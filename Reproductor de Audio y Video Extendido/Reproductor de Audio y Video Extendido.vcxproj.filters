@@ -1,0 +1,415 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Archivos de recursos">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="DWL">
+      <UniqueIdentifier>{5aafbfd6-4b0d-4f64-a5be-fce21d582163}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MAIN">
+      <UniqueIdentifier>{33c10cc3-7f24-444b-9777-dac5a9b6874d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ventanas">
+      <UniqueIdentifier>{4d555157-3a23-462e-9ce5-e473bd34c533}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SQLite">
+      <UniqueIdentifier>{88d529a1-d778-4ae9-89ec-7a51bb694343}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base de datos">
+      <UniqueIdentifier>{baed088e-06fc-4d4c-9f1c-dbf645a7fd1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base de datos\Tipos">
+      <UniqueIdentifier>{4c5f11bd-4580-436b-b452-8a4d30892da5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base de datos\Tablas">
+      <UniqueIdentifier>{b01c45df-755c-4635-b28c-de20f9b326e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas">
+      <UniqueIdentifier>{74eacee0-0026-4545-acb8-00698bac5642}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ventanas\Controles">
+      <UniqueIdentifier>{86140bae-a88e-41a0-b85e-580d6aa0159f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\Consola">
+      <UniqueIdentifier>{84928c74-54e6-467a-9fdd-fe4f5ce0a3db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\Controles">
+      <UniqueIdentifier>{4165fe03-1859-4d0b-bd06-0e52cf551cf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\Controles\TreeView">
+      <UniqueIdentifier>{fbc6d11b-52ef-463b-b1b3-ed887956edba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\Controles\ImageList">
+      <UniqueIdentifier>{a722b17b-e26a-4ed7-8bd7-a35ce20283d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\Menu">
+      <UniqueIdentifier>{582e9ccc-d9e5-4da7-bbb3-6bfe4363b8b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\Controles\ListView">
+      <UniqueIdentifier>{24876072-6ca4-49c2-aa93-cabb2d9df517}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\Controles\Button">
+      <UniqueIdentifier>{1928e800-5d54-49b6-aea9-13ece97b6c06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Sistema">
+      <UniqueIdentifier>{73610f63-b897-4ea5-b3bd-253a763c096e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Sistema\Directorios">
+      <UniqueIdentifier>{3be73d81-8253-4a99-81d0-8a7b790b3b71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Sistema\Unidades de Disco">
+      <UniqueIdentifier>{0f4656b9-978c-42ed-8761-6ee123478428}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Sistema\String">
+      <UniqueIdentifier>{35a8c189-a8aa-475d-86b8-8d1cc62aef38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Sistema\Mouse">
+      <UniqueIdentifier>{caf2d394-a02d-4351-8ca7-27ceecb536ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VLC">
+      <UniqueIdentifier>{9b9da493-5164-46a8-b89a-2dc9d5e0c4ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="A TODO">
+      <UniqueIdentifier>{bdd100ce-18d7-4ba7-970c-96ee27086dc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx">
+      <UniqueIdentifier>{dc872fa4-ea37-42c7-b902-8cec08c6cb7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\BarraEx">
+      <UniqueIdentifier>{6cc2c2f5-911c-44a4-88f4-8395662a3ade}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\DToolTipEx">
+      <UniqueIdentifier>{b100c2ec-d0c5-423a-bbfa-3c4a9231195e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\BotonEx">
+      <UniqueIdentifier>{387b6b9f-1344-4cff-be71-fa2d6bf42414}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\Controles\TrackBar %28DEPRECATED%29">
+      <UniqueIdentifier>{bd6b1b75-4b6e-41ab-84a6-58c537a0be5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\LabelEx">
+      <UniqueIdentifier>{ec2f93a3-f0d3-4895-aedb-dd9521e0b5b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\Controles\Static Control %28DEPRECATED%29">
+      <UniqueIdentifier>{ca03a1a6-077e-47d3-924d-4cc10a4e3a42}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Resource.h">
+      <Filter>MAIN</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>MAIN</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>MAIN</Filter>
+    </ClInclude>
+    <ClInclude Include="VentanaPrincipal.h">
+      <Filter>Ventanas</Filter>
+    </ClInclude>
+    <ClInclude Include="sqlite3.h">
+      <Filter>SQLite</Filter>
+    </ClInclude>
+    <ClInclude Include="TDisco.h">
+      <Filter>Base de datos\Tipos</Filter>
+    </ClInclude>
+    <ClInclude Include="TGenero.h">
+      <Filter>Base de datos\Tipos</Filter>
+    </ClInclude>
+    <ClInclude Include="TGrupo.h">
+      <Filter>Base de datos\Tipos</Filter>
+    </ClInclude>
+    <ClInclude Include="TMedio.h">
+      <Filter>Base de datos\Tipos</Filter>
+    </ClInclude>
+    <ClInclude Include="TRaiz.h">
+      <Filter>Base de datos\Tipos</Filter>
+    </ClInclude>
+    <ClInclude Include="TTipo.h">
+      <Filter>Base de datos\Tipos</Filter>
+    </ClInclude>
+    <ClInclude Include="TablaRaiz.h">
+      <Filter>Base de datos\Tablas</Filter>
+    </ClInclude>
+    <ClInclude Include="ExtensionesValidas.h">
+      <Filter>Base de datos\Tipos</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseDatos.h">
+      <Filter>Base de datos</Filter>
+    </ClInclude>
+    <ClInclude Include="StrTp.h">
+      <Filter>Base de datos\Tipos</Filter>
+    </ClInclude>
+    <ClInclude Include="DDirectoriosWindows.h">
+      <Filter>DWL\Sistema\Directorios</Filter>
+    </ClInclude>
+    <ClInclude Include="DUnidadesDisco.h">
+      <Filter>DWL\Sistema\Unidades de Disco</Filter>
+    </ClInclude>
+    <ClInclude Include="DhWnd.h">
+      <Filter>DWL\Ventanas</Filter>
+    </ClInclude>
+    <ClInclude Include="DStringUtils.h">
+      <Filter>DWL\Sistema\String</Filter>
+    </ClInclude>
+    <ClInclude Include="RAVE.h">
+      <Filter>MAIN</Filter>
+    </ClInclude>
+    <ClInclude Include="ArbolBD.h">
+      <Filter>Ventanas\Controles</Filter>
+    </ClInclude>
+    <ClInclude Include="DTreeView.h">
+      <Filter>DWL\Ventanas\Controles\TreeView</Filter>
+    </ClInclude>
+    <ClInclude Include="DImageList.h">
+      <Filter>DWL\Ventanas\Controles\ImageList</Filter>
+    </ClInclude>
+    <ClInclude Include="DMensajesWnd.h">
+      <Filter>DWL\Ventanas</Filter>
+    </ClInclude>
+    <ClInclude Include="DConsola.h">
+      <Filter>DWL\Ventanas\Consola</Filter>
+    </ClInclude>
+    <ClInclude Include="DMenu.h">
+      <Filter>DWL\Ventanas\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="DListView.h">
+      <Filter>DWL\Ventanas\Controles\ListView</Filter>
+    </ClInclude>
+    <ClInclude Include="DButton.h">
+      <Filter>DWL\Ventanas\Controles\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="ListaMedios.h">
+      <Filter>Ventanas\Controles</Filter>
+    </ClInclude>
+    <ClInclude Include="DMouse.h">
+      <Filter>DWL\Sistema\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="RaveVLC.h">
+      <Filter>VLC</Filter>
+    </ClInclude>
+    <ClInclude Include="TablaMedios.h">
+      <Filter>Base de datos\Tablas</Filter>
+    </ClInclude>
+    <ClInclude Include="VerVideo.h">
+      <Filter>Ventanas\Controles</Filter>
+    </ClInclude>
+    <ClInclude Include="DTrackBar.h">
+      <Filter>DWL\Ventanas\Controles\TrackBar %28DEPRECATED%29</Filter>
+    </ClInclude>
+    <ClInclude Include="DStaticControl.h">
+      <Filter>DWL\Ventanas\Controles\Static Control %28DEPRECATED%29</Filter>
+    </ClInclude>
+    <ClInclude Include="MarcoControles.h">
+      <Filter>Ventanas\Controles</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlesPantallaCompleta.h">
+      <Filter>Ventanas\Controles</Filter>
+    </ClInclude>
+    <ClInclude Include="TablaOpciones.h">
+      <Filter>Base de datos\Tablas</Filter>
+    </ClInclude>
+    <ClInclude Include="TablaBase.h">
+      <Filter>Base de datos\Tablas</Filter>
+    </ClInclude>
+    <ClInclude Include="TODO.h">
+      <Filter>A TODO</Filter>
+    </ClInclude>
+    <ClInclude Include="DBarraEx.h">
+      <Filter>DWL\Ventanas\ControlesEx\BarraEx</Filter>
+    </ClInclude>
+    <ClInclude Include="DToolTipEx.h">
+      <Filter>DWL\Ventanas\ControlesEx\DToolTipEx</Filter>
+    </ClInclude>
+    <ClInclude Include="BarraTiempo.h">
+      <Filter>Ventanas\Controles</Filter>
+    </ClInclude>
+    <ClInclude Include="BarraVolumen.h">
+      <Filter>Ventanas\Controles</Filter>
+    </ClInclude>
+    <ClInclude Include="RAVE_Configuracion.h">
+      <Filter>MAIN</Filter>
+    </ClInclude>
+    <ClInclude Include="RAVE_Colores.h">
+      <Filter>MAIN</Filter>
+    </ClInclude>
+    <ClInclude Include="DBotonEx.h">
+      <Filter>DWL\Ventanas\ControlesEx\BotonEx</Filter>
+    </ClInclude>
+    <ClInclude Include="DLabelEx.h">
+      <Filter>DWL\Ventanas\ControlesEx\LabelEx</Filter>
+    </ClInclude>
+    <ClInclude Include="VentanaErrorCritico.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
+      <Filter>MAIN</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>MAIN</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaPrincipal.cpp">
+      <Filter>Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="sqlite3.c">
+      <Filter>SQLite</Filter>
+    </ClCompile>
+    <ClCompile Include="TablaRaiz.cpp">
+      <Filter>Base de datos\Tablas</Filter>
+    </ClCompile>
+    <ClCompile Include="ExtensionesValidas.cpp">
+      <Filter>Base de datos\Tipos</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseDatos.cpp">
+      <Filter>Base de datos</Filter>
+    </ClCompile>
+    <ClCompile Include="DUnidadesDisco.cpp">
+      <Filter>DWL\Sistema\Unidades de Disco</Filter>
+    </ClCompile>
+    <ClCompile Include="DhWnd.cpp">
+      <Filter>DWL\Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="DStringUtils.cpp">
+      <Filter>DWL\Sistema\String</Filter>
+    </ClCompile>
+    <ClCompile Include="RAVE.cpp">
+      <Filter>MAIN</Filter>
+    </ClCompile>
+    <ClCompile Include="ArbolBD.cpp">
+      <Filter>Ventanas\Controles</Filter>
+    </ClCompile>
+    <ClCompile Include="DTreeView.cpp">
+      <Filter>DWL\Ventanas\Controles\TreeView</Filter>
+    </ClCompile>
+    <ClCompile Include="DTreeView_Nodo.cpp">
+      <Filter>DWL\Ventanas\Controles\TreeView</Filter>
+    </ClCompile>
+    <ClCompile Include="DImageList.cpp">
+      <Filter>DWL\Ventanas\Controles\ImageList</Filter>
+    </ClCompile>
+    <ClCompile Include="DConsola.cpp">
+      <Filter>DWL\Ventanas\Consola</Filter>
+    </ClCompile>
+    <ClCompile Include="DMenu.cpp">
+      <Filter>DWL\Ventanas\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="DListView.cpp">
+      <Filter>DWL\Ventanas\Controles\ListView</Filter>
+    </ClCompile>
+    <ClCompile Include="DListView_Columna.cpp">
+      <Filter>DWL\Ventanas\Controles\ListView</Filter>
+    </ClCompile>
+    <ClCompile Include="DListView_DatosEdicion.cpp">
+      <Filter>DWL\Ventanas\Controles\ListView</Filter>
+    </ClCompile>
+    <ClCompile Include="DListView_Item.cpp">
+      <Filter>DWL\Ventanas\Controles\ListView</Filter>
+    </ClCompile>
+    <ClCompile Include="DButton.cpp">
+      <Filter>DWL\Ventanas\Controles\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="ListaMedios.cpp">
+      <Filter>Ventanas\Controles</Filter>
+    </ClCompile>
+    <ClCompile Include="DMouse.cpp">
+      <Filter>DWL\Sistema\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="RaveVLC.cpp">
+      <Filter>VLC</Filter>
+    </ClCompile>
+    <ClCompile Include="TablaMedios.cpp">
+      <Filter>Base de datos\Tablas</Filter>
+    </ClCompile>
+    <ClCompile Include="VerVideo.cpp">
+      <Filter>Ventanas\Controles</Filter>
+    </ClCompile>
+    <ClCompile Include="DTrackBar.cpp">
+      <Filter>DWL\Ventanas\Controles\TrackBar %28DEPRECATED%29</Filter>
+    </ClCompile>
+    <ClCompile Include="DStaticControl.cpp">
+      <Filter>DWL\Ventanas\Controles\Static Control %28DEPRECATED%29</Filter>
+    </ClCompile>
+    <ClCompile Include="MarcoControles.cpp">
+      <Filter>Ventanas\Controles</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlesPantallaCompleta.cpp">
+      <Filter>Ventanas\Controles</Filter>
+    </ClCompile>
+    <ClCompile Include="TablaOpciones.cpp">
+      <Filter>Base de datos\Tablas</Filter>
+    </ClCompile>
+    <ClCompile Include="TablaBase.cpp">
+      <Filter>Base de datos\Tablas</Filter>
+    </ClCompile>
+    <ClCompile Include="DBarraEx.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\BarraEx</Filter>
+    </ClCompile>
+    <ClCompile Include="DToolTipEx.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\DToolTipEx</Filter>
+    </ClCompile>
+    <ClCompile Include="BarraTiempo.cpp">
+      <Filter>Ventanas\Controles</Filter>
+    </ClCompile>
+    <ClCompile Include="BarraVolumen.cpp">
+      <Filter>Ventanas\Controles</Filter>
+    </ClCompile>
+    <ClCompile Include="DBotonEx.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\BotonEx</Filter>
+    </ClCompile>
+    <ClCompile Include="DLabelEx.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\LabelEx</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaErrorCritico.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Reproductor de Audio y Video Extendido.rc">
+      <Filter>Archivos de recursos</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="Reproductor de Audio y Video Extendido.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Cancion.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_CDAudio.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Directorio.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Disco.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Genero.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Grupo.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_ListaCanciones.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Raiz.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Subtitulos.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Video.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\IDI_CDAudio.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,287 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{786A9BEF-4D80-4511-98AD-E6C9A61B2824}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>ReproductordeAudioyVideoExtendido</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>..\vlc-2.2.1\Include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <TargetName>RAVE</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <TargetName>RAVE</TargetName>
+    <IncludePath>..\vlc-2.2.1\Include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>..\vlc-2.2.1\Include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <TargetName>RAVE</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <TargetName>RAVE</TargetName>
+    <IncludePath>..\vlc-2.2.1\Include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ArbolBD.h" />
+    <ClInclude Include="BarraTiempo.h" />
+    <ClInclude Include="BarraVolumen.h" />
+    <ClInclude Include="BaseDatos.h" />
+    <ClInclude Include="DBotonEx.h" />
+    <ClInclude Include="DLabelEx.h" />
+    <ClInclude Include="RAVE_Colores.h" />
+    <ClInclude Include="RAVE_Configuracion.h" />
+    <ClInclude Include="ControlesPantallaCompleta.h" />
+    <ClInclude Include="DBarraEx.h" />
+    <ClInclude Include="DButton.h" />
+    <ClInclude Include="DConsola.h" />
+    <ClInclude Include="DDirectoriosWindows.h" />
+    <ClInclude Include="DhWnd.h" />
+    <ClInclude Include="DImageList.h" />
+    <ClInclude Include="DListView.h" />
+    <ClInclude Include="DMensajesWnd.h" />
+    <ClInclude Include="DMenu.h" />
+    <ClInclude Include="DMouse.h" />
+    <ClInclude Include="DStaticControl.h" />
+    <ClInclude Include="DStringUtils.h" />
+    <ClInclude Include="DToolTipEx.h" />
+    <ClInclude Include="DTreeView.h" />
+    <ClInclude Include="DUnidadesDisco.h" />
+    <ClInclude Include="ExtensionesValidas.h" />
+    <ClInclude Include="ListaMedios.h" />
+    <ClInclude Include="MarcoControles.h" />
+    <ClInclude Include="RAVE.h" />
+    <ClInclude Include="RaveVLC.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="sqlite3.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="StrTp.h" />
+    <ClInclude Include="TablaBase.h" />
+    <ClInclude Include="TablaMedios.h" />
+    <ClInclude Include="TablaOpciones.h" />
+    <ClInclude Include="TablaRaiz.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="TDisco.h" />
+    <ClInclude Include="TGenero.h" />
+    <ClInclude Include="TGrupo.h" />
+    <ClInclude Include="TMedio.h" />
+    <ClInclude Include="DTrackBar.h" />
+    <ClInclude Include="TODO.h" />
+    <ClInclude Include="TRaiz.h" />
+    <ClInclude Include="TTipo.h" />
+    <ClInclude Include="VentanaErrorCritico.h" />
+    <ClInclude Include="VentanaPrincipal.h" />
+    <ClInclude Include="VerVideo.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ArbolBD.cpp" />
+    <ClCompile Include="BarraTiempo.cpp" />
+    <ClCompile Include="BarraVolumen.cpp" />
+    <ClCompile Include="BaseDatos.cpp" />
+    <ClCompile Include="ControlesPantallaCompleta.cpp" />
+    <ClCompile Include="DBarraEx.cpp" />
+    <ClCompile Include="DBotonEx.cpp" />
+    <ClCompile Include="DButton.cpp" />
+    <ClCompile Include="DConsola.cpp" />
+    <ClCompile Include="DhWnd.cpp" />
+    <ClCompile Include="DImageList.cpp" />
+    <ClCompile Include="DLabelEx.cpp" />
+    <ClCompile Include="DListView.cpp" />
+    <ClCompile Include="DListView_Columna.cpp" />
+    <ClCompile Include="DListView_DatosEdicion.cpp" />
+    <ClCompile Include="DListView_Item.cpp" />
+    <ClCompile Include="DMenu.cpp" />
+    <ClCompile Include="DMouse.cpp" />
+    <ClCompile Include="DStaticControl.cpp" />
+    <ClCompile Include="DStringUtils.cpp" />
+    <ClCompile Include="DToolTipEx.cpp" />
+    <ClCompile Include="DTreeView.cpp" />
+    <ClCompile Include="DTreeView_Nodo.cpp" />
+    <ClCompile Include="DUnidadesDisco.cpp" />
+    <ClCompile Include="ExtensionesValidas.cpp" />
+    <ClCompile Include="ListaMedios.cpp" />
+    <ClCompile Include="MarcoControles.cpp" />
+    <ClCompile Include="RAVE.cpp" />
+    <ClCompile Include="RaveVLC.cpp" />
+    <ClCompile Include="Reproductor de Audio y Video Extendido.cpp" />
+    <ClCompile Include="sqlite3.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TablaBase.cpp" />
+    <ClCompile Include="TablaMedios.cpp" />
+    <ClCompile Include="TablaOpciones.cpp" />
+    <ClCompile Include="TablaRaiz.cpp" />
+    <ClCompile Include="DTrackBar.cpp" />
+    <ClCompile Include="VentanaErrorCritico.cpp" />
+    <ClCompile Include="VentanaPrincipal.cpp" />
+    <ClCompile Include="VerVideo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Reproductor de Audio y Video Extendido.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Iconos\IDI_Cancion.ico" />
+    <Image Include="..\Iconos\IDI_CDAudio.ico" />
+    <Image Include="..\Iconos\IDI_Directorio.ico" />
+    <Image Include="..\Iconos\IDI_Disco.ico" />
+    <Image Include="..\Iconos\IDI_Genero.ico" />
+    <Image Include="..\Iconos\IDI_Grupo.ico" />
+    <Image Include="..\Iconos\IDI_ListaCanciones.ico" />
+    <Image Include="..\Iconos\IDI_Raiz.ico" />
+    <Image Include="..\Iconos\IDI_Subtitulos.ico" />
+    <Image Include="..\Iconos\IDI_Video.ico" />
+    <Image Include="..\IDI_CDAudio.ico" />
+    <Image Include="Reproductor de Audio y Video Extendido.ico" />
+    <Image Include="small.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
