@@ -165,12 +165,13 @@
     <ClInclude Include="BarraTiempo.h" />
     <ClInclude Include="BarraVolumen.h" />
     <ClInclude Include="BaseDatos.h" />
+    <ClInclude Include="DBarraDesplazamientoEx.h" />
+    <ClInclude Include="DBarraProgresoEx.h" />
     <ClInclude Include="DBotonEx.h" />
     <ClInclude Include="DLabelEx.h" />
     <ClInclude Include="RAVE_Colores.h" />
     <ClInclude Include="RAVE_Configuracion.h" />
     <ClInclude Include="ControlesPantallaCompleta.h" />
-    <ClInclude Include="DBarraEx.h" />
     <ClInclude Include="DButton.h" />
     <ClInclude Include="DConsola.h" />
     <ClInclude Include="DDirectoriosWindows.h" />
@@ -217,7 +218,8 @@
     <ClCompile Include="BarraVolumen.cpp" />
     <ClCompile Include="BaseDatos.cpp" />
     <ClCompile Include="ControlesPantallaCompleta.cpp" />
-    <ClCompile Include="DBarraEx.cpp" />
+    <ClCompile Include="DBarraDesplazamientoEx.cpp" />
+    <ClCompile Include="DBarraProgresoEx.cpp" />
     <ClCompile Include="DBotonEx.cpp" />
     <ClCompile Include="DButton.cpp" />
     <ClCompile Include="DConsola.cpp" />

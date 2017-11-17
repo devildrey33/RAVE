@@ -3,42 +3,48 @@
 #include "RAVE_Colores.h"
 
 namespace DWL {
-	DLabelEx::DLabelEx() {
+	DLabelEx::DLabelEx(void) : DControlEx_TextoEstatico(), _Formato(DT_LEFT) {
 	}
 
 
-	DLabelEx::~DLabelEx() {
+	DLabelEx::~DLabelEx(void) {
 	}
 
-	HWND DLabelEx::CrearLabelEx(DhWnd &nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const long Estilos) {
+	HWND DLabelEx::CrearLabelEx(DhWnd &nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const BOOL nCentrado, const long Estilos) {
 		if (hWnd()) { Debug_Escribir(L"DLabelEx::CreadLabelEx() Error : ya se ha creado el label\n"); return hWnd(); }
 		hWnd = CrearControlEx(nPadre, L"DLabelEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
+
+		_Formato = (nCentrado == TRUE) ? DT_CENTER : DT_LEFT;
+		_Fuente = hWnd._Fuente;
 
 		_Texto = nTxt;
 		return hWnd();
 	}
 
+
 	void DLabelEx::PintarLabelEx(HDC DC) {
-/*		LONG_PTR		Estilos = GetWindowLongPtr(hWnd(), GWL_STYLE);
-		HBRUSH			Fondo = GetSysColorBrush(COLOR_3DFACE);*/
-		RECT			RC;
-//		static wchar_t	TmpStr[512];
-//		GetWindowText(hWnd(), TmpStr, 512);
+		RECT RC;
 		GetClientRect(hWnd(), &RC);
+		RECT RC2 = RC;
+		RC2.left++; RC2.top++; RC2.right++; RC2.bottom++;
 
 		// BackBuffer 
 		HDC     TmphDC = CreateCompatibleDC(NULL);
 		HBITMAP TmphDCBmp = CreateCompatibleBitmap(DC, RC.right, RC.bottom);
 		HBITMAP VTmphDCBmp = static_cast<HBITMAP>(SelectObject(TmphDC, TmphDCBmp));
-		HFONT	VFont = static_cast<HFONT>(SelectObject(TmphDC, hWnd._Fuente));
+		HFONT	VFont = static_cast<HFONT>(SelectObject(TmphDC, _Fuente));
 
-		HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO);
+		HBRUSH BrochaFondo = CreateSolidBrush(_ColorFondo);
 		FillRect(TmphDC, &RC, BrochaFondo);
 		DeleteObject(BrochaFondo);
 
 		SetBkMode(TmphDC, TRANSPARENT);
-		SetTextColor(TmphDC, COLOR_TEXTO);
-		DrawText(TmphDC, _Texto.c_str(), -1, &RC, DT_CENTER);
+		// Pinto la sombra del texto
+		SetTextColor(TmphDC, _ColorTextoSombra);
+		DrawText(TmphDC, _Texto.c_str(), static_cast<int>(_Texto.size()), &RC2, _Formato);
+		// Pinto el texto
+		SetTextColor(TmphDC, _ColorTexto);
+		DrawText(TmphDC, _Texto.c_str(), static_cast<int>(_Texto.size()), &RC, _Formato);
 
 		BitBlt(DC, RC.left, RC.top, RC.right, RC.bottom, TmphDC, 0, 0, SRCCOPY);
 //		EndPaint(hWnd(), &PS);

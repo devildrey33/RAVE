@@ -1,8 +1,8 @@
 #pragma once
 
-#include "DBarraEx.h"
+#include "DBarraDesplazamientoEx.h"
 
-class BarraVolumen : public DWL::DBarraEx {
+class BarraVolumen : public DWL::DBarraDesplazamientoEx {
   public:
 			BarraVolumen();
 	       ~BarraVolumen();

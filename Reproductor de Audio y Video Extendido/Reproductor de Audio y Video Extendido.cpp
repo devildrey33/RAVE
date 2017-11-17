@@ -29,8 +29,8 @@ LONG WINAPI FuncionErrorCritico(struct _EXCEPTION_POINTERS* ExceptionInfo) {
 		MINIDUMP_CALLBACK_INFORMATION mci;
 		mci.CallbackRoutine = NULL;
 		mci.CallbackParam = 0;
-		// Creamos una variable con las opciones que se usaran para crear el dump
-		MINIDUMP_TYPE mdt = (MINIDUMP_TYPE)(MiniDumpWithIndirectlyReferencedMemory | MiniDumpScanMemory | MiniDumpNormal);
+		// Creamos una variable con las opciones que se usaran para crear el dump // MiniDumpWithFullMemory
+		MINIDUMP_TYPE mdt = (MINIDUMP_TYPE)(MiniDumpWithDataSegs | MiniDumpWithHandleData | MiniDumpFilterMemory | MiniDumpScanMemory | MiniDumpNormal);
 		// Escribimos el dump en el archivo
 		BOOL rv;
 		rv = MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile, mdt, (ExceptionInfo != 0) ? &mdei : 0, 0, &mci);

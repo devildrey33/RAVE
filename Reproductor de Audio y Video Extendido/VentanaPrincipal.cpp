@@ -51,26 +51,26 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	BotonMezclar.Crear(MarcoSI.hWnd, L"Mezclar", 210, 0, 70, 30, ID_BOTON_MEZCLAR, TRUE, DEnum_Button_Tipo_Split);
 	BotonRepetir.Crear(MarcoSI.hWnd, L"Repetir", 290, 0, 70, 30, ID_BOTON_REPETIR, TRUE, DEnum_Button_Tipo_Split);
 
-	SliderTiempo.CrearBarraEx(hWnd, 10, 50, RC.right - 20, 20, ID_SLIDER_TIEMPO);
+	SliderTiempo.CrearBarraDesplazamientoEx(hWnd, 10, 50, RC.right - 20, 20, ID_SLIDER_TIEMPO);
 //	SliderTiempo.Crear(hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO, WS_CHILD | TBS_NOTICKS | WS_VISIBLE, 0, 30000, 0);
 //	SliderTiempo.TamPagina(30000 / 50);
 
 	MarcoSD.Crear(hWnd, RC.right - 260, 14, 250, 24, ID_MARCOSD);
-	SliderVolumen.CrearBarraEx(MarcoSD.hWnd, 120, 3, 90, 14, ID_SLIDER_VOLUMEN, 0, 200, 100);
+	SliderVolumen.CrearBarraDesplazamientoEx(MarcoSD.hWnd, 120, 3, 90, 14, ID_SLIDER_VOLUMEN, 0, 200, 100);
 	LabelVolumen.CrearLabelEx(MarcoSD.hWnd, L"100%", 215, 2, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
 
-	LabelTiempoActual.CrearLabelEx(MarcoSD.hWnd, L"00:00", 0, 2, 55, 20, ID_LABEL_TIEMPOACTUAL, WS_CHILD | WS_VISIBLE);
-	LabelTiempoSeparador.CrearLabelEx(MarcoSD.hWnd, L"/", 55, 2, 10, 20, ID_LABEL_TIEMPOSEPARADOR, WS_CHILD | WS_VISIBLE);
+	LabelTiempoActual.CrearLabelEx(MarcoSD.hWnd, L"00:00", 0, 2, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
+	LabelTiempoSeparador.CrearLabelEx(MarcoSD.hWnd, L"/", 55, 2, 10, 20, ID_LABEL_TIEMPOSEPARADOR,TRUE,  WS_CHILD | WS_VISIBLE);
 	LabelTiempoTotal.CrearLabelEx(MarcoSD.hWnd, L"00:00", 65, 2, 55, 20, ID_LABEL_TIEMPOTOTAL, WS_CHILD | WS_VISIBLE);
 
 
 	MarcoII.Crear(hWnd, 10, 80, 100, 160, ID_MARCOSI);
 
-	BotonBD.CreadBotonEx(MarcoII.hWnd, L"Base de datos", 0, 0, 100, 30, ID_BOTON_BD);
-	BotonLista.CreadBotonEx(MarcoII.hWnd, L"Lista de medios", 0, 40, 100, 30, ID_BOTON_LISTA);
-	BotonVideo.CreadBotonEx(MarcoII.hWnd, L"Ver video", 0, 80, 100, 30, ID_BOTON_VIDEO);
+	BotonBD.CrearBotonEx(MarcoII.hWnd, L"Base de datos", 0, 0, 100, 30, ID_BOTON_BD);
+	BotonLista.CrearBotonEx(MarcoII.hWnd, L"Lista de medios", 0, 40, 100, 30, ID_BOTON_LISTA);
+	BotonVideo.CrearBotonEx(MarcoII.hWnd, L"Ver video", 0, 80, 100, 30, ID_BOTON_VIDEO);
 
-	BotonOpciones.CreadBotonEx(MarcoII.hWnd, L"Opciones", 0, 120, 100, 30, ID_BOTON_OPCIONES);
+	BotonOpciones.CrearBotonEx(MarcoII.hWnd, L"Opciones", 0, 120, 100, 30, ID_BOTON_OPCIONES);
 
 	ShowWindow(hWnd(), nCmdShow);
 
@@ -159,7 +159,7 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 		case TIMER_TIEMPO :
 			if (!hWnd.Minimizado()) {
 				// Si el slider del tiempo tiene la captura, es porque se esta modificando el tiempo, por lo que no hay que actualizar la posición en ese momento.
-				if (SliderTiempo.Estado() != DBarraEx_Estado_Presionado && App.ControlesPC.SliderTiempo.Estado() != DBarraEx_Estado_Presionado) {
+				if (SliderTiempo.Estado() != DBarraDesplazamientoEx_Estado_Presionado && App.ControlesPC.SliderTiempo.Estado() != DBarraDesplazamientoEx_Estado_Presionado) {
 					SliderTiempo.Valor(App.VLC.TiempoActual());
 //					SliderTiempo.Posicion(static_cast<UINT64>(App.VLC.TiempoActual() * 30000));
 					App.ControlesPC.SliderTiempo.Valor(App.VLC.TiempoActual());
@@ -460,10 +460,6 @@ void VentanaPrincipal::Evento_SliderTiempo_Cambiado() {
 void VentanaPrincipal::Evento_SliderVolumen_Cambio() {
 	int Volumen = static_cast<int>(SliderVolumen.Valor());	
 	App.VLC.Volumen(Volumen);
-
-	std::wstring StrVol = std::to_wstring(Volumen) + L"%";
-	LabelVolumen.Texto(StrVol);
-	App.ControlesPC.LabelVolumen.Texto(StrVol);
 }
 
 // Guardo el volumen en las opciones (al soltar el slider del volumen)

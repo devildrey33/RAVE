@@ -12,11 +12,11 @@ namespace DWL {
 		DBotonEx_Estado_Presionado
 	};
 
-	class DBotonEx : public DControlEx {
+	class DBotonEx : public DControlEx_TextoDinamico {
 	  public:
 								DBotonEx();
 				               ~DBotonEx();
-		HWND					CreadBotonEx(DhWnd &nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const long Estilos = WS_CHILD | WS_VISIBLE);
+		HWND					CrearBotonEx(DhWnd &nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const long Estilos = WS_CHILD | WS_VISIBLE);
 
 		void					PintarBotonEx(HDC DC);
 
@@ -28,7 +28,6 @@ namespace DWL {
 
 	  protected:
 		DBotonEx_Estado		   _Estado;
-		std::wstring		   _Texto;
 	};
 
 }

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "DBarraEx.h"
+#include "DBarraDesplazamientoEx.h"
 
-class BarraTiempo : public DBarraEx {
+class BarraTiempo : public DBarraDesplazamientoEx {
   public:
 			BarraTiempo();
 		   ~BarraTiempo();

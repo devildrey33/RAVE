@@ -77,12 +77,6 @@
     <Filter Include="DWL\Ventanas\ControlesEx">
       <UniqueIdentifier>{dc872fa4-ea37-42c7-b902-8cec08c6cb7c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\BarraEx">
-      <UniqueIdentifier>{6cc2c2f5-911c-44a4-88f4-8395662a3ade}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\DToolTipEx">
-      <UniqueIdentifier>{b100c2ec-d0c5-423a-bbfa-3c4a9231195e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DWL\Ventanas\ControlesEx\BotonEx">
       <UniqueIdentifier>{387b6b9f-1344-4cff-be71-fa2d6bf42414}</UniqueIdentifier>
     </Filter>
@@ -94,6 +88,15 @@
     </Filter>
     <Filter Include="DWL\Ventanas\Controles\Static Control %28DEPRECATED%29">
       <UniqueIdentifier>{ca03a1a6-077e-47d3-924d-4cc10a4e3a42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\BarraProgresoEx">
+      <UniqueIdentifier>{d7c9df78-01b9-4dd2-b4df-d2c6df60cfc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\ToolTipEx">
+      <UniqueIdentifier>{b100c2ec-d0c5-423a-bbfa-3c4a9231195e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\BarraDesplazamientoEx">
+      <UniqueIdentifier>{364bd3eb-04b0-417f-8dbb-2071ef3f324f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -220,11 +223,8 @@
     <ClInclude Include="TODO.h">
       <Filter>A TODO</Filter>
     </ClInclude>
-    <ClInclude Include="DBarraEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\BarraEx</Filter>
-    </ClInclude>
     <ClInclude Include="DToolTipEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\DToolTipEx</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ToolTipEx</Filter>
     </ClInclude>
     <ClInclude Include="BarraTiempo.h">
       <Filter>Ventanas\Controles</Filter>
@@ -244,7 +244,15 @@
     <ClInclude Include="DLabelEx.h">
       <Filter>DWL\Ventanas\ControlesEx\LabelEx</Filter>
     </ClInclude>
-    <ClInclude Include="VentanaErrorCritico.h" />
+    <ClInclude Include="DBarraProgresoEx.h">
+      <Filter>DWL\Ventanas\ControlesEx\BarraProgresoEx</Filter>
+    </ClInclude>
+    <ClInclude Include="VentanaErrorCritico.h">
+      <Filter>Ventanas</Filter>
+    </ClInclude>
+    <ClInclude Include="DBarraDesplazamientoEx.h">
+      <Filter>DWL\Ventanas\ControlesEx\BarraDesplazamientoEx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -346,11 +354,8 @@
     <ClCompile Include="TablaBase.cpp">
       <Filter>Base de datos\Tablas</Filter>
     </ClCompile>
-    <ClCompile Include="DBarraEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\BarraEx</Filter>
-    </ClCompile>
     <ClCompile Include="DToolTipEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\DToolTipEx</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ToolTipEx</Filter>
     </ClCompile>
     <ClCompile Include="BarraTiempo.cpp">
       <Filter>Ventanas\Controles</Filter>
@@ -364,7 +369,15 @@
     <ClCompile Include="DLabelEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\LabelEx</Filter>
     </ClCompile>
-    <ClCompile Include="VentanaErrorCritico.cpp" />
+    <ClCompile Include="DBarraProgresoEx.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\BarraProgresoEx</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaErrorCritico.cpp">
+      <Filter>Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="DBarraDesplazamientoEx.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\BarraDesplazamientoEx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Reproductor de Audio y Video Extendido.rc">

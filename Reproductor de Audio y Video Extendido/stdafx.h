@@ -87,3 +87,4 @@
 #define ID_VEC_ENVIAR					2300
 #define ID_VEC_SALIR					2301
 #define ID_VEC_TEXTOERROR				2302
+#define ID_VEC_PROGRESO					2303

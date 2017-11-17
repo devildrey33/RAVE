@@ -1,8 +1,9 @@
 #pragma once
 
 #include "DhWnd.h"
-#include "DStaticControl.h"
-#include "DButton.h"
+#include "DLabelEx.h"
+#include "DBotonEx.h"
+#include "DBarraProgresoEx.h"
 
 class VentanaErrorCritico : public DVentana {
   public:
@@ -10,10 +11,14 @@ class VentanaErrorCritico : public DVentana {
 		               ~VentanaErrorCritico();
 	HWND				Crear(void);
 
-	DStaticControl		TextoError;
-	DButton				BotonEnviar;
-	DButton				BotonSalir;
+	void				Evento_BorraFondo(HDC DC);
+	void				Evento_BotonEx_Mouse_Click(const UINT nID);
 
+	DLabelEx			TextoTitulo;
+	DLabelEx			TextoError;
+	DBotonEx			BotonEnviar;
+	DBotonEx			BotonSalir;
+	DBarraProgresoEx	BarraProgreso;
 	LRESULT CALLBACK	GestorMensajes(UINT uMSg, WPARAM wParam, LPARAM lParam);
 };
 

@@ -7,12 +7,14 @@
 
 namespace DWL {
 
-	HFONT DhWnd::_Fuente = NULL;
+	HFONT DhWnd::_Fuente  = NULL;
+	HFONT DhWnd::_FuenteB = NULL;
 
 	ATOM DhWnd::RegistrarClase(const TCHAR *nNombre, WNDPROC WindowProcedureInicial, UINT nEstilos, const int nIconoRecursos, HBRUSH nColorFondo, HINSTANCE hInstance) {
-		// Creamos la fuente si no existe
+		// Creamos las fuentes si no existen
 		if (_Fuente == NULL) {
-			_Fuente = CreateFont(FUENTE_NORMAL_TAM, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
+			_Fuente  = CreateFont(FUENTE_NORMAL_TAM, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
+			_FuenteB = CreateFont(FUENTE_NORMAL_TAM, 0, 0, 0, FW_BOLD  , false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
 		}
 		
 		WNDCLASSEX WndClass;

@@ -179,8 +179,8 @@ const BOOL RaveVLC::Stop(void) {
 		App.VentanaRave.SliderTiempo.OcultarToolTip();
 		App.ControlesPC.SliderTiempo.OcultarToolTip();
 		// Evito mostrar el tooltip si se pasa el mouse por encima del slider tiempo
-		App.VentanaRave.SliderTiempo.ToolTip(DBarraEx_ToolTip_SinToolTip);
-		App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_SinToolTip);
+		App.VentanaRave.SliderTiempo.ToolTip(DBarraDesplazamientoEx_ToolTip_SinToolTip);
+		App.ControlesPC.SliderTiempo.ToolTip(DBarraDesplazamientoEx_ToolTip_SinToolTip);
 
 //		Sistema.App.MediaPlayer.HackVLCWNDPROC(false);
 		libvlc_media_player_stop(_MediaPlayer);
@@ -205,8 +205,8 @@ const BOOL RaveVLC::Pausa(void) {
 const BOOL RaveVLC::Play(void) {
 	if (_MediaPlayer != NULL) {
 		if (libvlc_media_player_play(_MediaPlayer) == 0)	{
-			App.VentanaRave.SliderTiempo.ToolTip(DBarraEx_ToolTip_Inferior);
-			App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_Superior);
+			App.VentanaRave.SliderTiempo.ToolTip(DBarraDesplazamientoEx_ToolTip_Inferior);
+			App.ControlesPC.SliderTiempo.ToolTip(DBarraDesplazamientoEx_ToolTip_Superior);
 			hWndVLC = NULL;
 			ActualizarIconos(1);
 			SetTimer(App.VentanaRave.hWnd(), TIMER_OBTENERVLCWND, 100, NULL);
@@ -259,6 +259,12 @@ Estados_Medio RaveVLC::ComprobarEstado(void) {
 
 // 0 - 200
 void RaveVLC::Volumen(int nVolumen) {
+	App.VentanaRave.SliderVolumen.Valor(static_cast<float>(nVolumen));
+	App.ControlesPC.SliderVolumen.Valor(static_cast<float>(nVolumen));
+	std::wstring StrVol = std::to_wstring(nVolumen) + L"%";
+	App.VentanaRave.LabelVolumen.Texto(StrVol);
+	App.ControlesPC.LabelVolumen.Texto(StrVol);
+
 	if (_MediaPlayer != NULL) {
 		libvlc_audio_set_volume(_MediaPlayer, nVolumen);
 	}

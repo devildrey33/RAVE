@@ -8,7 +8,8 @@
 	#define GET_Y_LPARAM(lp)			((int)(short)HIWORD(lp))
 
 #include <string>
-	
+#include "RAVE_Colores.h"
+
 namespace DWL {
 
 
@@ -38,6 +39,7 @@ namespace DWL {
 		HWND               _hWnd;
 
 		static HFONT       _Fuente;
+		static HFONT       _FuenteB;
 
 		/*friend class DVentana;
 		friend class DControl;
@@ -112,6 +114,92 @@ namespace DWL {
 		BOOL                       _MouseDentro;
 
 	};
+
+
+
+
+
+
+
+
+	/* Control básico sin texto y sin foco */
+	class DControlEx_FondoEstatico : public DControlEx {
+	  public:
+								DControlEx_FondoEstatico(void) : DControlEx(), _ColorFondo(COLOR_FONDO), _ColorBorde(COLOR_BORDE) { }
+							   ~DControlEx_FondoEstatico(void) { }
+		inline void				ColorFondo(COLORREF nColor) { _ColorFondo = nColor;		Repintar(); }
+		inline const COLORREF	ColorFondo(void) { return _ColorFondo; }
+		inline void				ColorBorde(COLORREF nColor) { _ColorFondo = nColor;		Repintar(); }
+		inline const COLORREF	ColorBorde(void) { return _ColorFondo; }
+	  protected:
+		COLORREF               _ColorFondo;
+		COLORREF               _ColorBorde;
+	};
+
+	/* Control básico sin texto que puede tener el foco (con estados resaltado y presionado) */
+	class DControlEx_FondoDinamico : public DControlEx_FondoEstatico {
+	  public:
+								DControlEx_FondoDinamico(void) : DControlEx_FondoEstatico(), _ColorFondoResaltado(COLOR_BOTON_RESALTADO), _ColorFondoPresionado(COLOR_BOTON_PRESIONADO), _ColorBordeResaltado(COLOR_BORDE_RESALTADO), _ColorBordePresionado(COLOR_BORDE_PRESIONADO) { }
+							   ~DControlEx_FondoDinamico(void) { }
+		inline void				ColorFondoResaltado(COLORREF nColor) { _ColorFondoResaltado = nColor;	Repintar(); }
+		inline const COLORREF	ColorFondoResaltado(void) { return _ColorFondoResaltado; }
+		inline void				ColorFondoPresionado(COLORREF nColor) { _ColorFondoPresionado = nColor;	Repintar(); }
+		inline const COLORREF	ColorFondoPresionado(void) { return _ColorFondoPresionado; }
+		inline void				ColorBordeResaltado(COLORREF nColor) { _ColorBordeResaltado = nColor;	Repintar(); }
+		inline const COLORREF	ColorBordeResaltado(void) { return _ColorBordeResaltado; }
+		inline void				ColorBordePresionado(COLORREF nColor) { _ColorBordePresionado = nColor;	Repintar(); }
+		inline const COLORREF	ColorBordePresionado(void) { return _ColorBordePresionado; }
+	  protected:
+		COLORREF               _ColorFondoResaltado;
+		COLORREF               _ColorFondoPresionado;
+		COLORREF               _ColorBordeResaltado;
+		COLORREF               _ColorBordePresionado;
+	};
+
+	/* Control básico con texto y sin foco */
+	class DControlEx_TextoEstatico : public DControlEx_FondoEstatico {
+	  public:
+								DControlEx_TextoEstatico(void) : DControlEx_FondoEstatico(), _ColorTexto(COLOR_TEXTO), _ColorTextoSombra(COLOR_TEXTO_SOMBRA), _Fuente(NULL) { }
+		                       ~DControlEx_TextoEstatico(void) { }
+		inline void				ColorTexto(COLORREF nColor) { _ColorTexto = nColor;		Repintar(); }
+		inline const COLORREF	ColorTexto(void) { return _ColorTexto; }
+		inline void				ColorTextoSombra(COLORREF nColor) { _ColorTextoSombra = nColor;		Repintar(); }
+		inline const COLORREF	ColorTextoSombra(void) { return _ColorTextoSombra; }
+		inline void				Fuente(HFONT nFuente) { _Fuente = nFuente;		Repintar(); }
+		inline void				Texto(std::wstring nTexto) { _Texto = nTexto; }
+		inline std::wstring		Texto(void) { return _Texto; }
+	  protected:
+		std::wstring           _Texto;
+		COLORREF               _ColorTexto;
+		COLORREF               _ColorTextoSombra;
+		HFONT                  _Fuente;
+	};
+
+	/* Control básico con texto y que puede tener el foco (con estados resaltado y presionado) */
+	class DControlEx_TextoDinamico : public DControlEx_FondoDinamico {
+	  public:
+								DControlEx_TextoDinamico(void) : DControlEx_FondoDinamico(), _ColorTexto(COLOR_TEXTO), _ColorTextoSombra(COLOR_TEXTO_SOMBRA), _Fuente(NULL), _ColorTextoResaltado(COLOR_TEXTO_RESALTADO), _ColorTextoPresionado(COLOR_TEXTO_PRESIONADO) { }
+		                       ~DControlEx_TextoDinamico(void) { }
+		inline void				ColorTexto(COLORREF nColor) { _ColorTexto = nColor;		Repintar(); }
+		inline const COLORREF	ColorTexto(void) { return _ColorTexto; }
+		inline void				ColorTextoSombra(COLORREF nColor) { _ColorTextoSombra = nColor;		Repintar(); }
+		inline const COLORREF	ColorTextoSombra(void) { return _ColorTextoSombra; }
+		inline void				ColorTextoResaltado(COLORREF nColor) { _ColorTextoResaltado = nColor;		Repintar(); }
+		inline const COLORREF	ColorTextoResaltado(void) { return _ColorTextoResaltado; }
+		inline void				ColorTextoPresionado(COLORREF nColor) { _ColorTextoPresionado = nColor;		Repintar(); }
+		inline const COLORREF	ColorTextoPresionado(void) { return _ColorTextoPresionado; }
+		inline void				Fuente(HFONT nFuente) { _Fuente = nFuente;		Repintar(); }
+		inline void				Texto(std::wstring nTexto) { _Texto = nTexto; }
+		inline std::wstring		Texto(void) { return _Texto; }
+   	  protected:
+		std::wstring           _Texto;
+		COLORREF               _ColorTexto;
+		COLORREF               _ColorTextoSombra;
+		COLORREF               _ColorTextoResaltado;
+		COLORREF               _ColorTextoPresionado;
+		HFONT                  _Fuente;
+	};
+
 
 }
 #endif

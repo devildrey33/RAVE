@@ -2,9 +2,8 @@
 #include "BarraTiempo.h"
 #include "RAVE.h"
 
-BarraTiempo::BarraTiempo() {
+BarraTiempo::BarraTiempo() : DBarraDesplazamientoEx() {
 }
-
 
 BarraTiempo::~BarraTiempo() {
 }

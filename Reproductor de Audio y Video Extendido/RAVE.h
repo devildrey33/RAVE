@@ -18,8 +18,8 @@ enum LineaComando {
 
 class RAVE {
   public:
-								RAVE();
-	                           ~RAVE();
+								RAVE(void);
+	                           ~RAVE(void);
 								// Devuelve TRUE si es la primera instancia, FALSE si ya existe una instancia ejecutada
 							    // Al devolver FALSE se salta el bucle de mensajes y termina la aplicación
 	const BOOL					Iniciar(int nCmdShow);

@@ -14,16 +14,16 @@ void ControlesPantallaCompleta::Crear(void) {
 	BotonStop.Crear(hWnd, L"S", 130, 10, 30, 30, ID_BOTON_STOP);
 	BotonAdelante.Crear(hWnd, L">", 170, 10, 30, 30, ID_BOTON_SIGUIENTE);
 
-	SliderTiempo.CrearBarraEx(hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO);
+	SliderTiempo.CrearBarraDesplazamientoEx(hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO);
 //	SliderTiempo.Crear(hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO, WS_CHILD | TBS_NOTICKS | WS_VISIBLE, 0, 30000, 0);
 //	SliderTiempo.TamPagina(30000 / 50);
 
-	SliderVolumen.CrearBarraEx(hWnd, RC.right - 145, 13, 90, 16, ID_SLIDER_VOLUMEN, 0, 200, 100);
+	SliderVolumen.CrearBarraDesplazamientoEx(hWnd, RC.right - 145, 13, 90, 16, ID_SLIDER_VOLUMEN, 0, 200, 100);
 	LabelVolumen.CrearLabelEx(hWnd, L"100%", RC.right - 40, 12, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
 
-	LabelTiempoActual.CrearLabelEx(hWnd, L"00:00", RC.right - 265, 12, 55, 20, ID_LABEL_TIEMPOACTUAL, WS_CHILD | WS_VISIBLE);
-	LabelTiempoSeparador.CrearLabelEx(hWnd, L"/", RC.right - 210, 12, 10, 20, ID_LABEL_TIEMPOSEPARADOR, WS_CHILD | WS_VISIBLE);
-	LabelTiempoTotal.CrearLabelEx(hWnd, L"00:00", RC.right - 200, 12, 55, 20, ID_LABEL_TIEMPOTOTAL, WS_CHILD | WS_VISIBLE);
+	LabelTiempoActual.CrearLabelEx(hWnd, L"00:00", RC.right - 265, 12, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
+	LabelTiempoSeparador.CrearLabelEx(hWnd, L"/", RC.right - 210, 12, 10, 20, ID_LABEL_TIEMPOSEPARADOR, TRUE, WS_CHILD | WS_VISIBLE);
+	LabelTiempoTotal.CrearLabelEx(hWnd, L"00:00", RC.right - 200, 12, 55, 20, ID_LABEL_TIEMPOTOTAL, TRUE, WS_CHILD | WS_VISIBLE);
 }
 
 
@@ -99,9 +99,9 @@ void ControlesPantallaCompleta::Evento_SliderVolumen_Cambio(void) {
 	int Volumen = static_cast<int>(SliderVolumen.Valor());
 	App.VLC.Volumen(Volumen);
 	//swprintf(TiempoStr, 64, L"%d%%", HIWORD(wParam));
-	std::wstring StrVol = std::to_wstring(Volumen) + L"%";
+/*	std::wstring StrVol = std::to_wstring(Volumen) + L"%";
 	LabelVolumen.Texto(StrVol);
-	App.VentanaRave.LabelVolumen.Texto(StrVol);
+	App.VentanaRave.LabelVolumen.Texto(StrVol);*/
 	KillTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD);
 
 }
