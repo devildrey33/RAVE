@@ -3,6 +3,12 @@
 #include "resource.h"
 #include "RAVE_Colores.h"
 #include "DMensajesWnd.h"
+#include "DDirectoriosWindows.h"
+#include "EnviarDump.h"
+//#include "CSmtp.h"
+#include <locale> 
+#include <codecvt>
+
 
 VentanaErrorCritico::VentanaErrorCritico() {
 }
@@ -45,9 +51,48 @@ void VentanaErrorCritico::Evento_BorraFondo(HDC DC) {
 	DeleteObject(BrochaFondo);
 }
 
+void VentanaErrorCritico::Enviar(void) {
+	// Path para el archivo dump
+	std::wstring WPathDump;
+	BOOL R = DWL::DDirectoriosWindows::Comun_AppData(WPathDump);
+	WPathDump += L"\\Rave\\ErrorCritico.dmp";
+
+/*	using convert_typeX = std::codecvt_utf8<wchar_t>;
+	std::wstring_convert<convert_typeX, wchar_t> converterX;
+	std::string PathDump = converterX.to_bytes(WPathDump.c_str());*/
+
+	EnviarDump E;
+	E.Enviar(WPathDump, BarraProgreso);
+
+/*	try {
+		CSmtp mail;
+
+		mail.SetSMTPServer("smtp.1and1.es", 25);
+		mail.SetLogin("bubatronik.app");
+		mail.SetPassword("cuentamandadumps");
+		mail.SetSenderName("RAVE");
+		mail.SetSenderMail("bubatronik.app@devildrey33.es");
+		mail.SetReplyTo("bubatronik.app@devildrey33.es");
+		mail.SetSubject("RAVE Dump");
+		mail.AddRecipient("devildrey33@hotmail.com");
+		mail.SetXPriority(XPRIORITY_NORMAL);
+		mail.SetXMailer("The Bat! (v3.02) Professional");
+		char Buffer[128];
+		sprintf_s(Buffer, 128, "RAVE %f en %s", RAVE_VERSION, App.SO.c_str());
+		mail.AddMsgLine(Buffer);
+		mail.AddAttachment(PathDump.c_str());
+		mail.Send();
+	}
+	catch (ECSmtp e) {
+		//std::wstring StrError = e.GetErrorText().c_str();
+		Debug_Escribir_Varg(L"VentanaErrorCritico::Enviar %s.\n", e.GetErrorText().c_str());
+	}*/
+}
+
 void VentanaErrorCritico::Evento_BotonEx_Mouse_Click(const UINT nID) {
 	switch (nID) {
 		case ID_VEC_ENVIAR:
+			Enviar();
 			break;
 		case ID_VEC_SALIR:
 			PostMessage(hWnd(), WM_CLOSE, 0, 0);

@@ -29,10 +29,10 @@ namespace DWL {
 
 	const BOOL DConsola::Escribir(const wchar_t *Texto, ...) {
 		WaitForSingleObject(_Mutex, INFINITE);
-		static wchar_t  T[512];
+		static wchar_t  T[4096];
 		va_list			Marker;
 		va_start(Marker, Texto);
-		int TotalCaracteres = vswprintf_s(T, 512, Texto, Marker);
+		int TotalCaracteres = vswprintf_s(T, 4096, Texto, Marker);
 		DWORD CaracteresEscribidos = 0;
 		BOOL Ret = WriteConsole(_Consola, T, TotalCaracteres, &CaracteresEscribidos, NULL);
 		ReleaseMutex(_Mutex);
@@ -50,9 +50,9 @@ namespace DWL {
 	const BOOL DConsola::Leer(std::wstring &Texto) {
 		WaitForSingleObject(_Mutex, INFINITE);
 		DWORD CaracteresLeidos = 0;
-		static wchar_t Caracteres[512];
-		SecureZeroMemory(Caracteres, 512 * sizeof(wchar_t));
-		BOOL R = ReadConsole(_Consola, Caracteres, 512, &CaracteresLeidos, NULL);
+		static wchar_t Caracteres[4096];
+		SecureZeroMemory(Caracteres, 4096 * sizeof(wchar_t));
+		BOOL R = ReadConsole(_Consola, Caracteres, 4096, &CaracteresLeidos, NULL);
 		Texto = Caracteres;
 		ReleaseMutex(_Mutex);
 		return R;
@@ -75,14 +75,14 @@ namespace DWL {
 
 	const BOOL DConsola::EscribirMS(const wchar_t *Texto, ...) {
 		WaitForSingleObject(_Mutex, INFINITE);
-		static wchar_t  T[512];
+		static wchar_t  T[4096];
 		va_list			Marker;
 		va_start(Marker, Texto);
-		int TotalCaracteres = vswprintf_s(T, 512, Texto, Marker);
+		int TotalCaracteres = vswprintf_s(T, 4096, Texto, Marker);
 		DWORD CaracteresEscribidos = 0;
-		static wchar_t Txt[512];
+		static wchar_t Txt[4096];
 		DWORD TmpTick = GetTickCount();
-		TotalCaracteres = swprintf_s(Txt, 512, L"[%.8d] %s", TmpTick - _UltimoTick, T);
+		TotalCaracteres = swprintf_s(Txt, 4096, L"[%.8d] %s", TmpTick - _UltimoTick, T);
 		_UltimoTick = TmpTick;
 		BOOL Ret = WriteConsole(_Consola, Txt, TotalCaracteres, &CaracteresEscribidos, NULL);
 		ReleaseMutex(_Mutex);
@@ -92,9 +92,9 @@ namespace DWL {
 	const BOOL DConsola::EscribirMS(std::wstring &Texto) {
 		WaitForSingleObject(_Mutex, INFINITE);
 		DWORD CaracteresEscribidos = 0;
-		static wchar_t Txt[512];
+		static wchar_t Txt[4096];
 		DWORD TmpTick = GetTickCount();
-		int TotalCaracteres = swprintf_s(Txt, 512, L"[%.8d] %s", TmpTick - _UltimoTick, Texto.c_str());
+		int TotalCaracteres = swprintf_s(Txt, 4096, L"[%.8d] %s", TmpTick - _UltimoTick, Texto.c_str());
 		_UltimoTick = TmpTick;
 		BOOL Ret = WriteConsole(_Consola, Txt, TotalCaracteres, &CaracteresEscribidos, NULL);
 		ReleaseMutex(_Mutex);

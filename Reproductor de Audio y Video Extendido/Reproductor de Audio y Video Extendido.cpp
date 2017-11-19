@@ -63,7 +63,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstanc
 		CreateDirectory(PathRAVE.c_str(), NULL);
 	}
 
-	// Filtro para errores criticos
+	// Filtro para errores críticos
 	LPTOP_LEVEL_EXCEPTION_FILTER FiltroErrorCritico;
 	FiltroErrorCritico = SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)FuncionErrorCritico);
 

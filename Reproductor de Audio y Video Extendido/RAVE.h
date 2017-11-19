@@ -30,6 +30,9 @@ class RAVE {
 								// Obtiene la linea de comando y determina que hay que hacer
 	const LineaComando			ObtenerLineaComando(void);
 
+	void						Eventos_Mirar();
+
+	void						ObtenerSO();
 
 	void						Terminar(void);
 	VentanaPrincipal			VentanaRave;
@@ -48,6 +51,8 @@ class RAVE {
 	BOOL						PlayerInicial;
 
 	VentanaErrorCritico			VentanaErrorCrit;
+
+	std::wstring				SO;
 };
 
 extern RAVE *_APLICACION;

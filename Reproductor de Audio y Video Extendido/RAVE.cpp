@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "RAVE.h"
 #include "resource.h"
-#include "Shellapi.h"
-
+#include <Shellapi.h>
+#include <versionhelpers.h>
 
 void RAVE_Iniciar(void) {
 	_APLICACION = new RAVE;
@@ -30,9 +30,11 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 	}
 	WaitForSingleObject(MutexPlayer, INFINITE);
 
+	ObtenerSO();
 	// Consola para mensajes de depuración
 	#ifdef MOSTRAR_CONSOLA
 		ConsolaDebug.Crear(L"Consola de depuración");
+		Debug_Escribir_Varg(L"RAVE::Iniciar en %s.\n", SO.c_str());
 	#endif
 
 	BOOL Ret = FALSE;
@@ -129,6 +131,47 @@ void RAVE::Terminar(void) {
 	BD.TerminarBD();
 }
 
+void RAVE::Eventos_Mirar(void) {
+	static MSG msg;
+	if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+}
+
+/**/
+void RAVE::ObtenerSO() {
+	UINT Version = 0;
+	if (IsWindowsXPOrGreater()) Version++;
+	if (IsWindowsXPSP1OrGreater()) Version++;
+	if (IsWindowsXPSP2OrGreater()) Version++;
+	if (IsWindowsXPSP3OrGreater()) Version++;
+	if (IsWindowsVistaOrGreater()) Version++;
+	if (IsWindowsVistaSP1OrGreater()) Version++;
+	if (IsWindowsVistaSP2OrGreater()) Version++;
+	if (IsWindows7OrGreater()) Version++;
+	if (IsWindows7SP1OrGreater()) Version++;
+	if (IsWindows8OrGreater()) Version++;
+	if (IsWindows8Point1OrGreater()) Version++;
+	if (IsWindows10OrGreater()) Version++;
+
+	switch (Version) {
+		case  0: SO = L"";						break;
+		case  1: SO = L"Windows XP";			break;
+		case  2: SO = L"Windows XP SP1";		break;
+		case  3: SO = L"Windows XP SP2";		break;
+		case  4: SO = L"Windows XP SP3";		break;
+		case  5: SO = L"Windows Vista";			break;
+		case  6: SO = L"Windows Vista SP1";		break;
+		case  7: SO = L"Windows Vista SP2";		break;
+		case  8: SO = L"Windows 7";				break;
+		case  9: SO = L"Windows 7 SP1";			break;
+		case 10: SO = L"Windows 8";				break;
+		case 11: SO = L"Windows 8.1";			break;
+		case 12: SO = L"Windows 10";			break;
+		default: SO = L"Windows 10 o superior";	break;
+	}
+}
 
 const LineaComando RAVE::ObtenerLineaComando(void) {
 	int				TotalArgs	= 0;

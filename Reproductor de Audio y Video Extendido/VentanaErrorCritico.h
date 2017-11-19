@@ -14,6 +14,8 @@ class VentanaErrorCritico : public DVentana {
 	void				Evento_BorraFondo(HDC DC);
 	void				Evento_BotonEx_Mouse_Click(const UINT nID);
 
+	void				Enviar(void);
+
 	DLabelEx			TextoTitulo;
 	DLabelEx			TextoError;
 	DBotonEx			BotonEnviar;

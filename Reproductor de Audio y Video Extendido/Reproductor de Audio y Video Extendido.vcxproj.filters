@@ -98,9 +98,9 @@
     <Filter Include="DWL\Ventanas\ControlesEx\BarraDesplazamientoEx">
       <UniqueIdentifier>{364bd3eb-04b0-417f-8dbb-2071ef3f324f}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
+    <Filter Include="Dump">
+      <UniqueIdentifier>{642c9ab7-cb7e-4500-888b-8b66e18d4f7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -247,11 +247,14 @@
     <ClInclude Include="DBarraProgresoEx.h">
       <Filter>DWL\Ventanas\ControlesEx\BarraProgresoEx</Filter>
     </ClInclude>
-    <ClInclude Include="VentanaErrorCritico.h">
-      <Filter>Ventanas</Filter>
-    </ClInclude>
     <ClInclude Include="DBarraDesplazamientoEx.h">
       <Filter>DWL\Ventanas\ControlesEx\BarraDesplazamientoEx</Filter>
+    </ClInclude>
+    <ClInclude Include="VentanaErrorCritico.h">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="EnviarDump.h">
+      <Filter>Dump</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -372,11 +375,14 @@
     <ClCompile Include="DBarraProgresoEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\BarraProgresoEx</Filter>
     </ClCompile>
-    <ClCompile Include="VentanaErrorCritico.cpp">
-      <Filter>Ventanas</Filter>
-    </ClCompile>
     <ClCompile Include="DBarraDesplazamientoEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\BarraDesplazamientoEx</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaErrorCritico.cpp">
+      <Filter>Dump</Filter>
+    </ClCompile>
+    <ClCompile Include="EnviarDump.cpp">
+      <Filter>Dump</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,8 +1,8 @@
 // Configuración para compilar RAVE
 
 // Versión y titulo
-#define RAVE_VERSION			0.3f
-#define RAVE_TITULO				L"Rave 0.3"
+#define RAVE_VERSION			0.302f
+#define RAVE_TITULO				L"Rave 0.302"
 
 // Fuente por defecto
 #define FUENTE_NORMAL			L"Tahoma"
@@ -15,4 +15,4 @@
 #define MOSTRAR_ERRORCRITICO
 
 // Simula un error crítico y luego invoca una nueva instancia que muestra el error crítico
-#define SIMULAR_ERRORCRITICO
+//#define SIMULAR_ERRORCRITICO

@@ -158,9 +158,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="ArbolBD.h" />
     <ClInclude Include="BarraTiempo.h" />
     <ClInclude Include="BarraVolumen.h" />
@@ -169,6 +166,7 @@
     <ClInclude Include="DBarraProgresoEx.h" />
     <ClInclude Include="DBotonEx.h" />
     <ClInclude Include="DLabelEx.h" />
+    <ClInclude Include="EnviarDump.h" />
     <ClInclude Include="RAVE_Colores.h" />
     <ClInclude Include="RAVE_Configuracion.h" />
     <ClInclude Include="ControlesPantallaCompleta.h" />
@@ -238,6 +236,7 @@
     <ClCompile Include="DTreeView.cpp" />
     <ClCompile Include="DTreeView_Nodo.cpp" />
     <ClCompile Include="DUnidadesDisco.cpp" />
+    <ClCompile Include="EnviarDump.cpp" />
     <ClCompile Include="ExtensionesValidas.cpp" />
     <ClCompile Include="ListaMedios.cpp" />
     <ClCompile Include="MarcoControles.cpp" />
