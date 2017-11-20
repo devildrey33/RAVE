@@ -162,6 +162,7 @@
     <ClInclude Include="BarraTiempo.h" />
     <ClInclude Include="BarraVolumen.h" />
     <ClInclude Include="BaseDatos.h" />
+    <ClInclude Include="ContaEmail.h" />
     <ClInclude Include="DBarraDesplazamientoEx.h" />
     <ClInclude Include="DBarraProgresoEx.h" />
     <ClInclude Include="DBotonEx.h" />

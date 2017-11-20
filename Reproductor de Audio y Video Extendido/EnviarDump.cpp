@@ -4,6 +4,7 @@
 #include <locale> 
 #include <codecvt>
 #include <Ws2tcpip.h>
+#include "ContaEmail.h"
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -61,11 +62,11 @@ const BOOL EnviarDump::_Recibir(void) {
 
 const BOOL EnviarDump::Enviar(std::wstring &Path, DWL::DBarraProgresoEx &Barra) {
 	int         iProtocolPort			= 0;
-	char        ServidorSmtp[64]		= "smtp.1and1.es";
-	char        CorreoDestino[64]		= "devildrey33@hotmail.com";
-	char        CorreoOrigen[64]		= "rave.app@devildrey33.es";
-	char        CorreoOrigen_Login[]	= "cmF2ZS5hcHBAZGV2aWxkcmV5MzMuZXM=";	// rave.app@devildrey33.es
-	char        CorreoOrigen_Password[]	= "Q3VlTlRhTWFORGFEdU1QUzMz";			// CueNTaMaNDaDuMPS33
+	char        ServidorSmtp[64]		= EMAIL_SMTP;
+	char        CorreoDestino[64]		= EMAIL_DESTINO;
+	char        CorreoOrigen[64]        = EMAIL_ORIGEN;
+	char        CorreoOrigen_Login[]    = EMAIL_LOGIN;
+	char        CorreoOrigen_Password[] = EMAIL_PASS;
 	char        szMsgLine[256]			= "";
 	
 	

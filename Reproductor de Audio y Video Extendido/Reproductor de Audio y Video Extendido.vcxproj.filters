@@ -256,6 +256,9 @@
     <ClInclude Include="EnviarDump.h">
       <Filter>Dump</Filter>
     </ClInclude>
+    <ClInclude Include="ContaEmail.h">
+      <Filter>Dump</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
