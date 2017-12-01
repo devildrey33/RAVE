@@ -10,6 +10,7 @@
 #include "TMedio.h"
 #include "DStaticControl.h"
 #include "MarcoControles.h"
+#include "MarcoOpciones.h"
 #include "BarraTiempo.h"
 #include "BarraVolumen.h"
 #include "DBotonEx.h"
@@ -74,7 +75,7 @@ class VentanaPrincipal : public DWL::DVentana {
 							// Marco que contiene los botones lista bd video
 	MarcoControles			MarcoII;
 
-	MarcoControles			Opciones;
+	MarcoOpciones			Opciones;
 
 	BarraVolumen			SliderVolumen;
 

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "VentanaErrorCritico.h"
 #include "resource.h"
-#include "RAVE_Colores.h"
+#include "Rave_Skin.h"
 #include "DMensajesWnd.h"
 #include "DDirectoriosWindows.h"
 #include "EnviarDump.h"

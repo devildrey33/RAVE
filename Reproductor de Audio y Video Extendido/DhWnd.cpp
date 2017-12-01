@@ -204,8 +204,5 @@ namespace DWL {
 		return FALSE;
 	};
 
-	void DControlEx::Repintar(void) {
-		RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT);
-	}
 
 };

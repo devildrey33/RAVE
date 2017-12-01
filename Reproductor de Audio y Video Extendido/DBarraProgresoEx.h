@@ -2,7 +2,7 @@
 #define DBARRAPROGRESOEX_H
 
 namespace DWL {
-	class DBarraProgresoEx : public DControlEx_FondoDinamico {
+	class DBarraProgresoEx : public DControlEx_FondoDinamico, public DControlEx_BordeDinamico {
 	  public:
 								DBarraProgresoEx();
 		                       ~DBarraProgresoEx();

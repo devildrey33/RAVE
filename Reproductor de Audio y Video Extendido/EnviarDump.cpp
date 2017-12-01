@@ -4,16 +4,9 @@
 #include <locale> 
 #include <codecvt>
 #include <Ws2tcpip.h>
-#include "ContaEmail.h"
+#include "RAVE_CuentaEmail.h"
 
 #pragma comment(lib, "ws2_32.lib")
-
-
-// Se escuchan las contestaciones del servidor
-//#define ESCUCHAR(sd)   sd 
-
-// Solo habla el reproductor e ignora lo que dice el servidor (para evitar hangs en el recv)
-#define ESCUCHAR(sd)
 
 
 EnviarDump::EnviarDump(void) : _Error(FALSE), _Server(NULL) {
@@ -21,6 +14,17 @@ EnviarDump::EnviarDump(void) : _Error(FALSE), _Server(NULL) {
 
 
 EnviarDump::~EnviarDump(void) {
+}
+
+// Enviar sin mostrar por la consola
+const BOOL EnviarDump::_EnviarNC(const char *eTxt) {
+	std::string		Texto = eTxt + std::string("\r\n");
+	int iStatus = send(_Server, Texto.c_str(), static_cast<int>(Texto.size()), 0);
+	if ((iStatus != SOCKET_ERROR) && (iStatus)) {
+		return FALSE;
+	}
+	_Error = TRUE;
+	return TRUE;
 }
 
 const BOOL EnviarDump::_Enviar(const char *eTxt, const BOOL nRecibir) {
@@ -138,10 +142,8 @@ const BOOL EnviarDump::Enviar(std::wstring &Path, DWL::DBarraProgresoEx &Barra) 
 	lpServEntry = getservbyname("mail", 0);
 
 	// Use the SMTP default port if no other port is specified
-	if (!lpServEntry)
-		iProtocolPort = htons(IPPORT_SMTP);
-	else
-		iProtocolPort = lpServEntry->s_port;
+	if (!lpServEntry)		iProtocolPort = htons(IPPORT_SMTP);
+	else					iProtocolPort = lpServEntry->s_port;
 
 	//inet_pton(AF_INET, ip_addr, Bufer);
 	// Setup a Socket Address structure
@@ -224,7 +226,7 @@ const BOOL EnviarDump::Enviar(std::wstring &Path, DWL::DBarraProgresoEx &Barra) 
 	// archivo codificado
 	for (i = 0; i < ArchivoStd.size(); i += 997) {
 		Parte = ArchivoStd.substr(i, 997);
-		_Enviar(Parte.c_str());
+		_EnviarNC(Parte.c_str());
 		Barra.Valor(static_cast<float>(i));
 		App.Eventos_Mirar();
 	}

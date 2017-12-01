@@ -4,15 +4,11 @@
 #define RAVE_VERSION			0.302f
 #define RAVE_TITULO				L"Rave 0.302"
 
-// Fuente por defecto
-#define FUENTE_NORMAL			L"Tahoma"
-#define FUENTE_NORMAL_TAM		16
-
 // Mostrar consola de depuración
 #define MOSTRAR_CONSOLA
 
 // Muestra la ventana para alertar de un error crítico
-#define MOSTRAR_ERRORCRITICO
+//#define MOSTRAR_ERRORCRITICO
 
 // Simula un error crítico y luego invoca una nueva instancia que muestra el error crítico
 //#define SIMULAR_ERRORCRITICO

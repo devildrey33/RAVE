@@ -1,11 +1,17 @@
 #pragma once
 
+// Fuente por defecto
+#define FUENTE_NORMAL			L"Tahoma"
+#define FUENTE_NORMAL_TAM		16
+// Tamaño ancho / alto de la barra de scroll (ancho si es vertical, alto si es horizontal)
+#define TAM_BARRA_SCROLL		16
+
 // Colores básicos para las ventanas y los controles
 #define COLOR_FONDO						RGB( 41,  39,  44)
 #define COLOR_FONDO_LISTA				RGB(250, 250, 250)
 #define COLOR_BORDE						RGB( 53,  51,  56)	//RGB(100, 100, 100)
-#define COLOR_BORDE_RESALTADO			RGB( 50,  50,  50)
-#define COLOR_BORDE_PRESIONADO			RGB( 70,  70,  70)
+#define COLOR_BORDE_RESALTADO			RGB(255,   0,   0)
+#define COLOR_BORDE_PRESIONADO			RGB(150,   0,   0)
 #define COLOR_TEXTO						RGB(235, 235, 235) //RGB(255, 255, 255)
 #define COLOR_TEXTO_SOMBRA				RGB(  0,   0,   0) //RGB(255, 255, 255)
 #define COLOR_TEXTO_RESALTADO			RGB(255, 255, 255) //RGB(255, 255, 255)
@@ -19,7 +25,7 @@
 #define COLOR_BARRA_FONDO_PRESIONADO	RGB(160, 160, 160)
 
 #define COLOR_TOOLTIP_BORDE				COLOR_BORDE //RGB(155, 155, 155)
-#define COLOR_TOOLTIP_FONDO				COLOR_FONDO //RGB(255, 255, 255)
+#define COLOR_TOOLTIP_FONDO				RGB( 21,  19,  24) //COLOR_FONDO
 #define COLOR_TOOLTIP_TEXTO				COLOR_TEXTO //RGB(  0,   0,   0)
 
 #define COLOR_BOTON						RGB( 37,  35,  40) //RGB(220, 220, 220)
@@ -28,3 +34,11 @@
 #define COLOR_BOTON_TEXTO				COLOR_TEXTO            //RGB(235, 235, 235) //RGB(  0,   0,   0)
 #define COLOR_BOTON_TEXTO_RESALTADO		COLOR_TEXTO_RESALTADO  //RGB(255, 255, 255) //RGB(100, 100, 100)
 #define COLOR_BOTON_TEXTO_PRESIONADO	COLOR_TEXTO_PRESIONADO //RGB( 50,  50,  50)
+
+
+#define COLOR_SCROLL_FONDO				RGB( 61,  59,  64)
+#define COLOR_SCROLL_FONDO_RESALTADO	RGB( 81,  79,  84)
+#define COLOR_SCROLL_FONDO_PRESIONADO	RGB( 51,  49,  54)
+#define COLOR_SCROLL_BARRA				RGB(180, 180, 180)
+#define COLOR_SCROLL_BARRA_RESALTADO	RGB(200, 200, 200)
+#define COLOR_SCROLL_BARRA_PRESIONADO	RGB(160, 160, 160)

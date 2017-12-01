@@ -2,7 +2,7 @@
 #include "ControlesPantallaCompleta.h"
 #include "DMouse.h"
 #include "DMensajesWnd.h"
-#include "RAVE_Colores.h"
+#include "Rave_Skin.h"
 
 void ControlesPantallaCompleta::Crear(void) {	
 	DVentana::CrearVentana(L"ControlesPantallaCompleta", L"", 0, 0, 500, 80, WS_POPUP, WS_EX_TOOLWINDOW, NULL, NULL, NULL, NULL);

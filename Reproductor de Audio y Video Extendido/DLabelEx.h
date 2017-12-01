@@ -4,7 +4,7 @@
 
 namespace DWL {
 
-	class DLabelEx : public DControlEx_TextoEstatico {
+	class DLabelEx : public DControlEx_TextoEstatico, public DControlEx_FondoEstatico {
 	  public:
 								DLabelEx(void);
 				               ~DLabelEx(void);

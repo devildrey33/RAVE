@@ -162,13 +162,15 @@
     <ClInclude Include="BarraTiempo.h" />
     <ClInclude Include="BarraVolumen.h" />
     <ClInclude Include="BaseDatos.h" />
-    <ClInclude Include="ContaEmail.h" />
+    <ClInclude Include="DBarraScrollEx.h" />
+    <ClInclude Include="MarcoOpciones.h" />
+    <ClInclude Include="RAVE_CuentaEmail.h" />
     <ClInclude Include="DBarraDesplazamientoEx.h" />
     <ClInclude Include="DBarraProgresoEx.h" />
     <ClInclude Include="DBotonEx.h" />
     <ClInclude Include="DLabelEx.h" />
     <ClInclude Include="EnviarDump.h" />
-    <ClInclude Include="RAVE_Colores.h" />
+    <ClInclude Include="RAVE_Skin.h" />
     <ClInclude Include="RAVE_Configuracion.h" />
     <ClInclude Include="ControlesPantallaCompleta.h" />
     <ClInclude Include="DButton.h" />
@@ -219,6 +221,7 @@
     <ClCompile Include="ControlesPantallaCompleta.cpp" />
     <ClCompile Include="DBarraDesplazamientoEx.cpp" />
     <ClCompile Include="DBarraProgresoEx.cpp" />
+    <ClCompile Include="DBarraScrollEx.cpp" />
     <ClCompile Include="DBotonEx.cpp" />
     <ClCompile Include="DButton.cpp" />
     <ClCompile Include="DConsola.cpp" />
@@ -241,6 +244,7 @@
     <ClCompile Include="ExtensionesValidas.cpp" />
     <ClCompile Include="ListaMedios.cpp" />
     <ClCompile Include="MarcoControles.cpp" />
+    <ClCompile Include="MarcoOpciones.cpp" />
     <ClCompile Include="RAVE.cpp" />
     <ClCompile Include="RaveVLC.cpp" />
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp" />

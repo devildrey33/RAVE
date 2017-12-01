@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "VerVideo.h"
 #include "DMouse.h"
+#include "Rave_Skin.h"
 
 VerVideo::VerVideo() {
 }
@@ -47,12 +48,14 @@ LRESULT VerVideo::Pintar(void) {
 	PAINTSTRUCT PS;
 	HDC hDC = BeginPaint(hWnd(), &PS);
 	
-	HBRUSH Negro = (HBRUSH)GetStockObject(BLACK_BRUSH);
+	//HBRUSH Negro = (HBRUSH)GetStockObject(BLACK_BRUSH);
+	HBRUSH Fondo = CreateSolidBrush(COLOR_TOOLTIP_FONDO);
 	RECT R;
 	
 	GetClientRect(hWnd(), &R);
-	FillRect(hDC, &R, Negro);
+	FillRect(hDC, &R, Fondo);
 
+	DeleteObject(Fondo);
 	EndPaint(hWnd(), &PS);
 	return 0;
 }

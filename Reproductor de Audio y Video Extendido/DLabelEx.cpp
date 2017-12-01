@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "DLabelEx.h"
-#include "RAVE_Colores.h"
+#include "Rave_Skin.h"
 
 namespace DWL {
 	DLabelEx::DLabelEx(void) : DControlEx_TextoEstatico(), _Formato(DT_LEFT) {

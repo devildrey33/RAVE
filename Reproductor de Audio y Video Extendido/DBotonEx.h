@@ -12,7 +12,7 @@ namespace DWL {
 		DBotonEx_Estado_Presionado
 	};
 
-	class DBotonEx : public DControlEx_TextoDinamico {
+	class DBotonEx : public DControlEx_TextoDinamico, DControlEx_FondoDinamico, DControlEx_BordeDinamico {
 	  public:
 								DBotonEx();
 				               ~DBotonEx();

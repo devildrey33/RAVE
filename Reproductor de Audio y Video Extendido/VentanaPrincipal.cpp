@@ -3,7 +3,7 @@
 #include "Resource.h"
 #include "DMensajesWnd.h"
 #include "DMouse.h"
-#include "RAVE_Colores.h"
+#include "Rave_Skin.h"
 
 /* TODO : Moure els butons de l'esquerra a la dreta, y fer que la llista / bd / opcions / video quedin ajustats a l'esquerra per evitar els flickerings dels scrolls de la llista i l'arbre */
 HWND VentanaPrincipal::Crear(int nCmdShow) {

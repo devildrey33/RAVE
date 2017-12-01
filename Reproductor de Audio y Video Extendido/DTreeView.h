@@ -141,8 +141,7 @@
 													\param[in]  cY          Coordenada Y del mouse.
 													\return     Debes devolver 0.
 											*/
-			  virtual LRESULT               Evento_Mouse_Movimiento(DTreeView_Nodo *mNodo, const int cX, const int cY) { return 0; };
-
+			  virtual LRESULT               Evento_Mouse_Movimiento(DTreeView_Nodo *mNodo, const int cX, const int cY) { return 0; };			  
 
 	/////////////////	
 		protected: //

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "DBotonEx.h"
-#include "RAVE_Colores.h"
+#include "Rave_Skin.h"
 #include "DMensajesWnd.h"
 
 namespace DWL {

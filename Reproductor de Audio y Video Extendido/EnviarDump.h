@@ -14,6 +14,7 @@ class EnviarDump {
 	BOOL	       _Error;
 
 	const BOOL	   _Enviar(const char *eTxt, const BOOL nRecibir = FALSE);
+	const BOOL	   _EnviarNC(const char *eTxt);
 	const BOOL     _Recibir(void);
 
 	SOCKET         _Server;

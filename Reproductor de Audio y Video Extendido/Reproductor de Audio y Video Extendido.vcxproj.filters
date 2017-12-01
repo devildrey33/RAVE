@@ -101,6 +101,9 @@
     <Filter Include="Dump">
       <UniqueIdentifier>{642c9ab7-cb7e-4500-888b-8b66e18d4f7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\BarraScrollEx">
+      <UniqueIdentifier>{5a691253-997b-48b4-aaf1-1e2adbd61707}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -235,9 +238,6 @@
     <ClInclude Include="RAVE_Configuracion.h">
       <Filter>MAIN</Filter>
     </ClInclude>
-    <ClInclude Include="RAVE_Colores.h">
-      <Filter>MAIN</Filter>
-    </ClInclude>
     <ClInclude Include="DBotonEx.h">
       <Filter>DWL\Ventanas\ControlesEx\BotonEx</Filter>
     </ClInclude>
@@ -256,8 +256,17 @@
     <ClInclude Include="EnviarDump.h">
       <Filter>Dump</Filter>
     </ClInclude>
-    <ClInclude Include="ContaEmail.h">
+    <ClInclude Include="RAVE_CuentaEmail.h">
       <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="DBarraScrollEx.h">
+      <Filter>DWL\Ventanas\ControlesEx\BarraScrollEx</Filter>
+    </ClInclude>
+    <ClInclude Include="RAVE_Skin.h">
+      <Filter>MAIN</Filter>
+    </ClInclude>
+    <ClInclude Include="MarcoOpciones.h">
+      <Filter>Ventanas\Controles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -386,6 +395,12 @@
     </ClCompile>
     <ClCompile Include="EnviarDump.cpp">
       <Filter>Dump</Filter>
+    </ClCompile>
+    <ClCompile Include="DBarraScrollEx.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\BarraScrollEx</Filter>
+    </ClCompile>
+    <ClCompile Include="MarcoOpciones.cpp">
+      <Filter>Ventanas\Controles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

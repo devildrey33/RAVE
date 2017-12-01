@@ -2,6 +2,9 @@
 #include "DTreeView.h"
 #include "DMensajesWnd.h"
 
+#define DCX_USESTYLE	0x00010000
+#define DCX_NODELETERGN 0x00040000
+
 namespace DWL {
 
 	//const DEnum_Objeto DTreeView::Objeto_Tipo(void) { return DEnum_Objeto::DEnum_Objeto_TreeView; };
@@ -121,6 +124,7 @@ namespace DWL {
 		if (nListaImagenes != NULL) nImg = nListaImagenes->operator ()();
 		TreeView_SetImageList(hWnd(), nImg, TVSIL_NORMAL);
 	}
+
 
 	//! Nuevo WindowProcedure que se sobrepondra al WindowProcedure original del TreeView.
 	/*! Esta función es la que re-emplaza el WindowProcedure del ListView para poder hacer cosas como la edicion, y el pintado personalizado.

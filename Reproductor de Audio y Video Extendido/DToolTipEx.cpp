@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "DToolTipEx.h"
-#include "RAVE_Colores.h"
+#include "Rave_Skin.h"
 
 
 namespace DWL {
