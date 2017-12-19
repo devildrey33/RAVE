@@ -5,6 +5,9 @@
 #include "DMouse.h"
 #include "Rave_Skin.h"
 
+#define RAVE_MIN_ANCHO 660
+#define RAVE_MIN_ALTO  280
+
 /* TODO : Moure els butons de l'esquerra a la dreta, y fer que la llista / bd / opcions / video quedin ajustats a l'esquerra per evitar els flickerings dels scrolls de la llista i l'arbre */
 HWND VentanaPrincipal::Crear(int nCmdShow) {
 	// Detección de monitores
@@ -397,8 +400,8 @@ void VentanaPrincipal::Evento_ListView_Mouse_DobleClick(DListView_DatosClick *Da
 
 void VentanaPrincipal::Evento_CambiandoTam(const UINT Lado, RECT *Rectangulo) {
 	// Comprobación de tamaño mínimo
-	if ((Rectangulo->right - Rectangulo->left) < 650) Rectangulo->right = Rectangulo->left + 660;
-	if ((Rectangulo->bottom - Rectangulo->top) < 260) Rectangulo->bottom = Rectangulo->top + 280;
+	if ((Rectangulo->right - Rectangulo->left) < RAVE_MIN_ANCHO)	Rectangulo->right = Rectangulo->left + RAVE_MIN_ANCHO;
+	if ((Rectangulo->bottom - Rectangulo->top) < RAVE_MIN_ALTO)		Rectangulo->bottom = Rectangulo->top + RAVE_MIN_ALTO;
 
 	RECT RC;
 	RC.left = 0;

@@ -22,6 +22,13 @@ namespace DWL {
 		DArbolEx_PosicionNodo_Ordenado,
 	};
 
+	enum DArbolEx_HitTest {
+		DArbolEx_HitTest_Icono,
+		DArbolEx_HitTest_Texto,
+		DArbolEx_HitTest_Expansor,
+		DArbolEx_HitTest_Todo		// (expansor, icono y texto)
+	};
+
 	/* Plantilla ArbolEx que se crea partiendo del tipo de nodo */
 	class DArbolEx : public virtual DBarraScrollEx {
 	  public:
@@ -56,6 +63,10 @@ namespace DWL {
 		void											PintarNodo(HDC hDC, RECT *Espacio, DArbolEx_Nodo *nNodo, const int PosH);
 
 		void											Scrolls_EventoCambioPosicion(void);
+
+		void											Evento_MouseMovimiento(const int cX, const int cY, const UINT Param);
+
+		DArbolEx_Nodo                                  *HitTest(const int cX, const int cY, const DArbolEx_HitTest nTipo);
 
 		LRESULT CALLBACK								GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	  protected:

@@ -17,8 +17,8 @@ namespace DWL {
 		_Raiz._Expandido		= TRUE;		 
 		_Raiz._Arbol			= this;
 		_ColorFondoScroll		= COLOR_ARBOL_FONDO_SCROLL;
-		_ColorScrollResaltado   = COLOR_ARBOL_FONDO_SCROLL_RESALTADO;
-		_ColorScrollPresionado  = COLOR_ARBOL_FONDO_SCROLL_PRESIONADO;
+//		_ColorScrollResaltado   = COLOR_ARBOL_FONDO_SCROLL_RESALTADO;
+		//_ColorScrollPresionado  = COLOR_ARBOL_FONDO_SCROLL_PRESIONADO;
 	};
 	
 	DArbolEx::~DArbolEx(void) {
@@ -265,6 +265,65 @@ namespace DWL {
 	}
 
 
+	DArbolEx_Nodo *DArbolEx::HitTest(const int cX, const int cY, const DArbolEx_HitTest nTipo) {
+//_NodoPaginaVDif		
+		DArbolEx_Nodo *Tmp = _NodoPaginaInicio;
+		int PixelesContados = _NodoPaginaVDif;
+		int AltoNodo = 0;
+		// Busco el nodo que está en la misma altura que cY
+		while (Tmp != _NodoPaginaFin) {
+			AltoNodo = Tmp->_Fuente->Alto();
+			if (PixelesContados <= cY && PixelesContados + AltoNodo >= cY) {
+				break;
+			}
+			PixelesContados += AltoNodo + (ARBOLEX_PADDING * 2);
+			Tmp = _BuscarSiguienteNodoVisible(Tmp);
+		}
+
+		// Se ha encontrado un nodo a la altura del mouse
+		if (Tmp != NULL) {
+			
+			// Ahora hay que crear varias rectas para determinar si el mouse está encima de una parte del nodo o no
+									   // Total ancestros      * Tamaño ancestro   + Padding         + Expansor            + Padding         + Icono            + Padding extra + Padding         + Ancho texto        + Padding          + 2 pixels de separación                      
+//			TmpAncho = (static_cast<int>((Tmp->_Ancestros - 1) * ARBOLEX_TAMICONO) + ARBOLEX_PADDING + ARBOLEX_TAMEXPANSOR + ARBOLEX_PADDING + ARBOLEX_TAMICONO + 2			    + ARBOLEX_PADDING + nNodo->_AnchoTexto + ARBOLEX_PADDING) + 2;
+			POINT Pt = { cX, cY };
+			RECT Recta;
+			int iniciotexto = static_cast<int>((Tmp->_Ancestros - 1) * ARBOLEX_TAMICONO) + ARBOLEX_PADDING + ARBOLEX_TAMEXPANSOR + ARBOLEX_PADDING + ARBOLEX_TAMICONO + 2 + _NodoPaginaHDif;
+			int inicioiconoX = static_cast<int>((Tmp->_Ancestros - 1) * ARBOLEX_TAMICONO) + ARBOLEX_PADDING + ARBOLEX_TAMEXPANSOR + ARBOLEX_PADDING + _NodoPaginaHDif;
+			int inicioiconoY = ((Tmp->_Fuente->Alto() * (ARBOLEX_PADDING * 2)) - ARBOLEX_TAMICONO) / 2;
+			int inicioexpansorX = static_cast<int>((Tmp->_Ancestros - 1) * ARBOLEX_TAMICONO) + ARBOLEX_PADDING + _NodoPaginaHDif;
+			int inicioexpansorY = ((Tmp->_Fuente->Alto() + (ARBOLEX_PADDING * 2)) - ARBOLEX_TAMEXPANSOR) / 2;
+			int iniciotodoX = static_cast<int>((Tmp->_Ancestros - 1) * ARBOLEX_TAMICONO) + ARBOLEX_PADDING + _NodoPaginaHDif;
+//			int iniciotodoY = ARBOLEX_PADDING;
+			int tamtodoX = ARBOLEX_TAMEXPANSOR + ARBOLEX_PADDING + ARBOLEX_TAMICONO + 2 + ARBOLEX_PADDING + Tmp->_AnchoTexto + ARBOLEX_PADDING;
+			switch (nTipo) {
+				case DArbolEx_HitTest_Texto:
+					Recta = {	iniciotexto,											PixelesContados + ARBOLEX_PADDING,
+								iniciotexto + Tmp->_AnchoTexto + ARBOLEX_PADDING,		PixelesContados + (ARBOLEX_PADDING * 2) + Tmp->_Fuente->Alto() 	};
+					break;
+				case DArbolEx_HitTest_Icono:
+					Recta = {	inicioiconoX,											PixelesContados + inicioiconoY,
+								inicioiconoX + ARBOLEX_TAMICONO,						PixelesContados + inicioiconoY + ARBOLEX_TAMICONO };
+					break;
+				case DArbolEx_HitTest_Expansor:
+					Recta = {	inicioexpansorX,										PixelesContados + inicioexpansorY,
+								inicioexpansorX + ARBOLEX_TAMEXPANSOR,					PixelesContados + inicioexpansorY + ARBOLEX_TAMEXPANSOR };
+					break;
+
+				case DArbolEx_HitTest_Todo:
+					Recta = {	iniciotodoX,											PixelesContados + ARBOLEX_PADDING,
+								iniciotodoX + tamtodoX,									PixelesContados + (ARBOLEX_PADDING * 2) + Tmp->_Fuente->Alto() };
+					break;
+			}
+
+			if (PtInRect(&Recta, Pt) != 0)
+				return Tmp;
+
+		}
+
+		return NULL;
+	}
+
 
 /*
 	+ RAIZ 
@@ -442,6 +501,16 @@ namespace DWL {
 		SetBkMode(_BufferNodo, TRANSPARENT);
 	}
 
+	void DArbolEx::Evento_MouseMovimiento(const int cX, const int cY, const UINT Param) {
+//		DArbolEx_Nodo *nNodo = HitTest(cX, cY, DArbolEx_HitTest_Texto);
+//		DArbolEx_Nodo *nNodo = HitTest(cX, cY, DArbolEx_HitTest_Icono);
+//		DArbolEx_Nodo *nNodo = HitTest(cX, cY, DArbolEx_HitTest_Expansor);
+		DArbolEx_Nodo *nNodo = HitTest(cX, cY, DArbolEx_HitTest_Todo);
+
+		if (nNodo != NULL) { Debug_Escribir_Varg(L"DArbolEx::Evento_MouseMovimiento %s\n", nNodo->Texto().c_str()); }
+		else               { Debug_Escribir_Varg(L"DArbolEx::Evento_MouseMovimiento NULL\n"); }
+	}
+
 	LRESULT CALLBACK DArbolEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
 			case WM_SIZE:
@@ -461,8 +530,10 @@ namespace DWL {
 				if (_MouseEntrando() == TRUE) {
 					// MouseEntrando
 				}
-
-				Scrolls_MouseMovimiento(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
+				
+				if (Scrolls_MouseMovimiento(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam)) == FALSE) {
+					Evento_MouseMovimiento(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
+				}
 				break;
 
 			case WM_MOUSELEAVE:
