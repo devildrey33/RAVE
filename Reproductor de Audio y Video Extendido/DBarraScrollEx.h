@@ -12,24 +12,26 @@ namespace DWL {
 	};
 
 	// Control que puede mostrar una barra de scroll vertical y una barra de scroll horizontal.
-	class DBarraScrollEx : public DControlEx_FondoEstatico {
+	class DBarraScrollEx : public virtual DControlEx_FondoEstatico {
 	  public:
 									DBarraScrollEx();
 		                           ~DBarraScrollEx();
 //		HWND						CrearBarraScrollEx(DhWnd &Padre, const int cX, const int cY, const int cAncho, const int cAlto, const UINT nID);
-		void						Scrolls_Pintar(HDC hDC);
+		void						Scrolls_Pintar(HDC hDC, RECT &RC);
 		const BOOL					Scrolls_MouseMovimiento(const int cX, const int cY, const UINT Param);
 		const BOOL					Scrolls_MousePresionado(const int cX, const int cY, const UINT Param);
 		const BOOL					Scrolls_MouseSoltado(const int cX, const int cY, const UINT Param);
-									// Obtiene el área cliente sin incluir las scroll bars
-		void						ObtenerRectaCliente(RECT *Recta);
+									// Obtiene el área que pertenece al control (RectaCliente es el resultado de GetClientRect, y RectaClienteSinScroll es el área del control excluyendo las barras de scroll) 
+		void						ObtenerRectaCliente(RECT *RectaCliente, RECT *RectaClienteSinScroll);
 									// Obtiene el área de los scrolls
+		void						ObtenerRectasScroll(RECT &RC, RECT &RectaH, RECT &RectaV);
 		void						ObtenerRectasScroll(RECT &RectaH, RECT &RectaV);
 									// Obtiene el área de la barra dentro del scroll vertical
 		void						ObtenerRectaBarraScrollV(RECT &RectaScroll, RECT &RectaBarra);
 									// Obtiene el área de la barra dentro del scroll horizontal
 		void						ObtenerRectaBarraScrollH(RECT &RectaScroll, RECT &RectaBarra);
 
+		virtual void				Scrolls_EventoCambioPosicion(void) { };
 		//		LRESULT CALLBACK			GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 		////////////////////////////// ScrollH
 		void						ScrollH_Pagina(const float nValor);

@@ -67,7 +67,7 @@ namespace DWL {
 
 		SetBkMode(Buffer, TRANSPARENT);
 		SetTextColor(Buffer, COLOR_TOOLTIP_TEXTO);
-		HFONT vFuente = static_cast<HFONT>(SelectObject(Buffer, hWnd._Fuente));
+		HFONT vFuente = static_cast<HFONT>(SelectObject(Buffer, hWnd._Fuente()));
 		TextOut(Buffer, PADDING, PADDING, _Str.c_str(), static_cast<int>(_Str.size()));
 		SelectObject(Buffer, vFuente);
 

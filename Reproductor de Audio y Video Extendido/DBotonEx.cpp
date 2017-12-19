@@ -33,7 +33,7 @@ namespace DWL {
 		// Creo un DC compatible para el buffer
 		HBITMAP Bmp = CreateCompatibleBitmap(DC, RC.right, RC.bottom);
 		HBITMAP BmpViejo = static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
-		HFONT   vFuente = static_cast<HFONT>(SelectObject(Buffer, _Fuente));
+		HFONT   vFuente = static_cast<HFONT>(SelectObject(Buffer, _Fuente()));
 
 		COLORREF ColorBorde = 0, ColorTexto = 0, ColorFondo = 0;
 		switch (_Estado) {

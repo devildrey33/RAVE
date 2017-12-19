@@ -104,6 +104,12 @@
     <Filter Include="DWL\Ventanas\ControlesEx\BarraScrollEx">
       <UniqueIdentifier>{5a691253-997b-48b4-aaf1-1e2adbd61707}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\ArbolEx">
+      <UniqueIdentifier>{88c21413-ab56-4b0b-bdee-4770a2f7636e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\ListaIconos">
+      <UniqueIdentifier>{48db754e-13be-43af-8b55-4b4c51d6a432}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -268,6 +274,24 @@
     <ClInclude Include="MarcoOpciones.h">
       <Filter>Ventanas\Controles</Filter>
     </ClInclude>
+    <ClInclude Include="DArbolEx_Nodo.h">
+      <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
+    </ClInclude>
+    <ClInclude Include="DArbolEx.h">
+      <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
+    </ClInclude>
+    <ClInclude Include="ArbolBD2.h">
+      <Filter>Ventanas\Controles</Filter>
+    </ClInclude>
+    <ClInclude Include="DhWnd_Fuente.h">
+      <Filter>DWL\Ventanas</Filter>
+    </ClInclude>
+    <ClInclude Include="DListaIconos.h">
+      <Filter>DWL\Ventanas\ControlesEx\ListaIconos</Filter>
+    </ClInclude>
+    <ClInclude Include="DListaIconos_Icono.h">
+      <Filter>DWL\Ventanas\ControlesEx\ListaIconos</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -401,6 +425,18 @@
     </ClCompile>
     <ClCompile Include="MarcoOpciones.cpp">
       <Filter>Ventanas\Controles</Filter>
+    </ClCompile>
+    <ClCompile Include="ArbolBD2.cpp">
+      <Filter>Ventanas\Controles</Filter>
+    </ClCompile>
+    <ClCompile Include="DArbolEx.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
+    </ClCompile>
+    <ClCompile Include="DListaIconos.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\ListaIconos</Filter>
+    </ClCompile>
+    <ClCompile Include="DArbolEx_Nodo.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

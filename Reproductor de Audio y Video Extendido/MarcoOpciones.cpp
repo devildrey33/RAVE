@@ -12,7 +12,7 @@ MarcoOpciones::~MarcoOpciones() {
 HWND MarcoOpciones::Crear(DhWnd &nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID) {
 	DControlEx::CrearControlEx(nPadre, L"MarcoOpciones", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD | WS_VISIBLE, NULL);
 
-	ScrollV_Pagina(25.0f);
+	ScrollV_Pagina(0.001f);
 	ScrollV_Visible(TRUE);
 	
 	ScrollH_Pagina(50.0f);
@@ -22,18 +22,18 @@ HWND MarcoOpciones::Crear(DhWnd &nPadre, const int cX, const int cY, const int c
 }
 
 void MarcoOpciones::Pintar(HDC hDC) {
-	RECT RC;
-	GetClientRect(hWnd(), &RC);
+	RECT RC, RCC;
+	ObtenerRectaCliente(&RC, &RCC);
+	
 	HDC     Buffer = CreateCompatibleDC(NULL);
 	HBITMAP Bmp = CreateCompatibleBitmap(hDC, RC.right, RC.bottom);
 	HBITMAP Viejo = static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
 
-	RECT RCC;
-	ObtenerRectaCliente(&RCC);
+	
 	HBRUSH Brocha = CreateSolidBrush(_ColorFondo);
 	FillRect(Buffer, &RCC, Brocha);
 	DeleteObject(Brocha);
-	Scrolls_Pintar(Buffer);
+	Scrolls_Pintar(Buffer, RC);
 
 	BitBlt(hDC, 0, 0, RC.right, RC.bottom, Buffer, 0, 0, SRCCOPY);
 

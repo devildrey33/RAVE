@@ -9,6 +9,7 @@
 
 #include <string>
 #include "Rave_Skin.h"
+#include "DhWnd_Fuente.h"
 
 namespace DWL {
 
@@ -17,29 +18,30 @@ namespace DWL {
 	// - Está costruida de forma que solo se puede asignar el miembro _hWmd internamente.
 	class DhWnd {
 	  public:
-							DhWnd(void) : _hWnd(0)			{ };
-							DhWnd(HWND hWnd) : _hWnd(hWnd)	{ };
-                           ~DhWnd(void)						{ Destruir(); };
-		inline HWND			operator() (void)				{ return _hWnd; };
-		inline const bool   operator== (HWND chWnd)			{ return (_hWnd == chWnd); };
-		inline void			operator= (HWND nhWnd)          { _hWnd = nhWnd; };
-		inline const BOOL   Activar(const BOOL nActivar)    { return EnableWindow(_hWnd, nActivar); };
-		inline const BOOL	Activado(void)					{ return IsWindowEnabled(_hWnd); };
-		inline const BOOL	Minimizar(void)					{ return ShowWindow(_hWnd, SW_MINIMIZE); };
-		inline const BOOL	Minimizado(void)				{ return IsIconic(_hWnd); };
-		const BOOL			Maximizada(void);
-		inline const HWND   AsignarFoco(void)               { return SetFocus(_hWnd); };
-		inline BOOL			Destruir(void)					{ if (_hWnd == NULL) { return TRUE; } BOOL R = DestroyWindow(_hWnd); _hWnd = NULL; return R; };
-		inline LONG_PTR     ID(void)						{ return GetWindowLongPtr(_hWnd, GWL_ID); };
-		inline HWND			Padre(void)						{ return GetParent(_hWnd); };
-		inline const BOOL   Visible(const BOOL nMostrar)    { return ShowWindow(_hWnd, (nMostrar != TRUE) ? SW_HIDE : SW_SHOW); };
-		inline const BOOL   Visible(void)                   { return IsWindowVisible(_hWnd); };
+								DhWnd(void) : _hWnd(0)			{ };
+								DhWnd(HWND hWnd) : _hWnd(hWnd)	{ };
+                               ~DhWnd(void)						{ Destruir(); };
+		inline HWND				operator() (void)				{ return _hWnd; };
+		inline const bool		operator== (HWND chWnd)			{ return (_hWnd == chWnd); };
+		inline void				operator= (HWND nhWnd)          { _hWnd = nhWnd; };
+		inline const BOOL		Activar(const BOOL nActivar)    { return EnableWindow(_hWnd, nActivar); };
+		inline const BOOL		Activado(void)					{ return IsWindowEnabled(_hWnd); };
+		inline const BOOL		Minimizar(void)					{ return ShowWindow(_hWnd, SW_MINIMIZE); };
+		inline const BOOL		Minimizado(void)				{ return IsIconic(_hWnd); };
+		const BOOL				Maximizada(void);
+		inline const HWND		AsignarFoco(void)               { return SetFocus(_hWnd); };
+		inline BOOL				Destruir(void)					{ if (_hWnd == NULL) { return TRUE; } BOOL R = DestroyWindow(_hWnd); _hWnd = NULL; return R; };
+		inline LONG_PTR			ID(void)						{ return GetWindowLongPtr(_hWnd, GWL_ID); };
+		inline HWND				Padre(void)						{ return GetParent(_hWnd); };
+		inline const BOOL		Visible(const BOOL nMostrar)    { return ShowWindow(_hWnd, (nMostrar != TRUE) ? SW_HIDE : SW_SHOW); };
+		inline const BOOL		Visible(void)                   { return IsWindowVisible(_hWnd); };
 
-		ATOM                RegistrarClase(const TCHAR *nNombre, WNDPROC WindowProcedureInicial, UINT Estilos = 0, const int nIconoRecursos = 0 ,HBRUSH nColorFondo = NULL, HINSTANCE hInstance = NULL);
-		HWND               _hWnd;
+		ATOM					RegistrarClase(const TCHAR *nNombre, WNDPROC WindowProcedureInicial, UINT Estilos = 0, const int nIconoRecursos = 0 ,HBRUSH nColorFondo = NULL, HINSTANCE hInstance = NULL);
+		HWND                   _hWnd;
 
-		static HFONT       _Fuente;
-		static HFONT       _FuenteB;
+		static DhWnd_Fuente    _Fuente;
+		static DhWnd_Fuente    _FuenteB;
+		//		static HFONT       _FuenteB;
 
 		/*friend class DVentana;
 		friend class DControl;
@@ -178,18 +180,18 @@ namespace DWL {
 	  public:
 								DControlEx_TextoEstatico(void) : DControlEx(), _ColorTexto(COLOR_TEXTO), _ColorTextoSombra(COLOR_TEXTO_SOMBRA), _Fuente(NULL) { }
 		                       ~DControlEx_TextoEstatico(void) { }
-		inline void				ColorTexto(COLORREF nColor) { _ColorTexto = nColor;		Repintar(); }
-		inline const COLORREF	ColorTexto(void) { return _ColorTexto; }
-		inline void				ColorTextoSombra(COLORREF nColor) { _ColorTextoSombra = nColor;		Repintar(); }
-		inline const COLORREF	ColorTextoSombra(void) { return _ColorTextoSombra; }
-		inline void				Fuente(HFONT nFuente) { _Fuente = nFuente;		Repintar(); }
-		inline void				Texto(std::wstring nTexto) { _Texto = nTexto; }
-		inline std::wstring		Texto(void) { return _Texto; }
+		inline void				ColorTexto(COLORREF nColor)			{ _ColorTexto = nColor;			Repintar(); }
+		inline const COLORREF	ColorTexto(void)					{ return _ColorTexto; }
+		inline void				ColorTextoSombra(COLORREF nColor)	{ _ColorTextoSombra = nColor;	Repintar(); }
+		inline const COLORREF	ColorTextoSombra(void)				{ return _ColorTextoSombra; }
+		inline void				Fuente(HFONT nFuente)				{ _Fuente = nFuente;			Repintar(); }
+		inline void				Texto(std::wstring nTexto)			{ _Texto = nTexto; }
+		inline std::wstring		Texto(void)							{ return _Texto; }
 	  protected:
 		std::wstring           _Texto;
 		COLORREF               _ColorTexto;
 		COLORREF               _ColorTextoSombra;
-		HFONT                  _Fuente;
+		DhWnd_Fuente           _Fuente;
 	};
 
 	/* Control básico con texto y que puede tener el foco (con estados resaltado y presionado) */
@@ -197,10 +199,10 @@ namespace DWL {
 	  public:
 								DControlEx_TextoDinamico(void) : DControlEx_TextoEstatico(), _ColorTextoResaltado(COLOR_TEXTO_RESALTADO), _ColorTextoPresionado(COLOR_TEXTO_PRESIONADO) { }
 		                       ~DControlEx_TextoDinamico(void) { }
-		inline void				ColorTextoResaltado(COLORREF nColor) { _ColorTextoResaltado = nColor;		Repintar(); }
-		inline const COLORREF	ColorTextoResaltado(void) { return _ColorTextoResaltado; }
-		inline void				ColorTextoPresionado(COLORREF nColor) { _ColorTextoPresionado = nColor;		Repintar(); }
-		inline const COLORREF	ColorTextoPresionado(void) { return _ColorTextoPresionado; }
+		inline void				ColorTextoResaltado(COLORREF nColor)	{ _ColorTextoResaltado = nColor;		Repintar(); }
+		inline const COLORREF	ColorTextoResaltado(void)				{ return _ColorTextoResaltado; }
+		inline void				ColorTextoPresionado(COLORREF nColor)	{ _ColorTextoPresionado = nColor;		Repintar(); }
+		inline const COLORREF	ColorTextoPresionado(void)				{ return _ColorTextoPresionado; }
    	  protected:
 		COLORREF               _ColorTextoResaltado;
 		COLORREF               _ColorTextoPresionado;

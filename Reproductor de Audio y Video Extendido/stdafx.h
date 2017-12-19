@@ -37,6 +37,7 @@
 #define ID_VERVIDEO         1999
 #define ID_LISTAMEDIOS		2000
 #define ID_ARBOLBD			2001
+#define ID_ARBOLBD2			1997
 #define ID_BOTON_PLAY		2002
 #define ID_BOTON_PAUSA		2003
 #define ID_BOTON_STOP		2004

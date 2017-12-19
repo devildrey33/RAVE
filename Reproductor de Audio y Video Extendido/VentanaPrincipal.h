@@ -3,6 +3,7 @@
 #include "DhWnd.h"
 #include "DButton.h"
 #include "ArbolBD.h"
+#include "ArbolBD2.h"
 #include "ListaMedios.h"
 //#include "DMenu.h"
 #include "VerVideo.h"
@@ -95,6 +96,7 @@ class VentanaPrincipal : public DWL::DVentana {
 	ArbolBD					Arbol;
 	VerVideo				Video;
 
+	ArbolBD2				Arbol2;
 
 	int						Errores;
 	Estados_Medio			EstadoMedio;

@@ -7,12 +7,12 @@
 
 namespace DWL {
 
-	HFONT DhWnd::_Fuente  = NULL;
-	HFONT DhWnd::_FuenteB = NULL;
+	DhWnd_Fuente DhWnd::_Fuente;
+	DhWnd_Fuente DhWnd::_FuenteB;
 
 	ATOM DhWnd::RegistrarClase(const TCHAR *nNombre, WNDPROC WindowProcedureInicial, UINT nEstilos, const int nIconoRecursos, HBRUSH nColorFondo, HINSTANCE hInstance) {
 		// Creamos las fuentes si no existen
-		if (_Fuente == NULL) {
+		if (_Fuente.Fuente() == NULL) {
 			_Fuente  = CreateFont(FUENTE_NORMAL_TAM, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
 			_FuenteB = CreateFont(FUENTE_NORMAL_TAM, 0, 0, 0, FW_BOLD  , false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
 		}
@@ -73,7 +73,7 @@ namespace DWL {
 
 		ATOM RetRgistrarClase = hWnd.RegistrarClase(nNombre, reinterpret_cast<WNDPROC>(_GestorMensajes), nEstilosClase, nIconoRecursos, nColorFondo);
 		hWnd = CreateWindowEx(nEstilosExtendidos, nNombre, nTexto, nEstilos, cX, cY, cAncho, cAlto, HWND_DESKTOP, nMenu, GetModuleHandle(NULL), this);
-		SendMessage(hWnd(), WM_SETFONT, (WPARAM)hWnd._Fuente, 0);
+		SendMessage(hWnd(), WM_SETFONT, (WPARAM)hWnd._Fuente(), 0);
 		return hWnd();
 
 	}
@@ -138,7 +138,7 @@ namespace DWL {
 			SetWindowLongPtr(hWnd(), GWLP_USERDATA, (LONG_PTR)this);
 			_GestorMensajesOriginal = reinterpret_cast<WNDPROC>(SetWindowLongPtr(hWnd(), GWLP_WNDPROC, (LONG_PTR)_GestorMensajes));
 
-			SendMessage(hWnd(), WM_SETFONT, (WPARAM)hWnd._Fuente, 0);
+			SendMessage(hWnd(), WM_SETFONT, (WPARAM)hWnd._Fuente(), 0);
 		}
 	};
 
@@ -163,7 +163,7 @@ namespace DWL {
 		if (hWnd() != NULL) {
 			SetWindowLongPtr(hWnd(), GWLP_USERDATA, (LONG_PTR)this);
 			SetWindowLongPtr(hWnd(), GWLP_WNDPROC,  (LONG_PTR)_GestorMensajes);
-			SendMessage(hWnd(), WM_SETFONT, (WPARAM)hWnd._Fuente, 0);
+			SendMessage(hWnd(), WM_SETFONT, (WPARAM)hWnd._Fuente(), 0);
 		}
 	};
 

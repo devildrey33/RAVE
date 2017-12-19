@@ -24,7 +24,32 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	CTW_ExtraX = (RW.right - RW.left) - RC.right;
 	CTW_ExtraY = (RW.bottom - RW.top) - RC.bottom;
 
-	Arbol.Crear(hWnd, 120, 81, RC.right - 120, RC.bottom - 80, ID_ARBOLBD, WS_CHILD | WS_VISIBLE | TVS_HASBUTTONS | TVS_LINESATROOT | TVS_TRACKSELECT | TVS_NOHSCROLL, TVS_EX_DOUBLEBUFFER | TVS_EX_RICHTOOLTIP);
+	Arbol2.CrearArbolEx(hWnd, 120, 81, RC.right - 120, RC.bottom - 80, ID_ARBOLBD2);
+	NodoBD *N1 = Arbol2.AgregarNodo<NodoBD>(L"N1aqqqqqqqqqqjjjaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaw", NULL, IDI_GRUPO);
+	N1->Seleccionado(TRUE);
+	Arbol2.Expandir(N1, TRUE);
+		NodoBD *N11 = Arbol2.AgregarNodo<NodoBD>(L"N1.1", N1, IDI_GRUPO);
+		Arbol2.AgregarNodo<NodoBD>(L"N1.2", N1, IDI_GRUPO);
+		NodoBD *N13 = Arbol2.AgregarNodo<NodoBD>(L"N1.3", N1, IDI_GRUPO);
+		Arbol2.Expandir(N11, TRUE);
+			Arbol2.AgregarNodo<NodoBD>(L"N1.1.1", N11, IDI_GRUPO);
+			Arbol2.AgregarNodo<NodoBD>(L"N1.1.2", N11, IDI_GRUPO);
+		Arbol2.Expandir(N13, TRUE);
+			Arbol2.AgregarNodo<NodoBD>(L"N1.3.1", N13, IDI_GRUPO);
+			Arbol2.AgregarNodo<NodoBD>(L"N1.3.2", N13, IDI_GRUPO);
+		N13->Seleccionado(TRUE);
+
+
+	NodoBD *N2 = Arbol2.AgregarNodo<NodoBD>(L"N2", NULL, IDI_GRUPO);
+	Arbol2.Expandir(N2, TRUE);
+		Arbol2.AgregarNodo<NodoBD>(L"N2.1", N2, IDI_GRUPO);
+		Arbol2.AgregarNodo<NodoBD>(L"N2.2", N2, IDI_GRUPO);
+	NodoBD *N3 = Arbol2.AgregarNodo<NodoBD>(L"N3", NULL, IDI_GRUPO);
+//	Arbol2.Expandir(N3, TRUE);
+	Arbol2.AgregarNodo<NodoBD>(L"N3.1", N3, IDI_GRUPO);
+
+
+	Arbol.Crear(hWnd, 120, 81, RC.right - 120, RC.bottom - 80, ID_ARBOLBD, WS_CHILD | TVS_HASBUTTONS | TVS_LINESATROOT | TVS_TRACKSELECT | TVS_NOHSCROLL, TVS_EX_DOUBLEBUFFER | TVS_EX_RICHTOOLTIP);
 	Arbol.AsignarImageList(&App.ListaImagenes16);
 
 	Lista.Crear(hWnd, 120, 81, RC.right - 120, RC.bottom - 80, ID_LISTAMEDIOS, WS_CHILD, LVS_EX_FULLROWSELECT);
@@ -93,6 +118,7 @@ void VentanaPrincipal::AjustarControles(RECT &RC) {
 	// Columnas de la lista  Ancho LV, Ancho Pista, Ancho Tiempo = Ancho restante para el nombre
 	Lista.Columna(1)->Ancho(RC.right - 250);
 	MoveWindow(Arbol.hWnd(), 120, 81, RC.right - 120, RC.bottom - 80, TRUE);
+	MoveWindow(Arbol2.hWnd(), 120, 81, RC.right - 130, RC.bottom - 90, TRUE);
 	MoveWindow(Video.hWnd(), 120, 81, RC.right - 120, RC.bottom - 80, TRUE);
 	MoveWindow(Opciones.hWnd(), 120, 81, RC.right - 120, RC.bottom - 80, TRUE);
 

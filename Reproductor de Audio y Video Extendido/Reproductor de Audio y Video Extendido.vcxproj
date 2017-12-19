@@ -159,10 +159,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ArbolBD.h" />
+    <ClInclude Include="ArbolBD2.h" />
     <ClInclude Include="BarraTiempo.h" />
     <ClInclude Include="BarraVolumen.h" />
     <ClInclude Include="BaseDatos.h" />
+    <ClInclude Include="DArbolEx.h" />
+    <ClInclude Include="DArbolEx_Nodo.h" />
     <ClInclude Include="DBarraScrollEx.h" />
+    <ClInclude Include="DhWnd_Fuente.h" />
+    <ClInclude Include="DListaIconos.h" />
+    <ClInclude Include="DListaIconos_Icono.h" />
     <ClInclude Include="MarcoOpciones.h" />
     <ClInclude Include="RAVE_CuentaEmail.h" />
     <ClInclude Include="DBarraDesplazamientoEx.h" />
@@ -215,10 +221,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ArbolBD.cpp" />
+    <ClCompile Include="ArbolBD2.cpp" />
     <ClCompile Include="BarraTiempo.cpp" />
     <ClCompile Include="BarraVolumen.cpp" />
     <ClCompile Include="BaseDatos.cpp" />
     <ClCompile Include="ControlesPantallaCompleta.cpp" />
+    <ClCompile Include="DArbolEx.cpp" />
+    <ClCompile Include="DArbolEx_Nodo.cpp" />
     <ClCompile Include="DBarraDesplazamientoEx.cpp" />
     <ClCompile Include="DBarraProgresoEx.cpp" />
     <ClCompile Include="DBarraScrollEx.cpp" />
@@ -228,6 +237,7 @@
     <ClCompile Include="DhWnd.cpp" />
     <ClCompile Include="DImageList.cpp" />
     <ClCompile Include="DLabelEx.cpp" />
+    <ClCompile Include="DListaIconos.cpp" />
     <ClCompile Include="DListView.cpp" />
     <ClCompile Include="DListView_Columna.cpp" />
     <ClCompile Include="DListView_DatosEdicion.cpp" />

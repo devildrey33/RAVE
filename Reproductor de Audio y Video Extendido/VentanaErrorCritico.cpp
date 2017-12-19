@@ -25,7 +25,7 @@ HWND VentanaErrorCritico::Crear(void) {
 	GetClientRect(hWnd(), &RC);
 
 	TextoTitulo.CrearLabelEx(hWnd, L"Error crítico!", 10, 10, RC.right - 20, 20, ID_VEC_TEXTOERROR, TRUE, WS_CHILD);
-	TextoTitulo.Fuente(hWnd._FuenteB);
+	TextoTitulo.Fuente(hWnd._FuenteB());
 	TextoTitulo.ColorTexto(COLOR_BOTON_RESALTADO);
 	TextoTitulo.hWnd.Visible(TRUE);
 

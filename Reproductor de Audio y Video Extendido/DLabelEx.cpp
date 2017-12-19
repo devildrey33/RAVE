@@ -32,7 +32,7 @@ namespace DWL {
 		HDC     TmphDC = CreateCompatibleDC(NULL);
 		HBITMAP TmphDCBmp = CreateCompatibleBitmap(DC, RC.right, RC.bottom);
 		HBITMAP VTmphDCBmp = static_cast<HBITMAP>(SelectObject(TmphDC, TmphDCBmp));
-		HFONT	VFont = static_cast<HFONT>(SelectObject(TmphDC, _Fuente));
+		HFONT	VFont = static_cast<HFONT>(SelectObject(TmphDC, _Fuente()));
 
 		HBRUSH BrochaFondo = CreateSolidBrush(_ColorFondo);
 		FillRect(TmphDC, &RC, BrochaFondo);
