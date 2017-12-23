@@ -41,6 +41,9 @@ namespace DWL {
 
 		static DhWnd_Fuente    _Fuente;
 		static DhWnd_Fuente    _FuenteB;
+
+		static DhWnd_Fuente    _FuenteTest;
+
 		//		static HFONT       _FuenteB;
 
 		/*friend class DVentana;

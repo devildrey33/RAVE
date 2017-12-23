@@ -29,6 +29,14 @@ namespace DWL {
 		DArbolEx_HitTest_Todo		// (expansor, icono y texto)
 	};
 
+	enum DArbolEx_ParteNodo {
+		DArbolEx_ParteNodo_Nada		= 0,
+		DArbolEx_ParteNodo_Expansor = 1,
+		DArbolEx_ParteNodo_Nodo		= 2,
+		DArbolEx_ParteNodo_Icono	= 3,
+		DArbolEx_ParteNodo_Texto	= 4
+	};
+
 	/* Plantilla ArbolEx que se crea partiendo del tipo de nodo */
 	class DArbolEx : public virtual DBarraScrollEx {
 	  public:
@@ -66,10 +74,12 @@ namespace DWL {
 
 		void											Evento_MouseMovimiento(const int cX, const int cY, const UINT Param);
 
-		DArbolEx_Nodo                                  *HitTest(const int cX, const int cY, const DArbolEx_HitTest nTipo);
+		DArbolEx_Nodo                                  *HitTest(const int cX, const int cY, DArbolEx_ParteNodo &Parte);
 
 		LRESULT CALLBACK								GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
+
 	  protected:
+
 		void										   _CrearBufferNodo(const int nAncho, const int nAlto);
 		HDC                                            _BufferNodo;
 		HBITMAP                                        _BufferNodoBmp;
@@ -101,8 +111,10 @@ namespace DWL {
 		DArbolEx_Nodo                                 *_NodoPresionado;
 														// Nodo resaltado
 		DArbolEx_Nodo                                 *_NodoResaltado;
+		DArbolEx_ParteNodo                             _NodoResaltadoParte;
 														// Ultimo nodo resaltado
-		DArbolEx_Nodo                                 *_UNodoResaltado;
+		DArbolEx_Nodo                                 *_NodoUResaltado;
+		DArbolEx_ParteNodo                             _NodoUResaltadoParte;
 
 														// Primer nodo visible en la página
 		DArbolEx_Nodo                                 *_NodoPaginaInicio;

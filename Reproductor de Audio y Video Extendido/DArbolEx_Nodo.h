@@ -36,10 +36,12 @@ namespace DWL {
 		inline const BOOL				Expandido(void)														{ return _Expandido;					}
 //		inline void						Expandido(const BOOL nExpandido)									{ _Expandido = nExpandido;				}
 		inline void						MostrarExpansor(const DArbolEx_MostrarExpansor nMostrarExpansor)	{ _MostrarExpansor = nMostrarExpansor;	}
+		const BOOL						MostrarExpansor(void);
 		inline const BOOL				Seleccionado(void)													{ return _Seleccionado;					}
 		inline void						Seleccionado(const BOOL nSeleccionado)								{ _Seleccionado = nSeleccionado;		}
 
-		inline DhWnd_Fuente			   &Fuente(void)														{ return *_Fuente;						}
+		inline DhWnd_Fuente			   &Fuente(void)														{ return *_Fuente; }
+		inline void						Fuente(DhWnd_Fuente &nFuente)                                       { _Fuente = &nFuente; _AnchoTexto = _Fuente->Tam(_Texto).cx;	}
 
 		inline DArbolEx_Nodo           *Padre(void)															{ return _Padre;						}
 		inline DArbolEx_Nodo           *Siguiente(void)														{ return _Siguiente;					}
@@ -52,9 +54,13 @@ namespace DWL {
 		std::wstring				   _Texto;
 		int                            _AnchoTexto;
 		DListaIconos_Icono			  *_Icono;
-		DArbolEx_MostrarExpansor       _MostrarExpansor;
-		BOOL						   _Expandido;
-		BOOL						   _Seleccionado;
+
+
+		// bitwitzar
+		DArbolEx_MostrarExpansor       _MostrarExpansor;	// 4
+		BOOL						   _Expandido;			// 1 
+		BOOL						   _Seleccionado;		// 1
+
 		DArbolEx_Nodo			      *_Padre;
 		size_t						   _Ancestros; // Total de padres por encima de este nodo
 		DArbolEx_Nodo			      *_Siguiente;

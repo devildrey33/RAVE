@@ -10,7 +10,7 @@
 namespace DWL {
 
 	DArbolEx::DArbolEx(void) :	DBarraScrollEx(),
-								_NodoMarcado(NULL), _NodoPresionado(NULL), _NodoResaltado(NULL), _UNodoResaltado(NULL), 
+								_NodoMarcado(NULL), _NodoPresionado(NULL), _NodoResaltado(NULL), _NodoUResaltado(NULL), _NodoResaltadoParte(DArbolEx_ParteNodo_Nada), _NodoUResaltadoParte(DArbolEx_ParteNodo_Nada),
 								_Fuente(NULL), _TotalAnchoVisible(0), _TotalAltoVisible(0), 
 								_NodoPaginaInicio(NULL), _NodoPaginaFin(NULL), _NodoPaginaVDif(0), _NodoPaginaHDif(0),
 								_BufferNodo(NULL), _BufferNodoBmp(NULL), _BufferNodoBmpViejo(NULL) {
@@ -34,7 +34,7 @@ namespace DWL {
 	HWND DArbolEx::CrearArbolEx(DhWnd &nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID) {
 		if (hWnd()) { Debug_Escribir(L"DArbolEx::CrearArbolEx() Error : ya se ha creado el arbol\n"); return hWnd(); }
 		hWnd = CrearControlEx(nPadre, L"DArbolEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD | WS_VISIBLE, NULL);
-		_Fuente = hWnd._Fuente;
+		_Fuente = hWnd._FuenteTest;
 		return hWnd();
 	}
 
@@ -189,8 +189,10 @@ namespace DWL {
 	void DArbolEx::PintarNodo(HDC hDC, RECT *Espacio, DArbolEx_Nodo *nNodo, const int PosH) {
 		// Determino el estado del nodo (0 normal, 1 resaltado, 2 presionado)
 		int Estado = 0;
-		if		(nNodo == _NodoResaltado)	Estado = 1;
-		else if (nNodo == _NodoPresionado)	Estado = 2;
+		if		(nNodo == _NodoResaltado)	
+			Estado = 1;
+		else if (nNodo == _NodoPresionado)	
+			Estado = 2;
 		COLORREF ColFondo = NULL, ColTexto = NULL;		
 		switch (Estado) {
 			case 0 : // Normal
@@ -199,7 +201,7 @@ namespace DWL {
 				break;
 			case 1 : // Resaltado
 				ColTexto = (nNodo->_Seleccionado == FALSE) ? COLOR_ARBOL_TEXTO_RESALTADO : COLOR_ARBOL_SELECCION_TEXTO_RESALTADO;
-				ColFondo = (nNodo->_Seleccionado == FALSE) ? COLOR_ARBOL_FONDO_RESALTADO : COLOR_ARBOL_SELECCION_RESALTADO;
+				ColFondo = (nNodo->_Seleccionado == FALSE) ? COLOR_ARBOL_FONDO_RESALTADO : COLOR_ARBOL_SELECCION_RESALTADO; // RGB(0, 0, 255) : RGB(0, 255, 0);
 				break;
 			case 2 : // Presionado
 				ColTexto = (nNodo->_Seleccionado == FALSE) ? COLOR_ARBOL_TEXTO_PRESIONADO : COLOR_ARBOL_SELECCION_TEXTO_PRESIONADO;
@@ -214,23 +216,24 @@ namespace DWL {
 		DeleteObject(BrochaFondo);
 
 		// Determino si hay que mostrar el expansor
-		BOOL MostrarExpansor = FALSE;
-		switch (nNodo->_MostrarExpansor) {
+		BOOL MostrarExpansor = nNodo->MostrarExpansor();
+/*		switch (nNodo->_MostrarExpansor) {
 			case DArbolEx_MostrarExpansor_Auto		: MostrarExpansor = (nNodo->_Hijos.size() > 0) ? TRUE : FALSE;		break;
 			case DArbolEx_MostrarExpansor_Mostrar	: MostrarExpansor = TRUE;											break;
 			case DArbolEx_MostrarExpansor_Ocultar	: MostrarExpansor = FALSE;											break;
-		}
+		}*/
 
-		int		AnchoOcupado		= ARBOLEX_PADDING + static_cast<int>((nNodo->_Ancestros - 1) * ARBOLEX_TAMICONO);
+		int		AnchoOcupado		= static_cast<int>((nNodo->_Ancestros - 1) * ARBOLEX_TAMICONO) + ARBOLEX_PADDING;  // ARBOLEX_PADDING + (static_cast<int>((nNodo->_Ancestros - 1) * ARBOLEX_TAMICONO));
 		HBRUSH	BrochaBordeExpansor	= CreateSolidBrush(COLOR_ARBOL_EXPANSOR_BORDE);
 		HPEN	PlumaExpansor		= CreatePen(PS_SOLID, 1, ColTexto);
 		if (MostrarExpansor == TRUE) {
 			int PosExpansorY = ((Espacio->bottom - Espacio->top) - ARBOLEX_TAMEXPANSOR) / 2;
-			RECT MarcoExpansor = { AnchoOcupado + ARBOLEX_PADDING, PosExpansorY, AnchoOcupado + ARBOLEX_TAMEXPANSOR + ARBOLEX_PADDING, PosExpansorY + ARBOLEX_TAMEXPANSOR };
+			RECT MarcoExpansor = { AnchoOcupado, PosExpansorY, AnchoOcupado + ARBOLEX_TAMEXPANSOR, PosExpansorY + ARBOLEX_TAMEXPANSOR };
+//			Debug_Escribir_Varg(L"ArbolEx::PintarNodo left:%d top:%d right:%d bottom:%d\n", MarcoExpansor.left, MarcoExpansor.top, MarcoExpansor.right, MarcoExpansor.bottom);
 			FrameRect(_BufferNodo, &MarcoExpansor, BrochaBordeExpansor);
 			// Pinto una linea horizontal para el expansor
-			MoveToEx(_BufferNodo, AnchoOcupado + ARBOLEX_PADDING + 2, PosExpansorY + ARBOLEX_TAMEXPANSOR / 2, NULL);
-			LineTo(_BufferNodo, AnchoOcupado + ARBOLEX_TAMEXPANSOR + ARBOLEX_PADDING - 2, PosExpansorY + ARBOLEX_TAMEXPANSOR / 2);
+			MoveToEx(_BufferNodo, AnchoOcupado + 2, PosExpansorY + ARBOLEX_TAMEXPANSOR / 2, NULL);
+			LineTo(_BufferNodo, AnchoOcupado + ARBOLEX_TAMEXPANSOR - 2, PosExpansorY + ARBOLEX_TAMEXPANSOR / 2);
 			if (nNodo->_Expandido == FALSE) {
 				// Pinto una linea vertical para el expansor
 				MoveToEx(_BufferNodo, AnchoOcupado + ARBOLEX_PADDING + (ARBOLEX_TAMEXPANSOR / 2), PosExpansorY + 2, NULL);
@@ -265,10 +268,14 @@ namespace DWL {
 	}
 
 
-	DArbolEx_Nodo *DArbolEx::HitTest(const int cX, const int cY, const DArbolEx_HitTest nTipo) {
-//_NodoPaginaVDif		
+	/* Función especial para eventos del mouse.
+		- Obtiene el nodo en modo DArbolEx_HitTest_Todo.
+		- El parámetro Parte devuelve la parte del nodo que se ha presionado
+	*/
+	// TODO : El expansor no es calcula correctament... falta o sobra un padding a la 'x' diria...
+	DArbolEx_Nodo *DArbolEx::HitTest(const int cX, const int cY, DArbolEx_ParteNodo &Parte) {
 		DArbolEx_Nodo *Tmp = _NodoPaginaInicio;
-		int PixelesContados = _NodoPaginaVDif;
+		int PixelesContados = _NodoPaginaVDif; // Pixeles de altura contados hasta el nodo
 		int AltoNodo = 0;
 		// Busco el nodo que está en la misma altura que cY
 		while (Tmp != _NodoPaginaFin) {
@@ -282,48 +289,60 @@ namespace DWL {
 
 		// Se ha encontrado un nodo a la altura del mouse
 		if (Tmp != NULL) {
-			
-			// Ahora hay que crear varias rectas para determinar si el mouse está encima de una parte del nodo o no
-									   // Total ancestros      * Tamaño ancestro   + Padding         + Expansor            + Padding         + Icono            + Padding extra + Padding         + Ancho texto        + Padding          + 2 pixels de separación                      
-//			TmpAncho = (static_cast<int>((Tmp->_Ancestros - 1) * ARBOLEX_TAMICONO) + ARBOLEX_PADDING + ARBOLEX_TAMEXPANSOR + ARBOLEX_PADDING + ARBOLEX_TAMICONO + 2			    + ARBOLEX_PADDING + nNodo->_AnchoTexto + ARBOLEX_PADDING) + 2;
-			POINT Pt = { cX, cY };
-			RECT Recta;
-			int iniciotexto = static_cast<int>((Tmp->_Ancestros - 1) * ARBOLEX_TAMICONO) + ARBOLEX_PADDING + ARBOLEX_TAMEXPANSOR + ARBOLEX_PADDING + ARBOLEX_TAMICONO + 2 + _NodoPaginaHDif;
-			int inicioiconoX = static_cast<int>((Tmp->_Ancestros - 1) * ARBOLEX_TAMICONO) + ARBOLEX_PADDING + ARBOLEX_TAMEXPANSOR + ARBOLEX_PADDING + _NodoPaginaHDif;
-			int inicioiconoY = ((Tmp->_Fuente->Alto() * (ARBOLEX_PADDING * 2)) - ARBOLEX_TAMICONO) / 2;
-			int inicioexpansorX = static_cast<int>((Tmp->_Ancestros - 1) * ARBOLEX_TAMICONO) + ARBOLEX_PADDING + _NodoPaginaHDif;
-			int inicioexpansorY = ((Tmp->_Fuente->Alto() + (ARBOLEX_PADDING * 2)) - ARBOLEX_TAMEXPANSOR) / 2;
-			int iniciotodoX = static_cast<int>((Tmp->_Ancestros - 1) * ARBOLEX_TAMICONO) + ARBOLEX_PADDING + _NodoPaginaHDif;
-//			int iniciotodoY = ARBOLEX_PADDING;
-			int tamtodoX = ARBOLEX_TAMEXPANSOR + ARBOLEX_PADDING + ARBOLEX_TAMICONO + 2 + ARBOLEX_PADDING + Tmp->_AnchoTexto + ARBOLEX_PADDING;
-			switch (nTipo) {
-				case DArbolEx_HitTest_Texto:
-					Recta = {	iniciotexto,											PixelesContados + ARBOLEX_PADDING,
-								iniciotexto + Tmp->_AnchoTexto + ARBOLEX_PADDING,		PixelesContados + (ARBOLEX_PADDING * 2) + Tmp->_Fuente->Alto() 	};
-					break;
-				case DArbolEx_HitTest_Icono:
-					Recta = {	inicioiconoX,											PixelesContados + inicioiconoY,
-								inicioiconoX + ARBOLEX_TAMICONO,						PixelesContados + inicioiconoY + ARBOLEX_TAMICONO };
-					break;
-				case DArbolEx_HitTest_Expansor:
-					Recta = {	inicioexpansorX,										PixelesContados + inicioexpansorY,
-								inicioexpansorX + ARBOLEX_TAMEXPANSOR,					PixelesContados + inicioexpansorY + ARBOLEX_TAMEXPANSOR };
-					break;
 
-				case DArbolEx_HitTest_Todo:
-					Recta = {	iniciotodoX,											PixelesContados + ARBOLEX_PADDING,
-								iniciotodoX + tamtodoX,									PixelesContados + (ARBOLEX_PADDING * 2) + Tmp->_Fuente->Alto() };
-					break;
+			// Ahora hay que crear varias rectas para determinar si el mouse está encima de una parte del nodo o no
+			//			  					  Total ancestros      * Tamaño ancestro   + Padding         + Expansor            + Padding         + Icono            + Padding extra + Padding         + Ancho texto        + Padding          + 2 pixels de separación                      
+			// AnchoNodo = (static_cast<int>((Tmp->_Ancestros - 1) * ARBOLEX_TAMICONO) + ARBOLEX_PADDING + ARBOLEX_TAMEXPANSOR + ARBOLEX_PADDING + ARBOLEX_TAMICONO + 2			    + ARBOLEX_PADDING + nNodo->_AnchoTexto + ARBOLEX_PADDING) + 2;
+			POINT Pt = { cX, cY };
+			int iniciotodoX = 0, tamtodoX = 0;
+			// Si el nodo tiene el expansor visible
+			if (Tmp->MostrarExpansor() == TRUE) {
+				// Compruebo si el mouse está en el expansor del nodo
+				int inicioexpansorX = static_cast<int>((Tmp->_Ancestros - 1) * ARBOLEX_TAMICONO) + ARBOLEX_PADDING + _NodoPaginaHDif;
+				int inicioexpansorY = ((Tmp->_Fuente->Alto() + (ARBOLEX_PADDING * 2)) - ARBOLEX_TAMEXPANSOR) / 2;							// ((Altura del nodo + (padding * 2)) - altura del expansor) / 2
+				iniciotodoX			= static_cast<int>((Tmp->_Ancestros - 1) * ARBOLEX_TAMICONO) + ARBOLEX_PADDING + _NodoPaginaHDif;
+				tamtodoX			= ARBOLEX_TAMEXPANSOR + ARBOLEX_PADDING + ARBOLEX_TAMICONO + 2 + ARBOLEX_PADDING + Tmp->_AnchoTexto + ARBOLEX_PADDING;
+				RECT RectaExpansor	= {	inicioexpansorX,							PixelesContados + inicioexpansorY,
+										inicioexpansorX + ARBOLEX_TAMEXPANSOR,		PixelesContados + inicioexpansorY + ARBOLEX_TAMEXPANSOR };
+				Debug_Escribir_Varg(L"ArbolEx::_HitTestEventoMouse left:%d top:%d right:%d bottom:%d\n", RectaExpansor.left, RectaExpansor.top, RectaExpansor.right, RectaExpansor.bottom);
+				if (PtInRect(&RectaExpansor, Pt) != 0) {
+					Parte = DArbolEx_ParteNodo_Expansor;
+					return Tmp;
+				}
+			}
+			else {
+				iniciotodoX = static_cast<int>((Tmp->_Ancestros - 1) * ARBOLEX_TAMICONO) + ARBOLEX_PADDING + ARBOLEX_TAMEXPANSOR + ARBOLEX_PADDING +  _NodoPaginaHDif;
+				tamtodoX	= ARBOLEX_TAMICONO + 2 + ARBOLEX_PADDING + Tmp->_AnchoTexto + ARBOLEX_PADDING;
+			}
+			// Compruebo si el mouse está en el icono del nodo
+			int inicioiconoX = static_cast<int>((Tmp->_Ancestros - 1) * ARBOLEX_TAMICONO) + ARBOLEX_PADDING + ARBOLEX_TAMEXPANSOR + ARBOLEX_PADDING + _NodoPaginaHDif;
+			int inicioiconoY = ((Tmp->_Fuente->Alto() + (ARBOLEX_PADDING * 2)) - ARBOLEX_TAMICONO) / 2;
+			RECT RectaIcono	 = { inicioiconoX,										PixelesContados + inicioiconoY,
+							 	 inicioiconoX + ARBOLEX_TAMICONO,					PixelesContados + inicioiconoY + ARBOLEX_TAMICONO };
+			if (PtInRect(&RectaIcono, Pt) != 0) {
+				Parte = DArbolEx_ParteNodo_Icono;
+				return Tmp;
+			}
+			int iniciotexto = static_cast<int>((Tmp->_Ancestros - 1) * ARBOLEX_TAMICONO) + ARBOLEX_PADDING + ARBOLEX_TAMEXPANSOR + ARBOLEX_PADDING + ARBOLEX_TAMICONO + 2 + _NodoPaginaHDif;
+			// Compruebo si el mouse está en el texto del nodo
+			RECT RectaTexto = { iniciotexto,										PixelesContados + ARBOLEX_PADDING,
+								iniciotexto + Tmp->_AnchoTexto + ARBOLEX_PADDING,	PixelesContados + (ARBOLEX_PADDING * 2) + Tmp->_Fuente->Alto() };
+			if (PtInRect(&RectaTexto, Pt) != 0) {
+				Parte = DArbolEx_ParteNodo_Texto;
+				return Tmp;
+			}
+			// Compruebo si el mouse está dentro del nodo (hay partes del nodo que no pertenecen ni al texto ni al icono ni al expansor)
+			RECT RectaNodo	 = { iniciotodoX,										PixelesContados + ARBOLEX_PADDING,
+								 iniciotodoX + tamtodoX,							PixelesContados + (ARBOLEX_PADDING * 2) + Tmp->_Fuente->Alto() };
+			if (PtInRect(&RectaNodo, Pt) != 0) {
+				Parte = DArbolEx_ParteNodo_Nodo;
+				return Tmp;
 			}
 
-			if (PtInRect(&Recta, Pt) != 0)
-				return Tmp;
-
 		}
-
+		Parte = DArbolEx_ParteNodo_Nada;
 		return NULL;
 	}
-
 
 /*
 	+ RAIZ 
@@ -502,13 +521,25 @@ namespace DWL {
 	}
 
 	void DArbolEx::Evento_MouseMovimiento(const int cX, const int cY, const UINT Param) {
-//		DArbolEx_Nodo *nNodo = HitTest(cX, cY, DArbolEx_HitTest_Texto);
-//		DArbolEx_Nodo *nNodo = HitTest(cX, cY, DArbolEx_HitTest_Icono);
-//		DArbolEx_Nodo *nNodo = HitTest(cX, cY, DArbolEx_HitTest_Expansor);
-		DArbolEx_Nodo *nNodo = HitTest(cX, cY, DArbolEx_HitTest_Todo);
+		if (Scrolls_MouseMovimiento(cX, cY, Param) == TRUE) { return; } // las coordenadas pertenecen al scroll (salgo del evento)
+/*	enum DArbolEx_ParteNodo {
+		DArbolEx_ParteNodo_Nada		= 0,
+		DArbolEx_ParteNodo_Expansor = 1,
+		DArbolEx_ParteNodo_Nodo		= 2,
+		DArbolEx_ParteNodo_Icono	= 3,
+		DArbolEx_ParteNodo_Texto	= 4
+	};*/
+		_NodoResaltado = HitTest(cX, cY, _NodoResaltadoParte);
 
-		if (nNodo != NULL) { Debug_Escribir_Varg(L"DArbolEx::Evento_MouseMovimiento %s\n", nNodo->Texto().c_str()); }
-		else               { Debug_Escribir_Varg(L"DArbolEx::Evento_MouseMovimiento NULL\n"); }
+//		Debug_Escribir_Varg(L"ArbolEx::Evento_MouseMovimiento x:%d y:%d p:%d\n", cX, cY, Parte);		
+		if (_NodoUResaltado != _NodoResaltado || _NodoResaltadoParte != _NodoUResaltadoParte) {
+			_NodoUResaltado		 = _NodoResaltado;
+			_NodoUResaltadoParte = _NodoResaltadoParte;
+			Repintar(); // TODO : substituir per un RepintarNodo(nNodo, nUNodo)
+		}
+
+//		if (nNodo != NULL) { Debug_Escribir_Varg(L"DArbolEx::Evento_MouseMovimiento %s\n", nNodo->Texto().c_str()); }
+		//else               { Debug_Escribir_Varg(L"DArbolEx::Evento_MouseMovimiento NULL\n"); }
 	}
 
 	LRESULT CALLBACK DArbolEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
@@ -531,12 +562,10 @@ namespace DWL {
 					// MouseEntrando
 				}
 				
-				if (Scrolls_MouseMovimiento(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam)) == FALSE) {
-					Evento_MouseMovimiento(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
-				}
+				Evento_MouseMovimiento(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
 				break;
 
-			case WM_MOUSELEAVE:
+			case WM_MOUSELEAVE: // Enviado gracias a WM_MOUSEMOVE -> _MouseEntrando()
 				_MouseDentro = FALSE;
 				if (_ScrollV_Estado != DBarraScrollEx_Estado_Presionado && _ScrollH_Estado != DBarraScrollEx_Estado_Presionado) {
 					if (_ScrollV_Estado != DBarraScrollEx_Estado_Invisible) _ScrollV_Estado = DBarraScrollEx_Estado_Normal;

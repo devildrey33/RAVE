@@ -12,6 +12,16 @@ namespace DWL {
 		for (size_t i = 0; i < _Hijos.size(); i++) delete _Hijos[i]; 
 	};
 
+	/* Devuelve TRUE o FALSE dependiendo de si hay que mostrar el expansor o no.. (si MostrarExpansor está en Auto, devolverá TRUE si el nodo tiene hijos, FALSE enc aso contrario) */
+	const BOOL DArbolEx_Nodo::MostrarExpansor(void) { 
+		switch (_MostrarExpansor) {
+			case DArbolEx_MostrarExpansor_Auto		: return (_Hijos.size() > 0) ? TRUE : FALSE;
+			case DArbolEx_MostrarExpansor_Mostrar	: return TRUE;
+			case DArbolEx_MostrarExpansor_Ocultar	: return FALSE;
+		}
+		return _Expandido; 
+	}
+
 	/*
 	const size_t DArbolEx_Nodo::Posicion(void) {
 		if (_Padre != NULL) { 

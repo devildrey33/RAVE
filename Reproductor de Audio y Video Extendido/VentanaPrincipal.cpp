@@ -29,6 +29,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 	Arbol2.CrearArbolEx(hWnd, 120, 81, RC.right - 120, RC.bottom - 80, ID_ARBOLBD2);
 	NodoBD *N1 = Arbol2.AgregarNodo<NodoBD>(L"N1aqqqqqqqqqqjjjaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaw", NULL, IDI_GRUPO);
+	N1->Fuente(this->hWnd._FuenteB);
 	N1->Seleccionado(TRUE);
 	Arbol2.Expandir(N1, TRUE);
 		NodoBD *N11 = Arbol2.AgregarNodo<NodoBD>(L"N1.1", N1, IDI_GRUPO);
