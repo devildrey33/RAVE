@@ -28,8 +28,28 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	CTW_ExtraY = (RW.bottom - RW.top) - RC.bottom;
 
 	Arbol2.CrearArbolEx(hWnd, 120, 81, RC.right - 120, RC.bottom - 80, ID_ARBOLBD2);
+/*	Arbol2.AgregarNodo<NodoBD>(L"N01", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N02", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N03", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N04", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N05", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N06", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N07", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N08", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N09", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N10", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N11", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N12", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N13", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N14", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N15", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N16", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N17", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N18", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N19", NULL, IDI_GRUPO);
+	Arbol2.AgregarNodo<NodoBD>(L"N20", NULL, IDI_GRUPO);*/
 	NodoBD *N1 = Arbol2.AgregarNodo<NodoBD>(L"N1aqqqqqqqqqqjjjaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaw", NULL, IDI_GRUPO);
-	N1->Fuente(this->hWnd._FuenteB);
+//	N1->Fuente(this->hWnd._FuenteB);
 	N1->Seleccionado(TRUE);
 	Arbol2.Expandir(N1, TRUE);
 		NodoBD *N11 = Arbol2.AgregarNodo<NodoBD>(L"N1.1", N1, IDI_GRUPO);
@@ -507,6 +527,20 @@ void VentanaPrincipal::Evento_BorraFondo(HDC DC) {
 
 LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
+
+		case WM_KEYDOWN:
+			Debug_Escribir_Varg(L"t:%d r:%d p:%d\n", static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));
+			return 0;
+		case WM_KEYUP:
+			Debug_Escribir_Varg(L"t:%d r:%d p:%d\n", static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));
+			return 0;
+		case WM_CHAR:
+			Debug_Escribir_Varg(L"t:%d r:%d p:%d\n", static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));
+			//				Debug_Escribir(L"DArbolEx::CrearArbolEx() Error : ya se ha creado el arbol\n");
+			return 0;
+
+
+
 		case WM_TIMER:	
 			this->Evento_Temporizador(static_cast<UINT>(wParam));
 			return 0;

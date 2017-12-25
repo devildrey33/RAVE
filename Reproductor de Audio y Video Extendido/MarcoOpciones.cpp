@@ -78,10 +78,10 @@ LRESULT CALLBACK MarcoOpciones::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM 
 			}
 			break;
 		case WM_LBUTTONDOWN:
-			Scrolls_MousePresionado(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
+			Scrolls_MousePresionado(0, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
 			break;
 		case WM_LBUTTONUP:
-			Scrolls_MouseSoltado(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
+			Scrolls_MouseSoltado(0, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
 			break;
 
 	}

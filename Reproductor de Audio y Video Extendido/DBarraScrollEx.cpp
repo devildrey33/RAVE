@@ -164,7 +164,8 @@ namespace DWL {
 	}
 
 	// Devuelve TRUE si el mouse está dentro de alguna barra de scroll
-	const BOOL DBarraScrollEx::Scrolls_MousePresionado(const int cX, const int cY, const UINT Param) {
+	const BOOL DBarraScrollEx::Scrolls_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param) {
+		if (Boton != 0) return TRUE;
 		RECT RCV, RCH, RCBV, RCBH;
 		ObtenerRectasScroll(RCH, RCV);
 		POINT Pt = { cX, cY };
@@ -215,7 +216,8 @@ namespace DWL {
 	}
 
 	// Devuelve TRUE si el mouse está dentro de alguna barra de scroll
-	const BOOL DBarraScrollEx::Scrolls_MouseSoltado(const int cX, const int cY, const UINT Param) {
+	const BOOL DBarraScrollEx::Scrolls_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param) {
+		if (Boton != 0) return TRUE;
 		RECT RCV, RCH;
 		ObtenerRectasScroll(RCH, RCV);
 		POINT Pt = { cX, cY };

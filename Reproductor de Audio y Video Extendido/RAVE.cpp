@@ -20,7 +20,7 @@ RAVE::~RAVE(void) {
 
 // Devuelve TRUE para continuar con el bucle de mensajes, FALSE para salir de la aplicación
 const BOOL RAVE::Iniciar(int nCmdShow) {
-		// Obtengo/Creo un mutex para evitar que 2 o mas reproductores se inicien a la vez.
+	// Obtengo/Creo un mutex para evitar que 2 o mas reproductores se inicien a la vez.
 	// De esta forma cuando se inicia el reproductor, este espera a que el anterior termine completamente de cargarse.
 	HANDLE MutexPlayer = OpenMutex(NULL, FALSE, TEXT("Mutex_RAVE"));
 	if (MutexPlayer == NULL) {
@@ -35,6 +35,30 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 		ConsolaDebug.Crear(L"Consola de depuración");
 		Debug_Escribir_Varg(L"RAVE::Iniciar en %s.\n", SO.c_str());
 	#endif
+
+
+
+/*
+#define DARBOLEX_NODO_ESTADO		0x000000ff
+#define DARBOLEX_NODO_SELECCIONADO	0x00000100
+#define DARBOLEX_NODO_EXPANDIDO		0x00000200
+
+		LONG_PTR Flag = 0;
+		int n = sizeof(LONG_PTR) * 8;
+
+//		Flag = Flag | 1;
+		//Flag = Flag | 0xff;
+		Flag = Flag | DARBOLEX_NODO_EXPANDIDO;
+		Flag = Flag | DARBOLEX_NODO_SELECCIONADO;
+
+		Debug_Escribir_Varg(L"TEST Flag " PRINTF_BINARY_PATTERN_INT64 "\n", PRINTF_BYTE_TO_BINARY_INT64(Flag));
+		*/
+
+
+
+
+
+
 
 	BOOL Ret = FALSE;
 

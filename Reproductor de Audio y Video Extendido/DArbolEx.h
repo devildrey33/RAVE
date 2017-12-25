@@ -37,6 +37,18 @@ namespace DWL {
 		DArbolEx_ParteNodo_Texto	= 4
 	};
 
+
+	class DArbolEx_Comportamiento {
+	  public : 
+		  DArbolEx_Comportamiento(void) : MultiSeleccion(TRUE), SubSeleccion(TRUE) { };
+		  ~DArbolEx_Comportamiento(void) { };
+		  BOOL MultiSeleccion;
+		  BOOL SubSeleccion;
+		  // labeledit
+		  // drag & drop
+
+	};
+
 	/* Plantilla ArbolEx que se crea partiendo del tipo de nodo */
 	class DArbolEx : public virtual DBarraScrollEx {
 	  public:
@@ -73,17 +85,30 @@ namespace DWL {
 		void											Scrolls_EventoCambioPosicion(void);
 
 		void											Evento_MouseMovimiento(const int cX, const int cY, const UINT Param);
+		void											Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param);
+		void											Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param);
+
+		void                                            Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
+		void                                            Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params);
+		void											Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param);
 
 		DArbolEx_Nodo                                  *HitTest(const int cX, const int cY, DArbolEx_ParteNodo &Parte);
 
 		LRESULT CALLBACK								GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+														// Comportamiento del ArbolEx (Multiseleccion, subseleccion, drag&drop, etc..)
+		DArbolEx_Comportamiento							Comportamiento;
+
 	  protected:
 
 		void										   _CrearBufferNodo(const int nAncho, const int nAlto);
+														// Buffer DC permanente para pintar UN nodo
 		HDC                                            _BufferNodo;
 		HBITMAP                                        _BufferNodoBmp;
 		HBITMAP                                        _BufferNodoBmpViejo;
+
+														// Teclas especiales
+		void										   _Tecla_CursorAbajo(void);
 
 	    void					  					   _CalcularNodosPagina(const size_t TamPagina);
 
@@ -109,6 +134,7 @@ namespace DWL {
 		DArbolEx_Nodo	                              *_NodoMarcado;
 														// Nodo presionado
 		DArbolEx_Nodo                                 *_NodoPresionado;
+		DArbolEx_ParteNodo                             _NodoPresionadoParte;
 														// Nodo resaltado
 		DArbolEx_Nodo                                 *_NodoResaltado;
 		DArbolEx_ParteNodo                             _NodoResaltadoParte;

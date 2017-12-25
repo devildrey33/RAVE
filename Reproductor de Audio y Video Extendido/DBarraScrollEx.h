@@ -19,8 +19,8 @@ namespace DWL {
 //		HWND						CrearBarraScrollEx(DhWnd &Padre, const int cX, const int cY, const int cAncho, const int cAlto, const UINT nID);
 		void						Scrolls_Pintar(HDC hDC, RECT &RC);
 		const BOOL					Scrolls_MouseMovimiento(const int cX, const int cY, const UINT Param);
-		const BOOL					Scrolls_MousePresionado(const int cX, const int cY, const UINT Param);
-		const BOOL					Scrolls_MouseSoltado(const int cX, const int cY, const UINT Param);
+		const BOOL					Scrolls_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param);
+		const BOOL					Scrolls_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param);
 									// Obtiene el área que pertenece al control (RectaCliente es el resultado de GetClientRect, y RectaClienteSinScroll es el área del control excluyendo las barras de scroll) 
 		void						ObtenerRectaCliente(RECT *RectaCliente, RECT *RectaClienteSinScroll);
 									// Obtiene el área de los scrolls
