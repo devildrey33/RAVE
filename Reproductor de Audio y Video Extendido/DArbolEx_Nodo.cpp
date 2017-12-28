@@ -3,8 +3,8 @@
 
 namespace DWL {
 
-	DArbolEx_Nodo::DArbolEx_Nodo() :	_Siguiente(NULL), _Icono(NULL), _Fuente(NULL), _Ancestros(0), _AnchoTexto(0), _Arbol(NULL),
-										_Expandido(FALSE), _Seleccionado(FALSE), _MostrarExpansor(DArbolEx_MostrarExpansor_Auto) {
+	DArbolEx_Nodo::DArbolEx_Nodo() :	_Siguiente(NULL), _Anterior(NULL), _Icono(NULL), _Fuente(NULL), _Ancestros(0), _AnchoTexto(0), _Arbol(NULL),
+										_Expandido(FALSE), _Seleccionado(FALSE), _SubSeleccionado(FALSE), _MostrarExpansor(DArbolEx_MostrarExpansor_Auto) {
 	};
 	
 	DArbolEx_Nodo::~DArbolEx_Nodo(void) {

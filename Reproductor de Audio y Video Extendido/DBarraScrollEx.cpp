@@ -309,6 +309,26 @@ namespace DWL {
 
 	}
 
+	// Devuelve TRUE si es necesario repintar, FALSE en caso contrario
+	const BOOL DBarraScrollEx::Scrolls_MouseEntrando(void) {
+		return FALSE;
+	}
+
+	// Devuelve TRUE si es necesario repintar, FALSE en caso contrario
+	const BOOL DBarraScrollEx::Scrolls_MouseSaliendo(void) {
+		BOOL nRepintar = FALSE;
+		if (_ScrollV_Estado != DBarraScrollEx_Estado_Presionado && _ScrollH_Estado != DBarraScrollEx_Estado_Presionado) {
+			if (_ScrollV_Estado != DBarraScrollEx_Estado_Invisible) {
+				_ScrollV_Estado = DBarraScrollEx_Estado_Normal;
+				nRepintar = TRUE;
+			}
+			if (_ScrollH_Estado != DBarraScrollEx_Estado_Invisible) {
+				_ScrollH_Estado = DBarraScrollEx_Estado_Normal;
+				nRepintar = TRUE;
+			}			
+		}
+		return nRepintar;
+	}
 
 	/*
 	LRESULT CALLBACK DBarraScrollEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {

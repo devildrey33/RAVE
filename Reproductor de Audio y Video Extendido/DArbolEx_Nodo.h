@@ -41,12 +41,13 @@ namespace DWL {
 		inline void						Seleccionado(const BOOL nSeleccionado)								{ _Seleccionado = nSeleccionado;		}
 
 		inline DhWnd_Fuente			   &Fuente(void)														{ return *_Fuente; }
-		inline void						Fuente(DhWnd_Fuente &nFuente)                                       { _Fuente = &nFuente; _AnchoTexto = _Fuente->Tam(_Texto).cx;	}
+		inline void						Fuente(DhWnd_Fuente &nFuente)                                       { _Fuente = &nFuente;	_AnchoTexto = _Fuente->Tam(_Texto).cx;	}
 
 		inline DArbolEx_Nodo           *Padre(void)															{ return _Padre;						}
 		inline DArbolEx_Nodo           *Siguiente(void)														{ return _Siguiente;					}
 		inline DArbolEx_Nodo	       *Hijo(const size_t Pos)												{ return _Hijos[Pos];					}
 		inline const size_t				TotalHijos(void)													{ return _Hijos.size();					}
+		inline DArbolEx_Nodo           *UltimoHijo(void)													{ return (_Hijos.size() == 0) ? NULL : _Hijos[_Hijos.size() - 1]; }
 
 		//const size_t					Posicion(void);
 
@@ -60,10 +61,12 @@ namespace DWL {
 		DArbolEx_MostrarExpansor       _MostrarExpansor;	// 4
 		BOOL						   _Expandido;			// 1 
 		BOOL						   _Seleccionado;		// 1
+		BOOL						   _SubSeleccionado;		// 1
 
 		DArbolEx_Nodo			      *_Padre;
 		size_t						   _Ancestros; // Total de padres por encima de este nodo
 		DArbolEx_Nodo			      *_Siguiente;
+		DArbolEx_Nodo			      *_Anterior;
 		std::vector<DArbolEx_Nodo *>   _Hijos;
 		DhWnd_Fuente				  *_Fuente;
 		DArbolEx                      *_Arbol;

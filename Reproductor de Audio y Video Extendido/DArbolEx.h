@@ -93,13 +93,21 @@ namespace DWL {
 		void											Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param);
 
 		DArbolEx_Nodo                                  *HitTest(const int cX, const int cY, DArbolEx_ParteNodo &Parte);
+		void											HacerVisible(DArbolEx_Nodo *vNodo);
+		const BOOL										ObtenerRectaNodo(DArbolEx_Nodo *rNodo, RECT &rRecta);
 
 		LRESULT CALLBACK								GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+
+		virtual const BOOL								Evento_MouseEntrando(void);
+		virtual const BOOL								Evento_MouseSaliendo(void);
+
+		void											SeleccionarNodo(DArbolEx_Nodo *sNodo);
 														// Comportamiento del ArbolEx (Multiseleccion, subseleccion, drag&drop, etc..)
 		DArbolEx_Comportamiento							Comportamiento;
 
 	  protected:
+  	    void										   _DesSeleccionarTodo(void);
 
 		void										   _CrearBufferNodo(const int nAncho, const int nAlto);
 														// Buffer DC permanente para pintar UN nodo
@@ -108,15 +116,20 @@ namespace DWL {
 		HBITMAP                                        _BufferNodoBmpViejo;
 
 														// Teclas especiales
+		void										   _Tecla_CursorArriba(void);
 		void										   _Tecla_CursorAbajo(void);
 
 	    void					  					   _CalcularNodosPagina(const size_t TamPagina);
 
 		void										   _CalcularScrolls(void);
-														// Busca el siguiente nodo
-		DArbolEx_Nodo								  *_BuscarSiguienteNodo(DArbolEx_Nodo *nActual);
-														// Busca el siguiente nodo visible
-		DArbolEx_Nodo								  *_BuscarSiguienteNodoVisible(DArbolEx_Nodo *nActual);
+
+
+														// Busca el nodo anterior
+		DArbolEx_Nodo								  *_BuscarNodoAnterior(DArbolEx_Nodo *nActual, const BOOL nVisible = FALSE);
+														// Busca el nodo siguiente
+		DArbolEx_Nodo								  *_BuscarNodoSiguiente(DArbolEx_Nodo *nActual, const BOOL nVisible = FALSE);
+
+
 														// Agrega un nodo (se tiene que reservar memória en la variable nNodo antes de agregar. ej nNodo = new DArbolEx_Nodo)
 		DArbolEx_Nodo                                 *_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre = NULL, const int nIcono = NULL, DhWnd_Fuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN);
 														// Obtiene el espacio en pixeles que necesita todo el arbol tal y como están los nodos expandidos

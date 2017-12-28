@@ -21,6 +21,9 @@ namespace DWL {
 		const BOOL					Scrolls_MouseMovimiento(const int cX, const int cY, const UINT Param);
 		const BOOL					Scrolls_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param);
 		const BOOL					Scrolls_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param);
+
+		const BOOL					Scrolls_MouseEntrando();
+		const BOOL                  Scrolls_MouseSaliendo();
 									// Obtiene el área que pertenece al control (RectaCliente es el resultado de GetClientRect, y RectaClienteSinScroll es el área del control excluyendo las barras de scroll) 
 		void						ObtenerRectaCliente(RECT *RectaCliente, RECT *RectaClienteSinScroll);
 									// Obtiene el área de los scrolls
