@@ -74,6 +74,8 @@ namespace DWL {
 															return nNodo;
 														};
 
+		DArbolEx_Nodo								   *PrimerNodoVisible(void);
+		DArbolEx_Nodo								   *UltimoNodoVisible(void);
 														// Eliminar Nodo
 		void											EliminarNodo(DArbolEx_Nodo *nEliminar);
 
@@ -87,6 +89,7 @@ namespace DWL {
 		void											Evento_MouseMovimiento(const int cX, const int cY, const UINT Param);
 		void											Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param);
 		void											Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param);
+		void                                            Evento_Mouse_Rueda(const short Delta, const short cX, const short cY, const UINT VirtKey);
 
 		void                                            Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
 		void                                            Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params);
@@ -102,12 +105,13 @@ namespace DWL {
 		virtual const BOOL								Evento_MouseEntrando(void);
 		virtual const BOOL								Evento_MouseSaliendo(void);
 
-		void											SeleccionarNodo(DArbolEx_Nodo *sNodo);
+		void											SeleccionarNodo(DArbolEx_Nodo *sNodo, const BOOL nSeleccionado);
 														// Comportamiento del ArbolEx (Multiseleccion, subseleccion, drag&drop, etc..)
 		DArbolEx_Comportamiento							Comportamiento;
 
 	  protected:
   	    void										   _DesSeleccionarTodo(void);
+//		void                                           _MarcarNodosShift(void);
 
 		void										   _CrearBufferNodo(const int nAncho, const int nAlto);
 														// Buffer DC permanente para pintar UN nodo
@@ -118,6 +122,10 @@ namespace DWL {
 														// Teclas especiales
 		void										   _Tecla_CursorArriba(void);
 		void										   _Tecla_CursorAbajo(void);
+		void										   _Tecla_Inicio(void);
+		void										   _Tecla_Fin(void);
+		void										   _Tecla_AvPag(void);
+		void										   _Tecla_RePag(void);
 
 	    void					  					   _CalcularNodosPagina(const size_t TamPagina);
 
@@ -145,6 +153,10 @@ namespace DWL {
 		DArbolEx_Nodo	                               _Raiz;
 														// Nodo que tiene el foco del teclado
 		DArbolEx_Nodo	                              *_NodoMarcado;
+														// Nodo desde el que se ha presionado la tecla shift
+		DArbolEx_Nodo							      *_NodoShift;
+														// Posiciones que se ha desplazado el shift
+		LONG                                           _PosShift;
 														// Nodo presionado
 		DArbolEx_Nodo                                 *_NodoPresionado;
 		DArbolEx_ParteNodo                             _NodoPresionadoParte;
@@ -164,6 +176,8 @@ namespace DWL {
 		int											   _NodoPaginaHDif;
 
 		DhWnd_Fuente			                       _Fuente;
+
+		bool										   _Teclado[256];
 
 		friend class DArbolEx_Nodo;
 	};
