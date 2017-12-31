@@ -110,6 +110,18 @@
     <Filter Include="DWL\Ventanas\ControlesEx\ListaIconos">
       <UniqueIdentifier>{48db754e-13be-43af-8b55-4b4c51d6a432}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\Extensiones">
+      <UniqueIdentifier>{dcdeb678-6ac4-415f-b635-e7f19a3ec517}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\Extensiones\EdicionTexto">
+      <UniqueIdentifier>{f2dead2b-bc03-45d3-baa2-54285f0b675d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\DDesplegable">
+      <UniqueIdentifier>{bd307228-6d88-4cd4-929c-4f8eec183789}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\ListaEx">
+      <UniqueIdentifier>{10c2859e-f7d4-40cd-8923-0287f6759530}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -292,6 +304,25 @@
     <ClInclude Include="DListaIconos_Icono.h">
       <Filter>DWL\Ventanas\ControlesEx\ListaIconos</Filter>
     </ClInclude>
+    <ClInclude Include="DEdicionTexto.h">
+      <Filter>DWL\Ventanas\ControlesEx\Extensiones\EdicionTexto</Filter>
+    </ClInclude>
+    <ClInclude Include="DControlEx.h">
+      <Filter>DWL\Ventanas\ControlesEx</Filter>
+    </ClInclude>
+    <ClInclude Include="DDesplegable.h">
+      <Filter>DWL\Ventanas\ControlesEx\DDesplegable</Filter>
+    </ClInclude>
+    <ClInclude Include="DListaEx_Columna.h">
+      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
+    </ClInclude>
+    <ClInclude Include="DListaEx.h">
+      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
+    </ClInclude>
+    <ClInclude Include="DListaEx_SubItem.h">
+      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
+    </ClInclude>
+    <ClInclude Include="DListaEx_Item.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -438,6 +469,25 @@
     <ClCompile Include="DArbolEx_Nodo.cpp">
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
     </ClCompile>
+    <ClCompile Include="DEdicionTexto.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\Extensiones\EdicionTexto</Filter>
+    </ClCompile>
+    <ClCompile Include="DControlEx.cpp">
+      <Filter>DWL\Ventanas\ControlesEx</Filter>
+    </ClCompile>
+    <ClCompile Include="DDesplegable.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\DDesplegable</Filter>
+    </ClCompile>
+    <ClCompile Include="DListaEx_Columna.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
+    </ClCompile>
+    <ClCompile Include="DListaEx.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
+    </ClCompile>
+    <ClCompile Include="DListaEx_SubItem.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
+    </ClCompile>
+    <ClCompile Include="DListaEx_Item.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Reproductor de Audio y Video Extendido.rc">

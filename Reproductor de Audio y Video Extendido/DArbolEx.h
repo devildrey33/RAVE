@@ -109,9 +109,10 @@ namespace DWL {
 														// Comportamiento del ArbolEx (Multiseleccion, subseleccion, drag&drop, etc..)
 		DArbolEx_Comportamiento							Comportamiento;
 
-	  protected:
-  	    void										   _DesSeleccionarTodo(void);
-//		void                                           _MarcarNodosShift(void);
+		void											DesSeleccionarTodo(void);
+
+	  protected:		
+		void                                           _AplicarShift(const LONG nPosShift);
 
 		void										   _CrearBufferNodo(const int nAncho, const int nAlto);
 														// Buffer DC permanente para pintar UN nodo
@@ -135,7 +136,7 @@ namespace DWL {
 														// Busca el nodo anterior
 		DArbolEx_Nodo								  *_BuscarNodoAnterior(DArbolEx_Nodo *nActual, const BOOL nVisible = FALSE);
 														// Busca el nodo siguiente
-		DArbolEx_Nodo								  *_BuscarNodoSiguiente(DArbolEx_Nodo *nActual, const BOOL nVisible = FALSE);
+		DArbolEx_Nodo								  *_BuscarNodoSiguiente(DArbolEx_Nodo *nActual, const BOOL nVisible = FALSE, DArbolEx_Nodo *DentroDe = NULL);
 
 
 														// Agrega un nodo (se tiene que reservar memória en la variable nNodo antes de agregar. ej nNodo = new DArbolEx_Nodo)
@@ -146,7 +147,7 @@ namespace DWL {
 		size_t										   _TotalAnchoVisible;
 														// Total de alto necesario para los nodos visibles
 		size_t										   _TotalAltoVisible;
-														// Maximo de altura para un nodo
+														// Maximo de altura para un nodo VISIBLE (para crear el BufferDC que se usa para pintar los nodos individualmente)
 		size_t                                         _MaxAltoNodo;
 
 														// Raiz que contiene todos los nodos
@@ -172,8 +173,8 @@ namespace DWL {
 														// Ultimo nodo visible en la página
 		DArbolEx_Nodo                                 *_NodoPaginaFin;
 														// Diferencia de pixeles del nodo inicial y el principio de la página (o es 0 o es un valor negativo)
-		int											   _NodoPaginaVDif;
-		int											   _NodoPaginaHDif;
+		LONG										   _NodoPaginaVDif;
+		LONG										   _NodoPaginaHDif;
 
 		DhWnd_Fuente			                       _Fuente;
 

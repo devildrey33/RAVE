@@ -1,6 +1,8 @@
 #ifndef DBARRAPROGRESOEX_H
 #define DBARRAPROGRESOEX_H
 
+#include "DControlEx.h"
+
 namespace DWL {
 	class DBarraProgresoEx : public DControlEx_FondoDinamico, public DControlEx_BordeDinamico {
 	  public:

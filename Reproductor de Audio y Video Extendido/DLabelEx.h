@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DhWnd.h"
+#include "DControlEx.h"
 
 namespace DWL {
 

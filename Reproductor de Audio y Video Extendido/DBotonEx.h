@@ -1,7 +1,7 @@
 #ifndef DBOTONEX_H
 #define DBOTONEX_H
 
-#include "DhWnd.h"
+#include "DControlEx.h"
 
 namespace DWL {
 	enum DBotonEx_Estado {

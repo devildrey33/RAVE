@@ -50,8 +50,6 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	Arbol2.AgregarNodo<NodoBD>(L"N20", NULL, IDI_GRUPO);*/
 	NodoBD *N1 = Arbol2.AgregarNodo<NodoBD>(L"N1aqqqqqqqqqqjjjaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaw", NULL, IDI_GRUPO);
 //	N1->Fuente(this->hWnd._FuenteB);
-	N1->Seleccionado(TRUE);
-	Arbol2.Expandir(N1, TRUE);
 		NodoBD *N11 = Arbol2.AgregarNodo<NodoBD>(L"N1.1", N1, IDI_GRUPO);
 		Arbol2.AgregarNodo<NodoBD>(L"N1.2", N1, IDI_GRUPO);
 		NodoBD *N13 = Arbol2.AgregarNodo<NodoBD>(L"N1.3", N1, IDI_GRUPO);
@@ -61,7 +59,11 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 		Arbol2.Expandir(N13, TRUE);
 			Arbol2.AgregarNodo<NodoBD>(L"N1.3.1", N13, IDI_GRUPO);
 			Arbol2.AgregarNodo<NodoBD>(L"N1.3.2", N13, IDI_GRUPO);
-		N13->Seleccionado(TRUE);
+		
+	Arbol2.Expandir(N1, TRUE); 
+	Arbol2.SeleccionarNodo(N1, TRUE);
+	Arbol2.SeleccionarNodo(N13, TRUE);
+	
 
 
 	NodoBD *N2 = Arbol2.AgregarNodo<NodoBD>(L"N2", NULL, IDI_GRUPO);

@@ -20,7 +20,7 @@ namespace DWL {
 								HFONT	VFuente = static_cast<HFONT>(SelectObject(Buffer, _Fuente));
 								GetTextExtentPoint(Buffer, nTexto, static_cast<int>(wcslen(nTexto)), &nTam);
 								SelectObject(Buffer, VFuente);
-								DeleteDC(Buffer);
+								ReleaseDC(NULL, Buffer);
 								return nTam;
 							}
 
@@ -30,7 +30,7 @@ namespace DWL {
 								HFONT	VFuente = static_cast<HFONT>(SelectObject(Buffer, _Fuente));
 								GetTextExtentPoint(Buffer, nTexto.c_str(), static_cast<int>(nTexto.size()), &nTam);
 								SelectObject(Buffer, VFuente);
-								DeleteDC(Buffer);
+								ReleaseDC(NULL, Buffer);
 								return nTam;
 							}
       protected :
