@@ -1,9 +1,7 @@
 #pragma once
 
-#include "DTreeView.h"
+#include "DArbolEx.h"
 #include "sqlite3.h"
-
-using namespace DWL;
 
 enum ArbolBD_TipoNodo {
 	ArbolBD_TipoNodo_Indefinido = -1,
@@ -19,39 +17,33 @@ enum ArbolBD_TipoNodo {
 	ArbolBD_TipoNodo_Raiz,
 };
 
-class ArbolBD;
 
-class ArbolBD_Nodo : public DTreeView_Nodo {
-public:
-							ArbolBD_Nodo() : TipoNodo(ArbolBD_TipoNodo_Indefinido), Hash(0) {};
-					       ~ArbolBD_Nodo() { };
-	
-	inline ArbolBD_Nodo	   *BDPadre(void)		{ return static_cast<ArbolBD_Nodo *>(Padre());		};
-	inline ArbolBD_Nodo	   *BDHijo(void)		{ return static_cast<ArbolBD_Nodo *>(Hijo());		};
-	inline ArbolBD_Nodo	   *BDSiguiente(void)	{ return static_cast<ArbolBD_Nodo *>(Siguiente());	};
-	inline ArbolBD_Nodo	   *BDAnterior(void)	{ return static_cast<ArbolBD_Nodo *>(Anterior());	};
+
+class NodoBD : public DWL::DArbolEx_Nodo {
+  public :
+							NodoBD() : DArbolEx_Nodo(), Hash(0) {};
+	                       ~NodoBD() {};
 
 	ArbolBD_TipoNodo		TipoNodo;
 	sqlite3_int64			Hash;
-	friend class ArbolBD;
-	
+  private :
 };
 
-class ArbolBD : public DTreeView {
+
+class ArbolBD : public DWL::DArbolEx {
   public:
-							ArbolBD(void);
-	                       ~ArbolBD(void);
-	const BOOL				TreeView_Evento_Nodo_Expandiendo(DTreeView_Nodo *nNodo);
+					ArbolBD();
+	               ~ArbolBD();
+	NodoBD		   *BuscarHash(sqlite3_int64 bHash);
+	NodoBD         *AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre, const TCHAR *cTexto, const sqlite3_int64 nHash = 0);
+	const BOOL      AgregarNodoALista(DWL::DArbolEx_Nodo *nNodo);
+					// Busca el primer nodo hijo que tiene el texto Buscar
+	NodoBD         *BuscarHijoTxt(std::wstring &Buscar, NodoBD *Padre = NULL);
+	inline NodoBD  *BDNodo(const size_t nPos)      { return static_cast<NodoBD *>(Nodo(nPos));  }
 
-	inline ArbolBD_Nodo    *BDNodo(const size_t Pos) { return static_cast<ArbolBD_Nodo *>(_Nodos[Pos]); };
-
-	ArbolBD_Nodo           *BuscarHash(sqlite3_int64 bHash);
-//	LRESULT				Evento_Mouse_BotonSoltado(const UINT Boton, const int cX, const int cY, const UINT Param);
-//	LRESULT             Evento_Mouse_Click(DTreeView_Nodo *cNodo, const UINT nBoton, const int cX, const int cY);
-
-//	void				AgregarNodo();
-	ArbolBD_Nodo           *AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, ArbolBD_Nodo *nPadre, const TCHAR *cTexto, const sqlite3_int64 nHash = 0);
-
-	const BOOL				AgregarNodoALista(DTreeView_Nodo *nNodo);
+	void            ObtenerPath(DWL::DArbolEx_Nodo *nNodo, std::wstring &rPath);
+	void            ExplorarPath(DWL::DArbolEx_Nodo *nNodo);
+	// Falta fer una funció com la de const BOOL ArbolBD::TreeView_Evento_Nodo_Expandiendo(DTreeView_Nodo *nNodo) adaptada a aquesta..... (ArbolBD DEPRECATED.cpp ArbolBD::TreeView_Evento_Nodo_Expandiendo)
+	void			Evento_Nodo_Expandido(DWL::DArbolEx_Nodo *nNodo, const BOOL nExpandido);
 };
 

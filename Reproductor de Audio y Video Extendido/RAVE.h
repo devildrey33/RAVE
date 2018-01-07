@@ -10,6 +10,8 @@
 #include "RAVE_Configuracion.h"
 #include "VentanaErrorCritico.h"
 
+using namespace DWL;
+
 enum LineaComando {
 	LineaComando_Nada,			// Sin parámetros extra
 	LineaComando_Path,			// Viene con uno o varios paths

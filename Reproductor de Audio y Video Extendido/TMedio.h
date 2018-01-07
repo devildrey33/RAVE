@@ -21,7 +21,7 @@ class TMedioListaM3u;
 class TMedioSubtitulos;
 class TMedioCDAudio;
 
-class ArbolBD_Nodo;
+class NodoBD;
 
 // Datos basicos de un medio (tanto audio como video)
 class TMedio {
@@ -36,7 +36,7 @@ class TMedio {
 	unsigned long				Longitud;	// Longitud en bytes
 //	unsigned long				ID_Disco;	// ID del disco duro padre
 	TRaiz					   *Raiz;		// Raíz que contiene el path principal y la id del disco duro
-	ArbolBD_Nodo			   *Nodo;
+	NodoBD       			   *Nodo;
 //	ItemListaMedios            *Item;
 	unsigned char               Nota;		// NOTA
 	bool						Disponible;

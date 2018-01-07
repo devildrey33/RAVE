@@ -41,4 +41,18 @@ namespace DWL {
 				_TextoSeparado.push_back(Tmp);
 		}
 	}
+
+
+
+
+
+
+	const size_t DString_ContarCaracter(std::wstring &Texto, wchar_t Caracter) {
+		size_t Total = 0;
+		for (size_t i = 0; i < Texto.size(); i++) {
+			if (Texto[i] == Caracter) Total++;
+		}
+		return Total;
+	}
+
 };

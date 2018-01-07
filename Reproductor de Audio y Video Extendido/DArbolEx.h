@@ -37,13 +37,25 @@ namespace DWL {
 		DArbolEx_ParteNodo_Texto	= 4
 	};
 
+	/* Datos que devuelve un click / dobleclick */
+	class DArbolEx_DatosClick {
+	  public :
+						DArbolEx_DatosClick() : X(0), Y(0), Boton(0), Nodo(NULL) { };
+		  				DArbolEx_DatosClick(const int nX, const int nY, const int nBoton, DArbolEx_Nodo *nNodo) : X(nX), Y(nY), Boton(nBoton), Nodo(nNodo) { };
+				       ~DArbolEx_DatosClick() { };
+  		int				X;
+		int				Y;
+		int				Boton;
+		DArbolEx_Nodo  *Nodo;
+	};
 
+	/* Comportamiento del ArbolEx */
 	class DArbolEx_Comportamiento {
 	  public : 
-		  DArbolEx_Comportamiento(void) : MultiSeleccion(TRUE), SubSeleccion(TRUE) { };
-		  ~DArbolEx_Comportamiento(void) { };
-		  BOOL MultiSeleccion;
-		  BOOL SubSeleccion;
+						DArbolEx_Comportamiento(void) : MultiSeleccion(TRUE), SubSeleccion(TRUE) { };
+		               ~DArbolEx_Comportamiento(void) { };
+		  BOOL			MultiSeleccion;
+		  BOOL			SubSeleccion;
 		  // labeledit
 		  // drag & drop
 
@@ -78,6 +90,7 @@ namespace DWL {
 		DArbolEx_Nodo								   *UltimoNodoVisible(void);
 														// Eliminar Nodo
 		void											EliminarNodo(DArbolEx_Nodo *nEliminar);
+		void											BorrarTodo(void);
 
 		void											Pintar(HDC hDC);
 
@@ -85,15 +98,21 @@ namespace DWL {
 		void											PintarNodo(HDC hDC, RECT *Espacio, DArbolEx_Nodo *nNodo, const int PosH);
 
 		void											Scrolls_EventoCambioPosicion(void);
+														// Eventos virtuales
+		virtual void									Evento_MouseMovimiento(const int cX, const int cY, const UINT Param)						{ };
+		virtual void									Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param)		{ };
+		virtual void									Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param)			{ };
+		virtual void                                    Evento_Mouse_Rueda(const short Delta, const short cX, const short cY, const UINT VirtKey)	{ };
 
-		void											Evento_MouseMovimiento(const int cX, const int cY, const UINT Param);
-		void											Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param);
-		void											Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param);
-		void                                            Evento_Mouse_Rueda(const short Delta, const short cX, const short cY, const UINT VirtKey);
+		virtual void                                    Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params)		{ };
+		virtual void                                    Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params)			{ };
+		virtual void									Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param)					{ };
 
-		void                                            Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
-		void                                            Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params);
-		void											Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param);
+		virtual void          							Evento_MouseEntrando(void)																	{ };
+		virtual void									Evento_MouseSaliendo(void)																	{ };
+
+														// Al expandir / contraer un nodo
+		virtual void									Evento_Nodo_Expandido(DWL::DArbolEx_Nodo *nNodo, const BOOL nExpandido)						{ };
 
 		DArbolEx_Nodo                                  *HitTest(const int cX, const int cY, DArbolEx_ParteNodo &Parte);
 		void											HacerVisible(DArbolEx_Nodo *vNodo);
@@ -102,16 +121,28 @@ namespace DWL {
 		LRESULT CALLBACK								GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 
-		virtual const BOOL								Evento_MouseEntrando(void);
-		virtual const BOOL								Evento_MouseSaliendo(void);
-
 		void											SeleccionarNodo(DArbolEx_Nodo *sNodo, const BOOL nSeleccionado);
 														// Comportamiento del ArbolEx (Multiseleccion, subseleccion, drag&drop, etc..)
 		DArbolEx_Comportamiento							Comportamiento;
 
 		void											DesSeleccionarTodo(void);
 
+														// Busca el nodo anterior
+		DArbolEx_Nodo								   *BuscarNodoAnterior(DArbolEx_Nodo *nActual, const BOOL nVisible = FALSE);
+														// Busca el nodo siguiente
+		DArbolEx_Nodo								   *BuscarNodoSiguiente(DArbolEx_Nodo *nActual, const BOOL nVisible = FALSE, DArbolEx_Nodo *DentroDe = NULL);
+
 	  protected:		
+
+		void										   _Evento_MouseMovimiento(const int cX, const int cY, const UINT Param);
+		void										   _Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param);
+		void										   _Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param);
+		void                                           _Evento_Mouse_Rueda(const short Delta, const short cX, const short cY, const UINT VirtKey);
+
+		void                                           _Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
+		void                                           _Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params);
+		void										   _Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param);
+
 		void                                           _AplicarShift(const LONG nPosShift);
 
 		void										   _CrearBufferNodo(const int nAncho, const int nAlto);
@@ -131,13 +162,6 @@ namespace DWL {
 	    void					  					   _CalcularNodosPagina(const size_t TamPagina);
 
 		void										   _CalcularScrolls(void);
-
-
-														// Busca el nodo anterior
-		DArbolEx_Nodo								  *_BuscarNodoAnterior(DArbolEx_Nodo *nActual, const BOOL nVisible = FALSE);
-														// Busca el nodo siguiente
-		DArbolEx_Nodo								  *_BuscarNodoSiguiente(DArbolEx_Nodo *nActual, const BOOL nVisible = FALSE, DArbolEx_Nodo *DentroDe = NULL);
-
 
 														// Agrega un nodo (se tiene que reservar memória en la variable nNodo antes de agregar. ej nNodo = new DArbolEx_Nodo)
 		DArbolEx_Nodo                                 *_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre = NULL, const int nIcono = NULL, DhWnd_Fuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN);

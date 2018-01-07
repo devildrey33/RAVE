@@ -27,56 +27,8 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	CTW_ExtraX = (RW.right - RW.left) - RC.right;
 	CTW_ExtraY = (RW.bottom - RW.top) - RC.bottom;
 
-	Arbol2.CrearArbolEx(hWnd, 120, 81, RC.right - 120, RC.bottom - 80, ID_ARBOLBD2);
-/*	Arbol2.AgregarNodo<NodoBD>(L"N01", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N02", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N03", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N04", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N05", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N06", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N07", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N08", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N09", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N10", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N11", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N12", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N13", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N14", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N15", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N16", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N17", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N18", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N19", NULL, IDI_GRUPO);
-	Arbol2.AgregarNodo<NodoBD>(L"N20", NULL, IDI_GRUPO);*/
-	NodoBD *N1 = Arbol2.AgregarNodo<NodoBD>(L"N1aqqqqqqqqqqjjjaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaw", NULL, IDI_GRUPO);
-//	N1->Fuente(this->hWnd._FuenteB);
-		NodoBD *N11 = Arbol2.AgregarNodo<NodoBD>(L"N1.1", N1, IDI_GRUPO);
-		Arbol2.AgregarNodo<NodoBD>(L"N1.2", N1, IDI_GRUPO);
-		NodoBD *N13 = Arbol2.AgregarNodo<NodoBD>(L"N1.3", N1, IDI_GRUPO);
-		Arbol2.Expandir(N11, TRUE);
-			Arbol2.AgregarNodo<NodoBD>(L"N1.1.1", N11, IDI_GRUPO);
-			Arbol2.AgregarNodo<NodoBD>(L"N1.1.2", N11, IDI_GRUPO);
-		Arbol2.Expandir(N13, TRUE);
-			Arbol2.AgregarNodo<NodoBD>(L"N1.3.1", N13, IDI_GRUPO);
-			Arbol2.AgregarNodo<NodoBD>(L"N1.3.2", N13, IDI_GRUPO);
-		
-	Arbol2.Expandir(N1, TRUE); 
-	Arbol2.SeleccionarNodo(N1, TRUE);
-	Arbol2.SeleccionarNodo(N13, TRUE);
-	
+	Arbol.CrearArbolEx(hWnd, 120, 81, RC.right - 120, RC.bottom - 80, ID_ARBOLBD);
 
-
-	NodoBD *N2 = Arbol2.AgregarNodo<NodoBD>(L"N2", NULL, IDI_GRUPO);
-	Arbol2.Expandir(N2, TRUE);
-		Arbol2.AgregarNodo<NodoBD>(L"N2.1", N2, IDI_GRUPO);
-		Arbol2.AgregarNodo<NodoBD>(L"N2.2", N2, IDI_GRUPO);
-	NodoBD *N3 = Arbol2.AgregarNodo<NodoBD>(L"N3", NULL, IDI_GRUPO);
-//	Arbol2.Expandir(N3, TRUE);
-	Arbol2.AgregarNodo<NodoBD>(L"N3.1", N3, IDI_GRUPO);
-
-
-	Arbol.Crear(hWnd, 120, 81, RC.right - 120, RC.bottom - 80, ID_ARBOLBD, WS_CHILD | TVS_HASBUTTONS | TVS_LINESATROOT | TVS_TRACKSELECT | TVS_NOHSCROLL, TVS_EX_DOUBLEBUFFER | TVS_EX_RICHTOOLTIP);
-	Arbol.AsignarImageList(&App.ListaImagenes16);
 
 	Lista.Crear(hWnd, 120, 81, RC.right - 120, RC.bottom - 80, ID_LISTAMEDIOS, WS_CHILD, LVS_EX_FULLROWSELECT);
 	Lista.AsignarImageList(&App.ListaImagenes16, DEnum_ListView_ImageList_Peque);
@@ -140,16 +92,15 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 void VentanaPrincipal::AjustarControles(RECT &RC) {
 	// 50 ?? 60
 
-	MoveWindow(Lista.hWnd(), 120, 81, RC.right - 120, RC.bottom - 80, TRUE);
+	MoveWindow(Lista.hWnd(), 120, 81, RC.right - 130, RC.bottom - 90, TRUE);
 	// Columnas de la lista  Ancho LV, Ancho Pista, Ancho Tiempo = Ancho restante para el nombre
-	Lista.Columna(1)->Ancho(RC.right - 250);
-	MoveWindow(Arbol.hWnd(), 120, 81, RC.right - 120, RC.bottom - 80, TRUE);
-	MoveWindow(Arbol2.hWnd(), 120, 81, RC.right - 130, RC.bottom - 90, TRUE);
-	MoveWindow(Video.hWnd(), 120, 81, RC.right - 120, RC.bottom - 80, TRUE);
-	MoveWindow(Opciones.hWnd(), 120, 81, RC.right - 120, RC.bottom - 80, TRUE);
+	Lista.Columna(1)->Ancho(RC.right - 240);
+	MoveWindow(Arbol.hWnd(), 120, 81, RC.right - 130, RC.bottom - 90, TRUE);
+	MoveWindow(Video.hWnd(), 120, 81, RC.right - 130, RC.bottom - 90, TRUE);
+	MoveWindow(Opciones.hWnd(), 120, 81, RC.right - 130, RC.bottom - 90, TRUE);
 
 	MoveWindow(SliderTiempo.hWnd(), 10, 50, RC.right - 20, 24, TRUE);
-	MoveWindow(MarcoSD.hWnd(), RC.right - 255, 14, 255, 24, TRUE);
+	MoveWindow(MarcoSD.hWnd(), RC.right - 265, 14, 255, 24, TRUE);
 
 	//App.VLC.RepintarVLC();
 	if (App.VLC.hWndVLC != NULL) {
@@ -380,8 +331,136 @@ void VentanaPrincipal::Evento_Button_Mouse_Click(const UINT cID) {
 	}
 }
 
+void VentanaPrincipal::_AgregarNodoALista(DArbolEx_Nodo *nNodo) {
+	if (nNodo == NULL) return;
+	NodoBD *TmpNodo = static_cast<NodoBD *>(nNodo);
+	sqlite3_int64 Hash = TmpNodo->Hash;
+	//	ArbolBD_Nodo *TmpNodo = aNodo->BDHijo();
+	// Si no hay hijos cargo las canciones correspondientes.
+	std::wstring Path, TmpStr;
 
+	if (Hash == 0) { // Si no hay hash es que el nodo contiene uno o mas hijos
+		do {
+//			TmpNodo->ObtenerTexto(TmpStr);
+			TmpNodo = static_cast<NodoBD *>(TmpNodo->Padre());
+			if (TmpNodo) {
+				Path = TmpNodo->Texto() + L"\\" + Path;
+			}
+		} while (TmpNodo != NULL);
+	}
 
+	std::wstring SqlStr;
+//	int i = nNodo->IDIcono();
+	switch (nNodo->IDIcono()) {
+		case 3: // Canción
+		case 4: // Video
+			SqlStr = L"SELECT * FROM Medios WHERE Hash =\"" + std::to_wstring(Hash) + L"\"";
+			//			SqlStr = L"SELECT * FROM Medios WHERE Path LIKE\"" + Path + L"\"";
+			break;
+		case 9: // Directorio principal (no val... ha de ser nomes l'arrel de MP3 o Pelis i Series)
+		case 8: // Directorio
+			SqlStr = L"SELECT * FROM Medios WHERE Path LIKE \"%" + Path + L"%\" COLLATE NOCASE";
+			break;
+	}
+
+	sqlite3_stmt   *SqlQuery = NULL;
+	int SqlRet = sqlite3_prepare16_v2(App.BD(), SqlStr.c_str(), -1, &SqlQuery, NULL);
+	if (SqlRet) {
+		const char *Error = sqlite3_errmsg(App.BD());
+		return;
+	}
+
+	/*
+	Nombre		Posición	   Tipo
+	--------------------------------
+	Id				0		INTEGER PRIMARY KEY
+	Hash			1		INT UNIQUE
+	Path			2		VARCHAR(260)
+	Nombre			3		VARCHAR(128)
+	TipoMedio		4		INT
+	Extension		5		INT
+	Reproducido		6		INT
+	Longitud		7		INT
+	Raiz			8		INT
+	Nota			9		SMALLINT
+	Genero		   10		INT
+	Grupo		   11		INT
+	Disco		   12		INT
+	Pista		   13		INT
+	Tiempo		   14		INT
+	Subtitulos	   15		VARCHAR(260)
+	*/
+
+	sqlite3_int64	nHash;
+	std::wstring	nNombre;
+	UINT			nPista;
+
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_MISUSE) {
+		SqlRet = sqlite3_step(SqlQuery);
+		if (SqlRet == SQLITE_ROW) {
+			TablaMedios_Medio *Medio = new TablaMedios_Medio(
+				static_cast<UINT>(sqlite3_column_int(SqlQuery, 0)),
+				sqlite3_column_int64(SqlQuery, 1),
+				reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 2)),
+				reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 3)),
+				static_cast<Tipo_Medio>(sqlite3_column_int(SqlQuery, 4)),
+				static_cast<Extension_Medio>(sqlite3_column_int(SqlQuery, 5)),
+				static_cast<UINT>(sqlite3_column_int(SqlQuery, 6)),
+				static_cast<ULONG>(sqlite3_column_int(SqlQuery, 7)),
+				static_cast<UINT>(sqlite3_column_int(SqlQuery, 8)),
+				static_cast<UINT>(sqlite3_column_int(SqlQuery, 9)),
+				static_cast<UINT>(sqlite3_column_int(SqlQuery, 10)),
+				static_cast<UINT>(sqlite3_column_int(SqlQuery, 11)),
+				static_cast<UINT>(sqlite3_column_int(SqlQuery, 12)),
+				static_cast<UINT>(sqlite3_column_int(SqlQuery, 13)),
+				static_cast<libvlc_time_t>(sqlite3_column_int(SqlQuery, 14)),
+				reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 15))
+			);
+
+			nHash = sqlite3_column_int64(SqlQuery, 1);
+			nNombre = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 3));
+			nPista = static_cast<UINT>(sqlite3_column_int(SqlQuery, 13));
+			App.VentanaRave.Lista.AgregarMedio(Medio);
+
+			delete Medio;
+
+			/*TmpStr = DWL::DString_ToStr(static_cast<UINT>(sqlite3_column_int(SqlQuery, 13)), 2) + L" " + reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 3));
+			AgregarBDNodo(ArbolBD_TipoNodo_Cancion, BDNodo, TmpStr.c_str(), static_cast<size_t>(sqlite3_column_int(SqlQuery, 1)));*/
+		}
+	}
+	sqlite3_finalize(SqlQuery);
+//	return TRUE;
+}
+
+// Función que muestra el menú para los nodos del ArbolBD
+void VentanaPrincipal::Evento_ArbolEx_Click(DArbolEx_DatosClick *Datos, const UINT aID) {
+	if (Datos->Boton == 1 && aID == ID_ARBOLBD) {		
+		if (Datos->Nodo == NULL) {	// Anulo los menuitems agregar... si no hay un nodo marcado
+			App.Menu_ArbolBD[0]->Activado(FALSE); // Agregar a lista
+			App.Menu_ArbolBD[1]->Activado(FALSE); // Agregar a nueva lista
+		}
+		else {						// activo los menuitems agregar si hay un nodo marcado
+			App.Menu_ArbolBD[0]->Activado(TRUE); // Agregar a lista
+			App.Menu_ArbolBD[1]->Activado(TRUE); // Agregar a nueva lista
+		}
+
+		const BOOL IdMenu = App.Menu_ArbolBD.Mostrar(hWnd());
+		switch (IdMenu) {
+			case ID_MENUBD_AGREGARANUEVALISTA:
+				Lista.BorrarListaReproduccion();
+				Arbol.AgregarNodoALista(Datos->Nodo);
+				Lista_Play();
+				break;
+			case ID_MENUBD_AGREGARALISTA:
+				Arbol.AgregarNodoALista(Datos->Nodo);
+				break;
+			case ID_MENUBD_ACTUALIZAR:
+				App.BD.ActualizarArbol();
+				break;
+		}
+	}
+}
+/*
 void VentanaPrincipal::Evento_TreeView_Mouse_Click(DTreeView_DatosClick *Datos, const UINT tID) {
 	//Datos->Boton;
 	if (Datos->Boton == 1 && tID == ID_ARBOLBD) {
@@ -400,7 +479,7 @@ void VentanaPrincipal::Evento_TreeView_Mouse_Click(DTreeView_DatosClick *Datos, 
 				break;
 		}
 	}
-}
+}*/
 
 
 void VentanaPrincipal::Evento_ListView_Mouse_Click(DListView_DatosClick *DatosClick, const UINT IDListView) {
@@ -577,13 +656,12 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			Evento_BorraFondo(reinterpret_cast<HDC>(wParam));
 			return TRUE;
 
+		// Barra de desplazamiento (barra de tiempo y volumen)
 		case DWL_BARRAEX_CAMBIO:
 			switch (wParam) {
 				case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambio();					break;
 			}
 			break;
-
-
 		case DWL_BARRAEX_CAMBIADO:
 			switch (wParam) {
 				case ID_SLIDER_TIEMPO:						Evento_SliderTiempo_Cambiado();					break;
@@ -593,12 +671,15 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 
 		case DWL_BOTONEX_CLICK :
 			Evento_BotonEx_Mouse_Click(static_cast<UINT>(wParam));
-			break;
-
-
-		case DWL_TREEVIEW_CLICK:
-			this->Evento_TreeView_Mouse_Click(reinterpret_cast<DTreeView_DatosClick *>(lParam), static_cast<UINT>(wParam));
 			return 0;
+
+		case DWL_ARBOLEX_CLICK :
+			this->Evento_ArbolEx_Click(reinterpret_cast<DArbolEx_DatosClick *>(wParam), static_cast<UINT>(lParam));
+			return 0;
+
+/*		case DWL_TREEVIEW_CLICK:
+			this->Evento_TreeView_Mouse_Click(reinterpret_cast<DTreeView_DatosClick *>(lParam), static_cast<UINT>(wParam));
+			return 0;*/
 
 		case DWL_LISTVIEW_CLICK:
 			this->Evento_ListView_Mouse_Click(reinterpret_cast<DListView_DatosClick *>(lParam), static_cast<UINT>(wParam));

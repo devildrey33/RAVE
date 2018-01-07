@@ -150,17 +150,17 @@ void RaveVLC::ActualizarIconos(int nTipo) {
 		int nIcono = 0;
 		switch (nTipo) {
 			case 0 : 
-				if (MedioActual.TipoMedio() == Tipo_Medio::Tipo_Medio_Audio) nIcono = 3;
-				if (MedioActual.TipoMedio() == Tipo_Medio::Tipo_Medio_Video) nIcono = 4;
+				if (MedioActual.TipoMedio() == Tipo_Medio::Tipo_Medio_Audio) nIcono = 3; // IDI_CANCION
+				if (MedioActual.TipoMedio() == Tipo_Medio::Tipo_Medio_Video) nIcono = 4; // IDI_VIDEO
 				break;
 			case 1 :
-				nIcono = 1;
+				nIcono = 1;	// IDI_GRUPO
 				break;
 			case 2 : 
-				nIcono = 2;
+				nIcono = 2; // IDI_DISCO
 				break;
 		}
-		ArbolBD_Nodo *Nodo = App.VentanaRave.Arbol.BuscarHash(MedioActual.Hash());
+		NodoBD *Nodo = App.VentanaRave.Arbol.BuscarHash(MedioActual.Hash());
 		if (Nodo != NULL) Nodo->Icono(nIcono);
 
 		ItemMedio *Item = App.VentanaRave.Lista.BuscarHash(MedioActual.Hash());

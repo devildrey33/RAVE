@@ -1,8 +1,16 @@
 #pragma once
 
 #include "DListaIconos_Icono.h"
+#include <vector>
 
 namespace DWL {
+
+
+	#define ARBOLEX_PADDING					2 // Espacio entre el marco de la selección y el texto (tambien se utiliza para espaciar el expansor, el icono y el texto horizontalmente)
+	#define ARBOLEX_MARGEN_Y_SELECCION		1 // Espacio entre la Y inicial / final del texto y el marco de seleccion
+	#define ARBOLEX_TAMEXPANSOR				9 // OJO!! tiene que ser impar para quedar bien
+	#define ARBOLEX_TAMICONO				16 // Tamaño del icono
+
 
 	enum DArbolEx_Nodo_Estado {
 		DArbolEx_Nodo_Estado_Normal,
@@ -34,7 +42,7 @@ namespace DWL {
 
 		inline std::wstring			   &Texto(void)															{ return _Texto;						}
 		inline const BOOL				Expandido(void)														{ return _Expandido;					}
-//		inline void						Expandido(const BOOL nExpandido)									{ _Expandido = nExpandido;				}
+		inline void						Expandido(const BOOL nExpandido)									{ _Expandido = nExpandido;				}
 		inline void						MostrarExpansor(const DArbolEx_MostrarExpansor nMostrarExpansor)	{ _MostrarExpansor = nMostrarExpansor;	}
 		const BOOL						MostrarExpansor(void);
 		inline const BOOL				Seleccionado(void)													{ return _Seleccionado;					}
@@ -49,6 +57,8 @@ namespace DWL {
 		inline const size_t				TotalHijos(void)													{ return _Hijos.size();					}
 		inline DArbolEx_Nodo           *UltimoHijo(void)													{ return (_Hijos.size() == 0) ? NULL : _Hijos[_Hijos.size() - 1]; }
 
+		inline const int                IDIcono(void)														{ return _Icono->ID(); }
+		void                            Icono(const int nIconoRecursos);
 		//const size_t					Posicion(void);
 
 	  protected:

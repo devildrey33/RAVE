@@ -184,9 +184,6 @@
     <ClInclude Include="RAVE.h">
       <Filter>MAIN</Filter>
     </ClInclude>
-    <ClInclude Include="ArbolBD.h">
-      <Filter>Ventanas\Controles</Filter>
-    </ClInclude>
     <ClInclude Include="DTreeView.h">
       <Filter>DWL\Ventanas\Controles\TreeView</Filter>
     </ClInclude>
@@ -292,9 +289,6 @@
     <ClInclude Include="DArbolEx.h">
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
     </ClInclude>
-    <ClInclude Include="ArbolBD2.h">
-      <Filter>Ventanas\Controles</Filter>
-    </ClInclude>
     <ClInclude Include="DhWnd_Fuente.h">
       <Filter>DWL\Ventanas</Filter>
     </ClInclude>
@@ -323,6 +317,9 @@
       <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
     </ClInclude>
     <ClInclude Include="DListaEx_Item.h" />
+    <ClInclude Include="ArbolBD.h">
+      <Filter>Ventanas\Controles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -357,9 +354,6 @@
     </ClCompile>
     <ClCompile Include="RAVE.cpp">
       <Filter>MAIN</Filter>
-    </ClCompile>
-    <ClCompile Include="ArbolBD.cpp">
-      <Filter>Ventanas\Controles</Filter>
     </ClCompile>
     <ClCompile Include="DTreeView.cpp">
       <Filter>DWL\Ventanas\Controles\TreeView</Filter>
@@ -457,9 +451,6 @@
     <ClCompile Include="MarcoOpciones.cpp">
       <Filter>Ventanas\Controles</Filter>
     </ClCompile>
-    <ClCompile Include="ArbolBD2.cpp">
-      <Filter>Ventanas\Controles</Filter>
-    </ClCompile>
     <ClCompile Include="DArbolEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
     </ClCompile>
@@ -488,6 +479,9 @@
       <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
     </ClCompile>
     <ClCompile Include="DListaEx_Item.cpp" />
+    <ClCompile Include="ArbolBD.cpp">
+      <Filter>Ventanas\Controles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Reproductor de Audio y Video Extendido.rc">

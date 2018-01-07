@@ -25,6 +25,9 @@
 			std::vector<std::wstring>  _TextoSeparado;
 		};
 
+		// Cuenta dentro de un string las veces que aparece un carácter
+		const size_t DString_ContarCaracter(std::wstring &Texto, wchar_t Caracter);
+
 
 
 		/* Convierte cualquier tipo básico a cadena, se puede especificar si se quiere un número fijo de digitos */

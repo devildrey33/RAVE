@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "DArbolEx.h"
+#include "DListaIconos.h"
+
 
 namespace DWL {
 
@@ -20,6 +22,11 @@ namespace DWL {
 			case DArbolEx_MostrarExpansor_Ocultar	: return FALSE;
 		}
 		return _Expandido; 
+	}
+
+
+	void DArbolEx_Nodo::Icono(const int nIconoRecursos) {
+		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, ARBOLEX_TAMICONO, ARBOLEX_TAMICONO);
 	}
 
 	/*

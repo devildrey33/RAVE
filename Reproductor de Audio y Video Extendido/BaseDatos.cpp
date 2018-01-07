@@ -75,8 +75,18 @@ void BaseDatos::ActualizarArbol(void) {
 	App.VentanaRave.Arbol.BorrarTodo();
 	App.Menu_ArbolBD[2]->Activado(FALSE);
 
+	NodoBD *Tmp = NULL;
+
+	for (size_t i = 0; i < Tabla_Raiz.Datos.size(); i++) {
+		Tmp = Arbol_AgregarRaiz(&Tabla_Raiz.Datos[i]->Path);
+		App.VentanaRave.Arbol.ExplorarPath(Tmp);
+	}
+
+	App.VentanaRave.Arbol.Repintar();
+
 	// Inicio el thread de la busqueda
 	_BuscarArchivos.Iniciar(hWnd());
+
 }
 
 
@@ -86,13 +96,17 @@ void BaseDatos::ActualizarArbol(void) {
 
 // Gestor de mensajes para recibir datos desde el thread de buscar
 LRESULT CALLBACK BaseDatos::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
-//	TMedio *TmpMedio;
+	std::wstring *TmpStr = NULL;
 	switch (uMsg) {
 		case WM_TBA_AGREGARRAIZ:
-			Arbol_AgregarRaiz(reinterpret_cast<std::wstring *>(lParam));
+			TmpStr = reinterpret_cast<std::wstring *>(lParam);
+			Arbol_AgregarRaiz(TmpStr);
+			delete TmpStr; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
 			break;
 		case WM_TBA_AGREGARDIR:
-			Arbol_AgregarDir(reinterpret_cast<std::wstring *>(lParam));
+			TmpStr = reinterpret_cast<std::wstring *>(lParam);
+			Arbol_AgregarDir(TmpStr, TRUE);
+			delete TmpStr; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
 			break;
 		case WM_TBA_AGREGARAUDIO:
 			Arbol_AgregarCancion(static_cast<size_t>(lParam));
@@ -106,7 +120,7 @@ LRESULT CALLBACK BaseDatos::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lPar
 	return 0;
 }
 
-const BOOL BaseDatos::Arbol_AgregarRaiz(std::wstring *Path) {
+NodoBD *BaseDatos::Arbol_AgregarRaiz(std::wstring *Path) {
 	// Busca si existe la raiz
 	/*	BOOL Ret = TRUE;
 	if (!App.VentanaRave.Arbol.BuscarTexto(*Path, NULL, FALSE))		App.VentanaRave.Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Raiz, NULL, Path->c_str());
@@ -115,64 +129,73 @@ const BOOL BaseDatos::Arbol_AgregarRaiz(std::wstring *Path) {
 	return Ret;*/
 
 	// Solo crea la raiz
-	App.VentanaRave.Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Raiz, NULL, Path->c_str());
-	delete Path;
-	return TRUE;
+	NodoBD *Tmp = App.VentanaRave.Arbol.BuscarHijoTxt(*Path);
+	if (Tmp == NULL) {
+		Tmp = App.VentanaRave.Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Raiz, NULL, Path->c_str());
+		Tmp->Expandido(TRUE);
+		App.VentanaRave.Arbol.Repintar();
+	}
+//	delete Path; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
+	return Tmp;
 }
 
-const BOOL BaseDatos::Arbol_AgregarDir(std::wstring *Path) {
+NodoBD *BaseDatos::Arbol_AgregarDir(std::wstring *Path, const BOOL nRepintar) {
 	CeRaiz *Raiz = Tabla_Raiz.Buscar_Raiz(Path->c_str());
-	if (Raiz == NULL) return FALSE;
+	if (Raiz == NULL) return NULL;
 	ArbolBD &Arbol = App.VentanaRave.Arbol;
 	// Busco la raíz
 //	DWL::DSplit SplitRaiz(Raiz->Path, L'\\');
-	ArbolBD_Nodo *TmpNodo = static_cast<ArbolBD_Nodo *>(Arbol.BuscarTexto(Raiz->Path, NULL, FALSE));
+	NodoBD *TmpNodo = static_cast<NodoBD *>(Arbol.BuscarHijoTxt(Raiz->Path, NULL));
 	// Busco el ultimo nodo padre
-	DWL::DSplit Split(Path->substr(Raiz->Path.size(), Path->size() - Raiz->Path.size()), L'\\');
-	for (int i = 0; i < static_cast<int>(Split.Total()) - 1; i++) {
-		TmpNodo = static_cast<ArbolBD_Nodo *>(Arbol.BuscarTexto(Split[i], TmpNodo, FALSE));
+	std::wstring tmp = Path->substr(Raiz->Path.size(), Path->size() - Raiz->Path.size());
+	DWL::DSplit Split(tmp, L'\\');
+	
+	for (size_t i = 0; i < static_cast<int>(Split.Total()) - 1; i++) {
+		TmpNodo = static_cast<NodoBD *>(Arbol.BuscarHijoTxt(Split[i], TmpNodo));
 	}
 
-
-
 	std::wstring Filtrado;
-	_FiltroPath(Split[Split.Total() - 1], Filtrado);
+	
+	BaseDatos_Filtros::FiltroPath(Split[Split.Total() - 1], Filtrado);
+
+	NodoBD *Ret = Arbol.BuscarHijoTxt(Filtrado, TmpNodo);
 	// Agrego el directorio
-	Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Directorio, TmpNodo, Filtrado.c_str());
-	delete Path;
-	return TRUE;
+	if (Ret == NULL) {
+		Ret = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Directorio, TmpNodo, Filtrado.c_str());
+	}
+//	delete Path;
+	if (nRepintar == TRUE)	Arbol.Repintar();
+
+	return Ret;
 }
 
 
-const BOOL BaseDatos::Arbol_AgregarCancion(const size_t Hash) {
+NodoBD *BaseDatos::Arbol_AgregarCancion(const size_t Hash) {
 	ArbolBD &Arbol = App.VentanaRave.Arbol;
 	// Busco el medio en el arbol
 	for (size_t i = 0; i < Arbol.TotalNodos(); i++) {
 		if (Arbol.BDNodo(i)->Hash == Hash) 
-			return 0; // Ya exsite
+			return NULL; // Ya exsite
 	}
 
 	// Obtengo la cancion de la bd
 
 	TablaMedios_Medio Cancion(_BD, Hash);
-	ArbolBD_Nodo *TmpNodo = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Directorio, NULL, Cancion.Path(), Hash);
+	NodoBD *TmpNodo = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Directorio, NULL, Cancion.Path(), Hash);
 //	TmpNodo->Hash = Hash;
 
-	return 1;
+	return TmpNodo;
 }
 
-/* Realiza una conversion 'capitalized' Primera en mayuscula, el resto en minuscula */
-void BaseDatos::_FiltroPath(std::wstring &iTexto, std::wstring &oTexto) {
-	oTexto.reserve(iTexto.size());
-	for (size_t i = 0; i < iTexto.size(); i++) {
-		if (i == 0) oTexto = static_cast<wchar_t>(toupper(iTexto[0]));
-		else        oTexto += static_cast<wchar_t>(tolower(iTexto[i]));
-	}
+const BOOL BaseDatos::ObtenerMedio(const sqlite3_int64 mHash, TablaMedios_Medio &mTMedio) {
+	return mTMedio.Obtener(_BD, mHash);
 }
 
-
-
-
+const BOOL BaseDatos::ObtenerMedio(std::wstring &mPath, TablaMedios_Medio &mTMedio) {
+//	CeRaiz         *mRaiz = App.BD.Tabla_Raiz.Buscar_Raiz(mPath.c_str());
+//	sqlite3_int64   mHash = TablaMedios::CrearHash(mRaiz->ID_Disco, mPath);
+	return mTMedio.Obtener(_BD, mPath);
+}
 
 
 
@@ -212,35 +235,13 @@ const BOOL ThreadBuscarArchivos::Iniciar(HWND nhWndDest) {
 
 
 unsigned long ThreadBuscarArchivos::_ThreadBusqueda(void *pThis) {
-
-/*	int Ret = 0;
-	std::wstring PathBD;
-	// Creo el directorio \AppData\Rave
-	BOOL R = DWL::DDirectoriosWindows::Comun_AppData(PathBD);
-	PathBD += L"\\Rave\\";
-	if (GetFileAttributes(PathBD.c_str()) == INVALID_FILE_ATTRIBUTES)
-		CreateDirectory(PathBD.c_str(), NULL);
-	// Las bases de datos para 32 y 64 bits dan hash distintos y pueden duplicar medios, por ello cada configuración tiene su bd
-#ifdef _WIN64
-	PathBD += L"Rave_x64.BD";
-#else
-	PathBD += L"Rave_x86.BD";
-#endif
-	// Creo / Abro la BD
-	Ret = sqlite3_open16(PathBD.c_str(), &_BD);
-	if (Ret) {
-		sqlite3_close(_BD);
-		return FALSE;
-	}*/
-
-
-
+	
 	DWORD Tick = GetTickCount();
 	size_t                i = 0;
 	ThreadBuscarArchivos *This = reinterpret_cast<ThreadBuscarArchivos *>(pThis);
 	int Ret = 0;
 
-	This->_ListaHash.resize(0);
+//	This->_ListaHash.resize(0);
 
 	std::wstring PathBD;
 	BOOL R = DWL::DDirectoriosWindows::Comun_AppData(PathBD);
@@ -298,7 +299,6 @@ unsigned long ThreadBuscarArchivos::_ThreadBusqueda(void *pThis) {
 }
 
 
-
 const UINT ThreadBuscarArchivos::_EscanearDirectorio(const wchar_t *nPath, CeRaiz *Raiz) {
 	WIN32_FIND_DATA		FindInfoPoint;
 	HANDLE				hFind = NULL;
@@ -322,13 +322,21 @@ const UINT ThreadBuscarArchivos::_EscanearDirectorio(const wchar_t *nPath, CeRai
 	if (Path[Path.size() - 1] != TEXT('\\'))	Path += TEXT("\\*.*");
 	else                                        Path += TEXT("*.*");
 
-	std::wstring *StringDirectorio = new std::wstring(nPath);
+	std::wstring *StringDirectorio;
 
-	if (Raiz->Path == nPath) SendMessage(hWndDest, WM_TBA_AGREGARRAIZ, 0, reinterpret_cast<LPARAM>(StringDirectorio));
-	else                     SendMessage(hWndDest, WM_TBA_AGREGARDIR, 0, reinterpret_cast<LPARAM>(StringDirectorio));
+	if (_wcsicmp(Raiz->Path.c_str(), nPath) == 0) {
+		StringDirectorio = new std::wstring(nPath);
+		SendMessage(hWndDest, WM_TBA_AGREGARRAIZ, 0, reinterpret_cast<LPARAM>(StringDirectorio));
+	}
+	else {
+		if ((DString_ContarCaracter(Raiz->Path, L'\\') + 1) == DString_ContarCaracter(Path, L'\\')) { // Si es un directorio hijo de la raiz (evito el resto de subdirectorios)
+			StringDirectorio = new std::wstring(nPath);
+			SendMessage(hWndDest, WM_TBA_AGREGARDIR, 0, reinterpret_cast<LPARAM>(StringDirectorio));
+		}
+	}
 	
 	// Hay que borrar el string de la memoria cuando se reciba el mensaje WM_TBA_AGREGARDIR en BaseDatos
-	ArbolBD_Nodo *TmpNodo = NULL;
+	NodoBD *TmpNodo = NULL;
 //	TMedio       *TmpMedio = NULL;
 	size_t        Hash = 0;
 	std::wstring  TmpTexto;
@@ -353,9 +361,9 @@ const UINT ThreadBuscarArchivos::_EscanearDirectorio(const wchar_t *nPath, CeRai
 			else {
 				TotalArchivosEscaneados++;
 				Hash = _AnalizarMedio(Path.c_str(), Raiz, FindInfoPoint.nFileSizeLow);
-				if (Hash) {
+/*				if (Hash) {
 					_ListaHash.push_back(Hash);
-				}
+				}*/
 
 
 //					SendMessage(hWndDest, WM_TBA_AGREGARMEDIO, 0, reinterpret_cast<LPARAM>(TmpMedio));
@@ -378,7 +386,7 @@ const UINT ThreadBuscarArchivos::_EscanearDirectorio(const wchar_t *nPath, CeRai
 	return TotalArchivosEscaneados;
 }
 
-const BOOL ThreadBuscarArchivos::_EsNombreValido(const TCHAR *nNombre) {
+const BOOL ThreadBuscarArchivos::_EsNombreValido(const wchar_t *nNombre) {
 	if (nNombre[0] == TEXT('.') && nNombre[1] == 0)								return FALSE;
 	if (nNombre[0] == TEXT('.') && nNombre[1] == TEXT('.') && nNombre[2] == 0)	return FALSE;
 	return TRUE;
@@ -390,7 +398,7 @@ const BOOL ThreadBuscarArchivos::_EsNombreValido(const TCHAR *nNombre) {
 	Si el path no existe en la BD, lo añade a la BD y retorna el hash.
 	Si el path es falso y no conduce a ningún archivo válido retorna NULL.
 */
-const size_t ThreadBuscarArchivos::_AnalizarMedio(const TCHAR *nPath, CeRaiz *Raiz, DWORD Longitud) {
+const size_t ThreadBuscarArchivos::_AnalizarMedio(const wchar_t *nPath, CeRaiz *Raiz, DWORD Longitud) {
 	//	TCHAR			TmpPath[MAX_PATH];
 	std::wstring	Path = nPath;
 	// Compruebo que existe fisicamente en el disco (comprobar velocidades usando CreateFile)
@@ -437,7 +445,7 @@ const size_t ThreadBuscarArchivos::_AnalizarMedio(const TCHAR *nPath, CeRaiz *Ra
 		case Tipo_Medio_Audio:
 		case Tipo_Medio_Video:
 			_AnalizarNombre(Path.substr(PosNombre + 1, (PosExtension - PosNombre) - 1), TmpNombre, Pista);
-			_Filtro(TmpNombre, NombreFinal);
+			BaseDatos_Filtros::FiltroNombre(TmpNombre, NombreFinal);
 			SqlStr = L"INSERT INTO Medios (Hash, Path, Nombre, TipoMedio, Extension, Pista, Raiz, Longitud, Nota, Tiempo, Subtitulos) VALUES(" + DString_ToStr(Hash)		+ L", \"" +
 																																				 PathCortado				+ L"\", \"" +
 																																				 NombreFinal				+ L"\", " +
@@ -469,7 +477,6 @@ const size_t ThreadBuscarArchivos::_AnalizarMedio(const TCHAR *nPath, CeRaiz *Ra
 		
 			break;
 //			_AnalizarNombre(Path.substr(PosNombre + 1, (PosExtension - PosNombre) - 1), TmpNombre, static_cast<TMedioVideo *>(Medio)->Pista);
-//			_Filtro(TmpNombre, NombreFinal);
 			break;
 		case Tipo_Medio_CDAudio:
 	//		_AnalizarNombre(Path.substr(PosNombre + 1, (PosExtension - PosNombre) - 1), TmpNombre, static_cast<TMedioCDAudio *>(Medio)->Pista);
@@ -553,14 +560,39 @@ const BOOL ThreadBuscarArchivos::_AnalizarNombre(std::wstring &Analisis, std::ws
 }
 
 
-/* Para filtrar nombres, generos, grupos y discos 
-	NOTA : no utilizar con paths
- */
-void ThreadBuscarArchivos::_Filtro(std::wstring &iTexto, std::wstring &oTexto) {
-	oTexto.reserve(iTexto.size());
+const BOOL ThreadBuscarArchivos::_EsNumero(const wchar_t Caracter) {
+	if (Caracter >= TEXT('0') && Caracter <= TEXT('9'))	return TRUE;
+	return FALSE;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*   ______ _ _ _                       _        _            _
+	|  ____(_) | |                     | |      | |          | |
+	| |__   _| | |_ _ __ ___  ___    __| | ___  | |_ _____  _| |_ ___
+	|  __| | | | __| '__/ _ \/ __|  / _` |/ _ \ | __/ _ \ \/ / __/ _ \
+	| |    | | | |_| | | (_) \__ \ | (_| |  __/ | ||  __/>  <| || (_) |
+	|_|    |_|_|\__|_|  \___/|___/  \__,_|\___|  \__\___/_/\_\\__\___/
+*/
+
+/* Para filtrar caracteres molestos en nombres de genero grupo disco y canciones */
+void BaseDatos_Filtros::FiltroNombre(std::wstring &In, std::wstring &Out) {
+	Out.reserve(In.size());
 	bool Espacio = false;
-	for (size_t i = 0; i < iTexto.size(); i++) {
-		switch (iTexto[i]) {
+	for (size_t i = 0; i < In.size(); i++) {
+		switch (In[i]) {
 			case 65279: // caracter invisible inutil del unicode
 				break;
 			case TEXT(':'): case TEXT('_'): case TEXT(','): case TEXT('.'): case 96  /*'*/: case TEXT('('): case TEXT(')'):
@@ -568,27 +600,31 @@ void ThreadBuscarArchivos::_Filtro(std::wstring &iTexto, std::wstring &oTexto) {
 			case TEXT('%'): case TEXT('/'): case TEXT('\\'): case TEXT('-'): case TEXT('['): case TEXT(']'): case TEXT('~'):
 			case ' ':
 				Espacio = false;
-				if (oTexto.size() != 0) {
-					if (oTexto[oTexto.size() - 1] != TEXT(' ')) 
+				if (Out.size() != 0) {
+					if (In[Out.size() - 1] != TEXT(' '))
 						Espacio = true;
 				}
-				else 
+				else
 					Espacio = true;
-				
-				
+
+
 				// Si el caracter anterior no es un espacio y no es el primer caracter, pongo un espacio. 
-				if (Espacio == true && oTexto.size() != 0) oTexto += TEXT(' ');
+				if (Espacio == true && Out.size() != 0) Out += TEXT(' ');
 				break;
 			default:
-				oTexto += static_cast<TCHAR>(tolower(iTexto[i]));
+				Out += static_cast<TCHAR>(tolower(In[i]));
 				break;
 		}
 	}
 	// Primer caracter en mayusculas
-	oTexto[0] = toupper(oTexto[0]);
+	Out[0] = toupper(Out[0]);
 }
 
-const BOOL ThreadBuscarArchivos::_EsNumero(const TCHAR Caracter) {
-	if (Caracter >= TEXT('0') && Caracter <= TEXT('9'))	return TRUE;
-	return FALSE;
+void BaseDatos_Filtros::FiltroPath(std::wstring &In, std::wstring &Out) {
+	Out.reserve(In.size());
+	for (size_t i = 0; i < In.size(); i++) {
+		if (i == 0) Out = static_cast<wchar_t>(toupper(In[0]));
+		else        Out += static_cast<wchar_t>(tolower(In[i]));
+	}
+
 }

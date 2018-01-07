@@ -57,9 +57,13 @@ public:
 	inline const UINT               Raiz(void) { return _Raiz; }
 	inline const UINT               Nota(void) { return _Nota; }
 	inline const UINT               Pista(void) { return _Pista; }
+	void                            PistaStr(std::wstring &nPistaStr);
 
 	const BOOL                      Obtener(sqlite3 *BD, const sqlite3_int64 Hash);
+	const BOOL                      Obtener(sqlite3 *BD, std::wstring &mPath);
 protected:
+
+	const BOOL                     _Consulta(sqlite3 *BD, std::wstring &StrConsulta);
 
 	UINT                           _Id;
 	sqlite3_int64                  _Hash;

@@ -74,22 +74,39 @@ const sqlite3_int64 TablaMedios::CrearHash(DWORD NSD, std::wstring &nPath) {
 
 
 
+// Obtiene los datos de un medio buscando por su path
+const BOOL TablaMedios_Medio::Obtener(sqlite3 *SqlBD, std::wstring &mPath) {
+	std::wstring TmpPath = mPath;
+	TmpPath[0] = L'?'; //                                                         Comparar strings case insensitive
+	std::wstring SqlStr = L"SELECT * FROM Medios WHERE Path =\"" + TmpPath + L"\" COLLATE NOCASE";
+	return _Consulta(SqlBD, SqlStr);
+}
 
-
-
-const BOOL TablaMedios_Medio::Obtener(sqlite3 *BD, const sqlite3_int64 Hash) {
-
-	//	return Consulta(BD, L"SELECT * FROM Raiz");
-	wchar_t		   *SqlError = NULL;
-	int				SqlRet = 0;
+// Obtiene los datos de un medio buscando por su hash
+const BOOL TablaMedios_Medio::Obtener(sqlite3 *SqlBD, const sqlite3_int64 Hash) {
 	std::wstring    SqlStr = L"SELECT * FROM Medios WHERE Hash =" + DWL::DString_ToStr(Hash);
-//	_BorrarMemoria();
-//	_BD = BD;
+	return _Consulta(SqlBD, SqlStr);
+}
 
+// Función que devuelve el número de pista en formato string con un mínimo de 2 digitos
+void TablaMedios_Medio::PistaStr(std::wstring &nPistaStr) {	
+	if (_Pista < 10) { nPistaStr = L"0" + std::to_wstring(_Pista);	}
+	else             { nPistaStr = std::to_wstring(_Pista);         }
+}
+
+
+const BOOL TablaMedios_Medio::_Consulta(sqlite3 *SqlBD, std::wstring &SqlStr) {
+	DWORD Tick = GetTickCount();
+	Debug_Escribir_Varg(L"TablaMedios_Medio::_Consulta  TxtQuery = '%s'\n", SqlStr.c_str());
+
+//	wchar_t		   *SqlError = NULL;
+	int				SqlRet = 0;
 	sqlite3_stmt   *SqlQuery = NULL;
-	SqlRet = sqlite3_prepare16_v2(BD, SqlStr.c_str(), -1, &SqlQuery, NULL);
-	if (SqlRet) 
+	SqlRet = sqlite3_prepare16_v2(SqlBD, SqlStr.c_str(), -1, &SqlQuery, NULL);
+	if (SqlRet) {
+		Debug_Escribir_Varg(L"TablaMedios_Medio::_Consulta terminada con error\n");
 		return FALSE;
+	}
 
 	std::wstring TmpPath;
 
@@ -98,23 +115,22 @@ const BOOL TablaMedios_Medio::Obtener(sqlite3 *BD, const sqlite3_int64 Hash) {
 	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
-			_Id				= static_cast<UINT>(sqlite3_column_int(SqlQuery, 0));
-			_Hash			= sqlite3_column_int64(SqlQuery, 1);
-			_Path			= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 2));
-			_Nombre			= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 3));
-			_TipoMedio		= static_cast<Tipo_Medio>(sqlite3_column_int(SqlQuery, 4));
-			_Extension		= static_cast<Extension_Medio>(sqlite3_column_int(SqlQuery, 5));
-			_Reproducido	= static_cast<UINT>(sqlite3_column_int(SqlQuery, 6));
-			_Longitud		= static_cast<DWORD>(sqlite3_column_int(SqlQuery, 7));
-			_Raiz			= static_cast<UINT>(sqlite3_column_int(SqlQuery, 8));
-			_Nota			= static_cast<UINT>(sqlite3_column_int(SqlQuery, 9));
-			_Genero			= static_cast<UINT>(sqlite3_column_int(SqlQuery, 10));
-			_Grupo			= static_cast<UINT>(sqlite3_column_int(SqlQuery, 11));
-			_Disco			= static_cast<UINT>(sqlite3_column_int(SqlQuery, 12));
-			_Pista			= static_cast<UINT>(sqlite3_column_int(SqlQuery, 13));
-			_Tiempo			= static_cast<libvlc_time_t>(sqlite3_column_int(SqlQuery, 14));
-			_Subtitulos		= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 15));
-
+			_Id = static_cast<UINT>(sqlite3_column_int(SqlQuery, 0));
+			_Hash		 = sqlite3_column_int64(SqlQuery, 1);
+			_Path		 = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 2));
+			_Nombre		 = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 3));
+			_TipoMedio	 = static_cast<Tipo_Medio>(sqlite3_column_int(SqlQuery, 4));
+			_Extension	 = static_cast<Extension_Medio>(sqlite3_column_int(SqlQuery, 5));
+			_Reproducido = static_cast<UINT>(sqlite3_column_int(SqlQuery, 6));
+			_Longitud	 = static_cast<DWORD>(sqlite3_column_int(SqlQuery, 7));
+			_Raiz		 = static_cast<UINT>(sqlite3_column_int(SqlQuery, 8));
+			_Nota		 = static_cast<UINT>(sqlite3_column_int(SqlQuery, 9));
+			_Genero		 = static_cast<UINT>(sqlite3_column_int(SqlQuery, 10));
+			_Grupo		 = static_cast<UINT>(sqlite3_column_int(SqlQuery, 11));
+			_Disco		 = static_cast<UINT>(sqlite3_column_int(SqlQuery, 12));
+			_Pista		 = static_cast<UINT>(sqlite3_column_int(SqlQuery, 13));
+			_Tiempo		 = static_cast<libvlc_time_t>(sqlite3_column_int(SqlQuery, 14));
+			_Subtitulos  = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 15));
 
 			TmpRaiz = App.BD.Tabla_Raiz.Buscar_RaizPorID(_Raiz);
 			if (TmpRaiz) _Path[0] = TmpRaiz->Letra;
@@ -124,9 +140,12 @@ const BOOL TablaMedios_Medio::Obtener(sqlite3 *BD, const sqlite3_int64 Hash) {
 	sqlite3_finalize(SqlQuery);
 
 	if (SqlRet == SQLITE_ERROR) {
+		Debug_Escribir_Varg(L"TablaMedios_Medio::_Consulta terminada con error : %dMS\n", GetTickCount() - Tick);
+
 		return FALSE;
 	}
 
+	Debug_Escribir_Varg(L"TablaMedios_Medio::_Consulta terminada : %dMS\n", GetTickCount() - Tick);
 	return TRUE;
 
 }

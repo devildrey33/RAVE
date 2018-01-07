@@ -2,7 +2,7 @@
 
 #include "DBarraDesplazamientoEx.h"
 
-class BarraTiempo : public DBarraDesplazamientoEx {
+class BarraTiempo : public DWL::DBarraDesplazamientoEx {
   public:
 			BarraTiempo();
 		   ~BarraTiempo();

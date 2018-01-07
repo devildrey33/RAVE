@@ -56,11 +56,17 @@
 	#define DWL_TREEVIEW_CLICK								WM_USER + 71
 	#define DWL_TREEVIEW_DOBLECLICK							WM_USER + 72
 
+
+
 	// DWLBaseWnd //////////////////////////////////////////////////////////
 	#define DWL_CUSTOM_DRAWDLG								WM_USER + 112 //! Mensaje para responder a notificaciones de colores en dialogos (solo para controles estandar de windows)
 	#define DWL_CUSTOM_DRAWWND								WM_USER + 113 //! Mensaje para responder a notificaciones de colores en ventanas (solo para controles estandar de windows)
     ////////////////////////////////////////////////////////////////////////
     #define DWL_NOTIFICACION                                WM_USER + 114 // Indica que se ha recibido una notificacion de un control que se la devolveremos para especificar mejor que tipo de control la manda.
+
+	#define DWL_ARBOLEX_CLICK								WM_USER + 200
+	#define DWL_ARBOLEX_DOBLECLICK							WM_USER + 201
+
 
 //	#define DWL_USAR_GESTOR_POR_DEFECTO						WM_USER + 120 //! Macro para definir el valor que debera devolver el GestorMensajes si queremos llamar a la función por defecto del windowprocedure.
 #endif

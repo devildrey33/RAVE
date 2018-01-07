@@ -25,6 +25,7 @@ namespace DWL {
 		}
 
 		HICON hIcono = static_cast<HICON>(LoadImage(GetModuleHandle(0), MAKEINTRESOURCE(IDRecursos), IMAGE_ICON, nAncho, nAlto, LR_DEFAULTCOLOR));
+		
 		DListaIconos_Icono *nIcono = new DListaIconos_Icono(hIcono, IDRecursos, nAncho, nAlto);
 		_Iconos.push_back(nIcono);
 		return nIcono;

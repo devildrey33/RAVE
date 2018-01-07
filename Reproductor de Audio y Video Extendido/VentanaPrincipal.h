@@ -1,9 +1,10 @@
 #pragma once
 
+
 #include "DhWnd.h"
 #include "DButton.h"
+//#include "ArbolBD.h"
 #include "ArbolBD.h"
-#include "ArbolBD2.h"
 #include "ListaMedios.h"
 //#include "DMenu.h"
 #include "VerVideo.h"
@@ -17,6 +18,7 @@
 #include "DBotonEx.h"
 #include "DLabelEx.h"
 
+using namespace DWL;
 
 class VentanaPrincipal : public DWL::DVentana {
  public:
@@ -27,7 +29,9 @@ class VentanaPrincipal : public DWL::DVentana {
 	void					Evento_Button_Mouse_Click(const UINT cID);
 	void					Evento_BotonEx_Mouse_Click(const UINT cID);
 
-	void				    Evento_TreeView_Mouse_Click(DTreeView_DatosClick *Datos, const UINT tID);
+	void				    Evento_ArbolEx_Click(DArbolEx_DatosClick *Datos, const UINT aID);
+
+//	void				    Evento_TreeView_Mouse_Click(DTreeView_DatosClick *Datos, const UINT tID);
 	void					Evento_ListView_Mouse_Click(DListView_DatosClick *DatosClick, const UINT IDListView);
 	void					Evento_ListView_Mouse_DobleClick(DListView_DatosClick *DatosClick, const UINT IDListView);
 	void					Evento_Temporizador(const UINT cID);
@@ -93,10 +97,10 @@ class VentanaPrincipal : public DWL::DVentana {
 	DWL::DBotonEx			BotonOpciones;
 
 	ListaMedios				Lista;
-	ArbolBD					Arbol;
+//	ArbolBD					Arbol;
 	VerVideo				Video;
 
-	ArbolBD2				Arbol2;
+	ArbolBD 				Arbol;
 
 	int						Errores;
 	Estados_Medio			EstadoMedio;
@@ -113,6 +117,7 @@ class VentanaPrincipal : public DWL::DVentana {
 
 
   protected:
+	void                   _AgregarNodoALista(DArbolEx_Nodo *nNodo);
 	BOOL                   _PantallaCompleta;
 };
 
