@@ -2,6 +2,8 @@
 
 #include "DBarraDesplazamientoEx.h"
 
+#define BARRAVOLUMEN_MOSTRARDEBUG		FALSE
+
 class BarraVolumen : public DWL::DBarraDesplazamientoEx {
   public:
 			BarraVolumen();

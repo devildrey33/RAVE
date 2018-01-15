@@ -44,6 +44,7 @@ namespace DWL {
 
 		static DhWnd_Fuente    _FuenteTest;
 
+		static bool            _Teclado[256];
 		//		static HFONT       _FuenteB;
 
 		/*friend class DVentana;

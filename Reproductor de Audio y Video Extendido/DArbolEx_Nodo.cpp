@@ -6,7 +6,7 @@
 namespace DWL {
 
 	DArbolEx_Nodo::DArbolEx_Nodo() :	_Siguiente(NULL), _Anterior(NULL), _Icono(NULL), _Fuente(NULL), _Ancestros(0), _AnchoTexto(0), _Arbol(NULL),
-										_Expandido(FALSE), _Seleccionado(FALSE), _SubSeleccionado(FALSE), _MostrarExpansor(DArbolEx_MostrarExpansor_Auto) {
+										Expandido(FALSE), Seleccionado(FALSE), _SubSeleccionado(FALSE), _MostrarExpansor(DArbolEx_MostrarExpansor_Auto) {
 	};
 	
 	DArbolEx_Nodo::~DArbolEx_Nodo(void) {
@@ -21,7 +21,7 @@ namespace DWL {
 			case DArbolEx_MostrarExpansor_Mostrar	: return TRUE;
 			case DArbolEx_MostrarExpansor_Ocultar	: return FALSE;
 		}
-		return _Expandido; 
+		return Expandido; 
 	}
 
 

@@ -8,6 +8,8 @@ namespace DWL {
 											_ColorFondoScroll(COLOR_SCROLL_FONDO),  _ColorScrollPresionado(COLOR_SCROLL_BARRA_PRESIONADO),
 											_ScrollV_Estado(DBarraScrollEx_Estado_Invisible), _ScrollV_Pagina(100.0f), _ScrollV_Posicion(0.0f),
 											_ScrollH_Estado(DBarraScrollEx_Estado_Invisible), _ScrollH_Pagina(100.0f), _ScrollH_Posicion(0.0f) {
+		_ScrollH_Alto = GetSystemMetrics(SM_CYHSCROLL);
+		_ScrollV_Ancho = GetSystemMetrics(SM_CXVSCROLL);
 	}
 
 
@@ -47,18 +49,18 @@ namespace DWL {
 	void DBarraScrollEx::ObtenerRectaCliente(RECT *RectaCliente, RECT *RectaClienteSinScroll) {
 		GetClientRect(hWnd(), RectaCliente);
 		*RectaClienteSinScroll = *RectaCliente;
-		if (_ScrollV_Estado != DBarraScrollEx_Estado_Invisible) RectaClienteSinScroll->right	-= TAM_BARRA_SCROLL;
-		if (_ScrollH_Estado != DBarraScrollEx_Estado_Invisible) RectaClienteSinScroll->bottom	-= TAM_BARRA_SCROLL;
+		if (_ScrollV_Estado != DBarraScrollEx_Estado_Invisible) RectaClienteSinScroll->right	-= _ScrollV_Ancho;
+		if (_ScrollH_Estado != DBarraScrollEx_Estado_Invisible) RectaClienteSinScroll->bottom	-= _ScrollH_Alto;
 	}
 
 
 	/* Obtiene el área que pertenece los scrolls Horizontal y Vertical */
 	void DBarraScrollEx::ObtenerRectasScroll(RECT &RC, RECT &RectaH, RECT &RectaV) {
-		RectaH = RC; RectaH.top = RectaH.bottom - TAM_BARRA_SCROLL;
-		RectaV = RC; RectaV.left = RectaV.right - TAM_BARRA_SCROLL;
+		RectaH = RC; RectaH.top = RectaH.bottom - _ScrollH_Alto;
+		RectaV = RC; RectaV.left = RectaV.right - _ScrollV_Ancho;
 		if (_ScrollH_Estado != DBarraScrollEx_Estado_Invisible && _ScrollV_Estado != DBarraScrollEx_Estado_Invisible) {
-			RectaH.right -= TAM_BARRA_SCROLL;
-			RectaV.bottom -= TAM_BARRA_SCROLL;
+			RectaH.right -= _ScrollH_Alto;
+			RectaV.bottom -= _ScrollV_Ancho;
 		}
 	}
 
@@ -66,11 +68,11 @@ namespace DWL {
 	void DBarraScrollEx::ObtenerRectasScroll(RECT &RectaH, RECT &RectaV) {
 		RECT Recta;
 		GetClientRect(hWnd(), &Recta);
-		RectaH = Recta; RectaH.top = RectaH.bottom - TAM_BARRA_SCROLL;
-		RectaV = Recta; RectaV.left = RectaV.right - TAM_BARRA_SCROLL;
+		RectaH = Recta; RectaH.top = RectaH.bottom - _ScrollH_Alto;
+		RectaV = Recta; RectaV.left = RectaV.right - _ScrollV_Ancho;
 		if (_ScrollH_Estado != DBarraScrollEx_Estado_Invisible && _ScrollV_Estado != DBarraScrollEx_Estado_Invisible) {
-			RectaH.right -= TAM_BARRA_SCROLL;
-			RectaV.bottom -= TAM_BARRA_SCROLL;
+			RectaH.right -= _ScrollH_Alto;
+			RectaV.bottom -= _ScrollV_Ancho;
 		}
 	}
 
@@ -130,7 +132,9 @@ namespace DWL {
 			}
 			else { // ScrollV presionado
 				_ScrollV_Posicion = _CalcularPosScrollV(RCH.bottom, cY);
-				Debug_Escribir_Varg(L"Scrolls_MouseMovimiento V:%.02f\n", _ScrollV_Posicion);
+				#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"Scrolls_MouseMovimiento V:%.02f\n", _ScrollV_Posicion);
+				#endif
 				Scrolls_EventoCambioPosicion();
 				Repintar();
 				return TRUE;
@@ -153,7 +157,9 @@ namespace DWL {
 			}
 			else { // ScrollH presionado
 				_ScrollH_Posicion = _CalcularPosScrollH(RCH.right, cX);
-				Debug_Escribir_Varg(L"Scrolls_MouseMovimiento H:%.02f\n", _ScrollH_Posicion);
+				#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"Scrolls_MouseMovimiento H:%.02f\n", _ScrollH_Posicion);
+				#endif
 				Scrolls_EventoCambioPosicion();
 				Repintar();
 				return TRUE;
@@ -185,7 +191,9 @@ namespace DWL {
 				_Scroll_PosPresionado = { cX, cY };			// Posición del mouse desde donde se inicia el drag de la barra
 				_Scroll_PosInicio     = _ScrollV_Posicion;	// Posición del scroll al iniciar el drag
 				_ScrollV_Estado		  = DBarraScrollEx_Estado_Presionado;
-				Debug_Escribir_Varg(L"Scrolls_MousePresionado V:%.02f\n", _ScrollV_Posicion);
+				#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"Scrolls_MousePresionado V:%.02f\n", _ScrollV_Posicion);
+				#endif
 				Scrolls_EventoCambioPosicion();
 				Repintar();
 				return TRUE;
@@ -205,7 +213,9 @@ namespace DWL {
 				_Scroll_PosPresionado = { cX, cY };			// Posición desde donde se inicia el drag de la barra
 				_Scroll_PosInicio	  = _ScrollH_Posicion;	// Posición del scroll al iniciar el drag
 				_ScrollH_Estado		  = DBarraScrollEx_Estado_Presionado;
-				Debug_Escribir_Varg(L"Scrolls_MousePresionado H:%.02f\n", _ScrollH_Posicion);
+				#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"Scrolls_MousePresionado H:%.02f\n", _ScrollH_Posicion);
+				#endif
 				Scrolls_EventoCambioPosicion();
 				Repintar();
 				return TRUE;
@@ -228,7 +238,9 @@ namespace DWL {
 			if (RetV == TRUE) _ScrollV_Estado = DBarraScrollEx_Estado_Resaltado;
 			else              _ScrollV_Estado = DBarraScrollEx_Estado_Normal;
 			_ScrollV_Posicion = _CalcularPosScrollV(RCH.bottom, cY);
-			Debug_Escribir_Varg(L"Scrolls_MouseSoltado V:%.02f\n", _ScrollV_Posicion);
+			#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
+				Debug_Escribir_Varg(L"Scrolls_MouseSoltado V:%.02f\n", _ScrollV_Posicion);
+			#endif
 			Scrolls_EventoCambioPosicion();
 			Repintar();
 			return TRUE;
@@ -238,7 +250,9 @@ namespace DWL {
 			if (RetH == TRUE) _ScrollH_Estado = DBarraScrollEx_Estado_Resaltado;
 			else              _ScrollH_Estado = DBarraScrollEx_Estado_Normal;
 			_ScrollH_Posicion = _CalcularPosScrollH(RCH.right, cX);
-			Debug_Escribir_Varg(L"Scrolls_MouseSoltado H:%.02f\n", _ScrollH_Posicion);
+			#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
+				Debug_Escribir_Varg(L"Scrolls_MouseSoltado H:%.02f\n", _ScrollH_Posicion);
+			#endif
 			Scrolls_EventoCambioPosicion();
 			Repintar();
 			return TRUE;
@@ -310,9 +324,9 @@ namespace DWL {
 	}
 
 	// Devuelve TRUE si es necesario repintar, FALSE en caso contrario
-	const BOOL DBarraScrollEx::Scrolls_MouseEntrando(void) {
+/*	const BOOL DBarraScrollEx::Scrolls_MouseEntrando(void) {
 		return FALSE;
-	}
+	}**/
 
 	// Devuelve TRUE si es necesario repintar, FALSE en caso contrario
 	const BOOL DBarraScrollEx::Scrolls_MouseSaliendo(void) {

@@ -72,8 +72,8 @@ const BOOL ArbolBD::AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 	if (Hash == 0) { // Si no hay hash es que el nodo contiene uno o mas hijos
 
 		while (TmpNodo->Padre() != NULL) {
-			if (TmpNodo->IDIcono() == IDI_RAIZ) {	Path = TmpNodo->Texto() + Path;				}
-			else                                {	Path = TmpNodo->Texto() + L"\\" + Path;		}
+			if (TmpNodo->IDIcono() == IDI_RAIZ) {	Path = TmpNodo->Texto + Path;				}
+			else                                {	Path = TmpNodo->Texto + L"\\" + Path;		}
 			TmpNodo = static_cast<NodoBD *>(TmpNodo->Padre());
 		}
 
@@ -171,7 +171,7 @@ NodoBD *ArbolBD::BuscarHijoTxt(std::wstring &Buscar, NodoBD *nPadre) {
 
 //	NodoBD *Tmp = static_cast<NodoBD *>(nPadre->Hijo(0));
 	for (size_t i = 0; i < nPadre->TotalHijos(); i++) {
-		std::wstring &rTxt = nPadre->Hijo(i)->Texto();
+		std::wstring &rTxt = nPadre->Hijo(i)->Texto;
 		if (_wcsicmp(rTxt.c_str(), Buscar.c_str()) == 0)
 			return static_cast<NodoBD *>(nPadre->Hijo(i));
 	}
@@ -190,11 +190,11 @@ void ArbolBD::ObtenerPath(DArbolEx_Nodo *nNodo, std::wstring &rPath) {
 	std::wstring TmpStr;
 	while (Tmp != NULL) {
 		if (Tmp->Padre() != NULL) { // Si el padre no es el nodo raiz 
-			TmpStr = Tmp->Texto();
+			TmpStr = Tmp->Texto;
 			if (TmpStr[TmpStr.size() - 1] == L'\\')
-				rPath = Tmp->Texto() + rPath;
+				rPath = Tmp->Texto + rPath;
 			else
-				rPath = Tmp->Texto() + L'\\' + rPath;
+				rPath = Tmp->Texto + L'\\' + rPath;
 		}
 		Tmp = Tmp->Padre();
 	}
@@ -203,7 +203,7 @@ void ArbolBD::ObtenerPath(DArbolEx_Nodo *nNodo, std::wstring &rPath) {
 void ArbolBD::ExplorarPath(DWL::DArbolEx_Nodo *nNodo) {
 	if (nNodo == NULL) return;
 	DWORD Tick = GetTickCount();
-	Debug_Escribir_Varg(L"ArbolBD::ExplorarPath  Nodo = '%s'\n", nNodo->Texto().c_str());
+	Debug_Escribir_Varg(L"ArbolBD::ExplorarPath  Nodo = '%s'\n", nNodo->Texto.c_str());
 
 	WIN32_FIND_DATA		FindInfoPoint;
 	HANDLE				hFind = NULL;
@@ -216,6 +216,7 @@ void ArbolBD::ExplorarPath(DWL::DArbolEx_Nodo *nNodo) {
 	BOOL AgregarMedios = FALSE;
 
 	hFind = FindFirstFile(nTmpTxt.c_str(), &FindInfoPoint);
+	size_t nEntradas = 0;
 	while (FindNextFile(hFind, &FindInfoPoint) != 0) {
 		nNombre = FindInfoPoint.cFileName;
 
@@ -223,13 +224,19 @@ void ArbolBD::ExplorarPath(DWL::DArbolEx_Nodo *nNodo) {
 			if (nNombre != L"." && nNombre != L"..") {
 				BaseDatos_Filtros::FiltroPath(nNombre, nTmpTxt);
 				AgregarBDNodo(ArbolBD_TipoNodo_Directorio, static_cast<NodoBD *>(nNodo), nTmpTxt.c_str());
+				nEntradas++;
 			}
 		}
 		else { // Archivo (Si hay archivos, hay que hacer una consulta que devuelva todos los archivos que tengan el path similar
 			AgregarMedios = TRUE;
+			nEntradas++;
 		}
 	}
 	FindClose(hFind);
+
+	// El nodo no tiene ningun hijo (ni directorios ni medios)
+	if (nEntradas == 0) {	nNodo->MostrarExpansor(DArbolEx_MostrarExpansor_Ocultar);	nNodo->Expandido = FALSE;	}
+	else				{	nNodo->MostrarExpansor(DArbolEx_MostrarExpansor_Auto);		}
 
 	// Consulta que obtiene todas las entradas que contienen el path
 	if (AgregarMedios == TRUE) {

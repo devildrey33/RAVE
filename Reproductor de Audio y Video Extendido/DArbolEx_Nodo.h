@@ -5,7 +5,6 @@
 
 namespace DWL {
 
-
 	#define ARBOLEX_PADDING					2 // Espacio entre el marco de la selección y el texto (tambien se utiliza para espaciar el expansor, el icono y el texto horizontalmente)
 	#define ARBOLEX_MARGEN_Y_SELECCION		1 // Espacio entre la Y inicial / final del texto y el marco de seleccion
 	#define ARBOLEX_TAMEXPANSOR				9 // OJO!! tiene que ser impar para quedar bien
@@ -35,21 +34,22 @@ namespace DWL {
 		DArbolEx_MostrarExpansor_Ocultar
 	};
 
+	// Cuaquier cambio efectuado en esta clase, debe ser actualizado con la función Repintar del ArbolEx.
 	class DArbolEx_Nodo {
 	  public:
 										DArbolEx_Nodo(void);
 									   ~DArbolEx_Nodo(void);
 
-		inline std::wstring			   &Texto(void)															{ return _Texto;						}
-		inline const BOOL				Expandido(void)														{ return _Expandido;					}
-		inline void						Expandido(const BOOL nExpandido)									{ _Expandido = nExpandido;				}
+//		inline std::wstring			   &Texto(void)															{ return _Texto;						}
+//		inline const BOOL				Expandido(void)														{ return _Expandido;					}
+//		inline void						Expandido(const BOOL nExpandido)									{ _Expandido = nExpandido;				}
 		inline void						MostrarExpansor(const DArbolEx_MostrarExpansor nMostrarExpansor)	{ _MostrarExpansor = nMostrarExpansor;	}
 		const BOOL						MostrarExpansor(void);
-		inline const BOOL				Seleccionado(void)													{ return _Seleccionado;					}
-		inline void						Seleccionado(const BOOL nSeleccionado)								{ _Seleccionado = nSeleccionado;		}
+/*		inline const BOOL				Seleccionado(void)													{ return _Seleccionado;					}
+		inline void						Seleccionado(const BOOL nSeleccionado)								{ _Seleccionado = nSeleccionado;		}*/
 
 		inline DhWnd_Fuente			   &Fuente(void)														{ return *_Fuente; }
-		inline void						Fuente(DhWnd_Fuente &nFuente)                                       { _Fuente = &nFuente;	_AnchoTexto = _Fuente->Tam(_Texto).cx;	}
+		inline void						Fuente(DhWnd_Fuente &nFuente)                                       { _Fuente = &nFuente;	_AnchoTexto = _Fuente->Tam(Texto).cx;	}
 
 		inline DArbolEx_Nodo           *Padre(void)															{ return _Padre;						}
 		inline DArbolEx_Nodo           *Siguiente(void)														{ return _Siguiente;					}
@@ -61,17 +61,17 @@ namespace DWL {
 		void                            Icono(const int nIconoRecursos);
 		//const size_t					Posicion(void);
 
+		std::wstring				    Texto;
+
+		BOOL						    Expandido;			// bits necesaris 1	
+		BOOL						    Seleccionado;		// bits necesaris 1
 	  protected:
-		std::wstring				   _Texto;
+		DArbolEx_MostrarExpansor       _MostrarExpansor;	// bits necesaris 4
+		BOOL						   _SubSeleccionado;	// bits necesaris 1
+
 		int                            _AnchoTexto;
 		DListaIconos_Icono			  *_Icono;
 
-
-		// bitwitzar
-		DArbolEx_MostrarExpansor       _MostrarExpansor;	// 4
-		BOOL						   _Expandido;			// 1 
-		BOOL						   _Seleccionado;		// 1
-		BOOL						   _SubSeleccionado;		// 1
 
 		DArbolEx_Nodo			      *_Padre;
 		size_t						   _Ancestros; // Total de padres por encima de este nodo

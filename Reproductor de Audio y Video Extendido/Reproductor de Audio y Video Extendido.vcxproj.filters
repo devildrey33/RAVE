@@ -8,9 +8,6 @@
     <Filter Include="DWL">
       <UniqueIdentifier>{5aafbfd6-4b0d-4f64-a5be-fce21d582163}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MAIN">
-      <UniqueIdentifier>{33c10cc3-7f24-444b-9777-dac5a9b6874d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Ventanas">
       <UniqueIdentifier>{4d555157-3a23-462e-9ce5-e473bd34c533}</UniqueIdentifier>
     </Filter>
@@ -107,9 +104,6 @@
     <Filter Include="DWL\Ventanas\ControlesEx\ArbolEx">
       <UniqueIdentifier>{88c21413-ab56-4b0b-bdee-4770a2f7636e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\ListaIconos">
-      <UniqueIdentifier>{48db754e-13be-43af-8b55-4b4c51d6a432}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DWL\Ventanas\ControlesEx\Extensiones">
       <UniqueIdentifier>{dcdeb678-6ac4-415f-b635-e7f19a3ec517}</UniqueIdentifier>
     </Filter>
@@ -119,19 +113,25 @@
     <Filter Include="DWL\Ventanas\ControlesEx\DDesplegable">
       <UniqueIdentifier>{bd307228-6d88-4cd4-929c-4f8eec183789}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\ListaEx">
+    <Filter Include="xXx _MAIN_ xXx">
+      <UniqueIdentifier>{33c10cc3-7f24-444b-9777-dac5a9b6874d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\TablaEx">
       <UniqueIdentifier>{10c2859e-f7d4-40cd-8923-0287f6759530}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DTablaEx, etc...%29">
+      <UniqueIdentifier>{48db754e-13be-43af-8b55-4b4c51d6a432}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
-      <Filter>MAIN</Filter>
+      <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
-      <Filter>MAIN</Filter>
+      <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>MAIN</Filter>
+      <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
     <ClInclude Include="VentanaPrincipal.h">
       <Filter>Ventanas</Filter>
@@ -182,7 +182,7 @@
       <Filter>DWL\Sistema\String</Filter>
     </ClInclude>
     <ClInclude Include="RAVE.h">
-      <Filter>MAIN</Filter>
+      <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
     <ClInclude Include="DTreeView.h">
       <Filter>DWL\Ventanas\Controles\TreeView</Filter>
@@ -251,7 +251,7 @@
       <Filter>Ventanas\Controles</Filter>
     </ClInclude>
     <ClInclude Include="RAVE_Configuracion.h">
-      <Filter>MAIN</Filter>
+      <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
     <ClInclude Include="DBotonEx.h">
       <Filter>DWL\Ventanas\ControlesEx\BotonEx</Filter>
@@ -278,7 +278,7 @@
       <Filter>DWL\Ventanas\ControlesEx\BarraScrollEx</Filter>
     </ClInclude>
     <ClInclude Include="RAVE_Skin.h">
-      <Filter>MAIN</Filter>
+      <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
     <ClInclude Include="MarcoOpciones.h">
       <Filter>Ventanas\Controles</Filter>
@@ -293,10 +293,10 @@
       <Filter>DWL\Ventanas</Filter>
     </ClInclude>
     <ClInclude Include="DListaIconos.h">
-      <Filter>DWL\Ventanas\ControlesEx\ListaIconos</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DTablaEx, etc...%29</Filter>
     </ClInclude>
     <ClInclude Include="DListaIconos_Icono.h">
-      <Filter>DWL\Ventanas\ControlesEx\ListaIconos</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DTablaEx, etc...%29</Filter>
     </ClInclude>
     <ClInclude Include="DEdicionTexto.h">
       <Filter>DWL\Ventanas\ControlesEx\Extensiones\EdicionTexto</Filter>
@@ -307,26 +307,31 @@
     <ClInclude Include="DDesplegable.h">
       <Filter>DWL\Ventanas\ControlesEx\DDesplegable</Filter>
     </ClInclude>
-    <ClInclude Include="DListaEx_Columna.h">
-      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
+    <ClInclude Include="ArbolBD.h">
+      <Filter>Ventanas\Controles</Filter>
     </ClInclude>
     <ClInclude Include="DListaEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
+    </ClInclude>
+    <ClInclude Include="DListaEx_Columna.h">
+      <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
     </ClInclude>
     <ClInclude Include="DListaEx_SubItem.h">
-      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
     </ClInclude>
-    <ClInclude Include="DListaEx_Item.h" />
-    <ClInclude Include="ArbolBD.h">
+    <ClInclude Include="DListaEx_Item.h">
+      <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
+    </ClInclude>
+    <ClInclude Include="ListaMedios2.h">
       <Filter>Ventanas\Controles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
-      <Filter>MAIN</Filter>
+      <Filter>xXx _MAIN_ xXx</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>MAIN</Filter>
+      <Filter>xXx _MAIN_ xXx</Filter>
     </ClCompile>
     <ClCompile Include="VentanaPrincipal.cpp">
       <Filter>Ventanas</Filter>
@@ -353,7 +358,7 @@
       <Filter>DWL\Sistema\String</Filter>
     </ClCompile>
     <ClCompile Include="RAVE.cpp">
-      <Filter>MAIN</Filter>
+      <Filter>xXx _MAIN_ xXx</Filter>
     </ClCompile>
     <ClCompile Include="DTreeView.cpp">
       <Filter>DWL\Ventanas\Controles\TreeView</Filter>
@@ -455,7 +460,7 @@
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
     </ClCompile>
     <ClCompile Include="DListaIconos.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\ListaIconos</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DTablaEx, etc...%29</Filter>
     </ClCompile>
     <ClCompile Include="DArbolEx_Nodo.cpp">
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
@@ -469,17 +474,22 @@
     <ClCompile Include="DDesplegable.cpp">
       <Filter>DWL\Ventanas\ControlesEx\DDesplegable</Filter>
     </ClCompile>
-    <ClCompile Include="DListaEx_Columna.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
+    <ClCompile Include="ArbolBD.cpp">
+      <Filter>Ventanas\Controles</Filter>
     </ClCompile>
     <ClCompile Include="DListaEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
+    </ClCompile>
+    <ClCompile Include="DListaEx_Columna.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
     </ClCompile>
     <ClCompile Include="DListaEx_SubItem.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
     </ClCompile>
-    <ClCompile Include="DListaEx_Item.cpp" />
-    <ClCompile Include="ArbolBD.cpp">
+    <ClCompile Include="DListaEx_Item.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
+    </ClCompile>
+    <ClCompile Include="ListaMedios2.cpp">
       <Filter>Ventanas\Controles</Filter>
     </ClCompile>
   </ItemGroup>
@@ -523,9 +533,6 @@
       <Filter>Archivos de recursos</Filter>
     </Image>
     <Image Include="..\Iconos\IDI_Video.ico">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="..\IDI_CDAudio.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>

@@ -126,16 +126,31 @@ const UINT TablaOpciones::ObtenerDatos(sqlite3 *BD) {
 	return TRUE;*/
 }
 
-const BOOL TablaOpciones::GuardarPosTamVentana(void) {
-	RECT RC;
-	GetWindowRect(App.VentanaRave.hWnd(), &RC);
-	_PosX	= RC.left;
-	_PosY	= RC.top;
-	_Ancho	= abs(RC.right - RC.left);
-	_Alto	= abs(RC.bottom - RC.top);
-
-	std::wstring Q = L"UPDATE Opciones SET PosX=" + DWL::DString_ToStr(RC.left) + L", PosY=" + DWL::DString_ToStr(RC.top) + L", Ancho=" + DWL::DString_ToStr(_Ancho) + L", Alto=" + DWL::DString_ToStr(_Alto) + L" WHERE Id=0";
+/* NOTA es mejor tener 2 selects para las opciones, uno para el tamaño y posición de la ventana, y otro para el resto de valores (shufle, repeat, volumen, etc...) 
+   Y no viene de 15 milisegundos mas a la hora de cerrar el reproductor */
+const BOOL TablaOpciones::GuardarOpciones(void) {
+	GuardarPosTamVentana();
+	std::wstring Q = L"UPDATE Opciones SET" 
+						L", Volumen=" + std::to_wstring(_Volumen) +
+						L", Shufle=" + std::to_wstring(_Shufle) +
+						L", Repeat=" + std::to_wstring(_Repeat) +
+				     L" WHERE Id=0";
 	return _Query(Q.c_str());
+}
+
+const BOOL TablaOpciones::GuardarPosTamVentana(void) {
+	if (App.VentanaRave.hWnd.Maximizada() == FALSE) {
+		RECT RC;
+		GetWindowRect(App.VentanaRave.hWnd(), &RC);
+		_PosX = RC.left;
+		_PosY = RC.top;
+		_Ancho = abs(RC.right - RC.left);
+		_Alto = abs(RC.bottom - RC.top);
+
+		std::wstring Q = L"UPDATE Opciones SET PosX=" + DWL::DString_ToStr(RC.left) + L", PosY=" + DWL::DString_ToStr(RC.top) + L", Ancho=" + DWL::DString_ToStr(_Ancho) + L", Alto=" + DWL::DString_ToStr(_Alto) + L" WHERE Id=0";
+		return _Query(Q.c_str());
+	}
+	return FALSE;
 }
 
 // UPDATE nTabla SET nParam="nInt" WHERE nDonde="nEs"

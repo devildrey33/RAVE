@@ -10,10 +10,11 @@ class TablaOpciones : public TablaBase {
 	const BOOL              CrearTabla(sqlite3 *BD);
 	const UINT			    ObtenerDatos(sqlite3 *BD);
 
-	const BOOL              GuardarDatos(void);
+	const BOOL              GuardarOpciones(void);
+	const BOOL              GuardarPosTamVentana(void);
 							// NOTA Esta función no guarda la posición en la BD
 	inline void             AsignarPosVentana(const int nX, const int nY) { _PosX = nX; _PosY = nY; };
-	const BOOL              GuardarPosTamVentana(void);
+//	const BOOL              GuardarPosTamVentana(void);
 	inline const int		PosX(void)		{ return _PosX; }
 	inline const int		PosY(void)		{ return _PosY;  }
 	inline const int		Ancho(void)		{ return _Ancho; }

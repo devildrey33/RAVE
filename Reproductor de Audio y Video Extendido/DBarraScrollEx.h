@@ -3,6 +3,8 @@
 #include "DControlEx.h"
 
 namespace DWL {
+	// Mostrar mensajes de depuración en la consola
+	#define DBARRASCROLLEX_MOSTRARDEBUG		FALSE
 
 	enum DBarraScrollEx_Estado {
 		DBarraScrollEx_Estado_Invisible,
@@ -22,7 +24,7 @@ namespace DWL {
 		const BOOL					Scrolls_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param);
 		const BOOL					Scrolls_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param);
 
-		const BOOL					Scrolls_MouseEntrando();
+//		const BOOL					Scrolls_MouseEntrando();
 		const BOOL                  Scrolls_MouseSaliendo();
 									// Obtiene el área que pertenece al control (RectaCliente es el resultado de GetClientRect, y RectaClienteSinScroll es el área del control excluyendo las barras de scroll) 
 		void						ObtenerRectaCliente(RECT *RectaCliente, RECT *RectaClienteSinScroll);
@@ -66,12 +68,15 @@ namespace DWL {
 		POINT					   _Scroll_PosPresionado;		// Coordenadas del mouse al iniciar el drag
 		float					   _Scroll_PosInicio;			// Posición del scroll al iniciar el drag
 
+		int                        _ScrollV_Ancho;
 		DBarraScrollEx_Estado      _ScrollV_Estado;
 		float					   _ScrollV_Pagina;
 		float					   _ScrollV_Posicion;
+		int                        _ScrollH_Alto;
 		DBarraScrollEx_Estado      _ScrollH_Estado;
 		float					   _ScrollH_Pagina;
 		float					   _ScrollH_Posicion;
+
 
 		COLORREF				   _ColorScroll;
 		COLORREF				   _ColorScrollResaltado;

@@ -27,10 +27,45 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	CTW_ExtraX = (RW.right - RW.left) - RC.right;
 	CTW_ExtraY = (RW.bottom - RW.top) - RC.bottom;
 
-	Arbol.CrearArbolEx(hWnd, 120, 81, RC.right - 120, RC.bottom - 80, ID_ARBOLBD);
+	Arbol.CrearArbolEx(hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_ARBOLBD);
+//	Arbol.hWnd.Visible(TRUE);
+
+	Lista2.CrearListaEx(hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_LISTAMEDIOS);
+	Lista2.hWnd.Visible(TRUE);
+
+	// Columnas
+	Lista2.AgregarColumna(24, DListaEx_Columna_Alineacion_Izquierda);							// Icono y pista
+	Lista2.AgregarColumna(DLISTAEX_COLUMNA_ANCHO_AUTO, DListaEx_Columna_Alineacion_Izquierda);	// Nombre
+	Lista2.AgregarColumna(80, DListaEx_Columna_Alineacion_Derecha);								// Tiempo
+
+	Lista2.AgregarMedio(IDI_CANCION, L"01", L"Nombre", L"00:00", 0);
+	Lista2.AgregarMedio(IDI_CANCION, L"02", L"Nombre", L"00:00", 1);
+	Lista2.AgregarMedio(IDI_CANCION, L"03", L"Nombre", L"00:00", 2);
+	Lista2.AgregarMedio(IDI_CANCION, L"04", L"Nombre", L"00:00", 3);
+	Lista2.AgregarMedio(IDI_CANCION, L"05", L"Nombre", L"00:00", 4);
+	Lista2.AgregarMedio(IDI_CANCION, L"06", L"Nombre", L"00:00", 5);
+	Lista2.AgregarMedio(IDI_CANCION, L"07", L"Nombre", L"00:00", 6);
+	Lista2.AgregarMedio(IDI_CANCION, L"08", L"Nombre", L"00:00", 7);
+	Lista2.AgregarMedio(IDI_CANCION, L"09", L"Nombre", L"00:00", 8);
+	Lista2.AgregarMedio(IDI_CANCION, L"10", L"Nombre", L"00:00", 9);
+	Lista2.AgregarMedio(IDI_CANCION, L"11", L"Nombre", L"00:00", 10);
+	Lista2.AgregarMedio(IDI_CANCION, L"12", L"Nombre", L"00:00", 11);
+	Lista2.AgregarMedio(IDI_CANCION, L"13", L"Nombre", L"00:00", 12);
+	Lista2.AgregarMedio(IDI_CANCION, L"14", L"Nombre", L"00:00", 13);
+	Lista2.AgregarMedio(IDI_CANCION, L"15", L"Nombre", L"00:00", 14);
+	Lista2.AgregarMedio(IDI_CANCION, L"16", L"Nombre", L"00:00", 15);
+	Lista2.AgregarMedio(IDI_CANCION, L"17", L"Nombre", L"00:00", 16);
+	Lista2.AgregarMedio(IDI_CANCION, L"18", L"Nombre", L"00:00", 17);
+	Lista2.AgregarMedio(IDI_CANCION, L"19", L"Nombre", L"00:00", 18);
+	Lista2.AgregarMedio(IDI_CANCION, L"20", L"Nombre", L"00:00", 19);
+	Lista2.AgregarMedio(IDI_CANCION, L"21", L"Nombre", L"00:00", 20);
+	Lista2.AgregarMedio(IDI_CANCION, L"22", L"Nombre", L"00:00", 21);
+	Lista2.AgregarMedio(IDI_CANCION, L"23", L"Nombre", L"00:00", 22);
+	Lista2.AgregarMedio(IDI_CANCION, L"24", L"Nombre", L"00:00", 23);
+	Lista2.AgregarMedio(IDI_CANCION, L"25", L"Nombre", L"00:00", 24);
 
 
-	Lista.Crear(hWnd, 120, 81, RC.right - 120, RC.bottom - 80, ID_LISTAMEDIOS, WS_CHILD, LVS_EX_FULLROWSELECT);
+	Lista.Crear(hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_LISTAMEDIOS, WS_CHILD, LVS_EX_FULLROWSELECT);
 	Lista.AsignarImageList(&App.ListaImagenes16, DEnum_ListView_ImageList_Peque);
 	Lista.AgregarColumna(TEXT("Pista"), 50);
 	Lista.AgregarColumna(TEXT("Nombre"), RC.right - 250);
@@ -40,8 +75,8 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	Lista.AgregarColumna(TEXT("Tiempo"), 60, DWL::DEnum_ListView_AlineacionTexto::DEnum_ListView_AlineacionTexto_Derecha);
 	Lista.CambiarVista(DWL::DEnum_ListView_Vista::DEnum_ListView_Vista_Detalles);
 	
-	Video.Crear(hWnd, 120, 81, RC.right - 120, RC.bottom - 80, ID_VERVIDEO);
-	Opciones.Crear(hWnd, 120, 81, RC.right - 120, RC.bottom - 80, ID_OPCIONES);
+	Video.Crear(hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_VERVIDEO);
+	Opciones.Crear(hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_OPCIONES);
 	Opciones.hWnd.Visible(FALSE);
 
 	MarcoSI.Crear(hWnd, 10, 10, 360, 30, ID_MARCOSI);
@@ -59,21 +94,23 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 //	SliderTiempo.TamPagina(30000 / 50);
 
 	MarcoSD.Crear(hWnd, RC.right - 260, 14, 250, 24, ID_MARCOSD);
-	SliderVolumen.CrearBarraDesplazamientoEx(MarcoSD.hWnd, 120, 3, 90, 14, ID_SLIDER_VOLUMEN, 0, 200, 100);
-	LabelVolumen.CrearLabelEx(MarcoSD.hWnd, L"100%", 215, 2, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
+
+	SliderVolumen.CrearBarraDesplazamientoEx(MarcoSD.hWnd, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.BD.Tabla_Opciones.Volumen()));
+	std::wstring TxtVolumen = std::to_wstring(App.BD.Tabla_Opciones.Volumen()) + L"%";
+	LabelVolumen.CrearLabelEx(MarcoSD.hWnd, TxtVolumen.c_str(), 215, 2, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
 
 	LabelTiempoActual.CrearLabelEx(MarcoSD.hWnd, L"00:00", 0, 2, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
 	LabelTiempoSeparador.CrearLabelEx(MarcoSD.hWnd, L"/", 55, 2, 10, 20, ID_LABEL_TIEMPOSEPARADOR,TRUE,  WS_CHILD | WS_VISIBLE);
 	LabelTiempoTotal.CrearLabelEx(MarcoSD.hWnd, L"00:00", 65, 2, 55, 20, ID_LABEL_TIEMPOTOTAL, WS_CHILD | WS_VISIBLE);
 
 
-	MarcoII.Crear(hWnd, 10, 80, 100, 160, ID_MARCOSI);
+	MarcoII.Crear(hWnd, 10, 80, 120, 160, ID_MARCOSI);
 
-	BotonBD.CrearBotonEx(MarcoII.hWnd, L"Base de datos", 0, 0, 100, 30, ID_BOTON_BD);
-	BotonLista.CrearBotonEx(MarcoII.hWnd, L"Lista de medios", 0, 40, 100, 30, ID_BOTON_LISTA);
-	BotonVideo.CrearBotonEx(MarcoII.hWnd, L"Ver video", 0, 80, 100, 30, ID_BOTON_VIDEO);
+	BotonBD.CrearBotonEx(MarcoII.hWnd, L"Base de datos", 0, 0, 120, 30, ID_BOTON_BD);
+	BotonLista.CrearBotonEx(MarcoII.hWnd, L"Lista de medios", 0, 40, 120, 30, ID_BOTON_LISTA);
+	BotonVideo.CrearBotonEx(MarcoII.hWnd, L"Ver video", 0, 80, 120, 30, ID_BOTON_VIDEO);
 
-	BotonOpciones.CrearBotonEx(MarcoII.hWnd, L"Opciones", 0, 120, 100, 30, ID_BOTON_OPCIONES);
+	BotonOpciones.CrearBotonEx(MarcoII.hWnd, L"Opciones", 0, 120, 120, 30, ID_BOTON_OPCIONES);
 
 	ShowWindow(hWnd(), nCmdShow);
 
@@ -92,12 +129,13 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 void VentanaPrincipal::AjustarControles(RECT &RC) {
 	// 50 ?? 60
 
-	MoveWindow(Lista.hWnd(), 120, 81, RC.right - 130, RC.bottom - 90, TRUE);
+	MoveWindow(Lista.hWnd(), 140, 81, RC.right - 150, RC.bottom - 90, TRUE);
+	MoveWindow(Lista2.hWnd(), 140, 81, RC.right - 150, RC.bottom - 90, TRUE);
 	// Columnas de la lista  Ancho LV, Ancho Pista, Ancho Tiempo = Ancho restante para el nombre
 	Lista.Columna(1)->Ancho(RC.right - 240);
-	MoveWindow(Arbol.hWnd(), 120, 81, RC.right - 130, RC.bottom - 90, TRUE);
-	MoveWindow(Video.hWnd(), 120, 81, RC.right - 130, RC.bottom - 90, TRUE);
-	MoveWindow(Opciones.hWnd(), 120, 81, RC.right - 130, RC.bottom - 90, TRUE);
+	MoveWindow(Arbol.hWnd(), 140, 81, RC.right - 150, RC.bottom - 90, TRUE);
+	MoveWindow(Video.hWnd(), 140, 81, RC.right - 150, RC.bottom - 90, TRUE);
+	MoveWindow(Opciones.hWnd(), 140, 81, RC.right - 150, RC.bottom - 90, TRUE);
 
 	MoveWindow(SliderTiempo.hWnd(), 10, 50, RC.right - 20, 24, TRUE);
 	MoveWindow(MarcoSD.hWnd(), RC.right - 265, 14, 255, 24, TRUE);
@@ -344,7 +382,7 @@ void VentanaPrincipal::_AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 //			TmpNodo->ObtenerTexto(TmpStr);
 			TmpNodo = static_cast<NodoBD *>(TmpNodo->Padre());
 			if (TmpNodo) {
-				Path = TmpNodo->Texto() + L"\\" + Path;
+				Path = TmpNodo->Texto + L"\\" + Path;
 			}
 		} while (TmpNodo != NULL);
 	}
@@ -606,6 +644,12 @@ void VentanaPrincipal::Evento_BorraFondo(HDC DC) {
 	DeleteObject(BrochaFondo);
 }
 
+void VentanaPrincipal::Evento_Cerrar(void) {
+	hWnd.Visible(FALSE);
+	App.BD.Tabla_Opciones.GuardarOpciones();
+	PostQuitMessage(0);
+}
+
 LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
 
@@ -626,9 +670,8 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			this->Evento_Temporizador(static_cast<UINT>(wParam));
 			return 0;
 		case WM_CLOSE : 
-			App.BD.Tabla_Opciones.GuardarPosTamVentana();
-			PostQuitMessage(0);
-			break;
+			Evento_Cerrar();
+			return 0;
 		case WM_COMMAND :
 			if (HIWORD(wParam) == BN_CLICKED) {
 				Evento_Button_Mouse_Click(LOWORD(wParam));
@@ -687,7 +730,6 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 		case DWL_LISTVIEW_DOBLECLICK:
 			this->Evento_ListView_Mouse_DobleClick(reinterpret_cast<DListView_DatosClick *>(lParam), static_cast<UINT>(wParam));
 			return 0;
-
 
 		case WM_NOTIFY:
 			switch (((LPNMHDR)lParam)->code) {
@@ -749,9 +791,9 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 				///////////////////////////////
 				// Notificaciones TreeView : // TODO hacer lista completa como en el listview y crear todos los eventos posibles
 				///////////////////////////////
-				case TVN_DELETEITEM:		 // Borrar item del TreeView																
-					SendMessage(((LPNMTREEVIEW)lParam)->hdr.hwndFrom, DWL_TREEVIEW_BORRARNODO, 0, ((LPNMTREEVIEW)lParam)->itemOld.lParam);
-					break;
+//				case TVN_DELETEITEM:		 // Borrar item del TreeView																
+//					SendMessage(((LPNMTREEVIEW)lParam)->hdr.hwndFrom, DWL_TREEVIEW_BORRARNODO, 0, ((LPNMTREEVIEW)lParam)->itemOld.lParam);
+//					break;
 				////////////////////////////////
 				// Notificaciones Estandard : //
 				////////////////////////////////
@@ -774,11 +816,11 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 
 					// Notificación TVN_ITEMEXPANDING para recibir cuando se expande un nodo del treeview
 					// Se necesita especificamente para la clase DTreeViewDirectorios ya que al expandir un nodo hay que escanear el directorio al que hace referencia.
-				case TVN_ITEMEXPANDING:
+/*				case TVN_ITEMEXPANDING:
 					return SendMessage(((LPNMHDR)lParam)->hwndFrom, DWL_TREEVIEW_NODO_EXPANDIENDO, wParam, lParam);
 					// Cambio de selección en el TreeView
 				case TVN_SELCHANGED:
-					return SendMessage(((LPNMHDR)lParam)->hwndFrom, DWL_TREEVIEW_NODO_CAMBIOSELECCION, wParam, lParam);
+					return SendMessage(((LPNMHDR)lParam)->hwndFrom, DWL_TREEVIEW_NODO_CAMBIOSELECCION, wParam, lParam); */
 			}
 	}
 //	return FALSE;

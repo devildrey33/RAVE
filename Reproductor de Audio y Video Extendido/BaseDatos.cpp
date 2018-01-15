@@ -132,7 +132,7 @@ NodoBD *BaseDatos::Arbol_AgregarRaiz(std::wstring *Path) {
 	NodoBD *Tmp = App.VentanaRave.Arbol.BuscarHijoTxt(*Path);
 	if (Tmp == NULL) {
 		Tmp = App.VentanaRave.Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Raiz, NULL, Path->c_str());
-		Tmp->Expandido(TRUE);
+		Tmp->Expandido = TRUE;
 		App.VentanaRave.Arbol.Repintar();
 	}
 //	delete Path; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)

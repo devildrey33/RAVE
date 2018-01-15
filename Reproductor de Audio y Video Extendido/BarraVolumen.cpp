@@ -22,7 +22,9 @@ void BarraVolumen::Evento_PintarBarra(HDC DC, RECT &RBarra) {
 /*	if (R < 0) R = 0;
 	if (G < 0) G = 0;*/
 
-	Debug_Escribir_Varg(L"BarraVolumen::Evento_PintarBarra R:%d G:%d\n", R, G);
+	#if BARRAVOLUMEN_MOSTRARDEBUG == TRUE
+		Debug_Escribir_Varg(L"BarraVolumen::Evento_PintarBarra R:%d G:%d\n", R, G);
+	#endif
 
 	HBRUSH BrochaBarra = CreateSolidBrush(RGB(R,G,0));
 	FillRect(DC, &RBarra, BrochaBarra);

@@ -6,6 +6,7 @@
 //#include "ArbolBD.h"
 #include "ArbolBD.h"
 #include "ListaMedios.h"
+#include "ListaMedios2.h"
 //#include "DMenu.h"
 #include "VerVideo.h"
 #include "DTrackBar.h"
@@ -45,6 +46,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	void					Evento_BorraFondo(HDC DC);
 
 //	void					Evento_CapturaSoltada(const UINT_PTR ID);
+
+	void                    Evento_Cerrar(void);
 
 	void					AjustarControles(RECT &RC);
 
@@ -97,6 +100,7 @@ class VentanaPrincipal : public DWL::DVentana {
 	DWL::DBotonEx			BotonOpciones;
 
 	ListaMedios				Lista;
+	ListaMedios2			Lista2;
 //	ArbolBD					Arbol;
 	VerVideo				Video;
 
