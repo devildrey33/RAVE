@@ -84,7 +84,7 @@ namespace DWL {
 		virtual void									Evento_MouseMovimiento(const int cX, const int cY, const UINT Param)						{ };
 		virtual void									Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param)		{ };
 		virtual void									Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param)			{ };
-		virtual void                                    Evento_MouseRueda(const short Delta, const short cX, const short cY, const UINT VirtKey)	{ };
+		virtual void                                    Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey)		{ };
 		virtual void									Evento_MouseDobleClick(const UINT Boton, const int cX, const int cY, const UINT Param)		{ };
 
 
@@ -101,7 +101,7 @@ namespace DWL {
 		void										   _Evento_MouseMovimiento(const int cX, const int cY, const UINT Param);
 		void										   _Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param);
 		void										   _Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param);
-		void                                           _Evento_MouseRueda(const short Delta, const short cX, const short cY, const UINT VirtKey);
+		void                                           _Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey);
 		void										   _Evento_MouseSaliendo(void);
 		void										   _Evento_MouseDobleClick(const UINT Boton, const int cX, const int cY, const UINT Param);
 
@@ -132,7 +132,7 @@ namespace DWL {
 
 		size_t                                         _ItemResaltado;
 //		size_t                                         _SubItemResaltado; // es en número de columa partiendo de la _FilaRsaltada
-		size_t		                                   _UItemResaltado;
+		size_t		                                   _ItemUResaltado;
 		size_t				                           _ItemPresionado;
 		size_t				                           _ItemMarcado;
 		size_t						                   _ItemShift;
@@ -153,6 +153,8 @@ namespace DWL {
 		HBITMAP                                        _BufferItemBmpViejo;
 		HFONT                                          _BufferItemFuenteViejo;
 
+/*		int                                            _MouseX;
+		int                                            _MouseY;*/
 
 		DhWnd_Fuente			                       _Fuente;
 //		bool										   _Teclado[256];

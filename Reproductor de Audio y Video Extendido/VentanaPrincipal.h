@@ -6,7 +6,7 @@
 //#include "ArbolBD.h"
 #include "ArbolBD.h"
 #include "ListaMedios.h"
-#include "ListaMedios2.h"
+//#include "ListaMedios2.h"
 //#include "DMenu.h"
 #include "VerVideo.h"
 #include "DTrackBar.h"
@@ -33,8 +33,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	void				    Evento_ArbolEx_Click(DArbolEx_DatosClick *Datos, const UINT aID);
 
 //	void				    Evento_TreeView_Mouse_Click(DTreeView_DatosClick *Datos, const UINT tID);
-	void					Evento_ListView_Mouse_Click(DListView_DatosClick *DatosClick, const UINT IDListView);
-	void					Evento_ListView_Mouse_DobleClick(DListView_DatosClick *DatosClick, const UINT IDListView);
+//	void					Evento_ListView_Mouse_Click(DListView_DatosClick *DatosClick, const UINT IDListView);
+	//void					Evento_ListView_Mouse_DobleClick(DListView_DatosClick *DatosClick, const UINT IDListView);
 	void					Evento_Temporizador(const UINT cID);
 	void					Evento_CambiandoTam(const UINT Lado, RECT *Rectangulo);
 //	LRESULT					Evento_SliderH(WPARAM wParam, LPARAM lParam);
@@ -99,8 +99,8 @@ class VentanaPrincipal : public DWL::DVentana {
 
 	DWL::DBotonEx			BotonOpciones;
 
+//	ListaMedios				Lista;
 	ListaMedios				Lista;
-	ListaMedios2			Lista2;
 //	ArbolBD					Arbol;
 	VerVideo				Video;
 

@@ -28,52 +28,23 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	CTW_ExtraY = (RW.bottom - RW.top) - RC.bottom;
 
 	Arbol.CrearArbolEx(hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_ARBOLBD);
-//	Arbol.hWnd.Visible(TRUE);
+	Arbol.hWnd.Visible(TRUE);
 
-	Lista2.CrearListaEx(hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_LISTAMEDIOS);
-	Lista2.hWnd.Visible(TRUE);
+	Lista.CrearListaEx(hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_LISTAMEDIOS);
 
 	// Columnas
-	Lista2.AgregarColumna(24, DListaEx_Columna_Alineacion_Izquierda);							// Icono y pista
-	Lista2.AgregarColumna(DLISTAEX_COLUMNA_ANCHO_AUTO, DListaEx_Columna_Alineacion_Izquierda);	// Nombre
-	Lista2.AgregarColumna(80, DListaEx_Columna_Alineacion_Derecha);								// Tiempo
-
-	Lista2.AgregarMedio(IDI_CANCION, L"01", L"Nombre", L"00:00", 0);
-	Lista2.AgregarMedio(IDI_CANCION, L"02", L"Nombre", L"00:00", 1);
-	Lista2.AgregarMedio(IDI_CANCION, L"03", L"Nombre", L"00:00", 2);
-	Lista2.AgregarMedio(IDI_CANCION, L"04", L"Nombre", L"00:00", 3);
-	Lista2.AgregarMedio(IDI_CANCION, L"05", L"Nombre", L"00:00", 4);
-	Lista2.AgregarMedio(IDI_CANCION, L"06", L"Nombre", L"00:00", 5);
-	Lista2.AgregarMedio(IDI_CANCION, L"07", L"Nombre", L"00:00", 6);
-	Lista2.AgregarMedio(IDI_CANCION, L"08", L"Nombre", L"00:00", 7);
-	Lista2.AgregarMedio(IDI_CANCION, L"09", L"Nombre", L"00:00", 8);
-	Lista2.AgregarMedio(IDI_CANCION, L"10", L"Nombre", L"00:00", 9);
-	Lista2.AgregarMedio(IDI_CANCION, L"11", L"Nombre", L"00:00", 10);
-	Lista2.AgregarMedio(IDI_CANCION, L"12", L"Nombre", L"00:00", 11);
-	Lista2.AgregarMedio(IDI_CANCION, L"13", L"Nombre", L"00:00", 12);
-	Lista2.AgregarMedio(IDI_CANCION, L"14", L"Nombre", L"00:00", 13);
-	Lista2.AgregarMedio(IDI_CANCION, L"15", L"Nombre", L"00:00", 14);
-	Lista2.AgregarMedio(IDI_CANCION, L"16", L"Nombre", L"00:00", 15);
-	Lista2.AgregarMedio(IDI_CANCION, L"17", L"Nombre", L"00:00", 16);
-	Lista2.AgregarMedio(IDI_CANCION, L"18", L"Nombre", L"00:00", 17);
-	Lista2.AgregarMedio(IDI_CANCION, L"19", L"Nombre", L"00:00", 18);
-	Lista2.AgregarMedio(IDI_CANCION, L"20", L"Nombre", L"00:00", 19);
-	Lista2.AgregarMedio(IDI_CANCION, L"21", L"Nombre", L"00:00", 20);
-	Lista2.AgregarMedio(IDI_CANCION, L"22", L"Nombre", L"00:00", 21);
-	Lista2.AgregarMedio(IDI_CANCION, L"23", L"Nombre", L"00:00", 22);
-	Lista2.AgregarMedio(IDI_CANCION, L"24", L"Nombre", L"00:00", 23);
-	Lista2.AgregarMedio(IDI_CANCION, L"25", L"Nombre", L"00:00", 24);
+	Lista.AgregarColumna(24, DListaEx_Columna_Alineacion_Izquierda);							// Icono y pista
+	Lista.AgregarColumna(DLISTAEX_COLUMNA_ANCHO_AUTO, DListaEx_Columna_Alineacion_Izquierda);	// Nombre
+	Lista.AgregarColumna(80, DListaEx_Columna_Alineacion_Derecha);								// Tiempo
 
 
+	/*
 	Lista.Crear(hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_LISTAMEDIOS, WS_CHILD, LVS_EX_FULLROWSELECT);
 	Lista.AsignarImageList(&App.ListaImagenes16, DEnum_ListView_ImageList_Peque);
 	Lista.AgregarColumna(TEXT("Pista"), 50);
 	Lista.AgregarColumna(TEXT("Nombre"), RC.right - 250);
-/*	Lista.AgregarColumna(TEXT("Disco"), 50);
-	Lista.AgregarColumna(TEXT("Grupo"), 50);
-	Lista.AgregarColumna(TEXT("Genero"), 50);*/
 	Lista.AgregarColumna(TEXT("Tiempo"), 60, DWL::DEnum_ListView_AlineacionTexto::DEnum_ListView_AlineacionTexto_Derecha);
-	Lista.CambiarVista(DWL::DEnum_ListView_Vista::DEnum_ListView_Vista_Detalles);
+	Lista.CambiarVista(DWL::DEnum_ListView_Vista::DEnum_ListView_Vista_Detalles);*/
 	
 	Video.Crear(hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_VERVIDEO);
 	Opciones.Crear(hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_OPCIONES);
@@ -130,9 +101,6 @@ void VentanaPrincipal::AjustarControles(RECT &RC) {
 	// 50 ?? 60
 
 	MoveWindow(Lista.hWnd(), 140, 81, RC.right - 150, RC.bottom - 90, TRUE);
-	MoveWindow(Lista2.hWnd(), 140, 81, RC.right - 150, RC.bottom - 90, TRUE);
-	// Columnas de la lista  Ancho LV, Ancho Pista, Ancho Tiempo = Ancho restante para el nombre
-	Lista.Columna(1)->Ancho(RC.right - 240);
 	MoveWindow(Arbol.hWnd(), 140, 81, RC.right - 150, RC.bottom - 90, TRUE);
 	MoveWindow(Video.hWnd(), 140, 81, RC.right - 150, RC.bottom - 90, TRUE);
 	MoveWindow(Opciones.hWnd(), 140, 81, RC.right - 150, RC.bottom - 90, TRUE);
@@ -229,7 +197,7 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 			// Un medio de la lista ha terminado
 			if (Estado == Terminada) {				
 				App.VLC.Stop();
-				if (Lista.Pos == Lista.TotalItems() - 1) {
+				if (Lista.MedioActual == Lista.TotalItems() - 1) {
 					// REPEAT
 				}
 				else {
@@ -256,7 +224,7 @@ void VentanaPrincipal::Lista_Play(void) {
 	switch (App.VLC.ComprobarEstado()) {
 		case SinCargar:
 			if (Lista.TotalItems() > 0) {
-				NCan.Obtener(App.BD(), Lista.Medio(Lista.Pos)->Hash);
+				NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
 				if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
 				if (App.VLC.Play() == TRUE) {
 //					Lista.Medio(Lista.Pos)->Icono(9);
@@ -265,11 +233,11 @@ void VentanaPrincipal::Lista_Play(void) {
 			break;
 		case Terminada:
 			App.VLC.ActualizarIconos(0);
-			Lista.Pos++;
-			if (Lista.Pos >= static_cast<int>(Lista.TotalItems())) {
-				Lista.Pos = 0;
+			Lista.MedioActual++;
+			if (Lista.MedioActual >= static_cast<int>(Lista.TotalItems())) {
+				Lista.MedioActual = 0;
 			}
-			NCan.Obtener(App.BD(), Lista.Medio(Lista.Pos)->Hash);
+			NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
 			if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
 			App.VLC.Play();
 			break;
@@ -290,11 +258,11 @@ void VentanaPrincipal::Lista_Stop(void) {
 void VentanaPrincipal::Lista_Siguiente(void) {
 	if (Lista.TotalItems() == 0) return;
 
-	Lista.Pos++;
-	if (Lista.Pos >= static_cast<int>(Lista.TotalItems())) Lista.Pos = 0;
+	Lista.MedioActual++;
+	if (Lista.MedioActual >= static_cast<int>(Lista.TotalItems())) Lista.MedioActual = 0;
 
 
-	TablaMedios_Medio NCan(App.BD(), Lista.Medio(Lista.Pos)->Hash);
+	TablaMedios_Medio NCan(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
 	if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
 	App.VLC.Play();
 }
@@ -305,11 +273,11 @@ void VentanaPrincipal::Lista_Anterior(void) {
 
 	int TotalItems = static_cast<int>(Lista.TotalItems()) - 1;
 	if (TotalItems == -1) TotalItems = 0;
-	Lista.Pos--;
-	if (Lista.Pos < 0) Lista.Pos = TotalItems;
+	Lista.MedioActual--;
+	if (Lista.MedioActual < 0) Lista.MedioActual = TotalItems;
 
-	if (Lista.Pos >= 0 && Lista.Pos <= TotalItems) {
-		TablaMedios_Medio NCan(App.BD(), Lista.Medio(Lista.Pos)->Hash);
+	if (Lista.MedioActual >= 0 && Lista.MedioActual <= TotalItems) {
+		TablaMedios_Medio NCan(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
 		if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
 		App.VLC.Play();
 	}
@@ -519,7 +487,7 @@ void VentanaPrincipal::Evento_TreeView_Mouse_Click(DTreeView_DatosClick *Datos, 
 	}
 }*/
 
-
+/*
 void VentanaPrincipal::Evento_ListView_Mouse_Click(DListView_DatosClick *DatosClick, const UINT IDListView) {
 
 }
@@ -534,7 +502,7 @@ void VentanaPrincipal::Evento_ListView_Mouse_DobleClick(DListView_DatosClick *Da
 			App.VLC.Play();
 		}
 	}
-}
+}*/
 
 
 
@@ -724,12 +692,12 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			this->Evento_TreeView_Mouse_Click(reinterpret_cast<DTreeView_DatosClick *>(lParam), static_cast<UINT>(wParam));
 			return 0;*/
 
-		case DWL_LISTVIEW_CLICK:
+/*		case DWL_LISTVIEW_CLICK:
 			this->Evento_ListView_Mouse_Click(reinterpret_cast<DListView_DatosClick *>(lParam), static_cast<UINT>(wParam));
 			return 0;
 		case DWL_LISTVIEW_DOBLECLICK:
 			this->Evento_ListView_Mouse_DobleClick(reinterpret_cast<DListView_DatosClick *>(lParam), static_cast<UINT>(wParam));
-			return 0;
+			return 0;*/
 
 		case WM_NOTIFY:
 			switch (((LPNMHDR)lParam)->code) {

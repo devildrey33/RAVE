@@ -36,6 +36,7 @@ namespace DWL {
 		inline const BOOL		Visible(const BOOL nMostrar)    { return ShowWindow(_hWnd, (nMostrar != TRUE) ? SW_HIDE : SW_SHOW); };
 		inline const BOOL		Visible(void)                   { return IsWindowVisible(_hWnd); };
 
+		inline void             BorrarBufferTeclado(void)		{ for (size_t i = 0; i < 256; i++) _Teclado[i] = false; }
 		ATOM					RegistrarClase(const TCHAR *nNombre, WNDPROC WindowProcedureInicial, UINT Estilos = 0, const int nIconoRecursos = 0 ,HBRUSH nColorFondo = NULL, HINSTANCE hInstance = NULL);
 		HWND                   _hWnd;
 

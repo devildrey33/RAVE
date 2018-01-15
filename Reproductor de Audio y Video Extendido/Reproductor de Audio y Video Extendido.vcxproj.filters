@@ -205,9 +205,6 @@
     <ClInclude Include="DButton.h">
       <Filter>DWL\Ventanas\Controles\Button</Filter>
     </ClInclude>
-    <ClInclude Include="ListaMedios.h">
-      <Filter>Ventanas\Controles</Filter>
-    </ClInclude>
     <ClInclude Include="DMouse.h">
       <Filter>DWL\Sistema\Mouse</Filter>
     </ClInclude>
@@ -322,7 +319,7 @@
     <ClInclude Include="DListaEx_Item.h">
       <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
     </ClInclude>
-    <ClInclude Include="ListaMedios2.h">
+    <ClInclude Include="ListaMedios.h">
       <Filter>Ventanas\Controles</Filter>
     </ClInclude>
   </ItemGroup>
@@ -389,9 +386,6 @@
     </ClCompile>
     <ClCompile Include="DButton.cpp">
       <Filter>DWL\Ventanas\Controles\Button</Filter>
-    </ClCompile>
-    <ClCompile Include="ListaMedios.cpp">
-      <Filter>Ventanas\Controles</Filter>
     </ClCompile>
     <ClCompile Include="DMouse.cpp">
       <Filter>DWL\Sistema\Mouse</Filter>
@@ -489,7 +483,7 @@
     <ClCompile Include="DListaEx_Item.cpp">
       <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
     </ClCompile>
-    <ClCompile Include="ListaMedios2.cpp">
+    <ClCompile Include="ListaMedios.cpp">
       <Filter>Ventanas\Controles</Filter>
     </ClCompile>
   </ItemGroup>

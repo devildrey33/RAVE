@@ -944,7 +944,10 @@ namespace DWL {
 		Repintar();
 	}
 
-	void DArbolEx::_Evento_MouseRueda(const short Delta, const short cX, const short cY, const UINT VirtKey) {		
+	void DArbolEx::_Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey) {		
+		RECT RW;
+		GetWindowRect(hWnd(), &RW);
+
 		if (Delta > 0) { // hacia arriba
 			_ScrollV_Posicion -= _ScrollV_Pagina / 10.0f;
 			if (_ScrollV_Posicion < 0.0f) _ScrollV_Posicion = 0.0f;
@@ -959,7 +962,13 @@ namespace DWL {
 		ObtenerRectaCliente(&RC, &RCC);		
 		_CalcularNodosPagina(RCC.bottom);
 
-		Evento_MouseRueda(Delta, cX, cY, VirtKey);
+		// Las coordenadas X e Y son relativas a la pantalla...
+		LONG ncX = RW.left - cX;
+		LONG ncY = RW.top - cY;
+		_NodoResaltado	 = HitTest(ncX, ncY, _NodoResaltadoParte);
+		_NodoUResaltado	 = _NodoResaltado;
+
+		Evento_MouseRueda(Delta, ncX, ncY, VirtKey);
 		Repintar();
 	}
 
@@ -1268,16 +1277,9 @@ namespace DWL {
 
 	LRESULT CALLBACK DArbolEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {		
 		switch (uMsg) {
-			case WM_SETFOCUS:
-				#if DARBOLEX_MOSTRARDEBUG == TRUE
-					Debug_Escribir(L"DArbolEx::SetFocus()\n");
-				#endif
-				break;
-			case WM_KILLFOCUS :
-				#if DARBOLEX_MOSTRARDEBUG == TRUE
-					Debug_Escribir(L"DArbolEx::KillFocus()\n");
-				#endif
-				break;
+			case WM_SETFOCUS:		hWnd.BorrarBufferTeclado();																													return 0;
+			case WM_KILLFOCUS:		hWnd.BorrarBufferTeclado();																													return 0;
+
 			case WM_KEYDOWN:		_Evento_TeclaPresionada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;
 			case WM_KEYUP:			_Evento_TeclaSoltada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;		
 

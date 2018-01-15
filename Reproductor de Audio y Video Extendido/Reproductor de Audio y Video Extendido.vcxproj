@@ -175,7 +175,7 @@
     <ClInclude Include="DListaEx_SubItem.h" />
     <ClInclude Include="DListaIconos.h" />
     <ClInclude Include="DListaIconos_Icono.h" />
-    <ClInclude Include="ListaMedios2.h" />
+    <ClInclude Include="ListaMedios.h" />
     <ClInclude Include="MarcoOpciones.h" />
     <ClInclude Include="RAVE_CuentaEmail.h" />
     <ClInclude Include="DBarraDesplazamientoEx.h" />
@@ -201,7 +201,6 @@
     <ClInclude Include="DTreeView.h" />
     <ClInclude Include="DUnidadesDisco.h" />
     <ClInclude Include="ExtensionesValidas.h" />
-    <ClInclude Include="ListaMedios.h" />
     <ClInclude Include="MarcoControles.h" />
     <ClInclude Include="RAVE.h" />
     <ClInclude Include="RaveVLC.h" />
@@ -266,7 +265,6 @@
     <ClCompile Include="EnviarDump.cpp" />
     <ClCompile Include="ExtensionesValidas.cpp" />
     <ClCompile Include="ListaMedios.cpp" />
-    <ClCompile Include="ListaMedios2.cpp" />
     <ClCompile Include="MarcoControles.cpp" />
     <ClCompile Include="MarcoOpciones.cpp" />
     <ClCompile Include="RAVE.cpp" />

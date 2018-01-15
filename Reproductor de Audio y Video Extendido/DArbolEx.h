@@ -106,7 +106,7 @@ namespace DWL {
 		virtual void									Evento_MouseMovimiento(const int cX, const int cY, const UINT Param)						{ };
 		virtual void									Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param)		{ };
 		virtual void									Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param)			{ };
-		virtual void                                    Evento_MouseRueda(const short Delta, const short cX, const short cY, const UINT VirtKey)	{ };
+		virtual void                                    Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey)		{ };
 		virtual void									Evento_MouseDobleClick(const UINT Boton, const int cX, const int cY, const UINT Param)		{ };
 
 		virtual void                                    Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params)		{ };
@@ -146,7 +146,7 @@ namespace DWL {
 		void										   _Evento_MouseMovimiento(const int cX, const int cY, const UINT Param);
 		void										   _Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param);
 		void										   _Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param);
-		void                                           _Evento_MouseRueda(const short Delta, const short cX, const short cY, const UINT VirtKey);
+		void                                           _Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey);
 		void										   _Evento_MouseDobleClick(const UINT Boton, const int cX, const int cY, const UINT Param);
 		void										   _Evento_MouseSaliendo(void);
 
