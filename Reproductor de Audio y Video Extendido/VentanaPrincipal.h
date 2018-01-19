@@ -30,7 +30,7 @@ class VentanaPrincipal : public DWL::DVentana {
 	void					Evento_Button_Mouse_Click(const UINT cID);
 	void					Evento_BotonEx_Mouse_Click(const UINT cID);
 
-	void				    Evento_ArbolEx_Click(DArbolEx_DatosClick *Datos, const UINT aID);
+	//void				    Evento_ArbolEx_Click(DArbolEx_DatosClick *Datos, const UINT aID);
 
 //	void				    Evento_TreeView_Mouse_Click(DTreeView_DatosClick *Datos, const UINT tID);
 //	void					Evento_ListView_Mouse_Click(DListView_DatosClick *DatosClick, const UINT IDListView);
@@ -106,7 +106,6 @@ class VentanaPrincipal : public DWL::DVentana {
 
 	ArbolBD 				Arbol;
 
-	int						Errores;
 	Estados_Medio			EstadoMedio;
 
 	POINT					MousePos;

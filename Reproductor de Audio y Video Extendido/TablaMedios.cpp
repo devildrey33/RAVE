@@ -149,3 +149,4 @@ const BOOL TablaMedios_Medio::_Consulta(sqlite3 *SqlBD, std::wstring &SqlStr) {
 	return TRUE;
 
 }
+

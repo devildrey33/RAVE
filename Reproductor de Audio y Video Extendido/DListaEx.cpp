@@ -34,8 +34,8 @@ namespace DWL {
 		return nColumna;
 	}
 	
-	DListaEx_Item *DListaEx::_AgregarItem(const int nIcono, const size_t PosicionItem, const TCHAR *nTxt, va_list Marker) {
-		DListaEx_Item		*nItem		= new DListaEx_Item();
+	DListaEx_Item *DListaEx::_AgregarItem(DListaEx_Item *nItem, const int nIcono, const size_t PosicionItem, const TCHAR *nTxt, va_list Marker) {
+//		DListaEx_Item		*nItem		= new DListaEx_Item();
 		DListaEx_SubItem	*nSubItem 	= new DListaEx_SubItem(nTxt);
 		nItem->_SubItems.push_back(nSubItem);
 

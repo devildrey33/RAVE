@@ -7,16 +7,16 @@
 
 namespace DWL {
 
-	#define DLISTAEX_MOSTRARDEBUG	TRUE
+	#define DLISTAEX_MOSTRARDEBUG	FALSE
 
 	#ifdef _WIN64
-		#define DLISTAEX_POSICIONFILA_INICIO	0
-		#define DLISTAEX_POSICIONFILA_FIN		_UI64_MAX - 1
-		#define DLISTAEX_POSICIONFILA_ORDENADO	_UI64_MAX - 2
+		#define DLISTAEX_POSICION_INICIO	0
+		#define DLISTAEX_POSICION_FIN		_UI64_MAX - 1
+		#define DLISTAEX_POSICION_ORDENADO	_UI64_MAX - 2
 	#else
-		#define DLISTAEX_POSICIONFILA_INICIO	0
-		#define DLISTAEX_POSICIONFILA_FIN		_UI32_MAX - 1
-		#define DLISTAEX_POSICIONFILA_ORDENADO	_UI32_MAX - 2
+		#define DLISTAEX_POSICION_INICIO	0
+		#define DLISTAEX_POSICION_FIN		_UI32_MAX - 1
+		#define DLISTAEX_POSICION_ORDENADO	_UI32_MAX - 2
 	#endif
 
 	/* Estados del mouse que puede tener un item */
@@ -40,13 +40,13 @@ namespace DWL {
 		void											EliminarTodasLasColumnas(void);
 
 														// Agrega una fila personalizada (por defecto es del tipo DListaEx_Item)
-		template <class TFila = DListaEx_Item> TFila   *AgregarItem(const int nIcono = NULL, const size_t PosicionFila = DLISTAEX_POSICIONFILA_FIN, const TCHAR *nTxt = NULL, ...) {
-															TFila  *nFila = new TFila();
+		template <class TItem = DListaEx_Item> TItem   *AgregarItem(const int nIcono = NULL, const size_t PosicionFila = DLISTAEX_POSICION_FIN, const TCHAR *nTxt = NULL, ...) {
+															TItem  *nItem = new TItem();
 															va_list Marker;
 															va_start(Marker, nTxt);
-															_AgregarItem(nIcono, PosicionFila, nTxt, Marker);
+															_AgregarItem(nItem, nIcono, PosicionFila, nTxt, Marker);
 															va_end(Marker);
-															return nFila;
+															return nItem;
 														};
 
 		void											EliminarItem(const size_t ePosItem);
@@ -126,7 +126,7 @@ namespace DWL {
 		void                                           _CalcularColumnas(void);
 		void                                           _CalcularItemsPagina(const size_t TamPagina);
 
-		DListaEx_Item                                 *_AgregarItem(const int nIcono, const size_t PosicionFila, const TCHAR *nTxt, va_list Marker);
+		DListaEx_Item                                 *_AgregarItem(DListaEx_Item *nItem, const int nIcono, const size_t PosicionFila, const TCHAR *nTxt, va_list Marker);
 		std::vector<DListaEx_Item *>                   _Items;
 		std::vector<DListaEx_Columna *>                _Columnas;
 

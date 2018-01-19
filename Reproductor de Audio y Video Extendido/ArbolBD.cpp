@@ -88,7 +88,7 @@ const BOOL ArbolBD::AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 			break;
 		case IDI_RAIZ:		 // Raiz (simbolitza l'arrel afegida per l'usuario que conte varis medis repartits o no en directoris)
 		case IDI_DIRECTORIO: // Directorio
-			SqlStr = L"SELECT * FROM Medios WHERE Path LIKE \"%" + Path.substr(1) + L"%\" COLLATE NOCASE";	// Path.substr(1) se salta la letra de la unidad y deja el path sin letra/unidad.
+			SqlStr = L"SELECT * FROM Medios WHERE Path LIKE \"?" + Path.substr(1) + L"%\" COLLATE NOCASE";	// Path.substr(1) se salta la letra de la unidad y deja el path sin letra/unidad.
 			break;																							// La letra de unidad se substituye normalmente por '?' ya que puede ser un medio extraible y no tiene por que estar siempre en la misma letra
 	}
 
@@ -279,3 +279,32 @@ void ArbolBD::ExplorarPath(DWL::DArbolEx_Nodo *nNodo) {
 	Debug_Escribir_Varg(L"ArbolBD::ExplorarPath terminado en = %dMS\n", GetTickCount() - Tick);
 
 }
+
+
+void ArbolBD::Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param) {
+	if (Boton == 1) {
+		if (_NodoPresionado == NULL) {	// Anulo los menuitems agregar... si no hay un nodo marcado
+			App.Menu_ArbolBD[0]->Activado(FALSE); // Agregar a lista
+			App.Menu_ArbolBD[1]->Activado(FALSE); // Agregar a nueva lista
+		}
+		else {						// activo los menuitems agregar si hay un nodo marcado
+			App.Menu_ArbolBD[0]->Activado(TRUE); // Agregar a lista
+			App.Menu_ArbolBD[1]->Activado(TRUE); // Agregar a nueva lista
+		}
+
+		const BOOL IdMenu = App.Menu_ArbolBD.Mostrar(hWnd());
+		switch (IdMenu) {
+			case ID_MENUBD_AGREGARANUEVALISTA:
+				App.VentanaRave.Lista.BorrarListaReproduccion();
+				AgregarNodoALista(_NodoPresionado);
+				App.VentanaRave.Lista_Play();
+				break;
+			case ID_MENUBD_AGREGARALISTA:
+				AgregarNodoALista(_NodoPresionado);
+				break;
+			case ID_MENUBD_ACTUALIZAR:
+				App.BD.ActualizarArbol();
+				break;
+		}
+	}
+};

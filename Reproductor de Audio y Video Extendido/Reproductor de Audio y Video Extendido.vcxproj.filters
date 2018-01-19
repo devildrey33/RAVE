@@ -116,11 +116,11 @@
     <Filter Include="xXx _MAIN_ xXx">
       <UniqueIdentifier>{33c10cc3-7f24-444b-9777-dac5a9b6874d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\TablaEx">
-      <UniqueIdentifier>{10c2859e-f7d4-40cd-8923-0287f6759530}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DTablaEx, etc...%29">
       <UniqueIdentifier>{48db754e-13be-43af-8b55-4b4c51d6a432}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\ListaEx">
+      <UniqueIdentifier>{10c2859e-f7d4-40cd-8923-0287f6759530}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -308,16 +308,16 @@
       <Filter>Ventanas\Controles</Filter>
     </ClInclude>
     <ClInclude Include="DListaEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
     </ClInclude>
     <ClInclude Include="DListaEx_Columna.h">
-      <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
     </ClInclude>
     <ClInclude Include="DListaEx_SubItem.h">
-      <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
     </ClInclude>
     <ClInclude Include="DListaEx_Item.h">
-      <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
     </ClInclude>
     <ClInclude Include="ListaMedios.h">
       <Filter>Ventanas\Controles</Filter>
@@ -472,16 +472,16 @@
       <Filter>Ventanas\Controles</Filter>
     </ClCompile>
     <ClCompile Include="DListaEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
     </ClCompile>
     <ClCompile Include="DListaEx_Columna.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
     </ClCompile>
     <ClCompile Include="DListaEx_SubItem.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
     </ClCompile>
     <ClCompile Include="DListaEx_Item.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\TablaEx</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
     </ClCompile>
     <ClCompile Include="ListaMedios.cpp">
       <Filter>Ventanas\Controles</Filter>

@@ -2,7 +2,7 @@
 #include "ListaMedios.h"
 #include "resource.h"
 
-ListaMedios::ListaMedios() : MedioActual(0) {
+ListaMedios::ListaMedios() : MedioActual(0), Errores(0) {
 }
 
 
@@ -37,9 +37,16 @@ void ListaMedios::BorrarListaReproduccion(void) {
 	MedioActual = 0;
 }
 
-void ListaMedios::AgregarMedio(TablaMedios_Medio *nMedio) {
-	ItemMedio *TmpMedio = new ItemMedio;
-	TmpMedio->Hash = nMedio->Hash();
+ItemMedio *ListaMedios::AgregarMedio(TablaMedios_Medio *nMedio) {
+//	ItemMedio *TmpMedio = new ItemMedio;
+	
+	// Busco si existe el hash para no agregar 2 medios iguales a la lista
+	for (size_t i = 0; i < _Items.size(); i++) {
+		if (static_cast<ItemMedio *>(_Items[i])->Hash == nMedio->Hash()) {
+			return Medio(i); // Devuelvo el medio existente
+		}
+	}
+
 
 	int nIcono = IDI_CANCION;
 	switch (nMedio->TipoMedio()) {
@@ -53,11 +60,11 @@ void ListaMedios::AgregarMedio(TablaMedios_Medio *nMedio) {
 	std::wstring Pista = std::to_wstring(nMedio->Pista());
 	if (Pista.size() == 1) Pista = L"0" + Pista;
 
-	AgregarItem(nIcono, DLISTAEX_POSICIONFILA_FIN, Pista.c_str(), nMedio->Nombre(), L"00:00");
-
+	ItemMedio *TmpMedio = AgregarItem<ItemMedio>(nIcono, DLISTAEX_POSICION_FIN, Pista.c_str(), nMedio->Nombre(), L"00:00");
+	TmpMedio->Hash = nMedio->Hash();
 //	AgregarItem(TmpMedio, nIcono, -1, -1, DWL::DString_ToStr(nMedio->Pista(), 2).c_str(), nMedio->Nombre(), L"00:00");
 	//	AgregarItem(TmpMedio, 0, -1, -1, DWL::DString_ToStr(Pista, 2).c_str(), Nombre, Disco, Grupo, Genero, Tiempo);
-
+	return TmpMedio;
 }
 
 ItemMedio *ListaMedios::BuscarHash(sqlite3_int64 bHash) {
@@ -65,4 +72,17 @@ ItemMedio *ListaMedios::BuscarHash(sqlite3_int64 bHash) {
 		if (Medio(i)->Hash == bHash) return Medio(i);
 	}
 	return NULL;
+}
+
+
+void ListaMedios::Evento_MouseDobleClick(const UINT Boton, const int cX, const int cY, const UINT Param) {
+	if (Boton == 0) {
+		if (_ItemResaltado != -1) {
+			MedioActual = _ItemResaltado;
+			ItemMedio *Itm = Medio(MedioActual);
+			TablaMedios_Medio NCan(App.BD(), Medio(MedioActual)->Hash);
+			if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
+			App.VLC.Play();
+		}
+	}
 }

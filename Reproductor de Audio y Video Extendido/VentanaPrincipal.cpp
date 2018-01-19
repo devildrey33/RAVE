@@ -190,7 +190,7 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 			break;
 		// Temporizador que detecta cuando se termina un medio y avanza al siguiente según las reglas establecidas
 		case TIMER_LISTA:
-			if (Errores > 10) {
+			if (Lista.Errores > 10) {
 				Lista_Stop();
 				return;
 			}
@@ -219,13 +219,13 @@ void VentanaPrincipal::Lista_Pausa(void) {
 void VentanaPrincipal::Lista_Play(void) {
 	if (Lista.TotalItems() == 0) return;
 
-	Errores = 0;
+	Lista.Errores = 0;
 	TablaMedios_Medio NCan;
 	switch (App.VLC.ComprobarEstado()) {
 		case SinCargar:
 			if (Lista.TotalItems() > 0) {
 				NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
-				if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
+				if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
 				if (App.VLC.Play() == TRUE) {
 //					Lista.Medio(Lista.Pos)->Icono(9);
 				}
@@ -238,7 +238,7 @@ void VentanaPrincipal::Lista_Play(void) {
 				Lista.MedioActual = 0;
 			}
 			NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
-			if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
+			if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
 			App.VLC.Play();
 			break;
 		case EnStop:
@@ -250,7 +250,7 @@ void VentanaPrincipal::Lista_Play(void) {
 
 
 void VentanaPrincipal::Lista_Stop(void) {
-	Errores = 0;
+	Lista.Errores = 0;
 	App.VLC.Stop();
 }
 
@@ -263,7 +263,7 @@ void VentanaPrincipal::Lista_Siguiente(void) {
 
 
 	TablaMedios_Medio NCan(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
-	if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
+	if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
 	App.VLC.Play();
 }
 
@@ -278,7 +278,7 @@ void VentanaPrincipal::Lista_Anterior(void) {
 
 	if (Lista.MedioActual >= 0 && Lista.MedioActual <= TotalItems) {
 		TablaMedios_Medio NCan(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
-		if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
+		if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
 		App.VLC.Play();
 	}
 }
@@ -439,7 +439,7 @@ void VentanaPrincipal::_AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 }
 
 // Función que muestra el menú para los nodos del ArbolBD
-void VentanaPrincipal::Evento_ArbolEx_Click(DArbolEx_DatosClick *Datos, const UINT aID) {
+/*void VentanaPrincipal::Evento_ArbolEx_Click(DArbolEx_DatosClick *Datos, const UINT aID) {
 	if (Datos->Boton == 1 && aID == ID_ARBOLBD) {		
 		if (Datos->Nodo == NULL) {	// Anulo los menuitems agregar... si no hay un nodo marcado
 			App.Menu_ArbolBD[0]->Activado(FALSE); // Agregar a lista
@@ -465,7 +465,7 @@ void VentanaPrincipal::Evento_ArbolEx_Click(DArbolEx_DatosClick *Datos, const UI
 				break;
 		}
 	}
-}
+}*/
 /*
 void VentanaPrincipal::Evento_TreeView_Mouse_Click(DTreeView_DatosClick *Datos, const UINT tID) {
 	//Datos->Boton;
@@ -684,9 +684,9 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			Evento_BotonEx_Mouse_Click(static_cast<UINT>(wParam));
 			return 0;
 
-		case DWL_ARBOLEX_CLICK :
+/*		case DWL_ARBOLEX_CLICK :
 			this->Evento_ArbolEx_Click(reinterpret_cast<DArbolEx_DatosClick *>(wParam), static_cast<UINT>(lParam));
-			return 0;
+			return 0;*/
 
 /*		case DWL_TREEVIEW_CLICK:
 			this->Evento_TreeView_Mouse_Click(reinterpret_cast<DTreeView_DatosClick *>(lParam), static_cast<UINT>(wParam));
@@ -699,7 +699,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			this->Evento_ListView_Mouse_DobleClick(reinterpret_cast<DListView_DatosClick *>(lParam), static_cast<UINT>(wParam));
 			return 0;*/
 
-		case WM_NOTIFY:
+/*		case WM_NOTIFY:
 			switch (((LPNMHDR)lParam)->code) {
 				/////////////////////////////
 				// Notificaciones Button : //
@@ -767,7 +767,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 				////////////////////////////////
 //				case NM_RELEASEDCAPTURE:
 //					Evento_CapturaSoltada(((LPNMHDR)lParam)->idFrom);
-				case NM_CLICK:
+				/*case NM_CLICK:
 				case NM_DBLCLK:
 					//                                                            case NM_HOVER :
 				case NM_KILLFOCUS:
@@ -780,7 +780,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 					// Por desgracia si quiero habilitar funcionabilidades extras como editar un SubItem con una ComboBox necesito obtener cuando se suelta el mouse...
 					// A causa de esto cuando recibo un NM_CLICK lo devuelvo a su control (que sera un TreeView o un ListView, y asi consigo saber cuando se suelta el boton del mouse).
 					SendMessage(((LPNMHDR)lParam)->hwndFrom, DWL_NOTIFICACION, wParam, lParam);
-					break;
+					break;*/
 
 					// Notificación TVN_ITEMEXPANDING para recibir cuando se expande un nodo del treeview
 					// Se necesita especificamente para la clase DTreeViewDirectorios ya que al expandir un nodo hay que escanear el directorio al que hace referencia.
@@ -789,7 +789,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 					// Cambio de selección en el TreeView
 				case TVN_SELCHANGED:
 					return SendMessage(((LPNMHDR)lParam)->hwndFrom, DWL_TREEVIEW_NODO_CAMBIOSELECCION, wParam, lParam); */
-			}
+//			}
 	}
 //	return FALSE;
 	return DefWindowProc(hWnd(), uMsg, wParam, lParam);

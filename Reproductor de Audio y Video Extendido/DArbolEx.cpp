@@ -937,10 +937,12 @@ namespace DWL {
 		}
 		DArbolEx_DatosClick DatosClick(cX, cY, Boton, NodoSoltado);
 		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_CLICK, reinterpret_cast<WPARAM>(&DatosClick), static_cast<LPARAM>(hWnd.ID()));
+
+		Evento_MouseSoltado(Boton, cX, cY, Param);
+
 		_NodoPresionadoParte = DArbolEx_ParteNodo_Nada;
 		_NodoPresionado = NULL;
 
-		Evento_MouseSoltado(Boton, cX, cY, Param);
 		Repintar();
 	}
 

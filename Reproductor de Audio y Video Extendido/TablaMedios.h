@@ -61,7 +61,7 @@ public:
 
 	const BOOL                      Obtener(sqlite3 *BD, const sqlite3_int64 Hash);
 	const BOOL                      Obtener(sqlite3 *BD, std::wstring &mPath);
-protected:
+  protected:
 
 	const BOOL                     _Consulta(sqlite3 *BD, std::wstring &StrConsulta);
 
