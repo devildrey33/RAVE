@@ -26,7 +26,15 @@ namespace DWL {
 
 
 	void DArbolEx_Nodo::Icono(const int nIconoRecursos) {
-		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, ARBOLEX_TAMICONO, ARBOLEX_TAMICONO);
+		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
+	}
+
+	void DArbolEx_Nodo::BorrarHijos(void) {
+		_Arbol->_CalcularValores = TRUE;
+		for (size_t i = 0; i < _Hijos.size(); i++) {
+			delete _Hijos[i];
+		}
+		_Hijos.resize(0);
 	}
 
 	/*

@@ -19,6 +19,8 @@
 #include "DBotonEx.h"
 #include "DLabelEx.h"
 
+#include "DExplorarDirectoriosEx.h"
+
 using namespace DWL;
 
 class VentanaPrincipal : public DWL::DVentana {
@@ -98,6 +100,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	DWL::DBotonEx			BotonVideo;
 
 	DWL::DBotonEx			BotonOpciones;
+
+	DWL::DExplorarDirectoriosEx ExplorarDir;
 
 //	ListaMedios				Lista;
 	ListaMedios				Lista;

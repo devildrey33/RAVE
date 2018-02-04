@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ListaMedios.h"
-#include "resource.h"
+#include "RAVE_Iconos.h"
 
 ListaMedios::ListaMedios() : MedioActual(0), Errores(0) {
 }
@@ -48,10 +48,10 @@ ItemMedio *ListaMedios::AgregarMedio(TablaMedios_Medio *nMedio) {
 	}
 
 
-	int nIcono = IDI_CANCION;
+	int nIcono = RAVE_Iconos::RAVE_Icono_Cancion;
 	switch (nMedio->TipoMedio()) {
-		case Tipo_Medio_Audio: nIcono = IDI_CANCION;	break;
-		case Tipo_Medio_Video: nIcono = IDI_VIDEO;		break;
+		case Tipo_Medio_Audio: nIcono = RAVE_Iconos::RAVE_Icono_Cancion;	break;
+		case Tipo_Medio_Video: nIcono = RAVE_Iconos::RAVE_Icono_Video;		break;
 	}
 
 	

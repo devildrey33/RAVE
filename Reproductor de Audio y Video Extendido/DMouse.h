@@ -5,29 +5,28 @@
 
     namespace DWL {
 
-        enum DEnum_Mouse_Cursor {
-	        DEnum_Mouse_Cursor_FlechaReloj		= 32650,	// IDC_APPSTARTING
-	        DEnum_Mouse_Cursor_FlechaVertical	= 32516,	// IDC_UPARROW
-	        DEnum_Mouse_Cursor_Flecha			= 32512,	// IDC_ARROW
-	        DEnum_Mouse_Cursor_Cruz				= 32515,    // IDC_CROSS
-	        DEnum_Mouse_Cursor_Mano				= 32649,	// IDC_HAND
-	        DEnum_Mouse_Cursor_Ayuda			= 32651,	// IDC_HELP
-	        DEnum_Mouse_Cursor_IBeam			= 32513,	// IDC_IBEAM
-	        DEnum_Mouse_Cursor_Cancelar			= 32648,	// IDC_NO
-	        DEnum_Mouse_Cursor_Tam				= 32646,	// IDC_SIZEALL
-	        DEnum_Mouse_Cursor_TamNESO			= 32643,	// IDC_SIZENESW
-	        DEnum_Mouse_Cursor_TamNS			= 32645,	// IDC_SIZENS
-	        DEnum_Mouse_Cursor_TamNOSE			= 32642,	// IDC_SIZENWSE
-	        DEnum_Mouse_Cursor_TamEO			= 32644,	// IDC_SIZEWE
-	        DEnum_Mouse_Cursor_Procesando		= 32514     // IDC_WAIT
+        enum DMouse_Cursor {
+	        DMouse_Cursor_FlechaReloj		= 32650,	// IDC_APPSTARTING
+	        DMouse_Cursor_FlechaVertical	= 32516,	// IDC_UPARROW
+			DMouse_Cursor_Flecha			= 32512,	// IDC_ARROW
+			DMouse_Cursor_Cruz				= 32515,    // IDC_CROSS
+			DMouse_Cursor_Mano				= 32649,	// IDC_HAND
+			DMouse_Cursor_Ayuda				= 32651,	// IDC_HELP
+			DMouse_Cursor_IBeam				= 32513,	// IDC_IBEAM
+			DMouse_Cursor_Cancelar			= 32648,	// IDC_NO
+			DMouse_Cursor_Tam				= 32646,	// IDC_SIZEALL
+			DMouse_Cursor_TamNESO			= 32643,	// IDC_SIZENESW
+			DMouse_Cursor_TamNS				= 32645,	// IDC_SIZENS
+			DMouse_Cursor_TamNOSE			= 32642,	// IDC_SIZENWSE
+			DMouse_Cursor_TamEO				= 32644,	// IDC_SIZEWE
+			DMouse_Cursor_Procesando		= 32514     // IDC_WAIT
         }; 
 
 		class DMouse {
           public:
-//			virtual const DEnum_Objeto		Objeto_Tipo(void) { return DEnum_Objeto_Mouse; };
 											DMouse(void) { };
 
-			static HCURSOR					CambiarCursor(const DEnum_Mouse_Cursor nCursor = DEnum_Mouse_Cursor_Flecha);
+			static HCURSOR					CambiarCursor(const DMouse_Cursor nCursor = DMouse_Cursor_Flecha);
 
 			static HCURSOR					CambiarCursor(HCURSOR nCursor);
 

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "RaveVLC.h"
-#include "resource.h"
+#include "RAVE_Iconos.h"
 
 RaveVLC::RaveVLC() : _Log(NULL), _MediaPlayer(NULL), _Instancia(NULL), MedioActual(), hWndVLC(NULL), _Eventos(NULL) {
 }
@@ -150,24 +150,26 @@ void RaveVLC::ActualizarIconos(int nTipo) {
 
 		int nIcono = 0;
 		switch (nTipo) {
-			case 0 : 
-				if (MedioActual.TipoMedio() == Tipo_Medio::Tipo_Medio_Audio) nIcono = IDI_CANCION; // IDI_CANCION
-				if (MedioActual.TipoMedio() == Tipo_Medio::Tipo_Medio_Video) nIcono = IDI_VIDEO; // IDI_VIDEO
+			case 0 : // normal
+				if (MedioActual.TipoMedio() == Tipo_Medio::Tipo_Medio_Audio) nIcono = RAVE_Iconos::RAVE_Icono_Cancion; // IDI_CANCION
+				if (MedioActual.TipoMedio() == Tipo_Medio::Tipo_Medio_Video) nIcono = RAVE_Iconos::RAVE_Icono_Video; // IDI_VIDEO
 				break;
 			case 1 :
-				nIcono = IDI_CDAUDIO; // play
+				nIcono = RAVE_Iconos::RAVE_Icono_Play; // play
 				break;
 			case 2 : 
-				nIcono = 2; // IDI_DISCO
+				nIcono = RAVE_Iconos::RAVE_Icono_Pausa; // Pausa
 				break;
 		}
 		NodoBD *Nodo = App.VentanaRave.Arbol.BuscarHash(MedioActual.Hash());
 		if (Nodo != NULL) 
 			Nodo->Icono(nIcono);
+		App.VentanaRave.Arbol.Repintar();
 
 		ItemMedio *Item = App.VentanaRave.Lista.BuscarHash(MedioActual.Hash());
 		if (Item != NULL) 
 			Item->Icono(nIcono);
+		App.VentanaRave.Lista.Repintar();
 	}
 
 }

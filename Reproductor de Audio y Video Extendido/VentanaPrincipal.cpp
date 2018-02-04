@@ -50,6 +50,9 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	Opciones.Crear(hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_OPCIONES);
 	Opciones.hWnd.Visible(FALSE);
 
+	ExplorarDir.CrearExplorarDirectoriosEx(Opciones.hWnd, 10, 10, 300, 200, ID_OPCIONES);
+	ExplorarDir.hWnd.Visible(TRUE);
+
 	MarcoSI.Crear(hWnd, 10, 10, 360, 30, ID_MARCOSI);
 	BotonAtras.Crear(MarcoSI.hWnd, L"<", 0, 0, 30, 30, ID_BOTON_ANTERIOR);
 	BotonPlay.Crear(MarcoSI.hWnd, L"P", 40, 0, 30, 30, ID_BOTON_PLAY);

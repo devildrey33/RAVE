@@ -589,6 +589,7 @@ const BOOL ThreadBuscarArchivos::_EsNumero(const wchar_t Caracter) {
 
 /* Para filtrar caracteres molestos en nombres de genero grupo disco y canciones */
 void BaseDatos_Filtros::FiltroNombre(std::wstring &In, std::wstring &Out) {
+	Out.resize(0);
 	Out.reserve(In.size());
 	bool Espacio = false;
 	for (size_t i = 0; i < In.size(); i++) {

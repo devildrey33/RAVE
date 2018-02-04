@@ -1041,7 +1041,7 @@ namespace DWL {
             return Evento_Mouse_Movimiento(HT, LInfo.iSubItem, cX, cY);
 
         if (_Items[HT]->_SubItems[LInfo.iSubItem].TipoEdicion != DEnum_ListView_TipoEdicion_SinEdicion) 
-            DMouse::CambiarCursor(DEnum_Mouse_Cursor_Mano);
+            DMouse::CambiarCursor(DMouse_Cursor_Mano);
         else 
 			DMouse::CambiarCursor();
 

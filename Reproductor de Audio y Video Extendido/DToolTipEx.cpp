@@ -4,7 +4,7 @@
 
 
 namespace DWL {
-#define PADDING 4
+
 
 	DToolTipEx::DToolTipEx() {
 	}
@@ -24,6 +24,7 @@ namespace DWL {
 		HDC	   		hDC = CreateCompatibleDC(NULL);
 		HBITMAP		Bmp = CreateCompatibleBitmap(hDC, 1, 1);
 		HBITMAP		Viejo = static_cast<HBITMAP>(SelectObject(hDC, Bmp));
+		HFONT       vFuente = static_cast<HFONT>(SelectObject(hDC, hWnd._Fuente()));
 		//	HFONT		FViejo = static_cast<HFONT>(SelectObject(hDC, Estilos.Fuentes.Normal()));
 		SIZE		Ret = { 0, 0 };
 		//	int			Padding = 8; // 8 pixeles de margen
@@ -32,8 +33,9 @@ namespace DWL {
 
 		_Str = Str;
 
-		MoveWindow(hWnd(), cX - static_cast<int>(Ret.cx / 2), cY, Ret.cx + (PADDING * 2), Ret.cy + (PADDING * 2), FALSE);
+		MoveWindow(hWnd(), cX - static_cast<int>(Ret.cx / 2), cY, Ret.cx + (DTOOLTIPEX_PADDING * 2), Ret.cy + (DTOOLTIPEX_PADDING * 2), FALSE);
 
+		SelectObject(hDC, vFuente);
 		SelectObject(hDC, Viejo);
 		DeleteObject(Bmp);
 		DeleteDC(hDC);
@@ -68,7 +70,7 @@ namespace DWL {
 		SetBkMode(Buffer, TRANSPARENT);
 		SetTextColor(Buffer, COLOR_TOOLTIP_TEXTO);
 		HFONT vFuente = static_cast<HFONT>(SelectObject(Buffer, hWnd._Fuente()));
-		TextOut(Buffer, PADDING, PADDING, _Str.c_str(), static_cast<int>(_Str.size()));
+		TextOut(Buffer, DTOOLTIPEX_PADDING, DTOOLTIPEX_PADDING, _Str.c_str(), static_cast<int>(_Str.size()));
 		SelectObject(Buffer, vFuente);
 
 		// Copio el buffer al DC

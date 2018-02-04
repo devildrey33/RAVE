@@ -4,8 +4,10 @@
 
 namespace DWL {
 
+	#define DTOOLTIPEX_PADDING 4
+
 	class DToolTipEx : public DVentana {
-	public:
+	  public:
 							DToolTipEx();
 		                   ~DToolTipEx();
 		// Función que crea la ventana del tooltip para futuras interacciones
@@ -16,7 +18,7 @@ namespace DWL {
 		virtual void		PintarToolTipEx(HDC DC);
 
 		LRESULT CALLBACK	GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
-	protected:
+	  protected:
 		std::wstring	   _Str;
 	};
 

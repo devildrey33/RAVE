@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ArbolBD.h"
-#include "resource.h"
+#include "RAVE_Iconos.h"
 #include "DStringUtils.h"
 
 ArbolBD::ArbolBD() {
@@ -41,18 +41,19 @@ NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre,
 	switch (nTipoNodo) {
 		case ArbolBD_TipoNodo_Raiz:			// Raíz añadida por el usuario
 			nFuente = &hWnd._FuenteB;
-			nIcono = IDI_RAIZ;
+			nIcono = RAVE_Iconos::RAVE_Icono_Raiz;
 			break;
 		case ArbolBD_TipoNodo_Directorio:	// Directorio dentro de una raíz
-			nIcono = IDI_DIRECTORIO;
+			nIcono = RAVE_Iconos::RAVE_Icono_Directorio;
 			break;
 		default:							// Medio dentro de una raíz o directorio
-			nIcono = (nTipoNodo == ArbolBD_TipoNodo_Cancion) ? IDI_CANCION : IDI_VIDEO;
+			nIcono = (nTipoNodo == ArbolBD_TipoNodo_Cancion) ? RAVE_Iconos::RAVE_Icono_Cancion : RAVE_Iconos::RAVE_Icono_Video;
 			nExpansor = DArbolEx_MostrarExpansor_Ocultar;
 			break;
 	}
 
 	NodoBD *nNodo = AgregarNodo<NodoBD>(cTexto, nPadre, nIcono, nFuente, DARBOLEX_POSICIONNODO_ORDENADO);
+	nNodo->Hash = nHash;
 	nNodo->MostrarExpansor(nExpansor);
 	return nNodo;
 	
@@ -72,8 +73,8 @@ const BOOL ArbolBD::AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 	if (Hash == 0) { // Si no hay hash es que el nodo contiene uno o mas hijos
 
 		while (TmpNodo->Padre() != NULL) {
-			if (TmpNodo->IDIcono() == IDI_RAIZ) {	Path = TmpNodo->Texto + Path;				}
-			else                                {	Path = TmpNodo->Texto + L"\\" + Path;		}
+			if (TmpNodo->IDIcono() == RAVE_Icono_Raiz)	{	Path = TmpNodo->Texto + Path;				}
+			else										{	Path = TmpNodo->Texto + L"\\" + Path;		}
 			TmpNodo = static_cast<NodoBD *>(TmpNodo->Padre());
 		}
 
@@ -81,13 +82,13 @@ const BOOL ArbolBD::AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 
 	std::wstring SqlStr;
 	switch (nNodo->IDIcono()) {
-		case IDI_CANCION: // Canción
-		case IDI_VIDEO: // Video
+		case RAVE_Icono_Cancion : // Canción
+		case RAVE_Icono_Video : // Video
 			SqlStr = L"SELECT * FROM Medios WHERE Hash =\"" + std::to_wstring(Hash) + L"\"";
 			//			SqlStr = L"SELECT * FROM Medios WHERE Path LIKE\"" + Path + L"\"";
 			break;
-		case IDI_RAIZ:		 // Raiz (simbolitza l'arrel afegida per l'usuario que conte varis medis repartits o no en directoris)
-		case IDI_DIRECTORIO: // Directorio
+		case RAVE_Icono_Raiz :		 // Raiz (simbolitza l'arrel afegida per l'usuario que conte varis medis repartits o no en directoris)
+		case RAVE_Icono_Directorio : // Directorio
 			SqlStr = L"SELECT * FROM Medios WHERE Path LIKE \"?" + Path.substr(1) + L"%\" COLLATE NOCASE";	// Path.substr(1) se salta la letra de la unidad y deja el path sin letra/unidad.
 			break;																							// La letra de unidad se substituye normalmente por '?' ya que puede ser un medio extraible y no tiene por que estar siempre en la misma letra
 	}
@@ -120,9 +121,9 @@ const BOOL ArbolBD::AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 	Subtitulos	   15		VARCHAR(260)
 	*/
 
-	sqlite3_int64	nHash;
+/*	sqlite3_int64	nHash;
 	std::wstring	nNombre;
-	UINT			nPista;
+	UINT			nPista;*/
 
 	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_MISUSE) {
 		SqlRet = sqlite3_step(SqlQuery);
@@ -146,10 +147,12 @@ const BOOL ArbolBD::AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 				reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 15))
 			);
 
-			nHash = sqlite3_column_int64(SqlQuery, 1);
+/*			nHash	= sqlite3_column_int64(SqlQuery, 1);
 			nNombre = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 3));
-			nPista = static_cast<UINT>(sqlite3_column_int(SqlQuery, 13));
+			nPista	= static_cast<UINT>(sqlite3_column_int(SqlQuery, 13));*/
 			App.VentanaRave.Lista.AgregarMedio(Medio);
+			_AgregarMedio(static_cast<NodoBD *>(nNodo), Medio);
+
 
 			delete Medio;
 
@@ -159,6 +162,35 @@ const BOOL ArbolBD::AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 	}
 	sqlite3_finalize(SqlQuery);
 	return TRUE;
+}
+
+// Asegura que el medio agregado a la lista, tambien exista en el arbol
+void ArbolBD::_AgregarMedio(NodoBD *nPadre, TablaMedios_Medio *nMedio) {
+	DWL::DSplit Split(nMedio->Path(), L'\\');
+	size_t TA = nPadre->Ancestros() + 1;
+	std::wstring Filtrado;
+	NodoBD *TmpPadre = nPadre, *Tmp = NULL;
+	// Busco si están creados los subdirectorios
+	for (size_t TA = nPadre->Ancestros() + 1; TA < Split.Total(); TA++) {
+		Tmp = BuscarHijoTxt(Split[TA], TmpPadre);
+		if (Tmp != NULL) { // El nodo ya existe
+			TmpPadre = Tmp;
+		}
+		else { // No existe, hay que crearlo
+			if (TA < Split.Total() - 1) { // Directorio				
+				BaseDatos_Filtros::FiltroPath(Split[TA], Filtrado);
+				TmpPadre = AgregarBDNodo(ArbolBD_TipoNodo_Directorio, TmpPadre, Filtrado.c_str());
+			}
+			else { // Medio
+				std::wstring nPista;
+				nMedio->PistaStr(nPista);
+				std::wstring nNombre = nPista + L" " + nMedio->Nombre();
+				BaseDatos_Filtros::FiltroNombre(nNombre, Filtrado);
+				ArbolBD_TipoNodo Tipo = (nMedio->TipoMedio() == Tipo_Medio_Audio) ? ArbolBD_TipoNodo_Cancion : ArbolBD_TipoNodo_Video;
+				Tmp = AgregarBDNodo(Tipo, TmpPadre, Filtrado.c_str(), nMedio->Hash());
+			}
+		}
+	}
 }
 
 /* Devuelve el primer hijo de nPadre que tiene el mismo texto que Buscar (NOTA no busca en nietos/descendientes) */

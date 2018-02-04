@@ -34,12 +34,12 @@ namespace DWL {
 		return nColumna;
 	}
 	
-	DListaEx_Item *DListaEx::_AgregarItem(DListaEx_Item *nItem, const int nIcono, const size_t PosicionItem, const TCHAR *nTxt, va_list Marker) {
+	DListaEx_Item *DListaEx::_AgregarItem(DListaEx_Item *nItem, DListaIconos_Icono *nIcono, const size_t PosicionItem, const TCHAR *nTxt, va_list Marker) {
 //		DListaEx_Item		*nItem		= new DListaEx_Item();
 		DListaEx_SubItem	*nSubItem 	= new DListaEx_SubItem(nTxt);
 		nItem->_SubItems.push_back(nSubItem);
 
-		nItem->_Icono = DListaIconos::AgregarIconoRecursos(nIcono, LISTAEX_TAMICONO, LISTAEX_TAMICONO);
+		nItem->_Icono = nIcono;
 
 		// Obtengo los textos de cada columna
 		for (size_t i = 1; i < _Columnas.size(); i++) {
@@ -94,7 +94,7 @@ namespace DWL {
 		if (nItemFin == -1) nItemFin = _Items.size() - 1;
 
 		RECT RectaItem;
-		LONG nAlto = _Fuente.Alto() + (LISTAEX_PADDING * 2);
+		LONG nAlto = _Fuente.Alto() + (DLISTAEX_PADDING * 2);
 		// _ItemPaginaInicio es unsigned -1 se refiere al valor máximo en una variable del tipo size_t
 		if (_ItemPaginaInicio != -1) {
 			for (size_t i = _ItemPaginaInicio; i < nItemFin + 1; i++) {
@@ -164,23 +164,23 @@ namespace DWL {
 
 		// Pinto el fondo del buffer
 		HBRUSH BrochaFondo = CreateSolidBrush(ColFondo);
-		RECT EspacioLocal = { 0 , 0, (static_cast<LONG>(_TotalAnchoVisible) > Espacio.right) ? static_cast<LONG>(_TotalAnchoVisible) : Espacio.right, (2 * LISTAEX_PADDING) + _Fuente.Alto() };
+		RECT EspacioLocal = { 0 , 0, (static_cast<LONG>(_TotalAnchoVisible) > Espacio.right) ? static_cast<LONG>(_TotalAnchoVisible) : Espacio.right, (2 * DLISTAEX_PADDING) + _Fuente.Alto() };
 		FillRect(_BufferItem, &EspacioLocal, BrochaFondo);
 		DeleteObject(BrochaFondo);
 
 		// Pinto el icono
-		int PosYIco = ((Espacio.bottom - Espacio.top) - LISTAEX_TAMICONO) / 2;
-		DrawIconEx(_BufferItem, bPresionado + LISTAEX_PADDING, bPresionado + PosYIco, _Items[nPosItem]->_Icono->Icono(), LISTAEX_TAMICONO, LISTAEX_TAMICONO, 0, 0, DI_NORMAL);
+		int PosYIco = ((Espacio.bottom - Espacio.top) - DLISTAEX_TAMICONO) / 2;
+		DrawIconEx(_BufferItem, bPresionado + DLISTAEX_PADDING, bPresionado + PosYIco, _Items[nPosItem]->_Icono->Icono(), DLISTAEX_TAMICONO, DLISTAEX_TAMICONO, 0, 0, DI_NORMAL);
 
 		RECT RCelda;
-		LONG AnchoPintado = (LISTAEX_PADDING * 2) + LISTAEX_TAMICONO;
+		LONG AnchoPintado = (DLISTAEX_PADDING * 2) + DLISTAEX_TAMICONO;
 		SetTextColor(_BufferItem, RGB(0, 0 ,0));
 		for (size_t i = 0; i < _Columnas.size(); i++) {
 			RCelda = {
-				1 + bPresionado + AnchoPintado + LISTAEX_PADDING, 
-				1 + bPresionado + LISTAEX_PADDING,
-				1 + bPresionado + AnchoPintado + _Columnas[i]->_AnchoCalculado - (LISTAEX_PADDING * 2),
-				1 + bPresionado + _Fuente.Alto() + LISTAEX_PADDING
+				1 + bPresionado + AnchoPintado + DLISTAEX_PADDING, 
+				1 + bPresionado + DLISTAEX_PADDING,
+				1 + bPresionado + AnchoPintado + _Columnas[i]->_AnchoCalculado - (DLISTAEX_PADDING * 2),
+				1 + bPresionado + _Fuente.Alto() + DLISTAEX_PADDING
 			};
 			
 			// Pinto la sombra
@@ -233,7 +233,7 @@ namespace DWL {
 
 
 		int PixelesContados = _ItemPaginaVDif; // Pixeles de altura contados hasta el nodo
-		int AltoItem = _Fuente.Alto() + (LISTAEX_PADDING * 2);
+		int AltoItem = _Fuente.Alto() + (DLISTAEX_PADDING * 2);
 		int PixelesContadosH = _ItemPaginaHDif;
 		for (size_t i = _ItemPaginaInicio; i < _ItemPaginaFin + 1; i++) {			
 			// El item está en las coordenadas del mouse
@@ -253,9 +253,41 @@ namespace DWL {
 	}
 
 
+	void DListaEx::EliminarItem(DListaEx_Item *eItem) {
+		for (size_t i = 0; i < _Items.size(); i++) {
+			if (_Items[i] == eItem) {
+				EliminarItem(i);
+				return;
+			}
+		}
+	}
+
+	void DListaEx::EliminarItem(const size_t ePos) {
+		if (ePos > -1 && ePos < _Items.size()) {
+			delete _Items[ePos];
+			_Items.erase(_Items.begin() + ePos);
+
+			if (ePos == _ItemMarcado) _ItemMarcado--;
+			_ItemPresionado = -1;
+			_ItemResaltado	= -1;
+			_ItemShift		= -1;
+			// Recalculo todos los valores de la lista antes de repintar
+			_CalcularValores = TRUE;
+		}
+	}
+
 	void DListaEx::DesSeleccionarTodo(void) {
 		for (size_t i = 0; i < _Items.size(); i++) {
 			_Items[i]->Seleccionado = FALSE;
+		}
+	}
+
+	void DListaEx::MostrarItem(DListaEx_Item *mItem) {
+		for (size_t i = 0; i < _Items.size(); i++) {
+			if (_Items[i] == mItem) {
+				MostrarItem(i);
+				return;
+			}
 		}
 	}
 
@@ -306,7 +338,7 @@ namespace DWL {
 		LONG nAncho = 0;
 		for (size_t i = 0; i < _Columnas.size(); i++) nAncho += _Columnas[i]->_AnchoCalculado;		
 
-		const int nAltoItem = _Fuente.Alto() + (LISTAEX_PADDING * 2);
+		const int nAltoItem = _Fuente.Alto() + (DLISTAEX_PADDING * 2);
 		rRecta.left   = 0;
 		rRecta.top    = nAltoItem * static_cast<LONG>(iPos);
 		rRecta.right  = nAncho;
@@ -330,7 +362,7 @@ namespace DWL {
 
 		_ItemPaginaHDif = -static_cast<LONG>((static_cast<float>(_TotalAnchoVisible) / 100.0f) * _ScrollH_Posicion);
 
-		LONG   nAltoItem = _Fuente.Alto() + (LISTAEX_PADDING * 2);
+		LONG   nAltoItem = _Fuente.Alto() + (DLISTAEX_PADDING * 2);
 
 		for (size_t i = 0; i < _Items.size(); i++) {
 			if (_ItemPaginaInicio == -1) { // Item inicial
@@ -365,7 +397,7 @@ namespace DWL {
 		if (_Items.size() == 0 || _Columnas.size() == 0) return;
 		// Calculo el ancho de las columnas fijas, y cuento las columnas automáticas
 		UINT ColumnasAuto = 0;
-		INT  nAnchoVisible	= (LISTAEX_PADDING *2) + LISTAEX_TAMICONO;
+		INT  nAnchoVisible	= (DLISTAEX_PADDING *2) + DLISTAEX_TAMICONO;
 		for (size_t i = 0; i < _Columnas.size(); i++) {
 			if (_Columnas[i]->Ancho != DLISTAEX_COLUMNA_ANCHO_AUTO) {	nAnchoVisible += _Columnas[i]->Ancho;		}
 			else													{	ColumnasAuto++;								}
@@ -386,12 +418,12 @@ namespace DWL {
 		}
 
 		// Altura (total de items * altura de la fuente)
-		_TotalAltoVisible = (_Fuente.Alto() + (LISTAEX_PADDING * 2)) * _Items.size();
+		_TotalAltoVisible = (_Fuente.Alto() + (DLISTAEX_PADDING * 2)) * _Items.size();
 	}
 
 
 	void DListaEx::_CalcularColumnas(void) {
-		INT		nAnchoFijo		= (LISTAEX_PADDING * 2) + LISTAEX_TAMICONO;
+		INT		nAnchoFijo		= (DLISTAEX_PADDING * 2) + DLISTAEX_TAMICONO;
 		UINT	ColumnasAuto	= 0;
 		size_t  i               = 0;
 		// Cuento el ancho fijo y las columnas con ancho automático
@@ -424,7 +456,7 @@ namespace DWL {
 		else													{ SV = TRUE;	RC.right -= _ScrollV_Ancho; }
 
 		// Borro y vuelvo a crear el buffer DC para pintar los nodos
-		_CrearBufferItem((static_cast<LONG>(_TotalAnchoVisible) > RC.right) ? static_cast<int>(_TotalAnchoVisible) : static_cast<int>(RC.right), _Fuente.Alto() + (LISTAEX_PADDING *2) );
+		_CrearBufferItem((static_cast<LONG>(_TotalAnchoVisible) > RC.right) ? static_cast<int>(_TotalAnchoVisible) : static_cast<int>(RC.right), _Fuente.Alto() + (DLISTAEX_PADDING *2) );
 
 		// Calculo el ancho máximo
 		if (SH == FALSE) {

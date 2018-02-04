@@ -24,7 +24,7 @@ namespace DWL {
 	}
 
 	void DListaEx_Item::Icono(const int nIconoRecursos) {
-		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, LISTAEX_TAMICONO, LISTAEX_TAMICONO);
+		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
 	}
 
 }

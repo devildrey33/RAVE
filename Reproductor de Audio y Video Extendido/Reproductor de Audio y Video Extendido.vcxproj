@@ -168,6 +168,7 @@
     <ClInclude Include="DControlEx.h" />
     <ClInclude Include="DDesplegable.h" />
     <ClInclude Include="DEdicionTexto.h" />
+    <ClInclude Include="DExplorarDirectoriosEx.h" />
     <ClInclude Include="DhWnd_Fuente.h" />
     <ClInclude Include="DListaEx.h" />
     <ClInclude Include="DListaEx_Columna.h" />
@@ -183,6 +184,7 @@
     <ClInclude Include="DBotonEx.h" />
     <ClInclude Include="DLabelEx.h" />
     <ClInclude Include="EnviarDump.h" />
+    <ClInclude Include="RAVE_Iconos.h" />
     <ClInclude Include="RAVE_Skin.h" />
     <ClInclude Include="RAVE_Configuracion.h" />
     <ClInclude Include="ControlesPantallaCompleta.h" />
@@ -242,6 +244,7 @@
     <ClCompile Include="DControlEx.cpp" />
     <ClCompile Include="DDesplegable.cpp" />
     <ClCompile Include="DEdicionTexto.cpp" />
+    <ClCompile Include="DExplorarDirectoriosEx.cpp" />
     <ClCompile Include="DhWnd.cpp" />
     <ClCompile Include="DImageList.cpp" />
     <ClCompile Include="DLabelEx.cpp" />
@@ -302,6 +305,8 @@
     <Image Include="..\Iconos\IDI_Genero.ico" />
     <Image Include="..\Iconos\IDI_Grupo.ico" />
     <Image Include="..\Iconos\IDI_ListaCanciones.ico" />
+    <Image Include="..\Iconos\IDI_Pausa.ico" />
+    <Image Include="..\Iconos\IDI_Play.ico" />
     <Image Include="..\Iconos\IDI_Raiz.ico" />
     <Image Include="..\Iconos\IDI_Subtitulos.ico" />
     <Image Include="..\Iconos\IDI_Video.ico" />

@@ -3,7 +3,7 @@
 #include "RAVE.h"
 #include "DBarraScrollEx.h"
 #include "DArbolEx_Nodo.h"
-//#include "DControl_Fuente.h"
+#include "DListaIconos.h"
 
 namespace DWL {
 
@@ -81,17 +81,37 @@ namespace DWL {
 														// Total de nodos
 		inline const size_t								TotalNodos(void)		{ return _Raiz._Hijos.size(); }
 
-														// Agrega un nodo personalizado (por defecto es del tipo DArbolEx_Nodo)
+														// Agrega un nodo personalizado (por defecto es del tipo DArbolEx_Nodo) para iconos de los recursos
 		template <class TNodo = DArbolEx_Nodo> TNodo   *AgregarNodo(const TCHAR *nTexto, DArbolEx_Nodo *nPadre = NULL, const int nIcono = NULL, DhWnd_Fuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN) {
+															DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoRecursos(nIcono, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
 															TNodo *nNodo = new TNodo();
-															_AgregarNodo(nNodo, nTexto, nPadre, nIcono, nFuente, PosicionNodo);
+															_AgregarNodo(nNodo, nTexto, nPadre, TmpIco, nFuente, PosicionNodo);
 															return nNodo;
 														};
 
+														// Agrega un nodo personalizado (por defecto es del tipo DArbolEx_Nodo) para iconos del sistema
+		template <class TNodo = DArbolEx_Nodo> TNodo   *AgregarNodo(const TCHAR *nTexto, DArbolEx_Nodo *nPadre, const GUID &KnowFolderId, DhWnd_Fuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN) {
+															DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoKnownFolder(KnowFolderId, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
+															TNodo *nNodo = new TNodo();
+															_AgregarNodo(nNodo, nTexto, nPadre, TmpIco, nFuente, PosicionNodo);
+															return nNodo;
+														};
+
+														// Agrega un nodo personalizado (por defecto es del tipo DArbolEx_Nodo) para iconos especificos de un path
+		template <class TNodo = DArbolEx_Nodo> TNodo   *AgregarNodo(const TCHAR *nTexto, DArbolEx_Nodo *nPadre, const wchar_t *PathIcono, const int nPosIcono = 0, DhWnd_Fuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN) {
+															DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoExterno(PathIcono, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO, nPosIcono);
+															TNodo *nNodo = new TNodo();
+															_AgregarNodo(nNodo, nTexto, nPadre, TmpIco, nFuente, PosicionNodo);
+															return nNodo;
+														};
+
+														// Primer nodo visible del arbol (devuelve _Raiz[0] o NULL)
 		DArbolEx_Nodo								   *PrimerNodoVisible(void);
+														// Ultimo nodo visible del arbol (devuelve el último nodo del arbol que su padre tenga el miembro _Expandido a TRUE)
 		DArbolEx_Nodo								   *UltimoNodoVisible(void);
 														// Eliminar Nodo
 		void											EliminarNodo(DArbolEx_Nodo *nEliminar);
+														// Elimina todos los nodos
 		void											BorrarTodo(void);
 
 		void											Pintar(HDC hDC);
@@ -175,7 +195,9 @@ namespace DWL {
 		void										   _CalcularScrolls(void);
 
 														// Agrega un nodo (se tiene que reservar memória en la variable nNodo antes de agregar. ej nNodo = new DArbolEx_Nodo)
-		DArbolEx_Nodo                                 *_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre = NULL, const int nIcono = NULL, DhWnd_Fuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN);
+//		DArbolEx_Nodo                                 *_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre = NULL, const int nIcono = NULL, DhWnd_Fuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN);
+		DArbolEx_Nodo                                 *_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre = NULL, DListaIconos_Icono *nIcono = NULL, DhWnd_Fuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN);
+
 														// Obtiene el espacio en pixeles que necesita todo el arbol tal y como están los nodos expandidos
 		void									       _CalcularTotalEspacioVisible(void);
 														// Total de ancho necesario para los nodos visibles

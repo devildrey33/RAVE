@@ -122,6 +122,9 @@
     <Filter Include="DWL\Ventanas\ControlesEx\ListaEx">
       <UniqueIdentifier>{10c2859e-f7d4-40cd-8923-0287f6759530}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\ExplorarDirectorios">
+      <UniqueIdentifier>{9c8ec836-aa61-4ed3-9265-8d6a79a9f649}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -322,6 +325,12 @@
     <ClInclude Include="ListaMedios.h">
       <Filter>Ventanas\Controles</Filter>
     </ClInclude>
+    <ClInclude Include="RAVE_Iconos.h">
+      <Filter>xXx _MAIN_ xXx</Filter>
+    </ClInclude>
+    <ClInclude Include="DExplorarDirectoriosEx.h">
+      <Filter>DWL\Ventanas\ControlesEx\ExplorarDirectorios</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -486,6 +495,9 @@
     <ClCompile Include="ListaMedios.cpp">
       <Filter>Ventanas\Controles</Filter>
     </ClCompile>
+    <ClCompile Include="DExplorarDirectoriosEx.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\ExplorarDirectorios</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Reproductor de Audio y Video Extendido.rc">
@@ -527,6 +539,12 @@
       <Filter>Archivos de recursos</Filter>
     </Image>
     <Image Include="..\Iconos\IDI_Video.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Pausa.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Play.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>

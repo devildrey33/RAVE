@@ -5,10 +5,12 @@
 
 namespace DWL {
 
-	#define ARBOLEX_PADDING					2 // Espacio entre el marco de la selección y el texto (tambien se utiliza para espaciar el expansor, el icono y el texto horizontalmente)
-	#define ARBOLEX_MARGEN_Y_SELECCION		1 // Espacio entre la Y inicial / final del texto y el marco de seleccion
-	#define ARBOLEX_TAMEXPANSOR				9 // OJO!! tiene que ser impar para quedar bien
-	#define ARBOLEX_TAMICONO				16 // Tamaño del icono
+
+
+	#define DARBOLEX_PADDING				2 // Espacio entre el marco de la selección y el texto (tambien se utiliza para espaciar el expansor, el icono y el texto horizontalmente)
+	#define DARBOLEX_MARGEN_Y_SELECCION		1 // Espacio entre la Y inicial / final del texto y el marco de seleccion
+	#define DARBOLEX_TAMEXPANSOR			9 // OJO!! tiene que ser impar para quedar bien
+	#define DARBOLEX_TAMICONO				16 // Tamaño del icono
 
 
 	enum DArbolEx_Nodo_Estado {
@@ -18,6 +20,7 @@ namespace DWL {
 	};
 
 	class DArbolEx;
+	class DExplorarDirectoriosEx;
 
 #define DARBOLEX_NODO_EXPANDIDO    1
 #define DARBOLEX_NODO_SELECCIONADO 2
@@ -40,6 +43,7 @@ namespace DWL {
 										DArbolEx_Nodo(void);
 									   ~DArbolEx_Nodo(void);
 
+		inline const size_t             Ancestros(void)														{ return _Ancestros;					}
 //		inline std::wstring			   &Texto(void)															{ return _Texto;						}
 //		inline const BOOL				Expandido(void)														{ return _Expandido;					}
 //		inline void						Expandido(const BOOL nExpandido)									{ _Expandido = nExpandido;				}
@@ -59,6 +63,7 @@ namespace DWL {
 
 		inline const int                IDIcono(void)														{ return _Icono->ID(); }
 		void                            Icono(const int nIconoRecursos);
+		void                            BorrarHijos(void);
 		//const size_t					Posicion(void);
 
 		std::wstring				    Texto;
@@ -81,6 +86,7 @@ namespace DWL {
 		DhWnd_Fuente				  *_Fuente;
 		DArbolEx                      *_Arbol;
 		friend class DArbolEx;
+		friend class DExplorarDirectoriosEx;
 	};
 
 }

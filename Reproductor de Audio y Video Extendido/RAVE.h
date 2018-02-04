@@ -4,7 +4,7 @@
 #include "BaseDatos.h"
 #include "DConsola.h"
 #include "RaveVLC.h"
-#include "DImageList.h"
+//#include "DImageList.h"
 #include "ControlesPantallaCompleta.h"
 #include "DMenu.h"
 #include "RAVE_Configuracion.h"
@@ -42,7 +42,7 @@ class RAVE {
 	DConsola					ConsolaDebug;
 	RaveVLC						VLC;
 	ControlesPantallaCompleta	ControlesPC;
-	DWL::DImageList				ListaImagenes16;
+//	DWL::DImageList				ListaImagenes16;
 
 
 	DWL::DMenu 					Menu_ArbolBD;
@@ -66,9 +66,11 @@ void RAVE_Iniciar();
 
 
 #ifdef MOSTRAR_CONSOLA 
-	#define Debug_Escribir_Varg(TEXTO, ...)		App.ConsolaDebug.EscribirMS(TEXTO, __VA_ARGS__);
-	#define Debug_Escribir(TEXTO)				App.ConsolaDebug.EscribirMS(TEXTO);
-	#define Debug_Leer(TEXTO)					App.ConsolaDebug.Leer(TEXTO);
+	#define Debug_EscribirSinMS_Varg(TEXTO, ...)	App.ConsolaDebug.Escribir(TEXTO, __VA_ARGS__);
+	#define Debug_Escribir_Varg(TEXTO, ...)			App.ConsolaDebug.EscribirMS(TEXTO, __VA_ARGS__);
+	#define Debug_EscribirSinMS(TEXTO)				App.ConsolaDebug.Escribir(TEXTO);
+	#define Debug_Escribir(TEXTO)					App.ConsolaDebug.EscribirMS(TEXTO);
+	#define Debug_Leer(TEXTO)						App.ConsolaDebug.Leer(TEXTO);
 #else
 	#define Debug_Escribir_Varg(TEXTO, ...)		
 	#define Debug_Escribir(TEXTO)				

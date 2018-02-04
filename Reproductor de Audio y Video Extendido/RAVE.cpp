@@ -132,7 +132,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 	Menu_Mezclar.CrearMenuItem(ID_REPETIR_SI_APAGAR_WIN, L"Apagar Windows");
 
 	// Lista de imagenes de 16 pixeles
-	ListaImagenes16.Crear(16, 16);
+/*	ListaImagenes16.Crear(16, 16);
 	ListaImagenes16.AgregarIconoRecursos(IDI_GENERO);				// 0
 	ListaImagenes16.AgregarIconoRecursos(IDI_GRUPO);				// 1
 	ListaImagenes16.AgregarIconoRecursos(IDI_DISCO);				// 2
@@ -142,7 +142,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 	ListaImagenes16.AgregarIconoRecursos(IDI_LISTACANCIONES);		// 6
 	ListaImagenes16.AgregarIconoRecursos(IDI_SUBTITULOS);			// 7
 	ListaImagenes16.AgregarIconoRecursos(IDI_DIRECTORIO);			// 8
-	ListaImagenes16.AgregarIconoRecursos(IDI_RAIZ);					// 9
+	ListaImagenes16.AgregarIconoRecursos(IDI_RAIZ);					// 9*/
 
 	// Ventana principal
 	VentanaRave.Crear(nCmdShow);

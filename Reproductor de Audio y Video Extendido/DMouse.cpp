@@ -3,7 +3,7 @@
 
 namespace DWL {
 
-	HCURSOR	DMouse::CambiarCursor(const DEnum_Mouse_Cursor nCursor) {
+	HCURSOR	DMouse::CambiarCursor(const DMouse_Cursor nCursor) {
 		HCURSOR Cur = LoadCursor(NULL, MAKEINTRESOURCE(nCursor));
 		return SetCursor(Cur);
 	};
