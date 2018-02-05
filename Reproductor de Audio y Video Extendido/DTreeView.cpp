@@ -46,9 +46,10 @@ namespace DWL {
 	\param[in]  nEstilosExtendidos   Estilos extendidos para el TreeView.
 	\return     Devuelve el HWND del TreeView o NULL en caso de error.
 	*/
-	HWND DTreeView::Crear(DhWnd &nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, DWORD nEstilos, DWORD nEstilosExtendidos) {
+	HWND DTreeView::Crear(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, DWORD nEstilos, DWORD nEstilosExtendidos) {
 		if (hWnd()) { Debug_Escribir(L"DTreeView::Crear() Error : ya se ha creado el treeview\n");  return hWnd(); }
-		hWnd = CreateWindowEx(nEstilosExtendidos, WC_TREEVIEW, NULL, nEstilos, cX, cY, cAncho, cAlto, nPadre(), reinterpret_cast<HMENU>(IntToPtr(cID)), GetModuleHandle(NULL), this);
+		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;
+		hWnd = CreateWindowEx(nEstilosExtendidos, WC_TREEVIEW, NULL, nEstilos, cX, cY, cAncho, cAlto, hWndPadre, reinterpret_cast<HMENU>(IntToPtr(cID)), GetModuleHandle(NULL), this);
 		_ConectarControl(cID, nPadre);
 		return hWnd();
 	}
@@ -62,8 +63,9 @@ namespace DWL {
 	\return     Devuelve el HWND del TreeView o NULL en caso de error.
 	\remarks    Esta función solo debe utilizarse si tenemos un TreeView en un dialogo de los recursos.
 	*/
-	HWND DTreeView::Asignar(DhWnd &nPadre, const UINT cID) {
-		hWnd = GetDlgItem(nPadre(), cID);
+	HWND DTreeView::Asignar(DhWnd *nPadre, const UINT cID) {
+		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;
+		hWnd = GetDlgItem(hWndPadre, cID);
 		_ConectarControl(cID, nPadre);
 		return hWnd();
 	}

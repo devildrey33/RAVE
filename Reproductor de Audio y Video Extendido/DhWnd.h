@@ -21,8 +21,10 @@ namespace DWL {
 								DhWnd(void) : _hWnd(0)			{ };
 								DhWnd(HWND hWnd) : _hWnd(hWnd)	{ };
                                ~DhWnd(void)						{ Destruir(); };
+		inline HWND				hWnd(void)						{ return _hWnd; };
 		inline HWND				operator() (void)				{ return _hWnd; };
 		inline const bool		operator== (HWND chWnd)			{ return (_hWnd == chWnd); };
+		inline const bool		operator== (DhWnd *chWnd)		{ return (_hWnd == chWnd->hWnd()); };
 		inline void				operator= (HWND nhWnd)          { _hWnd = nhWnd; };
 		inline const BOOL		Activar(const BOOL nActivar)    { return EnableWindow(_hWnd, nActivar); };
 		inline const BOOL		Activado(void)					{ return IsWindowEnabled(_hWnd); };
@@ -86,12 +88,12 @@ namespace DWL {
 									DControl(void) { }
 		                           ~DControl(void) { }
 
-		HWND						CrearControl(DhWnd &nPadre, const TCHAR *nNombre, const TCHAR *nTexto, const INT_PTR cID, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos, HBRUSH nColorFondo = NULL);
+		HWND						CrearControl(DhWnd *nPadre, const TCHAR *nNombre, const TCHAR *nTexto, const INT_PTR cID, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos, HBRUSH nColorFondo = NULL);
 
 		virtual LRESULT CALLBACK	GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) { return _GestorMensajesOriginal(hWnd(), uMsg, wParam, lParam); };
 	 	DhWnd						hWnd;
 	  protected:
-		void					   _ConectarControl(const UINT nID, DhWnd &nPadre);
+		void					   _ConectarControl(const UINT nID, DhWnd *nPadre);
 		static LRESULT CALLBACK    _GestorMensajes(HWND HandleVentana, UINT uMsg, WPARAM wParam, LPARAM lParam);
 									//! WindowProcedure Orignal del control estándar
 		WNDPROC                    _GestorMensajesOriginal;

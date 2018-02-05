@@ -9,7 +9,7 @@ MarcoOpciones::MarcoOpciones() {
 MarcoOpciones::~MarcoOpciones() {
 }
 
-HWND MarcoOpciones::Crear(DhWnd &nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID) {
+HWND MarcoOpciones::Crear(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID) {
 	DControlEx::CrearControlEx(nPadre, L"MarcoOpciones", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD | WS_VISIBLE, NULL);
 
 	ScrollV_Pagina(0.001f);

@@ -44,13 +44,8 @@ namespace DWL {
 									   ~DArbolEx_Nodo(void);
 
 		inline const size_t             Ancestros(void)														{ return _Ancestros;					}
-//		inline std::wstring			   &Texto(void)															{ return _Texto;						}
-//		inline const BOOL				Expandido(void)														{ return _Expandido;					}
-//		inline void						Expandido(const BOOL nExpandido)									{ _Expandido = nExpandido;				}
 		inline void						MostrarExpansor(const DArbolEx_MostrarExpansor nMostrarExpansor)	{ _MostrarExpansor = nMostrarExpansor;	}
 		const BOOL						MostrarExpansor(void);
-/*		inline const BOOL				Seleccionado(void)													{ return _Seleccionado;					}
-		inline void						Seleccionado(const BOOL nSeleccionado)								{ _Seleccionado = nSeleccionado;		}*/
 
 		inline DhWnd_Fuente			   &Fuente(void)														{ return *_Fuente; }
 		inline void						Fuente(DhWnd_Fuente &nFuente)                                       { _Fuente = &nFuente;	_AnchoTexto = _Fuente->Tam(Texto).cx;	}
@@ -63,11 +58,14 @@ namespace DWL {
 
 		inline const int                IDIcono(void)														{ return _Icono->ID(); }
 		void                            Icono(const int nIconoRecursos);
+		void                            Icono(const GUID nIconoKnownFolder);
+		void                            Icono(const wchar_t *nIconoPath, const int nIconoPos);
 		void                            BorrarHijos(void);
 		//const size_t					Posicion(void);
 
 		std::wstring				    Texto;
 
+		BOOL                            Activado;			// bits necesaris 1	
 		BOOL						    Expandido;			// bits necesaris 1	
 		BOOL						    Seleccionado;		// bits necesaris 1
 	  protected:

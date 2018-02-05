@@ -8,22 +8,22 @@ void ControlesPantallaCompleta::Crear(void) {
 	DVentana::CrearVentana(L"ControlesPantallaCompleta", L"", 0, 0, 500, 80, WS_POPUP, WS_EX_TOOLWINDOW, NULL, NULL, NULL, NULL);
 	RECT RC;
 	GetClientRect(hWnd(), &RC);
-	BotonAtras.Crear(hWnd, L"<", 10, 10, 30, 30, ID_BOTON_ANTERIOR);
-	BotonPlay.Crear(hWnd, L"P", 50, 10, 30, 30, ID_BOTON_PLAY);
-	BotonPausa.Crear(hWnd, L"||", 90, 10, 30, 30, ID_BOTON_PAUSA);
-	BotonStop.Crear(hWnd, L"S", 130, 10, 30, 30, ID_BOTON_STOP);
-	BotonAdelante.Crear(hWnd, L">", 170, 10, 30, 30, ID_BOTON_SIGUIENTE);
+	BotonAtras.Crear(&hWnd, L"<", 10, 10, 30, 30, ID_BOTON_ANTERIOR);
+	BotonPlay.Crear(&hWnd, L"P", 50, 10, 30, 30, ID_BOTON_PLAY);
+	BotonPausa.Crear(&hWnd, L"||", 90, 10, 30, 30, ID_BOTON_PAUSA);
+	BotonStop.Crear(&hWnd, L"S", 130, 10, 30, 30, ID_BOTON_STOP);
+	BotonAdelante.Crear(&hWnd, L">", 170, 10, 30, 30, ID_BOTON_SIGUIENTE);
 
-	SliderTiempo.CrearBarraDesplazamientoEx(hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO);
+	SliderTiempo.CrearBarraDesplazamientoEx(&hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO);
 //	SliderTiempo.Crear(hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO, WS_CHILD | TBS_NOTICKS | WS_VISIBLE, 0, 30000, 0);
 //	SliderTiempo.TamPagina(30000 / 50);
 
-	SliderVolumen.CrearBarraDesplazamientoEx(hWnd, RC.right - 145, 13, 90, 16, ID_SLIDER_VOLUMEN, 0, 200, 100);
-	LabelVolumen.CrearLabelEx(hWnd, L"100%", RC.right - 40, 12, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
+	SliderVolumen.CrearBarraDesplazamientoEx(&hWnd, RC.right - 145, 13, 90, 16, ID_SLIDER_VOLUMEN, 0, 200, 100);
+	LabelVolumen.CrearLabelEx(&hWnd, L"100%", RC.right - 40, 12, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
 
-	LabelTiempoActual.CrearLabelEx(hWnd, L"00:00", RC.right - 265, 12, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
-	LabelTiempoSeparador.CrearLabelEx(hWnd, L"/", RC.right - 210, 12, 10, 20, ID_LABEL_TIEMPOSEPARADOR, TRUE, WS_CHILD | WS_VISIBLE);
-	LabelTiempoTotal.CrearLabelEx(hWnd, L"00:00", RC.right - 200, 12, 55, 20, ID_LABEL_TIEMPOTOTAL, TRUE, WS_CHILD | WS_VISIBLE);
+	LabelTiempoActual.CrearLabelEx(&hWnd, L"00:00", RC.right - 265, 12, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
+	LabelTiempoSeparador.CrearLabelEx(&hWnd, L"/", RC.right - 210, 12, 10, 20, ID_LABEL_TIEMPOSEPARADOR, TRUE, WS_CHILD | WS_VISIBLE);
+	LabelTiempoTotal.CrearLabelEx(&hWnd, L"00:00", RC.right - 200, 12, 55, 20, ID_LABEL_TIEMPOTOTAL, TRUE, WS_CHILD | WS_VISIBLE);
 }
 
 

@@ -32,7 +32,7 @@ namespace DWL {
 														DListaEx(void);
 		                                               ~DListaEx(void);
 														// Crea el control ListaEx
-		HWND											CrearListaEx(DhWnd &nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID);
+		HWND											CrearListaEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID);
 
 		DListaEx_Columna							   *AgregarColumna(const int nAncho = DLISTAEX_COLUMNA_ANCHO_AUTO, DListaEx_Columna_Alineacion nAlineacion = DListaEx_Columna_Alineacion_Izquierda);
 

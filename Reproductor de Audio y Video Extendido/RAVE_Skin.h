@@ -81,6 +81,7 @@
 #define COLOR_ARBOL_FONDO_RESALTADO					RGB(230, 230, 230)
 #define COLOR_ARBOL_FONDO_PRESIONADO				RGB(180, 180, 180)
 #define COLOR_ARBOL_TEXTO							RGB( 30,  30,  30)
+#define COLOR_ARBOL_TEXTO_DESACTIVADO				RGB(128, 128, 128)
 #define COLOR_ARBOL_TEXTO_SOMBRA					RGB(255, 255, 255)
 #define COLOR_ARBOL_TEXTO_RESALTADO					RGB( 50,  50,  50)
 //#define COLOR_ARBOL_TEXTO_PRESIONADO				RGB(  0,   0,   0) // El texto presionado está siempre seleccionado

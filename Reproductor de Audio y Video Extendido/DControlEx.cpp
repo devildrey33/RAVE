@@ -3,14 +3,15 @@
 
 namespace DWL {
 
-	HWND DControlEx::CrearControlEx(DhWnd &nPadre, const TCHAR *nNombre, const TCHAR *nTexto, const INT_PTR cID, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos, UINT nEstilosClase, HBRUSH nColorFondo) {
+	HWND DControlEx::CrearControlEx(DhWnd *nPadre, const TCHAR *nNombre, const TCHAR *nTexto, const INT_PTR cID, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos, UINT nEstilosClase, HBRUSH nColorFondo) {
 		if (hWnd()) { Debug_Escribir(L"DControlEx::Crear() Error : ya se ha creado el control extendido\n"); return hWnd(); }
 		ATOM CA = hWnd.RegistrarClase(nNombre, _GestorMensajes, nEstilosClase);
-		return CreateWindowEx(nEstilosExtendidos, nNombre, nTexto, nEstilos, cX, cY, cAncho, cAlto, nPadre(), reinterpret_cast<HMENU>(cID), GetModuleHandle(NULL), this);
+		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;
+		return CreateWindowEx(nEstilosExtendidos, nNombre, nTexto, nEstilos, cX, cY, cAncho, cAlto, hWndPadre, reinterpret_cast<HMENU>(cID), GetModuleHandle(NULL), this);
 	};
 
 
-	void DControlEx::_ConectarControl(const UINT nID, DhWnd &nPadre) {
+	void DControlEx::_ConectarControl(const UINT nID, DhWnd *nPadre) {
 		if (hWnd() != NULL) {
 			SetWindowLongPtr(hWnd(), GWLP_USERDATA, (LONG_PTR)this);
 			SetWindowLongPtr(hWnd(), GWLP_WNDPROC, (LONG_PTR)_GestorMensajes);

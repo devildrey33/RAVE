@@ -10,7 +10,7 @@ namespace DWL {
 	DLabelEx::~DLabelEx(void) {
 	}
 
-	HWND DLabelEx::CrearLabelEx(DhWnd &nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const BOOL nCentrado, const long Estilos) {
+	HWND DLabelEx::CrearLabelEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const BOOL nCentrado, const long Estilos) {
 		if (hWnd()) { Debug_Escribir(L"DLabelEx::CreadLabelEx() Error : ya se ha creado el label\n"); return hWnd(); }
 		hWnd = CrearControlEx(nPadre, L"DLabelEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
 

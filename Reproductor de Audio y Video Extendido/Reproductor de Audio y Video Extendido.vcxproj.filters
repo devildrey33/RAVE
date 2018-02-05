@@ -110,9 +110,6 @@
     <Filter Include="DWL\Ventanas\ControlesEx\Extensiones\EdicionTexto">
       <UniqueIdentifier>{f2dead2b-bc03-45d3-baa2-54285f0b675d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\DDesplegable">
-      <UniqueIdentifier>{bd307228-6d88-4cd4-929c-4f8eec183789}</UniqueIdentifier>
-    </Filter>
     <Filter Include="xXx _MAIN_ xXx">
       <UniqueIdentifier>{33c10cc3-7f24-444b-9777-dac5a9b6874d}</UniqueIdentifier>
     </Filter>
@@ -122,7 +119,10 @@
     <Filter Include="DWL\Ventanas\ControlesEx\ListaEx">
       <UniqueIdentifier>{10c2859e-f7d4-40cd-8923-0287f6759530}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\ExplorarDirectorios">
+    <Filter Include="DWL\Ventanas\ControlesEx\DesplegableEx">
+      <UniqueIdentifier>{bd307228-6d88-4cd4-929c-4f8eec183789}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\ExplorarDirectoriosEx">
       <UniqueIdentifier>{9c8ec836-aa61-4ed3-9265-8d6a79a9f649}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -305,7 +305,7 @@
       <Filter>DWL\Ventanas\ControlesEx</Filter>
     </ClInclude>
     <ClInclude Include="DDesplegable.h">
-      <Filter>DWL\Ventanas\ControlesEx\DDesplegable</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
     </ClInclude>
     <ClInclude Include="ArbolBD.h">
       <Filter>Ventanas\Controles</Filter>
@@ -329,7 +329,7 @@
       <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
     <ClInclude Include="DExplorarDirectoriosEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\ExplorarDirectorios</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ExplorarDirectoriosEx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -475,7 +475,7 @@
       <Filter>DWL\Ventanas\ControlesEx</Filter>
     </ClCompile>
     <ClCompile Include="DDesplegable.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\DDesplegable</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
     </ClCompile>
     <ClCompile Include="ArbolBD.cpp">
       <Filter>Ventanas\Controles</Filter>
@@ -496,7 +496,7 @@
       <Filter>Ventanas\Controles</Filter>
     </ClCompile>
     <ClCompile Include="DExplorarDirectoriosEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\ExplorarDirectorios</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ExplorarDirectoriosEx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -27,10 +27,10 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	CTW_ExtraX = (RW.right - RW.left) - RC.right;
 	CTW_ExtraY = (RW.bottom - RW.top) - RC.bottom;
 
-	Arbol.CrearArbolEx(hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_ARBOLBD);
+	Arbol.CrearArbolEx(&hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_ARBOLBD);
 	Arbol.hWnd.Visible(TRUE);
 
-	Lista.CrearListaEx(hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_LISTAMEDIOS);
+	Lista.CrearListaEx(&hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_LISTAMEDIOS);
 
 	// Columnas
 	Lista.AgregarColumna(24, DListaEx_Columna_Alineacion_Izquierda);							// Icono y pista
@@ -46,45 +46,45 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	Lista.AgregarColumna(TEXT("Tiempo"), 60, DWL::DEnum_ListView_AlineacionTexto::DEnum_ListView_AlineacionTexto_Derecha);
 	Lista.CambiarVista(DWL::DEnum_ListView_Vista::DEnum_ListView_Vista_Detalles);*/
 	
-	Video.Crear(hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_VERVIDEO);
-	Opciones.Crear(hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_OPCIONES);
+	Video.Crear(&hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_VERVIDEO);
+	Opciones.Crear(&hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_OPCIONES);
 	Opciones.hWnd.Visible(FALSE);
 
-	ExplorarDir.CrearExplorarDirectoriosEx(Opciones.hWnd, 10, 10, 300, 200, ID_OPCIONES);
+	ExplorarDir.CrearExplorarDirectoriosEx(&Opciones.hWnd, 10, 10, 300, 200, ID_OPCIONES);
 	ExplorarDir.hWnd.Visible(TRUE);
 
-	MarcoSI.Crear(hWnd, 10, 10, 360, 30, ID_MARCOSI);
-	BotonAtras.Crear(MarcoSI.hWnd, L"<", 0, 0, 30, 30, ID_BOTON_ANTERIOR);
-	BotonPlay.Crear(MarcoSI.hWnd, L"P", 40, 0, 30, 30, ID_BOTON_PLAY);
-	BotonPausa.Crear(MarcoSI.hWnd, L"||", 80, 0, 30, 30, ID_BOTON_PAUSA);
-	BotonStop.Crear(MarcoSI.hWnd, L"S", 120, 0, 30, 30, ID_BOTON_STOP);
-	BotonAdelante.Crear(MarcoSI.hWnd, L">", 160, 0, 30, 30, ID_BOTON_SIGUIENTE);
+	MarcoSI.Crear(&hWnd, 10, 10, 360, 30, ID_MARCOSI);
+	BotonAtras.Crear(&MarcoSI.hWnd, L"<", 0, 0, 30, 30, ID_BOTON_ANTERIOR);
+	BotonPlay.Crear(&MarcoSI.hWnd, L"P", 40, 0, 30, 30, ID_BOTON_PLAY);
+	BotonPausa.Crear(&MarcoSI.hWnd, L"||", 80, 0, 30, 30, ID_BOTON_PAUSA);
+	BotonStop.Crear(&MarcoSI.hWnd, L"S", 120, 0, 30, 30, ID_BOTON_STOP);
+	BotonAdelante.Crear(&MarcoSI.hWnd, L">", 160, 0, 30, 30, ID_BOTON_SIGUIENTE);
 
-	BotonMezclar.Crear(MarcoSI.hWnd, L"Mezclar", 210, 0, 70, 30, ID_BOTON_MEZCLAR, TRUE, DEnum_Button_Tipo_Split);
-	BotonRepetir.Crear(MarcoSI.hWnd, L"Repetir", 290, 0, 70, 30, ID_BOTON_REPETIR, TRUE, DEnum_Button_Tipo_Split);
+	BotonMezclar.Crear(&MarcoSI.hWnd, L"Mezclar", 210, 0, 70, 30, ID_BOTON_MEZCLAR, TRUE, DEnum_Button_Tipo_Split);
+	BotonRepetir.Crear(&MarcoSI.hWnd, L"Repetir", 290, 0, 70, 30, ID_BOTON_REPETIR, TRUE, DEnum_Button_Tipo_Split);
 
-	SliderTiempo.CrearBarraDesplazamientoEx(hWnd, 10, 50, RC.right - 20, 20, ID_SLIDER_TIEMPO);
+	SliderTiempo.CrearBarraDesplazamientoEx(&hWnd, 10, 50, RC.right - 20, 20, ID_SLIDER_TIEMPO);
 //	SliderTiempo.Crear(hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO, WS_CHILD | TBS_NOTICKS | WS_VISIBLE, 0, 30000, 0);
 //	SliderTiempo.TamPagina(30000 / 50);
 
-	MarcoSD.Crear(hWnd, RC.right - 260, 14, 250, 24, ID_MARCOSD);
+	MarcoSD.Crear(&hWnd, RC.right - 260, 14, 250, 24, ID_MARCOSD);
 
-	SliderVolumen.CrearBarraDesplazamientoEx(MarcoSD.hWnd, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.BD.Tabla_Opciones.Volumen()));
+	SliderVolumen.CrearBarraDesplazamientoEx(&MarcoSD.hWnd, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.BD.Tabla_Opciones.Volumen()));
 	std::wstring TxtVolumen = std::to_wstring(App.BD.Tabla_Opciones.Volumen()) + L"%";
-	LabelVolumen.CrearLabelEx(MarcoSD.hWnd, TxtVolumen.c_str(), 215, 2, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
+	LabelVolumen.CrearLabelEx(&MarcoSD.hWnd, TxtVolumen.c_str(), 215, 2, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
 
-	LabelTiempoActual.CrearLabelEx(MarcoSD.hWnd, L"00:00", 0, 2, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
-	LabelTiempoSeparador.CrearLabelEx(MarcoSD.hWnd, L"/", 55, 2, 10, 20, ID_LABEL_TIEMPOSEPARADOR,TRUE,  WS_CHILD | WS_VISIBLE);
-	LabelTiempoTotal.CrearLabelEx(MarcoSD.hWnd, L"00:00", 65, 2, 55, 20, ID_LABEL_TIEMPOTOTAL, WS_CHILD | WS_VISIBLE);
+	LabelTiempoActual.CrearLabelEx(&MarcoSD.hWnd, L"00:00", 0, 2, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
+	LabelTiempoSeparador.CrearLabelEx(&MarcoSD.hWnd, L"/", 55, 2, 10, 20, ID_LABEL_TIEMPOSEPARADOR,TRUE,  WS_CHILD | WS_VISIBLE);
+	LabelTiempoTotal.CrearLabelEx(&MarcoSD.hWnd, L"00:00", 65, 2, 55, 20, ID_LABEL_TIEMPOTOTAL, WS_CHILD | WS_VISIBLE);
 
 
-	MarcoII.Crear(hWnd, 10, 80, 120, 160, ID_MARCOSI);
+	MarcoII.Crear(&hWnd, 10, 80, 120, 160, ID_MARCOSI);
 
-	BotonBD.CrearBotonEx(MarcoII.hWnd, L"Base de datos", 0, 0, 120, 30, ID_BOTON_BD);
-	BotonLista.CrearBotonEx(MarcoII.hWnd, L"Lista de medios", 0, 40, 120, 30, ID_BOTON_LISTA);
-	BotonVideo.CrearBotonEx(MarcoII.hWnd, L"Ver video", 0, 80, 120, 30, ID_BOTON_VIDEO);
+	BotonBD.CrearBotonEx(&MarcoII.hWnd, L"Base de datos", 0, 0, 120, 30, ID_BOTON_BD);
+	BotonLista.CrearBotonEx(&MarcoII.hWnd, L"Lista de medios", 0, 40, 120, 30, ID_BOTON_LISTA);
+	BotonVideo.CrearBotonEx(&MarcoII.hWnd, L"Ver video", 0, 80, 120, 30, ID_BOTON_VIDEO);
 
-	BotonOpciones.CrearBotonEx(MarcoII.hWnd, L"Opciones", 0, 120, 120, 30, ID_BOTON_OPCIONES);
+	BotonOpciones.CrearBotonEx(&MarcoII.hWnd, L"Opciones", 0, 120, 120, 30, ID_BOTON_OPCIONES);
 
 	ShowWindow(hWnd(), nCmdShow);
 

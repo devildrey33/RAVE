@@ -64,7 +64,7 @@
 													\param[in]  nEstilosExtendidos   Estilos extendidos para el TreeView.
 													\return     Devuelve el HWND del TreeView o NULL en caso de error.
 											*/
-			  HWND							Crear(DhWnd &nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, DWORD nEstilos, DWORD nEstilosExtendidos = NULL);
+			  HWND							Crear(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, DWORD nEstilos, DWORD nEstilosExtendidos = NULL);
 
 
 										    //! Función para asignar esta clase a un TreeView de un dialogo.
@@ -75,7 +75,7 @@
 												  \return     Devuelve el HWND del TreeView o NULL en caso de error.
 												  \remarks    Esta función solo debe utilizarse si tenemos un TreeView en un dialogo de los recursos.
 										    */
-			  HWND							Asignar(DhWnd &nPadre, const UINT cID);
+			  HWND							Asignar(DhWnd *nPadre, const UINT cID);
 
 
 

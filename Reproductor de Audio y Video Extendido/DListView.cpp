@@ -62,11 +62,12 @@ namespace DWL {
             \param[in]  nEstilosExtendidos  Estilos extendidos para el ListView. Estos estilos son los que se asignan con la macro ListView_SetExtendedListViewStyleEx.
             \return     Devuelve el HWND del ListView o NULL en caso de error.
     */
-	HWND DListView::Crear(DhWnd &nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, DWORD nEstilos, DWORD nEstilosExtendidos) {
+	HWND DListView::Crear(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, DWORD nEstilos, DWORD nEstilosExtendidos) {
 		if (hWnd()) { Debug_Escribir(L"DListView::Crear() Error : ya se ha creado el listview\n"); return hWnd(); }
 
 		//        if (nPadre == NULL) throw (DError(this, __PROTOTIPO_FUNCION__, DEnum_Error_BaseWndNULL)); 
-		hWnd = CreateWindowEx(NULL, WC_LISTVIEW, NULL, nEstilos, cX, cY, cAncho, cAlto, nPadre(), reinterpret_cast<HMENU>(IntToPtr(cID)), GetModuleHandle(NULL), this); 
+		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;
+		hWnd = CreateWindowEx(NULL, WC_LISTVIEW, NULL, nEstilos, cX, cY, cAncho, cAlto, hWndPadre, reinterpret_cast<HMENU>(IntToPtr(cID)), GetModuleHandle(NULL), this); 
 		_ConectarControl(cID, nPadre);
         ListView_SetExtendedListViewStyleEx(hWnd(), DWL_ESTILOS_EX_LISTVIEW, nEstilosExtendidos);
         return hWnd();
@@ -81,9 +82,10 @@ namespace DWL {
             \return     Devuelve el HWND del ListView o NULL en caso de error.
             \remarks    Esta función solo debe utilizarse si tenemos un ListView en un dialogo de los recursos.
     */
-	HWND DListView::Asignar(DhWnd &nPadre, const UINT cID) {
+	HWND DListView::Asignar(DhWnd *nPadre, const UINT cID) {
 //        if (nPadre == NULL) throw (DError(this, __PROTOTIPO_FUNCION__, DEnum_Error_BaseWndNULL)); 
-		hWnd = GetDlgItem(nPadre(), cID);
+		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;
+		hWnd = GetDlgItem(hWndPadre, cID);
 		_ConectarControl(cID, nPadre); 
 //		_Fuente = (HFONT)SendMessage(_hWnd, WM_GETFONT, 0, 0);
 		return hWnd();

@@ -11,7 +11,7 @@ VerVideo::~VerVideo() {
 }
 
 
-HWND VerVideo::Crear(DhWnd &Padre, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID) {
+HWND VerVideo::Crear(DhWnd *Padre, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID) {
 	return DControlEx::CrearControlEx(Padre, L"VerVideo", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, CS_DBLCLKS /*| CS_VREDRAW | CS_HREDRAW */);
 }
 

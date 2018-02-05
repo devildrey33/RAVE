@@ -10,7 +10,7 @@ namespace DWL {
 	public:
 							DStaticControl() : DControl() { };
 		                   ~DStaticControl() { };
-		HWND				Crear(DhWnd &nPadre, const wchar_t *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, DWORD nEstilos = WS_CHILD, BOOL nVisible = TRUE);
+		HWND				Crear(DhWnd *nPadre, const wchar_t *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, DWORD nEstilos = WS_CHILD, BOOL nVisible = TRUE);
 		void				Texto(const wchar_t *nTexto);
 
 /*		void				Evento_Pintar(void);

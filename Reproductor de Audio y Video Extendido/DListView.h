@@ -707,7 +707,7 @@ MiListView.AgregarItem(0, -1, -1, TEXT("Item alineado a la izquierda"), TEXT("It
                                                         \param[in]  nEstilosExtendidos   Estilos extendidos para el ListView. Estos estilos son los que se asignan con la macro ListView_SetExtendedListViewStyleEx.
                                                         \return     Devuelve el HWND del ListView o NULL en caso de error.
                                                 */
-		    HWND	    					    Crear(DhWnd &nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, DWORD nEstilos, DWORD nEstilosExtendidos = NULL);
+		    HWND	    					    Crear(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, DWORD nEstilos, DWORD nEstilosExtendidos = NULL);
 
                                                 //! Función para asignar esta clase a un ListView de un dialogo.
                                                 /*! Esta función se usa para asignar esta clase a un ListView de un dialogo.
@@ -717,7 +717,7 @@ MiListView.AgregarItem(0, -1, -1, TEXT("Item alineado a la izquierda"), TEXT("It
                                                         \return     Devuelve el HWND del ListView o NULL en caso de error.
                                                         \remarks    Esta función solo debe utilizarse si tenemos un ListView en un dialogo de los recursos.
                                                 */
-			HWND							    Asignar(DhWnd &nPadre, const UINT cID);
+			HWND							    Asignar(DhWnd *nPadre, const UINT cID);
 
 											    //! Función para activar / desactivar el ListView.
 											    /*!	Esta función activa / desactiva el ListView, y cancela cualquier edición de un item/subitem que este utilizando un editbox o un combobox.

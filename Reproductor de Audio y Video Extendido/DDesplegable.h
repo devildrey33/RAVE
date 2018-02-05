@@ -28,10 +28,12 @@ namespace DWL {
   	  public:
 							DDesplegable(void);
 		                   ~DDesplegable(void);
-		HWND				CrearDesplegable(DhWnd &nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const DDesplegable_Tipo nTipo = DDesplegable_Tipo_ListaEdit_Texto);
+		HWND				CrearDesplegable(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const DDesplegable_Tipo nTipo = DDesplegable_Tipo_ListaEdit_Texto);
+		void                MostrarDesplegable(void);
 		LRESULT CALLBACK	GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	  protected:
-		DhWnd             *_ControlDesplegable; // Puede ser un DListaEx o un DArbolEx dependiendo del nTipo especificado crear el control con la función CrearDesplegable()
+		DhWnd_Fuente	   _Fuente;
+		  //		DhWnd             *_ControlDesplegable; // Puede ser un DListaEx o un DArbolEx dependiendo del nTipo especificado crear el control con la función CrearDesplegable()
 		DDesplegable_Tipo  _Tipo;				// Tipo de control desplegable
 	};
 }

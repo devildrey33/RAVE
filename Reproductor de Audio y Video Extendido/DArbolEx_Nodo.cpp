@@ -6,7 +6,7 @@
 namespace DWL {
 
 	DArbolEx_Nodo::DArbolEx_Nodo() :	_Siguiente(NULL), _Anterior(NULL), _Icono(NULL), _Fuente(NULL), _Ancestros(0), _AnchoTexto(0), _Arbol(NULL),
-										Expandido(FALSE), Seleccionado(FALSE), _SubSeleccionado(FALSE), _MostrarExpansor(DArbolEx_MostrarExpansor_Auto) {
+										Expandido(FALSE), Seleccionado(FALSE), _SubSeleccionado(FALSE), _MostrarExpansor(DArbolEx_MostrarExpansor_Auto), Activado(TRUE) {
 	};
 	
 	DArbolEx_Nodo::~DArbolEx_Nodo(void) {
@@ -27,6 +27,14 @@ namespace DWL {
 
 	void DArbolEx_Nodo::Icono(const int nIconoRecursos) {
 		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
+	}
+
+	void DArbolEx_Nodo::Icono(const GUID nIconoKnownFolder) {
+		_Icono = DListaIconos::AgregarIconoKnownFolder(nIconoKnownFolder, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
+	}
+
+	void DArbolEx_Nodo::Icono(const wchar_t *nIconoPath, const int nIconoPos) {
+		_Icono = DListaIconos::AgregarIconoExterno(nIconoPath, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO, nIconoPos);
 	}
 
 	void DArbolEx_Nodo::BorrarHijos(void) {

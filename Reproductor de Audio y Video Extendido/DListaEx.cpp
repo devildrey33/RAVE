@@ -20,7 +20,7 @@ namespace DWL {
 	}
 
 	
-	HWND DListaEx::CrearListaEx(DhWnd &nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID) {
+	HWND DListaEx::CrearListaEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID) {
 		if (hWnd()) { Debug_Escribir(L"DListaEx::CrearListaEx() Error : ya se ha creado la lista\n"); return hWnd(); }
 		hWnd = CrearControlEx(nPadre, L"DListaEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, CS_DBLCLKS); // CS_DBLCLKS (el control recibe notificaciones de doble click)
 		_Fuente = hWnd._Fuente;

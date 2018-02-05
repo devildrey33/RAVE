@@ -31,7 +31,6 @@ namespace DWL {
 		                                   ~DExplorarDirectoriosEx_Nodo(void) { };
 		DExplorarDirectoriosEx_TipoNodo		Tipo;
 		std::wstring                        Path;
-		BOOL                                Activado;
 	};
 
 
@@ -43,11 +42,11 @@ namespace DWL {
 		DExplorarDirectoriosEx_Nodo	   *AgregarEntrada(const TCHAR *nTexto, DExplorarDirectoriosEx_Nodo *nPadre = NULL, const int IconoRecursos = 0, DExplorarDirectoriosEx_TipoNodo nTipo = DExplorarDirectoriosEx_TipoNodo_INDEFINIDO, const wchar_t *nPath = L"", const BOOL nActivado = TRUE);
 		DExplorarDirectoriosEx_Nodo	   *AgregarEntrada(const TCHAR *nTexto, DExplorarDirectoriosEx_Nodo *nPadre, const GUID &KnowFolderId, DExplorarDirectoriosEx_TipoNodo nTipo = DExplorarDirectoriosEx_TipoNodo_INDEFINIDO, const wchar_t *nPath = L"", const BOOL nActivado = TRUE);
 		DExplorarDirectoriosEx_Nodo	   *AgregarEntrada(const TCHAR *nTexto, DExplorarDirectoriosEx_Nodo *nPadre, const wchar_t *PathIcono, const int PosIcono, DExplorarDirectoriosEx_TipoNodo nTipo = DExplorarDirectoriosEx_TipoNodo_INDEFINIDO, const wchar_t *nPath = L"", const BOOL nActivado = TRUE);
-		HWND							CrearExplorarDirectoriosEx(DhWnd &nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID);
+		HWND							CrearExplorarDirectoriosEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID);
 		void							ActualizarDirectorios(void);
 										// Opciones
 		BOOL                            MostrarArchivosOcultos;			// Por defecto FALSE
-		BOOL                            DesactivarDirectorioWindows;	// Por defecto TRUE
+//		BOOL                            DesactivarDirectorioWindows;	// Por defecto TRUE
 	  protected:
 //		void						   _ObtenerPathNodo(DExplorarDirectoriosEx_Nodo *nNodo, std::wstring &oPath);
 		void							Evento_Nodo_Expandido(DWL::DArbolEx_Nodo *nNodo, const BOOL nExpandido);

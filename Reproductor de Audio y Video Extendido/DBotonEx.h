@@ -16,7 +16,7 @@ namespace DWL {
 	  public:
 								DBotonEx();
 				               ~DBotonEx();
-		HWND					CrearBotonEx(DhWnd &nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const long Estilos = WS_CHILD | WS_VISIBLE);
+		HWND					CrearBotonEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const long Estilos = WS_CHILD | WS_VISIBLE);
 
 		void					PintarBotonEx(HDC DC);
 

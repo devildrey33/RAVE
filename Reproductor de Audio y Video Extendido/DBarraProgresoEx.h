@@ -8,7 +8,7 @@ namespace DWL {
 	  public:
 								DBarraProgresoEx();
 		                       ~DBarraProgresoEx();
-		HWND					CrearBarraProgresoEx(DhWnd &nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const float nMinimo = 0.0f, const float nMaximo = 1.0f, const float nValor = 0.0);
+		HWND					CrearBarraProgresoEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const float nMinimo = 0.0f, const float nMaximo = 1.0f, const float nValor = 0.0);
 
 		void					Minimo(const float nMinimo);
 		inline const float		Minimo(void) { return _Minimo; }

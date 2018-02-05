@@ -111,13 +111,13 @@
 														\param[in]  TipoBoton            Tipo de boton, puede ser : DEnum_Button_Tipo_Normal (POR DEFECTO), DEnum_Button_Tipo_PorDefecto, DEnum_Button_Tipo_PushLike, DEnum_Button_Tipo_Split, DEnum_Button_Tipo_SplitPorDefecto, DEnum_Button_Tipo_Link, y DEnum_Button_Tipo_LinkPorDefecto.
                                                         \return     Devuelve el HWND del Button o NULL en caso de error.
                                                 */
-			HWND	    					    Crear(DhWnd &nPadre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, const BOOL nVisible = TRUE, const DEnum_Button_Tipo TipoBoton = DEnum_Button_Tipo_Normal);
+			HWND	    					    Crear(DhWnd *nPadre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, const BOOL nVisible = TRUE, const DEnum_Button_Tipo TipoBoton = DEnum_Button_Tipo_Normal);
 
 			
-/*			HWND	    					    CrearBoton(DhWnd &nPadre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, const BOOL nVisible = TRUE);
-			HWND	    					    CrearPush(DhWnd &nPadre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, const BOOL nVisible = TRUE);
-			HWND	    					    CrearSplit(DhWnd &nPadre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, const BOOL nVisible = TRUE);
-			HWND	    					    CrearLink(DhWnd &nPadre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, const BOOL nVisible = TRUE);*/
+/*			HWND	    					    CrearBoton(DhWnd *nPadre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, const BOOL nVisible = TRUE);
+			HWND	    					    CrearPush(DhWnd *nPadre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, const BOOL nVisible = TRUE);
+			HWND	    					    CrearSplit(DhWnd *nPadre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, const BOOL nVisible = TRUE);
+			HWND	    					    CrearLink(DhWnd *nPadre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, const BOOL nVisible = TRUE);*/
 
                                                 //! Función para asignar esta clase a un Button de un dialogo.
                                                 /*! Esta función se usa para asignar esta clase a un Button de un dialogo.
@@ -127,7 +127,7 @@
                                                         \return     Devuelve el HWND del Button o NULL en caso de error.
                                                         \remarks    Esta función solo debe utilizarse si tenemos un Button en un dialogo de los recursos.
                                                 */
-			HWND							    Asignar(DhWnd &nPadre, const UINT cID);
+			HWND							    Asignar(DhWnd *nPadre, const UINT cID);
 
                                                 //! Función para asignar el texto del button.
                                                 /*! Esta función se usa para asignar el texto del button.

@@ -6,7 +6,7 @@ class MarcoOpciones : public DWL::DBarraScrollEx {
   public:
 						MarcoOpciones();
 					   ~MarcoOpciones();
-	HWND				Crear(DWL::DhWnd &nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID);
+	HWND				Crear(DWL::DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID);
 	
 	void				Pintar(HDC hDC);
 

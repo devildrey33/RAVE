@@ -123,10 +123,13 @@ namespace DWL {
 
 
 
-	HWND DControl::CrearControl(DhWnd &nPadre, const TCHAR *nNombre, const TCHAR *nTexto, const INT_PTR cID, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos, HBRUSH nColorFondo) {
+	HWND DControl::CrearControl(DhWnd *nPadre, const TCHAR *nNombre, const TCHAR *nTexto, const INT_PTR cID, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos, HBRUSH nColorFondo) {
 		//	ATOM CA = hWnd.RegistrarClase(nNombre, _GestorMensajes, 0, nColorFondo);
 		if (hWnd()) { Debug_Escribir(L"DControl::Crear() Error : ya se ha creado el control\n"); return hWnd(); }
-		hWnd = CreateWindowEx(nEstilosExtendidos, nNombre, nTexto, nEstilos, cX, cY, cAncho, cAlto, nPadre(), reinterpret_cast<HMENU>(cID), GetModuleHandle(NULL), this);
+
+		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;
+
+		hWnd = CreateWindowEx(nEstilosExtendidos, nNombre, nTexto, nEstilos, cX, cY, cAncho, cAlto, hWndPadre, reinterpret_cast<HMENU>(cID), GetModuleHandle(NULL), this);
 		return hWnd();
 		//	return CreateWindowEx(nEstiloExtendido, nNombre, nTexto, Estilo, cX, cY, cAncho, cAlto, nPadre(), reinterpret_cast<HMENU>(IntToPtr(nID)), GetModuleHandle(NULL), this);
 	};
@@ -138,7 +141,7 @@ namespace DWL {
 		return Control->GestorMensajes(uMsg, wParam, lParam);
 	};
 
-	void DControl::_ConectarControl(const UINT nID, DhWnd &nPadre) {
+	void DControl::_ConectarControl(const UINT nID, DhWnd *nPadre) {
 		if (hWnd() != NULL) {
 			SetWindowLongPtr(hWnd(), GWLP_USERDATA, (LONG_PTR)this);
 			_GestorMensajesOriginal = reinterpret_cast<WNDPROC>(SetWindowLongPtr(hWnd(), GWLP_WNDPROC, (LONG_PTR)_GestorMensajes));

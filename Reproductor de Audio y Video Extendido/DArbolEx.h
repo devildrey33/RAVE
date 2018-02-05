@@ -70,7 +70,7 @@ namespace DWL {
 		                                               ~DArbolEx(void);
 
 														// Crea el control ArbolEx
-		HWND											CrearArbolEx(DhWnd &nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID);
+		HWND											CrearArbolEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID);
 
 		void											Expandir(DArbolEx_Nodo *nNodo, const BOOL nExpandir);
 

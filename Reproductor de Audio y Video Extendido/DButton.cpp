@@ -17,7 +17,7 @@ namespace DWL {
 			\param[in]  TipoBoton            Tipo de boton, puede ser : DEnum_Button_Tipo_Normal (POR DEFECTO), DEnum_Button_Tipo_PorDefecto, DEnum_Button_Tipo_PushLike, DEnum_Button_Tipo_Split, DEnum_Button_Tipo_SplitPorDefecto, DEnum_Button_Tipo_Link, y DEnum_Button_Tipo_LinkPorDefecto.
 			\return     Devuelve el HWND del Button o NULL en caso de error.
 	*/
-	HWND DButton::Crear(DhWnd &nPadre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, const BOOL nVisible, const DEnum_Button_Tipo TipoBoton) {		
+	HWND DButton::Crear(DhWnd *nPadre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, const BOOL nVisible, const DEnum_Button_Tipo TipoBoton) {		
 		if (hWnd()) { Debug_Escribir(L"DButton::Crear() Error : ya se ha creado el boton\n"); return hWnd(); }
 
 		DWORD Estilos = NULL;
@@ -30,7 +30,8 @@ namespace DWL {
 			case DEnum_Button_Tipo_Link:				Estilos = WS_CHILD | BS_COMMANDLINK;		break;
 			case DEnum_Button_Tipo_LinkPorDefecto:		Estilos = WS_CHILD | BS_DEFCOMMANDLINK;		break;
 		}
-		hWnd = CreateWindowEx(NULL, TEXT("BUTTON"), nTexto, Estilos, cX, cY, cAncho, cAlto, nPadre(), reinterpret_cast<HMENU>(IntToPtr(cID)), GetModuleHandle(NULL), this);
+		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;
+		hWnd = CreateWindowEx(NULL, TEXT("BUTTON"), nTexto, Estilos, cX, cY, cAncho, cAlto, hWndPadre, reinterpret_cast<HMENU>(IntToPtr(cID)), GetModuleHandle(NULL), this);
 		_ConectarControl(cID, nPadre);
 		if (nVisible) {
 			hWnd.Visible(TRUE);
@@ -48,8 +49,9 @@ namespace DWL {
 			\return     Devuelve el HWND del Button o NULL en caso de error.
 			\remarks    Esta función solo debe utilizarse si tenemos un Button en un dialogo de los recursos.
 	*/
-	HWND DButton::Asignar(DhWnd &nPadre, const UINT cID) {
-		hWnd = GetDlgItem(nPadre(), cID);
+	HWND DButton::Asignar(DhWnd *nPadre, const UINT cID) {
+		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;
+		hWnd = GetDlgItem(hWndPadre, cID);
 		_ConectarControl(cID, nPadre);
 		return hWnd();
 	};

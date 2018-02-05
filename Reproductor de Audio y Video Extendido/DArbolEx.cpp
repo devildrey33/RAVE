@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "DListaIconos.h"
 #include "DMensajesWnd.h"
-//#include "DArbolEx.h"
+#include "DArbolEx.h"
 
 
 /*		_________ _______  ______   _______																											 _  _ 
@@ -41,7 +41,7 @@ namespace DWL {
 		}
 	}
 
-	HWND DArbolEx::CrearArbolEx(DhWnd &nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID) {
+	HWND DArbolEx::CrearArbolEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID) {
 		if (hWnd()) { Debug_Escribir(L"DArbolEx::CrearArbolEx() Error : ya se ha creado el arbol\n"); return hWnd(); }
 		hWnd = CrearControlEx(nPadre, L"DArbolEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, CS_DBLCLKS);  // CS_DBLCLKS (el control recibe notificaciones de doble click)
 		_Fuente = hWnd._Fuente;
@@ -70,89 +70,6 @@ namespace DWL {
 
 		_CalcularValores = TRUE;
 	}
-	/*
-	DArbolEx_Nodo *DArbolEx::_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre, const int nIcono, DhWnd_Fuente *nFuente, const size_t PosicionNodo) {
-		// Asigno el arbol padre
-		nNodo->_Arbol = this;
-
-		// Asigno el texto
-		nNodo->Texto = nTexto;
-		// Cargo el icono (si existe)
-		if (nIcono != NULL) {
-			nNodo->_Icono = DListaIconos::AgregarIconoRecursos(nIcono, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
-		}
-
-		// Compruebo la fuente (si no es NULL asigno la nueva fuente)
-		if (nFuente != NULL) nNodo->_Fuente = nFuente;
-		else                 nNodo->_Fuente = &_Fuente; // no se ha especificado la fuente, asigno la fuente por defecto del arbol
-
-														// Calculo y asigno el ancho del texto
-		nNodo->_AnchoTexto = nNodo->_Fuente->Tam(nNodo->Texto).cx;
-
-		// Compruebo el padre (si es null nPadre será _Raiz)
-		if (nPadre == NULL) {
-			nPadre = &_Raiz;
-		}
-		// Asigno el nodo padre y el total de ancestros para este nodo
-		nNodo->_Padre = nPadre;
-		nNodo->_Ancestros = nPadre->_Ancestros + 1;
-
-		// Si el padre está expandido, sumo la altura de este nodo al total 
-		if (nNodo->_Padre->Expandido == TRUE) {
-			// Cuento los pixeles de todos los nodos visibles
-			_TotalAltoVisible += (nNodo->_Fuente->Alto() + (DARBOLEX_PADDING * 2));
-		}
-		DArbolEx_Nodo *nAnterior = NULL;
-		size_t nPos = 0;
-		switch (PosicionNodo) {
-			// Al final de la lista
-		case DARBOLEX_POSICIONNODO_FIN:
-			// Asigno el nodo sigüiente al último nodo del padre (si es que existe algún nodo)
-			if (nPadre->TotalHijos() > 0) {
-				nPadre->Hijo(nPadre->TotalHijos() - 1)->_Siguiente = nNodo;
-				nNodo->_Anterior = nPadre->_Hijos[nPadre->TotalHijos() - 1];
-			}
-			nPadre->_Hijos.push_back(nNodo);
-			break;
-
-			// Por orden alfabético
-		case DARBOLEX_POSICIONNODO_ORDENADO:
-			// Busco la posición que deberia tener ordenado alfabeticamente
-			for (nPos = 0; nPos < nPadre->TotalHijos(); nPos++) {
-				if (_wcsicmp(nTexto, nPadre->Hijo(nPos)->Texto.c_str()) < 0) break;
-			}
-			// enlazo el nodo anterior
-			if (nPadre->TotalHijos() > 0 && nPos > 0) { nNodo->_Anterior = nPadre->_Hijos[nPos - 1]; }
-
-			// Enlazo el nodo siguiente
-			if (nPos > 0) { nPadre->_Hijos[nPos - 1]->_Siguiente = nNodo; }
-			if (nPos < nPadre->_Hijos.size()) { nNodo->_Siguiente = nPadre->_Hijos[nPos]; }
-
-			// Agrego el nodo 
-			if (nPadre->_Hijos.size() == 0) { nPadre->_Hijos.push_back(nNodo); }
-			else { nPadre->_Hijos.insert(nPadre->_Hijos.begin() + nPos, nNodo); }
-			break;
-
-			// el default incluye DARBOLEX_POSICIONNODO_INICIO que es 0
-		default:
-			// enlazo el nodo anterior
-			if (nPadre->TotalHijos() > 0 && nPos > 0) { nNodo->_Anterior = nPadre->_Hijos[nPos - 1]; }
-
-			// Enlazo el nodo siguiente
-			if (PosicionNodo > 0) { nPadre->_Hijos[PosicionNodo - 1]->_Siguiente = nNodo; }
-			if (PosicionNodo + 1 > nPadre->TotalHijos()) { nNodo->_Siguiente = nPadre->_Hijos[PosicionNodo + 1]; }
-			// Agrego el nodo 
-			if (nPadre->_Hijos.size() == 0) { nPadre->_Hijos.push_back(nNodo); }
-			else { nPadre->_Hijos.insert(nPadre->_Hijos.begin() + PosicionNodo, nNodo); }
-			break;
-
-		}
-
-		_CalcularValores = TRUE;
-		//		_CalcularScrolls();
-		return nNodo;
-	}*/
-
 
 	DArbolEx_Nodo *DArbolEx::_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre, DListaIconos_Icono *nIcono, DhWnd_Fuente *nFuente, const size_t PosicionNodo) {
 		// Asigno el arbol padre
@@ -161,12 +78,10 @@ namespace DWL {
 		// Asigno el texto
 		nNodo->Texto = nTexto;
 		// Cargo el icono (si existe)
-		if (nIcono == NULL) {
+/*		if (nIcono == NULL) {
 			nNodo->_Icono = NULL;
-		}
+		}*/
 		nNodo->_Icono = nIcono;
-//			nNodo->_Icono = DListaIconos::AgregarIconoRecursos(nIcono, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
-//		}
 
 		// Compruebo la fuente (si no es NULL asigno la nueva fuente)
 		if (nFuente != NULL) nNodo->_Fuente = nFuente;
@@ -234,8 +149,8 @@ namespace DWL {
 
 		}
 
+		// Recalcular valores del arbol en el próximo repintado
 		_CalcularValores = TRUE;
-		//		_CalcularScrolls();
 		return nNodo;
 	}
 
@@ -284,8 +199,9 @@ namespace DWL {
 
 
 	void DArbolEx::Pintar(HDC hDC) {
+		// Compruebo si hay que recalcular los valores del arbol antes de pintar
 		if (_CalcularValores == TRUE) {
-			_CalcularValores = FALSE;
+			
 			_CalcularScrolls();
 		}
 
@@ -340,58 +256,76 @@ namespace DWL {
 	void DArbolEx::PintarNodo(HDC hDC, RECT *Espacio, DArbolEx_Nodo *nNodo, const int PosH) {
 		// Determino el estado del nodo (0 normal, 1 presionado, 2 resaltado, 3 seleccionado, 4 presionado, 5 resaltado, 6 sub-seleccionado, 7 presionado, 8 resaltado)
 		int Estado = 0;
-		if		(nNodo == _NodoPresionado) 			Estado = 1;
-		else if (nNodo == _NodoResaltado)			Estado = 2;
 
-		if		(nNodo->_SubSeleccionado == TRUE)   Estado += 6;
-		else if (nNodo->Seleccionado	 == TRUE)	Estado += 3;
+		// Normal +0, Presionado +1, Resaltado +2
+		if			(nNodo == _NodoPresionado) 			Estado = 1;
+		else if		(nNodo == _NodoResaltado)			Estado = 2;
+
+		// Activado +0, Desactivado +9
+		if			(nNodo->Activado == FALSE)			Estado += 9;
+		else {
+			// Seleccionado +3, SubSeleccionado +6
+			if		(nNodo->Seleccionado == TRUE)		Estado += 3;
+			else if (nNodo->_SubSeleccionado == TRUE)   Estado += 6;
+		}
 
 		COLORREF ColFondo = NULL, ColTexto = NULL, ColSombra = NULL;
 		switch (Estado) {
-			case 0: // Normal
+			case 0: // Activado Normal
 				ColTexto  = COLOR_ARBOL_TEXTO;
 				ColSombra = COLOR_ARBOL_TEXTO_SOMBRA;
 				ColFondo  = COLOR_ARBOL_FONDO;
 				break;
-			case 1: // Presionado
+			case 1: // Activado Presionado
 				ColTexto  = COLOR_ARBOL_SELECCION_TEXTO_PRESIONADO;
 				ColSombra = COLOR_ARBOL_TEXTO_SOMBRA;
 				ColFondo  = COLOR_ARBOL_FONDO_PRESIONADO;
 				break;
-			case 2: // Resaltado
+			case 2: // Activado Resaltado
 				ColTexto  = COLOR_ARBOL_TEXTO_RESALTADO;
 				ColSombra = COLOR_ARBOL_TEXTO_SOMBRA;
 				ColFondo  = COLOR_ARBOL_FONDO_RESALTADO;
 				break;
-			case 3: // Seleccionado
+			case 3: // Activado Seleccionado
 				ColTexto  = COLOR_ARBOL_SELECCION_TEXTO;
 				ColSombra = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
 				ColFondo  = COLOR_ARBOL_SELECCION;
 				break;
-			case 4: // Seleccionado presionado
+			case 4: // Activado Seleccionado presionado
 				ColTexto  = COLOR_ARBOL_SELECCION_TEXTO_PRESIONADO;
 				ColSombra = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
 				ColFondo  = COLOR_ARBOL_SELECCION_PRESIONADO;
 				break;
-			case 5: // Seleccionado resaltado
+			case 5: // Activado Seleccionado resaltado
 				ColTexto  = COLOR_ARBOL_SELECCION_TEXTO_RESALTADO;
 				ColSombra = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
 				ColFondo  = COLOR_ARBOL_SELECCION_RESALTADO;
 				break;
-			case 6: // Sub-Seleccionado
+			case 6: // Activado Sub-Seleccionado
 				ColTexto  = COLOR_ARBOL_SUBSELECCION_TEXTO;
 				ColSombra = COLOR_ARBOL_SUBSELECCION_TEXTO_SOMBRA;
 				ColFondo  = COLOR_ARBOL_SUBSELECCION;
 				break;
-			case 7: // Sub-Seleccionado presionado
+			case 7: // Activado Sub-Seleccionado presionado
 				ColTexto  = COLOR_ARBOL_SELECCION_TEXTO_PRESIONADO;
 				ColSombra = COLOR_ARBOL_SUBSELECCION_TEXTO_SOMBRA;
 				ColFondo  = COLOR_ARBOL_SELECCION_PRESIONADO;
 				break;
-			case 8: // Sub-Seleccionado resaltado
+			case 8: // Activado Sub-Seleccionado resaltado
 				ColTexto  = COLOR_ARBOL_SUBSELECCION_TEXTO_RESALTADO;
 				ColSombra = COLOR_ARBOL_SUBSELECCION_TEXTO_SOMBRA;
 				ColFondo  = COLOR_ARBOL_SUBSELECCION_RESALTADO;
+				break;
+			case 9: // Desactivado Normal
+				ColTexto  = COLOR_ARBOL_TEXTO_DESACTIVADO;
+				ColSombra = COLOR_ARBOL_TEXTO_SOMBRA;
+				ColFondo  = COLOR_ARBOL_FONDO;
+				break;
+			case 10: // Desactivado Presionado
+			case 11: // Desactivado Resaltado
+				ColTexto  = COLOR_ARBOL_TEXTO_DESACTIVADO;
+				ColSombra = COLOR_ARBOL_TEXTO_SOMBRA;
+				ColFondo  = COLOR_ARBOL_FONDO_RESALTADO;
 				break;
 		}
 
@@ -845,6 +779,9 @@ namespace DWL {
 
 
 	void DArbolEx::_CalcularScrolls(void) {
+		// Desactivo la comprobación para recalcular los valores
+		_CalcularValores = FALSE;
+
 		RECT RC;
 		GetClientRect(hWnd(), &RC);
 		_CalcularTotalEspacioVisible();
@@ -908,12 +845,13 @@ namespace DWL {
 
 	void DArbolEx::SeleccionarNodo(DArbolEx_Nodo *sNodo, const BOOL nSeleccionado) {
 		if (sNodo == NULL) return;
+		if (sNodo->Activado == FALSE) return;
 
 		sNodo->Seleccionado = nSeleccionado;
 		if (SubSeleccion == TRUE && sNodo->_Hijos.size() > 0) {
 			DArbolEx_Nodo *Tmp = sNodo->_Hijos[0];
 			while (Tmp != NULL) {
-				Tmp->_SubSeleccionado = nSeleccionado;
+				if (Tmp->Activado == TRUE)	Tmp->_SubSeleccionado = nSeleccionado;
 				Tmp = BuscarNodoSiguiente(Tmp, FALSE, sNodo);
 			}
 		}
@@ -949,9 +887,13 @@ namespace DWL {
 		}
 		_TiempoUltimoClick = GetTickCount();*/
 
-		_NodoPresionado			= HitTest(cX, cY, _NodoResaltadoParte);
-		_NodoPresionadoParte	= _NodoResaltadoParte;
-		_NodoMarcado			= _NodoPresionado;
+		_NodoMarcado = HitTest(cX, cY, _NodoResaltadoParte);
+		if (_NodoMarcado != NULL) {
+			if (_NodoMarcado->Activado == TRUE) {
+				_NodoPresionadoParte	= _NodoResaltadoParte;
+				_NodoPresionado			= _NodoMarcado;
+			}
+		}
 		if (MultiSeleccion == TRUE && (DhWnd::_Teclado[VK_CONTROL] == true || DhWnd::_Teclado[VK_SHIFT] == true)) {
 			if (DhWnd::_Teclado[VK_CONTROL] == true) {
 				if (_NodoPresionado != NULL) SeleccionarNodo(_NodoPresionado, !_NodoPresionado->Seleccionado);

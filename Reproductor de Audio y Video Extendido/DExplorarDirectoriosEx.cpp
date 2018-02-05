@@ -11,7 +11,7 @@ namespace DWL {
 	DExplorarDirectoriosEx::~DExplorarDirectoriosEx(void) {
 	}
 
-	HWND DExplorarDirectoriosEx::CrearExplorarDirectoriosEx(DhWnd &nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID) {
+	HWND DExplorarDirectoriosEx::CrearExplorarDirectoriosEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID) {
 		HWND rhWnd = CrearArbolEx(nPadre, cX, cY, cAncho, cAlto, cID);
 		ActualizarDirectorios();
 		return rhWnd;
@@ -174,7 +174,6 @@ namespace DWL {
 		std::wstring					sPath;
 		hFind = FindFirstFile(nPath.c_str(), &FindInfoPoint);
 		BOOL							Agregar = false;
-		BOOL							nActivado = TRUE;
 		DExplorarDirectoriosEx_Nodo    *TmpNodo = NULL;
 		std::wstring                    PathWindows;
 		
@@ -185,23 +184,16 @@ namespace DWL {
 				(FindInfoPoint.cFileName[0] != L'.' && FindInfoPoint.cFileName[1] != L'.' && FindInfoPoint.cFileName[2] != L'\0')) {	// Si no es el directorio "..\0" (puede ser ..algo)
 				// Miro si es un directorio oculto y si hay que mostrarlos
 				Agregar = false;
-				if (FindInfoPoint.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN && MostrarArchivosOcultos == TRUE)	{	Agregar = true;	}
+				if (FindInfoPoint.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN && MostrarArchivosOcultos == TRUE)	{	Agregar = true;	} // Directorio oculto, y hay que mostrar directorios ocultos
 				else																							{	Agregar = true;	} // Es un directorio normal
-				nActivado = TRUE;
-				// Compruebo si es el directorio de windows y hay que desactivarlo
-				sPath = nNodo->Path + FindInfoPoint.cFileName;
-				if (DesactivarDirectorioWindows == TRUE) {
-					DDirectoriosWindows::Windows(PathWindows);
-					if (PathWindows == sPath)  { nActivado = FALSE;	}
-				}
+				
 				// Agrego el directorio
+				sPath = nNodo->Path + FindInfoPoint.cFileName;
 				if (Agregar = true) {
-					TmpNodo = AgregarEntrada(FindInfoPoint.cFileName, nNodo, sPath.c_str(), 0, DExplorarDirectoriosEx_TipoNodo_Directorio, sPath.c_str(), nActivado);
-					if (nActivado == TRUE) { // Si está activado (por defecto el directorio windows está desactivado, y no se puede seleccionar aunque se muestre en el control)
-						if (_TieneDirectorios(sPath.c_str()) == TRUE) { // Si tiene subdirectorios agrego el expansor
-							AgregarEntrada(L"+", TmpNodo, 0, DExplorarDirectoriosEx_TipoNodo_Directorio_PorExplorar);
-						}
-					}
+					TmpNodo = AgregarEntrada(FindInfoPoint.cFileName, nNodo, sPath.c_str(), 0, DExplorarDirectoriosEx_TipoNodo_Directorio, sPath.c_str(), TRUE);
+					BOOL Ret = _TieneDirectorios(sPath.c_str());
+					if		(Ret == TRUE)	{	AgregarEntrada(L"+", TmpNodo, 0, DExplorarDirectoriosEx_TipoNodo_Directorio_PorExplorar);	} // Si tiene subdirectorios agrego el expansor
+					else if (Ret == 2)		{	TmpNodo->Activado = FALSE;																	} // Aceso denegado (desactivo el item)
 				}
 				
 			}
@@ -218,6 +210,11 @@ namespace DWL {
 		std::wstring					nPath = tPath; nPath += (nPath[nPath.size() - 1] == L'\\') ? L"*.*" : L"\\*.*";
 		BOOL                            nTieneDirectorios = FALSE;
 		hFind = FindFirstFile(nPath.c_str(), &FindInfoPoint);
+
+		if (hFind == INVALID_HANDLE_VALUE && GetLastError() == ERROR_ACCESS_DENIED) {			
+			return 2;
+		}
+
 		while (FindNextFile(hFind, &FindInfoPoint) != 0) {
 			// Si es un directorio y no es ni "." ni ".."
 			if (FindInfoPoint.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY &&															// Si es un directorio
