@@ -1,8 +1,9 @@
 #pragma once
 
 // Fuente por defecto
-#define FUENTE_NORMAL			L"Tahoma"
-#define FUENTE_NORMAL_TAM		18
+#define FUENTE_NORMAL			L"tahoma"
+#define FUENTE_NORMAL_TAM		21
+#define FUENTE_PEQUE_TAM		18
 // Tamaño ancho / alto de la barra de scroll (ancho si es vertical, alto si es horizontal)
 //#define TAM_BARRA_SCROLL		16
 

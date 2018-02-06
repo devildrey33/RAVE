@@ -35,12 +35,12 @@ NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre,
 	}
 
 	int                       nIcono   = 0;
-	DhWnd_Fuente             *nFuente  = &hWnd._Fuente;
+	DhWnd_Fuente             *nFuente  = &_Fuente;
 	DArbolEx_MostrarExpansor  nExpansor = DArbolEx_MostrarExpansor_Mostrar;
 //	size_t			nPos = 0;
 	switch (nTipoNodo) {
 		case ArbolBD_TipoNodo_Raiz:			// Raíz añadida por el usuario
-			nFuente = &hWnd._FuenteB;
+			nFuente = &_Fuente21Negrita;
 			nIcono = RAVE_Iconos::RAVE_Icono_Raiz;
 			break;
 		case ArbolBD_TipoNodo_Directorio:	// Directorio dentro de una raíz

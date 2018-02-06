@@ -7,7 +7,7 @@ namespace DWL {
 	DListaEx::DListaEx(void) :	_ItemPaginaInicio(-1)	, _ItemPaginaFin(-1)	, _ItemPaginaVDif(0)		, _ItemPaginaHDif(0),
 								_ItemResaltado(-1)		, _ItemUResaltado(-1)	, _ItemMarcado(-1)			, /*_SubItemResaltado(-1)		,*/
 								_ItemPresionado(-1)		, _ItemShift(-1)		, _CalcularValores(FALSE)	,
-								_TotalAnchoVisible(0)	, _TotalAltoVisible(0)	,
+								_TotalAnchoVisible(0)	, _TotalAltoVisible(0)	, _Fuente(NULL)             ,
 								_BufferItem(NULL)		, _BufferItemBmp(NULL)	, _BufferItemBmpViejo(NULL)	, _BufferItemFuenteViejo(NULL) {
 
 		_ColorFondoScroll = COLOR_LISTA_FONDO_SCROLL;
@@ -22,8 +22,8 @@ namespace DWL {
 	
 	HWND DListaEx::CrearListaEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID) {
 		if (hWnd()) { Debug_Escribir(L"DListaEx::CrearListaEx() Error : ya se ha creado la lista\n"); return hWnd(); }
-		hWnd = CrearControlEx(nPadre, L"DListaEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, CS_DBLCLKS); // CS_DBLCLKS (el control recibe notificaciones de doble click)
-		_Fuente = hWnd._Fuente;
+		_Fuente = _Fuente18Normal;
+		_hWnd = CrearControlEx(nPadre, L"DListaEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, CS_DBLCLKS); // CS_DBLCLKS (el control recibe notificaciones de doble click)
 		return hWnd();
 	}
 	
@@ -711,8 +711,8 @@ namespace DWL {
 	LRESULT CALLBACK DListaEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
 			// Foco
-			case WM_SETFOCUS:		hWnd.BorrarBufferTeclado();																													return 0;
-			case WM_KILLFOCUS:		hWnd.BorrarBufferTeclado();																													return 0;
+			case WM_SETFOCUS:		BorrarBufferTeclado();																														return 0;
+			case WM_KILLFOCUS:		BorrarBufferTeclado();																														return 0;
 			// Pintado
 			case WM_PAINT:			_Evento_Pintar();																															return 0;
 			// Cambio de tamaño

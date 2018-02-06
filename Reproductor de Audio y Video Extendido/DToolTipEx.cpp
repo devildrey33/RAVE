@@ -6,7 +6,7 @@
 namespace DWL {
 
 
-	DToolTipEx::DToolTipEx() {
+	DToolTipEx::DToolTipEx() : _Fuente(NULL) {
 	}
 
 
@@ -15,7 +15,8 @@ namespace DWL {
 
 
 	HWND DToolTipEx::CrearToolTipEx(void) {
-		hWnd = DVentana::CrearVentana(L"ToolTipEx", L"", 0, 0, 0, 0, WS_POPUP, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
+		_hWnd = DVentana::CrearVentana(L"ToolTipEx", L"", 0, 0, 0, 0, WS_POPUP, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
+		_Fuente = _Fuente18Normal;
 		return hWnd();
 	}
 
@@ -24,7 +25,7 @@ namespace DWL {
 		HDC	   		hDC = CreateCompatibleDC(NULL);
 		HBITMAP		Bmp = CreateCompatibleBitmap(hDC, 1, 1);
 		HBITMAP		Viejo = static_cast<HBITMAP>(SelectObject(hDC, Bmp));
-		HFONT       vFuente = static_cast<HFONT>(SelectObject(hDC, hWnd._Fuente()));
+		HFONT       vFuente = static_cast<HFONT>(SelectObject(hDC, _Fuente()));
 		//	HFONT		FViejo = static_cast<HFONT>(SelectObject(hDC, Estilos.Fuentes.Normal()));
 		SIZE		Ret = { 0, 0 };
 		//	int			Padding = 8; // 8 pixeles de margen
@@ -69,7 +70,7 @@ namespace DWL {
 
 		SetBkMode(Buffer, TRANSPARENT);
 		SetTextColor(Buffer, COLOR_TOOLTIP_TEXTO);
-		HFONT vFuente = static_cast<HFONT>(SelectObject(Buffer, hWnd._Fuente()));
+		HFONT vFuente = static_cast<HFONT>(SelectObject(Buffer, _Fuente()));
 		TextOut(Buffer, DTOOLTIPEX_PADDING, DTOOLTIPEX_PADDING, _Str.c_str(), static_cast<int>(_Str.size()));
 		SelectObject(Buffer, vFuente);
 

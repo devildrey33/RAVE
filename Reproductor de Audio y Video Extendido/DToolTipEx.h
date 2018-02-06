@@ -20,6 +20,7 @@ namespace DWL {
 		LRESULT CALLBACK	GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	  protected:
 		std::wstring	   _Str;
+		DhWnd_Fuente       _Fuente;
 	};
 
 }

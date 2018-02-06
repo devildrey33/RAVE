@@ -12,11 +12,11 @@ MarcoOpciones::~MarcoOpciones() {
 HWND MarcoOpciones::Crear(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID) {
 	DControlEx::CrearControlEx(nPadre, L"MarcoOpciones", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD | WS_VISIBLE, NULL);
 
-	ScrollV_Pagina(0.001f);
+/*	ScrollV_Pagina(0.001f);
 	ScrollV_Visible(TRUE);
 	
 	ScrollH_Pagina(50.0f);
-	ScrollH_Visible(TRUE);
+	ScrollH_Visible(TRUE);*/
 
 	return hWnd();
 }
@@ -48,7 +48,7 @@ void MarcoOpciones::Pintar(HDC hDC) {
 LRESULT CALLBACK MarcoOpciones::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
 		case WM_COMMAND:
-			return SendMessage(hWnd.Padre(), uMsg, wParam, lParam);
+			return SendMessage(hWndPadre(), uMsg, wParam, lParam);
 
 		case WM_SIZE:
 			Repintar();

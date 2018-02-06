@@ -139,7 +139,7 @@ const BOOL TablaOpciones::GuardarOpciones(void) {
 }
 
 const BOOL TablaOpciones::GuardarPosTamVentana(void) {
-	if (App.VentanaRave.hWnd.Maximizada() == FALSE) {
+	if (App.VentanaRave.Maximizada() == FALSE) {
 		RECT RC;
 		GetWindowRect(App.VentanaRave.hWnd(), &RC);
 		_PosX = RC.left;

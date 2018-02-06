@@ -38,7 +38,7 @@ namespace DWL {
     */
 	DListView::~DListView(void) {
         CancelarEdicion();
-		hWnd.Destruir();
+		Destruir();
 		size_t i;
 		for (i = 0; i < _Columnas.size(); i++) {
 			delete _Columnas[i];
@@ -67,7 +67,7 @@ namespace DWL {
 
 		//        if (nPadre == NULL) throw (DError(this, __PROTOTIPO_FUNCION__, DEnum_Error_BaseWndNULL)); 
 		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;
-		hWnd = CreateWindowEx(NULL, WC_LISTVIEW, NULL, nEstilos, cX, cY, cAncho, cAlto, hWndPadre, reinterpret_cast<HMENU>(IntToPtr(cID)), GetModuleHandle(NULL), this); 
+		_hWnd = CreateWindowEx(NULL, WC_LISTVIEW, NULL, nEstilos, cX, cY, cAncho, cAlto, hWndPadre, reinterpret_cast<HMENU>(IntToPtr(cID)), GetModuleHandle(NULL), this); 
 		_ConectarControl(cID, nPadre);
         ListView_SetExtendedListViewStyleEx(hWnd(), DWL_ESTILOS_EX_LISTVIEW, nEstilosExtendidos);
         return hWnd();
@@ -85,7 +85,7 @@ namespace DWL {
 	HWND DListView::Asignar(DhWnd *nPadre, const UINT cID) {
 //        if (nPadre == NULL) throw (DError(this, __PROTOTIPO_FUNCION__, DEnum_Error_BaseWndNULL)); 
 		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;
-		hWnd = GetDlgItem(hWndPadre, cID);
+		_hWnd = GetDlgItem(hWndPadre, cID);
 		_ConectarControl(cID, nPadre); 
 //		_Fuente = (HFONT)SendMessage(_hWnd, WM_GETFONT, 0, 0);
 		return hWnd();
@@ -503,7 +503,7 @@ namespace DWL {
                 SetWindowTheme(_hWndEdicion, TEXT("Explorer"), NULL);
         		SendMessage(_hWndEdicion, WM_SETFONT, (WPARAM)FuenteEdicion, 0); // Asigno la fuente
                 DatosEdicion._hWndEdicion = _hWndEdicion;
-				Ret = SendMessage(hWnd.Padre(), DWL_LISTVIEW_EMPEZAR_EDICION, static_cast<WPARAM>(hWnd.ID()), reinterpret_cast<LPARAM>(&DatosEdicion));
+				Ret = SendMessage(hWndPadre(), DWL_LISTVIEW_EMPEZAR_EDICION, static_cast<WPARAM>(ID()), reinterpret_cast<LPARAM>(&DatosEdicion));
                 if (Ret == 0) {
 		            _GestorMensajesOriginalEdicion = (WNDPROC)SetWindowLongPtr(_hWndEdicion, GWLP_WNDPROC, (LONG_PTR)_GestorMensajesEdicion); 
 
@@ -526,7 +526,7 @@ namespace DWL {
                 SetWindowTheme(_hWndEdicion, TEXT("Explorer"), NULL);
                 DatosEdicion._hWndEdicion = _hWndEdicion;
 
-				Ret = SendMessage(hWnd.Padre(), DWL_LISTVIEW_EMPEZAR_EDICION, static_cast<WPARAM>(hWnd.ID()), reinterpret_cast<LPARAM>(&DatosEdicion));
+				Ret = SendMessage(hWndPadre(), DWL_LISTVIEW_EMPEZAR_EDICION, static_cast<WPARAM>(ID()), reinterpret_cast<LPARAM>(&DatosEdicion));
                 if (Ret == 0) {
                     // Busco el EditBox dentro del ComboBox para re-emplazar su WindowProcedure
                     EnumChildWindows(_hWndEdicion, _BuscarEditEnCombo, (LONG_PTR)this);
@@ -548,7 +548,7 @@ namespace DWL {
                 SendMessage(_hWndEdicion, WM_SETFONT, (WPARAM)FuenteEdicion, 0); // Fuente del control
                 DatosEdicion._hWndEdicion = _hWndEdicion;
 
-				Ret = SendMessage(hWnd.Padre(), DWL_LISTVIEW_EMPEZAR_EDICION, static_cast<WPARAM>(hWnd.ID()), reinterpret_cast<LPARAM>(&DatosEdicion));
+				Ret = SendMessage(hWndPadre(), DWL_LISTVIEW_EMPEZAR_EDICION, static_cast<WPARAM>(ID()), reinterpret_cast<LPARAM>(&DatosEdicion));
                 if (Ret == 0) {
                     SendMessage(_hWndEdicion, CB_SELECTSTRING, -1, (LPARAM)TmpStr.c_str());
                     ShowWindow(_hWndEdicion, SW_SHOW);
@@ -593,7 +593,7 @@ namespace DWL {
             LRESULT Ret = 0;
 			std::wstring TmpTxt;
 
-			Ret = SendMessage(hWnd.Padre(), DWL_LISTVIEW_TERMINAR_EDICION, static_cast<WPARAM>(hWnd.ID()), reinterpret_cast<LPARAM>(&DatosEdicion));
+			Ret = SendMessage(hWndPadre(), DWL_LISTVIEW_TERMINAR_EDICION, static_cast<WPARAM>(ID()), reinterpret_cast<LPARAM>(&DatosEdicion));
             switch (_Editando) {
                 case DEnum_ListView_TipoEdicion_EditTexto :
                 case DEnum_ListView_TipoEdicion_EditEntero :
@@ -641,7 +641,7 @@ namespace DWL {
         if (_hWndEdicion != NULL && _Editando != DEnum_ListView_TipoEdicion_SinEdicion) {
 			ListView_SetItemState(hWnd(), _eItem, 0, LVIS_SELECTED);
             DListView_DatosEdicion DatosEdicion(_eItem, _eSubItem, _hWndEdicion, _Editando);
-			SendMessage(hWnd.Padre(), DWL_LISTVIEW_CANCELAR_EDICION, static_cast<WPARAM>(hWnd.ID()), reinterpret_cast<LPARAM>(&DatosEdicion));
+			SendMessage(hWndPadre(), DWL_LISTVIEW_CANCELAR_EDICION, static_cast<WPARAM>(ID()), reinterpret_cast<LPARAM>(&DatosEdicion));
         }
 		if (_hWndEdicion != NULL) DestroyWindow(_hWndEdicion);	
         _Editando = DEnum_ListView_TipoEdicion_SinEdicion;
@@ -708,8 +708,8 @@ namespace DWL {
         if (((LPNMHDR)lParam)->code == NM_DBLCLK || ((LPNMHDR)lParam)->code == NM_RDBLCLK) DobleClick = true;
         _Evento_Mouse_BotonSoltado(Boton, ((LPNMITEMACTIVATE)lParam)->ptAction.x, ((LPNMITEMACTIVATE)lParam)->ptAction.y, 0);
         DListView_DatosClick DatosClick(((LPNMITEMACTIVATE)lParam)->iItem, ((LPNMITEMACTIVATE)lParam)->iSubItem, Boton, ((LPNMITEMACTIVATE)lParam)->ptAction.x, ((LPNMITEMACTIVATE)lParam)->ptAction.y);
-		if (DobleClick == false) return SendMessage(hWnd.Padre(), DWL_LISTVIEW_CLICK, static_cast<WPARAM>(hWnd.ID()), reinterpret_cast<LPARAM>(&DatosClick));
-		else                     return SendMessage(hWnd.Padre(), DWL_LISTVIEW_DOBLECLICK, static_cast<WPARAM>(hWnd.ID()), reinterpret_cast<LPARAM>(&DatosClick));
+		if (DobleClick == false) return SendMessage(hWndPadre(), DWL_LISTVIEW_CLICK, static_cast<WPARAM>(ID()), reinterpret_cast<LPARAM>(&DatosClick));
+		else                     return SendMessage(hWndPadre(), DWL_LISTVIEW_DOBLECLICK, static_cast<WPARAM>(ID()), reinterpret_cast<LPARAM>(&DatosClick));
     }
 
 
@@ -734,13 +734,13 @@ namespace DWL {
 //                    case NM_HOVER : // (devolver 0 para normal, 1 para cancelar)
 //                        return SendMessage(GetParent(_hWnd), DWL_LISTVIEW_RESALTAR_ITEM, static_cast<WPARAM>(ID()), 0);
                     case NM_KILLFOCUS : // nada
-						return SendMessage(hWnd.Padre(), DWL_LISTVIEW_FOCO_PERDIDO, static_cast<WPARAM>(hWnd.ID()), 0);
+						return SendMessage(hWndPadre(), DWL_LISTVIEW_FOCO_PERDIDO, static_cast<WPARAM>(ID()), 0);
                     case NM_RELEASEDCAPTURE : // nada
-						return SendMessage(hWnd.Padre(), DWL_LISTVIEW_TERMINAR_CAPTURA, static_cast<WPARAM>(hWnd.ID()), 0);
+						return SendMessage(hWndPadre(), DWL_LISTVIEW_TERMINAR_CAPTURA, static_cast<WPARAM>(ID()), 0);
                     case NM_RETURN : // nada
-						return SendMessage(hWnd.Padre(), DWL_LISTVIEW_TECLADO_INTRO, static_cast<WPARAM>(hWnd.ID()), 0);
+						return SendMessage(hWndPadre(), DWL_LISTVIEW_TECLADO_INTRO, static_cast<WPARAM>(ID()), 0);
                     case NM_SETFOCUS : // nada
-						return SendMessage(hWnd.Padre(), DWL_LISTVIEW_FOCO_OBTENIDO, static_cast<WPARAM>(hWnd.ID()), 0);
+						return SendMessage(hWndPadre(), DWL_LISTVIEW_FOCO_OBTENIDO, static_cast<WPARAM>(ID()), 0);
                 }
                 break;
             case WM_MOUSELEAVE :
@@ -759,7 +759,7 @@ namespace DWL {
 				break;
 			case DWL_CUSTOM_DRAWDLG :
                 // Para dialogos necesito hacer el SendMessage DWL_MSGRESULT, pero para ventanas debo retornar directamente _CustomDraw(lParam);
-				SetWindowLong(hWnd.Padre(), DWL_MSGRESULT, (LONG)_CustomDraw(lParam));
+				SetWindowLong(hWndPadre(), DWL_MSGRESULT, (LONG)_CustomDraw(lParam));
 				return TRUE; 
 			case DWL_CUSTOM_DRAWWND :
                 // Para ventanas se enlaza directamente con la funcion _CustomDraw(lParam);
@@ -1114,7 +1114,7 @@ namespace DWL {
     */
     void DListView::Activar(const BOOL nActivar) {
         CancelarEdicion();
-        hWnd.Activar(nActivar);
+        Activar(nActivar);
     }
 
     //! Función para buscar la posición de una clase DListView_Item dentro del vector de items de este ListView.

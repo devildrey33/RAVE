@@ -12,11 +12,10 @@ namespace DWL {
 
 	HWND DLabelEx::CrearLabelEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const BOOL nCentrado, const long Estilos) {
 		if (hWnd()) { Debug_Escribir(L"DLabelEx::CreadLabelEx() Error : ya se ha creado el label\n"); return hWnd(); }
-		hWnd = CrearControlEx(nPadre, L"DLabelEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
+		_hWnd = CrearControlEx(nPadre, L"DLabelEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
 
 		_Formato = (nCentrado == TRUE) ? DT_CENTER : DT_LEFT;
-		_Fuente = hWnd._Fuente;
-
+		_Fuente = _Fuente18Normal;
 		_Texto = nTxt;
 		return hWnd();
 	}

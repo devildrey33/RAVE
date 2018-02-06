@@ -7,6 +7,7 @@
 
 #define RAVE_MIN_ANCHO 660
 #define RAVE_MIN_ALTO  280
+#define RAVE_BOTONES_LATERALES_ANCHO 140
 
 /* TODO : Moure els butons de l'esquerra a la dreta, y fer que la llista / bd / opcions / video quedin ajustats a l'esquerra per evitar els flickerings dels scrolls de la llista i l'arbre */
 HWND VentanaPrincipal::Crear(int nCmdShow) {
@@ -27,10 +28,10 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	CTW_ExtraX = (RW.right - RW.left) - RC.right;
 	CTW_ExtraY = (RW.bottom - RW.top) - RC.bottom;
 
-	Arbol.CrearArbolEx(&hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_ARBOLBD);
-	Arbol.hWnd.Visible(TRUE);
+	Arbol.CrearArbolEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_ARBOLBD);
+	Arbol.Visible(TRUE);
 
-	Lista.CrearListaEx(&hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_LISTAMEDIOS);
+	Lista.CrearListaEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_LISTAMEDIOS);
 
 	// Columnas
 	Lista.AgregarColumna(24, DListaEx_Columna_Alineacion_Izquierda);							// Icono y pista
@@ -46,45 +47,43 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	Lista.AgregarColumna(TEXT("Tiempo"), 60, DWL::DEnum_ListView_AlineacionTexto::DEnum_ListView_AlineacionTexto_Derecha);
 	Lista.CambiarVista(DWL::DEnum_ListView_Vista::DEnum_ListView_Vista_Detalles);*/
 	
-	Video.Crear(&hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_VERVIDEO);
-	Opciones.Crear(&hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_OPCIONES);
-	Opciones.hWnd.Visible(FALSE);
+	Video.Crear(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_VERVIDEO);
+	Opciones.Crear(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_OPCIONES);
+	Opciones.Visible(FALSE);
 
-	ExplorarDir.CrearExplorarDirectoriosEx(&Opciones.hWnd, 10, 10, 300, 200, ID_OPCIONES);
-	ExplorarDir.hWnd.Visible(TRUE);
+	ExplorarDir.CrearExplorarDirectoriosEx(&Opciones, 10, 10, 300, 200, ID_OPCIONES);
+	ExplorarDir.Visible(TRUE);
 
-	MarcoSI.Crear(&hWnd, 10, 10, 360, 30, ID_MARCOSI);
-	BotonAtras.Crear(&MarcoSI.hWnd, L"<", 0, 0, 30, 30, ID_BOTON_ANTERIOR);
-	BotonPlay.Crear(&MarcoSI.hWnd, L"P", 40, 0, 30, 30, ID_BOTON_PLAY);
-	BotonPausa.Crear(&MarcoSI.hWnd, L"||", 80, 0, 30, 30, ID_BOTON_PAUSA);
-	BotonStop.Crear(&MarcoSI.hWnd, L"S", 120, 0, 30, 30, ID_BOTON_STOP);
-	BotonAdelante.Crear(&MarcoSI.hWnd, L">", 160, 0, 30, 30, ID_BOTON_SIGUIENTE);
+	MarcoSI.Crear(this, 10, 10, 360, 30, ID_MARCOSI);
+	BotonAtras.Crear(&MarcoSI, L"<", 0, 0, 30, 30, ID_BOTON_ANTERIOR);
+	BotonPlay.Crear(&MarcoSI, L"P", 40, 0, 30, 30, ID_BOTON_PLAY);
+	BotonPausa.Crear(&MarcoSI, L"||", 80, 0, 30, 30, ID_BOTON_PAUSA);
+	BotonStop.Crear(&MarcoSI, L"S", 120, 0, 30, 30, ID_BOTON_STOP);
+	BotonAdelante.Crear(&MarcoSI, L">", 160, 0, 30, 30, ID_BOTON_SIGUIENTE);
 
-	BotonMezclar.Crear(&MarcoSI.hWnd, L"Mezclar", 210, 0, 70, 30, ID_BOTON_MEZCLAR, TRUE, DEnum_Button_Tipo_Split);
-	BotonRepetir.Crear(&MarcoSI.hWnd, L"Repetir", 290, 0, 70, 30, ID_BOTON_REPETIR, TRUE, DEnum_Button_Tipo_Split);
+	BotonMezclar.Crear(&MarcoSI, L"Mezclar", 210, 0, 70, 30, ID_BOTON_MEZCLAR, TRUE, DEnum_Button_Tipo_Split);
+	BotonRepetir.Crear(&MarcoSI, L"Repetir", 290, 0, 70, 30, ID_BOTON_REPETIR, TRUE, DEnum_Button_Tipo_Split);
 
-	SliderTiempo.CrearBarraDesplazamientoEx(&hWnd, 10, 50, RC.right - 20, 20, ID_SLIDER_TIEMPO);
+	SliderTiempo.CrearBarraDesplazamientoEx(this, 10, 50, RC.right - 20, 20, ID_SLIDER_TIEMPO);
 //	SliderTiempo.Crear(hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO, WS_CHILD | TBS_NOTICKS | WS_VISIBLE, 0, 30000, 0);
 //	SliderTiempo.TamPagina(30000 / 50);
 
-	MarcoSD.Crear(&hWnd, RC.right - 260, 14, 250, 24, ID_MARCOSD);
+	MarcoSD.Crear(this, RC.right - 260, 14, 250, 24, ID_MARCOSD);
 
-	SliderVolumen.CrearBarraDesplazamientoEx(&MarcoSD.hWnd, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.BD.Tabla_Opciones.Volumen()));
+	SliderVolumen.CrearBarraDesplazamientoEx(&MarcoSD, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.BD.Tabla_Opciones.Volumen()));
 	std::wstring TxtVolumen = std::to_wstring(App.BD.Tabla_Opciones.Volumen()) + L"%";
-	LabelVolumen.CrearLabelEx(&MarcoSD.hWnd, TxtVolumen.c_str(), 215, 2, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
+	LabelVolumen.CrearLabelEx(&MarcoSD, TxtVolumen.c_str(), 215, 2, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
 
-	LabelTiempoActual.CrearLabelEx(&MarcoSD.hWnd, L"00:00", 0, 2, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
-	LabelTiempoSeparador.CrearLabelEx(&MarcoSD.hWnd, L"/", 55, 2, 10, 20, ID_LABEL_TIEMPOSEPARADOR,TRUE,  WS_CHILD | WS_VISIBLE);
-	LabelTiempoTotal.CrearLabelEx(&MarcoSD.hWnd, L"00:00", 65, 2, 55, 20, ID_LABEL_TIEMPOTOTAL, WS_CHILD | WS_VISIBLE);
+	LabelTiempoActual.CrearLabelEx(&MarcoSD, L"00:00", 0, 2, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
+	LabelTiempoSeparador.CrearLabelEx(&MarcoSD, L"/", 55, 2, 10, 20, ID_LABEL_TIEMPOSEPARADOR,TRUE,  WS_CHILD | WS_VISIBLE);
+	LabelTiempoTotal.CrearLabelEx(&MarcoSD, L"00:00", 65, 2, 55, 20, ID_LABEL_TIEMPOTOTAL, WS_CHILD | WS_VISIBLE);
 
+	MarcoII.Crear(this, 10, 80, RAVE_BOTONES_LATERALES_ANCHO, 160, ID_MARCOSI);
 
-	MarcoII.Crear(&hWnd, 10, 80, 120, 160, ID_MARCOSI);
-
-	BotonBD.CrearBotonEx(&MarcoII.hWnd, L"Base de datos", 0, 0, 120, 30, ID_BOTON_BD);
-	BotonLista.CrearBotonEx(&MarcoII.hWnd, L"Lista de medios", 0, 40, 120, 30, ID_BOTON_LISTA);
-	BotonVideo.CrearBotonEx(&MarcoII.hWnd, L"Ver video", 0, 80, 120, 30, ID_BOTON_VIDEO);
-
-	BotonOpciones.CrearBotonEx(&MarcoII.hWnd, L"Opciones", 0, 120, 120, 30, ID_BOTON_OPCIONES);
+	BotonBD.CrearBotonEx(&MarcoII, L"Base de datos", 0, 0, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_BD);
+	BotonLista.CrearBotonEx(&MarcoII, L"Lista de medios", 0, 40, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_LISTA);
+	BotonVideo.CrearBotonEx(&MarcoII, L"Ver video", 0, 80, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_VIDEO);
+	BotonOpciones.CrearBotonEx(&MarcoII, L"Opciones", 0, 120, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_OPCIONES);
 
 	ShowWindow(hWnd(), nCmdShow);
 
@@ -103,10 +102,10 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 void VentanaPrincipal::AjustarControles(RECT &RC) {
 	// 50 ?? 60
 
-	MoveWindow(Lista.hWnd(), 140, 81, RC.right - 150, RC.bottom - 90, TRUE);
-	MoveWindow(Arbol.hWnd(), 140, 81, RC.right - 150, RC.bottom - 90, TRUE);
-	MoveWindow(Video.hWnd(), 140, 81, RC.right - 150, RC.bottom - 90, TRUE);
-	MoveWindow(Opciones.hWnd(), 140, 81, RC.right - 150, RC.bottom - 90, TRUE);
+	MoveWindow(Lista.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, TRUE);
+	MoveWindow(Arbol.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, TRUE);
+	MoveWindow(Video.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, TRUE);
+	MoveWindow(Opciones.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, TRUE);
 
 	MoveWindow(SliderTiempo.hWnd(), 10, 50, RC.right - 20, 24, TRUE);
 	MoveWindow(MarcoSD.hWnd(), RC.right - 265, 14, 255, 24, TRUE);
@@ -169,7 +168,7 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 			break;
 		// Temporizador para actualizar el tiempo actual del medio que se está reproduciendo
 		case TIMER_TIEMPO :
-			if (!hWnd.Minimizado()) {
+			if (!Minimizado()) {
 				// Si el slider del tiempo tiene la captura, es porque se esta modificando el tiempo, por lo que no hay que actualizar la posición en ese momento.
 				if (SliderTiempo.Estado() != DBarraDesplazamientoEx_Estado_Presionado && App.ControlesPC.SliderTiempo.Estado() != DBarraDesplazamientoEx_Estado_Presionado) {
 					SliderTiempo.Valor(App.VLC.TiempoActual());
@@ -290,32 +289,32 @@ void VentanaPrincipal::Lista_Anterior(void) {
 void VentanaPrincipal::Evento_BotonEx_Mouse_Click(const UINT cID) {
 	switch (cID) {
 		case ID_BOTON_OPCIONES: 
-			Arbol.hWnd.Visible(FALSE);
-			Lista.hWnd.Visible(FALSE);
-			Video.hWnd.Visible(FALSE);
-			Opciones.hWnd.Visible(TRUE);
-			Opciones.hWnd.AsignarFoco();
+			Arbol.Visible(FALSE);
+			Lista.Visible(FALSE);
+			Video.Visible(FALSE);
+			Opciones.Visible(TRUE);
+			Opciones.AsignarFoco();
 			break;
 		case ID_BOTON_BD:
-			Arbol.hWnd.Visible(TRUE);
-			Lista.hWnd.Visible(FALSE);
-			Video.hWnd.Visible(FALSE);
-			Opciones.hWnd.Visible(FALSE);
-			Arbol.hWnd.AsignarFoco();
+			Arbol.Visible(TRUE);
+			Lista.Visible(FALSE);
+			Video.Visible(FALSE);
+			Opciones.Visible(FALSE);
+			Arbol.AsignarFoco();
 			break;
 		case ID_BOTON_LISTA:
-			Arbol.hWnd.Visible(FALSE);
-			Lista.hWnd.Visible(TRUE);
-			Video.hWnd.Visible(FALSE);
-			Opciones.hWnd.Visible(FALSE);
-			Lista.hWnd.AsignarFoco();
+			Arbol.Visible(FALSE);
+			Lista.Visible(TRUE);
+			Video.Visible(FALSE);
+			Opciones.Visible(FALSE);
+			Lista.AsignarFoco();
 			break;
 		case ID_BOTON_VIDEO:
-			Arbol.hWnd.Visible(FALSE);
-			Lista.hWnd.Visible(FALSE);
-			Video.hWnd.Visible(TRUE);
-			Opciones.hWnd.Visible(FALSE);
-			Video.hWnd.AsignarFoco();
+			Arbol.Visible(FALSE);
+			Lista.Visible(FALSE);
+			Video.Visible(TRUE);
+			Opciones.Visible(FALSE);
+			Video.AsignarFoco();
 			break;
 	}
 }
@@ -539,16 +538,16 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 		ShowWindow(hWnd(), SW_MAXIMIZE);
 		GetClientRect(hWnd(), &RC);
 
-		Arbol.hWnd.Visible(FALSE);
-		Lista.hWnd.Visible(FALSE);
-		SliderTiempo.hWnd.Visible(FALSE);
-		MarcoSD.hWnd.Visible(FALSE);
-		MarcoSI.hWnd.Visible(FALSE);
-		MarcoII.hWnd.Visible(FALSE);
+		Arbol.Visible(FALSE);
+		Lista.Visible(FALSE);
+		SliderTiempo.Visible(FALSE);
+		MarcoSD.Visible(FALSE);
+		MarcoSI.Visible(FALSE);
+		MarcoII.Visible(FALSE);
 
-		Video.hWnd.Visible(FALSE);
+		Video.Visible(FALSE);
 		MoveWindow(Video.hWnd(), 0, 0, RC.right, RC.bottom, FALSE);
-		Video.hWnd.Visible(TRUE);
+		Video.Visible(TRUE);
 		App.ControlesPC.Mostrar();
 		DWL::DMouse::Visible(TRUE);
 
@@ -566,17 +565,17 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 		SetWindowLongPtr(hWnd(), GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
 		//MoveWindow(Video.hWnd(), 120, 71, RC.right - 120, RC.bottom - 70, TRUE);
 
-		Arbol.hWnd.Visible(FALSE);
-		Lista.hWnd.Visible(FALSE);
+		Arbol.Visible(FALSE);
+		Lista.Visible(FALSE);
 		GetClientRect(hWnd(), &RC);
 		RC.right = RC.right - CTW_ExtraX;
 		RC.bottom = RC.bottom - CTW_ExtraY;
 		AjustarControles(RC);
-		Video.hWnd.Visible(TRUE);
-		SliderTiempo.hWnd.Visible(TRUE);
-		MarcoSD.hWnd.Visible(TRUE);
-		MarcoSI.hWnd.Visible(TRUE);
-		MarcoII.hWnd.Visible(TRUE);
+		Video.Visible(TRUE);
+		SliderTiempo.Visible(TRUE);
+		MarcoSD.Visible(TRUE);
+		MarcoSI.Visible(TRUE);
+		MarcoII.Visible(TRUE);
 		App.ControlesPC.Ocultar();
 		DWL::DMouse::Visible(TRUE);
 		KillTimer(hWnd(), TIMER_CPC_INACTIVIDAD);
@@ -616,7 +615,7 @@ void VentanaPrincipal::Evento_BorraFondo(HDC DC) {
 }
 
 void VentanaPrincipal::Evento_Cerrar(void) {
-	hWnd.Visible(FALSE);
+	Visible(FALSE);
 	App.BD.Tabla_Opciones.GuardarOpciones();
 	PostQuitMessage(0);
 }
@@ -650,7 +649,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			}
 			break;
 		case WM_EXITSIZEMOVE  :
-			if (App.VentanaRave.hWnd.Maximizada() == FALSE) {
+			if (App.VentanaRave.Maximizada() == FALSE) {
 				App.BD.Tabla_Opciones.GuardarPosTamVentana();
 			}			
 			Debug_Escribir_Varg(L"WM_EXITSIZEMOVE %d, %d\n", wParam, lParam);

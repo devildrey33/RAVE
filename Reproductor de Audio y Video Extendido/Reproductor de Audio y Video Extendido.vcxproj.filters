@@ -304,9 +304,6 @@
     <ClInclude Include="DControlEx.h">
       <Filter>DWL\Ventanas\ControlesEx</Filter>
     </ClInclude>
-    <ClInclude Include="DDesplegable.h">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
-    </ClInclude>
     <ClInclude Include="ArbolBD.h">
       <Filter>Ventanas\Controles</Filter>
     </ClInclude>
@@ -330,6 +327,12 @@
     </ClInclude>
     <ClInclude Include="DExplorarDirectoriosEx.h">
       <Filter>DWL\Ventanas\ControlesEx\ExplorarDirectoriosEx</Filter>
+    </ClInclude>
+    <ClInclude Include="DDesplegableEx.h">
+      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
+    </ClInclude>
+    <ClInclude Include="DDesplegableEx_ExplorarDirectorios.h">
+      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -474,9 +477,6 @@
     <ClCompile Include="DControlEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx</Filter>
     </ClCompile>
-    <ClCompile Include="DDesplegable.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
-    </ClCompile>
     <ClCompile Include="ArbolBD.cpp">
       <Filter>Ventanas\Controles</Filter>
     </ClCompile>
@@ -497,6 +497,12 @@
     </ClCompile>
     <ClCompile Include="DExplorarDirectoriosEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\ExplorarDirectoriosEx</Filter>
+    </ClCompile>
+    <ClCompile Include="DDesplegableEx.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
+    </ClCompile>
+    <ClCompile Include="DDesplegableEx_ExplorarDirectorios.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -545,6 +551,27 @@
       <Filter>Archivos de recursos</Filter>
     </Image>
     <Image Include="..\Iconos\IDI_Play.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Cancion2.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Play2.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\iconos\icon2.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Pausa2.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Pausa3.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Play3.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Video2.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>

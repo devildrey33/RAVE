@@ -19,27 +19,28 @@ VentanaErrorCritico::~VentanaErrorCritico() {
 
 
 HWND VentanaErrorCritico::Crear(void) {
-	CrearVentana(L"Rave_ErrorCritico", L"Error crítico", 100, 100, 400, 280, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
+	CrearVentana(L"Rave_ErrorCritico", L"Error crítico", 100, 100, 440, 300, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
 	
 	RECT RC;
 	GetClientRect(hWnd(), &RC);
 
-	TextoTitulo.CrearLabelEx(&hWnd, L"Error crítico!", 10, 10, RC.right - 20, 20, ID_VEC_TEXTOERROR, TRUE, WS_CHILD);
-	TextoTitulo.Fuente(hWnd._FuenteB());
+	TextoTitulo.CrearLabelEx(this, L"Error crítico!", 10, 10, RC.right - 20, 20, ID_VEC_TEXTOERROR, TRUE, WS_CHILD);
+	TextoTitulo.Fuente(_Fuente21Negrita());
 	TextoTitulo.ColorTexto(COLOR_BOTON_RESALTADO);
-	TextoTitulo.hWnd.Visible(TRUE);
+	TextoTitulo.Visible(TRUE);
 
 	std::wstring TE =	std::wstring(L"Se ha detectado un error, y el Reproductor de Audio y Video\nExtendido debe cerrarse.\n\n") + 
 						std::wstring(L"Si lo deseas puedes mandar el informe de errores para que \n") +
 						std::wstring(L"sea revisado pulsando el boton Enviar. De esta forma estaras \n") +
 						std::wstring(L"ayudando al desarrollo de este reproductor.") +
 						std::wstring(L"\n\nEn caso contrario pula el boton Salir. ");
-	TextoError.CrearLabelEx(&hWnd, TE.c_str(), 10, 40, 380, 130, ID_VEC_TEXTOERROR, FALSE, WS_CHILD | WS_VISIBLE);
+	TextoError.CrearLabelEx(this, TE.c_str(), 10, 40, RC.right - 20, 150, ID_VEC_TEXTOERROR, FALSE, WS_CHILD | WS_VISIBLE);
+	TextoError.Fuente(_Fuente18Normal());
 
-	BarraProgreso.CrearBarraProgresoEx(&hWnd, 10, 180, RC.right - 20, 10, ID_VEC_PROGRESO, 0.0f, 100.0f, 0.0f);
+	BarraProgreso.CrearBarraProgresoEx(this, 10, 200, RC.right - 20, 10, ID_VEC_PROGRESO, 0.0f, 100.0f, 0.0f);
 	
-	BotonEnviar.CrearBotonEx(&hWnd, L"Enviar", 85, 200, 100, 30, ID_VEC_ENVIAR);
-	BotonSalir.CrearBotonEx(&hWnd, L"Salir", 195, 200, 100, 30, ID_VEC_SALIR);
+	BotonEnviar.CrearBotonEx(this, L"Enviar", 100, 220, 100, 30, ID_VEC_ENVIAR);
+	BotonSalir.CrearBotonEx(this, L"Salir", RC.right - 200, 220, 100, 30, ID_VEC_SALIR);
 	return hWnd();
 }
 

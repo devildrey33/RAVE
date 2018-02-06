@@ -49,7 +49,7 @@ namespace DWL {
 	HWND DTreeView::Crear(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, DWORD nEstilos, DWORD nEstilosExtendidos) {
 		if (hWnd()) { Debug_Escribir(L"DTreeView::Crear() Error : ya se ha creado el treeview\n");  return hWnd(); }
 		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;
-		hWnd = CreateWindowEx(nEstilosExtendidos, WC_TREEVIEW, NULL, nEstilos, cX, cY, cAncho, cAlto, hWndPadre, reinterpret_cast<HMENU>(IntToPtr(cID)), GetModuleHandle(NULL), this);
+		_hWnd = CreateWindowEx(nEstilosExtendidos, WC_TREEVIEW, NULL, nEstilos, cX, cY, cAncho, cAlto, hWndPadre, reinterpret_cast<HMENU>(IntToPtr(cID)), GetModuleHandle(NULL), this);
 		_ConectarControl(cID, nPadre);
 		return hWnd();
 	}
@@ -65,7 +65,7 @@ namespace DWL {
 	*/
 	HWND DTreeView::Asignar(DhWnd *nPadre, const UINT cID) {
 		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;
-		hWnd = GetDlgItem(hWndPadre, cID);
+		_hWnd = GetDlgItem(hWndPadre, cID);
 		_ConectarControl(cID, nPadre);
 		return hWnd();
 	}
@@ -151,13 +151,13 @@ namespace DWL {
 					//                    case NM_HOVER : // (devolver 0 para normal, 1 para cancelar)
 					//                        return SendMessage(GetParent(_hWnd), DWL_LISTVIEW_RESALTAR_ITEM, static_cast<WPARAM>(ID()), 0);
 				case NM_KILLFOCUS: // nada
-					return SendMessage(hWnd.Padre(), DWL_TREEVIEW_FOCO_PERDIDO, static_cast<WPARAM>(hWnd.ID()), 0);
+					return SendMessage(hWndPadre(), DWL_TREEVIEW_FOCO_PERDIDO, static_cast<WPARAM>(ID()), 0);
 				case NM_RELEASEDCAPTURE: // nada
-					return SendMessage(hWnd.Padre(), DWL_TREEVIEW_TERMINAR_CAPTURA, static_cast<WPARAM>(hWnd.ID()), 0);
+					return SendMessage(hWndPadre(), DWL_TREEVIEW_TERMINAR_CAPTURA, static_cast<WPARAM>(ID()), 0);
 				case NM_RETURN: // nada
-					return SendMessage(hWnd.Padre(), DWL_TREEVIEW_TECLADO_INTRO, static_cast<WPARAM>(hWnd.ID()), 0);
+					return SendMessage(hWndPadre(), DWL_TREEVIEW_TECLADO_INTRO, static_cast<WPARAM>(ID()), 0);
 				case NM_SETFOCUS: // nada
-					return SendMessage(hWnd.Padre(), DWL_TREEVIEW_FOCO_OBTENIDO, static_cast<WPARAM>(hWnd.ID()), 0);
+					return SendMessage(hWndPadre(), DWL_TREEVIEW_FOCO_OBTENIDO, static_cast<WPARAM>(ID()), 0);
 				}
 				break;
 			case DWL_TREEVIEW_NODO_EXPANDIENDO :
@@ -169,7 +169,7 @@ namespace DWL {
 					}
 				}
 				if (this->TreeView_Evento_Nodo_Expandiendo(NodoTmp) == TRUE) return TRUE;
-				return SendMessage(hWnd.Padre(), DWL_TREEVIEW_NODO_EXPANDIENDO, (WPARAM)NodoTmp, (LPARAM)hWnd.ID());
+				return SendMessage(hWndPadre(), DWL_TREEVIEW_NODO_EXPANDIENDO, (WPARAM)NodoTmp, (LPARAM)ID());
 
 				// Este mensaje se recibe una vez borrado el item y se usa para borrar la clase con el nodo de la memoria.
 				// El LPARAM es un puntero a la clase DTreeView_Nodo que contiene la información adicional para el nodo, y que debe ser eliminada tanto del vector de nodos como de memória.
@@ -217,8 +217,8 @@ namespace DWL {
 		Evento_Mouse_Click(TmpNodo, Boton, CoordMouse.x, CoordMouse.y);
 
 		DTreeView_DatosClick DatosClick(TmpNodo, Boton, CoordMouse.x, CoordMouse.y);
-		if (DobleClick == false) return SendMessage(hWnd.Padre(), DWL_TREEVIEW_CLICK, static_cast<WPARAM>(hWnd.ID()), reinterpret_cast<LPARAM>(&DatosClick));
-		else                     return SendMessage(hWnd.Padre(), DWL_TREEVIEW_DOBLECLICK, static_cast<WPARAM>(hWnd.ID()), reinterpret_cast<LPARAM>(&DatosClick));
+		if (DobleClick == false) return SendMessage(hWndPadre(), DWL_TREEVIEW_CLICK, static_cast<WPARAM>(ID()), reinterpret_cast<LPARAM>(&DatosClick));
+		else                     return SendMessage(hWndPadre(), DWL_TREEVIEW_DOBLECLICK, static_cast<WPARAM>(ID()), reinterpret_cast<LPARAM>(&DatosClick));
 	}
 
 

@@ -5,7 +5,7 @@ namespace DWL {
 
 	HWND DControlEx::CrearControlEx(DhWnd *nPadre, const TCHAR *nNombre, const TCHAR *nTexto, const INT_PTR cID, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos, UINT nEstilosClase, HBRUSH nColorFondo) {
 		if (hWnd()) { Debug_Escribir(L"DControlEx::Crear() Error : ya se ha creado el control extendido\n"); return hWnd(); }
-		ATOM CA = hWnd.RegistrarClase(nNombre, _GestorMensajes, nEstilosClase);
+		ATOM CA = RegistrarClase(nNombre, _GestorMensajes, nEstilosClase);
 		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;
 		return CreateWindowEx(nEstilosExtendidos, nNombre, nTexto, nEstilos, cX, cY, cAncho, cAlto, hWndPadre, reinterpret_cast<HMENU>(cID), GetModuleHandle(NULL), this);
 	};
@@ -15,7 +15,7 @@ namespace DWL {
 		if (hWnd() != NULL) {
 			SetWindowLongPtr(hWnd(), GWLP_USERDATA, (LONG_PTR)this);
 			SetWindowLongPtr(hWnd(), GWLP_WNDPROC, (LONG_PTR)_GestorMensajes);
-			SendMessage(hWnd(), WM_SETFONT, (WPARAM)hWnd._Fuente(), 0);
+			SendMessage(hWnd(), WM_SETFONT, (WPARAM)_Fuente18Normal(), 0);
 		}
 	};
 
@@ -23,15 +23,15 @@ namespace DWL {
 	LRESULT CALLBACK DControlEx::_GestorMensajes(HWND nhWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
 		case WM_CREATE: {
-			DControl *PreControlEx = reinterpret_cast<DControl *>(((CREATESTRUCT *)lParam)->lpCreateParams);
+			DControlEx *PreControlEx = reinterpret_cast<DControlEx *>(((CREATESTRUCT *)lParam)->lpCreateParams);
 			if (PreControlEx == NULL) return FALSE;
-			PreControlEx->hWnd = nhWnd;
+			PreControlEx->_hWnd = nhWnd;
 			SetWindowLongPtr(nhWnd, GWLP_USERDATA, (LONG_PTR)PreControlEx);
 			PreControlEx->GestorMensajes(uMsg, wParam, lParam);
 			return TRUE;
 		}
 		default: {
-			DControl *ControlEx = reinterpret_cast<DControl *>(GetWindowLongPtr(nhWnd, GWLP_USERDATA));
+			DControlEx *ControlEx = reinterpret_cast<DControlEx *>(GetWindowLongPtr(nhWnd, GWLP_USERDATA));
 			if (ControlEx != NULL) {
 				return ControlEx->GestorMensajes(uMsg, wParam, lParam);
 				//					if (Ret != DWL_USAR_GESTOR_POR_DEFECTO) return 0;

@@ -7,20 +7,27 @@
 
 namespace DWL {
 
-	DhWnd_Fuente DhWnd::_Fuente;
-	DhWnd_Fuente DhWnd::_FuenteB;
+	DhWnd_Fuente DhWnd::_Fuente18Normal;
+	DhWnd_Fuente DhWnd::_Fuente18Negrita;
+	DhWnd_Fuente DhWnd::_Fuente21Normal;
+	DhWnd_Fuente DhWnd::_Fuente21Negrita;
 	DhWnd_Fuente DhWnd::_FuenteTest;
 
 	bool         DhWnd::_Teclado[256];// = { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
 
-	ATOM DhWnd::RegistrarClase(const TCHAR *nNombre, WNDPROC WindowProcedureInicial, UINT nEstilos, const int nIconoRecursos, HBRUSH nColorFondo, HINSTANCE hInstance) {
+	void DhWnd::IniciarMiembrosEstaticos() {
 		// Creamos las fuentes si no existen, y limpiamos el buffer para el teclado
-		if (_Fuente.Fuente() == NULL) {
+		if (_Fuente18Normal.Fuente() == NULL) {
 			BorrarBufferTeclado();
-			_Fuente		= CreateFont(FUENTE_NORMAL_TAM, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
-			_FuenteB	= CreateFont(FUENTE_NORMAL_TAM, 0, 0, 0, FW_BOLD, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
-			_FuenteTest = CreateFont(26, 0, 0, 0, FW_BOLD, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
+			_Fuente18Normal		= CreateFont(FUENTE_PEQUE_TAM, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
+			_Fuente18Negrita	= CreateFont(FUENTE_PEQUE_TAM, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
+			_Fuente21Normal		= CreateFont(FUENTE_NORMAL_TAM, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
+			_Fuente21Negrita	= CreateFont(FUENTE_NORMAL_TAM, 0, 0, 0, FW_BOLD, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
+			_FuenteTest			= CreateFont(26, 0, 0, 0, FW_BOLD, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
 		}
+	}
+
+	ATOM DhWnd::RegistrarClase(const TCHAR *nNombre, WNDPROC WindowProcedureInicial, UINT nEstilos, const int nIconoRecursos, HBRUSH nColorFondo, HINSTANCE hInstance) {
 		
 		WNDCLASSEX WndClass;
 		WndClass.cbSize = sizeof(WNDCLASSEX);
@@ -76,9 +83,9 @@ namespace DWL {
 //		if (hWnd() != NULL) hWnd.Destruir();
 		if (hWnd()) { Debug_Escribir(L"DVentana::Crear() Error : ya se ha creado la ventana\n"); return hWnd(); }
 
-		ATOM RetRgistrarClase = hWnd.RegistrarClase(nNombre, reinterpret_cast<WNDPROC>(_GestorMensajes), nEstilosClase, nIconoRecursos, nColorFondo);
-		hWnd = CreateWindowEx(nEstilosExtendidos, nNombre, nTexto, nEstilos, cX, cY, cAncho, cAlto, HWND_DESKTOP, nMenu, GetModuleHandle(NULL), this);
-		SendMessage(hWnd(), WM_SETFONT, (WPARAM)hWnd._Fuente(), 0);
+		ATOM RetRgistrarClase = RegistrarClase(nNombre, reinterpret_cast<WNDPROC>(_GestorMensajes), nEstilosClase, nIconoRecursos, nColorFondo);
+		_hWnd = CreateWindowEx(nEstilosExtendidos, nNombre, nTexto, nEstilos, cX, cY, cAncho, cAlto, HWND_DESKTOP, nMenu, GetModuleHandle(NULL), this);
+		SendMessage(hWnd(), WM_SETFONT, (WPARAM)_Fuente18Normal(), 0);
 		return hWnd();
 
 	}
@@ -92,7 +99,7 @@ namespace DWL {
 			case WM_CREATE: {
 				DVentana *PreVentana = reinterpret_cast<DVentana *>(((CREATESTRUCT *)lParam)->lpCreateParams);
 				if (PreVentana == NULL) return FALSE;
-				PreVentana->hWnd = nhWnd;
+				PreVentana->_hWnd = nhWnd;
 				SetWindowLongPtr(nhWnd, GWLP_USERDATA, (LONG_PTR)PreVentana);
 				PreVentana->GestorMensajes(uMsg, wParam, lParam);
 				return TRUE;
@@ -129,7 +136,7 @@ namespace DWL {
 
 		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;
 
-		hWnd = CreateWindowEx(nEstilosExtendidos, nNombre, nTexto, nEstilos, cX, cY, cAncho, cAlto, hWndPadre, reinterpret_cast<HMENU>(cID), GetModuleHandle(NULL), this);
+		_hWnd = CreateWindowEx(nEstilosExtendidos, nNombre, nTexto, nEstilos, cX, cY, cAncho, cAlto, hWndPadre, reinterpret_cast<HMENU>(cID), GetModuleHandle(NULL), this);
 		return hWnd();
 		//	return CreateWindowEx(nEstiloExtendido, nNombre, nTexto, Estilo, cX, cY, cAncho, cAlto, nPadre(), reinterpret_cast<HMENU>(IntToPtr(nID)), GetModuleHandle(NULL), this);
 	};
@@ -146,7 +153,7 @@ namespace DWL {
 			SetWindowLongPtr(hWnd(), GWLP_USERDATA, (LONG_PTR)this);
 			_GestorMensajesOriginal = reinterpret_cast<WNDPROC>(SetWindowLongPtr(hWnd(), GWLP_WNDPROC, (LONG_PTR)_GestorMensajes));
 
-			SendMessage(hWnd(), WM_SETFONT, (WPARAM)hWnd._Fuente(), 0);
+			SendMessage(hWnd(), WM_SETFONT, (WPARAM)_Fuente18Normal(), 0);
 		}
 	};
 

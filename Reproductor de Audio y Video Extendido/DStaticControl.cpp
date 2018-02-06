@@ -6,9 +6,9 @@ namespace DWL {
 	HWND DStaticControl::Crear(DhWnd *nPadre, const wchar_t *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID, DWORD nEstilos, BOOL nVisible) {
 		if (hWnd()) { Debug_Escribir(L"DStaticControl::Crear() Error : ya se ha creado el label\n"); return hWnd(); }
 		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;
-		hWnd = CreateWindowEx(NULL, L"STATIC", nTexto, nEstilos, cX, cY, cAncho, cAlto, hWndPadre, reinterpret_cast<HMENU>(IntToPtr(cID)), GetModuleHandle(NULL), this);
+		_hWnd = CreateWindowEx(NULL, L"STATIC", nTexto, nEstilos, cX, cY, cAncho, cAlto, hWndPadre, reinterpret_cast<HMENU>(IntToPtr(cID)), GetModuleHandle(NULL), this);
 		_ConectarControl(cID, nPadre);
-		hWnd.Visible(nVisible);
+		Visible(nVisible);
 		return hWnd();
 	}
 

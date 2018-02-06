@@ -18,13 +18,13 @@
 namespace DWL {
 
 	DArbolEx::DArbolEx(void) : DBarraScrollEx(),
-  	  _NodoMarcado(NULL)		, _NodoShift(NULL)								, _PosShift(0),										// Info nodo Marcado y Shift
-	  _NodoPresionado(NULL)		, _NodoPresionadoParte(DArbolEx_ParteNodo_Nada)	, _CalcularValores(FALSE),							// Info nodo presionado
-	  _NodoResaltado(NULL)		, _NodoResaltadoParte(DArbolEx_ParteNodo_Nada)	, MultiSeleccion(TRUE),								// Info nodo resaltado
-	  _NodoUResaltado(NULL)		, _NodoUResaltadoParte(DArbolEx_ParteNodo_Nada)	, SubSeleccion(FALSE),								// Info ultimo nodo resaltado (para evitar repintados innecesarios en el mousemove)
-	  _Fuente(NULL)				, _TotalAnchoVisible(0)							, _TotalAltoVisible(0)	,							// Fuente y tamaño
-	  _NodoPaginaInicio(NULL)	, _NodoPaginaFin(NULL)							, _NodoPaginaVDif(0)	, _NodoPaginaHDif(0),		// Nodo inicial y final de la página visible
-	  _BufferNodo(NULL)			, _BufferNodoBmp(NULL)							, _BufferNodoBmpViejo(NULL)						{	// Buffer para pintar un solo nodo
+  	  _NodoMarcado(NULL)		, _NodoShift(NULL)								, _PosShift(0)				,							// Info nodo Marcado y Shift
+	  _NodoPresionado(NULL)		, _NodoPresionadoParte(DArbolEx_ParteNodo_Nada)	, _CalcularValores(FALSE)	,							// Info nodo presionado
+	  _NodoResaltado(NULL)		, _NodoResaltadoParte(DArbolEx_ParteNodo_Nada)	, MultiSeleccion(TRUE)		,							// Info nodo resaltado
+	  _NodoUResaltado(NULL)		, _NodoUResaltadoParte(DArbolEx_ParteNodo_Nada)	, SubSeleccion(FALSE)		,							// Info ultimo nodo resaltado (para evitar repintados innecesarios en el mousemove)
+	  _TotalAnchoVisible(0)		, _TotalAltoVisible(0)							, _Fuente(NULL)				,							// tamaño
+	  _NodoPaginaInicio(NULL)	, _NodoPaginaFin(NULL)							, _NodoPaginaVDif(0)		, _NodoPaginaHDif(0),		// Nodo inicial y final de la página visible
+	  _BufferNodo(NULL)			, _BufferNodoBmp(NULL)							, _BufferNodoBmpViejo(NULL)							{	// Buffer para pintar un solo nodo
 
 		_Raiz.Expandido = TRUE;
 		_Raiz._Arbol = this;
@@ -43,8 +43,8 @@ namespace DWL {
 
 	HWND DArbolEx::CrearArbolEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID) {
 		if (hWnd()) { Debug_Escribir(L"DArbolEx::CrearArbolEx() Error : ya se ha creado el arbol\n"); return hWnd(); }
-		hWnd = CrearControlEx(nPadre, L"DArbolEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, CS_DBLCLKS);  // CS_DBLCLKS (el control recibe notificaciones de doble click)
-		_Fuente = hWnd._Fuente;
+		_hWnd = CrearControlEx(nPadre, L"DArbolEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, CS_DBLCLKS);  // CS_DBLCLKS (el control recibe notificaciones de doble click)
+		_Fuente = _Fuente18Normal;
 		return hWnd();
 	}
 
@@ -965,7 +965,7 @@ namespace DWL {
 			}
 		}
 		DArbolEx_DatosClick DatosClick(cX, cY, Boton, NodoSoltado);
-		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_CLICK, reinterpret_cast<WPARAM>(&DatosClick), static_cast<LPARAM>(hWnd.ID()));
+		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_CLICK, reinterpret_cast<WPARAM>(&DatosClick), static_cast<LPARAM>(ID()));
 
 		Evento_MouseSoltado(Boton, cX, cY, Param);
 
@@ -1308,8 +1308,8 @@ namespace DWL {
 
 	LRESULT CALLBACK DArbolEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {		
 		switch (uMsg) {
-			case WM_SETFOCUS:		hWnd.BorrarBufferTeclado();																													return 0;
-			case WM_KILLFOCUS:		hWnd.BorrarBufferTeclado();																													return 0;
+			case WM_SETFOCUS:		BorrarBufferTeclado();																														return 0;
+			case WM_KILLFOCUS:		BorrarBufferTeclado();																														return 0;
 
 			case WM_KEYDOWN:		_Evento_TeclaPresionada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;
 			case WM_KEYUP:			_Evento_TeclaSoltada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;		

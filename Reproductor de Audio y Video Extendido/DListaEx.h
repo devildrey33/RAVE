@@ -179,8 +179,7 @@ namespace DWL {
 /*		int                                            _MouseX;
 		int                                            _MouseY;*/
 
-		DhWnd_Fuente			                       _Fuente;
-//		bool										   _Teclado[256];
+		DhWnd_Fuente                                   _Fuente;
 
 		friend class DListaEx_Columna;
 		friend class DListaEx_Item;

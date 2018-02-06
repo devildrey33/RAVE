@@ -95,7 +95,7 @@
                                                         \fn		   ~DButton(void);
                                                         \return     No devuelve nada
                                                 */
-                                               ~DButton(void) { hWnd.Destruir(); };
+                                               ~DButton(void) { Destruir(); };
 
                                                 //! Función para crear el Button (CreateWindowEx).
                                                 /*! Esta función se usa para crear un Button dinamicamente.

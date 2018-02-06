@@ -166,7 +166,8 @@
     <ClInclude Include="DArbolEx_Nodo.h" />
     <ClInclude Include="DBarraScrollEx.h" />
     <ClInclude Include="DControlEx.h" />
-    <ClInclude Include="DDesplegable.h" />
+    <ClInclude Include="DDesplegableEx.h" />
+    <ClInclude Include="DDesplegableEx_ExplorarDirectorios.h" />
     <ClInclude Include="DEdicionTexto.h" />
     <ClInclude Include="DExplorarDirectoriosEx.h" />
     <ClInclude Include="DhWnd_Fuente.h" />
@@ -242,7 +243,8 @@
     <ClCompile Include="DButton.cpp" />
     <ClCompile Include="DConsola.cpp" />
     <ClCompile Include="DControlEx.cpp" />
-    <ClCompile Include="DDesplegable.cpp" />
+    <ClCompile Include="DDesplegableEx.cpp" />
+    <ClCompile Include="DDesplegableEx_ExplorarDirectorios.cpp" />
     <ClCompile Include="DEdicionTexto.cpp" />
     <ClCompile Include="DExplorarDirectoriosEx.cpp" />
     <ClCompile Include="DhWnd.cpp" />
@@ -298,7 +300,9 @@
     <ResourceCompile Include="Reproductor de Audio y Video Extendido.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\iconos\icon2.ico" />
     <Image Include="..\Iconos\IDI_Cancion.ico" />
+    <Image Include="..\Iconos\IDI_Cancion2.ico" />
     <Image Include="..\Iconos\IDI_CDAudio.ico" />
     <Image Include="..\Iconos\IDI_Directorio.ico" />
     <Image Include="..\Iconos\IDI_Disco.ico" />
@@ -306,10 +310,15 @@
     <Image Include="..\Iconos\IDI_Grupo.ico" />
     <Image Include="..\Iconos\IDI_ListaCanciones.ico" />
     <Image Include="..\Iconos\IDI_Pausa.ico" />
+    <Image Include="..\Iconos\IDI_Pausa2.ico" />
+    <Image Include="..\Iconos\IDI_Pausa3.ico" />
     <Image Include="..\Iconos\IDI_Play.ico" />
+    <Image Include="..\Iconos\IDI_Play2.ico" />
+    <Image Include="..\Iconos\IDI_Play3.ico" />
     <Image Include="..\Iconos\IDI_Raiz.ico" />
     <Image Include="..\Iconos\IDI_Subtitulos.ico" />
     <Image Include="..\Iconos\IDI_Video.ico" />
+    <Image Include="..\Iconos\IDI_Video2.ico" />
     <Image Include="Reproductor de Audio y Video Extendido.ico" />
     <Image Include="small.ico" />
   </ItemGroup>

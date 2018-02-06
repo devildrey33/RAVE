@@ -31,10 +31,10 @@ namespace DWL {
 			case DEnum_Button_Tipo_LinkPorDefecto:		Estilos = WS_CHILD | BS_DEFCOMMANDLINK;		break;
 		}
 		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;
-		hWnd = CreateWindowEx(NULL, TEXT("BUTTON"), nTexto, Estilos, cX, cY, cAncho, cAlto, hWndPadre, reinterpret_cast<HMENU>(IntToPtr(cID)), GetModuleHandle(NULL), this);
+		_hWnd = CreateWindowEx(NULL, TEXT("BUTTON"), nTexto, Estilos, cX, cY, cAncho, cAlto, hWndPadre, reinterpret_cast<HMENU>(IntToPtr(cID)), GetModuleHandle(NULL), this);
 		_ConectarControl(cID, nPadre);
 		if (nVisible) {
-			hWnd.Visible(TRUE);
+			Visible(TRUE);
 		}
 		return hWnd();
 	};
@@ -51,7 +51,7 @@ namespace DWL {
 	*/
 	HWND DButton::Asignar(DhWnd *nPadre, const UINT cID) {
 		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;
-		hWnd = GetDlgItem(hWndPadre, cID);
+		_hWnd = GetDlgItem(hWndPadre, cID);
 		_ConectarControl(cID, nPadre);
 		return hWnd();
 	};
@@ -64,7 +64,7 @@ namespace DWL {
 			\sa         ObtenerTexto().
 	*/
 	void DButton::AsignarTexto(const TCHAR *nTexto) {
-		SetDlgItemText(GetParent(hWnd()), static_cast<int>(hWnd.ID()), nTexto);
+		SetDlgItemText(GetParent(hWnd()), static_cast<int>(ID()), nTexto);
 	}
 
 	//! Función para obtener el texto del button.
@@ -76,7 +76,7 @@ namespace DWL {
 	*/
 	void DButton::ObtenerTexto(std::wstring &nTexto) {
 		static TCHAR Buffer[1024];
-		GetDlgItemText(GetParent(hWnd()), static_cast<int>(hWnd.ID()), Buffer, 1024);
+		GetDlgItemText(GetParent(hWnd()), static_cast<int>(ID()), Buffer, 1024);
 		nTexto = Buffer;
 	}
 };
