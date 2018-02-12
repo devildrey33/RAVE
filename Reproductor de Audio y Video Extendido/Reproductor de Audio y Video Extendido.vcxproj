@@ -167,9 +167,10 @@
     <ClInclude Include="DBarraScrollEx.h" />
     <ClInclude Include="DControlEx.h" />
     <ClInclude Include="DDesplegableEx.h" />
-    <ClInclude Include="DDesplegableEx_ExplorarDirectorios.h" />
+    <ClInclude Include="DDesplegableEx_ExplorarDirectoriosEx.h" />
     <ClInclude Include="DEdicionTexto.h" />
     <ClInclude Include="DExplorarDirectoriosEx.h" />
+    <ClInclude Include="DGDI.h" />
     <ClInclude Include="DhWnd_Fuente.h" />
     <ClInclude Include="DListaEx.h" />
     <ClInclude Include="DListaEx_Columna.h" />
@@ -178,6 +179,7 @@
     <ClInclude Include="DListaIconos.h" />
     <ClInclude Include="DListaIconos_Icono.h" />
     <ClInclude Include="ListaMedios.h" />
+    <ClInclude Include="ListaRaices.h" />
     <ClInclude Include="MarcoOpciones.h" />
     <ClInclude Include="RAVE_CuentaEmail.h" />
     <ClInclude Include="DBarraDesplazamientoEx.h" />
@@ -244,9 +246,10 @@
     <ClCompile Include="DConsola.cpp" />
     <ClCompile Include="DControlEx.cpp" />
     <ClCompile Include="DDesplegableEx.cpp" />
-    <ClCompile Include="DDesplegableEx_ExplorarDirectorios.cpp" />
+    <ClCompile Include="DDesplegableEx_ExplorarDirectoriosEx.cpp" />
     <ClCompile Include="DEdicionTexto.cpp" />
     <ClCompile Include="DExplorarDirectoriosEx.cpp" />
+    <ClCompile Include="DGDI.cpp" />
     <ClCompile Include="DhWnd.cpp" />
     <ClCompile Include="DImageList.cpp" />
     <ClCompile Include="DLabelEx.cpp" />
@@ -270,6 +273,7 @@
     <ClCompile Include="EnviarDump.cpp" />
     <ClCompile Include="ExtensionesValidas.cpp" />
     <ClCompile Include="ListaMedios.cpp" />
+    <ClCompile Include="ListaRaices.cpp" />
     <ClCompile Include="MarcoControles.cpp" />
     <ClCompile Include="MarcoOpciones.cpp" />
     <ClCompile Include="RAVE.cpp" />
@@ -301,6 +305,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\iconos\icon2.ico" />
+    <Image Include="..\Iconos\IDI_Borrar.ico" />
+    <Image Include="..\Iconos\IDI_BorrarResaltado.ico" />
     <Image Include="..\Iconos\IDI_Cancion.ico" />
     <Image Include="..\Iconos\IDI_Cancion2.ico" />
     <Image Include="..\Iconos\IDI_CDAudio.ico" />

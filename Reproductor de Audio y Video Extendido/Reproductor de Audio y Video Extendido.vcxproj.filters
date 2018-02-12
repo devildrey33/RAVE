@@ -35,17 +35,8 @@
     <Filter Include="DWL\Ventanas\Controles">
       <UniqueIdentifier>{4165fe03-1859-4d0b-bd06-0e52cf551cf3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas\Controles\TreeView">
-      <UniqueIdentifier>{fbc6d11b-52ef-463b-b1b3-ed887956edba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\Controles\ImageList">
-      <UniqueIdentifier>{a722b17b-e26a-4ed7-8bd7-a35ce20283d0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DWL\Ventanas\Menu">
       <UniqueIdentifier>{582e9ccc-d9e5-4da7-bbb3-6bfe4363b8b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\Controles\ListView">
-      <UniqueIdentifier>{24876072-6ca4-49c2-aa93-cabb2d9df517}</UniqueIdentifier>
     </Filter>
     <Filter Include="DWL\Ventanas\Controles\Button">
       <UniqueIdentifier>{1928e800-5d54-49b6-aea9-13ece97b6c06}</UniqueIdentifier>
@@ -125,6 +116,18 @@
     <Filter Include="DWL\Ventanas\ControlesEx\ExplorarDirectoriosEx">
       <UniqueIdentifier>{9c8ec836-aa61-4ed3-9265-8d6a79a9f649}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DWL\Sistema\Graficos">
+      <UniqueIdentifier>{c95287fd-0aac-4a4c-8922-d130975d3a89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\Controles\TreeView %28DEPRECATED%29">
+      <UniqueIdentifier>{fbc6d11b-52ef-463b-b1b3-ed887956edba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\Controles\ListView %28DEPRECATED%29">
+      <UniqueIdentifier>{24876072-6ca4-49c2-aa93-cabb2d9df517}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\Controles\ImageList %28DEPRECATED%29">
+      <UniqueIdentifier>{a722b17b-e26a-4ed7-8bd7-a35ce20283d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -188,10 +191,10 @@
       <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
     <ClInclude Include="DTreeView.h">
-      <Filter>DWL\Ventanas\Controles\TreeView</Filter>
+      <Filter>DWL\Ventanas\Controles\TreeView %28DEPRECATED%29</Filter>
     </ClInclude>
     <ClInclude Include="DImageList.h">
-      <Filter>DWL\Ventanas\Controles\ImageList</Filter>
+      <Filter>DWL\Ventanas\Controles\ImageList %28DEPRECATED%29</Filter>
     </ClInclude>
     <ClInclude Include="DMensajesWnd.h">
       <Filter>DWL\Ventanas</Filter>
@@ -203,7 +206,7 @@
       <Filter>DWL\Ventanas\Menu</Filter>
     </ClInclude>
     <ClInclude Include="DListView.h">
-      <Filter>DWL\Ventanas\Controles\ListView</Filter>
+      <Filter>DWL\Ventanas\Controles\ListView %28DEPRECATED%29</Filter>
     </ClInclude>
     <ClInclude Include="DButton.h">
       <Filter>DWL\Ventanas\Controles\Button</Filter>
@@ -331,8 +334,14 @@
     <ClInclude Include="DDesplegableEx.h">
       <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
     </ClInclude>
-    <ClInclude Include="DDesplegableEx_ExplorarDirectorios.h">
+    <ClInclude Include="DGDI.h">
+      <Filter>DWL\Sistema\Graficos</Filter>
+    </ClInclude>
+    <ClInclude Include="DDesplegableEx_ExplorarDirectoriosEx.h">
       <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
+    </ClInclude>
+    <ClInclude Include="ListaRaices.h">
+      <Filter>Ventanas\Controles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -370,13 +379,13 @@
       <Filter>xXx _MAIN_ xXx</Filter>
     </ClCompile>
     <ClCompile Include="DTreeView.cpp">
-      <Filter>DWL\Ventanas\Controles\TreeView</Filter>
+      <Filter>DWL\Ventanas\Controles\TreeView %28DEPRECATED%29</Filter>
     </ClCompile>
     <ClCompile Include="DTreeView_Nodo.cpp">
-      <Filter>DWL\Ventanas\Controles\TreeView</Filter>
+      <Filter>DWL\Ventanas\Controles\TreeView %28DEPRECATED%29</Filter>
     </ClCompile>
     <ClCompile Include="DImageList.cpp">
-      <Filter>DWL\Ventanas\Controles\ImageList</Filter>
+      <Filter>DWL\Ventanas\Controles\ImageList %28DEPRECATED%29</Filter>
     </ClCompile>
     <ClCompile Include="DConsola.cpp">
       <Filter>DWL\Ventanas\Consola</Filter>
@@ -385,16 +394,16 @@
       <Filter>DWL\Ventanas\Menu</Filter>
     </ClCompile>
     <ClCompile Include="DListView.cpp">
-      <Filter>DWL\Ventanas\Controles\ListView</Filter>
+      <Filter>DWL\Ventanas\Controles\ListView %28DEPRECATED%29</Filter>
     </ClCompile>
     <ClCompile Include="DListView_Columna.cpp">
-      <Filter>DWL\Ventanas\Controles\ListView</Filter>
+      <Filter>DWL\Ventanas\Controles\ListView %28DEPRECATED%29</Filter>
     </ClCompile>
     <ClCompile Include="DListView_DatosEdicion.cpp">
-      <Filter>DWL\Ventanas\Controles\ListView</Filter>
+      <Filter>DWL\Ventanas\Controles\ListView %28DEPRECATED%29</Filter>
     </ClCompile>
     <ClCompile Include="DListView_Item.cpp">
-      <Filter>DWL\Ventanas\Controles\ListView</Filter>
+      <Filter>DWL\Ventanas\Controles\ListView %28DEPRECATED%29</Filter>
     </ClCompile>
     <ClCompile Include="DButton.cpp">
       <Filter>DWL\Ventanas\Controles\Button</Filter>
@@ -501,8 +510,14 @@
     <ClCompile Include="DDesplegableEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
     </ClCompile>
-    <ClCompile Include="DDesplegableEx_ExplorarDirectorios.cpp">
+    <ClCompile Include="DGDI.cpp">
+      <Filter>DWL\Sistema\Graficos</Filter>
+    </ClCompile>
+    <ClCompile Include="DDesplegableEx_ExplorarDirectoriosEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
+    </ClCompile>
+    <ClCompile Include="ListaRaices.cpp">
+      <Filter>Ventanas\Controles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -572,6 +587,12 @@
       <Filter>Archivos de recursos</Filter>
     </Image>
     <Image Include="..\Iconos\IDI_Video2.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Borrar.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_BorrarResaltado.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>

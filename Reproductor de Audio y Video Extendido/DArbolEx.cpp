@@ -1306,10 +1306,20 @@ namespace DWL {
 		Evento_MouseDobleClick(Boton, cX, cY, Param);
 	}
 
-	LRESULT CALLBACK DArbolEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {		
+	void DArbolEx::_Evento_FocoObtenido(HWND hWndUltimoFoco) {
+		BorrarBufferTeclado();
+		Evento_FocoObtenido(hWndUltimoFoco);
+	}
+
+	void DArbolEx::_Evento_FocoPerdido(HWND hWndNuevoFoco) {
+		BorrarBufferTeclado();
+		Evento_FocoPerdido(hWndNuevoFoco);
+	}
+
+	LRESULT CALLBACK DArbolEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
-			case WM_SETFOCUS:		BorrarBufferTeclado();																														return 0;
-			case WM_KILLFOCUS:		BorrarBufferTeclado();																														return 0;
+			case WM_SETFOCUS:		_Evento_FocoObtenido((HWND)wParam);																											return 0;
+			case WM_KILLFOCUS:		_Evento_FocoPerdido((HWND)wParam);																											return 0;
 
 			case WM_KEYDOWN:		_Evento_TeclaPresionada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;
 			case WM_KEYUP:			_Evento_TeclaSoltada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;		

@@ -7,7 +7,7 @@
 
 namespace DWL {
 
-	#define DLISTAEX_MOSTRARDEBUG	FALSE
+	#define DLISTAEX_MOSTRARDEBUG	TRUE
 
 	#ifdef _WIN64
 		#define DLISTAEX_POSICION_INICIO	0
@@ -26,6 +26,7 @@ namespace DWL {
 		DListaEx_Item_EstadoMouse_Presionado	= 2
 	};
 
+	class DDesplegableEx;
 
 	class DListaEx : public virtual DBarraScrollEx {
 	  public:
@@ -97,7 +98,7 @@ namespace DWL {
 		void											Pintar(HDC hDC);
 		void											PintarItem(HDC hDC, const size_t pPosItem, RECT &Espacio);
 
-		const size_t									HitTest(const int cX, const int cY);
+		const size_t									HitTest(const int cX, const int cY, size_t *PosSubItem = NULL);
 
 		void											Scrolls_EventoCambioPosicion(void);
 
@@ -115,6 +116,12 @@ namespace DWL {
 		virtual void                                    Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params)			{ };
 		virtual void									Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param)					{ };
 
+		virtual void								    Evento_FocoObtenido(HWND hWndUltimoFoco)													{ };
+		virtual void								    Evento_FocoPerdido(HWND hWndNuevoFoco)														{ };
+
+		virtual void                                    Evento_PintarSubItem(HDC hDC, const size_t NumItem, const size_t NumSubItem, RECT *Espacio) { };
+
+		BOOL                                            MostrarSeleccion;
 
 		LRESULT CALLBACK								GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	  protected:
@@ -131,6 +138,10 @@ namespace DWL {
 		void                                           _Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
 		void                                           _Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params);
 		void										   _Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param);
+
+		void										   _Evento_FocoObtenido(HWND hWndUltimoFoco);
+		void										   _Evento_FocoPerdido(HWND hWndNuevoFoco);
+
 
 		// Teclas especiales
 		void										   _Tecla_CursorArriba(void);
@@ -154,13 +165,16 @@ namespace DWL {
 		std::vector<DListaEx_Columna *>                _Columnas;
 
 		size_t                                         _ItemResaltado;
-//		size_t                                         _SubItemResaltado; // es en número de columa partiendo de la _FilaRsaltada
 		size_t		                                   _ItemUResaltado;
+		size_t                                         _SubItemResaltado; // es en número de columa partiendo de la _FilaRsaltada
+		size_t										   _SubItemUResaltado;
 		size_t				                           _ItemPresionado;
+		size_t				                           _SubItemPresionado;
 		size_t				                           _ItemMarcado;
 		size_t						                   _ItemShift;
 														// Diferencia de pixeles inicial entre la _FilaInicioPagina y el inicio de la página visible
 		LONG                                           _ItemPaginaVDif;
+														// Diferencia de pixeles entre .... 
 		LONG                                           _ItemPaginaHDif;
 
 		size_t                                         _ItemPaginaInicio;
@@ -184,6 +198,9 @@ namespace DWL {
 		friend class DListaEx_Columna;
 		friend class DListaEx_Item;
 		friend class DListaEx_SubItem;
+
+		friend class DDesplegableEx;
+
 	};
 
 }

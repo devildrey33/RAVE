@@ -4,11 +4,12 @@
 
 namespace DWL {
 
-	DListaEx::DListaEx(void) :	_ItemPaginaInicio(-1)	, _ItemPaginaFin(-1)	, _ItemPaginaVDif(0)		, _ItemPaginaHDif(0),
-								_ItemResaltado(-1)		, _ItemUResaltado(-1)	, _ItemMarcado(-1)			, /*_SubItemResaltado(-1)		,*/
-								_ItemPresionado(-1)		, _ItemShift(-1)		, _CalcularValores(FALSE)	,
-								_TotalAnchoVisible(0)	, _TotalAltoVisible(0)	, _Fuente(NULL)             ,
-								_BufferItem(NULL)		, _BufferItemBmp(NULL)	, _BufferItemBmpViejo(NULL)	, _BufferItemFuenteViejo(NULL) {
+	DListaEx::DListaEx(void) :	_ItemPaginaInicio(-1)	, _ItemPaginaFin(-1)		, _ItemPaginaVDif(0)		, _ItemPaginaHDif(0),
+								_SubItemResaltado(-1)	, _SubItemUResaltado(-1)	, _SubItemPresionado(-1)	, MostrarSeleccion(TRUE),
+								_ItemResaltado(-1)		, _ItemUResaltado(-1)		, _ItemMarcado(-1)			, 
+								_ItemPresionado(-1)		, _ItemShift(-1)			, _CalcularValores(FALSE)	,
+								_TotalAnchoVisible(0)	, _TotalAltoVisible(0)		, _Fuente(NULL)             ,
+								_BufferItem(NULL)		, _BufferItemBmp(NULL)		, _BufferItemBmpViejo(NULL)	, _BufferItemFuenteViejo(NULL) {
 
 		_ColorFondoScroll = COLOR_LISTA_FONDO_SCROLL;
 	}
@@ -133,12 +134,19 @@ namespace DWL {
 		COLORREF ColTexto, ColSombra, ColFondo;
 		// Presionado ////////////////////////////////////
 		if (bPresionado == TRUE) { 
-			ColTexto  = COLOR_LISTA_SELECCION_TEXTO_PRESIONADO;
-			ColSombra = COLOR_LISTA_SELECCION_TEXTO_SOMBRA;
-			ColFondo  = COLOR_LISTA_SELECCION_PRESIONADO;
+			if (MostrarSeleccion == TRUE) {
+				ColTexto  = COLOR_LISTA_SELECCION_TEXTO_PRESIONADO;
+				ColSombra = COLOR_LISTA_SELECCION_TEXTO_SOMBRA;
+				ColFondo  = COLOR_LISTA_SELECCION_PRESIONADO;
+			}
+			else {
+				ColTexto  = COLOR_LISTA_TEXTO;
+				ColSombra = COLOR_LISTA_TEXTO_SOMBRA;
+				ColFondo  = COLOR_LISTA_FONDO_PRESIONADO;
+			}
 		}
 		// Seleccionado //////////////////////////////////
-		else if (_Items[nPosItem]->Seleccionado == TRUE) { 
+		else if (_Items[nPosItem]->Seleccionado == TRUE && MostrarSeleccion == TRUE) { 
 			if (bResaltado == FALSE) {	////////////////// Normal
 				ColTexto = COLOR_LISTA_SELECCION_TEXTO;
 				ColFondo = COLOR_LISTA_SELECCION;
@@ -173,8 +181,9 @@ namespace DWL {
 		DrawIconEx(_BufferItem, bPresionado + DLISTAEX_PADDING, bPresionado + PosYIco, _Items[nPosItem]->_Icono->Icono(), DLISTAEX_TAMICONO, DLISTAEX_TAMICONO, 0, 0, DI_NORMAL);
 
 		RECT RCelda;
-		LONG AnchoPintado = (DLISTAEX_PADDING * 2) + DLISTAEX_TAMICONO;
-		SetTextColor(_BufferItem, RGB(0, 0 ,0));
+//		LONG AnchoPintado = (DLISTAEX_PADDING * 2) + DLISTAEX_TAMICONO;
+		LONG AnchoPintado = 0;
+		//		SetTextColor(_BufferItem, RGB(0, 0 ,0));
 		for (size_t i = 0; i < _Columnas.size(); i++) {
 			RCelda = {
 				1 + bPresionado + AnchoPintado + DLISTAEX_PADDING, 
@@ -182,15 +191,22 @@ namespace DWL {
 				1 + bPresionado + AnchoPintado + _Columnas[i]->_AnchoCalculado - (DLISTAEX_PADDING * 2),
 				1 + bPresionado + _Fuente.Alto() + DLISTAEX_PADDING
 			};
-			
-			// Pinto la sombra
-			SetTextColor(_BufferItem, ColSombra);
-			DrawText(_BufferItem, _Items[nPosItem]->Texto(i).c_str(), static_cast<int>(_Items[nPosItem]->Texto(i).size()), &RCelda, _Columnas[i]->Alineacion | DT_NOPREFIX);
+			if (i == 0) { // La primera columna contiene el icono (que ya se ha pintado)
+				RCelda.left += (DLISTAEX_PADDING * 2) + DLISTAEX_TAMICONO;
+			}
+			// Si hay texto lo pinto
+			if (_Items[nPosItem]->Texto(i).size() > 0) {
+				// Pinto la sombra
+				SetTextColor(_BufferItem, ColSombra);
+				DrawText(_BufferItem, _Items[nPosItem]->Texto(i).c_str(), static_cast<int>(_Items[nPosItem]->Texto(i).size()), &RCelda, _Columnas[i]->Alineacion | DT_NOPREFIX);
 
-			// Pinto el texto
-			SetTextColor(_BufferItem, ColTexto);
-			OffsetRect(&RCelda, -1, -1);
-			DrawText(_BufferItem, _Items[nPosItem]->Texto(i).c_str(), static_cast<int>(_Items[nPosItem]->Texto(i).size()), &RCelda, _Columnas[i]->Alineacion | DT_NOPREFIX);
+				// Pinto el texto
+				SetTextColor(_BufferItem, ColTexto);
+				OffsetRect(&RCelda, -1, -1);
+				DrawText(_BufferItem, _Items[nPosItem]->Texto(i).c_str(), static_cast<int>(_Items[nPosItem]->Texto(i).size()), &RCelda, _Columnas[i]->Alineacion | DT_NOPREFIX);
+			}
+			// Llamo al evento virtual para pintar el subitem (para extender el control y pintar iconos por ejemplo)
+			Evento_PintarSubItem(_BufferItem, nPosItem, i, &RCelda);
 
 			AnchoPintado += _Columnas[i]->_AnchoCalculado;
 		}
@@ -217,37 +233,57 @@ namespace DWL {
 	}
 
 
-
-	const size_t DListaEx::HitTest(const int cX, const int cY) {
+	/* Función que determina el item que hay debajo de las coordenadas especificadas 
+		[in]  cX			: Coordenada X
+		[in]  cY			: Coordenada Y
+		[out] nPosSubItem	: Si no es NULL devolverá la posición del SubItem
+	*/
+	const size_t DListaEx::HitTest(const int cX, const int cY, size_t *nPosSubItem) {
 		if (_ItemPaginaInicio == -1) {
 			#if DLISTAEX_MOSTRARDEBUG == TRUE
-				Debug_Escribir_Varg(L"DListaEx::HitTest X:%d Y:%d P:-1\n", cX, cY);
+				Debug_Escribir_Varg(L"DListaEx::HitTest X:%d Y:%d I:-1 SI:-1\n", cX, cY);
 			#endif
 			return -1;
 		}
 
-//		_TotalAltoVisible
-
-
-
-
-
-		int PixelesContados = _ItemPaginaVDif; // Pixeles de altura contados hasta el nodo
-		int AltoItem = _Fuente.Alto() + (DLISTAEX_PADDING * 2);
-		int PixelesContadosH = _ItemPaginaHDif;
-		for (size_t i = _ItemPaginaInicio; i < _ItemPaginaFin + 1; i++) {			
+		int PixelesContados		= _ItemPaginaVDif; // Pixeles de altura contados hasta el nodo
+		int AltoItem			= _Fuente.Alto() + (DLISTAEX_PADDING * 2);
+		int PixelesContadosH	= _ItemPaginaHDif;
+		size_t PosInicio		= _ItemPaginaInicio;
+		size_t PosFin			= _ItemPaginaFin + 1;
+		
+		if (PosFin == 0) PosFin = _Items.size();
+		for (size_t i = PosInicio; i < PosFin; i++) {
 			// El item está en las coordenadas del mouse
 			if (PixelesContados <= cY && PixelesContados + AltoItem >= cY) {				
-				#if DLISTAEX_MOSTRARDEBUG == TRUE
-					Debug_Escribir_Varg(L"DListaEx::HitTest X:%d Y:%d P:%d\n", cX, cY, i);
-				#endif
-				return i;
+				// Si PosSubItem no es NULL necesitamos determinar la posición del SubItem
+				if (nPosSubItem != NULL) {
+					for (size_t si = 0; si < _Columnas.size(); si++) {
+
+//						if (si == 0) { PixelesContadosH += (DLISTAEX_PADDING * 2) + DLISTAEX_TAMICONO; } // Si es el primer subitem, incluyo el tamaño del icono al ancho contado.
+
+						if (PixelesContadosH <= cX && PixelesContadosH + _Columnas[si]->_AnchoCalculado >= cX) {
+							*nPosSubItem = si;
+							#if DLISTAEX_MOSTRARDEBUG == TRUE
+								Debug_Escribir_Varg(L"DListaEx::HitTest X:%d Y:%d I:%d SI:%d\n", cX, cY, i, si);
+							#endif
+							return i;
+						}
+						PixelesContadosH += _Columnas[si]->_AnchoCalculado;
+					}
+				}
+				else { // Solo se busca el item
+					#if DLISTAEX_MOSTRARDEBUG == TRUE
+						Debug_Escribir_Varg(L"DListaEx::HitTest X:%d Y:%d I:%d\n", cX, cY, i);
+					#endif
+					return i;
+				}
 			}
 			PixelesContados += AltoItem;
 		}
 
 		#if DLISTAEX_MOSTRARDEBUG == TRUE
-			Debug_Escribir_Varg(L"DListaEx::HitTest X:%d Y:%d P:-1\n", cX, cY);
+			Debug_Escribir_Varg(L"DListaEx::HitTest X:%d Y:%d I:-1\n", cX, cY);
 		#endif
 		return -1;
 	}
@@ -263,14 +299,16 @@ namespace DWL {
 	}
 
 	void DListaEx::EliminarItem(const size_t ePos) {
-		if (ePos > -1 && ePos < _Items.size()) {
+		if (ePos < _Items.size()) {
 			delete _Items[ePos];
 			_Items.erase(_Items.begin() + ePos);
 
-			if (ePos == _ItemMarcado) _ItemMarcado--;
-			_ItemPresionado = -1;
-			_ItemResaltado	= -1;
-			_ItemShift		= -1;
+			_ItemMarcado        = -1;
+			_ItemPresionado		= -1;
+			_SubItemPresionado	= -1;
+			_ItemResaltado		= -1;
+			_SubItemResaltado	= -1;
+			_ItemShift			= -1;
 			// Recalculo todos los valores de la lista antes de repintar
 			_CalcularValores = TRUE;
 		}
@@ -435,8 +473,13 @@ namespace DWL {
 		ObtenerRectaCliente(&RC, &RCSS);
 		// Asigno el AnchoCalculado a todas las columnas
 		for (i = 0; i < _Columnas.size(); i++) {
-				if (_Columnas[i]->Ancho != DLISTAEX_COLUMNA_ANCHO_AUTO) {	_Columnas[i]->_AnchoCalculado = _Columnas[i]->Ancho;											} // Ancho sobrante dividido por el número de columnas automáticas
-				else													{	_Columnas[i]->_AnchoCalculado = static_cast<LONG>((RCSS.right - nAnchoFijo) / ColumnasAuto);	} // Ancho en pixeles
+			if (_Columnas[i]->Ancho != DLISTAEX_COLUMNA_ANCHO_AUTO) {	
+				_Columnas[i]->_AnchoCalculado = _Columnas[i]->Ancho;	// Ancho en pixeles
+			} 
+			else													{	
+				_Columnas[i]->_AnchoCalculado = static_cast<LONG>((RCSS.right - nAnchoFijo) / ColumnasAuto);	// Ancho sobrante dividido por el número de columnas automáticas
+				if (i == 0) { _Columnas[i]->_AnchoCalculado += (DLISTAEX_PADDING * 2) + DLISTAEX_TAMICONO; }	// Si es la primera columna, añado el ancho del icono al tamaño auto
+			} 
 		}
 	}
 
@@ -521,11 +564,13 @@ namespace DWL {
 //		if (bME == TRUE)	Scrolls_MouseEntrando();		
 
 		if (Scrolls_MouseMovimiento(cX, cY, Param) == TRUE) { return; } // las coordenadas pertenecen al scroll (salgo del evento)
+		
+		_ItemResaltado = HitTest(cX, cY, &_SubItemResaltado);
 
-		_ItemResaltado = HitTest(cX, cY);
 		// Comprueba si el item resaltado es el mismo que la ultima vez, y si no lo és repinta el control
-		if (_ItemResaltado != _ItemUResaltado) {
+		if (_ItemResaltado != _ItemUResaltado || _SubItemResaltado != _SubItemUResaltado) {
 			_ItemUResaltado = _ItemResaltado;
+			_SubItemUResaltado = _SubItemResaltado;
 			Repintar();
 		}
 		
@@ -538,7 +583,7 @@ namespace DWL {
 		SetFocus(hWnd());
 		if (Scrolls_MousePresionado(Boton, cX, cY, Param) == TRUE) { return; }
 
-		_ItemPresionado = HitTest(cX, cY);
+		_ItemPresionado = HitTest(cX, cY, &_SubItemPresionado);
 		_ItemMarcado	= _ItemPresionado;
 
 		#if DLISTAEX_MOSTRARDEBUG == TRUE
@@ -559,10 +604,13 @@ namespace DWL {
 
 		if (_ItemPresionado != -1) {
 			_Items[_ItemPresionado]->Seleccionado = TRUE;
-			_ItemPresionado = -1;
 		}
 
 		Evento_MouseSoltado(Boton, cX, cY, Param);
+		
+		_ItemPresionado = -1;
+		_SubItemPresionado = -1;
+
 		Repintar();
 	}
 
@@ -708,11 +756,22 @@ namespace DWL {
 		Evento_MouseDobleClick(Boton, cX, cY, Param);
 	}
 
+	void DListaEx::_Evento_FocoObtenido(HWND hWndUltimoFoco) {
+		BorrarBufferTeclado();
+		Evento_FocoObtenido(hWndUltimoFoco);
+	}
+
+	void DListaEx::_Evento_FocoPerdido(HWND hWndNuevoFoco) {
+		BorrarBufferTeclado();
+		Evento_FocoPerdido(hWndNuevoFoco);
+	}
+
+
 	LRESULT CALLBACK DListaEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
 			// Foco
-			case WM_SETFOCUS:		BorrarBufferTeclado();																														return 0;
-			case WM_KILLFOCUS:		BorrarBufferTeclado();																														return 0;
+			case WM_SETFOCUS:		_Evento_FocoObtenido((HWND)wParam);																											return 0;
+			case WM_KILLFOCUS:		_Evento_FocoPerdido((HWND)wParam);																											return 0;
 			// Pintado
 			case WM_PAINT:			_Evento_Pintar();																															return 0;
 			// Cambio de tamaño

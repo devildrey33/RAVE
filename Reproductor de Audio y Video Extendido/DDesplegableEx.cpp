@@ -1,9 +1,13 @@
 #include "stdafx.h"
 #include "DDesplegableEx.h"
+#include "DGDI.h"
 
 namespace DWL {
 
-	DDesplegableEx::DDesplegableEx() {
+	DDesplegableEx::DDesplegableEx() :	_TipoEdicion(DDesplegableEx_TipoEdicion_SinEdicion), _TipoDesplegable(DDesplegableEx_TipoDesplegable_Lista),
+										_EstadoBoton(DDesplegableEx_Estado_Normal), _EstadoVisor(DDesplegableEx_Estado_Normal),
+										_UEstadoBoton(DDesplegableEx_Estado_Indefinido), _UEstadoVisor(DDesplegableEx_Estado_Indefinido),
+										_ExplorarDirectorios(NULL), _Arbol (NULL), _Lista(NULL)															{
 	}
 
 
@@ -25,6 +29,7 @@ namespace DWL {
 			case DDesplegableEx_TipoDesplegable_Arbol :
 				break;
 			case DDesplegableEx_TipoDesplegable_ExplorarDirectorios :
+				_ExplorarDirectorios = new DDesplegableEx_ExplorarDirectoriosEx(this);
 				break;
 		}
 
@@ -46,12 +51,102 @@ namespace DWL {
 
 
 	void DDesplegableEx::MostrarDesplegable(void) {
+		switch (_TipoDesplegable) {
+		case DDesplegableEx_TipoDesplegable_Lista:
+			break;
+		case DDesplegableEx_TipoDesplegable_Arbol:
+			break;
+		case DDesplegableEx_TipoDesplegable_ExplorarDirectorios:		
+//			if (_ExplorarDirectorios->Visible() == FALSE)	
+				_ExplorarDirectorios->Mostrar();
+			break;
+		}
+
+		// Envio el mensaje WM_NCACTIVATE a la ventana principal para que no se vea como pierde el foco, y parezca que el desplegable es un hijo de la ventana principal
+		SendMessage(GetAncestor(_hWnd, GA_ROOT), WM_NCACTIVATE, TRUE, 0);
 
 	}
 
-	void DDesplegableEx::Pintar(HDC hDC) {
 
+	void DDesplegableEx::Pintar(HDC DC) {
+		RECT RC;
+		GetClientRect(hWnd(), &RC);
+
+		// Creo un buffer en memória para pintar el control
+		HDC		Buffer = CreateCompatibleDC(NULL);
+		// Creo un DC compatible para el buffer
+		HBITMAP Bmp = CreateCompatibleBitmap(DC, RC.right, RC.bottom);
+		HBITMAP BmpViejo = static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
+
+		RECT RBoton = { RC.right - RC.bottom, 0, RC.right, RC.bottom };
+		RECT RVisor = { 0, 0, (RC.right - RC.bottom), RC.bottom }; // Recta que contiene la parte del icono y del texto (sin el boton del desplegable)
+
+		COLORREF nColorBotonBorde = 0, nColorBoton = 0,	nColorVisor = 0, nColorVisorBorde = 0;
+
+		switch (_EstadoBoton) {
+			case DDesplegableEx_Estado_Normal:
+				nColorBotonBorde = COLOR_BORDE;
+				nColorBoton = COLOR_BOTON;
+				break;
+			case DDesplegableEx_Estado_Resaltado:
+				nColorBotonBorde = COLOR_BORDE_RESALTADO;
+				nColorBoton = COLOR_BOTON_RESALTADO;
+				break;
+			case DDesplegableEx_Estado_Presionado:
+				nColorBotonBorde = COLOR_BORDE_PRESIONADO;
+				nColorBoton = COLOR_BOTON_PRESIONADO;
+				break;
+		}
+
+		switch (_EstadoVisor) {
+			case DDesplegableEx_Estado_Normal:
+				nColorVisorBorde = COLOR_BORDE;
+				nColorVisor = COLOR_FONDO_CLARO;
+				break;
+			case DDesplegableEx_Estado_Resaltado:
+				nColorVisorBorde = COLOR_BORDE_RESALTADO;
+				nColorVisor = COLOR_FONDO_CLARO_RESALTADO;
+				break;
+			case DDesplegableEx_Estado_Presionado:
+				nColorVisorBorde = COLOR_BORDE_PRESIONADO;
+				nColorVisor = COLOR_FONDO_CLARO_PRESIONADO;
+				break;
+		}
+
+		// Pinto el borde del visor
+		HBRUSH BrochaVisorBorde = CreateSolidBrush(nColorVisorBorde);
+		FrameRect(Buffer, &RVisor, BrochaVisorBorde);
+		DeleteObject(BrochaVisorBorde);
+
+		RVisor.left++; RVisor.top++; RVisor.right--; RVisor.bottom--;
+		// Pinto el fondo del visor
+		HBRUSH BrochaVisor = CreateSolidBrush(nColorVisor);
+		FillRect(Buffer, &RVisor, BrochaVisor);
+		DeleteObject(BrochaVisor);
+
+
+		// Pinto el borde del botón
+		HBRUSH BrochaBotonBorde = CreateSolidBrush(nColorBotonBorde);
+		FrameRect(Buffer, &RBoton, BrochaBotonBorde);
+		DeleteObject(BrochaBotonBorde);
+
+		RBoton.left++; RBoton.top++; RBoton.right--; RBoton.bottom--;
+		// Pinto el fondo del botón
+		HBRUSH BrochaBoton = CreateSolidBrush(nColorBoton);
+		FillRect(Buffer, &RBoton, BrochaBoton);
+		DeleteObject(BrochaBoton);
+
+		DGDI::PintarFlecha(Buffer, (RC.right - RC.bottom) + 6, 4, 90.0f, 8, 1, RGB(255, 255, 255));
+
+		// Copio el buffer al DC
+		BitBlt(DC, RC.left, RC.top, RC.right, RC.bottom, Buffer, 0, 0, SRCCOPY);
+
+		// Elimino el buffer de la memória
+		SelectObject(Buffer, BmpViejo);
+		DeleteObject(Bmp);
+		DeleteDC(Buffer);
 	}
+
 
 	void DDesplegableEx::_Evento_Pintar(void) {
 		HDC         DC;
@@ -68,19 +163,108 @@ namespace DWL {
 	}
 
 	void DDesplegableEx::_Evento_MouseMovimiento(const int cX, const int cY, const UINT Param) {
+
+		BOOL bME = _MouseEntrando();
+
+		RECT RC; 
+		GetClientRect(_hWnd, &RC);
+		RECT RBoton = { RC.right - RC.bottom, 0, RC.right, RC.bottom };
+		RECT RVisor = { 0, 0, RC.right - RC.bottom, RC.bottom };
+
+		POINT Pt = { cX, cY };
+		// Está dentro del botón
+		if (PtInRect(&RBoton, Pt) == TRUE) {
+			if		(_Presionado == DDesplegableEx_Presionado_Nada)		_EstadoBoton = DDesplegableEx_Estado_Resaltado;
+			else if (_Presionado == DDesplegableEx_Presionado_Boton)	_EstadoBoton = DDesplegableEx_Estado_Presionado;
+			else if (_Presionado == DDesplegableEx_Presionado_Visor)	_EstadoBoton = DDesplegableEx_Estado_Resaltado;
+		}
+		else {
+			_EstadoBoton = DDesplegableEx_Estado_Normal;
+		}
+
+		// Está dentro del visor
+		if (PtInRect(&RVisor, Pt) == TRUE) {
+			if		(_Presionado == DDesplegableEx_Presionado_Nada)		_EstadoVisor = DDesplegableEx_Estado_Resaltado;
+			else if (_Presionado == DDesplegableEx_Presionado_Boton)	_EstadoVisor = DDesplegableEx_Estado_Resaltado;
+			else if (_Presionado == DDesplegableEx_Presionado_Visor)	_EstadoVisor = DDesplegableEx_Estado_Presionado;
+		}
+		else {
+			_EstadoVisor = DDesplegableEx_Estado_Normal;
+		}
+
+		if (_UEstadoVisor != _EstadoVisor || _UEstadoBoton != _EstadoBoton) {
+			_UEstadoVisor = _EstadoVisor;
+			_UEstadoBoton = _EstadoBoton;
+			Repintar();
+		}
+
+		Evento_MouseMovimiento(cX, cY, Param);
+
+		if (bME == TRUE)	Evento_MouseEntrando();
 	}
 
 	void DDesplegableEx::_Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param) {
+		RECT RC;
+		GetClientRect(_hWnd, &RC);
+		RECT RBoton = { RC.right - RC.bottom, 0, RC.right, RC.bottom };
+		RECT RVisor = { 0, 0, RC.right - RC.bottom, RC.bottom };
+
+		SetCapture(_hWnd);
+
+		POINT Pt = { cX, cY };
+		// Está dentro del botón
+		if (PtInRect(&RBoton, Pt) == TRUE) {
+			_EstadoBoton = DDesplegableEx_Estado_Presionado;
+			_Presionado  = DDesplegableEx_Presionado_Boton;
+		}
+		// Está dentro del visor
+		if (PtInRect(&RVisor, Pt) == TRUE) {
+			_EstadoVisor = DDesplegableEx_Estado_Presionado;
+			_Presionado  = DDesplegableEx_Presionado_Visor;
+		}
+
+		Repintar();
 	}
 
 	void DDesplegableEx::_Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param) {
+		ReleaseCapture();
+
+		RECT RC;
+		GetClientRect(_hWnd, &RC);
+		RECT RBoton = { RC.right - RC.bottom, 0, RC.right, RC.bottom };
+		RECT RVisor = { 0, 0, RC.right - RC.bottom, RC.bottom };
+
+		_EstadoBoton = DDesplegableEx_Estado_Normal;
+		_EstadoVisor = DDesplegableEx_Estado_Normal;
+
+		POINT Pt = { cX, cY };
+		// Está dentro del botón
+		if (PtInRect(&RBoton, Pt) == TRUE) {
+			_EstadoBoton = DDesplegableEx_Estado_Resaltado;
+			MostrarDesplegable();
+		}
+		// Está dentro del visor
+		if (PtInRect(&RVisor, Pt) == TRUE) {
+			_EstadoVisor = DDesplegableEx_Estado_Resaltado;
+		}
+
+		_Presionado = DDesplegableEx_Presionado_Nada;
+
+		Repintar();
 	}
 
 	void DDesplegableEx::_Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey) {
 	}
 
 	void DDesplegableEx::_Evento_MouseSaliendo(void) {
+		_MouseDentro = FALSE;
+		if (_EstadoBoton != DDesplegableEx_Estado_Normal || _EstadoVisor != DDesplegableEx_Estado_Normal) {
+			_EstadoBoton = DDesplegableEx_Estado_Normal;
+			_EstadoVisor = DDesplegableEx_Estado_Normal;
+			Repintar();
+		}
 	}
+
 
 	LRESULT CALLBACK DDesplegableEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {

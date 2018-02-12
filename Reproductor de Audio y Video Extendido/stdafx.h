@@ -63,6 +63,9 @@
 #define ID_MARCOSI                  2021
 #define ID_MARCOII                  2022
 
+#define ID_LISTARAIZ                2023
+#define ID_COMBORAIZ                2024
+
 
 #define ID_MENUBD_AGREGARALISTA			2100
 #define ID_MENUBD_AGREGARANUEVALISTA	2101

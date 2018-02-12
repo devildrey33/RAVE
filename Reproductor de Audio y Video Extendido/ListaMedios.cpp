@@ -54,9 +54,6 @@ ItemMedio *ListaMedios::AgregarMedio(TablaMedios_Medio *nMedio) {
 		case Tipo_Medio_Video: nIcono = RAVE_Iconos::RAVE_Icono_Video;		break;
 	}
 
-	
-	if (nMedio->TipoMedio() == Tipo_Medio::Tipo_Medio_Video) nIcono = 4;
-
 	std::wstring Pista = std::to_wstring(nMedio->Pista());
 	if (Pista.size() == 1) Pista = L"0" + Pista;
 

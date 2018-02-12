@@ -173,7 +173,7 @@ namespace DWL {
 
 		std::wstring					sPath;
 		hFind = FindFirstFile(nPath.c_str(), &FindInfoPoint);
-		BOOL							Agregar = false;
+		BOOL							Agregar = FALSE;
 		DExplorarDirectoriosEx_Nodo    *TmpNodo = NULL;
 		std::wstring                    PathWindows;
 		
@@ -184,12 +184,14 @@ namespace DWL {
 				(FindInfoPoint.cFileName[0] != L'.' && FindInfoPoint.cFileName[1] != L'.' && FindInfoPoint.cFileName[2] != L'\0')) {	// Si no es el directorio "..\0" (puede ser ..algo)
 				// Miro si es un directorio oculto y si hay que mostrarlos
 				Agregar = false;
-				if (FindInfoPoint.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN && MostrarArchivosOcultos == TRUE)	{	Agregar = true;	} // Directorio oculto, y hay que mostrar directorios ocultos
-				else																							{	Agregar = true;	} // Es un directorio normal
+				if (FindInfoPoint.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN && MostrarArchivosOcultos == TRUE)	{	Agregar = TRUE;	 } // Directorio oculto, y hay que mostrar directorios ocultos
+				else																							{	Agregar = TRUE;	 } // Es un directorio normal
 				
+				if (FindInfoPoint.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT)								{	Agregar = FALSE; } // Es un directorio link/junction				
+
 				// Agrego el directorio
 				sPath = nNodo->Path + FindInfoPoint.cFileName;
-				if (Agregar = true) {
+				if (Agregar == TRUE) {
 					TmpNodo = AgregarEntrada(FindInfoPoint.cFileName, nNodo, sPath.c_str(), 0, DExplorarDirectoriosEx_TipoNodo_Directorio, sPath.c_str(), TRUE);
 					BOOL Ret = _TieneDirectorios(sPath.c_str());
 					if		(Ret == TRUE)	{	AgregarEntrada(L"+", TmpNodo, 0, DExplorarDirectoriosEx_TipoNodo_Directorio_PorExplorar);	} // Si tiene subdirectorios agrego el expansor

@@ -63,6 +63,9 @@ namespace DWL {
 
 	};*/
 
+	class DDesplegableEx;
+
+
 	/* Plantilla ArbolEx que se crea partiendo del tipo de nodo */
 	class DArbolEx : public virtual DBarraScrollEx {
 	  public:
@@ -133,7 +136,8 @@ namespace DWL {
 		virtual void                                    Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params)			{ };
 		virtual void									Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param)					{ };
 
-
+		virtual void                                    Evento_FocoObtenido(HWND hWndUltimoFoco)													{ };
+		virtual void                                    Evento_FocoPerdido(HWND hWndNuevoFoco)														{ };
 														// Al expandir / contraer un nodo
 		virtual void									Evento_Nodo_Expandido(DWL::DArbolEx_Nodo *nNodo, const BOOL nExpandido)						{ };
 
@@ -173,6 +177,9 @@ namespace DWL {
 		void                                           _Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
 		void                                           _Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params);
 		void										   _Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param);
+
+		void										   _Evento_FocoObtenido(HWND hWndUltimoFoco);
+		void										   _Evento_FocoPerdido(HWND hWndNuevoFoco);
 
 		void                                           _AplicarShift(const LONG nPosShift);
 
@@ -238,6 +245,8 @@ namespace DWL {
 //		bool										   _Teclado[256];
 
 		friend class DArbolEx_Nodo;
+
+		friend class DDesplegableEx;
 	};
 
 

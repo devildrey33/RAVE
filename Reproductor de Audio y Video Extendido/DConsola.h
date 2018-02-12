@@ -18,6 +18,8 @@
 //			const BOOL				EscribirMS(const wchar_t *Texto);
 			const BOOL				EscribirMS(const wchar_t *Texto, ...);
 			const BOOL				EscribirMS(std::wstring &Texto);
+
+			const BOOL              MostrarUltimoError();
 		protected:
 			DWORD				   _UltimoTick;
 			HANDLE                 _Consola;

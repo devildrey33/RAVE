@@ -61,7 +61,6 @@ namespace DWL {
 		DExplorarDirectoriosEx_Nodo   *_NodoMisDocumentos;
 		DExplorarDirectoriosEx_Nodo   *_NodoMiPC;
 		DExplorarDirectoriosEx_Nodo   *_NodoRed;
-
 	};
 
 };

@@ -18,8 +18,8 @@
 #include "BarraVolumen.h"
 #include "DBotonEx.h"
 #include "DLabelEx.h"
-
-#include "DExplorarDirectoriosEx.h"
+#include "ListaRaices.h"
+#include "DDesplegableEx.h"
 
 using namespace DWL;
 
@@ -101,7 +101,10 @@ class VentanaPrincipal : public DWL::DVentana {
 
 	DWL::DBotonEx			BotonOpciones;
 
-	DWL::DExplorarDirectoriosEx ExplorarDir;
+//	DWL::DExplorarDirectoriosEx ExplorarDir;
+
+	DWL::DDesplegableEx     ComboRaiz;
+	ListaRaices             ListaRaiz;
 
 //	ListaMedios				Lista;
 	ListaMedios				Lista;

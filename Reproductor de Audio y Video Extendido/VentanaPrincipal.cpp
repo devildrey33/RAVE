@@ -20,7 +20,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 //	int x = App.BD.Tabla_Opciones.PosX(), y = App.BD.Tabla_Opciones.PosY();
 
-	HWND rhWnd = DVentana::CrearVentana(L"VentanaPrincipal", RAVE_TITULO, App.BD.Tabla_Opciones.PosX(), App.BD.Tabla_Opciones.PosY(), App.BD.Tabla_Opciones.Ancho(), App.BD.Tabla_Opciones.Alto(), WS_OVERLAPPEDWINDOW);
+	HWND rhWnd = DVentana::CrearVentana(L"VentanaPrincipal", RAVE_TITULO, App.BD.Tabla_Opciones.PosX(), App.BD.Tabla_Opciones.PosY(), App.BD.Tabla_Opciones.Ancho(), App.BD.Tabla_Opciones.Alto(), WS_OVERLAPPEDWINDOW, WS_EX_APPWINDOW, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 
 	RECT RC, RW;
 	GetClientRect(hWnd(), &RC);
@@ -51,8 +51,15 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	Opciones.Crear(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_OPCIONES);
 	Opciones.Visible(FALSE);
 
-	ExplorarDir.CrearExplorarDirectoriosEx(&Opciones, 10, 10, 300, 200, ID_OPCIONES);
-	ExplorarDir.Visible(TRUE);
+	ListaRaiz.CrearListaRaiz(&Opciones, 10, 10, 300, 80, ID_LISTARAIZ);
+
+	for (size_t i = 0; i < App.BD.Tabla_Raiz.Datos.size(); i++) {
+		ListaRaiz.AgregarRaiz(App.BD.Tabla_Raiz.Datos[i]->Path.c_str());
+	}
+	ListaRaiz.Visible(TRUE);
+
+	ComboRaiz.CrearDesplegable(&Opciones, 10, 100, 300, 30, ID_OPCIONES, DDesplegableEx_TipoEdicion_SinEdicion, DDesplegableEx_TipoDesplegable_ExplorarDirectorios);
+	ComboRaiz.Visible(TRUE);
 
 	MarcoSI.Crear(this, 10, 10, 360, 30, ID_MARCOSI);
 	BotonAtras.Crear(&MarcoSI, L"<", 0, 0, 30, 30, ID_BOTON_ANTERIOR);

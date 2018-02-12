@@ -71,10 +71,18 @@ void RAVE_Iniciar();
 	#define Debug_EscribirSinMS(TEXTO)				App.ConsolaDebug.Escribir(TEXTO);
 	#define Debug_Escribir(TEXTO)					App.ConsolaDebug.EscribirMS(TEXTO);
 	#define Debug_Leer(TEXTO)						App.ConsolaDebug.Leer(TEXTO);
+	// Marco que muestra si la función WINAPI tiene un error por la consola (GetLastError)
+	#define Debug_MostrarUltimoError()				App.ConsolaDebug.MostrarUltimoError();	
+	#define Debug_UltimoError(NUM)					SetLastError(NUM);	
 #else
+	#define Debug_EscribirSinMS_Varg(TEXTO, ...)	
 	#define Debug_Escribir_Varg(TEXTO, ...)		
+	#define Debug_EscribirSinMS(TEXTO)				
 	#define Debug_Escribir(TEXTO)				
 	#define Debug_Leer(TEXTO)					
+	// Marco que muestra si la función WINAPI tiene un error por la consola (GetLastError)
+	#define Debug_MostrarUltimoError()				
+	#define Debug_UltimoError(NUM)					SetLastError(NUM);	
 #endif
 
 

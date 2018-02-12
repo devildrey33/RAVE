@@ -22,21 +22,21 @@ namespace DWL {
 
 	LRESULT CALLBACK DControlEx::_GestorMensajes(HWND nhWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
-		case WM_CREATE: {
-			DControlEx *PreControlEx = reinterpret_cast<DControlEx *>(((CREATESTRUCT *)lParam)->lpCreateParams);
-			if (PreControlEx == NULL) return FALSE;
-			PreControlEx->_hWnd = nhWnd;
-			SetWindowLongPtr(nhWnd, GWLP_USERDATA, (LONG_PTR)PreControlEx);
-			PreControlEx->GestorMensajes(uMsg, wParam, lParam);
-			return TRUE;
-		}
-		default: {
-			DControlEx *ControlEx = reinterpret_cast<DControlEx *>(GetWindowLongPtr(nhWnd, GWLP_USERDATA));
-			if (ControlEx != NULL) {
-				return ControlEx->GestorMensajes(uMsg, wParam, lParam);
-				//					if (Ret != DWL_USAR_GESTOR_POR_DEFECTO) return 0;
+			case WM_CREATE: {
+				DControlEx *PreControlEx = reinterpret_cast<DControlEx *>(((CREATESTRUCT *)lParam)->lpCreateParams);
+				if (PreControlEx == NULL) return FALSE;
+				PreControlEx->_hWnd = nhWnd;
+				SetWindowLongPtr(nhWnd, GWLP_USERDATA, (LONG_PTR)PreControlEx);
+				PreControlEx->GestorMensajes(uMsg, wParam, lParam);
+				return TRUE;
 			}
-		}
+			default: {
+				DControlEx *ControlEx = reinterpret_cast<DControlEx *>(GetWindowLongPtr(nhWnd, GWLP_USERDATA));
+				if (ControlEx != NULL) {
+					return ControlEx->GestorMensajes(uMsg, wParam, lParam);
+					//					if (Ret != DWL_USAR_GESTOR_POR_DEFECTO) return 0;
+				}
+			}
 		}
 		return DefWindowProc(nhWnd, uMsg, wParam, lParam);
 	};
