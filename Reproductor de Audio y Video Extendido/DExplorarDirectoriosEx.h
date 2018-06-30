@@ -36,31 +36,40 @@ namespace DWL {
 
 	class DExplorarDirectoriosEx : public DWL::DArbolEx {
 	  public:
-										DExplorarDirectoriosEx(void);
-									   ~DExplorarDirectoriosEx(void);
+												DExplorarDirectoriosEx(void);
+											   ~DExplorarDirectoriosEx(void);
 
-		DExplorarDirectoriosEx_Nodo	   *AgregarEntrada(const TCHAR *nTexto, DExplorarDirectoriosEx_Nodo *nPadre = NULL, const int IconoRecursos = 0, DExplorarDirectoriosEx_TipoNodo nTipo = DExplorarDirectoriosEx_TipoNodo_INDEFINIDO, const wchar_t *nPath = L"", const BOOL nActivado = TRUE);
-		DExplorarDirectoriosEx_Nodo	   *AgregarEntrada(const TCHAR *nTexto, DExplorarDirectoriosEx_Nodo *nPadre, const GUID &KnowFolderId, DExplorarDirectoriosEx_TipoNodo nTipo = DExplorarDirectoriosEx_TipoNodo_INDEFINIDO, const wchar_t *nPath = L"", const BOOL nActivado = TRUE);
-		DExplorarDirectoriosEx_Nodo	   *AgregarEntrada(const TCHAR *nTexto, DExplorarDirectoriosEx_Nodo *nPadre, const wchar_t *PathIcono, const int PosIcono, DExplorarDirectoriosEx_TipoNodo nTipo = DExplorarDirectoriosEx_TipoNodo_INDEFINIDO, const wchar_t *nPath = L"", const BOOL nActivado = TRUE);
-		HWND							CrearExplorarDirectoriosEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID);
-		void							ActualizarDirectorios(void);
-										// Opciones
-		BOOL                            MostrarArchivosOcultos;			// Por defecto FALSE
-//		BOOL                            DesactivarDirectorioWindows;	// Por defecto TRUE
+		DExplorarDirectoriosEx_Nodo			   *AgregarEntrada(const TCHAR *nTexto, DExplorarDirectoriosEx_Nodo *nPadre = NULL, const int IconoRecursos = 0, DExplorarDirectoriosEx_TipoNodo nTipo = DExplorarDirectoriosEx_TipoNodo_INDEFINIDO, const wchar_t *nPath = L"", const BOOL nActivado = TRUE);
+		DExplorarDirectoriosEx_Nodo			   *AgregarEntrada(const TCHAR *nTexto, DExplorarDirectoriosEx_Nodo *nPadre, const GUID &KnowFolderId, DExplorarDirectoriosEx_TipoNodo nTipo = DExplorarDirectoriosEx_TipoNodo_INDEFINIDO, const wchar_t *nPath = L"", const BOOL nActivado = TRUE);
+		DExplorarDirectoriosEx_Nodo			   *AgregarEntrada(const TCHAR *nTexto, DExplorarDirectoriosEx_Nodo *nPadre, const wchar_t *PathIcono, const int PosIcono, DExplorarDirectoriosEx_TipoNodo nTipo = DExplorarDirectoriosEx_TipoNodo_INDEFINIDO, const wchar_t *nPath = L"", const BOOL nActivado = TRUE);
+		HWND									CrearExplorarDirectoriosEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, DWORD nEstilos = WS_CHILD | WS_VISIBLE);
+		void									ActualizarDirectorios(void);
+												// Opciones
+		BOOL									MostrarArchivosOcultos;			// Por defecto FALSE
+
+		const wchar_t                          *PathSeleccionado(void);
+		DListaIconos_Icono                     *IconoSeleccionado(void);
+		inline DExplorarDirectoriosEx_Nodo     *PathResaltado(void)				{ return static_cast<DExplorarDirectoriosEx_Nodo *>(_NodoResaltado); };
+		inline DExplorarDirectoriosEx_Nodo     *PathEscritorio(void)			{ return _NodoEscritorio; };
+		inline DExplorarDirectoriosEx_Nodo     *PathMisDocumentos(void)			{ return _NodoMisDocumentos; };
+		inline DExplorarDirectoriosEx_Nodo     *PathMiPC(void)					{ return _NodoMiPC; };
+		inline DExplorarDirectoriosEx_Nodo     *PathRed(void)					{ return _NodoRed; };
+
 	  protected:
-//		void						   _ObtenerPathNodo(DExplorarDirectoriosEx_Nodo *nNodo, std::wstring &oPath);
-		void							Evento_Nodo_Expandido(DWL::DArbolEx_Nodo *nNodo, const BOOL nExpandido);
-		const BOOL		               _EnumerarRed(LPNETRESOURCE lpnr, DExplorarDirectoriosEx_Nodo *nNodo);
-		const BOOL		               _EnumerarDirectorios(DExplorarDirectoriosEx_Nodo *nNodo);
+//		void								   _ObtenerPathNodo(DExplorarDirectoriosEx_Nodo *nNodo, std::wstring &oPath);
+		void									Evento_Nodo_Expandido(DWL::DArbolEx_Nodo *nNodo, const BOOL nExpandido);
+		const BOOL						       _EnumerarRed(LPNETRESOURCE lpnr, DExplorarDirectoriosEx_Nodo *nNodo);
+		const BOOL							   _EnumerarDirectorios(DExplorarDirectoriosEx_Nodo *nNodo);
 #if DEXPLORARDIRECTORIOSEX_MOSTRARDEBUG == TRUE
-		void                           _DEBUG_EnumerarRed(int i, LPNETRESOURCE lpnrLocal);
+		void							       _DEBUG_EnumerarRed(int i, LPNETRESOURCE lpnrLocal);
 #endif
-		const BOOL		               _TieneDirectorios(const wchar_t *nPath);
+		const BOOL						       _TieneDirectorios(const wchar_t *nPath);
 
-		DExplorarDirectoriosEx_Nodo   *_NodoEscritorio;
-		DExplorarDirectoriosEx_Nodo   *_NodoMisDocumentos;
-		DExplorarDirectoriosEx_Nodo   *_NodoMiPC;
-		DExplorarDirectoriosEx_Nodo   *_NodoRed;
+		DExplorarDirectoriosEx_Nodo			  *_NodoEscritorio;
+		DExplorarDirectoriosEx_Nodo			  *_NodoMisDocumentos;
+		DExplorarDirectoriosEx_Nodo			  *_NodoMiPC;
+		DExplorarDirectoriosEx_Nodo			  *_NodoRed;
+
 	};
 
 };

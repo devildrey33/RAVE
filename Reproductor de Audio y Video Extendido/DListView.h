@@ -725,7 +725,7 @@ MiListView.AgregarItem(0, -1, -1, TEXT("Item alineado a la izquierda"), TEXT("It
 													    \param[in]	nActivar	: Parametro en el que especificaremos si queremos activar o desactivar el ListView
 													    \return		No devuelve nada.
 											    */
-	        virtual void				        Activar(const BOOL nActivar);
+	        virtual const BOOL			        Activar(const BOOL nActivar);
 
 											    //! Función para activar / desactivar el uso de grupos dentro del ListView.
 											    /*!	Esta función se usa para activar / desactivar el uso de grupos dentro del ListView.

@@ -3,7 +3,7 @@
 #include "Rave_Skin.h"
 
 namespace DWL {
-	DLabelEx::DLabelEx(void) : DControlEx_TextoEstatico(), _Formato(DT_LEFT) {
+	DLabelEx::DLabelEx(void) : _Formato(DT_LEFT), ColorTexto(COLOR_TEXTO), ColorTextoSombra(COLOR_TEXTO_SOMBRA), ColorFondo(COLOR_FONDO) {
 	}
 
 
@@ -15,7 +15,7 @@ namespace DWL {
 		_hWnd = CrearControlEx(nPadre, L"DLabelEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
 
 		_Formato = (nCentrado == TRUE) ? DT_CENTER : DT_LEFT;
-		_Fuente = _Fuente18Normal;
+		Fuente = _Fuente18Normal;
 		_Texto = nTxt;
 		return hWnd();
 	}
@@ -31,18 +31,18 @@ namespace DWL {
 		HDC     TmphDC = CreateCompatibleDC(NULL);
 		HBITMAP TmphDCBmp = CreateCompatibleBitmap(DC, RC.right, RC.bottom);
 		HBITMAP VTmphDCBmp = static_cast<HBITMAP>(SelectObject(TmphDC, TmphDCBmp));
-		HFONT	VFont = static_cast<HFONT>(SelectObject(TmphDC, _Fuente()));
+		HFONT	VFont = static_cast<HFONT>(SelectObject(TmphDC, Fuente()));
 
-		HBRUSH BrochaFondo = CreateSolidBrush(_ColorFondo);
+		HBRUSH BrochaFondo = CreateSolidBrush(ColorFondo);
 		FillRect(TmphDC, &RC, BrochaFondo);
 		DeleteObject(BrochaFondo);
 
 		SetBkMode(TmphDC, TRANSPARENT);
 		// Pinto la sombra del texto
-		SetTextColor(TmphDC, _ColorTextoSombra);
+		SetTextColor(TmphDC, ColorTextoSombra);
 		DrawText(TmphDC, _Texto.c_str(), static_cast<int>(_Texto.size()), &RC2, _Formato);
 		// Pinto el texto
-		SetTextColor(TmphDC, _ColorTexto);
+		SetTextColor(TmphDC, ColorTexto);
 		DrawText(TmphDC, _Texto.c_str(), static_cast<int>(_Texto.size()), &RC, _Formato);
 
 		BitBlt(DC, RC.left, RC.top, RC.right, RC.bottom, TmphDC, 0, 0, SRCCOPY);

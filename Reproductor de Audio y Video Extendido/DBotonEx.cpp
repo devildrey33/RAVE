@@ -5,18 +5,20 @@
 
 namespace DWL {
 
-	DBotonEx::DBotonEx() : DControlEx_TextoDinamico(), _Estado(DBotonEx_Estado_Normal) {
+	DBotonEx::DBotonEx() :	ColorTexto(COLOR_TEXTO), ColorTextoResaltado(COLOR_TEXTO_RESALTADO), ColorTextoPresionado(COLOR_TEXTO_PRESIONADO), ColorTextoSombra(COLOR_TEXTO_SOMBRA), _Estado(DBotonEx_Estado_Normal),
+							ColorBorde(COLOR_BORDE), ColorBordeResaltado(COLOR_BORDE_RESALTADO), ColorBordePresionado(COLOR_BORDE_PRESIONADO), ColorTextoDesactivado(COLOR_TEXTO_DESACTIVADO),
+							ColorFondo(COLOR_BOTON), ColorFondoResaltado(COLOR_BOTON_RESALTADO), ColorFondoPresionado(COLOR_BOTON_PRESIONADO) {
 	}
 
 
 	DBotonEx::~DBotonEx() {
-	}
+	} 
 
 	HWND DBotonEx::CrearBotonEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const long Estilos) {
 		if (hWnd()) { Debug_Escribir(L"DBotonEx::CrearBotonEx() Error : ya se ha creado el botón\n"); return hWnd(); }
 		_hWnd = CrearControlEx(nPadre, L"DBotonEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
 		_Texto = nTxt;
-		_Fuente = _Fuente21Negrita;
+		Fuente = _Fuente21Negrita;
 		return hWnd();
 	}
 
@@ -32,45 +34,50 @@ namespace DWL {
 		// Creo un DC compatible para el buffer
 		HBITMAP Bmp = CreateCompatibleBitmap(DC, RC.right, RC.bottom);
 		HBITMAP BmpViejo = static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
-		HFONT   vFuente = static_cast<HFONT>(SelectObject(Buffer, _Fuente()));
+		HFONT   vFuente = static_cast<HFONT>(SelectObject(Buffer, Fuente()));
 
-		COLORREF ColorBorde = 0, ColorTexto = 0, ColorFondo = 0;
+		COLORREF nColorBorde = 0, nColorTexto = 0, nColorFondo = 0;
 		switch (_Estado) {
 			case DBotonEx_Estado_Normal:
-				ColorFondo = _ColorFondo;
-				ColorBorde = _ColorBorde;
-				ColorTexto = _ColorTexto;
+				nColorFondo = ColorFondo;
+				nColorBorde = ColorBorde;
+				nColorTexto = ColorTexto;
 				break;
 			case DBotonEx_Estado_Resaltado:
-				ColorFondo = _ColorFondoResaltado;
-				ColorBorde = _ColorBordeResaltado;
-				ColorTexto = _ColorTextoResaltado;
+				nColorFondo = ColorFondoResaltado;
+				nColorBorde = ColorBordeResaltado;
+				nColorTexto = ColorTextoResaltado;
 				break;
 			case DBotonEx_Estado_Presionado:
-				ColorFondo = _ColorFondoPresionado;
-				ColorBorde = _ColorBordePresionado;
-				ColorTexto = _ColorTextoPresionado;
+				nColorFondo = ColorFondoPresionado;
+				nColorBorde = ColorBordePresionado;
+				nColorTexto = ColorTextoPresionado;
 				RCT.top += 2;
 				RCS.top += 2;
 				break;
 		}
+		// Si el control no está activado modifico el color final del texto
+		if (Activado() == FALSE) {
+			nColorTexto = ColorTextoDesactivado;
+		}
+
 		// Pinto el borde
-		HBRUSH BrochaBorde = CreateSolidBrush(ColorBorde);
+		HBRUSH BrochaBorde = CreateSolidBrush(nColorBorde);
 		FrameRect(Buffer, &RC, BrochaBorde);
 		DeleteObject(BrochaBorde);
 
 		// Pinto el fondo
-		HBRUSH BrochaFondo = CreateSolidBrush(ColorFondo);
+		HBRUSH BrochaFondo = CreateSolidBrush(nColorFondo);
 		FillRect(Buffer, &RCF, BrochaFondo);
 		DeleteObject(BrochaFondo);
 
 		SetBkMode(Buffer, TRANSPARENT);
 		// Pinto la sombra del texto
-		SetTextColor(Buffer, _ColorTextoSombra);
+		SetTextColor(Buffer, ColorTextoSombra);
 		DrawText(Buffer, _Texto.c_str(), static_cast<int>(_Texto.size()), &RCS, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
 		// Pinto el texto
-		SetTextColor(Buffer, ColorTexto);
+		SetTextColor(Buffer, nColorTexto);
 		DrawText(Buffer, _Texto.c_str(), static_cast<int>(_Texto.size()), &RCT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
 
@@ -84,6 +91,12 @@ namespace DWL {
 		DeleteDC(Buffer);
 	}
 
+	const BOOL DBotonEx::Activar(const BOOL nActivar) {
+		BOOL Ret = FALSE;
+		Ret = EnableWindow(_hWnd, nActivar);
+		Repintar();
+		return Ret;
+	}
 	
 	void DBotonEx::Evento_MouseMovimiento(const int cX, const int cY, const UINT wParam) {
 	}

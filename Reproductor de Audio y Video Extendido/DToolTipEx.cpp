@@ -15,7 +15,7 @@ namespace DWL {
 
 
 	HWND DToolTipEx::CrearToolTipEx(void) {
-		_hWnd = DVentana::CrearVentana(L"ToolTipEx", L"", 0, 0, 0, 0, WS_POPUP, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
+		_hWnd = DVentana::CrearVentana(NULL, L"DToolTipEx", L"", 0, 0, 0, 0, WS_POPUP, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
 		_Fuente = _Fuente18Normal;
 		return hWnd();
 	}

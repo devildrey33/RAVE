@@ -5,15 +5,23 @@
 		V  Control DLabel
 		V  Control DToolTip basic
 		V  Controls DBarraDesplazamiento, DBarraProgreso, i DBarraScroll
+		V  Poder afegir i eliminar arrels a la BD desde les opcions
 	   +o- Control DArbolEx
 		   +o- Acabar el teclat i el mouse amb el shift
 			V  Implementar sub-selecció
-			-  Implementar LabelEdit )estic pensant amb un control d'edició personalitzat que tindra DArbolEx i DListaEx de posibilitats)
+			-  Implementar LabelEdit (estic pensant amb un control d'edició personalitzat que tindra DArbolEx i DListaEx de posibilitats) [DEdicionTextoEx]
 			-  Revisar expandir nodo (si redimensiones la finestra al minim i fas doble click a motorhead veuras.... s'hauria de quedar el nodo pare a _NodoInicioPagina)
+			-  Falta fer una funció HacerVisible(Nodo) per solucionar el problema de la linea d'adalt
 	   +o- Control DListaEx
 			-  Implementar teclat complexe (shifts, controls, av, repag, i tal...) 
-			-  Doble click (fer play en un medi a ListaMedios)
-			-  Canviar els icones amb el RaveVLC
+	   +o- Control DExplorarDirectorios que crea un arbre amb l'escriptori, MisDocuemntos, MiPC, i Entorno de Red (per poguer seleccionar un directori) [Extensió de DArbolEx]
+			+  Directoris desactivats si no hi ha privilegis per explorar-los
+		o- Clase adaptable per formar part d'un control DEdicionTextoEx
+			-  Edició de textes bàsic amb una sola linea (s'ha de poder especificar la part del control que mostrará el control per editar el texte)
+			   +o- Pensat per tenir : una font amb tamany fixe, un color de texte, sombra i un de fondo, amb posibilitat de Resaltat i Presionat
+				-  Al final necesita un backbuffer per poguer pintar el texte en un espai limitat 
+	   +o- Dialeg per seleccionar un directori.
+
 
 	RAVE 0.4
 		-  Asociacions d'arxius amb l'explorador

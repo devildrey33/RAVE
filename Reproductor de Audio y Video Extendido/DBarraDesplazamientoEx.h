@@ -41,10 +41,11 @@ namespace DWL {
 
 	   virtual void								Evento_MostrarToolTip(float nValor, std::wstring &Texto);
 
-	   inline void								ColorBarraResaltado(COLORREF nColor) { _ColorBarraResaltado = nColor;		Repintar(); }
-	   inline const COLORREF					ColorBarraResaltado(void) { return _ColorBarraResaltado; }
-	   inline void								ColorBarraPresionado(COLORREF nColor) { _ColorBarraPresionado = nColor;		Repintar(); }
-	   inline const COLORREF					ColorBarraPresionado(void) { return _ColorBarraPresionado; }
+	   COLORREF								    ColorBarraResaltado;
+	   COLORREF								    ColorBarraPresionado;
+
+	   COLORREF									ColorBordeResaltado;
+	   COLORREF									ColorBordePresionado;
 
 
 	   LRESULT CALLBACK							GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -52,8 +53,6 @@ namespace DWL {
 	   DBarraDesplazamientoEx_ToolTip		   _MostrarToolTip;
 	   DToolTipEx							   _ToolTip;
 
-	   COLORREF								   _ColorBarraResaltado;
-	   COLORREF								   _ColorBarraPresionado;
 
 	   DBarraDesplazamientoEx_Estado		   _Estado;
 

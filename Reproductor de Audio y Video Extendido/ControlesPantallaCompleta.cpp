@@ -5,7 +5,7 @@
 #include "Rave_Skin.h"
 
 void ControlesPantallaCompleta::Crear(void) {	
-	DVentana::CrearVentana(L"ControlesPantallaCompleta", L"", 0, 0, 500, 80, WS_POPUP, WS_EX_TOOLWINDOW, NULL, NULL, NULL, NULL);
+	DVentana::CrearVentana(NULL, L"ControlesPantallaCompleta", L"", 0, 0, 500, 80, WS_POPUP, WS_EX_TOOLWINDOW, NULL, NULL, NULL, NULL);
 	RECT RC;
 	GetClientRect(hWnd(), &RC);
 	BotonAtras.Crear(this, L"<", 10, 10, 30, 30, ID_BOTON_ANTERIOR);

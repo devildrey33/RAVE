@@ -13,9 +13,9 @@ ListaRaices::~ListaRaices(void) {
 
 void ListaRaices::CrearListaRaiz(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID) {
 	CrearListaEx(nPadre, cX, cY, cAncho, cAlto, cID);
-
-	AgregarColumna(DLISTAEX_COLUMNA_ANCHO_AUTO);
-	AgregarColumna(16 + (DLISTAEX_PADDING * 2), DListaEx_Columna_Alineacion_Centrado);
+	/* TODO : Afegir columna per mostrar el percentatge de escaneig (2 fases : enumeració de medis, obtenció de dades de cada medi) */
+	AgregarColumna(DLISTAEX_COLUMNA_ANCHO_AUTO);										// Path
+	AgregarColumna(16 + (DLISTAEX_PADDING * 2), DListaEx_Columna_Alineacion_Centrado);	// Eliminar
 	// Icono de la papelera para borrar la raíz
 	_IconoPapeleraResaltado	= DListaIconos::AgregarIconoRecursos(IDI_BORRAR, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
 	_IconoPapelera			= DListaIconos::AgregarIconoRecursos(IDI_BORRARRESALTADO, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
@@ -24,8 +24,10 @@ void ListaRaices::CrearListaRaiz(DhWnd *nPadre, const int cX, const int cY, cons
 }
 
 
-DListaEx_Item *ListaRaices::AgregarRaiz(const wchar_t *nPath) {
-	return AgregarItem(nPath, 0, DLISTAEX_POSICION_FIN, nPath, L"");
+DListaEx_Item *ListaRaices::AgregarRaiz(const wchar_t *nPath, const BOOL nRepintar) {
+	DListaEx_Item *Ret = AgregarItem(nPath, 0, DLISTAEX_POSICION_FIN, nPath, L"");
+	if (nRepintar != FALSE) Repintar();
+	return Ret;
 }
 
 
@@ -41,12 +43,13 @@ void ListaRaices::Evento_PintarSubItem(HDC hDC, const size_t NumItem, const size
 }
 
 
-void ListaRaices::Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param) { 
+void ListaRaices::Evento_MousePresionado(DWL::DControlEx_EventoMouse &DatosMouse) {
 };
 
 
-void ListaRaices::Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param) {
+void ListaRaices::Evento_MouseSoltado(DWL::DControlEx_EventoMouse &DatosMouse) {
 	if (_ItemPresionado == _ItemResaltado && _SubItemResaltado == 1) {
+		App.VentanaRave.EliminarRaiz(_Items[_ItemPresionado]->Texto());
 		EliminarItem(_ItemPresionado);
 //		Repintar();
 	}

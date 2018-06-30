@@ -98,9 +98,6 @@
     <Filter Include="DWL\Ventanas\ControlesEx\Extensiones">
       <UniqueIdentifier>{dcdeb678-6ac4-415f-b635-e7f19a3ec517}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\Extensiones\EdicionTexto">
-      <UniqueIdentifier>{f2dead2b-bc03-45d3-baa2-54285f0b675d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="xXx _MAIN_ xXx">
       <UniqueIdentifier>{33c10cc3-7f24-444b-9777-dac5a9b6874d}</UniqueIdentifier>
     </Filter>
@@ -127,6 +124,15 @@
     </Filter>
     <Filter Include="DWL\Ventanas\Controles\ImageList %28DEPRECATED%29">
       <UniqueIdentifier>{a722b17b-e26a-4ed7-8bd7-a35ce20283d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\EdicionTextoEx">
+      <UniqueIdentifier>{f2dead2b-bc03-45d3-baa2-54285f0b675d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\Dialogos Comunes">
+      <UniqueIdentifier>{c3c8176b-efbb-4943-a878-f184727d60a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\Dialogos Comunes\DlgDirectorios">
+      <UniqueIdentifier>{e846f990-8e98-4a16-b0b6-ef3d334b3dfe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -301,9 +307,6 @@
     <ClInclude Include="DListaIconos_Icono.h">
       <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DTablaEx, etc...%29</Filter>
     </ClInclude>
-    <ClInclude Include="DEdicionTexto.h">
-      <Filter>DWL\Ventanas\ControlesEx\Extensiones\EdicionTexto</Filter>
-    </ClInclude>
     <ClInclude Include="DControlEx.h">
       <Filter>DWL\Ventanas\ControlesEx</Filter>
     </ClInclude>
@@ -342,6 +345,15 @@
     </ClInclude>
     <ClInclude Include="ListaRaices.h">
       <Filter>Ventanas\Controles</Filter>
+    </ClInclude>
+    <ClInclude Include="DEdicionTextoEx.h">
+      <Filter>DWL\Ventanas\ControlesEx\EdicionTextoEx</Filter>
+    </ClInclude>
+    <ClInclude Include="DDlgDirectorios.h">
+      <Filter>DWL\Ventanas\Dialogos Comunes\DlgDirectorios</Filter>
+    </ClInclude>
+    <ClInclude Include="DControlEx_EventoMouse.h">
+      <Filter>DWL\Ventanas\ControlesEx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -480,9 +492,6 @@
     <ClCompile Include="DArbolEx_Nodo.cpp">
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
     </ClCompile>
-    <ClCompile Include="DEdicionTexto.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\Extensiones\EdicionTexto</Filter>
-    </ClCompile>
     <ClCompile Include="DControlEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx</Filter>
     </ClCompile>
@@ -518,6 +527,12 @@
     </ClCompile>
     <ClCompile Include="ListaRaices.cpp">
       <Filter>Ventanas\Controles</Filter>
+    </ClCompile>
+    <ClCompile Include="DEdicionTextoEx.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\EdicionTextoEx</Filter>
+    </ClCompile>
+    <ClCompile Include="DDlgDirectorios.cpp">
+      <Filter>DWL\Ventanas\Dialogos Comunes\DlgDirectorios</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,7 @@
 
 namespace DWL {
 
-	class DLabelEx : public DControlEx_TextoEstatico, public DControlEx_FondoEstatico {
+	class DLabelEx : public DControlEx {
 	  public:
 								DLabelEx(void);
 				               ~DLabelEx(void);
@@ -12,8 +12,15 @@ namespace DWL {
 		void					PintarLabelEx(HDC DC);
 		void					Texto(std::wstring &nTexto);
 		LRESULT CALLBACK		GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+		COLORREF                ColorFondo;
+		COLORREF                ColorTexto;
+		COLORREF                ColorTextoSombra;
+	
+		DhWnd_Fuente            Fuente;
 	  protected:
 		UINT				   _Formato;
+		std::wstring           _Texto;
 	};
 
 }

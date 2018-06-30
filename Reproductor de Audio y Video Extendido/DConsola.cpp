@@ -36,6 +36,7 @@ namespace DWL {
 		int TotalCaracteres = vswprintf_s(T, 4096, Texto, Marker);
 		DWORD CaracteresEscribidos = 0;
 		BOOL Ret = WriteConsole(_Consola, T, TotalCaracteres, &CaracteresEscribidos, NULL);
+		va_end(Marker);
 		ReleaseMutex(_Mutex);
 		return Ret;
 	}
@@ -86,6 +87,7 @@ namespace DWL {
 		TotalCaracteres = swprintf_s(Txt, 4096, L"[%.8d] %s", TmpTick - _UltimoTick, T);
 		_UltimoTick = TmpTick;
 		BOOL Ret = WriteConsole(_Consola, Txt, TotalCaracteres, &CaracteresEscribidos, NULL);
+		va_end(Marker);
 		ReleaseMutex(_Mutex);
 		return Ret;
 	}
@@ -111,6 +113,7 @@ namespace DWL {
 		DWORD dw = GetLastError();
 		if (dw == 0) {
 			ReleaseMutex(_Mutex);
+			EscribirMS(L"GetLastError() : Sin errores.\n");
 			return FALSE;
 		}
 
@@ -118,7 +121,7 @@ namespace DWL {
 
 		// Display the error message and exit the process
 		lpDisplayBuf = (LPVOID)LocalAlloc(LMEM_ZEROINIT, (lstrlen((LPCTSTR)lpMsgBuf) + lstrlen((LPCTSTR)Texto) + 40) * sizeof(TCHAR));
-		StringCchPrintf((LPTSTR)lpDisplayBuf, LocalSize(lpDisplayBuf) / sizeof(TCHAR), TEXT("%s failed with error %d: %s"), Texto, dw, lpMsgBuf);
+		StringCchPrintf((LPTSTR)lpDisplayBuf, LocalSize(lpDisplayBuf) / sizeof(TCHAR), TEXT("%s failed with error %d: %s\n"), Texto, dw, lpMsgBuf);
 		std::wstring TmpTxt = (LPCTSTR)lpDisplayBuf;
 		EscribirMS(TmpTxt);
 		

@@ -22,7 +22,7 @@
     <ProjectGuid>{786A9BEF-4D80-4511-98AD-E6C9A61B2824}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>ReproductordeAudioyVideoExtendido</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -166,9 +166,10 @@
     <ClInclude Include="DArbolEx_Nodo.h" />
     <ClInclude Include="DBarraScrollEx.h" />
     <ClInclude Include="DControlEx.h" />
+    <ClInclude Include="DControlEx_EventoMouse.h" />
     <ClInclude Include="DDesplegableEx.h" />
     <ClInclude Include="DDesplegableEx_ExplorarDirectoriosEx.h" />
-    <ClInclude Include="DEdicionTexto.h" />
+    <ClInclude Include="DEdicionTextoEx.h" />
     <ClInclude Include="DExplorarDirectoriosEx.h" />
     <ClInclude Include="DGDI.h" />
     <ClInclude Include="DhWnd_Fuente.h" />
@@ -178,6 +179,7 @@
     <ClInclude Include="DListaEx_SubItem.h" />
     <ClInclude Include="DListaIconos.h" />
     <ClInclude Include="DListaIconos_Icono.h" />
+    <ClInclude Include="DDlgDirectorios.h" />
     <ClInclude Include="ListaMedios.h" />
     <ClInclude Include="ListaRaices.h" />
     <ClInclude Include="MarcoOpciones.h" />
@@ -247,7 +249,7 @@
     <ClCompile Include="DControlEx.cpp" />
     <ClCompile Include="DDesplegableEx.cpp" />
     <ClCompile Include="DDesplegableEx_ExplorarDirectoriosEx.cpp" />
-    <ClCompile Include="DEdicionTexto.cpp" />
+    <ClCompile Include="DEdicionTextoEx.cpp" />
     <ClCompile Include="DExplorarDirectoriosEx.cpp" />
     <ClCompile Include="DGDI.cpp" />
     <ClCompile Include="DhWnd.cpp" />
@@ -264,6 +266,7 @@
     <ClCompile Include="DListView_Item.cpp" />
     <ClCompile Include="DMenu.cpp" />
     <ClCompile Include="DMouse.cpp" />
+    <ClCompile Include="DDlgDirectorios.cpp" />
     <ClCompile Include="DStaticControl.cpp" />
     <ClCompile Include="DStringUtils.cpp" />
     <ClCompile Include="DToolTipEx.cpp" />

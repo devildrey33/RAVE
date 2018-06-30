@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "MarcoOpciones.h"
-
+#include "DMensajesWnd.h"
 
 MarcoOpciones::MarcoOpciones() {
 }
@@ -30,7 +30,7 @@ void MarcoOpciones::Pintar(HDC hDC) {
 	HBITMAP Viejo = static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
 
 	
-	HBRUSH Brocha = CreateSolidBrush(_ColorFondo);
+	HBRUSH Brocha = CreateSolidBrush(ColorFondo);
 	FillRect(Buffer, &RCC, Brocha);
 	DeleteObject(Brocha);
 	Scrolls_Pintar(Buffer, RC);
@@ -46,8 +46,12 @@ void MarcoOpciones::Pintar(HDC hDC) {
 
 
 LRESULT CALLBACK MarcoOpciones::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
+	DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)));
+
 	switch (uMsg) {
+		// Redirecciono los clics en botones hacia la ventana padre del reproductor
 		case WM_COMMAND:
+		case DWL_BOTONEX_CLICK : 
 			return SendMessage(hWndPadre(), uMsg, wParam, lParam);
 
 		case WM_SIZE:
@@ -66,8 +70,8 @@ LRESULT CALLBACK MarcoOpciones::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM 
 			if (_MouseEntrando() == TRUE) {
 				// MouseEntrando
 			}
-
-			Scrolls_MouseMovimiento(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
+			
+			Scrolls_MouseMovimiento(DatosMouse);
 			break;
 		case WM_MOUSELEAVE:
 			_MouseDentro = FALSE;
@@ -78,10 +82,10 @@ LRESULT CALLBACK MarcoOpciones::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM 
 			}
 			break;
 		case WM_LBUTTONDOWN:
-			Scrolls_MousePresionado(0, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
+			Scrolls_MousePresionado(DatosMouse);
 			break;
 		case WM_LBUTTONUP:
-			Scrolls_MouseSoltado(0, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
+			Scrolls_MouseSoltado(DatosMouse);
 			break;
 
 	}

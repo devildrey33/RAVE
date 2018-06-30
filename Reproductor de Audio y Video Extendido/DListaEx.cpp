@@ -1,17 +1,18 @@
 #include "stdafx.h"
 #include "DListaEx.h"
 #include "DListaIconos.h"
+#include "DMensajesWnd.h"
 
 namespace DWL {
 
 	DListaEx::DListaEx(void) :	_ItemPaginaInicio(-1)	, _ItemPaginaFin(-1)		, _ItemPaginaVDif(0)		, _ItemPaginaHDif(0),
 								_SubItemResaltado(-1)	, _SubItemUResaltado(-1)	, _SubItemPresionado(-1)	, MostrarSeleccion(TRUE),
 								_ItemResaltado(-1)		, _ItemUResaltado(-1)		, _ItemMarcado(-1)			, 
-								_ItemPresionado(-1)		, _ItemShift(-1)			, _CalcularValores(FALSE)	,
-								_TotalAnchoVisible(0)	, _TotalAltoVisible(0)		, _Fuente(NULL)             ,
+								_ItemPresionado(-1)		, _ItemShift(-1)			, _Repintar(FALSE)			,
+								_TotalAnchoVisible(0)	, _TotalAltoVisible(0)		, 
 								_BufferItem(NULL)		, _BufferItemBmp(NULL)		, _BufferItemBmpViejo(NULL)	, _BufferItemFuenteViejo(NULL) {
 
-		_ColorFondoScroll = COLOR_LISTA_FONDO_SCROLL;
+//		ColorFondoScroll = COLOR_LISTA_FONDO_SCROLL;
 	}
 
 
@@ -23,7 +24,7 @@ namespace DWL {
 	
 	HWND DListaEx::CrearListaEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID) {
 		if (hWnd()) { Debug_Escribir(L"DListaEx::CrearListaEx() Error : ya se ha creado la lista\n"); return hWnd(); }
-		_Fuente = _Fuente18Normal;
+		Fuente = _Fuente18Normal;
 		_hWnd = CrearControlEx(nPadre, L"DListaEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, CS_DBLCLKS); // CS_DBLCLKS (el control recibe notificaciones de doble click)
 		return hWnd();
 	}
@@ -31,7 +32,7 @@ namespace DWL {
 	DListaEx_Columna *DListaEx::AgregarColumna(const int nAncho, DListaEx_Columna_Alineacion nAlineacion) {
 		DListaEx_Columna *nColumna = new DListaEx_Columna(nAlineacion, nAncho);
 		_Columnas.push_back(nColumna);
-		_CalcularValores = TRUE;
+		_Repintar = TRUE;
 		return nColumna;
 	}
 	
@@ -49,7 +50,7 @@ namespace DWL {
 		}
 		_Items.push_back(nItem);
 		
-		_CalcularValores = TRUE;
+		_Repintar = TRUE;
 //		_CalcularScrolls();
 
 		return nItem;
@@ -71,8 +72,8 @@ namespace DWL {
 
 	void DListaEx::Pintar(HDC hDC) {
 
-		if (_CalcularValores == TRUE) {
-			_CalcularValores = FALSE;
+		if (_Repintar == TRUE) {
+			_Repintar = FALSE;
 			_CalcularScrolls();
 		}
 
@@ -95,7 +96,7 @@ namespace DWL {
 		if (nItemFin == -1) nItemFin = _Items.size() - 1;
 
 		RECT RectaItem;
-		LONG nAlto = _Fuente.Alto() + (DLISTAEX_PADDING * 2);
+		LONG nAlto = Fuente.Alto() + (DLISTAEX_PADDING * 2);
 		// _ItemPaginaInicio es unsigned -1 se refiere al valor máximo en una variable del tipo size_t
 		if (_ItemPaginaInicio != -1) {
 			for (size_t i = _ItemPaginaInicio; i < nItemFin + 1; i++) {
@@ -172,7 +173,7 @@ namespace DWL {
 
 		// Pinto el fondo del buffer
 		HBRUSH BrochaFondo = CreateSolidBrush(ColFondo);
-		RECT EspacioLocal = { 0 , 0, (static_cast<LONG>(_TotalAnchoVisible) > Espacio.right) ? static_cast<LONG>(_TotalAnchoVisible) : Espacio.right, (2 * DLISTAEX_PADDING) + _Fuente.Alto() };
+		RECT EspacioLocal = { 0 , 0, (static_cast<LONG>(_TotalAnchoVisible) > Espacio.right) ? static_cast<LONG>(_TotalAnchoVisible) : Espacio.right, (2 * DLISTAEX_PADDING) + Fuente.Alto() };
 		FillRect(_BufferItem, &EspacioLocal, BrochaFondo);
 		DeleteObject(BrochaFondo);
 
@@ -189,7 +190,7 @@ namespace DWL {
 				1 + bPresionado + AnchoPintado + DLISTAEX_PADDING, 
 				1 + bPresionado + DLISTAEX_PADDING,
 				1 + bPresionado + AnchoPintado + _Columnas[i]->_AnchoCalculado - (DLISTAEX_PADDING * 2),
-				1 + bPresionado + _Fuente.Alto() + DLISTAEX_PADDING
+				1 + bPresionado + Fuente.Alto() + DLISTAEX_PADDING
 			};
 			if (i == 0) { // La primera columna contiene el icono (que ya se ha pintado)
 				RCelda.left += (DLISTAEX_PADDING * 2) + DLISTAEX_TAMICONO;
@@ -247,7 +248,7 @@ namespace DWL {
 		}
 
 		int PixelesContados		= _ItemPaginaVDif; // Pixeles de altura contados hasta el nodo
-		int AltoItem			= _Fuente.Alto() + (DLISTAEX_PADDING * 2);
+		int AltoItem			= Fuente.Alto() + (DLISTAEX_PADDING * 2);
 		int PixelesContadosH	= _ItemPaginaHDif;
 		size_t PosInicio		= _ItemPaginaInicio;
 		size_t PosFin			= _ItemPaginaFin + 1;
@@ -310,7 +311,7 @@ namespace DWL {
 			_SubItemResaltado	= -1;
 			_ItemShift			= -1;
 			// Recalculo todos los valores de la lista antes de repintar
-			_CalcularValores = TRUE;
+			_Repintar = TRUE;
 		}
 	}
 
@@ -376,7 +377,7 @@ namespace DWL {
 		LONG nAncho = 0;
 		for (size_t i = 0; i < _Columnas.size(); i++) nAncho += _Columnas[i]->_AnchoCalculado;		
 
-		const int nAltoItem = _Fuente.Alto() + (DLISTAEX_PADDING * 2);
+		const int nAltoItem = Fuente.Alto() + (DLISTAEX_PADDING * 2);
 		rRecta.left   = 0;
 		rRecta.top    = nAltoItem * static_cast<LONG>(iPos);
 		rRecta.right  = nAncho;
@@ -400,7 +401,7 @@ namespace DWL {
 
 		_ItemPaginaHDif = -static_cast<LONG>((static_cast<float>(_TotalAnchoVisible) / 100.0f) * _ScrollH_Posicion);
 
-		LONG   nAltoItem = _Fuente.Alto() + (DLISTAEX_PADDING * 2);
+		LONG   nAltoItem = Fuente.Alto() + (DLISTAEX_PADDING * 2);
 
 		for (size_t i = 0; i < _Items.size(); i++) {
 			if (_ItemPaginaInicio == -1) { // Item inicial
@@ -456,7 +457,7 @@ namespace DWL {
 		}
 
 		// Altura (total de items * altura de la fuente)
-		_TotalAltoVisible = (_Fuente.Alto() + (DLISTAEX_PADDING * 2)) * _Items.size();
+		_TotalAltoVisible = (Fuente.Alto() + (DLISTAEX_PADDING * 2)) * _Items.size();
 	}
 
 
@@ -499,7 +500,7 @@ namespace DWL {
 		else													{ SV = TRUE;	RC.right -= _ScrollV_Ancho; }
 
 		// Borro y vuelvo a crear el buffer DC para pintar los nodos
-		_CrearBufferItem((static_cast<LONG>(_TotalAnchoVisible) > RC.right) ? static_cast<int>(_TotalAnchoVisible) : static_cast<int>(RC.right), _Fuente.Alto() + (DLISTAEX_PADDING *2) );
+		_CrearBufferItem((static_cast<LONG>(_TotalAnchoVisible) > RC.right) ? static_cast<int>(_TotalAnchoVisible) : static_cast<int>(RC.right), Fuente.Alto() + (DLISTAEX_PADDING *2) );
 
 		// Calculo el ancho máximo
 		if (SH == FALSE) {
@@ -545,7 +546,7 @@ namespace DWL {
 		_BufferItem				= CreateCompatibleDC(NULL);
 		_BufferItemBmp			= CreateCompatibleBitmap(hDC, nAncho, nAlto);
 		_BufferItemBmpViejo		= static_cast<HBITMAP>(SelectObject(_BufferItem, _BufferItemBmp));
-		_BufferItemFuenteViejo	= static_cast<HFONT>(SelectObject(_BufferItem, _Fuente()));
+		_BufferItemFuenteViejo	= static_cast<HFONT>(SelectObject(_BufferItem, Fuente()));
 		ReleaseDC(NULL, hDC);
 		SetBkMode(_BufferItem, TRANSPARENT);
 	}
@@ -557,15 +558,16 @@ namespace DWL {
 		EndPaint(hWnd(), &PS);
 	}
 
-	void DListaEx::_Evento_MouseMovimiento(const int cX, const int cY, const UINT Param) {
+	void DListaEx::_Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam) {
+		DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)));
 //		_mX = cX; _mY = cY;
 		// Utilizo la función _MouseEntrando() para poder recibir los mensajes WM_MOUSELEAVE
 		BOOL bME = _MouseEntrando();
 //		if (bME == TRUE)	Scrolls_MouseEntrando();		
 
-		if (Scrolls_MouseMovimiento(cX, cY, Param) == TRUE) { return; } // las coordenadas pertenecen al scroll (salgo del evento)
+		if (Scrolls_MouseMovimiento(DatosMouse) == TRUE) { return; } // las coordenadas pertenecen al scroll (salgo del evento)
 		
-		_ItemResaltado = HitTest(cX, cY, &_SubItemResaltado);
+		_ItemResaltado = HitTest(DatosMouse.X(), DatosMouse.Y(), &_SubItemResaltado);
 
 		// Comprueba si el item resaltado es el mismo que la ultima vez, y si no lo és repinta el control
 		if (_ItemResaltado != _ItemUResaltado || _SubItemResaltado != _SubItemUResaltado) {
@@ -574,20 +576,25 @@ namespace DWL {
 			Repintar();
 		}
 		
-		Evento_MouseMovimiento(cX, cY, Param);
+		Evento_MouseMovimiento(DatosMouse);
 
 		if (bME == TRUE)	Evento_MouseEntrando();
+
+		// Envio el evento mouseup a la ventana padre
+		SendMessage(GetParent(hWnd()), DWL_LISTAEX_MOUSEMOVIMIENTO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
+
 	}
 
-	void DListaEx::_Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param) {
+	void DListaEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {
+		DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
 		SetFocus(hWnd());
-		if (Scrolls_MousePresionado(Boton, cX, cY, Param) == TRUE) { return; }
+		if (Scrolls_MousePresionado(DatosMouse) == TRUE) { return; }
 
-		_ItemPresionado = HitTest(cX, cY, &_SubItemPresionado);
+		_ItemPresionado = HitTest(DatosMouse.X(), DatosMouse.Y(), &_SubItemPresionado);
 		_ItemMarcado	= _ItemPresionado;
 
 		#if DLISTAEX_MOSTRARDEBUG == TRUE
-			Debug_Escribir_Varg(L"DListaEx::_Evento_MousePresionado IP:%d X:%d Y:%d\n", _ItemMarcado, cX, cY);
+			Debug_Escribir_Varg(L"DListaEx::_Evento_MousePresionado IP:%d X:%d Y:%d\n", _ItemMarcado, DatosMouse.X(), DatosMouse.Y());
 		#endif
 
 		if (_ItemPresionado != -1) {
@@ -595,23 +602,31 @@ namespace DWL {
 			_Items[_ItemPresionado]->Seleccionado = TRUE;
 		}
 
-		Evento_MousePresionado(Boton, cX, cY, Param);
+		Evento_MousePresionado(DatosMouse);
 		Repintar();
+		// Envio el evento mouseup a la ventana padre
+		SendMessage(GetParent(hWnd()), DWL_LISTAEX_MOUSEPRESIONADO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
+
 	}
 
-	void DListaEx::_Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param) {
-		if (Scrolls_MouseSoltado(Boton, cX, cY, Param) == TRUE) { return; }
+	void DListaEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
+		DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
+
+		if (Scrolls_MouseSoltado(DatosMouse) == TRUE) { return; }
 
 		if (_ItemPresionado != -1) {
 			_Items[_ItemPresionado]->Seleccionado = TRUE;
 		}
 
-		Evento_MouseSoltado(Boton, cX, cY, Param);
-		
+		// Evento virtual
+		Evento_MouseSoltado(DatosMouse);
+		// Envio el evento mouseup a la ventana padre
+		SendMessage(GetParent(hWnd()), DWL_LISTAEX_MOUSESOLTADO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
+		// Establezco que no hay ningún item presionado, y repinto
 		_ItemPresionado = -1;
 		_SubItemPresionado = -1;
-
 		Repintar();
+
 	}
 
 	void DListaEx::_Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey) {
@@ -752,8 +767,11 @@ namespace DWL {
 		if (nRepintar == TRUE) Repintar();
 	}
 
-	void DListaEx::_Evento_MouseDobleClick(const UINT Boton, const int cX, const int cY, const UINT Param) {
-		Evento_MouseDobleClick(Boton, cX, cY, Param);
+	void DListaEx::_Evento_MouseDobleClick(const int Boton, WPARAM wParam, LPARAM lParam) {
+		DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
+		Evento_MouseDobleClick(DatosMouse);
+
+//		Evento_MouseDobleClick(Boton, cX, cY, Param);
 	}
 
 	void DListaEx::_Evento_FocoObtenido(HWND hWndUltimoFoco) {
@@ -777,25 +795,28 @@ namespace DWL {
 			// Cambio de tamaño
 			case WM_SIZE:			_CalcularScrolls();		Repintar();																											return 0;
 			// Mouse
-			case WM_MOUSEMOVE:		_Evento_MouseMovimiento(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));												return 0;
+			case WM_MOUSEMOVE:		_Evento_MouseMovimiento(wParam, lParam);																									return 0;
+//			case WM_MOUSEMOVE:		_Evento_MouseMovimiento(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));												return 0;
 			case WM_MOUSELEAVE:		_Evento_MouseSaliendo();																													return 0;
 			// Mouse presionado
-			case WM_LBUTTONDOWN:	_Evento_MousePresionado(0, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
-			case WM_RBUTTONDOWN:	_Evento_MousePresionado(1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
-			case WM_MBUTTONDOWN:	_Evento_MousePresionado(2, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
+			case WM_LBUTTONDOWN:	_Evento_MousePresionado(0, wParam, lParam);																									return 0;
+			case WM_RBUTTONDOWN:	_Evento_MousePresionado(1, wParam, lParam);																									return 0;
+			case WM_MBUTTONDOWN:	_Evento_MousePresionado(2, wParam, lParam);																									return 0;
 			// Mouse soltado
-			case WM_LBUTTONUP:		_Evento_MouseSoltado(0, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));												return 0;
-			case WM_RBUTTONUP:		_Evento_MouseSoltado(1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));												return 0;
-			case WM_MBUTTONUP:		_Evento_MouseSoltado(2, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));												return 0;
+			case WM_LBUTTONUP:		_Evento_MouseSoltado(0, wParam, lParam);																									return 0;
+			case WM_RBUTTONUP:		_Evento_MouseSoltado(1, wParam, lParam);																									return 0;
+			case WM_MBUTTONUP:		_Evento_MouseSoltado(2, wParam, lParam);																									return 0;
 			// Mouse doble click
-			case WM_LBUTTONDBLCLK:	_Evento_MouseDobleClick(0, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
-			case WM_RBUTTONDBLCLK:	_Evento_MouseDobleClick(1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
-			case WM_MBUTTONDBLCLK:	_Evento_MouseDobleClick(2, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
+			case WM_LBUTTONDBLCLK:	_Evento_MouseDobleClick(0, wParam, lParam);																									return 0;
+			case WM_RBUTTONDBLCLK:	_Evento_MouseDobleClick(1, wParam, lParam);																									return 0;
+			case WM_MBUTTONDBLCLK:	_Evento_MouseDobleClick(2, wParam, lParam);																									return 0;
+
 			// Mouse rueda
 			case WM_MOUSEWHEEL:		_Evento_MouseRueda(static_cast<short>(HIWORD(wParam)), GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(LOWORD(wParam)));		return 0;
 			// Teclado
 			case WM_KEYDOWN:		_Evento_TeclaPresionada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;
 			case WM_KEYUP:			_Evento_TeclaSoltada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;
+			case WM_CHAR:           _Evento_Tecla(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));																	return 0;
 		}
 		return DefWindowProc(hWnd(), uMsg, wParam, lParam);
 	}

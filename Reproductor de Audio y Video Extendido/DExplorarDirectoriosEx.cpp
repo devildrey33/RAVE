@@ -11,8 +11,8 @@ namespace DWL {
 	DExplorarDirectoriosEx::~DExplorarDirectoriosEx(void) {
 	}
 
-	HWND DExplorarDirectoriosEx::CrearExplorarDirectoriosEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID) {
-		HWND rhWnd = CrearArbolEx(nPadre, cX, cY, cAncho, cAlto, cID);
+	HWND DExplorarDirectoriosEx::CrearExplorarDirectoriosEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, DWORD nEstilos) {
+		HWND rhWnd = CrearArbolEx(nPadre, cX, cY, cAncho, cAlto, cID, nEstilos);
 		ActualizarDirectorios();
 		return rhWnd;
 	}
@@ -301,6 +301,17 @@ namespace DWL {
 
 		return TRUE;
 	}
+
+	const wchar_t *DExplorarDirectoriosEx::PathSeleccionado(void) {
+		if (_NodoMarcado != NULL)	{	return _NodoMarcado->Texto.c_str();		}
+		else						{	return NULL;							}
+	}
+
+	DListaIconos_Icono *DExplorarDirectoriosEx::IconoSeleccionado(void) {
+		if (_NodoMarcado != NULL)	{	return _NodoMarcado->Icono();	}
+		else						{	return NULL;					}
+	}
+
 	/*
 	void DExplorarDirectoriosEx::_ObtenerPathNodo(DExplorarDirectoriosEx_Nodo *nNodo, std::wstring &oPath) {
 		DExplorarDirectoriosEx_Nodo *TmpNodo = nNodo;

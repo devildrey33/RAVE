@@ -64,7 +64,9 @@
 #define ID_MARCOII                  2022
 
 #define ID_LISTARAIZ                2023
-#define ID_COMBORAIZ                2024
+//#define ID_COMBORAIZ                2024
+#define ID_BOTON_AGREGARRAIZ		2024
+
 
 
 #define ID_MENUBD_AGREGARALISTA			2100

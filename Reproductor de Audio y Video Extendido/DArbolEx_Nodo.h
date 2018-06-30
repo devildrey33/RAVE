@@ -60,7 +60,9 @@ namespace DWL {
 		void                            Icono(const int nIconoRecursos);
 		void                            Icono(const GUID nIconoKnownFolder);
 		void                            Icono(const wchar_t *nIconoPath, const int nIconoPos);
+		inline DListaIconos_Icono      *Icono(void) { return _Icono; };
 		void                            BorrarHijos(void);
+
 		//const size_t					Posicion(void);
 
 		std::wstring				    Texto;

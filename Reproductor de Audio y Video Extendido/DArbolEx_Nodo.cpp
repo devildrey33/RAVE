@@ -38,7 +38,7 @@ namespace DWL {
 	}
 
 	void DArbolEx_Nodo::BorrarHijos(void) {
-		_Arbol->_CalcularValores = TRUE;
+		_Arbol->_Repintar = TRUE;
 		for (size_t i = 0; i < _Hijos.size(); i++) {
 			delete _Hijos[i];
 		}

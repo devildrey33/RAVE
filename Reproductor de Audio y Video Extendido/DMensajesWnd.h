@@ -64,9 +64,19 @@
     ////////////////////////////////////////////////////////////////////////
     #define DWL_NOTIFICACION                                WM_USER + 114 // Indica que se ha recibido una notificacion de un control que se la devolveremos para especificar mejor que tipo de control la manda.
 
-	#define DWL_ARBOLEX_CLICK								WM_USER + 200
-	#define DWL_ARBOLEX_DOBLECLICK							WM_USER + 201
+	// DArbolEx ////////////////////////////////////////////////////////////
+	#define DWL_ARBOLEX_MOUSEPRESIONADO						WM_USER + 200
+	#define DWL_ARBOLEX_MOUSESOLTADO						WM_USER + 201
+	#define DWL_ARBOLEX_MOUSEMOVIMIENTO						WM_USER + 202
+	#define	DWL_ARBOLEX_CLICK                               DWL_ARBOLEX_MOUSESOLTADO
+	#define DWL_ARBOLEX_DOBLECLICK							WM_USER + 203
 
+	// DListaEx ////////////////////////////////////////////////////////////
+	#define DWL_LISTAEX_MOUSEPRESIONADO						WM_USER + 300
+	#define DWL_LISTAEX_MOUSESOLTADO						WM_USER + 301
+	#define DWL_LISTAEX_MOUSEMOVIMIENTO						WM_USER + 302
+	#define	DWL_LISTAEX_CLICK                               DWL_LISTAEX_MOUSESOLTADO
+	#define DWL_LISTAEX_DOBLECLICK							WM_USER + 303
 
 //	#define DWL_USAR_GESTOR_POR_DEFECTO						WM_USER + 120 //! Macro para definir el valor que debera devolver el GestorMensajes si queremos llamar a la función por defecto del windowprocedure.
 #endif

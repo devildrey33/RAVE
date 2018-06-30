@@ -1112,9 +1112,9 @@ namespace DWL {
 		    \param[in]	nActivar	: Parametro en el que especificaremos si queremos activar o desactivar el ListView
 		    \return		No devuelve nada.
     */
-    void DListView::Activar(const BOOL nActivar) {
+    const BOOL DListView::Activar(const BOOL nActivar) {
         CancelarEdicion();
-        Activar(nActivar);
+        return DhWnd::Activar(nActivar);
     }
 
     //! Función para buscar la posición de una clase DListView_Item dentro del vector de items de este ListView.

@@ -26,7 +26,7 @@ namespace DWL {
 		inline const bool		operator== (HWND chWnd)			{ return (_hWnd == chWnd); };
 		inline const bool		operator== (DhWnd *chWnd)		{ return (_hWnd == chWnd->hWnd()); };
 		inline void				operator= (HWND nhWnd)          { _hWnd = nhWnd; };*/
-		inline const BOOL		Activar(const BOOL nActivar)    { return EnableWindow(_hWnd, nActivar); };
+		inline virtual const BOOL	Activar(const BOOL nActivar)    { return EnableWindow(_hWnd, nActivar); };
 		inline const BOOL		Activado(void)					{ return IsWindowEnabled(_hWnd); };
 		inline const BOOL		Minimizar(void)					{ return ShowWindow(_hWnd, SW_MINIMIZE); };
 		inline const BOOL		Minimizado(void)				{ return IsIconic(_hWnd); };
@@ -72,7 +72,7 @@ namespace DWL {
 									DVentana(void) : DhWnd() { }
 		                           ~DVentana(void) { }
 									// Función para crear una ventana
-		HWND						CrearVentana(const TCHAR *nNombre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos = NULL, UINT nEstilosClase = NULL, HMENU nMenu = NULL, HBRUSH nColorFondo = NULL, const int nIconoRecursos = 32512);
+		HWND						CrearVentana(DhWnd *nPadre, const TCHAR *nNombre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos = NULL, UINT nEstilosClase = NULL, HMENU nMenu = NULL, HBRUSH nColorFondo = NULL, const int nIconoRecursos = 32512);
 
 		void						Titulo(std::wstring &nTitulo);
 

@@ -10,7 +10,7 @@
 		   ) (   | (   ) || (  \  )| (   ) |   _   - Finiquitar el shift																			| || |
 		   | |   | |   | || |   ) || |   | |  (_)  - LabelEdit																						| || |
 		   | |   | |   | || |   | || |   | |       - Drag&Drop ?¿?¿   																				| || |
-		   | |   | |   | || |   ) || |   | |   _      																								(_)(_)
+		   | |   | |   | || |   ) || |   | |   _   - Events enviats a la finstrea pare																(_)(_)
 		   | |   | (___) || (__/  )| (___) |  (_)	    																							 _  _ 
 		   )_(   (_______)(______/ (_______)           																								(_)(_)
 */
@@ -19,16 +19,16 @@ namespace DWL {
 
 	DArbolEx::DArbolEx(void) : DBarraScrollEx(),
   	  _NodoMarcado(NULL)		, _NodoShift(NULL)								, _PosShift(0)				,							// Info nodo Marcado y Shift
-	  _NodoPresionado(NULL)		, _NodoPresionadoParte(DArbolEx_ParteNodo_Nada)	, _CalcularValores(FALSE)	,							// Info nodo presionado
+	  _NodoPresionado(NULL)		, _NodoPresionadoParte(DArbolEx_ParteNodo_Nada)	, _Repintar(FALSE)			,							// Info nodo presionado
 	  _NodoResaltado(NULL)		, _NodoResaltadoParte(DArbolEx_ParteNodo_Nada)	, MultiSeleccion(TRUE)		,							// Info nodo resaltado
 	  _NodoUResaltado(NULL)		, _NodoUResaltadoParte(DArbolEx_ParteNodo_Nada)	, SubSeleccion(FALSE)		,							// Info ultimo nodo resaltado (para evitar repintados innecesarios en el mousemove)
-	  _TotalAnchoVisible(0)		, _TotalAltoVisible(0)							, _Fuente(NULL)				,							// tamaño
+	  _TotalAnchoVisible(0)		, _TotalAltoVisible(0)							,														// tamaño
 	  _NodoPaginaInicio(NULL)	, _NodoPaginaFin(NULL)							, _NodoPaginaVDif(0)		, _NodoPaginaHDif(0),		// Nodo inicial y final de la página visible
 	  _BufferNodo(NULL)			, _BufferNodoBmp(NULL)							, _BufferNodoBmpViejo(NULL)							{	// Buffer para pintar un solo nodo
 
 		_Raiz.Expandido = TRUE;
 		_Raiz._Arbol = this;
-		_ColorFondoScroll = COLOR_ARBOL_FONDO_SCROLL;
+//		ColorFondoScroll = COLOR_ARBOL_FONDO_SCROLL;
 	};
 
 	DArbolEx::~DArbolEx(void) {
@@ -41,10 +41,10 @@ namespace DWL {
 		}
 	}
 
-	HWND DArbolEx::CrearArbolEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID) {
+	HWND DArbolEx::CrearArbolEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, DWORD nEstilos) {
 		if (hWnd()) { Debug_Escribir(L"DArbolEx::CrearArbolEx() Error : ya se ha creado el arbol\n"); return hWnd(); }
-		_hWnd = CrearControlEx(nPadre, L"DArbolEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, CS_DBLCLKS);  // CS_DBLCLKS (el control recibe notificaciones de doble click)
-		_Fuente = _Fuente18Normal;
+		_hWnd = CrearControlEx(nPadre, L"DArbolEx", L"", cID, cX, cY, cAncho, cAlto, nEstilos, NULL, CS_DBLCLKS);  // CS_DBLCLKS (el control recibe notificaciones de doble click)
+		Fuente = _Fuente18Normal;
 		return hWnd();
 	}
 
@@ -68,7 +68,7 @@ namespace DWL {
 		_NodoResaltadoParte		= DArbolEx_ParteNodo_Nada;
 		_NodoUResaltadoParte	= DArbolEx_ParteNodo_Nada;
 
-		_CalcularValores = TRUE;
+		_Repintar = TRUE;
 	}
 
 	DArbolEx_Nodo *DArbolEx::_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre, DListaIconos_Icono *nIcono, DhWnd_Fuente *nFuente, const size_t PosicionNodo) {
@@ -85,7 +85,7 @@ namespace DWL {
 
 		// Compruebo la fuente (si no es NULL asigno la nueva fuente)
 		if (nFuente != NULL) nNodo->_Fuente = nFuente;
-		else                 nNodo->_Fuente = &_Fuente; // no se ha especificado la fuente, asigno la fuente por defecto del arbol
+		else                 nNodo->_Fuente = &Fuente; // no se ha especificado la fuente, asigno la fuente por defecto del arbol
 
 														// Calculo y asigno el ancho del texto
 		nNodo->_AnchoTexto = nNodo->_Fuente->Tam(nNodo->Texto).cx;
@@ -107,50 +107,50 @@ namespace DWL {
 		size_t nPos = 0;
 		switch (PosicionNodo) {
 			// Al final de la lista
-		case DARBOLEX_POSICIONNODO_FIN:
-			// Asigno el nodo sigüiente al último nodo del padre (si es que existe algún nodo)
-			if (nPadre->TotalHijos() > 0) {
-				nPadre->Hijo(nPadre->TotalHijos() - 1)->_Siguiente = nNodo;
-				nNodo->_Anterior = nPadre->_Hijos[nPadre->TotalHijos() - 1];
-			}
-			nPadre->_Hijos.push_back(nNodo);
-			break;
+			case DARBOLEX_POSICIONNODO_FIN:
+				// Asigno el nodo sigüiente al último nodo del padre (si es que existe algún nodo)
+				if (nPadre->TotalHijos() > 0) {
+					nPadre->Hijo(nPadre->TotalHijos() - 1)->_Siguiente = nNodo;
+					nNodo->_Anterior = nPadre->_Hijos[nPadre->TotalHijos() - 1];
+				}
+				nPadre->_Hijos.push_back(nNodo);
+				break;
 
 			// Por orden alfabético
-		case DARBOLEX_POSICIONNODO_ORDENADO:
-			// Busco la posición que deberia tener ordenado alfabeticamente
-			for (nPos = 0; nPos < nPadre->TotalHijos(); nPos++) {
-				if (_wcsicmp(nTexto, nPadre->Hijo(nPos)->Texto.c_str()) < 0) break;
-			}
-			// enlazo el nodo anterior
-			if (nPadre->TotalHijos() > 0 && nPos > 0) { nNodo->_Anterior = nPadre->_Hijos[nPos - 1]; }
+			case DARBOLEX_POSICIONNODO_ORDENADO:
+				// Busco la posición que deberia tener ordenado alfabeticamente
+				for (nPos = 0; nPos < nPadre->TotalHijos(); nPos++) {
+					if (_wcsicmp(nTexto, nPadre->Hijo(nPos)->Texto.c_str()) < 0) break;
+				}
+				// enlazo el nodo anterior
+				if (nPadre->TotalHijos() > 0 && nPos > 0) { nNodo->_Anterior = nPadre->_Hijos[nPos - 1]; }
 
-			// Enlazo el nodo siguiente
-			if (nPos > 0) { nPadre->_Hijos[nPos - 1]->_Siguiente = nNodo; }
-			if (nPos < nPadre->_Hijos.size()) { nNodo->_Siguiente = nPadre->_Hijos[nPos]; }
+				// Enlazo el nodo siguiente
+				if (nPos > 0) { nPadre->_Hijos[nPos - 1]->_Siguiente = nNodo; }
+				if (nPos < nPadre->_Hijos.size()) { nNodo->_Siguiente = nPadre->_Hijos[nPos]; }
 
-			// Agrego el nodo 
-			if (nPadre->_Hijos.size() == 0) { nPadre->_Hijos.push_back(nNodo); }
-			else { nPadre->_Hijos.insert(nPadre->_Hijos.begin() + nPos, nNodo); }
-			break;
+				// Agrego el nodo 
+				if (nPadre->_Hijos.size() == 0) { nPadre->_Hijos.push_back(nNodo); }
+				else { nPadre->_Hijos.insert(nPadre->_Hijos.begin() + nPos, nNodo); }
+				break;
 
 			// el default incluye DARBOLEX_POSICIONNODO_INICIO que es 0
-		default:
-			// enlazo el nodo anterior
-			if (nPadre->TotalHijos() > 0 && nPos > 0) { nNodo->_Anterior = nPadre->_Hijos[nPos - 1]; }
+			default:
+				// enlazo el nodo anterior
+				if (nPadre->TotalHijos() > 0 && nPos > 0) { nNodo->_Anterior = nPadre->_Hijos[nPos - 1]; }
 
-			// Enlazo el nodo siguiente
-			if (PosicionNodo > 0) { nPadre->_Hijos[PosicionNodo - 1]->_Siguiente = nNodo; }
-			if (PosicionNodo + 1 > nPadre->TotalHijos()) { nNodo->_Siguiente = nPadre->_Hijos[PosicionNodo + 1]; }
-			// Agrego el nodo 
-			if (nPadre->_Hijos.size() == 0) { nPadre->_Hijos.push_back(nNodo); }
-			else { nPadre->_Hijos.insert(nPadre->_Hijos.begin() + PosicionNodo, nNodo); }
-			break;
+				// Enlazo el nodo siguiente
+				if (PosicionNodo > 0) { nPadre->_Hijos[PosicionNodo - 1]->_Siguiente = nNodo; }
+				if (PosicionNodo + 1 > nPadre->TotalHijos()) { nNodo->_Siguiente = nPadre->_Hijos[PosicionNodo + 1]; }
+				// Agrego el nodo 
+				if (nPadre->_Hijos.size() == 0) { nPadre->_Hijos.push_back(nNodo); }
+				else { nPadre->_Hijos.insert(nPadre->_Hijos.begin() + PosicionNodo, nNodo); }
+				break;
 
 		}
 
 		// Recalcular valores del arbol en el próximo repintado
-		_CalcularValores = TRUE;
+		_Repintar = TRUE;
 		return nNodo;
 	}
 
@@ -173,7 +173,7 @@ namespace DWL {
 		// Borro el nodo de la memória
 		delete nEliminar;
 		// En el próximo repintado se recalcularan los tamaños del arbol	
-		_CalcularValores = TRUE;
+		_Repintar = TRUE;
 	}
 
 	// Devuelve el primer nodo visible, o NULL si no hay nodos
@@ -200,8 +200,7 @@ namespace DWL {
 
 	void DArbolEx::Pintar(HDC hDC) {
 		// Compruebo si hay que recalcular los valores del arbol antes de pintar
-		if (_CalcularValores == TRUE) {
-			
+		if (_Repintar == TRUE) {			
 			_CalcularScrolls();
 		}
 
@@ -780,7 +779,7 @@ namespace DWL {
 
 	void DArbolEx::_CalcularScrolls(void) {
 		// Desactivo la comprobación para recalcular los valores
-		_CalcularValores = FALSE;
+		_Repintar = FALSE;
 
 		RECT RC;
 		GetClientRect(hWnd(), &RC);
@@ -809,8 +808,8 @@ namespace DWL {
 			}
 		}
 		ScrollH_Visible(SH);
-		// calculo la altura máxima
 
+		// calculo la altura máxima
 		if (SV == FALSE) {
 			_ScrollV_Pagina = 100.0f;
 		}
@@ -857,12 +856,16 @@ namespace DWL {
 		}
 	}
 
-	void DArbolEx::_Evento_MouseMovimiento(const int cX, const int cY, const UINT Param) {
+	void DArbolEx::_Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam) {
 
 		BOOL bME = _MouseEntrando();
 
+		DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)));
+		int cX		= DatosMouse.X(),
+			cY		= DatosMouse.Y();
 
-		if (Scrolls_MouseMovimiento(cX, cY, Param) == TRUE) { return; } // las coordenadas pertenecen al scroll (salgo del evento)
+
+		if (Scrolls_MouseMovimiento(DatosMouse) == TRUE) { return; } // las coordenadas pertenecen al scroll (salgo del evento)
 		_NodoResaltado = HitTest(cX, cY, _NodoResaltadoParte);
 
 		// Comprueba si el nodo resaltado es el mismo que la ultima vez, y si no lo és repinta el control
@@ -872,21 +875,21 @@ namespace DWL {
 			Repintar(); // TODO : substituir per un RepintarNodo(nNodo, nUNodo)
 		}
 		// Eventos virtuales
-		Evento_MouseMovimiento(cX, cY, Param);
+		Evento_MouseMovimiento(DatosMouse);
+		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_MOUSEPRESIONADO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
 		if (bME == TRUE)	Evento_MouseEntrando();
+
 	}
 
-	void DArbolEx::_Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param) {
-		SetFocus(hWnd());
-		if (Scrolls_MousePresionado(Boton, cX, cY, Param) == TRUE) { return; }
-/*		// Miro si ha habido un doble click
-		if (_TiempoUltimoClick == 0) _TiempoUltimoClick = GetTickCount()
-		if (_TiempoUltimoClick < GetDoubleClickTime()) {
-			//DOBLE CLICK
-			return;
-		}
-		_TiempoUltimoClick = GetTickCount();*/
+	void DArbolEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {
+		
+		DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
+		int cX		= DatosMouse.X(),
+			cY		= DatosMouse.Y();
 
+		SetFocus(hWnd());
+		if (Scrolls_MousePresionado(DatosMouse) == TRUE) { return; }
+		
 		_NodoMarcado = HitTest(cX, cY, _NodoResaltadoParte);
 		if (_NodoMarcado != NULL) {
 			if (_NodoMarcado->Activado == TRUE) {
@@ -944,12 +947,22 @@ namespace DWL {
 		if (_NodoMarcado != NULL) SeleccionarNodo(_NodoMarcado, TRUE);
 		if (_NodoShift != NULL)   SeleccionarNodo(_NodoShift, TRUE);
 
-		Evento_MousePresionado(Boton, cX, cY, Param);
+		Evento_MousePresionado(DatosMouse);
 		Repintar();
+
+		// Envio el evento mousedown a la ventana padre
+		
+//		DControlEx_EventoMouse ParamMouse(cX, cY, GetWindowLongPtr(_hWnd, GWL_ID), Boton);
+		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_MOUSEPRESIONADO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
+
 	}
 
-	void DArbolEx::_Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param) {
-		if (Scrolls_MouseSoltado(Boton, cX, cY, Param) == TRUE) { return; }
+	void DArbolEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
+		DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
+		int cX		= DatosMouse.X(),
+			cY		= DatosMouse.Y();
+
+		if (Scrolls_MouseSoltado(DatosMouse) == TRUE) { return; }
 
 		DArbolEx_ParteNodo nParte;
 		DArbolEx_Nodo *NodoSoltado = HitTest(cX, cY, nParte);
@@ -964,15 +977,16 @@ namespace DWL {
 				//NodoSoltado->_Seleccionado = TRUE; 
 			}
 		}
-		DArbolEx_DatosClick DatosClick(cX, cY, Boton, NodoSoltado);
-		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_CLICK, reinterpret_cast<WPARAM>(&DatosClick), static_cast<LPARAM>(ID()));
 
-		Evento_MouseSoltado(Boton, cX, cY, Param);
-
+		// Llamo al evento virtual
+		Evento_MouseSoltado(DatosMouse);
+		// Envio el evento mouseup a la ventana padre
+		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_MOUSESOLTADO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
+		// reasigno el estado presionado y Repinto
 		_NodoPresionadoParte = DArbolEx_ParteNodo_Nada;
 		_NodoPresionado = NULL;
-
 		Repintar();
+
 	}
 
 	void DArbolEx::_Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey) {		
@@ -1001,6 +1015,11 @@ namespace DWL {
 
 		Evento_MouseRueda(Delta, ncX, ncY, VirtKey);
 		Repintar();
+
+		// Envio el evento click a la ventana padre
+//		DControlEx_EventoMouse ParamMouse(cX, cY, GetWindowLongPtr(_hWnd, GWL_ID), Boton);
+//		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_MOUSESOLTADO, reinterpret_cast<WPARAM>(&ParamMouse), 0);
+
 	}
 
 	/* Función que elimina la selección y la sub-selección de todos los nodos 
@@ -1298,12 +1317,13 @@ namespace DWL {
 		if (nRepintar == TRUE) Repintar();
 	}
 
-	void DArbolEx::_Evento_MouseDobleClick(const UINT Boton, const int cX, const int cY, const UINT Param) {
+	void DArbolEx::_Evento_MouseDobleClick(const int Boton, WPARAM wParam, LPARAM lParam) {
 		if (_NodoMarcado != NULL) {
 			Expandir(_NodoMarcado, !_NodoMarcado->Expandido);
 			SeleccionarNodo(_NodoMarcado, TRUE);
 		}
-		Evento_MouseDobleClick(Boton, cX, cY, Param);
+		DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
+		Evento_MouseDobleClick(DatosMouse);
 	}
 
 	void DArbolEx::_Evento_FocoObtenido(HWND hWndUltimoFoco) {
@@ -1323,28 +1343,30 @@ namespace DWL {
 
 			case WM_KEYDOWN:		_Evento_TeclaPresionada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;
 			case WM_KEYUP:			_Evento_TeclaSoltada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;		
+			case WM_CHAR:           _Evento_Tecla(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));																	return 0;
 
 			case WM_SIZE:			_CalcularScrolls();		Repintar();																											return 0;
 
 			case WM_PAINT:			_Evento_Pintar();																															return 0;
 
-			case WM_MOUSEMOVE:		_Evento_MouseMovimiento(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));												return 0;
+			case WM_MOUSEMOVE:		_Evento_MouseMovimiento(wParam, lParam);																									return 0;
+//			case WM_MOUSEMOVE:		_Evento_MouseMovimiento(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));												return 0;
 
 			case WM_MOUSELEAVE:		_Evento_MouseSaliendo();																													return 0;
 
 			case WM_MOUSEWHEEL:		_Evento_MouseRueda(static_cast<short>(HIWORD(wParam)), GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(LOWORD(wParam)));		return 0;
-
-			case WM_LBUTTONDOWN:	_Evento_MousePresionado(0, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
-			case WM_RBUTTONDOWN:	_Evento_MousePresionado(1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
-			case WM_MBUTTONDOWN:	_Evento_MousePresionado(2, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
-
-			case WM_LBUTTONUP:		_Evento_MouseSoltado(0, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));												return 0;
-			case WM_RBUTTONUP:		_Evento_MouseSoltado(1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));												return 0;
-			case WM_MBUTTONUP:		_Evento_MouseSoltado(2, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));												return 0;
-
-			case WM_LBUTTONDBLCLK:	_Evento_MouseDobleClick(0, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
-			case WM_RBUTTONDBLCLK:	_Evento_MouseDobleClick(1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
-			case WM_MBUTTONDBLCLK:	_Evento_MouseDobleClick(2, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
+			// Mouse presionado
+			case WM_LBUTTONDOWN:	_Evento_MousePresionado(0, wParam, lParam);																									return 0;
+			case WM_RBUTTONDOWN:	_Evento_MousePresionado(1, wParam, lParam);																									return 0;
+			case WM_MBUTTONDOWN:	_Evento_MousePresionado(2, wParam, lParam);																									return 0;
+			// Mouse soltado
+			case WM_LBUTTONUP:		_Evento_MouseSoltado(0, wParam, lParam);																									return 0;
+			case WM_RBUTTONUP:		_Evento_MouseSoltado(1, wParam, lParam);																									return 0;
+			case WM_MBUTTONUP:		_Evento_MouseSoltado(2, wParam, lParam);																									return 0;
+			// Mouse doble click
+			case WM_LBUTTONDBLCLK:	_Evento_MouseDobleClick(0, wParam, lParam);																									return 0;
+			case WM_RBUTTONDBLCLK:	_Evento_MouseDobleClick(1, wParam, lParam);																									return 0;
+			case WM_MBUTTONDBLCLK:	_Evento_MouseDobleClick(2, wParam, lParam);																									return 0;
 
 		}
 		return DefWindowProc(hWnd(), uMsg, wParam, lParam);

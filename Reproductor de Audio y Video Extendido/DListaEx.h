@@ -102,14 +102,14 @@ namespace DWL {
 
 		void											Scrolls_EventoCambioPosicion(void);
 
-		// Eventos virtuales
+														// Eventos virtuales
 		virtual void          							Evento_MouseEntrando(void)																	{ };
 		virtual void									Evento_MouseSaliendo(void)																	{ };
-		virtual void									Evento_MouseMovimiento(const int cX, const int cY, const UINT Param)						{ };
-		virtual void									Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param)		{ };
-		virtual void									Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param)			{ };
+		virtual void									Evento_MouseMovimiento(DControlEx_EventoMouse &DatosMouse)									{ };
+		virtual void									Evento_MousePresionado(DControlEx_EventoMouse &DatosMouse)									{ };
+		virtual void									Evento_MouseSoltado(DControlEx_EventoMouse &DatosMouse)										{ };
 		virtual void                                    Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey)		{ };
-		virtual void									Evento_MouseDobleClick(const UINT Boton, const int cX, const int cY, const UINT Param)		{ };
+		virtual void									Evento_MouseDobleClick(DControlEx_EventoMouse &DatosMouse)									{ };
 
 
 		virtual void                                    Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params)		{ };
@@ -124,16 +124,18 @@ namespace DWL {
 		BOOL                                            MostrarSeleccion;
 
 		LRESULT CALLBACK								GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+		DhWnd_Fuente                                    Fuente;
 	  protected:
 														// Eventos internos
 		inline void                                    _Evento_Pintar(void);
 
-		void										   _Evento_MouseMovimiento(const int cX, const int cY, const UINT Param);
-		void										   _Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param);
-		void										   _Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param);
+		void										   _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
+		void										   _Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam);
+		void										   _Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam);
 		void                                           _Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey);
 		void										   _Evento_MouseSaliendo(void);
-		void										   _Evento_MouseDobleClick(const UINT Boton, const int cX, const int cY, const UINT Param);
+		void										   _Evento_MouseDobleClick(const int Boton, WPARAM wParam, LPARAM lParam);
 
 		void                                           _Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
 		void                                           _Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params);
@@ -152,7 +154,7 @@ namespace DWL {
 		void										   _Tecla_RePag(void);
 
 														// Valor que determina si hay que recalcular los tamaños antes de pintar
-		BOOL                                           _CalcularValores; 		
+		BOOL                                           _Repintar; 		
 
 														// Funciones que calculan el espacio para el listview
 		void										   _CalcularTotalEspacioVisible(RECT &RC);
@@ -192,8 +194,6 @@ namespace DWL {
 
 /*		int                                            _MouseX;
 		int                                            _MouseY;*/
-
-		DhWnd_Fuente                                   _Fuente;
 
 		friend class DListaEx_Columna;
 		friend class DListaEx_Item;

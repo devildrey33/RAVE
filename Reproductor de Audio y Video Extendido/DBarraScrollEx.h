@@ -14,15 +14,15 @@ namespace DWL {
 	};
 
 	// Control que puede mostrar una barra de scroll vertical y una barra de scroll horizontal.
-	class DBarraScrollEx : public virtual DControlEx_FondoEstatico {
+	class DBarraScrollEx : public DControlEx {
 	  public:
 									DBarraScrollEx();
 		                           ~DBarraScrollEx();
 //		HWND						CrearBarraScrollEx(DhWnd &Padre, const int cX, const int cY, const int cAncho, const int cAlto, const UINT nID);
-		void						Scrolls_Pintar(HDC hDC, RECT &RC);
-		const BOOL					Scrolls_MouseMovimiento(const int cX, const int cY, const UINT Param);
-		const BOOL					Scrolls_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param);
-		const BOOL					Scrolls_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param);
+		void						Scrolls_Pintar(HDC hDC, RECT &RC); // El HDC especificado se supone que es un back buffer
+		const BOOL					Scrolls_MouseMovimiento(DControlEx_EventoMouse &DatosMouse);
+		const BOOL					Scrolls_MousePresionado(DControlEx_EventoMouse &DatosMouse);
+		const BOOL					Scrolls_MouseSoltado(DControlEx_EventoMouse &DatosMouse);
 
 //		const BOOL					Scrolls_MouseEntrando();
 		const BOOL                  Scrolls_MouseSaliendo();
@@ -51,17 +51,16 @@ namespace DWL {
 		const float					ScrollV_Posicion(void);
 		void						ScrollV_Visible(const BOOL nVisible);
 
-		inline void					ColorScroll(COLORREF nColor)			{ _ColorScroll = nColor;			Repintar(); }
-		inline const COLORREF		ColorScroll(void)						{ return _ColorScroll;							}
-		inline void					ColorScrollResaltado(COLORREF nColor)	{ _ColorScrollResaltado = nColor;	Repintar(); }
-		inline const COLORREF		ColorScrollResaltado(void)				{ return _ColorScrollResaltado;					}
-		inline void					ColorScrollPresionado(COLORREF nColor)	{ _ColorScrollPresionado = nColor;	Repintar(); }
-		inline const COLORREF		ColorScrollPresionado(void)				{ return _ColorScrollPresionado;				}
-		inline void					ColorFondoScroll(COLORREF nColor)		{ _ColorFondoScroll = nColor;		Repintar(); }
-		inline const COLORREF		ColorFondoScroll(void)					{ return _ColorFondoScroll;						}
+		COLORREF				    ColorFondo;
+		COLORREF				    ColorScroll;
+		COLORREF				    ColorScrollResaltado;
+		COLORREF                    ColorScrollPresionado;
+		COLORREF				    ColorFondoScroll;
+		COLORREF				    ColorFondoScrollResaltado;
+		COLORREF				    ColorFondoScrollPresionado;
 
 	protected:
-		void					   _PintarBarraScrollEx(HDC hDC, RECT &RectaScroll, RECT &RectaBarra, const COLORREF pColorBarra);
+		void					   _PintarBarraScrollEx(HDC hDC, RECT &RectaScroll, RECT &RectaBarra, const COLORREF pColorBarra, const COLORREF pColorFondo);
 		const float				   _CalcularPosScrollH(const UINT nTam, const int nPos);
 		const float				   _CalcularPosScrollV(const UINT nTam, const int nPos);
 									
@@ -78,10 +77,6 @@ namespace DWL {
 		float					   _ScrollH_Posicion;
 
 
-		COLORREF				   _ColorScroll;
-		COLORREF				   _ColorScrollResaltado;
-		COLORREF                   _ColorScrollPresionado;
-		COLORREF				   _ColorFondoScroll;
 	};
 
 };

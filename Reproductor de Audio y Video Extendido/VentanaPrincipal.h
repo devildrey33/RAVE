@@ -29,6 +29,9 @@ class VentanaPrincipal : public DWL::DVentana {
 					       ~VentanaPrincipal() { };
 	HWND					Crear(int nCmdShow);
 
+	void					AgregarRaiz(void);
+	void					EliminarRaiz(std::wstring &Path);
+
 	void					Evento_Button_Mouse_Click(const UINT cID);
 	void					Evento_BotonEx_Mouse_Click(const UINT cID);
 
@@ -103,8 +106,9 @@ class VentanaPrincipal : public DWL::DVentana {
 
 //	DWL::DExplorarDirectoriosEx ExplorarDir;
 
-	DWL::DDesplegableEx     ComboRaiz;
+//	DWL::DDesplegableEx     ComboRaiz;
 	ListaRaices             ListaRaiz;
+	DWL::DBotonEx			BotonAgregarRaiz;
 
 //	ListaMedios				Lista;
 	ListaMedios				Lista;

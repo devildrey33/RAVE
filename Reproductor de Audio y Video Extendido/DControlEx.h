@@ -2,7 +2,7 @@
 #define DCONTROLEX_H
 
 #include "DhWnd.h"
-
+#include "DControlEx_EventoMouse.h"
 
 namespace DWL {
 
@@ -33,7 +33,7 @@ namespace DWL {
 
 
 	/* Control básico con borde, sin texto y sin foco */
-	class DControlEx_BordeEstatico : virtual public DControlEx {
+/*	class DControlEx_BordeEstatico : virtual public DControlEx {
 	  public:
 								DControlEx_BordeEstatico(void) : DControlEx(), _ColorBorde(COLOR_BORDE) { }
 		                       ~DControlEx_BordeEstatico(void) { }
@@ -41,11 +41,11 @@ namespace DWL {
 		inline const COLORREF	ColorBorde(void) { return _ColorBorde; }
 	  protected:
 		COLORREF               _ColorBorde;
-	};
+	};*/
 
 
 	/* Control básico con borde, sin texto que puede tener el foco (con estados resaltado y presionado) */
-	class DControlEx_BordeDinamico : public DControlEx_BordeEstatico {
+/*	class DControlEx_BordeDinamico : public DControlEx_BordeEstatico {
 	  public:
 								DControlEx_BordeDinamico(void) : DControlEx_BordeEstatico(), _ColorBordeResaltado(COLOR_BORDE_RESALTADO), _ColorBordePresionado(COLOR_BORDE_PRESIONADO) { }
 		                       ~DControlEx_BordeDinamico(void) { }
@@ -56,11 +56,11 @@ namespace DWL {
 	  protected:
 		COLORREF               _ColorBordeResaltado;
 		COLORREF               _ColorBordePresionado;
-	};
+	};*/
 
 
 	/* Control básico sin borde, sin texto y sin foco */
-	class DControlEx_FondoEstatico : virtual public DControlEx {
+/*	class DControlEx_FondoEstatico : virtual public DControlEx {
 	  public:
 								DControlEx_FondoEstatico(void) : DControlEx(), _ColorFondo(COLOR_FONDO) { }
 		                       ~DControlEx_FondoEstatico(void) { }
@@ -68,11 +68,11 @@ namespace DWL {
 		inline const COLORREF	ColorFondo(void) { return _ColorFondo; }
 	  protected:
 		COLORREF               _ColorFondo;
-	};
+	};*/
 
 
 	/* Control básico sin borde, sin texto que puede tener el foco (con estados resaltado y presionado) */
-	class DControlEx_FondoDinamico : public DControlEx_FondoEstatico {
+/*	class DControlEx_FondoDinamico : public DControlEx_FondoEstatico {
 	  public:
 								DControlEx_FondoDinamico(void) : DControlEx_FondoEstatico(), _ColorFondoResaltado(COLOR_BOTON_RESALTADO), _ColorFondoPresionado(COLOR_BOTON_PRESIONADO) { }
 		                       ~DControlEx_FondoDinamico(void) { }
@@ -83,10 +83,10 @@ namespace DWL {
 	  protected:
 		COLORREF               _ColorFondoResaltado;
 		COLORREF               _ColorFondoPresionado;
-	};
+	};*/
 
 	/* Control básico con texto y sin foco */
-	class DControlEx_TextoEstatico : virtual public DControlEx {
+/*	class DControlEx_TextoEstatico : virtual public DControlEx {
 	  public:
 								DControlEx_TextoEstatico(void) : DControlEx(), _ColorTexto(COLOR_TEXTO), _ColorTextoSombra(COLOR_TEXTO_SOMBRA), _Fuente(NULL) { }
 		                       ~DControlEx_TextoEstatico(void)		{ }
@@ -102,10 +102,10 @@ namespace DWL {
 		COLORREF               _ColorTexto;
 		COLORREF               _ColorTextoSombra;
 		DhWnd_Fuente           _Fuente;
-	};
+	};*/
 
 	/* Control básico con texto y que puede tener el foco (con estados resaltado y presionado) */
-	class DControlEx_TextoDinamico : public DControlEx_TextoEstatico {
+/*	class DControlEx_TextoDinamico : public DControlEx_TextoEstatico {
 	  public:
 								DControlEx_TextoDinamico(void) : DControlEx_TextoEstatico(), _ColorTextoResaltado(COLOR_TEXTO_RESALTADO), _ColorTextoPresionado(COLOR_TEXTO_PRESIONADO) { }
 		                       ~DControlEx_TextoDinamico(void) { }
@@ -116,7 +116,7 @@ namespace DWL {
 	  protected:
 		COLORREF               _ColorTextoResaltado;
 		COLORREF               _ColorTextoPresionado;
-	};
+	};*/
 }
 
 #endif

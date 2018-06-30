@@ -3,11 +3,12 @@
 
 namespace DWL {
 
-	DBarraScrollEx::DBarraScrollEx(void) :  DControlEx_FondoEstatico(), _Scroll_PosPresionado({ 0 ,0 }), _Scroll_PosInicio(0.0f),
-											_ColorScroll(COLOR_SCROLL_BARRA),		_ColorScrollResaltado(COLOR_SCROLL_BARRA_RESALTADO),
-											_ColorFondoScroll(COLOR_SCROLL_FONDO),  _ColorScrollPresionado(COLOR_SCROLL_BARRA_PRESIONADO),
-											_ScrollV_Estado(DBarraScrollEx_Estado_Invisible), _ScrollV_Pagina(100.0f), _ScrollV_Posicion(0.0f),
-											_ScrollH_Estado(DBarraScrollEx_Estado_Invisible), _ScrollH_Pagina(100.0f), _ScrollH_Posicion(0.0f) {
+	DBarraScrollEx::DBarraScrollEx(void) :  ColorFondo(COLOR_FONDO)									, _Scroll_PosPresionado({ 0 ,0 }), _Scroll_PosInicio(0.0f),
+											ColorScroll(COLOR_SCROLL_BARRA)							,  ColorScrollResaltado(COLOR_SCROLL_BARRA_RESALTADO),
+											ColorFondoScroll(COLOR_SCROLL_FONDO)					,  ColorScrollPresionado(COLOR_SCROLL_BARRA_PRESIONADO),
+											ColorFondoScrollResaltado(COLOR_SCROLL_FONDO_RESALTADO)	,  ColorFondoScrollPresionado(COLOR_SCROLL_FONDO_PRESIONADO),
+										   _ScrollV_Estado(DBarraScrollEx_Estado_Invisible)			, _ScrollV_Pagina(100.0f), _ScrollV_Posicion(0.0f),
+										   _ScrollH_Estado(DBarraScrollEx_Estado_Invisible)			, _ScrollH_Pagina(100.0f), _ScrollH_Posicion(0.0f) {
 		_ScrollH_Alto = GetSystemMetrics(SM_CYHSCROLL);
 		_ScrollV_Ancho = GetSystemMetrics(SM_CXVSCROLL);
 	}
@@ -24,22 +25,27 @@ namespace DWL {
 		ObtenerRectasScroll(RC, RCH, RCV);
 		if (_ScrollV_Estado != DBarraScrollEx_Estado_Invisible)	ObtenerRectaBarraScrollV(RCV, RCBV);
 		if (_ScrollH_Estado != DBarraScrollEx_Estado_Invisible)	ObtenerRectaBarraScrollH(RCH, RCBH);
+//		Debug_Escribir_Varg(L"_ScrollV_Estado : %d, _ScrollH_Estado : %d, ColorFondoScroll %d\n", _ScrollV_Estado, _ScrollH_Estado, ColorFondoScroll);
 		switch (_ScrollV_Estado) {
-			case DBarraScrollEx_Estado_Normal		:	_PintarBarraScrollEx(hDC, RCV, RCBV, _ColorScroll);					break;
-			case DBarraScrollEx_Estado_Resaltado	:	_PintarBarraScrollEx(hDC, RCV, RCBV, _ColorScrollResaltado);		break;
-			case DBarraScrollEx_Estado_Presionado	:	_PintarBarraScrollEx(hDC, RCV, RCBV, _ColorScrollPresionado);		break;
-			case DBarraScrollEx_Estado_Invisible	:   PintarRecuadro = FALSE;												break;
+			case DBarraScrollEx_Estado_Normal		:	
+				_PintarBarraScrollEx(hDC, RCV, RCBV, ColorScroll			, ColorFondoScroll);				
+				break;
+			case DBarraScrollEx_Estado_Resaltado	:	_PintarBarraScrollEx(hDC, RCV, RCBV, ColorScrollResaltado   , ColorFondoScrollResaltado);		break;
+			case DBarraScrollEx_Estado_Presionado	:	_PintarBarraScrollEx(hDC, RCV, RCBV, ColorScrollPresionado  , ColorFondoScrollPresionado);		break;
+			case DBarraScrollEx_Estado_Invisible	:   PintarRecuadro = FALSE;																			break;
 		}
 		switch (_ScrollH_Estado) {
-			case DBarraScrollEx_Estado_Normal		:	_PintarBarraScrollEx(hDC, RCH, RCBH, _ColorScroll);					break;
-			case DBarraScrollEx_Estado_Resaltado	:	_PintarBarraScrollEx(hDC, RCH, RCBH, _ColorScrollResaltado);		break;
-			case DBarraScrollEx_Estado_Presionado	:	_PintarBarraScrollEx(hDC, RCH, RCBH, _ColorScrollPresionado);		break;
-			case DBarraScrollEx_Estado_Invisible	:   PintarRecuadro = FALSE;												break;
+			case DBarraScrollEx_Estado_Normal		:	
+				_PintarBarraScrollEx(hDC, RCH, RCBH, ColorScroll			, ColorFondoScroll);				
+				break;
+			case DBarraScrollEx_Estado_Resaltado	:	_PintarBarraScrollEx(hDC, RCH, RCBH, ColorScrollResaltado   , ColorFondoScrollResaltado);		break;
+			case DBarraScrollEx_Estado_Presionado	:	_PintarBarraScrollEx(hDC, RCH, RCBH, ColorScrollPresionado  , ColorFondoScrollPresionado);		break;
+			case DBarraScrollEx_Estado_Invisible	:   PintarRecuadro = FALSE;																			break;
 		}
 		// Si las dos barras son visibles hay que pintar un recuadro en la parte inferior derecha del control 
 		if (PintarRecuadro == TRUE) {
 			RECT Recuadro = { RCV.left, RCH.top, RCV.right, RCH.bottom };
-			HBRUSH BrochaRecuadro = CreateSolidBrush(_ColorFondoScroll);
+			HBRUSH BrochaRecuadro = CreateSolidBrush(ColorFondoScroll);
 			FillRect(hDC, &Recuadro, BrochaRecuadro);
 			DeleteObject(BrochaRecuadro);
 		}
@@ -110,7 +116,10 @@ namespace DWL {
 	}
 
 	// Devuelve TRUE si el mouse está dentro de alguna barra de scroll
-	const BOOL DBarraScrollEx::Scrolls_MouseMovimiento(const int cX, const int cY, const UINT Param) {
+	const BOOL DBarraScrollEx::Scrolls_MouseMovimiento(DControlEx_EventoMouse &DatosMouse) {
+		int cX		= DatosMouse.X(),
+			cY		= DatosMouse.Y();
+
 		RECT RCV, RCH;
 		ObtenerRectasScroll(RCH, RCV);
 		POINT Pt = { cX, cY };
@@ -170,8 +179,11 @@ namespace DWL {
 	}
 
 	// Devuelve TRUE si el mouse está dentro de alguna barra de scroll
-	const BOOL DBarraScrollEx::Scrolls_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param) {
-		if (Boton != 0) return FALSE;
+	const BOOL DBarraScrollEx::Scrolls_MousePresionado(DControlEx_EventoMouse &DatosMouse) {
+		int cX		= DatosMouse.X(),
+			cY		= DatosMouse.Y();
+
+		if (DatosMouse.Boton != 0) return FALSE;
 		RECT RCV, RCH, RCBV, RCBH;
 		ObtenerRectasScroll(RCH, RCV);
 		POINT Pt = { cX, cY };
@@ -226,8 +238,11 @@ namespace DWL {
 	}
 
 	// Devuelve TRUE si el mouse está dentro de alguna barra de scroll
-	const BOOL DBarraScrollEx::Scrolls_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param) {
-		if (Boton != 0) return FALSE;
+	const BOOL DBarraScrollEx::Scrolls_MouseSoltado(DControlEx_EventoMouse &DatosMouse) {
+		int cX		= DatosMouse.X(),
+			cY		= DatosMouse.Y();
+
+		if (DatosMouse.Boton != 0) return FALSE;
 		RECT RCV, RCH;
 		ObtenerRectasScroll(RCH, RCV);
 		POINT Pt = { cX, cY };
@@ -261,9 +276,9 @@ namespace DWL {
 		return FALSE;		
 	}
 
-	void DBarraScrollEx::_PintarBarraScrollEx(HDC hDC, RECT &RectaScroll, RECT &RectaBarra, const COLORREF pColorBarra) {
+	void DBarraScrollEx::_PintarBarraScrollEx(HDC hDC, RECT &RectaScroll, RECT &RectaBarra, const COLORREF pColorBarra, const COLORREF pColorFondo) {
 		// Creo las brochas 
-		HBRUSH ColorFondo = CreateSolidBrush(_ColorFondoScroll);
+		HBRUSH ColorFondo = CreateSolidBrush(pColorFondo);
 		HBRUSH ColorBarra = CreateSolidBrush(pColorBarra);
 
 		// Pinto el scrollbar

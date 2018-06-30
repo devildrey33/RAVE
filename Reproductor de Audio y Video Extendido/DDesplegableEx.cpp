@@ -7,7 +7,7 @@ namespace DWL {
 	DDesplegableEx::DDesplegableEx() :	_TipoEdicion(DDesplegableEx_TipoEdicion_SinEdicion), _TipoDesplegable(DDesplegableEx_TipoDesplegable_Lista),
 										_EstadoBoton(DDesplegableEx_Estado_Normal), _EstadoVisor(DDesplegableEx_Estado_Normal),
 										_UEstadoBoton(DDesplegableEx_Estado_Indefinido), _UEstadoVisor(DDesplegableEx_Estado_Indefinido),
-										_ExplorarDirectorios(NULL), _Arbol (NULL), _Lista(NULL)															{
+										_ExplorarDirectorios(NULL), _Arbol (NULL), _Lista(NULL), _Icono(NULL) {
 	}
 
 
@@ -20,7 +20,7 @@ namespace DWL {
 		_hWnd = CrearControlEx(nPadre, L"DDesplegableEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, NULL);  // CS_DBLCLKS (el control recibe notificaciones de doble click)
 		_TipoEdicion		= nTipoEdicion;
 		_TipoDesplegable	= nTipoDesplegable;
-		_Fuente				= _Fuente18Normal;
+		Fuente				= _Fuente18Normal;
 
 		// Creo el tipo de desplegable especificado
 		switch (_TipoDesplegable) {
@@ -34,6 +34,9 @@ namespace DWL {
 		}
 
 		// Creo un editbox o un LabelEx según el tipo de edición
+		RECT REdit = { 20, 1, cAncho - cAlto, cAlto - 1 };
+		IniciarEdicionTextoEx(REdit);
+
 		switch (_TipoEdicion) {
 			case DDesplegableEx_TipoEdicion_SinEdicion :
 				break;
@@ -51,15 +54,19 @@ namespace DWL {
 
 
 	void DDesplegableEx::MostrarDesplegable(void) {
+		RECT RC;
+		GetClientRect(hWnd(), &RC);
+
+
 		switch (_TipoDesplegable) {
-		case DDesplegableEx_TipoDesplegable_Lista:
-			break;
-		case DDesplegableEx_TipoDesplegable_Arbol:
-			break;
-		case DDesplegableEx_TipoDesplegable_ExplorarDirectorios:		
-//			if (_ExplorarDirectorios->Visible() == FALSE)	
-				_ExplorarDirectorios->Mostrar();
-			break;
+			case DDesplegableEx_TipoDesplegable_Lista:
+				break;
+			case DDesplegableEx_TipoDesplegable_Arbol:
+				break;
+			case DDesplegableEx_TipoDesplegable_ExplorarDirectorios:		
+	//			if (_ExplorarDirectorios->Visible() == FALSE)	
+					_ExplorarDirectorios->Mostrar();
+				break;
 		}
 
 		// Envio el mensaje WM_NCACTIVATE a la ventana principal para que no se vea como pierde el foco, y parezca que el desplegable es un hijo de la ventana principal
@@ -113,7 +120,8 @@ namespace DWL {
 				break;
 		}
 
-		// Pinto el borde del visor
+
+		// Pinto el borde del visor (el visor es el editbox o texto el estatico)
 		HBRUSH BrochaVisorBorde = CreateSolidBrush(nColorVisorBorde);
 		FrameRect(Buffer, &RVisor, BrochaVisorBorde);
 		DeleteObject(BrochaVisorBorde);
@@ -138,6 +146,15 @@ namespace DWL {
 
 		DGDI::PintarFlecha(Buffer, (RC.right - RC.bottom) + 6, 4, 90.0f, 8, 1, RGB(255, 255, 255));
 
+		// Pinto el texto
+		EdicionTexto_Pintar(Buffer);
+
+		// Pinto el icono (si hay icono)
+		if (_Icono != NULL) {
+			DrawIconEx(Buffer, 4, 7, _Icono->Icono(), DARBOLEX_TAMICONO, DARBOLEX_TAMICONO, 0, 0, DI_NORMAL);
+		}
+
+
 		// Copio el buffer al DC
 		BitBlt(DC, RC.left, RC.top, RC.right, RC.bottom, Buffer, 0, 0, SRCCOPY);
 
@@ -157,9 +174,15 @@ namespace DWL {
 	}
 
 	void DDesplegableEx::_Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
+		if (EdicionTexto_Evento_TeclaPresionada(Caracter, Repeticion, Params) == TRUE) Repintar();
 	}
 
 	void DDesplegableEx::_Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
+		if (EdicionTexto_Evento_TeclaSoltada(Caracter, Repeticion, Params) == TRUE) Repintar();
+	}
+
+	void DDesplegableEx::_Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param) {
+		if (EdicionTexto_Evento_Tecla(Caracter, Repeticion, Param) == TRUE) Repintar();
 	}
 
 	void DDesplegableEx::_Evento_MouseMovimiento(const int cX, const int cY, const UINT Param) {
@@ -204,6 +227,7 @@ namespace DWL {
 	}
 
 	void DDesplegableEx::_Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param) {
+		SetFocus(_hWnd);
 		RECT RC;
 		GetClientRect(_hWnd, &RC);
 		RECT RBoton = { RC.right - RC.bottom, 0, RC.right, RC.bottom };
@@ -273,6 +297,7 @@ namespace DWL {
 
 			case WM_KEYDOWN:		_Evento_TeclaPresionada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;
 			case WM_KEYUP:			_Evento_TeclaSoltada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;		
+			case WM_CHAR: 			_Evento_Tecla(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));																	return 0;
 
 			case WM_SIZE:			Repintar();																																	return 0;
 

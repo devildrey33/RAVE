@@ -85,8 +85,8 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 
 			IniciarUI(nCmdShow);
 
-			Ret = BD.Tabla_Raiz.Argerar_Raiz(TEXT("D:\\MP3"));
-			Ret = BD.Tabla_Raiz.Argerar_Raiz(TEXT("D:\\Pelis i Series"));
+//			Ret = BD.Tabla_Raiz.Argerar_Raiz(TEXT("D:\\MP3"));
+//			Ret = BD.Tabla_Raiz.Argerar_Raiz(TEXT("D:\\Pelis i Series"));
 			BD.ActualizarArbol();
 
 			// Libero el mutex que impide la carga de un supuesto segundo reproductor

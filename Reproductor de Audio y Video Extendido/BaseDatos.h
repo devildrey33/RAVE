@@ -78,6 +78,7 @@ class BaseDatos : public DWL::DVentana {
 	const BOOL			            ObtenerMedio(std::wstring &mPath, TablaMedios_Medio &mTMedio);
 
 	inline sqlite3                 *operator()(void) { return _BD; }
+	const BOOL                      SqlQuery(const wchar_t *Query, ...);
 
 	TablaRaiz                       Tabla_Raiz;
 	TablaMedios                     Tabla_Medios;
@@ -85,6 +86,7 @@ class BaseDatos : public DWL::DVentana {
   protected:
 	sqlite3                       *_BD;
 	ThreadBuscarArchivos		   _BuscarArchivos;
+	std::wstring                   _UltimoErrorSQL;
 //	void						   _FiltroPath(std::wstring &iTexto, std::wstring &oTexto);
 };
 

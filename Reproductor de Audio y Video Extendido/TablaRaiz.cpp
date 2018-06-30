@@ -98,6 +98,7 @@ CeRaiz *TablaRaiz::Buscar_Raiz(const TCHAR *nPath) {
 	return NULL;
 }
 
+
 /*	FALSE Ya esta agregada o hay un error
 	 > 0  Nueva raíz agregada, el resultado es la ID de la raiz dentro de la base de datos  */
 
@@ -156,7 +157,7 @@ const BOOL TablaRaiz::Argerar_Raiz(const TCHAR *nPath) {
 	} 
 	sqlite3_finalize(SqlQuery);
 	if (SqlRet == SQLITE_ERROR) {
-		return NULL;
+		return FALSE;
 	}
 
 	ObtenerDatos(_BD);
@@ -169,5 +170,13 @@ const BOOL TablaRaiz::Argerar_Raiz(const TCHAR *nPath) {
 		return FALSE;
 	}*/
 
-	return Ret;
+	return TRUE;
+}
+
+
+const BOOL TablaRaiz::Eliminar_Raiz(std::wstring &nPath) {
+	BOOL Ret = App.BD.SqlQuery(L"DELETE FROM Raiz WHERE Path ='%s'", nPath.c_str());
+
+	ObtenerDatos(_BD);
+	return TRUE;
 }

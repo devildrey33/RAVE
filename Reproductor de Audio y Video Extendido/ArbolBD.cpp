@@ -35,7 +35,7 @@ NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre,
 	}
 
 	int                       nIcono   = 0;
-	DhWnd_Fuente             *nFuente  = &_Fuente;
+	DhWnd_Fuente             *nFuente  = &Fuente;
 	DArbolEx_MostrarExpansor  nExpansor = DArbolEx_MostrarExpansor_Mostrar;
 //	size_t			nPos = 0;
 	switch (nTipoNodo) {
@@ -313,9 +313,9 @@ void ArbolBD::ExplorarPath(DWL::DArbolEx_Nodo *nNodo) {
 }
 
 
-void ArbolBD::Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param) {
-	if (Boton == 1) {
-		if (_NodoPresionado == NULL) {	// Anulo los menuitems agregar... si no hay un nodo marcado
+void ArbolBD::Evento_MouseSoltado(DControlEx_EventoMouse &DatosMouse) {
+	if (DatosMouse.Boton == 1) {
+		if (_NodoResaltado == NULL) {	// Anulo los menuitems agregar... si no hay un nodo marcado
 			App.Menu_ArbolBD[0]->Activado(FALSE); // Agregar a lista
 			App.Menu_ArbolBD[1]->Activado(FALSE); // Agregar a nueva lista
 		}
@@ -328,11 +328,11 @@ void ArbolBD::Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, 
 		switch (IdMenu) {
 			case ID_MENUBD_AGREGARANUEVALISTA:
 				App.VentanaRave.Lista.BorrarListaReproduccion();
-				AgregarNodoALista(_NodoPresionado);
+				AgregarNodoALista(_NodoResaltado);
 				App.VentanaRave.Lista_Play();
 				break;
 			case ID_MENUBD_AGREGARALISTA:
-				AgregarNodoALista(_NodoPresionado);
+				AgregarNodoALista(_NodoResaltado);
 				break;
 			case ID_MENUBD_ACTUALIZAR:
 				App.BD.ActualizarArbol();

@@ -5,7 +5,7 @@
 
 namespace DWL {
 
-	DBarraProgresoEx::DBarraProgresoEx(void) : DControlEx_FondoDinamico(), _Minimo(0), _Maximo(0), _Valor(0) {
+	DBarraProgresoEx::DBarraProgresoEx(void) : _Minimo(0), _Maximo(0), _Valor(0) {
 	}
 
 
@@ -16,8 +16,8 @@ namespace DWL {
 	HWND DBarraProgresoEx::CrearBarraProgresoEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const float nMinimo, const float nMaximo, const float nValor) {
 		if (hWnd()) { Debug_Escribir(L"DBarraProgresoEx::CrearBarraProgresoEx() Error : ya se ha creado la barra\n"); return hWnd(); }
 		_hWnd = CrearControlEx(nPadre, L"DBarraProgresoEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD | WS_VISIBLE, NULL, CS_HREDRAW | CS_VREDRAW);
-		_ColorFondo = COLOR_BARRA_FONDO;
-		_ColorBarra = COLOR_BARRA;
+		ColorFondo = COLOR_BARRA_FONDO;
+		ColorBarra = COLOR_BARRA;
 		_Minimo = nMinimo;
 		_Maximo = nMaximo;
 		_Valor = nValor;
@@ -76,19 +76,19 @@ namespace DWL {
 
 
 	void DBarraProgresoEx::Evento_PintarBarra(HDC DC, RECT &RBarra) {
-		HBRUSH BrochaBarra = CreateSolidBrush(_ColorBarra);
+		HBRUSH BrochaBarra = CreateSolidBrush(ColorBarra);
 		FillRect(DC, &RBarra, BrochaBarra);
 		DeleteObject(BrochaBarra);
 	}
 
 	void DBarraProgresoEx::Evento_PintarFondo(HDC DC, RECT &RFondo) {
-		HBRUSH BrochaFondo = CreateSolidBrush(_ColorFondo);
+		HBRUSH BrochaFondo = CreateSolidBrush(ColorFondo);
 		FillRect(DC, &RFondo, BrochaFondo);
 		DeleteObject(BrochaFondo);
 	}
 
 	void DBarraProgresoEx::Evento_PintarBorde(HDC DC, RECT &RBorde) {
-		HBRUSH BrochaBorde = CreateSolidBrush(_ColorBorde);
+		HBRUSH BrochaBorde = CreateSolidBrush(ColorBorde);
 		FrameRect(DC, &RBorde, BrochaBorde);
 		DeleteObject(BrochaBorde);
 	}

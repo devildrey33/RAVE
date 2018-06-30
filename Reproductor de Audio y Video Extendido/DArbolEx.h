@@ -5,6 +5,7 @@
 #include "DArbolEx_Nodo.h"
 #include "DListaIconos.h"
 
+
 namespace DWL {
 
 	#define DARBOLEX_MOSTRARDEBUG	FALSE
@@ -40,7 +41,7 @@ namespace DWL {
 	};
 
 	/* Datos que devuelve un click / dobleclick */
-	class DArbolEx_DatosClick {
+	/*class DArbolEx_DatosClick {
 	  public :
 						DArbolEx_DatosClick() : X(0), Y(0), Boton(0), Nodo(NULL) { };
 		  				DArbolEx_DatosClick(const int nX, const int nY, const int nBoton, DArbolEx_Nodo *nNodo) : X(nX), Y(nY), Boton(nBoton), Nodo(nNodo) { };
@@ -49,7 +50,7 @@ namespace DWL {
 		int				Y;
 		int				Boton;
 		DArbolEx_Nodo  *Nodo;
-	};
+	};*/
 
 	/* Comportamiento del ArbolEx */
 /*	class DArbolEx_Comportamiento {
@@ -73,7 +74,7 @@ namespace DWL {
 		                                               ~DArbolEx(void);
 
 														// Crea el control ArbolEx
-		HWND											CrearArbolEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID);
+		HWND											CrearArbolEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, DWORD nEstilos = WS_CHILD);
 
 		void											Expandir(DArbolEx_Nodo *nNodo, const BOOL nExpandir);
 
@@ -126,11 +127,11 @@ namespace DWL {
 														// Eventos virtuales
 		virtual void          							Evento_MouseEntrando(void)																	{ };
 		virtual void									Evento_MouseSaliendo(void)																	{ };
-		virtual void									Evento_MouseMovimiento(const int cX, const int cY, const UINT Param)						{ };
-		virtual void									Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param)		{ };
-		virtual void									Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param)			{ };
+		virtual void									Evento_MouseMovimiento(DControlEx_EventoMouse &DatosMouse)									{ };
+		virtual void									Evento_MousePresionado(DControlEx_EventoMouse &DatosMouse)									{ };
+		virtual void									Evento_MouseSoltado(DControlEx_EventoMouse &DatosMouse)										{ };
 		virtual void                                    Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey)		{ };
-		virtual void									Evento_MouseDobleClick(const UINT Boton, const int cX, const int cY, const UINT Param)		{ };
+		virtual void									Evento_MouseDobleClick(DControlEx_EventoMouse &DatosMouse)									{ };
 
 		virtual void                                    Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params)		{ };
 		virtual void                                    Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params)			{ };
@@ -162,16 +163,21 @@ namespace DWL {
 														// Busca el nodo siguiente
 		DArbolEx_Nodo								   *BuscarNodoSiguiente(DArbolEx_Nodo *nActual, const BOOL nVisible = FALSE, DArbolEx_Nodo *DentroDe = NULL);
 
+		DhWnd_Fuente			                        Fuente;
+
+		inline DArbolEx_Nodo                           *NodoResaltado(void) { return _NodoResaltado; };
+		inline DArbolEx_Nodo                           *NodoMarcado(void)   { return _NodoMarcado; };
+
 	  protected:		
 														// Valor que determina si hay que recalcular los tamaños antes de pintar
-		BOOL                                           _CalcularValores;
+		BOOL                                           _Repintar;
 														// Eventos internos
 		void										   _Evento_Pintar(void);
-		void										   _Evento_MouseMovimiento(const int cX, const int cY, const UINT Param);
-		void										   _Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param);
-		void										   _Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param);
+		void										   _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
+		void										   _Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam);
+		void										   _Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam);
 		void                                           _Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey);
-		void										   _Evento_MouseDobleClick(const UINT Boton, const int cX, const int cY, const UINT Param);
+		void										   _Evento_MouseDobleClick(const int Boton, WPARAM wParam, LPARAM lParam);
 		void										   _Evento_MouseSaliendo(void);
 
 		void                                           _Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
@@ -240,7 +246,6 @@ namespace DWL {
 		LONG										   _NodoPaginaVDif;
 		LONG										   _NodoPaginaHDif;
 
-		DhWnd_Fuente			                       _Fuente;
 
 //		bool										   _Teclado[256];
 

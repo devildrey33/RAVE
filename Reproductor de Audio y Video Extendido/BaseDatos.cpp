@@ -15,8 +15,8 @@ BaseDatos::~BaseDatos(void) {
 
 
 const BOOL BaseDatos::IniciarBD(void) {
-	// Creo ventana para los mensajes
-	CrearVentana(L"MensajesBDRave", L"MensajesBDRave", 0, 0, 10, 10, WS_POPUP);
+	// Creo ventana para los mensajes (para recibir datos desde el thread de buscar)
+	CrearVentana(NULL, L"MensajesBDRave", L"MensajesBDRave", 0, 0, 10, 10, WS_POPUP);
 
 
 	int Ret = 0;
@@ -89,7 +89,36 @@ void BaseDatos::ActualizarArbol(void) {
 
 }
 
+const BOOL BaseDatos::SqlQuery(const wchar_t *Query, ...) {
 
+	va_list			Marker;
+	va_start(Marker, Query);
+	static wchar_t VargQuery[4096];
+	vswprintf_s(VargQuery, 4096, Query, Marker);
+	va_end(Marker);
+
+	//wchar_t		   *SqlError = NULL;
+	int				SqlRet = 0;
+//	const wchar_t  *SqlStr = L"SELECT * FROM Raiz";
+
+	sqlite3_stmt   *SqlQuery = NULL;
+	SqlRet = sqlite3_prepare16_v2(_BD, VargQuery, -1, &SqlQuery, NULL);
+	if (SqlRet) return FALSE;
+
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
+		SqlRet = sqlite3_step(SqlQuery);
+	}
+
+	sqlite3_finalize(SqlQuery);
+
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		Debug_Escribir_Varg(L"BaseDatos::SqlQuery %s", _UltimoErrorSQL.c_str());
+		return FALSE;
+	}
+
+	return TRUE;
+}
 
 
 

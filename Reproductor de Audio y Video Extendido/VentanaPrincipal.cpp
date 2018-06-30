@@ -4,6 +4,7 @@
 #include "DMensajesWnd.h"
 #include "DMouse.h"
 #include "Rave_Skin.h"
+#include "DDlgDirectorios.h"
 
 #define RAVE_MIN_ANCHO 660
 #define RAVE_MIN_ALTO  280
@@ -20,13 +21,13 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 //	int x = App.BD.Tabla_Opciones.PosX(), y = App.BD.Tabla_Opciones.PosY();
 
-	HWND rhWnd = DVentana::CrearVentana(L"VentanaPrincipal", RAVE_TITULO, App.BD.Tabla_Opciones.PosX(), App.BD.Tabla_Opciones.PosY(), App.BD.Tabla_Opciones.Ancho(), App.BD.Tabla_Opciones.Alto(), WS_OVERLAPPEDWINDOW, WS_EX_APPWINDOW, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+	HWND rhWnd = DVentana::CrearVentana(NULL, L"VentanaPrincipal", RAVE_TITULO, App.BD.Tabla_Opciones.PosX(), App.BD.Tabla_Opciones.PosY(), App.BD.Tabla_Opciones.Ancho(), App.BD.Tabla_Opciones.Alto(), WS_OVERLAPPEDWINDOW, WS_EX_APPWINDOW, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 
-	RECT RC, RW;
+	RECT RC; // , RW;
 	GetClientRect(hWnd(), &RC);
-	GetWindowRect(hWnd(), &RW);
+/*	GetWindowRect(hWnd(), &RW);
 	CTW_ExtraX = (RW.right - RW.left) - RC.right;
-	CTW_ExtraY = (RW.bottom - RW.top) - RC.bottom;
+	CTW_ExtraY = (RW.bottom - RW.top) - RC.bottom;*/
 
 	Arbol.CrearArbolEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_ARBOLBD);
 	Arbol.Visible(TRUE);
@@ -48,6 +49,8 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	Lista.CambiarVista(DWL::DEnum_ListView_Vista::DEnum_ListView_Vista_Detalles);*/
 	
 	Video.Crear(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_VERVIDEO);
+
+	// Opciones /////////////////////////////
 	Opciones.Crear(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_OPCIONES);
 	Opciones.Visible(FALSE);
 
@@ -58,9 +61,13 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	}
 	ListaRaiz.Visible(TRUE);
 
-	ComboRaiz.CrearDesplegable(&Opciones, 10, 100, 300, 30, ID_OPCIONES, DDesplegableEx_TipoEdicion_SinEdicion, DDesplegableEx_TipoDesplegable_ExplorarDirectorios);
-	ComboRaiz.Visible(TRUE);
+/*	ComboRaiz.CrearDesplegable(&Opciones, 10, 100, 300, 30, ID_OPCIONES, DDesplegableEx_TipoEdicion_SinEdicion, DDesplegableEx_TipoDesplegable_ExplorarDirectorios);
+	ComboRaiz.Visible(TRUE);*/
+	BotonAgregarRaiz.CrearBotonEx(&Opciones, L"Agregar Raiz", 10, 100, 150, 24, ID_BOTON_AGREGARRAIZ);
+	BotonAgregarRaiz.Fuente = _Fuente21Normal;
+	/////////////////////////////////////////
 
+	// Marco superior izquierdo /////////////
 	MarcoSI.Crear(this, 10, 10, 360, 30, ID_MARCOSI);
 	BotonAtras.Crear(&MarcoSI, L"<", 0, 0, 30, 30, ID_BOTON_ANTERIOR);
 	BotonPlay.Crear(&MarcoSI, L"P", 40, 0, 30, 30, ID_BOTON_PLAY);
@@ -70,6 +77,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 	BotonMezclar.Crear(&MarcoSI, L"Mezclar", 210, 0, 70, 30, ID_BOTON_MEZCLAR, TRUE, DEnum_Button_Tipo_Split);
 	BotonRepetir.Crear(&MarcoSI, L"Repetir", 290, 0, 70, 30, ID_BOTON_REPETIR, TRUE, DEnum_Button_Tipo_Split);
+	//////////////////////////////////////////
 
 	SliderTiempo.CrearBarraDesplazamientoEx(this, 10, 50, RC.right - 20, 20, ID_SLIDER_TIEMPO);
 //	SliderTiempo.Crear(hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO, WS_CHILD | TBS_NOTICKS | WS_VISIBLE, 0, 30000, 0);
@@ -85,13 +93,15 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	LabelTiempoSeparador.CrearLabelEx(&MarcoSD, L"/", 55, 2, 10, 20, ID_LABEL_TIEMPOSEPARADOR,TRUE,  WS_CHILD | WS_VISIBLE);
 	LabelTiempoTotal.CrearLabelEx(&MarcoSD, L"00:00", 65, 2, 55, 20, ID_LABEL_TIEMPOTOTAL, WS_CHILD | WS_VISIBLE);
 
+	// Marco superior izquierdo /////////////
 	MarcoII.Crear(this, 10, 80, RAVE_BOTONES_LATERALES_ANCHO, 160, ID_MARCOSI);
-
 	BotonBD.CrearBotonEx(&MarcoII, L"Base de datos", 0, 0, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_BD);
 	BotonLista.CrearBotonEx(&MarcoII, L"Lista de medios", 0, 40, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_LISTA);
 	BotonVideo.CrearBotonEx(&MarcoII, L"Ver video", 0, 80, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_VIDEO);
 	BotonOpciones.CrearBotonEx(&MarcoII, L"Opciones", 0, 120, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_OPCIONES);
+	/////////////////////////////////////////
 
+	// Muestro la ventana principal
 	ShowWindow(hWnd(), nCmdShow);
 
 	// Timer que comprueba si se ha terminado la cancion
@@ -294,6 +304,8 @@ void VentanaPrincipal::Lista_Anterior(void) {
 
 
 void VentanaPrincipal::Evento_BotonEx_Mouse_Click(const UINT cID) {
+	
+
 	switch (cID) {
 		case ID_BOTON_OPCIONES: 
 			Arbol.Visible(FALSE);
@@ -323,7 +335,36 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(const UINT cID) {
 			Opciones.Visible(FALSE);
 			Video.AsignarFoco();
 			break;
+		case ID_BOTON_AGREGARRAIZ :
+			AgregarRaiz();
+			break;
 	}
+}
+
+void VentanaPrincipal::AgregarRaiz(void) {
+	DDlgDirectorios          DialogoDirectorios;
+	std::wstring             Path;
+
+	BOOL Ret = DialogoDirectorios.Mostrar(this, Path);
+	if (Ret == TRUE) {
+		// Agrego la raíz a la BD.
+		// Puede que esa raíz sea parte de otra raíz existente o viceversa, en ese caso no se agrega una nueva raíz a la lista, habrá que modificar la lista
+		if (App.BD.Tabla_Raiz.Argerar_Raiz(Path.c_str()) == TRUE) {
+			ListaRaiz.AgregarRaiz(Path.c_str());
+			Debug_Escribir(L"VentanaPrincipal::AgregarRaiz Nueva raíz agregada.\n");
+		}
+		else { // La raiz ya existia o es un error
+			Debug_Escribir(L"VentanaPrincipal::AgregarRaiz La raíz se ha fusionado a una raíz existente.\n");
+		}
+	}
+	else {
+		Debug_Escribir(L"VentanaPrincipal::AgregarRaiz Cancelado por el usuario.\n");
+	}
+}
+
+void VentanaPrincipal::EliminarRaiz(std::wstring &Path) {
+	App.BD.Tabla_Raiz.Eliminar_Raiz(Path);
+	
 }
 
 void VentanaPrincipal::Evento_Button_Mouse_Click(const UINT cID) {

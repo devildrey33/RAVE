@@ -12,11 +12,13 @@ namespace DWL {
 		DBotonEx_Estado_Presionado
 	};
 
-	class DBotonEx : public DControlEx_TextoDinamico, DControlEx_FondoDinamico, DControlEx_BordeDinamico {
+	class DBotonEx : public DControlEx {
 	  public:
 								DBotonEx();
 				               ~DBotonEx();
 		HWND					CrearBotonEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const long Estilos = WS_CHILD | WS_VISIBLE);
+
+		virtual const BOOL		Activar(const BOOL nActivar);
 
 		void					PintarBotonEx(HDC DC);
 
@@ -26,7 +28,24 @@ namespace DWL {
 
 		LRESULT CALLBACK		GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+		COLORREF                ColorBorde;
+		COLORREF                ColorBordeResaltado;
+		COLORREF                ColorBordePresionado;
+		COLORREF                ColorFondo;
+		COLORREF                ColorFondoResaltado;
+		COLORREF                ColorFondoPresionado;
+
+		COLORREF                ColorTexto;
+		COLORREF                ColorTextoResaltado;
+		COLORREF                ColorTextoPresionado;
+		COLORREF                ColorTextoDesactivado;
+
+		COLORREF                ColorTextoSombra;
+
+		DhWnd_Fuente            Fuente;
+
 	  protected:
+		std::wstring           _Texto;
 		DBotonEx_Estado		   _Estado;
 	};
 

@@ -2,6 +2,7 @@
 #ifndef DDESPLEGABLEEX_H
 #define DDESPLEGABLEEX_H
 
+#include "DEdicionTextoEx.h"
 #include "DDesplegableEx_ExplorarDirectoriosEx.h"
 //#include "DListaEx.h"
 
@@ -41,12 +42,13 @@ namespace DWL {
 	};
 
 	/* Control del estilo ComboBox que puede mostrar una DListaEx o un DArbolEx además del editbox / static text iniciales */
-	class DDesplegableEx : public DControlEx {
+	class DDesplegableEx : public DControlEx, public DEdicionTextoEx_Nucleo {
   	  public:
 												DDesplegableEx(void);
 									           ~DDesplegableEx(void);
 		HWND									CrearDesplegable(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const DDesplegableEx_TipoEdicion nTipoEdicion = DDesplegableEx_TipoEdicion_Texto, const DDesplegableEx_TipoDesplegable nTipoDesplegable = DDesplegableEx_TipoDesplegable_Lista);
 		void									MostrarDesplegable(void);
+//		void									OcultarDesplegable(void);
 		void									Pintar(HDC hDC);
 
 												// Eventos virtuales
@@ -63,6 +65,8 @@ namespace DWL {
 
 
 		LRESULT CALLBACK						GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+		inline void                             AsignarIcono(DListaIconos_Icono *nIcono)												{ _Icono = nIcono; }
 	  protected:
 //		void                                   _MostrarExplorarDirectorios(void);
 
@@ -86,11 +90,12 @@ namespace DWL {
 		DDesplegableEx_Estado				   _EstadoVisor;
 		DDesplegableEx_Estado				   _UEstadoBoton;
 		DDesplegableEx_Estado				   _UEstadoVisor;
-		DhWnd_Fuente						   _Fuente;
 												// Control desplegable (puede ser DArbolEx, DListaEx o DExplorarDirectoriosEx)
 		DArbolEx							  *_Arbol;
 		DListaEx							  *_Lista;
 		DDesplegableEx_ExplorarDirectoriosEx  *_ExplorarDirectorios;
+
+		DListaIconos_Icono                    *_Icono;
 	};
 }
 #endif

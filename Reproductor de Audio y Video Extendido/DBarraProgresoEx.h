@@ -4,7 +4,7 @@
 #include "DControlEx.h"
 
 namespace DWL {
-	class DBarraProgresoEx : public DControlEx_FondoDinamico, public DControlEx_BordeDinamico {
+	class DBarraProgresoEx : public DControlEx {
 	  public:
 								DBarraProgresoEx();
 		                       ~DBarraProgresoEx();
@@ -24,15 +24,17 @@ namespace DWL {
 		virtual void			Evento_PintarBarra(HDC DC, RECT &RBarra);
 		virtual void			Evento_PintarFondo(HDC DC, RECT &RFondo);
 
-		inline void				ColorBarra(COLORREF nColor) { _ColorBarra = nColor;		Repintar(); }
-		inline const COLORREF	ColorBarra(void)            { return _ColorBarra; }
+		COLORREF			    ColorBarra;
+		COLORREF                ColorBorde;
+		COLORREF                ColorFondo;
+		COLORREF                ColorFondoResaltado;
+		COLORREF                ColorFondoPresionado;
 
 		LRESULT CALLBACK		GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	  protected:
 		float				   _Minimo;
 		float				   _Maximo;
 		float				   _Valor;
-		COLORREF			   _ColorBarra;
 	};
 }
 #endif

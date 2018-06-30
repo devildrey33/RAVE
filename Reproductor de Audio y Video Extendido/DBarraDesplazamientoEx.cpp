@@ -5,7 +5,14 @@
 
 namespace DWL {
 
-	DBarraDesplazamientoEx::DBarraDesplazamientoEx(void) : DBarraProgresoEx(), _Estado(DBarraDesplazamientoEx_Estado_Normal), _MostrarToolTip(DBarraDesplazamientoEx_ToolTip_SinToolTip) {
+	DBarraDesplazamientoEx::DBarraDesplazamientoEx(void) :	DBarraProgresoEx(), _Estado(DBarraDesplazamientoEx_Estado_Normal), _MostrarToolTip(DBarraDesplazamientoEx_ToolTip_SinToolTip),
+															ColorBarraResaltado(COLOR_BARRA_RESALTADO), ColorBarraPresionado(COLOR_BARRA_PRESIONADO),
+															ColorBordeResaltado(COLOR_ROJO), ColorBordePresionado(COLOR_ROJO_PRESIONADO) {
+		ColorBarra				= COLOR_BARRA;
+		ColorBorde				= COLOR_BORDE;
+		ColorFondo				= COLOR_BARRA_FONDO;
+		ColorFondoResaltado		= COLOR_BARRA_FONDO_RESALTADO;
+		ColorFondoPresionado	= COLOR_BARRA_FONDO_PRESIONADO;
 	}
 
 	DBarraDesplazamientoEx::~DBarraDesplazamientoEx(void) {
@@ -19,13 +26,6 @@ namespace DWL {
 		_Maximo = nMaximo;
 		_Valor = nValor;
 		_ToolTip.CrearToolTipEx();
-		_ColorBarra = COLOR_BARRA;
-		_ColorBarraResaltado = COLOR_BARRA_RESALTADO;
-		_ColorBarraPresionado = COLOR_BARRA_PRESIONADO;
-		_ColorFondo = COLOR_BARRA_FONDO;
-		_ColorFondoResaltado = COLOR_BARRA_FONDO_RESALTADO;
-		_ColorFondoPresionado = COLOR_BARRA_FONDO_PRESIONADO;
-
 		return hWnd();
 	}
 
@@ -40,9 +40,9 @@ namespace DWL {
 	void DBarraDesplazamientoEx::Evento_PintarBarra(HDC DC, RECT &RBarra) {
 		COLORREF Color = 0;
 		switch (_Estado) {
-			case DBarraDesplazamientoEx_Estado_Normal		: Color = _ColorBarra;				break;
-			case DBarraDesplazamientoEx_Estado_Resaltado	: Color = _ColorBarraResaltado;		break;
-			case DBarraDesplazamientoEx_Estado_Presionado	: Color = _ColorBarraPresionado;	break;
+			case DBarraDesplazamientoEx_Estado_Normal		: Color = ColorBarra;				break;
+			case DBarraDesplazamientoEx_Estado_Resaltado	: Color = ColorBarraResaltado;		break;
+			case DBarraDesplazamientoEx_Estado_Presionado	: Color = ColorBarraPresionado;		break;
 		}
 		HBRUSH BrochaBarra = CreateSolidBrush(Color);
 		FillRect(DC, &RBarra, BrochaBarra);
@@ -52,9 +52,9 @@ namespace DWL {
 	void DBarraDesplazamientoEx::Evento_PintarFondo(HDC DC, RECT &RFondo) {
 		COLORREF Color = 0;
 		switch (_Estado) {
-			case DBarraDesplazamientoEx_Estado_Normal		: Color = _ColorFondo;				break;
-			case DBarraDesplazamientoEx_Estado_Resaltado	: Color = _ColorFondoResaltado;		break;
-			case DBarraDesplazamientoEx_Estado_Presionado	: Color = _ColorFondoPresionado;	break;
+			case DBarraDesplazamientoEx_Estado_Normal		: Color = ColorFondo;				break;
+			case DBarraDesplazamientoEx_Estado_Resaltado	: Color = ColorFondoResaltado;		break;
+			case DBarraDesplazamientoEx_Estado_Presionado	: Color = ColorFondoPresionado;		break;
 		}
 		HBRUSH BrochaFondo = CreateSolidBrush(Color);
 		FillRect(DC, &RFondo, BrochaFondo);
@@ -64,14 +64,15 @@ namespace DWL {
 	void DBarraDesplazamientoEx::Evento_PintarBorde(HDC DC, RECT &RBorde) {
 		COLORREF Color = 0;
 		switch (_Estado) {
-			case DBarraDesplazamientoEx_Estado_Normal		: Color = _ColorBorde;				break;
-			case DBarraDesplazamientoEx_Estado_Resaltado	: Color = _ColorBordeResaltado;		break;
-			case DBarraDesplazamientoEx_Estado_Presionado	: Color = _ColorBordePresionado;	break;
+			case DBarraDesplazamientoEx_Estado_Normal		: Color = ColorBorde;				break;
+			case DBarraDesplazamientoEx_Estado_Resaltado	: Color = ColorBordeResaltado;		break;
+			case DBarraDesplazamientoEx_Estado_Presionado	: Color = ColorBordePresionado;		break;
 		}
 		HBRUSH BrochaBorde = CreateSolidBrush(Color);
 		FrameRect(DC, &RBorde, BrochaBorde);
 		DeleteObject(BrochaBorde);
 	}
+
 
 	void DBarraDesplazamientoEx::Evento_MouseMovimiento(const int cX, const int cY, const UINT wParam) {
 		RECT  RC = { 0, 0, 0, 0 };
