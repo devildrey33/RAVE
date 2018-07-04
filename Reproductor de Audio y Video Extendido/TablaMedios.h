@@ -40,6 +40,7 @@ class TablaMedios_Medio {
 public:
 									TablaMedios_Medio(void) : _Id(0), _Hash(0), _TipoMedio(Tipo_Medio_INDEFINIDO), _Extension(Extension_NOSOPORTADA), _Longitud(0), _Raiz(0), _Nota(0), _Genero(0), _Grupo(0), _Disco(0), _Pista(0) {};
 									TablaMedios_Medio(UINT nId, sqlite3_int64 nHash, const wchar_t *nPath, const wchar_t *nNombre, Tipo_Medio nTipoMedio, Extension_Medio nExtension, UINT nReproducido, ULONG nLongitud, UINT nRaiz, UINT nNota, UINT nGenero, UINT nGrupo, UINT nDisco, UINT nPista, libvlc_time_t nTiempo, const wchar_t *nSubtitulos) : _Id(nId), _Hash(nHash), _Path(nPath), _Nombre(nNombre), _TipoMedio(nTipoMedio), _Extension(nExtension), _Longitud(nLongitud), _Raiz(nRaiz), _Nota(nNota), _Genero(nGenero), _Grupo(nGrupo), _Disco(nDisco), _Pista(nPista), _Tiempo(nTiempo), _Subtitulos(nSubtitulos) { }
+									// Constructor que obtiene los datos de un medio partiendo del hash
 									TablaMedios_Medio(sqlite3 *BD, const sqlite3_int64 Hash) { Obtener(BD, Hash); }
                                    ~TablaMedios_Medio(void) { }
 	
@@ -58,7 +59,11 @@ public:
 	inline const UINT               Nota(void) { return _Nota; }
 	inline const UINT               Pista(void) { return _Pista; }
 	void                            PistaStr(std::wstring &nPistaStr);
-
+									// Tiempo en milisegundos
+	inline libvlc_time_t			Tiempo(void) { return _Tiempo;  };
+									// Re-asigna el tiempo en la base de datos
+	const BOOL                      Tiempo(const libvlc_time_t nTiempo);
+									// Funciones para obtener un medio de la BD partiendo del Hash o del Path.
 	const BOOL                      Obtener(sqlite3 *BD, const sqlite3_int64 Hash);
 	const BOOL                      Obtener(sqlite3 *BD, std::wstring &mPath);
   protected:

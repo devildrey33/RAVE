@@ -623,6 +623,7 @@ namespace DWL {
 		// Envio el evento mouseup a la ventana padre
 		SendMessage(GetParent(hWnd()), DWL_LISTAEX_MOUSESOLTADO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
 		// Establezco que no hay ningún item presionado, y repinto
+		// TODO : El -1 está malament lo millor seria fer servir el objecte DListaEx_Item * directament com a l'arbre
 		_ItemPresionado = -1;
 		_SubItemPresionado = -1;
 		Repintar();

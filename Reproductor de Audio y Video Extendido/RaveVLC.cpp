@@ -161,15 +161,23 @@ void RaveVLC::ActualizarIconos(int nTipo) {
 				nIcono = RAVE_Iconos::RAVE_Icono_Pausa; // Pausa
 				break;
 		}
+		// Actualizo el nodo del ArbolBD
 		NodoBD *Nodo = App.VentanaRave.Arbol.BuscarHash(MedioActual.Hash());
 		if (Nodo != NULL) 
 			Nodo->Icono(nIcono);
 		App.VentanaRave.Arbol.Repintar();
-
+		// Actualizo el Item del ListaMedios
 		ItemMedio *Item = App.VentanaRave.Lista.BuscarHash(MedioActual.Hash());
 		if (Item != NULL) 
 			Item->Icono(nIcono);
 		App.VentanaRave.Lista.Repintar();
+
+/*		if (nTipo == 1) {
+			std::wstring StrTiempo;
+			//	Debug_Escribir_Varg(L"Evento_SliderTiempo_Cambiado %d, %.02f\n", App.VLC.TiempoTotalMs(), SliderTiempo.Valor());
+			TiempoStr(static_cast<UINT64>(App.VLC.TiempoTotalMs()), StrTiempo);
+			Item->Texto(0) = StrTiempo;
+		}*/
 	}
 
 }
@@ -215,6 +223,7 @@ const BOOL RaveVLC::Play(void) {
 			hWndVLC = NULL;
 			ActualizarIconos(1);
 			SetTimer(App.VentanaRave.hWnd(), TIMER_OBTENERVLCWND, 100, NULL);
+			SetTimer(App.VentanaRave.hWnd(), TIMER_OBTENER_TIEMPO_TOTAL, 250, NULL);
 			if (MedioActual.TipoMedio() == Tipo_Medio_Video) { // Desactivo el protector de pantalla si es un video
 				SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, FALSE, NULL, TRUE);
 			}
@@ -284,6 +293,7 @@ const int RaveVLC::Volumen(void) {
 
 
 void RaveVLC::TiempoStr(UINT64 TMS, std::wstring &StrTiempo) {            
+	StrTiempo.resize(0);
 	unsigned int Horas = static_cast<int>(((TMS / 1000) / 60) / 60);
 	unsigned int Minutos = static_cast<int>((TMS / 1000) / 60) - (Horas * 60);
 	unsigned int Segundos = static_cast<int>(TMS / 1000) - (Minutos * 60) - ((Horas * 60) * 60);

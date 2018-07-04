@@ -15,8 +15,8 @@ class ItemMedio : public DWL::DListaEx_Item {
 
 class ListaMedios : public DWL::DListaEx {
   public:
-						ListaMedios();
-	                   ~ListaMedios();
+						ListaMedios(void);
+	                   ~ListaMedios(void);
 //	ItemMedio          *AgregarMedio(const int nIcono, const TCHAR *nPista, const TCHAR *nNombre, const TCHAR *nTiempo, const sqlite3_int64 nHash);
 
 	ItemMedio		   *AgregarMedio(TablaMedios_Medio *nMedio);
@@ -25,10 +25,10 @@ class ListaMedios : public DWL::DListaEx {
 	ItemMedio          *BuscarHash(sqlite3_int64 Hash);
 
 	inline ItemMedio   *Medio(const size_t nPos) { 
-		return static_cast<ItemMedio *>(_Items[nPos]); 
-	}
+							return static_cast<ItemMedio *>(_Items[nPos]); 
+						}
 
-	void				Evento_MouseDobleClick(const UINT Boton, const int cX, const int cY, const UINT Param);
+	void				Evento_MouseDobleClick(DWL::DControlEx_EventoMouse &EventoMouse);
 
 	size_t              MedioActual;
 

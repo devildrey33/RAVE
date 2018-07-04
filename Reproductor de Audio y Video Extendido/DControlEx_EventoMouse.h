@@ -6,65 +6,6 @@
 namespace DWL {
 
 	//! Clase que contiene los parametros de un evento del mouse (mouseup, down, move, click, dobleckick, etc...) para pasarlos a la función de su ventana padre.
-	class DControlEx_EventoMouse2 {
-	  public: //////////////////////////// Miembros publicos
-
-			//! Constructor.
-			/*!	Constructor por defecto.
-			\fn			DControlEx_EventoMouse(void);
-			\return		No devuelve nada.
-			*/
-		DControlEx_EventoMouse2(void) : X(0), Y(0), IDControl(0), Boton(-1) {
-		};
-
-		//! Constructor que define todos los valores
-		/*!	Constructor asignador de datos.
-		\fn			DControlEx_EventoMouse(const int cX, const int cY, const UINT cID, const UINT nBoton);
-		\param[in]	cX		: Coordenada X del mouse.
-		\param[in]	cY		: Coordenada Y del mouse.
-		\param[in]	cID		: ID del ArbolEx.
-		\param[in]	cBoton	: Boton del mouse presionado / soltado.
-		\return		No devuelve nada.
-		*/
-		DControlEx_EventoMouse2(const int cX, const int cY, const UINT cID, const UINT nBoton) :
-			X(cX), Y(cY), IDControl(cID), Boton(nBoton) {
-		};
-
-		//! Destructor.
-		/*!	Destructor.
-		\fn			~DControlEx_EventoMouse(void);
-		\return		No devuelve nada.
-		*/
-		~DControlEx_EventoMouse2(void) {
-		};
-
-		//! Posicion X del mouse
-		int			                    X;
-
-		//! Posicion Y del mouse
-		int					            Y;
-
-		//! ID del control
-		UINT		                    IDControl;
-
-		// Tecla virtual presionada (MK_CONTROL, MK_LBUTTON, MK_MBUTTON, MK_RBUTTON, MK_SHIFT, MK_XBUTTON1, MK_XBUTTON2)
-		WPARAM							Param;
-
-		//! Boton del mouse presionado (-1 : en el Evento MW_MOUSEMOVE 
-		int  		                    Boton;
-
-	private: /////////////////////////// Miembros privados
-
-			 //! Constructor copia des-habilitado
-		DControlEx_EventoMouse2(const DControlEx_EventoMouse2 &) : X(0), Y(0), IDControl(0), Boton(-1) { };
-		//! Operador = des-habilitado
-		inline							DControlEx_EventoMouse2 &operator=(const DControlEx_EventoMouse2 &) { return *this; };
-
-	};									//
-										////////////////////////////////////// DControlEx_EventoMouse
-
-
-	//! Clase que contiene los parametros de un evento del mouse (mouseup, down, move, click, dobleckick, etc...) para pasarlos a la función de su ventana padre.
 	class DControlEx_EventoMouse {
 	  public: //////////////////////////// Miembros publicos
 
@@ -82,6 +23,7 @@ namespace DWL {
 											\param[in]	wParam	: WPARAM del evento.
 											\param[in]	lParam  : LPARAM del evento.
 											\param[in]	cID		: ID del ArbolEx.
+											\param[in]	cBoton	: Botón del mouse pulsado (si es -1 es que no se ha pulsado ningún botón).
 											\return		No devuelve nada.
 										*/
 										DControlEx_EventoMouse(WPARAM nwParam, LPARAM nlParam, const UINT cID, const int cBoton = -1) :

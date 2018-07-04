@@ -22,6 +22,11 @@ namespace DWL {
 		inline std::wstring                &Texto(const size_t nSubItem = 0) {
 												return _SubItems[nSubItem]->Texto;
 											};		
+										    // Función que devuelve una referencia al std::wstring que contiene el texto del subitem especificado 
+		inline std::wstring                &Texto(const size_t nSubItem, std::wstring &nTexto) {
+												_SubItems[nSubItem]->Texto = nTexto;
+												return _SubItems[nSubItem]->Texto;
+											};		
 
 		void                                Icono(const int nIconoRecursos);
 

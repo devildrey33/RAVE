@@ -57,7 +57,10 @@ ItemMedio *ListaMedios::AgregarMedio(TablaMedios_Medio *nMedio) {
 	std::wstring Pista = std::to_wstring(nMedio->Pista());
 	if (Pista.size() == 1) Pista = L"0" + Pista;
 
-	ItemMedio *TmpMedio = AgregarItem<ItemMedio>(nIcono, DLISTAEX_POSICION_FIN, Pista.c_str(), nMedio->Nombre(), L"00:00");
+	std::wstring StrTiempo;
+	App.VLC.TiempoStr(nMedio->Tiempo(), StrTiempo);
+
+	ItemMedio *TmpMedio = AgregarItem<ItemMedio>(nIcono, DLISTAEX_POSICION_FIN, Pista.c_str(), nMedio->Nombre(), StrTiempo.c_str());
 	TmpMedio->Hash = nMedio->Hash();
 //	AgregarItem(TmpMedio, nIcono, -1, -1, DWL::DString_ToStr(nMedio->Pista(), 2).c_str(), nMedio->Nombre(), L"00:00");
 	//	AgregarItem(TmpMedio, 0, -1, -1, DWL::DString_ToStr(Pista, 2).c_str(), Nombre, Disco, Grupo, Genero, Tiempo);
@@ -72,8 +75,8 @@ ItemMedio *ListaMedios::BuscarHash(sqlite3_int64 bHash) {
 }
 
 
-void ListaMedios::Evento_MouseDobleClick(const UINT Boton, const int cX, const int cY, const UINT Param) {
-	if (Boton == 0) {
+void ListaMedios::Evento_MouseDobleClick(DWL::DControlEx_EventoMouse &EventoMouse) {
+	if (EventoMouse.Boton == 0) {
 		if (_ItemResaltado != -1) {
 			MedioActual = _ItemResaltado;
 			ItemMedio *Itm = Medio(MedioActual);

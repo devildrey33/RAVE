@@ -207,12 +207,22 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 				}
 			}
 			break;
+		case TIMER_OBTENER_TIEMPO_TOTAL :
+			Timer_ObtenerTiempoTotal();
+			break;
+
 		// Temporizador que detecta cuando se termina un medio y avanza al siguiente según las reglas establecidas
 		case TIMER_LISTA:
+			// Si no hay items salgo
+			if (Lista.TotalItems() == 0) return;
+
+			// Si hay 10 errores en la lista, paro
 			if (Lista.Errores > 10) {
 				Lista_Stop();
+				//Lista.Errores = 0; // ya lo hace el stop
 				return;
 			}
+
 			// Un medio de la lista ha terminado
 			if (Estado == Terminada) {				
 				App.VLC.Stop();
@@ -228,6 +238,24 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 		}	
 }
 
+void VentanaPrincipal::Timer_ObtenerTiempoTotal(void) {
+	// Actualizo el tiempo del medio actual si es 00:00
+	ItemMedio * rItem = Lista.Medio(Lista.MedioActual);
+	UINT64 TiempoMS = App.VLC.TiempoTotalMs();
+	if (Lista.MedioActual != -1 && Lista.TotalItems() != 0 && TiempoMS != 0) {
+		std::wstring TextoItem = Lista.Item(Lista.MedioActual)->Texto(2);
+		if (TextoItem == L"00:00") {
+			App.VLC.TiempoStr(TiempoMS, TextoItem);
+			rItem->Texto(2, TextoItem);
+			Lista.Repintar();
+			TablaMedios_Medio nMedioActual(App.BD(), rItem->Hash);
+			nMedioActual.Tiempo(static_cast<libvlc_time_t>(TiempoMS));
+
+		}
+		KillTimer(_hWnd, TIMER_OBTENER_TIEMPO_TOTAL);
+	}
+
+}
 
 
 void VentanaPrincipal::Lista_Pausa(void) {

@@ -131,7 +131,8 @@ const UINT TablaOpciones::ObtenerDatos(sqlite3 *BD) {
 const BOOL TablaOpciones::GuardarOpciones(void) {
 	GuardarPosTamVentana();
 	std::wstring Q = L"UPDATE Opciones SET" 
-						L", Volumen=" + std::to_wstring(_Volumen) +
+						L" Volumen=" + std::to_wstring(_Volumen) +
+//						L", Volumen=" + std::to_wstring(_Volumen) +
 						L", Shufle=" + std::to_wstring(_Shufle) +
 						L", Repeat=" + std::to_wstring(_Repeat) +
 				     L" WHERE Id=0";

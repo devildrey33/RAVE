@@ -41,7 +41,9 @@ class VentanaPrincipal : public DWL::DVentana {
 //	void					Evento_ListView_Mouse_Click(DListView_DatosClick *DatosClick, const UINT IDListView);
 	//void					Evento_ListView_Mouse_DobleClick(DListView_DatosClick *DatosClick, const UINT IDListView);
 	void					Evento_Temporizador(const UINT cID);
+	void					Timer_ObtenerTiempoTotal(void);
 	void					Evento_CambiandoTam(const UINT Lado, RECT *Rectangulo);
+
 //	LRESULT					Evento_SliderH(WPARAM wParam, LPARAM lParam);
 
 	void					Evento_SliderTiempo_Cambiado(void);

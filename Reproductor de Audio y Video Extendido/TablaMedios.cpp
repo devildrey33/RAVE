@@ -71,9 +71,6 @@ const sqlite3_int64 TablaMedios::CrearHash(DWORD NSD, std::wstring &nPath) {
 
 
 
-
-
-
 // Obtiene los datos de un medio buscando por su path
 const BOOL TablaMedios_Medio::Obtener(sqlite3 *SqlBD, std::wstring &mPath) {
 	std::wstring TmpPath = mPath;
@@ -94,10 +91,22 @@ void TablaMedios_Medio::PistaStr(std::wstring &nPistaStr) {
 	else             { nPistaStr = std::to_wstring(_Pista);         }
 }
 
+// Función que re-asigna el tiempo del medio en la BD
+const BOOL TablaMedios_Medio::Tiempo(const libvlc_time_t nTiempo) {
+	// NO FUNCIONA
+	BOOL Ret = App.BD.SqlQuery(L"UPDATE Medios SET Tiempo=%d WHERE Id=%d", nTiempo, _Id);
+	Obtener(App.BD(), _Hash);
+	return Ret;
+
+
+}
+
+
+
 
 const BOOL TablaMedios_Medio::_Consulta(sqlite3 *SqlBD, std::wstring &SqlStr) {
 	DWORD Tick = GetTickCount();
-	Debug_Escribir_Varg(L"TablaMedios_Medio::_Consulta  TxtQuery = '%s'\n", SqlStr.c_str());
+	Debug_Escribir_Varg(L"TablaMedios_Medio::_Consulta TxtQuery = '%s'\n", SqlStr.c_str());
 
 //	wchar_t		   *SqlError = NULL;
 	int				SqlRet = 0;
