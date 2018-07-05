@@ -9,6 +9,7 @@
 #include "DMenu.h"
 #include "RAVE_Configuracion.h"
 #include "VentanaErrorCritico.h"
+#include <stdlib.h>
 
 using namespace DWL;
 
@@ -20,41 +21,45 @@ enum LineaComando {
 
 class RAVE {
   public:
-								RAVE(void);
-	                           ~RAVE(void);
-								// Devuelve TRUE si es la primera instancia, FALSE si ya existe una instancia ejecutada
-							    // Al devolver FALSE se salta el bucle de mensajes y termina la aplicación
-	const BOOL					Iniciar(int nCmdShow);
+									RAVE(void);
+							       ~RAVE(void);
+									// Devuelve TRUE si es la primera instancia, FALSE si ya existe una instancia ejecutada
+									// Al devolver FALSE se salta el bucle de mensajes y termina la aplicación
+	const BOOL						Iniciar(int nCmdShow);
 
-								// Inicia los menús y la ventana principal
-	void						IniciarUI(int nCmdShow);
+									// Inicia los menús y la ventana principal
+	void							IniciarUI(int nCmdShow);
 
-								// Obtiene la linea de comando y determina que hay que hacer
-	const LineaComando			ObtenerLineaComando(void);
+	template <typename T = int> T	Rand(const T Max, const T Min = 0) {
+										return static_cast<T>((double)rand() / (RAND_MAX + 1) * (Max - Min) + Min);
+									}
+									// Obtiene la linea de comando y determina que hay que hacer
+	const LineaComando				ObtenerLineaComando(void);
 
-	void						Eventos_Mirar();
+	void							Eventos_Mirar();
 
-	void						ObtenerSO();
+	void							ObtenerSO();
 
-	void						Terminar(void);
-	VentanaPrincipal			VentanaRave;
-	BaseDatos					BD;
-	DConsola					ConsolaDebug;
-	RaveVLC						VLC;
-	ControlesPantallaCompleta	ControlesPC;
-//	DWL::DImageList				ListaImagenes16;
+//	int							Rand()
 
-
-	DWL::DMenu 					Menu_ArbolBD;
-	DWL::DMenu 					Menu_Mezclar;
-	DWL::DMenu 					Menu_Repetir;
+	void							Terminar(void);
+	VentanaPrincipal				VentanaRave;
+	BaseDatos						BD;
+	DConsola						ConsolaDebug;
+	RaveVLC							VLC;
+	ControlesPantallaCompleta		ControlesPC;
 
 
-	BOOL						PlayerInicial;
+	DWL::DMenu 						Menu_ArbolBD;
+	DWL::DMenu 						Menu_Mezclar;
+	DWL::DMenu 						Menu_Repetir;
 
-	VentanaErrorCritico			VentanaErrorCrit;
 
-	std::wstring				SO;
+	BOOL							PlayerInicial;
+
+	VentanaErrorCritico				VentanaErrorCrit;
+
+	std::wstring					SO;
 };
 
 extern RAVE *_APLICACION;

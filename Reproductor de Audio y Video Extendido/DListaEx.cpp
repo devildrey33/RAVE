@@ -5,10 +5,10 @@
 
 namespace DWL {
 
-	DListaEx::DListaEx(void) :	_ItemPaginaInicio(-1)	, _ItemPaginaFin(-1)		, _ItemPaginaVDif(0)		, _ItemPaginaHDif(0),
+	DListaEx::DListaEx(void) :	_ItemPaginaInicio(0)	, _ItemPaginaFin(0)			, _ItemPaginaVDif(0)		, _ItemPaginaHDif(0),
 								_SubItemResaltado(-1)	, _SubItemUResaltado(-1)	, _SubItemPresionado(-1)	, MostrarSeleccion(TRUE),
-								_ItemResaltado(-1)		, _ItemUResaltado(-1)		, _ItemMarcado(-1)			, 
-								_ItemPresionado(-1)		, _ItemShift(-1)			, _Repintar(FALSE)			,
+								_ItemResaltado(-1)		, _ItemUResaltado(-1)		, _ItemMarcado(0)			,
+								_ItemPresionado(-1)		, _ItemShift(0)				, _Repintar(FALSE)			,
 								_TotalAnchoVisible(0)	, _TotalAltoVisible(0)		, 
 								_BufferItem(NULL)		, _BufferItemBmp(NULL)		, _BufferItemBmpViejo(NULL)	, _BufferItemFuenteViejo(NULL) {
 
@@ -367,9 +367,35 @@ namespace DWL {
 		Repintar();
 	}
 
-	const size_t DListaEx::PosItem(DListaEx_Item *pItem) {
+	const size_t DListaEx::ItemPos(DListaEx_Item *pItem) {
 		return std::find(_Items.begin(), _Items.end(), pItem) - _Items.begin();
 	}
+
+	void DListaEx::ItemMarcado(DListaEx_Item *NuevoItemMarcado, const BOOL nRepintar) {
+		for (size_t i = 0; i < _Items.size(); i++) {
+			if (NuevoItemMarcado == _Items[i]) {
+				_ItemMarcado = i;
+				break;
+			}
+		}
+		if (nRepintar == TRUE) Repintar();
+	}
+
+/*	DListaEx_Item * DListaEx::ItemResaltado(void) { 
+		if (_ItemResaltado == -1) return NULL;
+		return _Items[_ItemResaltado];
+	};
+
+	DListaEx_Item * DListaEx::ItemPresionado(void) { 
+		if (_ItemPresionado == -1) return NULL;
+		return _Items[_ItemPresionado];
+	};
+
+	DListaEx_Item * DListaEx::ItemMarcado(void) { 
+		if (_ItemMarcado == -1) return NULL;
+		return _Items[_ItemMarcado];
+	};*/
+
 	
 	// Obtiene la recta absoluta del item
 	const BOOL DListaEx::ObtenerRectaItem(const size_t iPos, RECT &rRecta) {
@@ -764,6 +790,7 @@ namespace DWL {
 	void DListaEx::_Evento_MouseSaliendo(void) {
 		BOOL nRepintar = Scrolls_MouseSaliendo();
 		_MouseDentro = FALSE;
+		_ItemResaltado = -1;
 		Evento_MouseSaliendo();
 		if (nRepintar == TRUE) Repintar();
 	}

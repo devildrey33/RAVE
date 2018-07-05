@@ -56,13 +56,15 @@ namespace DWL {
 
 		Visible(FALSE);
 
-		// Re-activo la ventana padre
-		nPadre->Activar(TRUE);
 
 		rPath  = EdicionSeleccion.Texto();
 //		rIcono = EdicionSeleccion.Icono();
 
 		Destruir();
+
+		// Re-activo la ventana padre
+		nPadre->Activar(TRUE);
+		nPadre->AsignarFoco();
 
 		// Si se ha pulsado cancelar devuleve FALSE
 		return (_Terminado == 2) ? FALSE : TRUE;

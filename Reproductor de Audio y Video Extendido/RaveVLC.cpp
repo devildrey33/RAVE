@@ -168,8 +168,10 @@ void RaveVLC::ActualizarIconos(int nTipo) {
 		App.VentanaRave.Arbol.Repintar();
 		// Actualizo el Item del ListaMedios
 		ItemMedio *Item = App.VentanaRave.Lista.BuscarHash(MedioActual.Hash());
-		if (Item != NULL) 
+		if (Item != NULL) {
 			Item->Icono(nIcono);
+			App.VentanaRave.Lista.MostrarItem(Item);
+		}
 		App.VentanaRave.Lista.Repintar();
 
 /*		if (nTipo == 1) {

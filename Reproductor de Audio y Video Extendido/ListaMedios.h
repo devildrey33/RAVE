@@ -22,6 +22,8 @@ class ListaMedios : public DWL::DListaEx {
 	ItemMedio		   *AgregarMedio(TablaMedios_Medio *nMedio);
 	void				BorrarListaReproduccion(void);
 
+	const BOOL			Mezclar(const BOOL nMezclar);
+
 	ItemMedio          *BuscarHash(sqlite3_int64 Hash);
 
 	inline ItemMedio   *Medio(const size_t nPos) { 
@@ -31,7 +33,11 @@ class ListaMedios : public DWL::DListaEx {
 	void				Evento_MouseDobleClick(DWL::DControlEx_EventoMouse &EventoMouse);
 
 	size_t              MedioActual;
+	size_t              MedioActualOrdenado;
+	size_t             _ItemMarcadoOriginal;
 
 	int                 Errores;
+
+	std::vector<ItemMedio *> _MediosOrdenados;
 };
 

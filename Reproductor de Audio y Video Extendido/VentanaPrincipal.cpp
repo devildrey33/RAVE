@@ -35,7 +35,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	Lista.CrearListaEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_LISTAMEDIOS);
 
 	// Columnas
-	Lista.AgregarColumna(24, DListaEx_Columna_Alineacion_Izquierda);							// Icono y pista
+	Lista.AgregarColumna(45, DListaEx_Columna_Alineacion_Izquierda);							// Icono y pista
 	Lista.AgregarColumna(DLISTAEX_COLUMNA_ANCHO_AUTO, DListaEx_Columna_Alineacion_Izquierda);	// Nombre
 	Lista.AgregarColumna(80, DListaEx_Columna_Alineacion_Derecha);								// Tiempo
 
@@ -374,6 +374,7 @@ void VentanaPrincipal::AgregarRaiz(void) {
 	std::wstring             Path;
 
 	BOOL Ret = DialogoDirectorios.Mostrar(this, Path);
+//	SetFocus(_hWnd);
 	if (Ret == TRUE) {
 		// Agrego la raíz a la BD.
 		// Puede que esa raíz sea parte de otra raíz existente o viceversa, en ese caso no se agrega una nueva raíz a la lista, habrá que modificar la lista
@@ -411,6 +412,9 @@ void VentanaPrincipal::Evento_Button_Mouse_Click(const UINT cID) {
 			break;
 		case ID_BOTON_STOP:
 			Lista_Stop();
+			break;
+		case ID_BOTON_MEZCLAR :
+			_Mezclar = Lista.Mezclar(!_Mezclar);
 			break;
 	}
 }

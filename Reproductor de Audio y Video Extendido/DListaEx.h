@@ -7,7 +7,7 @@
 
 namespace DWL {
 
-	#define DLISTAEX_MOSTRARDEBUG	TRUE
+	#define DLISTAEX_MOSTRARDEBUG	FALSE
 
 	#ifdef _WIN64
 		#define DLISTAEX_POSICION_INICIO	0
@@ -77,17 +77,21 @@ namespace DWL {
 		void											EliminarItem(DListaEx_Item *eItem);
 		const UINT										EliminarItemsSeleccionados(void);
 		void											EliminarTodosLosItems(void);
-		inline DListaEx_Item                           *Item(const size_t iPos) { return _Items[iPos]; }
+														// Acceso a los DListaEx_Item
+		inline DListaEx_Item                           *Item(const size_t iPos) { if (iPos == -1)            { return NULL; }	return _Items[iPos]; }
+		inline DListaEx_Item                           *ItemResaltado(void)		{ if (_ItemResaltado == -1)  { return NULL; }	return _Items[_ItemResaltado]; };
+		inline DListaEx_Item                           *ItemPresionado(void)	{ if (_ItemPresionado == -1) { return NULL; }	return _Items[_ItemPresionado]; };
+		inline DListaEx_Item                           *ItemMarcado(void)		{ if (_ItemMarcado == -1)    { return NULL; }	return _Items[_ItemMarcado]; };
+		void											ItemMarcado(DListaEx_Item *NuevoItemMarcado, const BOOL nRepintar = FALSE);
 														// Devuelve la posición del DListaEx_Item que está dentro de esta lista
-		const size_t                                    PosItem(DListaEx_Item *pItem);
-
+		const size_t                                    ItemPos(DListaEx_Item *pItem);
 
 		void											DesSeleccionarTodo(void);
 		void											MostrarItem(const size_t iPos);
 		void											MostrarItem(DListaEx_Item *eItem);
 
 		const BOOL                                      ObtenerRectaItem(const size_t iPos, RECT &rRecta);
-		inline const BOOL                               ObtenerRectaItem(DListaEx_Item *eItem, RECT &rRecta) { return ObtenerRectaItem(PosItem(eItem), rRecta); }
+		inline const BOOL                               ObtenerRectaItem(DListaEx_Item *eItem, RECT &rRecta) { return ObtenerRectaItem(ItemPos(eItem), rRecta); }
 
 		inline const size_t								TotalItems(void) { return _Items.size(); }
 		void											TotalItemsSeleccionados(void); // poc util...

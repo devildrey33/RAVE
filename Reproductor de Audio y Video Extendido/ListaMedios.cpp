@@ -2,6 +2,7 @@
 #include "ListaMedios.h"
 #include "RAVE_Iconos.h"
 
+
 ListaMedios::ListaMedios() : MedioActual(0), Errores(0) {
 }
 
@@ -61,6 +62,9 @@ ItemMedio *ListaMedios::AgregarMedio(TablaMedios_Medio *nMedio) {
 	App.VLC.TiempoStr(nMedio->Tiempo(), StrTiempo);
 
 	ItemMedio *TmpMedio = AgregarItem<ItemMedio>(nIcono, DLISTAEX_POSICION_FIN, Pista.c_str(), nMedio->Nombre(), StrTiempo.c_str());
+	// Agrego el item también en el vector MediosOrdenados (por si el shufle está activado)
+	_MediosOrdenados.push_back(TmpMedio);
+
 	TmpMedio->Hash = nMedio->Hash();
 //	AgregarItem(TmpMedio, nIcono, -1, -1, DWL::DString_ToStr(nMedio->Pista(), 2).c_str(), nMedio->Nombre(), L"00:00");
 	//	AgregarItem(TmpMedio, 0, -1, -1, DWL::DString_ToStr(Pista, 2).c_str(), Nombre, Disco, Grupo, Genero, Tiempo);
@@ -85,4 +89,59 @@ void ListaMedios::Evento_MouseDobleClick(DWL::DControlEx_EventoMouse &EventoMous
 			App.VLC.Play();
 		}
 	}
+}
+
+
+const BOOL ListaMedios::Mezclar(const BOOL nMezclar) {
+	size_t	i	= 0;
+	BOOL	Ret = FALSE;
+	// Mezclar
+	if (nMezclar == TRUE) {
+		// Guardo el orden original en el vector MediosOrdenados
+		_MediosOrdenados.clear();
+		for (i = 0; i < _Items.size(); i++) {	_MediosOrdenados.push_back(Medio(i));	}
+		// Limpio el vector de la lista para empezar a meclar sus items
+		for (i = 0; i < _Items.size(); i++) {	_Items[i] = NULL;						}
+		// Mezclo los items
+		size_t R = 0;
+		for (i = 0; i < _Items.size(); i++) {
+			R = App.Rand<size_t>(_Items.size(), 0);
+			// Si el item en la pos R no es NULL pasamos al siguiente
+			while (_Items[R] != NULL) {
+				// Si R llega al tope de items, la reasignamos al principio
+				if (++R == _Items.size()) R = 0;
+			}
+			_Items[R] = _MediosOrdenados[i];
+		}
+		// Guardo la posición del medio actual en la lista ordenada
+		MedioActualOrdenado = MedioActual;
+		// Busco la posición del medio actual en la lista mezclada
+		for (i = 0; i < _Items.size(); i++) {
+			if (_Items[i] == _MediosOrdenados[MedioActual]) {
+				MedioActual = i;
+				MostrarItem(i);
+				break;
+			}
+		}
+		Ret = TRUE;
+	}
+	// Restaurar medios ordenados
+	else {
+		// Busco la posición del medio actual en la lista original
+		for (i = 0; i < _Items.size(); i++) {
+			if (_Items[MedioActual] == _MediosOrdenados[i]) {
+				MedioActual = i;
+				MostrarItem(i);
+				break;
+			}
+		}
+		// Restauro los items desde la lista original
+		for (i = 0; i < _Items.size(); i++) {
+			_Items[i] = _MediosOrdenados[i];
+		}
+	}
+
+	// Repinto el control y devuelvo si la lista está mezclada o no
+	Repintar();
+	return Ret;
 }

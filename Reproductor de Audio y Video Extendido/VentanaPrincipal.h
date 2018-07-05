@@ -25,7 +25,7 @@ using namespace DWL;
 
 class VentanaPrincipal : public DWL::DVentana {
  public:
-							VentanaPrincipal() : DWL::DVentana(), _PantallaCompleta(FALSE), EstadoMedio(EnStop), MousePos({ 0, 0 }), MonitorDisponible(FALSE) {};
+							VentanaPrincipal() : DWL::DVentana(), _PantallaCompleta(FALSE), EstadoMedio(EnStop), MousePos({ 0, 0 }), MonitorDisponible(FALSE), _Mezclar(FALSE) {};
 					       ~VentanaPrincipal() { };
 	HWND					Crear(int nCmdShow);
 
@@ -135,5 +135,7 @@ class VentanaPrincipal : public DWL::DVentana {
   protected:
 	void                   _AgregarNodoALista(DArbolEx_Nodo *nNodo);
 	BOOL                   _PantallaCompleta;
+
+	BOOL                   _Mezclar;
 };
 

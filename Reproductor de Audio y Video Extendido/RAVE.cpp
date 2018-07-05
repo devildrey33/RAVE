@@ -6,6 +6,8 @@
 
 void RAVE_Iniciar(void) {
 	_APLICACION = new RAVE;
+	// Inicio la semilla para generar números aleatórios
+	srand(GetTickCount());
 }
 
 

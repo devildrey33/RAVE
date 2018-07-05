@@ -1313,6 +1313,7 @@ namespace DWL {
 	void DArbolEx::_Evento_MouseSaliendo(void) {
 		BOOL nRepintar = Scrolls_MouseSaliendo();
 		_MouseDentro = FALSE;
+		_NodoResaltado = NULL;
 		Evento_MouseSaliendo();
 		if (nRepintar == TRUE) Repintar();
 	}

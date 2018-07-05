@@ -48,9 +48,12 @@ void ListaRaices::Evento_MousePresionado(DWL::DControlEx_EventoMouse &DatosMouse
 
 
 void ListaRaices::Evento_MouseSoltado(DWL::DControlEx_EventoMouse &DatosMouse) {
-	if (_ItemPresionado == _ItemResaltado && _SubItemResaltado == 1) {
-		App.VentanaRave.EliminarRaiz(_Items[_ItemPresionado]->Texto());
-		EliminarItem(_ItemPresionado);
+	DListaEx_Item *nItemPresionado = ItemPresionado();
+	if (nItemPresionado == NULL) return;
+
+	if (nItemPresionado == ItemResaltado() && _SubItemResaltado == 1) {
+		App.VentanaRave.EliminarRaiz(nItemPresionado->Texto());
+		EliminarItem(nItemPresionado);
 //		Repintar();
 	}
 };
