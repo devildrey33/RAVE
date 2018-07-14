@@ -33,30 +33,38 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 
 	ObtenerSO();
 	// Consola para mensajes de depuración
-	#ifdef MOSTRAR_CONSOLA
+	#ifdef RAVE_MOSTRAR_CONSOLA
 		ConsolaDebug.Crear(L"Consola de depuración");
 		Debug_Escribir_Varg(L"RAVE::Iniciar en %s.\n", SO.c_str());
 	#endif
 
 
+	/*#if defined _DEBUG && defined RAVE_SIMULAR_PATH_DEBUG
+		bool bDebug = false; // arreglo para que el apppath sea el directorio raíz en vez del directorio debug
+	#endif*/
 
-/*
-#define DARBOLEX_NODO_ESTADO		0x000000ff
-#define DARBOLEX_NODO_SELECCIONADO	0x00000100
-#define DARBOLEX_NODO_EXPANDIDO		0x00000200
-
-		LONG_PTR Flag = 0;
-		int n = sizeof(LONG_PTR) * 8;
-
-//		Flag = Flag | 1;
-		//Flag = Flag | 0xff;
-		Flag = Flag | DARBOLEX_NODO_EXPANDIDO;
-		Flag = Flag | DARBOLEX_NODO_SELECCIONADO;
-
-		Debug_Escribir_Varg(L"TEST Flag " PRINTF_BINARY_PATTERN_INT64 "\n", PRINTF_BYTE_TO_BINARY_INT64(Flag));
-		*/
-
-
+	// Obtengo el directorio actual de la aplicacion
+	TCHAR PathApp[1024];
+	DWORD Size = GetModuleFileName(NULL, PathApp, 1024);
+	for (Size; Size > 0; Size--) {
+		if (PathApp[Size] == TCHAR('\\')) {
+/*			#if defined _DEBUG && defined RAVE_SIMULAR_PATH_DEBUG
+				if (bDebug == false) {
+					bDebug = true;
+				}
+				else {
+					break;
+				}
+			#else // #if defined _DEBUG
+				break;
+			#endif*/
+			break;
+		}
+	}
+	PathApp[Size + 1] = 0;
+	AppPath = PathApp;
+	// Aseguro que el directorio actual sea el del player
+	SetCurrentDirectory(AppPath.c_str());
 
 
 
@@ -67,11 +75,11 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 	// Obtengo la linea de comandos y ejecuto el reproductor según los argumentos
 	LineaComando LC = ObtenerLineaComando();
 
-	#ifdef MOSTRAR_ERRORCRITICO
+	#ifdef RAVE_MOSTRAR_ERRORCRITICO
 		LC = LineaComando_ErrorCritico;
 	#endif
 
-	#ifdef SIMULAR_ERRORCRITICO
+	#ifdef RAVE_SIMULAR_ERRORCRITICO
 		// Hay que comprobar que no se vaya a mostrar la ventana de error crítico, o el windows entrará en un bucle infinito abriendo el Rave xd
 		if (LC != LineaComando_ErrorCritico) {
 			int *SEC = NULL;

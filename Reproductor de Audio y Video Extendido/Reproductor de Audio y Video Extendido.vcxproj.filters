@@ -134,6 +134,21 @@
     <Filter Include="DWL\Ventanas\Dialogos Comunes\DlgDirectorios">
       <UniqueIdentifier>{e846f990-8e98-4a16-b0b6-ef3d334b3dfe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DWL\Sistema\Registro Windows">
+      <UniqueIdentifier>{827b3b63-5dbc-4db9-b634-bcf2d9c3ae66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AsociarReproductor">
+      <UniqueIdentifier>{8ad9c686-8c63-4d14-b7ab-03419bb29e17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\BarraTareas">
+      <UniqueIdentifier>{0ca039a6-e0c6-4363-8873-3b85cf246579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\Base">
+      <UniqueIdentifier>{ba734c0d-ef45-4156-bfd8-aade65265ef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Sistema\Temporizador">
+      <UniqueIdentifier>{73793132-5d19-4596-a069-b872e2302e0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -187,9 +202,6 @@
     <ClInclude Include="DUnidadesDisco.h">
       <Filter>DWL\Sistema\Unidades de Disco</Filter>
     </ClInclude>
-    <ClInclude Include="DhWnd.h">
-      <Filter>DWL\Ventanas</Filter>
-    </ClInclude>
     <ClInclude Include="DStringUtils.h">
       <Filter>DWL\Sistema\String</Filter>
     </ClInclude>
@@ -201,9 +213,6 @@
     </ClInclude>
     <ClInclude Include="DImageList.h">
       <Filter>DWL\Ventanas\Controles\ImageList %28DEPRECATED%29</Filter>
-    </ClInclude>
-    <ClInclude Include="DMensajesWnd.h">
-      <Filter>DWL\Ventanas</Filter>
     </ClInclude>
     <ClInclude Include="DConsola.h">
       <Filter>DWL\Ventanas\Consola</Filter>
@@ -298,9 +307,6 @@
     <ClInclude Include="DArbolEx.h">
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
     </ClInclude>
-    <ClInclude Include="DhWnd_Fuente.h">
-      <Filter>DWL\Ventanas</Filter>
-    </ClInclude>
     <ClInclude Include="DListaIconos.h">
       <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DTablaEx, etc...%29</Filter>
     </ClInclude>
@@ -355,6 +361,30 @@
     <ClInclude Include="DControlEx_EventoMouse.h">
       <Filter>DWL\Ventanas\ControlesEx</Filter>
     </ClInclude>
+    <ClInclude Include="DRegistro.h">
+      <Filter>DWL\Sistema\Registro Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="AsociarReproductor.h">
+      <Filter>AsociarReproductor</Filter>
+    </ClInclude>
+    <ClInclude Include="DhWnd.h">
+      <Filter>DWL\Ventanas\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="DhWnd_Fuente.h">
+      <Filter>DWL\Ventanas\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="DMensajesWnd.h">
+      <Filter>DWL\Ventanas\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="DBarraTareas.h">
+      <Filter>DWL\Ventanas\BarraTareas</Filter>
+    </ClInclude>
+    <ClInclude Include="DTemporizador.h">
+      <Filter>DWL\Sistema\Temporizador</Filter>
+    </ClInclude>
+    <ClInclude Include="vlc.hpp">
+      <Filter>VLC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -380,9 +410,6 @@
     </ClCompile>
     <ClCompile Include="DUnidadesDisco.cpp">
       <Filter>DWL\Sistema\Unidades de Disco</Filter>
-    </ClCompile>
-    <ClCompile Include="DhWnd.cpp">
-      <Filter>DWL\Ventanas</Filter>
     </ClCompile>
     <ClCompile Include="DStringUtils.cpp">
       <Filter>DWL\Sistema\String</Filter>
@@ -533,6 +560,21 @@
     </ClCompile>
     <ClCompile Include="DDlgDirectorios.cpp">
       <Filter>DWL\Ventanas\Dialogos Comunes\DlgDirectorios</Filter>
+    </ClCompile>
+    <ClCompile Include="DRegistro.cpp">
+      <Filter>DWL\Sistema\Registro Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="AsociarReproductor.cpp">
+      <Filter>AsociarReproductor</Filter>
+    </ClCompile>
+    <ClCompile Include="DhWnd.cpp">
+      <Filter>DWL\Ventanas\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="DBarraTareas.cpp">
+      <Filter>DWL\Ventanas\BarraTareas</Filter>
+    </ClCompile>
+    <ClCompile Include="DTemporizador.cpp">
+      <Filter>DWL\Sistema\Temporizador</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

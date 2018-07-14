@@ -11,23 +11,6 @@ ListaMedios::~ListaMedios() {
 }
 
 
-/*TablaMedios_Medio *nMedio*/
-/*ItemMedio *ListaMedios::AgregarMedio(const int nIcono, const TCHAR *nPista, const TCHAR *nNombre, const TCHAR *nTiempo, const sqlite3_int64 nHash) {
-
-
-	// Busco si existe el hash para no agregar 2 medios iguales a la lista
-	for (size_t i = 0; i < _Items.size(); i++) {
-		if (static_cast<ItemMedio *>(_Items[i])->Hash == nHash) {
-			return Medio(i); // Devuelvo el medio existente
-		}
-	}
-
-
-	ItemMedio *nMedio = AgregarItem<ItemMedio>(nIcono, DLISTAEX_POSICIONFILA_FIN, nPista, nNombre, nTiempo);
-	nMedio->Hash = nHash;
-	return nMedio;
-}
-*/
 
 
 void ListaMedios::BorrarListaReproduccion(void) {
@@ -39,7 +22,6 @@ void ListaMedios::BorrarListaReproduccion(void) {
 }
 
 ItemMedio *ListaMedios::AgregarMedio(TablaMedios_Medio *nMedio) {
-//	ItemMedio *TmpMedio = new ItemMedio;
 	
 	// Busco si existe el hash para no agregar 2 medios iguales a la lista
 	for (size_t i = 0; i < _Items.size(); i++) {
@@ -48,26 +30,28 @@ ItemMedio *ListaMedios::AgregarMedio(TablaMedios_Medio *nMedio) {
 		}
 	}
 
-
+	// Miro el icono que necesita el medio
 	int nIcono = RAVE_Iconos::RAVE_Icono_Cancion;
 	switch (nMedio->TipoMedio()) {
 		case Tipo_Medio_Audio: nIcono = RAVE_Iconos::RAVE_Icono_Cancion;	break;
 		case Tipo_Medio_Video: nIcono = RAVE_Iconos::RAVE_Icono_Video;		break;
 	}
 
+	// Paso la pista a string formateada a 2 digitos
 	std::wstring Pista = std::to_wstring(nMedio->Pista());
 	if (Pista.size() == 1) Pista = L"0" + Pista;
 
+	// Paso el tiempo a string formateado en mm:ss
 	std::wstring StrTiempo;
 	App.VLC.TiempoStr(nMedio->Tiempo(), StrTiempo);
 
+	// Agrego el item
 	ItemMedio *TmpMedio = AgregarItem<ItemMedio>(nIcono, DLISTAEX_POSICION_FIN, Pista.c_str(), nMedio->Nombre(), StrTiempo.c_str());
 	// Agrego el item también en el vector MediosOrdenados (por si el shufle está activado)
 	_MediosOrdenados.push_back(TmpMedio);
-
+	// Asigno el hash al item
 	TmpMedio->Hash = nMedio->Hash();
-//	AgregarItem(TmpMedio, nIcono, -1, -1, DWL::DString_ToStr(nMedio->Pista(), 2).c_str(), nMedio->Nombre(), L"00:00");
-	//	AgregarItem(TmpMedio, 0, -1, -1, DWL::DString_ToStr(Pista, 2).c_str(), Nombre, Disco, Grupo, Genero, Tiempo);
+
 	return TmpMedio;
 }
 
@@ -78,7 +62,7 @@ ItemMedio *ListaMedios::BuscarHash(sqlite3_int64 bHash) {
 	return NULL;
 }
 
-
+// Reproduce el medio especificado con el ratón
 void ListaMedios::Evento_MouseDobleClick(DWL::DControlEx_EventoMouse &EventoMouse) {
 	if (EventoMouse.Boton == 0) {
 		if (_ItemResaltado != -1) {
@@ -91,7 +75,7 @@ void ListaMedios::Evento_MouseDobleClick(DWL::DControlEx_EventoMouse &EventoMous
 	}
 }
 
-
+// 	Función que mezcla las canciones de la lista (TRUE), o restaura el orden original en que se añadieron (FALSE)
 const BOOL ListaMedios::Mezclar(const BOOL nMezclar) {
 	size_t	i	= 0;
 	BOOL	Ret = FALSE;

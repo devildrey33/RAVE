@@ -284,7 +284,7 @@ void ArbolBD::ExplorarPath(DWL::DArbolEx_Nodo *nNodo) {
 		while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
 			SqlRet = sqlite3_step(SqlQuery);
 			if (SqlRet == SQLITE_ROW) {
-				size_t			 mHash		= sqlite3_column_int64(SqlQuery, 1);
+				size_t			 mHash		= static_cast<size_t>(sqlite3_column_int64(SqlQuery, 1));
 				std::wstring	 mPath		= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 2));
 				std::wstring     mNombre	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 3));
 				Tipo_Medio       mTipoMedio	= static_cast<Tipo_Medio>(sqlite3_column_int(SqlQuery, 4));

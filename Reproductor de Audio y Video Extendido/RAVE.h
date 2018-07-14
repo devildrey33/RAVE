@@ -60,6 +60,7 @@ class RAVE {
 	VentanaErrorCritico				VentanaErrorCrit;
 
 	std::wstring					SO;
+	std::wstring					AppPath;
 };
 
 extern RAVE *_APLICACION;
@@ -70,15 +71,15 @@ extern RAVE *_APLICACION;
 void RAVE_Iniciar(); 
 
 
-#ifdef MOSTRAR_CONSOLA 
+#ifdef RAVE_MOSTRAR_CONSOLA 
 	#define Debug_EscribirSinMS_Varg(TEXTO, ...)	App.ConsolaDebug.Escribir(TEXTO, __VA_ARGS__);
 	#define Debug_Escribir_Varg(TEXTO, ...)			App.ConsolaDebug.EscribirMS(TEXTO, __VA_ARGS__);
 	#define Debug_EscribirSinMS(TEXTO)				App.ConsolaDebug.Escribir(TEXTO);
 	#define Debug_Escribir(TEXTO)					App.ConsolaDebug.EscribirMS(TEXTO);
 	#define Debug_Leer(TEXTO)						App.ConsolaDebug.Leer(TEXTO);
 	// Marco que muestra si la función WINAPI tiene un error por la consola (GetLastError)
-	#define Debug_MostrarUltimoError()				App.ConsolaDebug.MostrarUltimoError();	
-	#define Debug_UltimoError(NUM)					SetLastError(NUM);	
+	#define Debug_MostrarUltimoError()				App.ConsolaDebug.MostrarUltimoError()
+	#define Debug_UltimoError(NUM)					SetLastError(NUM)
 #else
 	#define Debug_EscribirSinMS_Varg(TEXTO, ...)	
 	#define Debug_Escribir_Varg(TEXTO, ...)		

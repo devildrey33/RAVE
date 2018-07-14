@@ -29,10 +29,12 @@ const BOOL RaveVLC::Iniciar(void) {
 	ArgsVLC.AgregarArgumento(AppPath.c_str());			// Path de la aplicacion
 	ArgsVLC.AgregarArgumento(Tmp.c_str());				// Path del directorio de plugins
 //	ArgsVLC.AgregarArgumento("--no-video-title-show");	// No mostrar el titulo del video */
+	//_Instancia = VLC::Instance(0, NULL);
 
+	
 	_Instancia = libvlc_new(0, NULL);
-	_Log = libvlc_log_open(_Instancia); // PARTE DEL LOG PARA EL VLC
-	libvlc_set_log_verbosity(_Instancia, 2);
+	/*_Log = libvlc_log_open(_Instancia); // PARTE DEL LOG PARA EL VLC
+	libvlc_set_log_verbosity(_Instancia, 2);*/
 
 	Debug_Escribir_Varg(L"RaveVLC::Iniciar  Instancia = '%x' \n", _Instancia);
 

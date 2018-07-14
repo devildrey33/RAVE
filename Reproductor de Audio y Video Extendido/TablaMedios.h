@@ -3,7 +3,8 @@
 #include "sqlite3.h"
 #include <string>
 #include "ExtensionesValidas.h"
-#include <vlc\vlc.h>
+//#include "..\vlc-2.2.1\Include\vlc\vlc.h"
+#include "vlc.hpp"
 
 /*
 	Nombre		Posición	   Tipo

@@ -81,6 +81,7 @@ const BOOL BaseDatos::CrearBD(void) {
 }
 
 void BaseDatos::ActualizarArbol(void) {
+	App.VentanaRave.BarraTareas.Estado_Indeterminado();
 //	if (_hWnd != NULL) return;
 	App.VentanaRave.Arbol.BorrarTodo();
 	App.Menu_ArbolBD[2]->Activado(FALSE);
@@ -153,6 +154,8 @@ LRESULT CALLBACK BaseDatos::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lPar
 		case WM_TBA_TERMINADO :
 			_BuscarArchivos._Thread = NULL;
 			App.Menu_ArbolBD[2]->Activado(TRUE);
+			App.VentanaRave.BarraTareas.Estado_SinProgreso();
+			App.VentanaRave.BarraTareas.Resaltar();
 			break;
 
 	}

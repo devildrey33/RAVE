@@ -1,6 +1,7 @@
 #pragma once
 
-#include <vlc\vlc.h>
+//#include "..\vlc-2.2.1\Include\vlc\vlc.h"
+#include "vlc.hpp"
 #include <vector>
 #include "TMedio.h"
 

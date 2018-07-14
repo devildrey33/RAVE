@@ -703,6 +703,7 @@ void VentanaPrincipal::Evento_Cerrar(void) {
 LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
 
+
 		case WM_KEYDOWN:
 			Debug_Escribir_Varg(L"t:%d r:%d p:%d\n", static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));
 			return 0;

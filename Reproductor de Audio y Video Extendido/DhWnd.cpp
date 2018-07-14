@@ -89,6 +89,7 @@ namespace DWL {
 		_hWnd = CreateWindowEx(nEstilosExtendidos, nNombre, nTexto, nEstilos, cX, cY, cAncho, cAlto, HWND_DESKTOP, nMenu, GetModuleHandle(NULL), this);
 		Debug_MostrarUltimoError();
 		SendMessage(hWnd(), WM_SETFONT, (WPARAM)_Fuente18Normal(), 0);
+		BarraTareas._Iniciar(_hWnd);
 		return hWnd();
 
 	}

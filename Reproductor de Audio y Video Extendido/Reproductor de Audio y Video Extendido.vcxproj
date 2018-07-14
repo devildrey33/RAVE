@@ -69,7 +69,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\vlc-2.2.1\Include;$(IncludePath)</IncludePath>
+    <IncludePath>..\vlc-3.0.4\Include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</IntDir>
     <TargetName>RAVE</TargetName>
@@ -79,11 +79,11 @@
     <OutDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</IntDir>
     <TargetName>RAVE</TargetName>
-    <IncludePath>..\vlc-2.2.1\Include;$(IncludePath)</IncludePath>
+    <IncludePath>..\vlc-3.0.4\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>..\vlc-2.2.1\Include;$(IncludePath)</IncludePath>
+    <IncludePath>..\vlc-3.0.4\Include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</IntDir>
     <TargetName>RAVE</TargetName>
@@ -93,7 +93,7 @@
     <OutDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</IntDir>
     <TargetName>RAVE</TargetName>
-    <IncludePath>..\vlc-2.2.1\Include;$(IncludePath)</IncludePath>
+    <IncludePath>..\vlc-3.0.4\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -159,12 +159,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ArbolBD.h" />
+    <ClInclude Include="AsociarReproductor.h" />
     <ClInclude Include="BarraTiempo.h" />
     <ClInclude Include="BarraVolumen.h" />
     <ClInclude Include="BaseDatos.h" />
     <ClInclude Include="DArbolEx.h" />
     <ClInclude Include="DArbolEx_Nodo.h" />
     <ClInclude Include="DBarraScrollEx.h" />
+    <ClInclude Include="DBarraTareas.h" />
     <ClInclude Include="DControlEx.h" />
     <ClInclude Include="DControlEx_EventoMouse.h" />
     <ClInclude Include="DDesplegableEx.h" />
@@ -180,6 +182,8 @@
     <ClInclude Include="DListaIconos.h" />
     <ClInclude Include="DListaIconos_Icono.h" />
     <ClInclude Include="DDlgDirectorios.h" />
+    <ClInclude Include="DRegistro.h" />
+    <ClInclude Include="DTemporizador.h" />
     <ClInclude Include="ListaMedios.h" />
     <ClInclude Include="ListaRaices.h" />
     <ClInclude Include="MarcoOpciones.h" />
@@ -231,9 +235,11 @@
     <ClInclude Include="VentanaErrorCritico.h" />
     <ClInclude Include="VentanaPrincipal.h" />
     <ClInclude Include="VerVideo.h" />
+    <ClInclude Include="vlc.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ArbolBD.cpp" />
+    <ClCompile Include="AsociarReproductor.cpp" />
     <ClCompile Include="BarraTiempo.cpp" />
     <ClCompile Include="BarraVolumen.cpp" />
     <ClCompile Include="BaseDatos.cpp" />
@@ -243,6 +249,7 @@
     <ClCompile Include="DBarraDesplazamientoEx.cpp" />
     <ClCompile Include="DBarraProgresoEx.cpp" />
     <ClCompile Include="DBarraScrollEx.cpp" />
+    <ClCompile Include="DBarraTareas.cpp" />
     <ClCompile Include="DBotonEx.cpp" />
     <ClCompile Include="DButton.cpp" />
     <ClCompile Include="DConsola.cpp" />
@@ -267,8 +274,10 @@
     <ClCompile Include="DMenu.cpp" />
     <ClCompile Include="DMouse.cpp" />
     <ClCompile Include="DDlgDirectorios.cpp" />
+    <ClCompile Include="DRegistro.cpp" />
     <ClCompile Include="DStaticControl.cpp" />
     <ClCompile Include="DStringUtils.cpp" />
+    <ClCompile Include="DTemporizador.cpp" />
     <ClCompile Include="DToolTipEx.cpp" />
     <ClCompile Include="DTreeView.cpp" />
     <ClCompile Include="DTreeView_Nodo.cpp" />

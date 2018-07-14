@@ -20,13 +20,11 @@
 			-  Edició de textes bàsic amb una sola linea (s'ha de poder especificar la part del control que mostrará el control per editar el texte)
 			   +o- Pensat per tenir : una font amb tamany fixe, un color de texte, sombra i un de fondo, amb posibilitat de Resaltat i Presionat
 				-  Al final necesita un backbuffer per poguer pintar el texte en un espai limitat 
-	   +o- Dialeg per seleccionar un directori.
-
 
 	RAVE 0.4
 		-  Asociacions d'arxius amb l'explorador
-		-  Shuffle / repeat (apagar windows sobretot)
-		-  Dialeg/finestra per afegir/eliminar arrels
+	   +o- Shuffle / repeat (apagar windows sobretot)
+		+  Dialeg/finestra per afegir/eliminar arrels
 		-  Menu per la llista
 
 */
