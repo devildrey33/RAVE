@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "DBarraTareas.h"
 
-#define DBARRATAREAS_MOSTRARDEBUG TRUE
+#define DBARRATAREAS_MOSTRARDEBUG FALSE
+#define DBARRATAREAS_TEMPORIZADOR 10
 
 namespace DWL {
 
@@ -15,11 +16,11 @@ namespace DWL {
 
 	void DBarraTareas::Resaltar(void) {
 		FlashWindow(_hWnd, TRUE);
-//		CrearTemporizador(10, 1000, TRUE);
+		CrearTemporizador(DBARRATAREAS_TEMPORIZADOR, 1000, TRUE);
 	}
 
 	void DBarraTareas::Evento_Temporizador(const UINT cID) {
-		if (cID == 10) FlashWindow(_hWnd, TRUE);
+		if (cID == DBARRATAREAS_TEMPORIZADOR) FlashWindow(_hWnd, TRUE);
 	}
 
 
@@ -78,7 +79,7 @@ namespace DWL {
 	}
 
 
-
+	// Asocia este objeto con su ventana/objeto padre
 	void DBarraTareas::_Iniciar(HWND hWndVentana) {
 		_hWnd = hWndVentana;
 	}

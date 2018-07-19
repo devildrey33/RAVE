@@ -194,9 +194,11 @@ void RAVE::Terminar(void) {
 
 void RAVE::Eventos_Mirar(void) {
 	static MSG msg;
-	if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+	for (int i = 0; i < 10; i++) {
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
 	}
 }
 

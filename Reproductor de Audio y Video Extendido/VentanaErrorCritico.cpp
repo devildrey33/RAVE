@@ -8,13 +8,15 @@
 //#include "CSmtp.h"
 #include <locale> 
 #include <codecvt>
+#include "DMouse.h"
 
+#define ID_TEMPORIZADOR 100
 
-VentanaErrorCritico::VentanaErrorCritico() {
+VentanaErrorCritico::VentanaErrorCritico(void) /*: _EstadoError(FALSE) */ {
 }
 
 
-VentanaErrorCritico::~VentanaErrorCritico() {
+VentanaErrorCritico::~VentanaErrorCritico(void) {
 }
 
 
@@ -41,6 +43,11 @@ HWND VentanaErrorCritico::Crear(void) {
 	
 	BotonEnviar.CrearBotonEx(this, L"Enviar", 100, 220, 100, 30, ID_VEC_ENVIAR);
 	BotonSalir.CrearBotonEx(this, L"Salir", RC.right - 200, 220, 100, 30, ID_VEC_SALIR);
+
+	BarraTareas.Estado_Error();
+	BarraTareas.Valor(100, 100);
+
+//	SetTimer(_hWnd, ID_TEMPORIZADOR, 500, NULL);
 	return hWnd();
 }
 
@@ -63,31 +70,11 @@ void VentanaErrorCritico::Enviar(void) {
 	std::string PathDump = converterX.to_bytes(WPathDump.c_str());*/
 
 	EnviarDump E;
-	E.Enviar(WPathDump, BarraProgreso);
+	BarraTareas.Estado_Indeterminado();
+	E.Enviar2(WPathDump, _hWnd);
+	DMouse::CambiarCursor(DMouse_Cursor_FlechaReloj);
 
-/*	try {
-		CSmtp mail;
-
-		mail.SetSMTPServer("smtp.1and1.es", 25);
-		mail.SetLogin("bubatronik.app");
-		mail.SetPassword("cuentamandadumps");
-		mail.SetSenderName("RAVE");
-		mail.SetSenderMail("bubatronik.app@devildrey33.es");
-		mail.SetReplyTo("bubatronik.app@devildrey33.es");
-		mail.SetSubject("RAVE Dump");
-		mail.AddRecipient("devildrey33@hotmail.com");
-		mail.SetXPriority(XPRIORITY_NORMAL);
-		mail.SetXMailer("The Bat! (v3.02) Professional");
-		char Buffer[128];
-		sprintf_s(Buffer, 128, "RAVE %f en %s", RAVE_VERSION, App.SO.c_str());
-		mail.AddMsgLine(Buffer);
-		mail.AddAttachment(PathDump.c_str());
-		mail.Send();
-	}
-	catch (ECSmtp e) {
-		//std::wstring StrError = e.GetErrorText().c_str();
-		Debug_Escribir_Varg(L"VentanaErrorCritico::Enviar %s.\n", e.GetErrorText().c_str());
-	}*/
+	BotonEnviar.Activar(FALSE);
 }
 
 void VentanaErrorCritico::Evento_BotonEx_Mouse_Click(const UINT nID) {
@@ -100,9 +87,30 @@ void VentanaErrorCritico::Evento_BotonEx_Mouse_Click(const UINT nID) {
 			break;
 	}
 }
+/*
+void VentanaErrorCritico::Evento_Temporizador(void) {
+	_EstadoError = !_EstadoError;
+	if (_EstadoError == FALSE)	BarraTareas.Estado_Error();
+	else                        BarraTareas.Estado_Pausado();
+}*/
 
 LRESULT CALLBACK VentanaErrorCritico::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
+		case WM_THREAD_ENVIARVALOR :
+			BarraProgreso.Maximo(static_cast<float>(wParam));
+			BarraProgreso.Valor(static_cast<float>(lParam));
+			BarraTareas.Estado_Normal();
+			BarraTareas.Valor(static_cast<UINT>(lParam), static_cast<UINT>(wParam));
+			break;
+		case WM_THREAD_TERMINADO :
+			if (wParam == 1)	{	Debug_Escribir_Varg(L"EnviarDump::Enviar Error durante la transmisión.\n");	}
+			else				{	Debug_Escribir_Varg(L"EnviarDump::Enviar Se ha enviado correctamente.\n");	}
+			PostMessage(_hWnd, WM_CLOSE, 0, 0);
+			break;
+
+/*		case WM_TIMER :
+			Evento_Temporizador();
+			break;*/
 		case WM_ERASEBKGND:
 			Evento_BorraFondo(reinterpret_cast<HDC>(wParam));
 			return TRUE;

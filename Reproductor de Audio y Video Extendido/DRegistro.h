@@ -1,8 +1,7 @@
 #ifndef DREGISTRO_H
 #define DREGISTRO_H
 
-#define DREGISTRO_MOSTRARDEBUG	TRUE
-
+#define DREGISTRO_MOSTRARDEBUG	FALSE
 
 
 namespace DWL {

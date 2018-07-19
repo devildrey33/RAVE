@@ -8,10 +8,8 @@
 #define RAVE_MOSTRAR_CONSOLA
 
 // Muestra la ventana para alertar de un error crítico
-//#define RAVE_MOSTRAR_ERRORCRITICO
+#define RAVE_MOSTRAR_ERRORCRITICO
 
 // Simula un error crítico y luego invoca una nueva instancia que muestra el error crítico
 //#define RAVE_SIMULAR_ERRORCRITICO
 
-// Simula el path en la raíz de la aplicación en vez de en el directorio DEBUG (Solo se aplica a versiones DEBUG)
-//#define RAVE_SIMULAR_PATH_DEBUG

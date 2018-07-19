@@ -15,7 +15,7 @@
 			DBarraTareas_Estado_Error			= TBPF_ERROR
 		};
 
-		class DBarraTareas : public DTemporizador {
+		class DBarraTareas : protected DTemporizador {
 		  public:
 												DBarraTareas(void);
 								               ~DBarraTareas(void);

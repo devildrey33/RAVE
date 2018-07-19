@@ -86,9 +86,6 @@
     <Filter Include="DWL\Ventanas\ControlesEx\BarraDesplazamientoEx">
       <UniqueIdentifier>{364bd3eb-04b0-417f-8dbb-2071ef3f324f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dump">
-      <UniqueIdentifier>{642c9ab7-cb7e-4500-888b-8b66e18d4f7a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DWL\Ventanas\ControlesEx\BarraScrollEx">
       <UniqueIdentifier>{5a691253-997b-48b4-aaf1-1e2adbd61707}</UniqueIdentifier>
     </Filter>
@@ -148,6 +145,9 @@
     </Filter>
     <Filter Include="DWL\Sistema\Temporizador">
       <UniqueIdentifier>{73793132-5d19-4596-a069-b872e2302e0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="xXx _MAIN_ xXx\ErrorCritico">
+      <UniqueIdentifier>{642c9ab7-cb7e-4500-888b-8b66e18d4f7a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -283,14 +283,11 @@
     <ClInclude Include="DBarraDesplazamientoEx.h">
       <Filter>DWL\Ventanas\ControlesEx\BarraDesplazamientoEx</Filter>
     </ClInclude>
-    <ClInclude Include="VentanaErrorCritico.h">
-      <Filter>Dump</Filter>
-    </ClInclude>
     <ClInclude Include="EnviarDump.h">
-      <Filter>Dump</Filter>
+      <Filter>xXx _MAIN_ xXx\ErrorCritico</Filter>
     </ClInclude>
     <ClInclude Include="RAVE_CuentaEmail.h">
-      <Filter>Dump</Filter>
+      <Filter>xXx _MAIN_ xXx\ErrorCritico</Filter>
     </ClInclude>
     <ClInclude Include="DBarraScrollEx.h">
       <Filter>DWL\Ventanas\ControlesEx\BarraScrollEx</Filter>
@@ -386,6 +383,9 @@
       <Filter>VLC</Filter>
     </ClInclude>
     <ClInclude Include="MemoriaCompartida.h" />
+    <ClInclude Include="VentanaErrorCritico.h">
+      <Filter>Ventanas</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -499,11 +499,8 @@
     <ClCompile Include="DBarraDesplazamientoEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\BarraDesplazamientoEx</Filter>
     </ClCompile>
-    <ClCompile Include="VentanaErrorCritico.cpp">
-      <Filter>Dump</Filter>
-    </ClCompile>
     <ClCompile Include="EnviarDump.cpp">
-      <Filter>Dump</Filter>
+      <Filter>xXx _MAIN_ xXx\ErrorCritico</Filter>
     </ClCompile>
     <ClCompile Include="DBarraScrollEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\BarraScrollEx</Filter>
@@ -578,6 +575,9 @@
       <Filter>DWL\Sistema\Temporizador</Filter>
     </ClCompile>
     <ClCompile Include="MemoriaCompartida.cpp" />
+    <ClCompile Include="VentanaErrorCritico.cpp">
+      <Filter>Ventanas</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Reproductor de Audio y Video Extendido.rc">

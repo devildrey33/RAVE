@@ -8,8 +8,10 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
+BOOL	EnviarDump::_Error	= FALSE;
+SOCKET	EnviarDump::_Server = NULL;
 
-EnviarDump::EnviarDump(void) : _Error(FALSE), _Server(NULL) {
+EnviarDump::EnviarDump(void) {
 }
 
 
@@ -64,7 +66,31 @@ const BOOL EnviarDump::_Recibir(void) {
 }
 
 
-const BOOL EnviarDump::Enviar(std::wstring &Path, DWL::DBarraProgresoEx &Barra) {
+const BOOL EnviarDump::Revisar(int iStatus, char *szFunction) {
+	if ((iStatus != SOCKET_ERROR) && (iStatus))	return TRUE;	
+	_Error = TRUE;
+	return FALSE; // error
+}
+
+
+const BOOL EnviarDump::Enviar(std::wstring &Path, HWND hWnd) {
+	if (_Thread != NULL) return FALSE; // Ya existe un thread
+
+	EnviarDump_Datos *DatosDump = new EnviarDump_Datos(Path, hWnd);
+
+	// Iniciamos el Thread
+	_Thread = CreateThread(NULL, 0, (unsigned long(__stdcall *)(void *))this->_ThreadEnviar, (void *)DatosDump, 0, NULL);
+	
+	if (_Thread) SetThreadPriority(_Thread, 0);
+	else		 return FALSE;
+	return TRUE;
+
+
+}
+
+unsigned long  EnviarDump::_ThreadEnviar(void *pDatosDump) {
+	EnviarDump_Datos *DatosDump = reinterpret_cast<EnviarDump_Datos *>(pDatosDump);
+
 	int         iProtocolPort			= 0;
 	char        ServidorSmtp[64]		= EMAIL_SMTP;
 	char        CorreoDestino[64]		= EMAIL_DESTINO;
@@ -74,9 +100,7 @@ const BOOL EnviarDump::Enviar(std::wstring &Path, DWL::DBarraProgresoEx &Barra) 
 	char        szMsgLine[256]			= "";
 	
 	
-//	SOCKET      hServer					= NULL;
 	WSADATA     WSData;
-//	LPHOSTENT   lpHostEntry;
 	LPSERVENT   lpServEntry;
 	SOCKADDR_IN SockAddr;
 
@@ -112,28 +136,17 @@ const BOOL EnviarDump::Enviar(std::wstring &Path, DWL::DBarraProgresoEx &Barra) 
 	DWORD dwRetval = getaddrinfo(ServidorSmtp, "smtp", &hints, &result);
 
 	for (p = result; p != NULL; p = p->ai_next) {
-//		void *addr;
 		remote = (struct sockaddr_in *)p->ai_addr;
-		//addr = &(remote->sin_addr);
 
 		// Convert IP to string
 		inet_ntop(p->ai_family, &remote->sin_addr, ip_addr, sizeof(ip_addr));
 		SockAddr.sin_addr = remote->sin_addr;
-//		printf("%s\n", ip_addr);
 	}
-
-/*	// Lookup email server's IP address.
-	lpHostEntry = gethostbyname(szSmtpServerName);
-	if (!lpHostEntry) {
-		Debug_Escribir_Varg(L"EnviarDump::Enviar Error obteniendo la ip del servidor de email.\n");
-		WSACleanup();
-		return FALSE;
-	}*/
 
 	// Create a TCP/IP socket, no specific protocol
 	_Server = socket(PF_INET, SOCK_STREAM, 0);
 	if (_Server == INVALID_SOCKET) {
-		Debug_Escribir_Varg(L"EnviarDump::Enviar Error creando el socket.\n");
+//		Debug_Escribir_Varg(L"EnviarDump::Enviar Error creando el socket.\n");
 		WSACleanup();
 		return FALSE;
 	}
@@ -155,16 +168,16 @@ const BOOL EnviarDump::Enviar(std::wstring &Path, DWL::DBarraProgresoEx &Barra) 
 
 	// Connect the Socket
 	if (connect(_Server, (PSOCKADDR)&SockAddr, sizeof(SockAddr))) {
-		Debug_Escribir_Varg(L"EnviarDump::Enviar Error conectando el socket.\n");
+//		Debug_Escribir_Varg(L"EnviarDump::Enviar Error conectando el socket.\n");
 		WSACleanup();
 		return FALSE;
 	}
 
 
 	// Cargo y codifico el archivo a mandar para saber el tamaño que ocupa en base64
-	HANDLE Archivo = CreateFile(Path.c_str(), FILE_READ_DATA, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	HANDLE Archivo = CreateFile(DatosDump->Path.c_str(), FILE_READ_DATA, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 	if (Archivo == INVALID_HANDLE_VALUE) {
-		Debug_Escribir_Varg(L"EnviarDump::Enviar Error abriendo el archivo %s\n", Path.c_str());
+		Debug_Escribir_Varg(L"EnviarDump::Enviar Error abriendo el archivo %s\n", DatosDump->Path.c_str());
 		WSACleanup();
 		return FALSE;
 	}
@@ -172,7 +185,7 @@ const BOOL EnviarDump::Enviar(std::wstring &Path, DWL::DBarraProgresoEx &Barra) 
 	char *ArchivoChar = new char[TamArchivo];
 	DWORD CaracteresLeidos = 0;
 	if (ReadFile(Archivo, reinterpret_cast<LPVOID>(ArchivoChar), TamArchivo * sizeof(char), &CaracteresLeidos, NULL) == FALSE) {
-		Debug_Escribir_Varg(L"EnviarDump::Enviar Error leyendo el archivo %s.\n", Path.c_str());
+		Debug_Escribir_Varg(L"EnviarDump::Enviar Error leyendo el archivo %s.\n", DatosDump->Path.c_str());
 		WSACleanup();
 		return FALSE;
 	}
@@ -180,9 +193,7 @@ const BOOL EnviarDump::Enviar(std::wstring &Path, DWL::DBarraProgresoEx &Barra) 
 	delete[] ArchivoChar;
 	size_t i = 0;
 
-	Barra.Maximo(static_cast<float>(ArchivoStd.size()));
-	Barra.Valor(0.0f);
-	App.Eventos_Mirar();
+	SendMessage(DatosDump->hWnd, WM_THREAD_ENVIARVALOR, static_cast<WPARAM>(ArchivoStd.size()), 0);
 
 	// Receive initial response from SMTP server
 	_Recibir();
@@ -227,8 +238,8 @@ const BOOL EnviarDump::Enviar(std::wstring &Path, DWL::DBarraProgresoEx &Barra) 
 	for (i = 0; i < ArchivoStd.size(); i += 997) {
 		Parte = ArchivoStd.substr(i, 997);
 		_EnviarNC(Parte.c_str());
-		Barra.Valor(static_cast<float>(i));
-		App.Eventos_Mirar();
+
+		SendMessage(DatosDump->hWnd, WM_THREAD_ENVIARVALOR, static_cast<WPARAM>(ArchivoStd.size()), static_cast<LPARAM>(i));
 	}
 
 	_Enviar("--Boundary-=_StOHgENiGNeW");
@@ -242,22 +253,19 @@ const BOOL EnviarDump::Enviar(std::wstring &Path, DWL::DBarraProgresoEx &Barra) 
 
 	WSACleanup();
 
-	if (_Error == TRUE) {
+	SendMessage(DatosDump->hWnd, WM_THREAD_TERMINADO, static_cast<WPARAM>(_Error), 0);
+
+/*	if (_Error == TRUE) {
 		Debug_Escribir_Varg(L"EnviarDump::Enviar Error durante la transmisión.\n");
 		return FALSE;
 	}
-	Debug_Escribir_Varg(L"EnviarDump::Enviar Se ha enviado correctamente.\n");
-	// Termino la aplicación
-	PostQuitMessage(0);
-	return TRUE;
-}
+	Debug_Escribir_Varg(L"EnviarDump::Enviar Se ha enviado correctamente.\n");*/
 
 
-const BOOL EnviarDump::Revisar(int iStatus, char *szFunction) {
-	if ((iStatus != SOCKET_ERROR) && (iStatus))	return TRUE;	
-	_Error = TRUE;
-	return FALSE; // error
+	delete DatosDump;
+	return 0;
 }
+
 
 
 

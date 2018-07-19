@@ -13,8 +13,9 @@ class VentanaErrorCritico : public DVentana {
 
 	void				Evento_BorraFondo(HDC DC);
 	void				Evento_BotonEx_Mouse_Click(const UINT nID);
-
+//	void				Evento_Temporizador(void);
 	void				Enviar(void);
+
 
 	DLabelEx			TextoTitulo;
 	DLabelEx			TextoError;
@@ -22,5 +23,7 @@ class VentanaErrorCritico : public DVentana {
 	DBotonEx			BotonSalir;
 	DBarraProgresoEx	BarraProgreso;
 	LRESULT CALLBACK	GestorMensajes(UINT uMSg, WPARAM wParam, LPARAM lParam);
+  protected:
+//	BOOL               _EstadoError;
 };
 
