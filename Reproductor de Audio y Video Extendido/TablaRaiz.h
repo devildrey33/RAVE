@@ -30,7 +30,7 @@ class TablaRaiz {
 
 	CeRaiz				   *Buscar_Raiz(const TCHAR *nPath);
 	CeRaiz				   *Buscar_RaizPorID(const unsigned long bID);
-	const BOOL				Argerar_Raiz(const TCHAR *nPath);
+	const BOOL              Argerar_Raiz(const TCHAR *nPath, CeRaiz *Raiz);
 	const BOOL              Eliminar_Raiz(std::wstring &nPath);
 
   protected:

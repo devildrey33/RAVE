@@ -27,6 +27,9 @@
 	Subtitulos		15		VARCHAR(260)
 */
 
+class TablaRaiz;
+
+class TablaMedios_Medio;
 
 class TablaMedios {
   public :
@@ -34,16 +37,22 @@ class TablaMedios {
 	                               ~TablaMedios(void) { };
 	 const BOOL						CrearTabla(sqlite3 *BD);
 	 static const sqlite3_int64     CrearHash(DWORD NSD, std::wstring &nPath);
+
 };
 
 /* Acceso a una canción de la base de datos */
 class TablaMedios_Medio {
-public:
+  public:
 									TablaMedios_Medio(void) : _Id(0), _Hash(0), _TipoMedio(Tipo_Medio_INDEFINIDO), _Extension(Extension_NOSOPORTADA), _Longitud(0), _Raiz(0), _Nota(0), _Genero(0), _Grupo(0), _Disco(0), _Pista(0) {};
 									TablaMedios_Medio(UINT nId, sqlite3_int64 nHash, const wchar_t *nPath, const wchar_t *nNombre, Tipo_Medio nTipoMedio, Extension_Medio nExtension, UINT nReproducido, ULONG nLongitud, UINT nRaiz, UINT nNota, UINT nGenero, UINT nGrupo, UINT nDisco, UINT nPista, libvlc_time_t nTiempo, const wchar_t *nSubtitulos) : _Id(nId), _Hash(nHash), _Path(nPath), _Nombre(nNombre), _TipoMedio(nTipoMedio), _Extension(nExtension), _Longitud(nLongitud), _Raiz(nRaiz), _Nota(nNota), _Genero(nGenero), _Grupo(nGrupo), _Disco(nDisco), _Pista(nPista), _Tiempo(nTiempo), _Subtitulos(nSubtitulos) { }
+									
+									// Constructor copia
+									TablaMedios_Medio(const TablaMedios_Medio &nTabla) : _Id(nTabla._Id), _Hash(nTabla._Hash), _TipoMedio(nTabla._TipoMedio), _Extension(nTabla._Extension), _Longitud(nTabla._Longitud), _Raiz(nTabla._Raiz), _Nota(nTabla._Nota), _Genero(nTabla._Genero), _Grupo(nTabla._Grupo), _Disco(nTabla._Disco), _Pista(nTabla._Pista) { }
+
 									// Constructor que obtiene los datos de un medio partiendo del hash
 									TablaMedios_Medio(sqlite3 *BD, const sqlite3_int64 Hash) { Obtener(BD, Hash); }
-                                   ~TablaMedios_Medio(void) { }
+									TablaMedios_Medio(sqlite3 *BD, std::wstring &Path) { Obtener(BD, Path); }
+								   ~TablaMedios_Medio(void) { }
 	
 	inline const UINT               Id(void) { return _Id; }
 	inline const sqlite3_int64      Hash(void) { return _Hash; }
@@ -67,7 +76,13 @@ public:
 									// Funciones para obtener un medio de la BD partiendo del Hash o del Path.
 	const BOOL                      Obtener(sqlite3 *BD, const sqlite3_int64 Hash);
 	const BOOL                      Obtener(sqlite3 *BD, std::wstring &mPath);
+
+	const BOOL                      AgregarMedio(sqlite3 *BD, std::wstring &Path, TablaRaiz &Raiz);
+
+	const BOOL						AnalizarMedio(sqlite3 *SqlBD, std::wstring &nPath, TablaRaiz &Raiz, DWORD Longitud = 0);
   protected:
+    const BOOL                     _AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre, UINT &nPista);
+	const BOOL				       _EsNumero(const wchar_t Caracter);
 
 	const BOOL                     _Consulta(sqlite3 *BD, std::wstring &StrConsulta);
 

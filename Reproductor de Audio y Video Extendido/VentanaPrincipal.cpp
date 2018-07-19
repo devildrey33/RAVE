@@ -5,6 +5,7 @@
 #include "DMouse.h"
 #include "Rave_Skin.h"
 #include "DDlgDirectorios.h"
+#include <shellapi.h>
 
 #define RAVE_MIN_ANCHO 660
 #define RAVE_MIN_ALTO  280
@@ -21,7 +22,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 //	int x = App.BD.Tabla_Opciones.PosX(), y = App.BD.Tabla_Opciones.PosY();
 
-	HWND rhWnd = DVentana::CrearVentana(NULL, L"VentanaPrincipal", RAVE_TITULO, App.BD.Tabla_Opciones.PosX(), App.BD.Tabla_Opciones.PosY(), App.BD.Tabla_Opciones.Ancho(), App.BD.Tabla_Opciones.Alto(), WS_OVERLAPPEDWINDOW, WS_EX_APPWINDOW, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+	HWND rhWnd = DVentana::CrearVentana(NULL, L"RAVE_VentanaPrincipal", RAVE_TITULO, App.BD.Tabla_Opciones.PosX(), App.BD.Tabla_Opciones.PosY(), App.BD.Tabla_Opciones.Ancho(), App.BD.Tabla_Opciones.Alto(), WS_OVERLAPPEDWINDOW, WS_EX_APPWINDOW, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 
 	RECT RC; // , RW;
 	GetClientRect(hWnd(), &RC);
@@ -108,6 +109,9 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	SetTimer(hWnd(), TIMER_LISTA, 500, NULL);
 	// Timer para el slider del tiempo
 	SetTimer(hWnd(), TIMER_TIEMPO, 250, NULL);
+
+	// Habilito el drag & drop para esta ventana
+	DragAcceptFiles(hWnd(), TRUE);
 
 	return rhWnd;
 }
@@ -377,8 +381,9 @@ void VentanaPrincipal::AgregarRaiz(void) {
 //	SetFocus(_hWnd);
 	if (Ret == TRUE) {
 		// Agrego la raíz a la BD.
+		CeRaiz *nRaiz = NULL;
 		// Puede que esa raíz sea parte de otra raíz existente o viceversa, en ese caso no se agrega una nueva raíz a la lista, habrá que modificar la lista
-		if (App.BD.Tabla_Raiz.Argerar_Raiz(Path.c_str()) == TRUE) {
+		if (App.BD.Tabla_Raiz.Argerar_Raiz(Path.c_str(), nRaiz) == TRUE) {
 			ListaRaiz.AgregarRaiz(Path.c_str());
 			Debug_Escribir(L"VentanaPrincipal::AgregarRaiz Nueva raíz agregada.\n");
 		}
@@ -416,8 +421,13 @@ void VentanaPrincipal::Evento_Button_Mouse_Click(const UINT cID) {
 		case ID_BOTON_MEZCLAR :
 			_Mezclar = Lista.Mezclar(!_Mezclar);
 			break;
+		case ID_BOTON_REPETIR :
+			App.Menu_Repetir.Mostrar(_hWnd);
+			break;
 	}
 }
+
+
 
 void VentanaPrincipal::_AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 	if (nNodo == NULL) return;
@@ -508,7 +518,7 @@ void VentanaPrincipal::_AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 			nHash = sqlite3_column_int64(SqlQuery, 1);
 			nNombre = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 3));
 			nPista = static_cast<UINT>(sqlite3_column_int(SqlQuery, 13));
-			App.VentanaRave.Lista.AgregarMedio(Medio);
+//			App.VentanaRave.Lista.AgregarMedio(Medio);
 
 			delete Medio;
 
@@ -700,9 +710,24 @@ void VentanaPrincipal::Evento_Cerrar(void) {
 	PostQuitMessage(0);
 }
 
+void VentanaPrincipal::Evento_SoltarArchivos(WPARAM wParam) {
+	TCHAR        Archivo[MAX_PATH];
+	unsigned int TotalSoltados = DragQueryFile((HDROP)wParam, static_cast<unsigned int>(-1), 0, 0);
+	for (unsigned int i = 0; i < TotalSoltados; i++) {
+		DragQueryFile((HDROP)wParam, i, Archivo, MAX_PATH);
+//		if (FILE_ATTRIBUTE_DIRECTORY & GetFileAttributes(Archivo))	SoltarArchivos_BuscarArchivos(Archivo);
+//		else														SoltarArchivos_AgregarArchivo(Archivo);
+	}
+	DragFinish((HDROP)wParam);
+}
+
+
+
 LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
-
+		case WM_DROPFILES :
+			Evento_SoltarArchivos(wParam);
+			break;
 
 		case WM_KEYDOWN:
 			Debug_Escribir_Varg(L"t:%d r:%d p:%d\n", static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));

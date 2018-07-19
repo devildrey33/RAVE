@@ -10,6 +10,7 @@
 #include "RAVE_Configuracion.h"
 #include "VentanaErrorCritico.h"
 #include <stdlib.h>
+#include "MemoriaCompartida.h"
 
 using namespace DWL;
 
@@ -34,7 +35,7 @@ class RAVE {
 										return static_cast<T>((double)rand() / (RAND_MAX + 1) * (Max - Min) + Min);
 									}
 									// Obtiene la linea de comando y determina que hay que hacer
-	const LineaComando				ObtenerLineaComando(void);
+	const LineaComando				ObtenerLineaComando(std::vector<std::wstring> &Paths);
 
 	void							Eventos_Mirar();
 
@@ -56,11 +57,14 @@ class RAVE {
 
 
 	BOOL							PlayerInicial;
+	HANDLE							MutexPlayer;
 
 	VentanaErrorCritico				VentanaErrorCrit;
 
 	std::wstring					SO;
 	std::wstring					AppPath;
+
+	MemoriaCompartida               MemCompartida;
 };
 
 extern RAVE *_APLICACION;

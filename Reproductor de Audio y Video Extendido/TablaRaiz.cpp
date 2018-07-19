@@ -104,7 +104,7 @@ CeRaiz *TablaRaiz::Buscar_Raiz(const TCHAR *nPath) {
 
 /*	Se puede dar el caso en que dada una raíz existente se quiera agregar otra raíz que es pariente de esta.
 		En este no se añadirá ninguna raíz y la raíz existente pasara a tener el path que ocupe menos caracteres. */
-const BOOL TablaRaiz::Argerar_Raiz(const TCHAR *nPath) {
+const BOOL TablaRaiz::Argerar_Raiz(const TCHAR *nPath, CeRaiz *Raiz) {
 	BOOL Ret = 0;
 	UINT Total = 0;
 	int  SqlRet = 0;
@@ -113,7 +113,9 @@ const BOOL TablaRaiz::Argerar_Raiz(const TCHAR *nPath) {
 	if (PathFinal[PathFinal.size() - 1] != TEXT('\\')) PathFinal += TEXT('\\');
 
 	CeRaiz *BuscarRaiz = Buscar_Raiz(PathFinal.c_str());
+	// Si existe una raiz similar o igual
 	if (BuscarRaiz != NULL) {
+		Raiz = BuscarRaiz;
 		// La nueva raíz es el padre/abuelo/etc.. de una raíz definida anteriormente 
 		if (BuscarRaiz->Path.size() > PathFinal.size()) {
 			std::wstring SqlUpdateStr = L"UPDATE Raiz SET Path=\"" + PathFinal + L"\"WHERE Id=" + DWL::DString_ToStr(BuscarRaiz->Id);
@@ -129,7 +131,7 @@ const BOOL TablaRaiz::Argerar_Raiz(const TCHAR *nPath) {
 		return FALSE;
 	}
 
-
+	// Si no existe una raíz similar
 	DWL::DUnidadesDisco nUnidades;
 	DWL::DUnidadDisco  *Unidad = nUnidades.Buscar_Letra(PathFinal[0]);
 	if (Unidad == NULL)
@@ -161,6 +163,7 @@ const BOOL TablaRaiz::Argerar_Raiz(const TCHAR *nPath) {
 	}
 
 	ObtenerDatos(_BD);
+	Raiz = Datos[Datos.size() - 1];
 
 	/*
 	wchar_t *SqlError = NULL;

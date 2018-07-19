@@ -29,7 +29,7 @@ public:
 
 class ThreadBuscarArchivos {
   public:
-												ThreadBuscarArchivos() : _Cancelar(FALSE), _Thread(NULL), _Mutex(NULL) { }
+												ThreadBuscarArchivos() : _Cancelar(FALSE), _Thread(NULL), _Mutex(NULL), _BD(NULL) { }
 								               ~ThreadBuscarArchivos() { }
     const BOOL					            	Iniciar(HWND nhWndDest);
     static unsigned long	                   _ThreadBusqueda(void *pThis);
@@ -47,7 +47,7 @@ class ThreadBuscarArchivos {
     HANDLE		                               _Mutex;
     BOOL									   _Cancelar;
 //    std::vector<size_t>                        _ListaHash;
-    static sqlite3                            *_BD;
+    sqlite3				                      *_BD;
 
 //	const UINT							       _TotalBarras(std::wstring nPath);
 
@@ -76,6 +76,8 @@ class BaseDatos : public DWL::DVentana {
 									// Obtiene un puntero con los datos del medio en la BD (OJO hay que borrar el puntero devuelvo una vez no sea necesario)
 	const BOOL			            ObtenerMedio(const sqlite3_int64 mHash, TablaMedios_Medio &mTMedio);
 	const BOOL			            ObtenerMedio(std::wstring &mPath, TablaMedios_Medio &mTMedio);
+									// Agrega uno o mas medios a la BD y devuelve un vector de TablaMedios_Medio con los medios agregados
+	const UINT                      AgregarMedios(std::vector<std::wstring> &In_Paths, std::vector<TablaMedios_Medio *> &Out_Medios);
 
 	inline sqlite3                 *operator()(void) { return _BD; }
 	const BOOL                      SqlQuery(const wchar_t *Query, ...);

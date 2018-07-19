@@ -83,5 +83,5 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstanc
 	}
 	App.Terminar();
 
-	return static_cast<int>(msg.wParam);
+	return 0;
 }

@@ -1,8 +1,8 @@
 // Configuración para compilar RAVE
 
 // Versión y titulo
-#define RAVE_VERSION			0.319f
-#define RAVE_TITULO				L"Rave 0.319"
+#define RAVE_VERSION			0.320f
+#define RAVE_TITULO				L"Rave 0.320"
 
 // Mostrar consola de depuración
 #define RAVE_MOSTRAR_CONSOLA

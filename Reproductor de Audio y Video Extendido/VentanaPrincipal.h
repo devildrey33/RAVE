@@ -50,6 +50,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	void					Evento_SliderVolumen_Cambiado(void);
 	void					Evento_SliderVolumen_Cambio(void);
 
+	void                    Evento_SoltarArchivos(WPARAM wParam);
+
 	void					Evento_BorraFondo(HDC DC);
 
 //	void					Evento_CapturaSoltada(const UINT_PTR ID);
@@ -71,6 +73,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	void					Lista_Play(void);
 	void					Lista_Pausa(void);
 	void					Lista_Stop(void);
+
+
 
 	DWL::DButton			BotonPlay;
 	DWL::DButton			BotonPausa;

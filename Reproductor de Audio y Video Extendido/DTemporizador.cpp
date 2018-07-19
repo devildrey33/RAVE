@@ -14,7 +14,6 @@ void DTemporizador::CrearTemporizador(const UINT nID, const DWORD Milisegundos, 
 	DTemporizador_Unico *Temporizador = new DTemporizador_Unico(nID, this, UnaVez);
 	_Temporizadores.push_back(Temporizador);
 
-
 	BOOL Ret = CreateTimerQueueTimer(&nTimer, NULL, reinterpret_cast<WAITORTIMERCALLBACK>(_TimerProc), Temporizador, Milisegundos, UnaVez, WT_EXECUTEINTIMERTHREAD);
 	Temporizador->Timer = nTimer;
 }

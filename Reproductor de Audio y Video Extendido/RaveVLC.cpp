@@ -31,12 +31,13 @@ const BOOL RaveVLC::Iniciar(void) {
 //	ArgsVLC.AgregarArgumento("--no-video-title-show");	// No mostrar el titulo del video */
 	//_Instancia = VLC::Instance(0, NULL);
 
-	
+	Debug_Escribir_Varg(L"RaveVLC::Iniciar Cargando LibVLC...\n", _Instancia);
+	DWORD t = GetTickCount();
 	_Instancia = libvlc_new(0, NULL);
 	/*_Log = libvlc_log_open(_Instancia); // PARTE DEL LOG PARA EL VLC
 	libvlc_set_log_verbosity(_Instancia, 2);*/
 
-	Debug_Escribir_Varg(L"RaveVLC::Iniciar  Instancia = '%x' \n", _Instancia);
+	Debug_Escribir_Varg(L"RaveVLC::Iniciar Cargado en %d MS, Instancia = '%x' \n", GetTickCount() - t, _Instancia);
 
 	return TRUE;
 }
@@ -76,38 +77,38 @@ const BOOL RaveVLC::AbrirMedio(TablaMedios_Medio &Medio) {
 	CerrarMedio();
 	TiempoTotal = 0;
 	MedioActual = Medio;
-	// Hay que convertir el path a UTF8 para que funcione en el VLC...
-	char	Destino[2048];
-	size_t  TamnTexto = wcslen(MedioActual.Path()) + 1;
-	int		TamRes = WideCharToMultiByte(CP_UTF8, NULL, MedioActual.Path(), static_cast<int>(TamnTexto), Destino, 2048, NULL, NULL);
-	Destino[TamRes] = 0;	// finalizo el string porque en la versión RELEASE de WideCharToMultiByte no se pone el terminador de cadenas, en la debug si.... (NO TESTEADO DESDE VS2008)
 
 	if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(MedioActual.Path())) {
 		Debug_Escribir_Varg(L"RaveVLC::AbrirMedio  El archivo '%s' NO EXISTE!\n", MedioActual.Path());
 		return FALSE;
 	}
 
+	// Hay que convertir el path a UTF8 para que funcione en el VLC...
+	char	Destino[MAX_PATH];
+	size_t  TamnTexto	= wcslen(MedioActual.Path()) + 1;
+	int		TamRes		= WideCharToMultiByte(CP_UTF8, NULL, MedioActual.Path(), static_cast<int>(TamnTexto), Destino, MAX_PATH, NULL, NULL);
+	Destino[TamRes] = 0;	// finalizo el string porque en la versión RELEASE de WideCharToMultiByte no se pone el terminador de cadenas, en la debug si.... (NO TESTEADO DESDE VS2008)
+
+	
 	libvlc_media_t *Media = NULL;
 	Media = libvlc_media_new_path(_Instancia, Destino);
-	libvlc_media_parse(Media);
 	_MediaPlayer = libvlc_media_player_new_from_media(Media);
+	libvlc_media_release(Media);
 	
+//	_Eventos = libvlc_media_player_event_manager(_MediaPlayer);
+//	libvlc_event_attach(_Eventos, libvlc_MediaStateChanged, EventosVLC, this);				// no va
+//	libvlc_event_attach(_Eventos, libvlc_MediaDurationChanged, EventosVLC, this);			// no va (igual amb streaming si...)
+//	libvlc_event_attach(_Eventos, libvlc_MediaPlayerEndReached, EventosVLC, this);			
+//	libvlc_event_attach(_Eventos, libvlc_MediaPlayerEncounteredError, EventosVLC, this);	// ?
 
-/*	_Eventos = libvlc_media_player_event_manager(_MediaPlayer);
-	libvlc_event_attach(_Eventos, libvlc_MediaStateChanged, EventosVLC, this);				// no va
-	libvlc_event_attach(_Eventos, libvlc_MediaDurationChanged, EventosVLC, this);			// no va (igual amb streaming si...)
-	libvlc_event_attach(_Eventos, libvlc_MediaPlayerEndReached, EventosVLC, this);			
-	libvlc_event_attach(_Eventos, libvlc_MediaPlayerEncounteredError, EventosVLC, this);	// ?*/
-
-	/* Desactiva los eventos del mouse y del teclado dentro de la ventana del vlc */
+	// Desactiva los eventos del mouse y del teclado dentro de la ventana del vlc 
 	libvlc_video_set_mouse_input(_MediaPlayer, false);
 	libvlc_video_set_key_input(_MediaPlayer, false);
 
-	libvlc_media_release(Media);
 	Volumen(static_cast<int>(App.VentanaRave.SliderVolumen.Valor()));
-	libvlc_media_player_set_hwnd(_MediaPlayer, App.VentanaRave.Video.hWnd());
 
 	if (Medio.TipoMedio() == Tipo_Medio_Video) {
+		libvlc_media_player_set_hwnd(_MediaPlayer, App.VentanaRave.Video.hWnd());
 		// Pulso el botón para mostrar el video
 		App.VentanaRave.Evento_Button_Mouse_Click(ID_BOTON_VIDEO);
 	}

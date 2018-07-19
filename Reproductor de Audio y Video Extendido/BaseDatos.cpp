@@ -97,7 +97,6 @@ void BaseDatos::ActualizarArbol(void) {
 
 	// Inicio el thread de la busqueda
 	_BuscarArchivos.Iniciar(hWnd());
-
 }
 
 const BOOL BaseDatos::SqlQuery(const wchar_t *Query, ...) {
@@ -241,6 +240,23 @@ const BOOL BaseDatos::ObtenerMedio(std::wstring &mPath, TablaMedios_Medio &mTMed
 
 
 
+const UINT BaseDatos::AgregarMedios(std::vector<std::wstring> &In_Paths, std::vector<TablaMedios_Medio *> &Out_Medios) {
+	for (size_t i = 0; i < In_Paths.size(); i++) {
+		TablaMedios_Medio *Medio = new TablaMedios_Medio();
+		if (Medio->Obtener(_BD, In_Paths[i]) == TRUE) {
+			Out_Medios.push_back(Medio);
+		}
+		// No existe en la BD, hay que crearlo
+		else {
+
+		}
+	}
+	return 0;
+}
+
+
+
+
 
 
 
@@ -264,7 +280,7 @@ const BOOL BaseDatos::ObtenerMedio(std::wstring &mPath, TablaMedios_Medio &mTMed
     |_|  |_| |_|_|  \___|\__,_|\__,_|____/ \__,_|___/\___\__,_|_|/_/    \_\_|  \___|_| |_|_| \_/ \___/|___/                                                                                                           
 */
 
-sqlite3 *ThreadBuscarArchivos::_BD = NULL;
+//sqlite3 *ThreadBuscarArchivos::_BD = NULL;
 
 
 const BOOL ThreadBuscarArchivos::Iniciar(HWND nhWndDest) {
@@ -306,20 +322,20 @@ unsigned long ThreadBuscarArchivos::_ThreadBusqueda(void *pThis) {
 #endif
 
 
-	Ret = sqlite3_open16(PathBD.c_str(), &_BD);
+	Ret = sqlite3_open16(PathBD.c_str(), &This->_BD);
 	if (Ret) {
-		sqlite3_close(_BD);
+		sqlite3_close(This->_BD);
 		return 1;
 	}
 	TablaRaiz Tabla_Raiz;
-	Tabla_Raiz.ObtenerDatos(_BD);
+	Tabla_Raiz.ObtenerDatos(This->_BD);
 
 	Debug_Escribir_Varg(L"TBA::_ThreadBusqueda  TotalRaíz = '%d'\n", Tabla_Raiz.Datos.size());
 	
 	// Fase 1 : enumerar arxius i directoris
 	UINT TotalArchivos = 0;
 	char *SqlError; // Amb START TRANSACTION es thread safe, pero va lentisim si la BD esta buida...
-	Ret = sqlite3_exec(_BD, "BEGIN TRANSACTION", NULL, NULL, &SqlError);
+	Ret = sqlite3_exec(This->_BD, "BEGIN TRANSACTION", NULL, NULL, &SqlError);
 	if (Ret) 
 		sqlite3_free(SqlError);
 	
@@ -327,7 +343,7 @@ unsigned long ThreadBuscarArchivos::_ThreadBusqueda(void *pThis) {
 		TotalArchivos += This->_EscanearDirectorio(Tabla_Raiz.Datos[i]->Path.c_str(), Tabla_Raiz.Datos[i]);
 	}
 
-	Ret = sqlite3_exec(_BD, "COMMIT TRANSACTION", NULL, NULL, &SqlError);
+	Ret = sqlite3_exec(This->_BD, "COMMIT TRANSACTION", NULL, NULL, &SqlError);
 	if (Ret) 
 		sqlite3_free(SqlError);
 
@@ -338,13 +354,13 @@ unsigned long ThreadBuscarArchivos::_ThreadBusqueda(void *pThis) {
 
 	//	This->_Mutex = CreateMutex(NULL, FALSE, TEXT("Mutex_ThreadBuscarArchivos"));
 
-	sqlite3_close(_BD);
+	sqlite3_close(This->_BD);
 	DWORD Tack = GetTickCount() - Tick;
 
 	Debug_Escribir_Varg(L"TBA::_ThreadBusqueda ha escaneado %d archivos en %d milisegundos.\n", TotalArchivos, Tack);
 
 	PostMessage(This->hWndDest, WM_TBA_TERMINADO, 0, static_cast<LPARAM>(TotalArchivos));
-	_BD = NULL;
+	This->_BD = NULL;
 	return 0;
 }
 

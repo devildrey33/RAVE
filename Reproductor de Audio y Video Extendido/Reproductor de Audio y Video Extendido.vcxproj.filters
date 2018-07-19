@@ -385,6 +385,7 @@
     <ClInclude Include="vlc.hpp">
       <Filter>VLC</Filter>
     </ClInclude>
+    <ClInclude Include="MemoriaCompartida.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -576,6 +577,7 @@
     <ClCompile Include="DTemporizador.cpp">
       <Filter>DWL\Sistema\Temporizador</Filter>
     </ClCompile>
+    <ClCompile Include="MemoriaCompartida.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Reproductor de Audio y Video Extendido.rc">
