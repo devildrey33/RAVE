@@ -100,64 +100,16 @@ const BOOL ArbolBD::AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 		return FALSE;
 	}
 
-	/*
-	Nombre		Posición	   Tipo
-	--------------------------------
-	Id				0		INTEGER PRIMARY KEY
-	Hash			1		INT UNIQUE
-	Path			2		VARCHAR(260)
-	Nombre			3		VARCHAR(128)
-	TipoMedio		4		INT
-	Extension		5		INT
-	Reproducido		6		INT
-	Longitud		7		INT
-	Raiz			8		INT
-	Nota			9		SMALLINT
-	Genero		   10		INT
-	Grupo		   11		INT
-	Disco		   12		INT
-	Pista		   13		INT
-	Tiempo		   14		INT
-	Subtitulos	   15		VARCHAR(260)
-	*/
-
-/*	sqlite3_int64	nHash;
-	std::wstring	nNombre;
-	UINT			nPista;*/
 
 	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_MISUSE) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
-			TablaMedios_Medio *Medio = new TablaMedios_Medio(
-				static_cast<UINT>(sqlite3_column_int(SqlQuery, 0)),
-				sqlite3_column_int64(SqlQuery, 1),
-				reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 2)),
-				reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 3)),
-				static_cast<Tipo_Medio>(sqlite3_column_int(SqlQuery, 4)),
-				static_cast<Extension_Medio>(sqlite3_column_int(SqlQuery, 5)),
-				static_cast<UINT>(sqlite3_column_int(SqlQuery, 6)),
-				static_cast<ULONG>(sqlite3_column_int(SqlQuery, 7)),
-				static_cast<UINT>(sqlite3_column_int(SqlQuery, 8)),
-				static_cast<UINT>(sqlite3_column_int(SqlQuery, 9)),
-				static_cast<UINT>(sqlite3_column_int(SqlQuery, 10)),
-				static_cast<UINT>(sqlite3_column_int(SqlQuery, 11)),
-				static_cast<UINT>(sqlite3_column_int(SqlQuery, 12)),
-				static_cast<UINT>(sqlite3_column_int(SqlQuery, 13)),
-				static_cast<libvlc_time_t>(sqlite3_column_int(SqlQuery, 14)),
-				reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 15))
-			);
-
-/*			nHash	= sqlite3_column_int64(SqlQuery, 1);
-			nNombre = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 3));
-			nPista	= static_cast<UINT>(sqlite3_column_int(SqlQuery, 13));*/
+			BDMedio *Medio = new BDMedio(SqlQuery, App.BD.Unidades);
+			
 			App.VentanaRave.Lista.AgregarMedio(Medio);
 			_AgregarMedio(static_cast<NodoBD *>(nNodo), Medio);
 
-
 			delete Medio;
-
-			/*TmpStr = DWL::DString_ToStr(static_cast<UINT>(sqlite3_column_int(SqlQuery, 13)), 2) + L" " + reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 3));
-			AgregarBDNodo(ArbolBD_TipoNodo_Cancion, BDNodo, TmpStr.c_str(), static_cast<size_t>(sqlite3_column_int(SqlQuery, 1)));*/
 		}
 	}
 	sqlite3_finalize(SqlQuery);
@@ -165,8 +117,8 @@ const BOOL ArbolBD::AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 }
 
 // Asegura que el medio agregado a la lista, tambien exista en el arbol
-void ArbolBD::_AgregarMedio(NodoBD *nPadre, TablaMedios_Medio *nMedio) {
-	DWL::DSplit Split(nMedio->Path(), L'\\');
+void ArbolBD::_AgregarMedio(NodoBD *nPadre, BDMedio *nMedio) {
+	DWL::DSplit Split(nMedio->Path.c_str(), L'\\');
 	size_t TA = nPadre->Ancestros() + 1;
 	std::wstring Filtrado;
 	NodoBD *TmpPadre = nPadre, *Tmp = NULL;
@@ -178,16 +130,16 @@ void ArbolBD::_AgregarMedio(NodoBD *nPadre, TablaMedios_Medio *nMedio) {
 		}
 		else { // No existe, hay que crearlo
 			if (TA < Split.Total() - 1) { // Directorio				
-				BaseDatos_Filtros::FiltroPath(Split[TA], Filtrado);
+				App.BD.FiltroPath(Split[TA], Filtrado);
 				TmpPadre = AgregarBDNodo(ArbolBD_TipoNodo_Directorio, TmpPadre, Filtrado.c_str());
 			}
 			else { // Medio
 				std::wstring nPista;
 				nMedio->PistaStr(nPista);
-				std::wstring nNombre = nPista + L" " + nMedio->Nombre();
-				BaseDatos_Filtros::FiltroNombre(nNombre, Filtrado);
-				ArbolBD_TipoNodo Tipo = (nMedio->TipoMedio() == Tipo_Medio_Audio) ? ArbolBD_TipoNodo_Cancion : ArbolBD_TipoNodo_Video;
-				Tmp = AgregarBDNodo(Tipo, TmpPadre, Filtrado.c_str(), nMedio->Hash());
+				std::wstring nNombre = nPista + L" " + nMedio->Nombre;
+				App.BD.FiltroNombre(nNombre, Filtrado);
+				ArbolBD_TipoNodo Tipo = (nMedio->TipoMedio == Tipo_Medio_Audio) ? ArbolBD_TipoNodo_Cancion : ArbolBD_TipoNodo_Video;
+				Tmp = AgregarBDNodo(Tipo, TmpPadre, Filtrado.c_str(), nMedio->Hash);
 			}
 		}
 	}
@@ -254,7 +206,7 @@ void ArbolBD::ExplorarPath(DWL::DArbolEx_Nodo *nNodo) {
 
 		if (FindInfoPoint.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) { // Directorio
 			if (nNombre != L"." && nNombre != L"..") {
-				BaseDatos_Filtros::FiltroPath(nNombre, nTmpTxt);
+				RaveBD::FiltroPath(nNombre, nTmpTxt);
 				AgregarBDNodo(ArbolBD_TipoNodo_Directorio, static_cast<NodoBD *>(nNodo), nTmpTxt.c_str());
 				nEntradas++;
 			}
@@ -297,8 +249,8 @@ void ArbolBD::ExplorarPath(DWL::DArbolEx_Nodo *nNodo) {
 					if (mPista < 10) { nTmpTxt = L"0" + std::to_wstring(mPista) + L" " + mNombre; }
 					else { nTmpTxt = std::to_wstring(mPista) + L" " + mNombre; }
 					switch (mTipoMedio) {
-					case Tipo_Medio_Audio:		mTipoNodo = ArbolBD_TipoNodo_Cancion;	break;
-					case Tipo_Medio_Video:		mTipoNodo = ArbolBD_TipoNodo_Video;		break;
+						case Tipo_Medio_Audio:		mTipoNodo = ArbolBD_TipoNodo_Cancion;	break;
+						case Tipo_Medio_Video:		mTipoNodo = ArbolBD_TipoNodo_Video;		break;
 					}
 					AgregarBDNodo(mTipoNodo, static_cast<NodoBD *>(nNodo), nTmpTxt.c_str(), mHash);
 				}
@@ -335,8 +287,9 @@ void ArbolBD::Evento_MouseSoltado(DControlEx_EventoMouse &DatosMouse) {
 				AgregarNodoALista(_NodoMarcado);
 				break;
 			case ID_MENUBD_ACTUALIZAR:
-				App.BD.ActualizarArbol();
+				App.VentanaRave.ActualizarArbol();
 				break;
 		}
 	}
 };
+

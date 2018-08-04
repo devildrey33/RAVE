@@ -7,15 +7,16 @@
 #define MUTEX_RAVE L"Mutex_RAVE"
 
 void RAVE_Iniciar(void) {
+	// Inicio la aplicación
 	_APLICACION = new RAVE;
-	// Inicio la semilla para generar números aleatórios
-	srand(GetTickCount());
 }
 
 
 RAVE *_APLICACION = NULL;
 
 RAVE::RAVE(void) : PlayerInicial(FALSE), MutexPlayer(NULL) {
+	// Inicio la semilla para generar números aleatórios
+	srand(GetTickCount());
 }
 
 
@@ -105,13 +106,13 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 			}
 
 			VLC.Iniciar();
-			BD.IniciarBD();
+			BD.Iniciar();
 
 			IniciarUI(nCmdShow);
 
 //			Ret = BD.Tabla_Raiz.Argerar_Raiz(TEXT("D:\\MP3"));
 //			Ret = BD.Tabla_Raiz.Argerar_Raiz(TEXT("D:\\Pelis i Series"));
-			BD.ActualizarArbol();
+			//BD.ActualizarArbol();
 
 			if (Paths.size() > 0) {
 				// Agrega los paths a la lista de medios
@@ -187,18 +188,22 @@ void RAVE::IniciarUI(int nCmdShow) {
 }
 
 void RAVE::Terminar(void) {
-	BD.TerminarBD();
+	BD.Terminar();
+
+	if (PlayerInicial == TRUE) {
+		SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, TRUE, NULL, TRUE); // activo el protector de pantalla
+	}
 	
 	CoUninitialize();
 }
 
+
+/* Vacia la cola de mensajes para este hilo */
 void RAVE::Eventos_Mirar(void) {
-	static MSG msg;
-	for (int i = 0; i < 10; i++) {
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
+	static MSG msg;	
+	while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) != 0) {
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
 	}
 }
 
@@ -279,3 +284,25 @@ const LineaComando RAVE::ObtenerLineaComando(std::vector<std::wstring> &Paths) {
 	
 	return Ret;
 }
+
+
+//
+// Función para cerrar el sistema de varias formas (SOCerrarSistema [CS_Apagar, CS_Reiniciar, CS_CerrarUsuario])
+// void CerrarSistema(const SOCerrarSistema Forma = CS_Apagar, const bool Forzar = false);
+void RAVE::CerrarSistema(const SOCerrarSistema Forma, const BOOL Forzar) {
+	HANDLE           hToken;
+	TOKEN_PRIVILEGES tkp;
+	UINT             Flags = NULL;
+	OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken);
+	LookupPrivilegeValue(NULL, SE_SHUTDOWN_NAME, &tkp.Privileges[0].Luid);
+	tkp.PrivilegeCount = 1;
+	tkp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+	AdjustTokenPrivileges(hToken, false, &tkp, NULL, (PTOKEN_PRIVILEGES)NULL, 0);
+	switch (Forma) {
+		case SOCerrarSistema_Apagar			:	Flags = EWX_POWEROFF;	break;
+		case SOCerrarSistema_ReIniciar		:	Flags = EWX_REBOOT;		break;
+		case SOCerrarSistema_CerrarUsuario	:	Flags = EWX_LOGOFF;		break;
+	}
+	if (Forzar == TRUE) Flags = (Flags | EWX_FORCE);
+	ExitWindowsEx(Flags, 0);
+};

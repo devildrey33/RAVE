@@ -1,0 +1,177 @@
+#pragma once
+
+#include "DUnidadesDisco.h"
+#include "vlc.hpp"
+
+#define WM_TBA_AGREGARDIR			WM_USER + 2000
+#define WM_TBA_AGREGARRAIZ			WM_USER + 2001
+#define WM_TBA_TERMINADO			WM_USER + 2003
+
+#define WM_TAAL_AGREGARMEDIO		WM_USER + 2010
+#define WM_TAAL_TERMINADO			WM_USER + 2011
+
+
+// clase que engloba una raíz
+class BDRaiz {
+  public:
+						BDRaiz(void) : ID_Disco(0), Id(0), Letra('C') { };
+						BDRaiz(std::wstring &nPath) : ID_Disco(0), Id(0), Letra('C'), Path(nPath) { };
+						BDRaiz(const BDRaiz &c) : ID_Disco(c.ID_Disco), Path(c.Path), Id(c.Id), Letra(c.Letra) { };
+	                   ~BDRaiz(void) { };
+	std::wstring        Path;
+	unsigned long		ID_Disco;	// Numero de serie de la unidad
+	unsigned long		Id;			// Id dentro de la base de datos
+	wchar_t             Letra;		// Letra de la unidad actual
+};
+
+// Clase con los datos de un medio
+class BDMedio {
+  public :
+						BDMedio() : Pista(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0), Genero(0), Grupo(0), Disco(0) { };
+						BDMedio(UINT nId, sqlite3_int64 nHash, const wchar_t *nPath, const wchar_t *nNombre, Tipo_Medio nTipoMedio, Extension_Medio nExtension, UINT nReproducido, ULONG nLongitud, DWORD nIDDisco, UINT nNota, UINT nGenero, UINT nGrupo, UINT nDisco, UINT nPista, libvlc_time_t nTiempo, const wchar_t *nSubtitulos) : Id(nId), Hash(nHash), Path(nPath), Nombre(nNombre), TipoMedio(nTipoMedio), Extension(nExtension), Longitud(nLongitud), IDDisco(nIDDisco), Nota(nNota), Genero(nGenero), Grupo(nGrupo), Disco(nDisco), Pista(nPista), Tiempo(nTiempo), Subtitulos(nSubtitulos) { }
+						BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
+	                   ~BDMedio() { };
+	
+	UINT				Pista;
+	std::wstring		Nombre;
+	sqlite3_int64		Hash;
+	std::wstring		Path;
+
+	Tipo_Medio          TipoMedio;
+	Extension_Medio     Extension;
+	libvlc_time_t       Tiempo;
+	ULONG               Longitud;
+
+	UINT                Reproducido;
+	UINT                Nota;
+
+	UINT                Id;
+	DWORD               IDDisco;
+
+	UINT				Genero;
+	UINT                Grupo;
+	UINT                Disco;
+	std::wstring        Subtitulos;
+
+	void                PistaStr(std::wstring &nPistaStr);
+	void                ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
+
+};
+
+
+
+class RaveBD {
+  public:
+							RaveBD(void);
+	                       ~RaveBD(void);
+
+							// Inicia la base de datos
+	const BOOL				Iniciar(void);
+							// Termina la conexión a la base de datos
+	void					Terminar(void);
+							// Consulta básica wchar_t
+	const int				Consulta(const wchar_t *TxtConsulta);
+							// Consulta al estilo printf
+	const int				ConsultaVarg(const wchar_t *TxtConsulta, ...);
+							// Consulta desde un std::wstring
+	inline const int		Consulta(std::wstring &TxtConsulta) { return Consulta(TxtConsulta.c_str()); };
+
+							// Función que extrae los datos del medio que nos da el path
+	const BOOL              AnalizarMedio(std::wstring &mPath, BDMedio &OUT_Medio, const ULONG Longitud = 0);
+
+							// Agrega / Obtiene el Medio de la BD, y lo devuelve.
+	const BOOL				AgregarObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio);
+
+							// Agrega uno o mas medios a la BD y luego los añade a la lista de medios a reproducir
+							// (Esta función se utiliza al soltar archivos en la ventana del reproductor, o al pasarle como argumento inicial uno o mas archivos)
+	void					AgregarMediosExternos(std::vector<std::wstring> &In_Paths);
+
+							// Obtiene un puntero con los datos del medio en la BD (Si el medio no existe devuelve FALSE)
+	const BOOL				ObtenerMedio(const sqlite3_int64 mHash, BDMedio &OUT_Medio);
+	const BOOL				ObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio);
+
+	const BOOL              AsignarTiempoMedio(const libvlc_time_t nTiempo, const sqlite3_int64 mHash);
+
+							
+							// Funciones para buscar una raíz por su path o por su id
+	BDRaiz                 *BuscarRaiz(std::wstring &nPath);
+	BDRaiz                 *BuscarRaiz(const unsigned long bID);
+							// Función para agregar una raíz a la base de datos
+	BDRaiz                 *AgregarRaiz(std::wstring &nPath);
+							// Función para eliminar una raíz de la base de datos
+	const BOOL              EliminarRaiz(std::wstring &nPath);
+							// Función que obtiene las raices de la base de datos
+	const BOOL              ObtenerRaices(void);
+							// Funciones para obtener los datos de las raices en memória
+	inline const size_t     TotalRaices(void)		{ return _Raices.size(); }
+	inline BDRaiz          *Raiz(const size_t Pos)  { return _Raices[Pos];   }
+
+							// Función que crea un Hash partiendo de la ID del disco y el path del medio
+	const sqlite3_int64     CrearHash(DWORD NSD, std::wstring &nPath);
+
+							// Devuelve el puntero de la base de datos sqlite 3
+	inline sqlite3         *operator()(void) { return _BD; }
+
+							// Filtros para los strings que sean paths o nombres de medio
+	static void			    FiltroPath(std::wstring &In, std::wstring &Out);
+	static void			    FiltroNombre(std::wstring &In, std::wstring &Out);
+
+							// Función que obtiene las opciones de la base de datos
+	const BOOL              ObtenerOpciones(void);
+							// NOTA Esta función no guarda la posición en la BD
+	inline void             Opciones_AsignarPosVentana(const int nX, const int nY) { _Opciones_PosX = nX; _Opciones_PosY = nY; };
+							// Opciones que se guardan en la BD
+	const BOOL              Opciones_GuardarOpciones(void);
+	const BOOL              Opciones_GuardarPosTamVentana(void);
+
+	inline const int		Opciones_Volumen(void) { return _Opciones_Volumen; }
+	void					Opciones_Volumen(const int nVolumen);
+
+	inline const int		Opciones_PosX(void) { return _Opciones_PosX; }
+	inline const int		Opciones_PosY(void) { return _Opciones_PosY; }
+	inline const int		Opciones_Ancho(void) { return _Opciones_Ancho; }
+	inline const int		Opciones_Alto(void) { return _Opciones_Alto; }
+
+	inline const int		Opciones_Shufle(void) { return _Opciones_Shufle; }
+	void					Opciones_Shufle(const int nShufle);
+
+	inline const int		Opciones_Repeat(void) { return _Opciones_Repeat; }
+	void					Opciones_Repeat(const int nRepeat);
+
+	inline const int		Opciones_Inicio(void) { return _Opciones_Inicio; }
+	void					Opciones_Inicio(const int nInicio);
+
+	inline const int		Opciones_OcultarMouseEnVideo(void) { return _Opciones_OcultarMouseEnVideo; }
+	void					Opciones_OcultarMouseEnVideo(const int nOcultarMouseEnVideo);
+
+	DWL::DUnidadesDisco     Unidades;
+
+  protected:
+
+	const BOOL             _AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre, UINT &nPista);
+    const BOOL		       _EsNumero(const wchar_t Caracter);
+
+	const BOOL			   _CompararRaices(std::wstring &Path1, std::wstring &Path2);
+	void                   _BorrarRaices(void);
+	std::vector<BDRaiz *>  _Raices;
+	const BOOL             _ConsultaObtenerMedio(std::wstring &TxtConsulta, BDMedio &OUT_Medio);
+
+    const BOOL             _CrearTablas(void);
+	std::wstring           _UltimoErrorSQL;
+	sqlite3               *_BD;
+
+
+	std::wstring           _Opciones_PathAbrir;
+	int                    _Opciones_Volumen;
+	int                    _Opciones_PosX;
+	int                    _Opciones_PosY;
+	int                    _Opciones_Ancho;
+	int                    _Opciones_Alto;
+	int                    _Opciones_Shufle;
+	int                    _Opciones_Repeat;
+	int                    _Opciones_Inicio;
+	// Tiempo en MS que tarda en ocultarse el mouse y los controles de un video
+	int                    _Opciones_OcultarMouseEnVideo;
+
+};
+

@@ -31,15 +31,31 @@ const BOOL RaveVLC::Iniciar(void) {
 //	ArgsVLC.AgregarArgumento("--no-video-title-show");	// No mostrar el titulo del video */
 	//_Instancia = VLC::Instance(0, NULL);
 
+	char OpcionesSMem[1024];
+	sprintf_s(OpcionesSMem,	1024, "smem{audio-prerender-callback=%lld,audio-postrender-callback=%lld,audio-data=%lld}", ((long long int)(intptr_t)(void*)&audio_prerendercb), ((long long int)(intptr_t)(void*)&audio_postrendercb), ((long long int)(intptr_t)(void*)this));
+	const char * const Argumentos[] = {	
+			OpcionesSMem
+	};
+
 	Debug_Escribir_Varg(L"RaveVLC::Iniciar Cargando LibVLC...\n", _Instancia);
 	DWORD t = GetTickCount();
-	_Instancia = libvlc_new(0, NULL);
+//	_Instancia = libvlc_new(0, NULL);
+	_Instancia = libvlc_new(sizeof(Argumentos) / sizeof(Argumentos[0]), Argumentos);
+
+	const char *ErrorVLC = libvlc_errmsg();
 	/*_Log = libvlc_log_open(_Instancia); // PARTE DEL LOG PARA EL VLC
 	libvlc_set_log_verbosity(_Instancia, 2);*/
 
 	Debug_Escribir_Varg(L"RaveVLC::Iniciar Cargado en %d MS, Instancia = '%x' \n", GetTickCount() - t, _Instancia);
 
 	return TRUE;
+}
+
+void RaveVLC::audio_prerendercb(void* data, unsigned char** buffer, size_t size) {
+	int i = 0;
+}
+void RaveVLC::audio_postrendercb(void* data, unsigned char* buffer, unsigned int channels, unsigned int rate, unsigned int nb_samples, unsigned int bits_per_sample, size_t size, int64_t pts) {
+	int i = 0;
 }
 
 
@@ -73,20 +89,20 @@ void EventosVLC(const libvlc_event_t* event, void* ptr) {
 }*/
 
 
-const BOOL RaveVLC::AbrirMedio(TablaMedios_Medio &Medio) {
+const BOOL RaveVLC::AbrirMedio(BDMedio &Medio) {
 	CerrarMedio();
 	TiempoTotal = 0;
 	MedioActual = Medio;
 
-	if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(MedioActual.Path())) {
-		Debug_Escribir_Varg(L"RaveVLC::AbrirMedio  El archivo '%s' NO EXISTE!\n", MedioActual.Path());
+	if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(MedioActual.Path.c_str())) {
+		Debug_Escribir_Varg(L"RaveVLC::AbrirMedio  El archivo '%s' NO EXISTE!\n", MedioActual.Path.c_str());
 		return FALSE;
 	}
 
 	// Hay que convertir el path a UTF8 para que funcione en el VLC...
 	char	Destino[MAX_PATH];
-	size_t  TamnTexto	= wcslen(MedioActual.Path()) + 1;
-	int		TamRes		= WideCharToMultiByte(CP_UTF8, NULL, MedioActual.Path(), static_cast<int>(TamnTexto), Destino, MAX_PATH, NULL, NULL);
+	size_t  TamnTexto	= wcslen(MedioActual.Path.c_str()) + 1;
+	int		TamRes		= WideCharToMultiByte(CP_UTF8, NULL, MedioActual.Path.c_str(), static_cast<int>(TamnTexto), Destino, MAX_PATH, NULL, NULL);
 	Destino[TamRes] = 0;	// finalizo el string porque en la versión RELEASE de WideCharToMultiByte no se pone el terminador de cadenas, en la debug si.... (NO TESTEADO DESDE VS2008)
 
 	
@@ -107,7 +123,7 @@ const BOOL RaveVLC::AbrirMedio(TablaMedios_Medio &Medio) {
 
 	Volumen(static_cast<int>(App.VentanaRave.SliderVolumen.Valor()));
 
-	if (Medio.TipoMedio() == Tipo_Medio_Video) {
+	if (Medio.TipoMedio == Tipo_Medio_Video) {
 		libvlc_media_player_set_hwnd(_MediaPlayer, App.VentanaRave.Video.hWnd());
 		// Pulso el botón para mostrar el video
 		App.VentanaRave.Evento_Button_Mouse_Click(ID_BOTON_VIDEO);
@@ -118,10 +134,10 @@ const BOOL RaveVLC::AbrirMedio(TablaMedios_Medio &Medio) {
 	App.ControlesPC.SliderTiempo.OcultarToolTip();
 
 	// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
-	std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" - " +  std::wstring(MedioActual.Nombre());
+	std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" - " +  std::wstring(MedioActual.Nombre);
 	App.VentanaRave.Titulo(nTitulo);
 
-	Debug_Escribir_Varg(L"RaveVLC::AbrirMedio Path '%s'\n", MedioActual.Path());
+	Debug_Escribir_Varg(L"RaveVLC::AbrirMedio Path '%s'\n", MedioActual.Path.c_str());
 
 	return TRUE;
 }
@@ -149,13 +165,13 @@ void RaveVLC::CerrarMedio(void) {
 */
 
 void RaveVLC::ActualizarIconos(int nTipo) {
-	if (MedioActual.Hash() != 0) {
+	if (MedioActual.Hash != 0) {
 
 		int nIcono = 0;
 		switch (nTipo) {
 			case 0 : // normal
-				if (MedioActual.TipoMedio() == Tipo_Medio::Tipo_Medio_Audio) nIcono = RAVE_Iconos::RAVE_Icono_Cancion; // IDI_CANCION
-				if (MedioActual.TipoMedio() == Tipo_Medio::Tipo_Medio_Video) nIcono = RAVE_Iconos::RAVE_Icono_Video; // IDI_VIDEO
+				if (MedioActual.TipoMedio == Tipo_Medio::Tipo_Medio_Audio) nIcono = RAVE_Iconos::RAVE_Icono_Cancion; // IDI_CANCION
+				if (MedioActual.TipoMedio == Tipo_Medio::Tipo_Medio_Video) nIcono = RAVE_Iconos::RAVE_Icono_Video; // IDI_VIDEO
 				break;
 			case 1 :
 				nIcono = RAVE_Iconos::RAVE_Icono_Play; // play
@@ -165,12 +181,12 @@ void RaveVLC::ActualizarIconos(int nTipo) {
 				break;
 		}
 		// Actualizo el nodo del ArbolBD
-		NodoBD *Nodo = App.VentanaRave.Arbol.BuscarHash(MedioActual.Hash());
+		NodoBD *Nodo = App.VentanaRave.Arbol.BuscarHash(MedioActual.Hash);
 		if (Nodo != NULL) 
 			Nodo->Icono(nIcono);
 		App.VentanaRave.Arbol.Repintar();
 		// Actualizo el Item del ListaMedios
-		ItemMedio *Item = App.VentanaRave.Lista.BuscarHash(MedioActual.Hash());
+		ItemMedio *Item = App.VentanaRave.Lista.BuscarHash(MedioActual.Hash);
 		if (Item != NULL) {
 			Item->Icono(nIcono);
 			App.VentanaRave.Lista.MostrarItem(Item);
@@ -229,7 +245,7 @@ const BOOL RaveVLC::Play(void) {
 			ActualizarIconos(1);
 			SetTimer(App.VentanaRave.hWnd(), TIMER_OBTENERVLCWND, 100, NULL);
 			SetTimer(App.VentanaRave.hWnd(), TIMER_OBTENER_TIEMPO_TOTAL, 250, NULL);
-			if (MedioActual.TipoMedio() == Tipo_Medio_Video) { // Desactivo el protector de pantalla si es un video
+			if (MedioActual.TipoMedio == Tipo_Medio_Video) { // Desactivo el protector de pantalla si es un video
 				SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, FALSE, NULL, TRUE);
 			}
 			return TRUE;

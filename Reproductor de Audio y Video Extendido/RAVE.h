@@ -1,7 +1,7 @@
 #pragma once
 
 #include "VentanaPrincipal.h"
-#include "BaseDatos.h"
+//#include "BaseDatos.h"
 #include "DConsola.h"
 #include "RaveVLC.h"
 //#include "DImageList.h"
@@ -11,6 +11,7 @@
 #include "VentanaErrorCritico.h"
 #include <stdlib.h>
 #include "MemoriaCompartida.h"
+#include "RaveBD.h"
 
 using namespace DWL;
 
@@ -19,6 +20,13 @@ enum LineaComando {
 	LineaComando_Path,			// Viene con uno o varios paths
 	LineaComando_ErrorCritico	// Mostrar ventana de error crítico
 };
+
+enum SOCerrarSistema {
+	SOCerrarSistema_Apagar			= EWX_POWEROFF,
+	SOCerrarSistema_ReIniciar		= EWX_REBOOT,
+	SOCerrarSistema_CerrarUsuario	= EWX_LOGOFF
+};
+
 
 class RAVE {
   public:
@@ -41,11 +49,14 @@ class RAVE {
 
 	void							ObtenerSO();
 
+	void							CerrarSistema(const SOCerrarSistema Forma = SOCerrarSistema_Apagar, const BOOL Forzar = FALSE);
+
 //	int							Rand()
 
 	void							Terminar(void);
 	VentanaPrincipal				VentanaRave;
-	BaseDatos						BD;
+	RaveBD							BD;
+//	BaseDatos						BD;
 	DConsola						ConsolaDebug;
 	RaveVLC							VLC;
 	ControlesPantallaCompleta		ControlesPC;

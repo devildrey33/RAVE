@@ -21,36 +21,36 @@ void ListaMedios::BorrarListaReproduccion(void) {
 	MedioActual = 0;
 }
 
-ItemMedio *ListaMedios::AgregarMedio(TablaMedios_Medio *nMedio) {
+ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {
 	
 	// Busco si existe el hash para no agregar 2 medios iguales a la lista
 	for (size_t i = 0; i < _Items.size(); i++) {
-		if (static_cast<ItemMedio *>(_Items[i])->Hash == nMedio->Hash()) {
+		if (static_cast<ItemMedio *>(_Items[i])->Hash == nMedio->Hash) {
 			return Medio(i); // Devuelvo el medio existente
 		}
 	}
 
 	// Miro el icono que necesita el medio
 	int nIcono = RAVE_Iconos::RAVE_Icono_Cancion;
-	switch (nMedio->TipoMedio()) {
+	switch (nMedio->TipoMedio) {
 		case Tipo_Medio_Audio: nIcono = RAVE_Iconos::RAVE_Icono_Cancion;	break;
 		case Tipo_Medio_Video: nIcono = RAVE_Iconos::RAVE_Icono_Video;		break;
 	}
 
 	// Paso la pista a string formateada a 2 digitos
-	std::wstring Pista = std::to_wstring(nMedio->Pista());
+	std::wstring Pista = std::to_wstring(nMedio->Pista);
 	if (Pista.size() == 1) Pista = L"0" + Pista;
 
 	// Paso el tiempo a string formateado en mm:ss
 	std::wstring StrTiempo;
-	App.VLC.TiempoStr(nMedio->Tiempo(), StrTiempo);
+	App.VLC.TiempoStr(nMedio->Tiempo, StrTiempo);
 
 	// Agrego el item
-	ItemMedio *TmpMedio = AgregarItem<ItemMedio>(nIcono, DLISTAEX_POSICION_FIN, Pista.c_str(), nMedio->Nombre(), StrTiempo.c_str());
+	ItemMedio *TmpMedio = AgregarItem<ItemMedio>(nIcono, DLISTAEX_POSICION_FIN, Pista.c_str(), nMedio->Nombre.c_str(), StrTiempo.c_str());
 	// Agrego el item también en el vector MediosOrdenados (por si el shufle está activado)
 	_MediosOrdenados.push_back(TmpMedio);
 	// Asigno el hash al item
-	TmpMedio->Hash = nMedio->Hash();
+	TmpMedio->Hash = nMedio->Hash;
 
 	return TmpMedio;
 }
@@ -68,7 +68,10 @@ void ListaMedios::Evento_MouseDobleClick(DWL::DControlEx_EventoMouse &EventoMous
 		if (_ItemResaltado != -1) {
 			MedioActual = _ItemResaltado;
 			ItemMedio *Itm = Medio(MedioActual);
-			TablaMedios_Medio NCan(App.BD(), Medio(MedioActual)->Hash);
+			
+			BDMedio NCan;
+			App.BD.ObtenerMedio(Medio(MedioActual)->Hash, NCan);
+
 			if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
 			App.VLC.Play();
 		}

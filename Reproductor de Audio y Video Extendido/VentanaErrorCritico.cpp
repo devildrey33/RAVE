@@ -71,7 +71,7 @@ void VentanaErrorCritico::Enviar(void) {
 
 	EnviarDump E;
 	BarraTareas.Estado_Indeterminado();
-	E.Enviar2(WPathDump, _hWnd);
+	E.Enviar(WPathDump, _hWnd);
 	DMouse::CambiarCursor(DMouse_Cursor_FlechaReloj);
 
 	BotonEnviar.Activar(FALSE);

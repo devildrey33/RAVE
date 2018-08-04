@@ -6,6 +6,7 @@
 #include "Rave_Skin.h"
 #include "DDlgDirectorios.h"
 #include <shellapi.h>
+#include "DStringUtils.h"
 
 #define RAVE_MIN_ANCHO 660
 #define RAVE_MIN_ALTO  280
@@ -17,12 +18,12 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	EnumDisplayMonitors(NULL, NULL, VentanaPrincipal::EnumerarPantallas, NULL);
 	// Si el monitor donde se guardo la ultima posición no está disponible busco una nueva posición
 	if (MonitorDisponible == FALSE) {
-		App.BD.Tabla_Opciones.AsignarPosVentana(RectMonitorActual.left + 100, RectMonitorActual.top + 100);
+		App.BD.Opciones_AsignarPosVentana(RectMonitorActual.left + 100, RectMonitorActual.top + 100);
 	}
 
 //	int x = App.BD.Tabla_Opciones.PosX(), y = App.BD.Tabla_Opciones.PosY();
 
-	HWND rhWnd = DVentana::CrearVentana(NULL, L"RAVE_VentanaPrincipal", RAVE_TITULO, App.BD.Tabla_Opciones.PosX(), App.BD.Tabla_Opciones.PosY(), App.BD.Tabla_Opciones.Ancho(), App.BD.Tabla_Opciones.Alto(), WS_OVERLAPPEDWINDOW, WS_EX_APPWINDOW, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+	HWND rhWnd = DVentana::CrearVentana(NULL, L"RAVE_VentanaPrincipal", RAVE_TITULO, App.BD.Opciones_PosX(), App.BD.Opciones_PosY(), App.BD.Opciones_Ancho(), App.BD.Opciones_Alto(), WS_OVERLAPPEDWINDOW, WS_EX_APPWINDOW, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 
 	RECT RC; // , RW;
 	GetClientRect(hWnd(), &RC);
@@ -57,8 +58,8 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 	ListaRaiz.CrearListaRaiz(&Opciones, 10, 10, 300, 80, ID_LISTARAIZ);
 
-	for (size_t i = 0; i < App.BD.Tabla_Raiz.Datos.size(); i++) {
-		ListaRaiz.AgregarRaiz(App.BD.Tabla_Raiz.Datos[i]->Path.c_str());
+	for (size_t i = 0; i < App.BD.TotalRaices(); i++) {
+		ListaRaiz.AgregarRaiz(App.BD.Raiz(i)->Path.c_str());
 	}
 	ListaRaiz.Visible(TRUE);
 
@@ -86,8 +87,8 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 	MarcoSD.Crear(this, RC.right - 260, 14, 250, 24, ID_MARCOSD);
 
-	SliderVolumen.CrearBarraDesplazamientoEx(&MarcoSD, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.BD.Tabla_Opciones.Volumen()));
-	std::wstring TxtVolumen = std::to_wstring(App.BD.Tabla_Opciones.Volumen()) + L"%";
+	SliderVolumen.CrearBarraDesplazamientoEx(&MarcoSD, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.BD.Opciones_Volumen()));
+	std::wstring TxtVolumen = std::to_wstring(App.BD.Opciones_Volumen()) + L"%";
 	LabelVolumen.CrearLabelEx(&MarcoSD, TxtVolumen.c_str(), 215, 2, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
 
 	LabelTiempoActual.CrearLabelEx(&MarcoSD, L"00:00", 0, 2, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
@@ -112,6 +113,8 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 	// Habilito el drag & drop para esta ventana
 	DragAcceptFiles(hWnd(), TRUE);
+
+	ActualizarArbol();
 
 	return rhWnd;
 }
@@ -150,7 +153,7 @@ void VentanaPrincipal::AjustarControles(RECT &RC) {
 
 
 BOOL CALLBACK VentanaPrincipal::EnumerarPantallas(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData) {
-	POINT Pt = { App.BD.Tabla_Opciones.PosX(), App.BD.Tabla_Opciones.PosY() };
+	POINT Pt = { App.BD.Opciones_PosX(), App.BD.Opciones_PosY() };
 	if (PtInRect(lprcMonitor, Pt) != 0) {
 		// El monitor está disponible, no hace falta seguir buscando
 		App.VentanaRave.RectMonitorActual	= *lprcMonitor;
@@ -252,8 +255,12 @@ void VentanaPrincipal::Timer_ObtenerTiempoTotal(void) {
 			App.VLC.TiempoStr(TiempoMS, TextoItem);
 			rItem->Texto(2, TextoItem);
 			Lista.Repintar();
-			TablaMedios_Medio nMedioActual(App.BD(), rItem->Hash);
-			nMedioActual.Tiempo(static_cast<libvlc_time_t>(TiempoMS));
+
+//			BDMedio nMedioActual;
+//			App.BD.ObtenerMedio(rItem->Hash, nMedioActual);
+			App.BD.AsignarTiempoMedio(static_cast<libvlc_time_t>(TiempoMS), rItem->Hash);
+
+//			nMedioActual.Tiempo = static_cast<libvlc_time_t>(TiempoMS);
 
 		}
 		KillTimer(_hWnd, TIMER_OBTENER_TIEMPO_TOTAL);
@@ -271,11 +278,12 @@ void VentanaPrincipal::Lista_Play(void) {
 	if (Lista.TotalItems() == 0) return;
 
 	Lista.Errores = 0;
-	TablaMedios_Medio NCan;
+	BDMedio NCan;
 	switch (App.VLC.ComprobarEstado()) {
 		case SinCargar:
 			if (Lista.TotalItems() > 0) {
-				NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
+				App.BD.ObtenerMedio(Lista.Medio(Lista.MedioActual)->Hash, NCan);
+//				NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
 				if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
 				if (App.VLC.Play() == TRUE) {
 //					Lista.Medio(Lista.Pos)->Icono(9);
@@ -288,7 +296,8 @@ void VentanaPrincipal::Lista_Play(void) {
 			if (Lista.MedioActual >= static_cast<int>(Lista.TotalItems())) {
 				Lista.MedioActual = 0;
 			}
-			NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
+			App.BD.ObtenerMedio(Lista.Medio(Lista.MedioActual)->Hash, NCan);
+//			NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
 			if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
 			App.VLC.Play();
 			break;
@@ -313,7 +322,8 @@ void VentanaPrincipal::Lista_Siguiente(void) {
 	if (Lista.MedioActual >= static_cast<int>(Lista.TotalItems())) Lista.MedioActual = 0;
 
 
-	TablaMedios_Medio NCan(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
+	BDMedio NCan;
+	App.BD.ObtenerMedio(Lista.Medio(Lista.MedioActual)->Hash, NCan);
 	if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
 	App.VLC.Play();
 }
@@ -328,7 +338,9 @@ void VentanaPrincipal::Lista_Anterior(void) {
 	if (Lista.MedioActual < 0) Lista.MedioActual = TotalItems;
 
 	if (Lista.MedioActual >= 0 && Lista.MedioActual <= TotalItems) {
-		TablaMedios_Medio NCan(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
+		BDMedio NCan;
+		App.BD.ObtenerMedio(Lista.Medio(Lista.MedioActual)->Hash, NCan);
+//		TablaMedios_Medio NCan(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
 		if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
 		App.VLC.Play();
 	}
@@ -381,9 +393,9 @@ void VentanaPrincipal::AgregarRaiz(void) {
 //	SetFocus(_hWnd);
 	if (Ret == TRUE) {
 		// Agrego la raíz a la BD.
-		CeRaiz *nRaiz = NULL;
+//		BDRaiz *nRaiz = NULL;
 		// Puede que esa raíz sea parte de otra raíz existente o viceversa, en ese caso no se agrega una nueva raíz a la lista, habrá que modificar la lista
-		if (App.BD.Tabla_Raiz.Argerar_Raiz(Path.c_str(), nRaiz) == TRUE) {
+		if (App.BD.AgregarRaiz(Path) != NULL) {
 			ListaRaiz.AgregarRaiz(Path.c_str());
 			Debug_Escribir(L"VentanaPrincipal::AgregarRaiz Nueva raíz agregada.\n");
 		}
@@ -397,7 +409,7 @@ void VentanaPrincipal::AgregarRaiz(void) {
 }
 
 void VentanaPrincipal::EliminarRaiz(std::wstring &Path) {
-	App.BD.Tabla_Raiz.Eliminar_Raiz(Path);
+	App.BD.EliminarRaiz(Path);
 	
 }
 
@@ -427,108 +439,6 @@ void VentanaPrincipal::Evento_Button_Mouse_Click(const UINT cID) {
 	}
 }
 
-
-
-void VentanaPrincipal::_AgregarNodoALista(DArbolEx_Nodo *nNodo) {
-	if (nNodo == NULL) return;
-	NodoBD *TmpNodo = static_cast<NodoBD *>(nNodo);
-	sqlite3_int64 Hash = TmpNodo->Hash;
-	//	ArbolBD_Nodo *TmpNodo = aNodo->BDHijo();
-	// Si no hay hijos cargo las canciones correspondientes.
-	std::wstring Path, TmpStr;
-
-	if (Hash == 0) { // Si no hay hash es que el nodo contiene uno o mas hijos
-		do {
-//			TmpNodo->ObtenerTexto(TmpStr);
-			TmpNodo = static_cast<NodoBD *>(TmpNodo->Padre());
-			if (TmpNodo) {
-				Path = TmpNodo->Texto + L"\\" + Path;
-			}
-		} while (TmpNodo != NULL);
-	}
-
-	std::wstring SqlStr;
-//	int i = nNodo->IDIcono();
-	switch (nNodo->IDIcono()) {
-		case 3: // Canción
-		case 4: // Video
-			SqlStr = L"SELECT * FROM Medios WHERE Hash =\"" + std::to_wstring(Hash) + L"\"";
-			//			SqlStr = L"SELECT * FROM Medios WHERE Path LIKE\"" + Path + L"\"";
-			break;
-		case 9: // Directorio principal (no val... ha de ser nomes l'arrel de MP3 o Pelis i Series)
-		case 8: // Directorio
-			SqlStr = L"SELECT * FROM Medios WHERE Path LIKE \"%" + Path + L"%\" COLLATE NOCASE";
-			break;
-	}
-
-	sqlite3_stmt   *SqlQuery = NULL;
-	int SqlRet = sqlite3_prepare16_v2(App.BD(), SqlStr.c_str(), -1, &SqlQuery, NULL);
-	if (SqlRet) {
-		const char *Error = sqlite3_errmsg(App.BD());
-		return;
-	}
-
-	/*
-	Nombre		Posición	   Tipo
-	--------------------------------
-	Id				0		INTEGER PRIMARY KEY
-	Hash			1		INT UNIQUE
-	Path			2		VARCHAR(260)
-	Nombre			3		VARCHAR(128)
-	TipoMedio		4		INT
-	Extension		5		INT
-	Reproducido		6		INT
-	Longitud		7		INT
-	Raiz			8		INT
-	Nota			9		SMALLINT
-	Genero		   10		INT
-	Grupo		   11		INT
-	Disco		   12		INT
-	Pista		   13		INT
-	Tiempo		   14		INT
-	Subtitulos	   15		VARCHAR(260)
-	*/
-
-	sqlite3_int64	nHash;
-	std::wstring	nNombre;
-	UINT			nPista;
-
-	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_MISUSE) {
-		SqlRet = sqlite3_step(SqlQuery);
-		if (SqlRet == SQLITE_ROW) {
-			TablaMedios_Medio *Medio = new TablaMedios_Medio(
-				static_cast<UINT>(sqlite3_column_int(SqlQuery, 0)),
-				sqlite3_column_int64(SqlQuery, 1),
-				reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 2)),
-				reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 3)),
-				static_cast<Tipo_Medio>(sqlite3_column_int(SqlQuery, 4)),
-				static_cast<Extension_Medio>(sqlite3_column_int(SqlQuery, 5)),
-				static_cast<UINT>(sqlite3_column_int(SqlQuery, 6)),
-				static_cast<ULONG>(sqlite3_column_int(SqlQuery, 7)),
-				static_cast<UINT>(sqlite3_column_int(SqlQuery, 8)),
-				static_cast<UINT>(sqlite3_column_int(SqlQuery, 9)),
-				static_cast<UINT>(sqlite3_column_int(SqlQuery, 10)),
-				static_cast<UINT>(sqlite3_column_int(SqlQuery, 11)),
-				static_cast<UINT>(sqlite3_column_int(SqlQuery, 12)),
-				static_cast<UINT>(sqlite3_column_int(SqlQuery, 13)),
-				static_cast<libvlc_time_t>(sqlite3_column_int(SqlQuery, 14)),
-				reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 15))
-			);
-
-			nHash = sqlite3_column_int64(SqlQuery, 1);
-			nNombre = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 3));
-			nPista = static_cast<UINT>(sqlite3_column_int(SqlQuery, 13));
-//			App.VentanaRave.Lista.AgregarMedio(Medio);
-
-			delete Medio;
-
-			/*TmpStr = DWL::DString_ToStr(static_cast<UINT>(sqlite3_column_int(SqlQuery, 13)), 2) + L" " + reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 3));
-			AgregarBDNodo(ArbolBD_TipoNodo_Cancion, BDNodo, TmpStr.c_str(), static_cast<size_t>(sqlite3_column_int(SqlQuery, 1)));*/
-		}
-	}
-	sqlite3_finalize(SqlQuery);
-//	return TRUE;
-}
 
 // Función que muestra el menú para los nodos del ArbolBD
 /*void VentanaPrincipal::Evento_ArbolEx_Click(DArbolEx_DatosClick *Datos, const UINT aID) {
@@ -693,7 +603,7 @@ void VentanaPrincipal::Evento_SliderVolumen_Cambio() {
 
 // Guardo el volumen en las opciones (al soltar el slider del volumen)
 void VentanaPrincipal::Evento_SliderVolumen_Cambiado() {
-	App.BD.Tabla_Opciones.Volumen(static_cast<int>(SliderVolumen.Valor()));
+	App.BD.Opciones_Volumen(static_cast<int>(SliderVolumen.Valor()));
 }
 
 void VentanaPrincipal::Evento_BorraFondo(HDC DC) {
@@ -706,25 +616,156 @@ void VentanaPrincipal::Evento_BorraFondo(HDC DC) {
 
 void VentanaPrincipal::Evento_Cerrar(void) {
 	Visible(FALSE);
-	App.BD.Tabla_Opciones.GuardarOpciones();
+	App.BD.Opciones_GuardarOpciones();
 	PostQuitMessage(0);
 }
 
 void VentanaPrincipal::Evento_SoltarArchivos(WPARAM wParam) {
 	TCHAR        Archivo[MAX_PATH];
 	unsigned int TotalSoltados = DragQueryFile((HDROP)wParam, static_cast<unsigned int>(-1), 0, 0);
+	std::vector<std::wstring> Paths;
+
 	for (unsigned int i = 0; i < TotalSoltados; i++) {
 		DragQueryFile((HDROP)wParam, i, Archivo, MAX_PATH);
 //		if (FILE_ATTRIBUTE_DIRECTORY & GetFileAttributes(Archivo))	SoltarArchivos_BuscarArchivos(Archivo);
 //		else														SoltarArchivos_AgregarArchivo(Archivo);
+		Paths.push_back(Archivo);
 	}
 	DragFinish((HDROP)wParam);
+
+	ThreadArchivosLista.Iniciar(_hWnd, Paths);
 }
 
 
 
+NodoBD *VentanaPrincipal::Arbol_AgregarRaiz(std::wstring *Path) {
+	// Busca si existe la raiz
+	/*	BOOL Ret = TRUE;
+	if (!App.VentanaRave.Arbol.BuscarTexto(*Path, NULL, FALSE))		App.VentanaRave.Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Raiz, NULL, Path->c_str());
+	else	                                                   		Ret = FALSE;
+	delete Path;
+	return Ret;*/
+
+	// Solo crea la raiz
+	NodoBD *Tmp = Arbol.BuscarHijoTxt(*Path);
+	if (Tmp == NULL) {
+		Tmp = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Raiz, NULL, Path->c_str());
+		Tmp->Expandido = TRUE;
+		Arbol.Repintar();
+	}
+	//	delete Path; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
+	return Tmp;
+}
+
+NodoBD *VentanaPrincipal::Arbol_AgregarDir(std::wstring *Path, const BOOL nRepintar) {
+	BDRaiz *Raiz = App.BD.BuscarRaiz(*Path);
+//	CeRaiz *Raiz = Tabla_Raiz.Buscar_Raiz(Path->c_str());
+	if (Raiz == NULL) return NULL;
+	// Busco la raíz
+	//	DWL::DSplit SplitRaiz(Raiz->Path, L'\\');
+	NodoBD *TmpNodo = static_cast<NodoBD *>(Arbol.BuscarHijoTxt(Raiz->Path, NULL));
+	// Busco el ultimo nodo padre
+	std::wstring tmp = Path->substr(Raiz->Path.size(), Path->size() - Raiz->Path.size());
+	DWL::DSplit Split(tmp, L'\\');
+
+	for (size_t i = 0; i < static_cast<int>(Split.Total()) - 1; i++) {
+		TmpNodo = static_cast<NodoBD *>(Arbol.BuscarHijoTxt(Split[i], TmpNodo));
+	}
+
+	std::wstring Filtrado;
+
+	RaveBD::FiltroPath(Split[Split.Total() - 1], Filtrado);
+
+	NodoBD *Ret = Arbol.BuscarHijoTxt(Filtrado, TmpNodo);
+	// Agrego el directorio
+	if (Ret == NULL) {
+		Ret = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Directorio, TmpNodo, Filtrado.c_str());
+	}
+	//	delete Path;
+	if (nRepintar == TRUE)	Arbol.Repintar();
+
+	return Ret;
+}
+
+/*
+NodoBD *VentanaPrincipal::Arbol_AgregarCancion(const size_t Hash) {
+//	ArbolBD &Arbol = App.VentanaRave.Arbol;
+	// Busco el medio en el arbol
+	for (size_t i = 0; i < Arbol.TotalNodos(); i++) {
+		if (Arbol.BDNodo(i)->Hash == Hash)
+			return NULL; // Ya exsite
+	}
+
+	BDMedio Medio;
+	App.BD.ObtenerMedio(Hash, Medio);
+	// Obtengo la cancion de la bd
+//	TablaMedios_Medio Cancion(_BD, Hash);
+	NodoBD *TmpNodo = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Directorio, NULL, Medio.Path.c_str(), Hash);
+	//	TmpNodo->Hash = Hash;
+
+	return TmpNodo;
+}*/
+
+void VentanaPrincipal::ActualizarArbol(void) {
+	BarraTareas.Estado_Indeterminado();
+	// Re-escaneo las unidades de disco
+	App.BD.Unidades.Escanear_Unidades_Locales();
+	//	if (_hWnd != NULL) return;
+	Arbol.BorrarTodo();
+	App.Menu_ArbolBD[2]->Activado(FALSE);
+
+	NodoBD *Tmp = NULL;
+
+	for (size_t i = 0; i < App.BD.TotalRaices(); i++) {
+		Tmp = Arbol_AgregarRaiz(&App.BD.Raiz(i)->Path);
+		Arbol.ExplorarPath(Tmp);
+	}
+
+	Arbol.Repintar();
+
+	// Inicio el thread de la busqueda
+	ThreadActualizar.Iniciar(hWnd());
+}
+
+
 LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
+	std::wstring *TmpStr = NULL;
+	BDMedio *Medio = NULL;
 	switch (uMsg) {
+		// Para el Thread AgregarArchivosLista, al agregar/obtener el archivo en la BD, ya se puede agregar a la lista.
+		case WM_TAAL_AGREGARMEDIO :
+			Medio = reinterpret_cast<BDMedio *>(wParam);
+			Lista.AgregarMedio(Medio);
+			delete Medio;
+			break;
+		case WM_TAAL_TERMINADO:
+			ThreadArchivosLista.Terminar();
+			BarraTareas.Estado_SinProgreso();
+			BarraTareas.Resaltar();
+			Lista.Repintar();
+			Lista_Play();
+			break;
+		case WM_TBA_AGREGARRAIZ:
+			TmpStr = reinterpret_cast<std::wstring *>(lParam);
+			Arbol_AgregarRaiz(TmpStr);
+			delete TmpStr; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
+			break;
+		case WM_TBA_AGREGARDIR:
+			TmpStr = reinterpret_cast<std::wstring *>(lParam);
+			Arbol_AgregarDir(TmpStr, TRUE);
+			delete TmpStr; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
+			break;
+//		case WM_TBA_AGREGARAUDIO:
+//			Arbol_AgregarCancion(static_cast<size_t>(lParam));
+//			break;
+		case WM_TBA_TERMINADO:
+			ThreadActualizar.Terminar();
+			App.Menu_ArbolBD[2]->Activado(TRUE);
+			BarraTareas.Estado_SinProgreso();
+			BarraTareas.Resaltar();
+			Debug_Escribir_Varg(L"ThreadActualizarArbol::Terminado %d archivos encontrados\n", lParam);
+			break;
+
 		case WM_DROPFILES :
 			Evento_SoltarArchivos(wParam);
 			break;
@@ -756,7 +797,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			break;
 		case WM_EXITSIZEMOVE  :
 			if (App.VentanaRave.Maximizada() == FALSE) {
-				App.BD.Tabla_Opciones.GuardarPosTamVentana();
+				App.BD.Opciones_GuardarPosTamVentana();
 			}			
 			Debug_Escribir_Varg(L"WM_EXITSIZEMOVE %d, %d\n", wParam, lParam);
 			break;

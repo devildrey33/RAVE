@@ -1,7 +1,7 @@
 #pragma once
 
 #include "DListaEx.h"
-#include "TablaMedios.h"
+//#include "TablaMedios.h"
 
 class ItemMedio : public DWL::DListaEx_Item {
   public:
@@ -11,7 +11,7 @@ class ItemMedio : public DWL::DListaEx_Item {
     sqlite3_int64		Hash;
 };
 
-
+class BDMedio;
 
 class ListaMedios : public DWL::DListaEx {
   public:
@@ -19,7 +19,7 @@ class ListaMedios : public DWL::DListaEx {
 	                   ~ListaMedios(void);
 //	ItemMedio          *AgregarMedio(const int nIcono, const TCHAR *nPista, const TCHAR *nNombre, const TCHAR *nTiempo, const sqlite3_int64 nHash);
 
-	ItemMedio		   *AgregarMedio(TablaMedios_Medio *nMedio);
+	ItemMedio		   *AgregarMedio(BDMedio *nMedio);
 	void				BorrarListaReproduccion(void);
 
 	const BOOL			Mezclar(const BOOL nMezclar);

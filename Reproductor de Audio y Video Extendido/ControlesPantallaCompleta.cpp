@@ -29,7 +29,7 @@ void ControlesPantallaCompleta::Crear(void) {
 
 void ControlesPantallaCompleta::Mostrar(void) {
 	KillTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD);
-	SetTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD, App.BD.Tabla_Opciones.OcultarMouseEnVideo(), NULL);
+	SetTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD, App.BD.Opciones_OcultarMouseEnVideo(), NULL);
 
 
 //	if (_Visible == TRUE) return;
@@ -90,9 +90,9 @@ void ControlesPantallaCompleta::Evento_SliderTiempo_Cambiado(void) {
 }
 
 void ControlesPantallaCompleta::Evento_SliderVolumen_Cambiado(void) {
-	App.BD.Tabla_Opciones.Volumen(static_cast<int>(SliderVolumen.Valor()));
+	App.BD.Opciones_Volumen(static_cast<int>(SliderVolumen.Valor()));
 	KillTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD);
-	SetTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD, App.BD.Tabla_Opciones.OcultarMouseEnVideo(), NULL);
+	SetTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD, App.BD.Opciones_OcultarMouseEnVideo(), NULL);
 }
 
 void ControlesPantallaCompleta::Evento_SliderVolumen_Cambio(void) {
@@ -128,7 +128,7 @@ LRESULT CALLBACK ControlesPantallaCompleta::GestorMensajes(UINT uMsg, WPARAM wPa
 			DWL::DMouse::ObtenerPosicion(&nPos);
 			if (App.VentanaRave.MousePos.x != nPos.x || App.VentanaRave.MousePos.y != nPos.y) {
 				KillTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD);
-				SetTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD, App.BD.Tabla_Opciones.OcultarMouseEnVideo(), NULL);
+				SetTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD, App.BD.Opciones_OcultarMouseEnVideo(), NULL);
 				App.VentanaRave.MousePos = nPos;
 				Mostrar();
 			}

@@ -11,17 +11,11 @@
     <Filter Include="Ventanas">
       <UniqueIdentifier>{4d555157-3a23-462e-9ce5-e473bd34c533}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SQLite">
-      <UniqueIdentifier>{88d529a1-d778-4ae9-89ec-7a51bb694343}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Base de datos">
       <UniqueIdentifier>{baed088e-06fc-4d4c-9f1c-dbf645a7fd1c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Base de datos\Tipos">
       <UniqueIdentifier>{4c5f11bd-4580-436b-b452-8a4d30892da5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Base de datos\Tablas">
-      <UniqueIdentifier>{b01c45df-755c-4635-b28c-de20f9b326e6}</UniqueIdentifier>
     </Filter>
     <Filter Include="DWL\Ventanas">
       <UniqueIdentifier>{74eacee0-0026-4545-acb8-00698bac5642}</UniqueIdentifier>
@@ -149,6 +143,18 @@
     <Filter Include="xXx _MAIN_ xXx\ErrorCritico">
       <UniqueIdentifier>{642c9ab7-cb7e-4500-888b-8b66e18d4f7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Base de datos\SQLite">
+      <UniqueIdentifier>{88d529a1-d778-4ae9-89ec-7a51bb694343}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base de datos\Threads">
+      <UniqueIdentifier>{6853da57-9ca7-46e6-b3b2-b81af18b5c54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base de datos\Threads\ActualizarArbol">
+      <UniqueIdentifier>{65f25277-892e-4291-a618-7c65ad1fa449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base de datos\Threads\AgregarArchivosLista">
+      <UniqueIdentifier>{0dbc0e65-768e-4a1f-a201-096e4c7bafd8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -164,7 +170,7 @@
       <Filter>Ventanas</Filter>
     </ClInclude>
     <ClInclude Include="sqlite3.h">
-      <Filter>SQLite</Filter>
+      <Filter>Base de datos\SQLite</Filter>
     </ClInclude>
     <ClInclude Include="TDisco.h">
       <Filter>Base de datos\Tipos</Filter>
@@ -184,14 +190,8 @@
     <ClInclude Include="TTipo.h">
       <Filter>Base de datos\Tipos</Filter>
     </ClInclude>
-    <ClInclude Include="TablaRaiz.h">
-      <Filter>Base de datos\Tablas</Filter>
-    </ClInclude>
     <ClInclude Include="ExtensionesValidas.h">
       <Filter>Base de datos\Tipos</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseDatos.h">
-      <Filter>Base de datos</Filter>
     </ClInclude>
     <ClInclude Include="StrTp.h">
       <Filter>Base de datos\Tipos</Filter>
@@ -232,9 +232,6 @@
     <ClInclude Include="RaveVLC.h">
       <Filter>VLC</Filter>
     </ClInclude>
-    <ClInclude Include="TablaMedios.h">
-      <Filter>Base de datos\Tablas</Filter>
-    </ClInclude>
     <ClInclude Include="VerVideo.h">
       <Filter>Ventanas\Controles</Filter>
     </ClInclude>
@@ -249,12 +246,6 @@
     </ClInclude>
     <ClInclude Include="ControlesPantallaCompleta.h">
       <Filter>Ventanas\Controles</Filter>
-    </ClInclude>
-    <ClInclude Include="TablaOpciones.h">
-      <Filter>Base de datos\Tablas</Filter>
-    </ClInclude>
-    <ClInclude Include="TablaBase.h">
-      <Filter>Base de datos\Tablas</Filter>
     </ClInclude>
     <ClInclude Include="TODO.h">
       <Filter>A TODO</Filter>
@@ -386,6 +377,15 @@
     <ClInclude Include="VentanaErrorCritico.h">
       <Filter>Ventanas</Filter>
     </ClInclude>
+    <ClInclude Include="RaveBD.h">
+      <Filter>Base de datos</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadActualizarArbol.h">
+      <Filter>Base de datos\Threads\ActualizarArbol</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadAgregarArchivosLista.h">
+      <Filter>Base de datos\Threads\AgregarArchivosLista</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -398,16 +398,10 @@
       <Filter>Ventanas</Filter>
     </ClCompile>
     <ClCompile Include="sqlite3.c">
-      <Filter>SQLite</Filter>
-    </ClCompile>
-    <ClCompile Include="TablaRaiz.cpp">
-      <Filter>Base de datos\Tablas</Filter>
+      <Filter>Base de datos\SQLite</Filter>
     </ClCompile>
     <ClCompile Include="ExtensionesValidas.cpp">
       <Filter>Base de datos\Tipos</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseDatos.cpp">
-      <Filter>Base de datos</Filter>
     </ClCompile>
     <ClCompile Include="DUnidadesDisco.cpp">
       <Filter>DWL\Sistema\Unidades de Disco</Filter>
@@ -454,9 +448,6 @@
     <ClCompile Include="RaveVLC.cpp">
       <Filter>VLC</Filter>
     </ClCompile>
-    <ClCompile Include="TablaMedios.cpp">
-      <Filter>Base de datos\Tablas</Filter>
-    </ClCompile>
     <ClCompile Include="VerVideo.cpp">
       <Filter>Ventanas\Controles</Filter>
     </ClCompile>
@@ -471,12 +462,6 @@
     </ClCompile>
     <ClCompile Include="ControlesPantallaCompleta.cpp">
       <Filter>Ventanas\Controles</Filter>
-    </ClCompile>
-    <ClCompile Include="TablaOpciones.cpp">
-      <Filter>Base de datos\Tablas</Filter>
-    </ClCompile>
-    <ClCompile Include="TablaBase.cpp">
-      <Filter>Base de datos\Tablas</Filter>
     </ClCompile>
     <ClCompile Include="DToolTipEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\ToolTipEx</Filter>
@@ -577,6 +562,15 @@
     <ClCompile Include="MemoriaCompartida.cpp" />
     <ClCompile Include="VentanaErrorCritico.cpp">
       <Filter>Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="RaveBD.cpp">
+      <Filter>Base de datos</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadActualizarArbol.cpp">
+      <Filter>Base de datos\Threads\ActualizarArbol</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadAgregarArchivosLista.cpp">
+      <Filter>Base de datos\Threads\AgregarArchivosLista</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

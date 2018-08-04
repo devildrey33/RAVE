@@ -3,13 +3,13 @@
 #include "TDisco.h"
 
 enum Tipo_Medio {
-	Tipo_Medio_INDEFINIDO = -1,
+	Tipo_Medio_INDEFINIDO	= -1,
 	//	Tipo_Medio_PreAudio = 0,
-	Tipo_Medio_Audio = 1,
-	Tipo_Medio_Video = 2,
-	Tipo_Medio_CDAudio = 3,
-	Tipo_Medio_Lista = 4,
-	Tipo_Medio_Subtitulos = 5
+	Tipo_Medio_Audio		= 1,
+	Tipo_Medio_Video		= 2,
+	Tipo_Medio_CDAudio		= 3,
+	Tipo_Medio_Lista		= 4,
+	Tipo_Medio_Subtitulos	= 5
 };
 
 

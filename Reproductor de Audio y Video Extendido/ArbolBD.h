@@ -2,7 +2,7 @@
 
 #include "DArbolEx.h"
 #include "sqlite3.h"
-#include "TablaMedios.h"
+//#include "TablaMedios.h"
 
 enum ArbolBD_TipoNodo {
 	ArbolBD_TipoNodo_Indefinido = -1,
@@ -30,6 +30,7 @@ class NodoBD : public DWL::DArbolEx_Nodo {
   private :
 };
 
+class BDMedio;
 
 class ArbolBD : public DWL::DArbolEx {
   public:
@@ -38,7 +39,6 @@ class ArbolBD : public DWL::DArbolEx {
 	NodoBD		   *BuscarHash(sqlite3_int64 bHash);
 	NodoBD         *AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre, const TCHAR *cTexto, const sqlite3_int64 nHash = 0);
 	const BOOL      AgregarNodoALista(DWL::DArbolEx_Nodo *nNodo);
-
 
 					// Busca el primer nodo hijo que tiene el texto Buscar
 	NodoBD         *BuscarHijoTxt(std::wstring &Buscar, NodoBD *Padre = NULL);
@@ -50,7 +50,7 @@ class ArbolBD : public DWL::DArbolEx {
 	void			Evento_Nodo_Expandido(DWL::DArbolEx_Nodo *nNodo, const BOOL nExpandido);
 	void			Evento_MouseSoltado(DWL::DControlEx_EventoMouse &DatosMouse);
   protected:
-    void           _AgregarMedio(NodoBD *nPadre, TablaMedios_Medio *nMedio);
+    void           _AgregarMedio(NodoBD *nPadre, BDMedio *nMedio);
 
 };
 

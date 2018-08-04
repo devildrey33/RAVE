@@ -162,7 +162,6 @@
     <ClInclude Include="AsociarReproductor.h" />
     <ClInclude Include="BarraTiempo.h" />
     <ClInclude Include="BarraVolumen.h" />
-    <ClInclude Include="BaseDatos.h" />
     <ClInclude Include="DArbolEx.h" />
     <ClInclude Include="DArbolEx_Nodo.h" />
     <ClInclude Include="DBarraScrollEx.h" />
@@ -188,6 +187,7 @@
     <ClInclude Include="ListaRaices.h" />
     <ClInclude Include="MarcoOpciones.h" />
     <ClInclude Include="MemoriaCompartida.h" />
+    <ClInclude Include="RaveBD.h" />
     <ClInclude Include="RAVE_CuentaEmail.h" />
     <ClInclude Include="DBarraDesplazamientoEx.h" />
     <ClInclude Include="DBarraProgresoEx.h" />
@@ -220,14 +220,12 @@
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StrTp.h" />
-    <ClInclude Include="TablaBase.h" />
-    <ClInclude Include="TablaMedios.h" />
-    <ClInclude Include="TablaOpciones.h" />
-    <ClInclude Include="TablaRaiz.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TDisco.h" />
     <ClInclude Include="TGenero.h" />
     <ClInclude Include="TGrupo.h" />
+    <ClInclude Include="ThreadActualizarArbol.h" />
+    <ClInclude Include="ThreadAgregarArchivosLista.h" />
     <ClInclude Include="TMedio.h" />
     <ClInclude Include="DTrackBar.h" />
     <ClInclude Include="TODO.h" />
@@ -243,7 +241,6 @@
     <ClCompile Include="AsociarReproductor.cpp" />
     <ClCompile Include="BarraTiempo.cpp" />
     <ClCompile Include="BarraVolumen.cpp" />
-    <ClCompile Include="BaseDatos.cpp" />
     <ClCompile Include="ControlesPantallaCompleta.cpp" />
     <ClCompile Include="DArbolEx.cpp" />
     <ClCompile Include="DArbolEx_Nodo.cpp" />
@@ -291,6 +288,7 @@
     <ClCompile Include="MarcoOpciones.cpp" />
     <ClCompile Include="MemoriaCompartida.cpp" />
     <ClCompile Include="RAVE.cpp" />
+    <ClCompile Include="RaveBD.cpp" />
     <ClCompile Include="RaveVLC.cpp" />
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp" />
     <ClCompile Include="sqlite3.c">
@@ -305,11 +303,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TablaBase.cpp" />
-    <ClCompile Include="TablaMedios.cpp" />
-    <ClCompile Include="TablaOpciones.cpp" />
-    <ClCompile Include="TablaRaiz.cpp" />
     <ClCompile Include="DTrackBar.cpp" />
+    <ClCompile Include="ThreadActualizarArbol.cpp" />
+    <ClCompile Include="ThreadAgregarArchivosLista.cpp" />
     <ClCompile Include="VentanaErrorCritico.cpp" />
     <ClCompile Include="VentanaPrincipal.cpp" />
     <ClCompile Include="VerVideo.cpp" />

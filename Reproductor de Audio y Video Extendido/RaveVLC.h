@@ -1,9 +1,10 @@
 #pragma once
 
 //#include "..\vlc-2.2.1\Include\vlc\vlc.h"
-#include "vlc.hpp"
+
 #include <vector>
-#include "TMedio.h"
+#include "RaveBD.h"
+//#include "TMedio.h"
 
 
 #ifdef _WIN64
@@ -73,7 +74,6 @@ private:
 
 
 
-
 class RaveVLC {
   public:
 											RaveVLC(void);
@@ -89,7 +89,7 @@ class RaveVLC {
 
 //	void CALLBACK							EventosVLC(const libvlc_event_t* event, void* ptr);
 
-	const BOOL								AbrirMedio(TablaMedios_Medio &Medio);
+	const BOOL								AbrirMedio(BDMedio &Medio);
 	void									CerrarMedio(void);
 
 	const BOOL								Play(void);
@@ -113,7 +113,8 @@ class RaveVLC {
 	//	void									TiempoStrL(UINT64 TMS, wchar_t *StrTiempo);
 
 	void									ActualizarIconos(int nIcono);
-	TablaMedios_Medio                       MedioActual;
+	
+	BDMedio			                        MedioActual;
 
 	UINT64                                  TiempoTotal;
 
@@ -123,5 +124,10 @@ class RaveVLC {
 	static BOOL CALLBACK					EnumeracionVLC(HWND hWndWnd, LPARAM lParam);
 
 	HWND									hWndVLC;
+
+
+
+	static void								audio_prerendercb(void* data, unsigned char** buffer, size_t size);
+	static void								audio_postrendercb(void* data, unsigned char* buffer, unsigned int channels, unsigned int rate, unsigned int nb_samples, unsigned int bits_per_sample, size_t size, int64_t pts);
 };
 
