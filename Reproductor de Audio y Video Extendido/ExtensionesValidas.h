@@ -71,7 +71,9 @@ enum Extension_Medio {
 	
 	Extension_CRODOWNLOAD,
 	Extension_OPDOWNLOAD,
-	Extension_SRT
+	Extension_SRT,
+	// Ultima extensión
+	Extension_FINAL
 };
 
 class ExtensionesValidas {
@@ -79,5 +81,6 @@ class ExtensionesValidas {
 									ExtensionesValidas(void);
 								   ~ExtensionesValidas(void);
 	static const Extension_Medio	ObtenerExtension(const wchar_t *Extension);
-	static const Tipo_Medio			OtenerTipoMedio(const Extension_Medio Extension);
+	static const Tipo_Medio			ObtenerTipoMedio(const Extension_Medio Extension);
+	static const wchar_t           *ExtensionStr(const Extension_Medio Extension);
 };

@@ -380,7 +380,7 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 	size_t				PosNombre		= nPath.find_last_of(TEXT("\\"));																					// Posición donde empieza el nombre
 	size_t				PosExtension	= nPath.find_last_of(TEXT("."));																					// Posición donde empieza la extensión
 	Extension_Medio		Extension		= ExtensionesValidas::ObtenerExtension(nPath.substr(PosExtension + 1, (nPath.size() - PosExtension) - 1).c_str());	// Obtengo el tipo de extensión
-	Tipo_Medio			Tipo			= ExtensionesValidas::OtenerTipoMedio(Extension);																	// Obtengo el tipo de medio
+	Tipo_Medio			Tipo			= ExtensionesValidas::ObtenerTipoMedio(Extension);																	// Obtengo el tipo de medio
 	sqlite3_int64		Hash			= CrearHash(UnidadDisco->Numero_Serie(), PathCortado);																// Creo un hash partiendo del path y el número de serie del disco
 	UINT				Pista			= 0;																												// Número de pista
 	std::wstring		TmpNombre;

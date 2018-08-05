@@ -639,13 +639,6 @@ void VentanaPrincipal::Evento_SoltarArchivos(WPARAM wParam) {
 
 
 NodoBD *VentanaPrincipal::Arbol_AgregarRaiz(std::wstring *Path) {
-	// Busca si existe la raiz
-	/*	BOOL Ret = TRUE;
-	if (!App.VentanaRave.Arbol.BuscarTexto(*Path, NULL, FALSE))		App.VentanaRave.Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Raiz, NULL, Path->c_str());
-	else	                                                   		Ret = FALSE;
-	delete Path;
-	return Ret;*/
-
 	// Solo crea la raiz
 	NodoBD *Tmp = Arbol.BuscarHijoTxt(*Path);
 	if (Tmp == NULL) {
@@ -653,9 +646,9 @@ NodoBD *VentanaPrincipal::Arbol_AgregarRaiz(std::wstring *Path) {
 		Tmp->Expandido = TRUE;
 		Arbol.Repintar();
 	}
-	//	delete Path; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
 	return Tmp;
 }
+
 
 NodoBD *VentanaPrincipal::Arbol_AgregarDir(std::wstring *Path, const BOOL nRepintar) {
 	BDRaiz *Raiz = App.BD.BuscarRaiz(*Path);
@@ -727,11 +720,43 @@ void VentanaPrincipal::ActualizarArbol(void) {
 	ThreadActualizar.Iniciar(hWnd());
 }
 
+// Agrega un medio desde el explorador (haciendo dobleclick o desde el menú)
+void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
+	std::wstring Param;
+	App.MemCompartida.Leer(Param);
+	BDMedio Medio;
+	if (App.BD.ObtenerMedio(Param, Medio) == FALSE) {
+		if (App.BD.AnalizarMedio(Param, Medio, 0) == FALSE) return;
+	}
+
+	Debug_Escribir_Varg(L"VentanaPrincipal::ExploradorAgregarMedio : %s\n", Param.c_str());
+	Lista.AgregarMedio(&Medio);
+	Lista.Repintar();
+
+	if (Reproducir == TRUE) {
+		ItemMedio *Item = Lista.BuscarHash(Medio.Hash);
+		for (size_t i = 0; i < Lista.TotalItems(); i++) {
+			if (Item == Lista.Medio(i)) {
+				Lista.MedioActual = i;
+				break;
+			}
+		}		
+		Lista_Play();
+	}
+}
+
 
 LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	std::wstring *TmpStr = NULL;
 	BDMedio *Medio = NULL;
 	switch (uMsg) {
+		case WM_AGREGARMEDIO :
+			ExploradorAgregarMedio(FALSE);
+			break;
+		case WM_REPRODUCIRMEDIO :
+			ExploradorAgregarMedio(TRUE);
+			break;
+
 		// Para el Thread AgregarArchivosLista, al agregar/obtener el archivo en la BD, ya se puede agregar a la lista.
 		case WM_TAAL_AGREGARMEDIO :
 			Medio = reinterpret_cast<BDMedio *>(wParam);

@@ -113,7 +113,7 @@ namespace DWL {
 		DWORD dw = GetLastError();
 		if (dw == 0) {
 			ReleaseMutex(_Mutex);
-			EscribirMS(L"GetLastError() : Sin errores.\n");
+			//EscribirMS(L"GetLastError() : Sin errores.\n");
 			return FALSE;
 		}
 

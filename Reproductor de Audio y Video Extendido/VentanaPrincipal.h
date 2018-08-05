@@ -84,7 +84,7 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						Lista_Pausa(void);
 	void						Lista_Stop(void);
 
-
+	void						ExploradorAgregarMedio(const BOOL Reproducir);
 
 	DWL::DButton				BotonPlay;
 	DWL::DButton				BotonPausa;

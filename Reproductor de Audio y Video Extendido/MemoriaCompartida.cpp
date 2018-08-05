@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "MemoriaCompartida.h"
 
-#define TAM_BUFFER 4096 * 8
+#define TAM_BUFFER 4096 * sizeof(wchar_t)
 
 MemoriaCompartida::MemoriaCompartida(void) : _hMapFile(NULL) {
 }
@@ -96,8 +96,8 @@ const BOOL MemoriaCompartida::Escribir(std::wstring &Texto) {
 		Debug_MostrarUltimoError();
 		return FALSE;
 	}
-
-	CopyMemory((PVOID)pBuf, Texto.c_str(), (Texto.size() * sizeof(TCHAR)));
+	ZeroMemory((PVOID)pBuf, TAM_BUFFER);
+	CopyMemory((PVOID)pBuf, Texto.c_str(), (Texto.size() * sizeof(wchar_t)));
 
 	UnmapViewOfFile(pBuf);
 

@@ -22,9 +22,10 @@
 				-  Al final necesita un backbuffer per poguer pintar el texte en un espai limitat 
 		v  Clase DTemporizador per crear timers sense necesitat de finestra
 	RAVE 0.4
-		-  Asociacions d'arxius amb l'explorador
+		V  Asociacions d'arxius amb l'explorador
+			- Falta comprobar les asosiacions i mostrar un dialeg com el del bubatronik
 	   +o- Shuffle / repeat (apagar windows sobretot)
-		+  Dialeg/finestra per afegir/eliminar arrels
+	   +o- Dialeg/finestra per afegir/eliminar arrels
 		-  Menu per la llista
 
 */

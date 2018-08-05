@@ -12,13 +12,17 @@
 #include <stdlib.h>
 #include "MemoriaCompartida.h"
 #include "RaveBD.h"
+#include "AsociarReproductor.h"
 
 using namespace DWL;
 
 enum LineaComando {
-	LineaComando_Nada,			// Sin parámetros extra
-	LineaComando_Path,			// Viene con uno o varios paths
-	LineaComando_ErrorCritico	// Mostrar ventana de error crítico
+	LineaComando_Nada,					// Sin parámetros extra
+	LineaComando_Path,					// Viene con uno o varios paths
+	LineaComando_ErrorCritico,			// Mostrar ventana de error crítico
+	LineaComando_AsociarArchivos,		// Ejecuta una instancia de RAVE con permisos de administración para agregar las asociaciones de los medios en el registro de windows.
+	LineaComando_DesasociarArchivos,	// Ejecuta una instancia de RAVE con permisos de administración para eliminar las asociaciones del registro de windows.
+	LineaComando_Reproducir				// Reproduce el medio especificado en el segundo parámetro
 };
 
 enum SOCerrarSistema {
@@ -73,9 +77,13 @@ class RAVE {
 	VentanaErrorCritico				VentanaErrorCrit;
 
 	std::wstring					SO;
+									// Directorio de la aplicación, Siempre termina con "\"
 	std::wstring					AppPath;
 
 	MemoriaCompartida               MemCompartida;
+
+									// Objeto para asociar este reproductor en el registro de windows
+	AsociarReproductor				AsociarMedios;
 };
 
 extern RAVE *_APLICACION;

@@ -8,10 +8,9 @@ class AsociarReproductor {
 	                   ~AsociarReproductor();
 						// Registra la aplicación y asigna las extensiones
 	void				RegistrarApp(void);
+						// Elimina las associaciones de archivo y los datos de la aplicación (en el registro de windows)
+	void				DesRegistrarApp(void);
 						// Comprueba si las asociaciones de los medios en el explorador ejecutaran este reproductor
 	const BOOL          ComprobarAsociaciones(void);
-						// Des-Registra la aplicación y elimina las extensiones
-	void				DesRegistrarApp(void);
-
 };
 

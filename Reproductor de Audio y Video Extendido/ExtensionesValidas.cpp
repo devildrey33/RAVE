@@ -71,10 +71,9 @@ const Extension_Medio ExtensionesValidas::ObtenerExtension(const wchar_t *Extens
 		
 
 	return Extension_NOSOPORTADA;
-
 }
 
-const Tipo_Medio ExtensionesValidas::OtenerTipoMedio(const Extension_Medio Extension) {
+const Tipo_Medio ExtensionesValidas::ObtenerTipoMedio(const Extension_Medio Extension) {
 	switch (Extension) {
 		case Extension_ASF:		case Extension_AMV:		case Extension_AVI:		case Extension_DIVX:	case Extension_DV:		case Extension_FLV:		case Extension_GXF:		case Extension_IT:	
 		case Extension_MKV:		case Extension_MOV:		case Extension_MPEG:	case Extension_MPG:		case Extension_MPV:		case Extension_MPEG1:	case Extension_MPEG2:	case Extension_MPEG4:
@@ -94,4 +93,67 @@ const Tipo_Medio ExtensionesValidas::OtenerTipoMedio(const Extension_Medio Exten
 			return Tipo_Medio_Subtitulos;
 	}
 	return Tipo_Medio_INDEFINIDO;
+}
+
+const wchar_t *ExtensionesValidas::ExtensionStr(const Extension_Medio Extension) {
+	switch (Extension) {
+		case Extension_ASF			:	return L"ASF";
+		case Extension_AMV			:	return L"AMV";
+		case Extension_AVI			:	return L"AVI";
+		case Extension_CDA			:	return L"CDA";
+		case Extension_DIVX			:	return L"DIVX";
+		case Extension_DV			:	return L"DV";
+		case Extension_FLAC			:	return L"FLAC";
+		case Extension_FLV			:	return L"FLV";
+		case Extension_GXF			:	return L"GXF";
+		case Extension_IT			:	return L"IT";
+		case Extension_MKV			:	return L"MKV";
+		case Extension_MID			:	return L"MID";
+		case Extension_MOV			:	return L"MOV";
+		case Extension_MPEG			:	return L"MPEG";
+		case Extension_MPG			:	return L"MPG";
+		case Extension_MPV			:	return L"MPV";
+		case Extension_MPEG1		:	return L"MPEG1";
+		case Extension_MPEG2		:	return L"MPEG2";
+		case Extension_MPEG4		:	return L"MPEG4";
+		case Extension_MPE			:	return L"MPE";
+		case Extension_MP2			:	return L"MP2";
+		case Extension_MP3			:	return L"MP3";
+		case Extension_MP4			:	return L"MP4";
+		case Extension_MP4V			:	return L"MP4V";
+		case Extension_MTS			:	return L"MTS";
+		case Extension_MXF			:	return L"MXF";
+		case Extension_M1V			:	return L"M1V";
+		case Extension_M2T			:	return L"M2T";
+		case Extension_M2TS			:	return L"M2TS";
+		case Extension_M2V			:	return L"M2V";
+		case Extension_M3U			:	return L"M3U";
+		case Extension_M4V			:	return L"M4V";
+		case Extension_MOD			:	return L"MOD";
+		case Extension_NSV			:	return L"NSV";
+		case Extension_NUV			:	return L"NUV";
+		case Extension_OGG			:	return L"OGG";
+		case Extension_OGM			:	return L"OGM";
+		case Extension_OGV			:	return L"OGV";
+		case Extension_OGX			:	return L"OGX";
+		case Extension_PS			:	return L"PS";
+		case Extension_RM			:	return L"RM";
+		case Extension_RMVB			:	return L"RMVB";
+		case Extension_SDP			:	return L"SDP";
+		case Extension_S3M			:	return L"S3M";
+		case Extension_TOD			:	return L"TOD";
+		case Extension_TS			:	return L"TS";
+		case Extension_VOB			:	return L"VOB";
+		case Extension_VRO			:	return L"VRO";
+		case Extension_WAV			:	return L"WAV";
+		case Extension_WEBM			:	return L"WEBM";
+		case Extension_WMA			:	return L"WMA";
+		case Extension_WMV			:	return L"WMV";
+		case Extension_XM			:	return L"XM";
+
+		case Extension_CRODOWNLOAD	:	return L"CRODOWNLOAD";
+		case Extension_OPDOWNLOAD	:	return L"OPDOWNLOAD";
+		case Extension_SRT			:	return L"SRT";
+	}
+	return L"";
 }

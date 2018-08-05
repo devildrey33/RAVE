@@ -29,6 +29,14 @@
 		const size_t DString_ContarCaracter(std::wstring &Texto, wchar_t Caracter);
 
 
+		/* Convierte cualquier tipo básico a cadena, se puede especificar si se quiere un número fijo de digitos */
+		template <typename T> std::wstring DString_ToStrF(T Tmp, int Decimales = 0) {
+			std::wostringstream out;
+			out << std::fixed << std::setprecision(2) << Tmp;
+			return out.str();
+		}
+
+
 
 		/* Convierte cualquier tipo básico a cadena, se puede especificar si se quiere un número fijo de digitos */
 		template <typename T> std::wstring DString_ToStr(T Tmp, int Digitos = 0) {

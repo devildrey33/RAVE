@@ -62,8 +62,8 @@ LONG DRegistro::ObtenerValor_String(HKEY Root, const TCHAR *Key, const TCHAR *No
 // static LONG ObtenerValor_String(HKEY Root, const TCHAR *Key, const TCHAR *Nombre, std::wstring &Resultado);
 LONG DRegistro::ObtenerValor_String(HKEY Root, const TCHAR *Key, const TCHAR *Nombre, std::wstring &Resultado) {
 	HKEY			hParentKey;													// Clave a abrir
-	TCHAR			Tmp[1024] = TEXT("");									    // String temporal
-	DWORD			Tam = 1024;
+	static TCHAR	Tmp[2048] = TEXT("");									    // String temporal
+	DWORD			Tam = 2048;
 	RegOpenKeyEx(Root, Key, 0, KEY_READ, &hParentKey);							// Abro la clave
 	LONG Ret = RegQueryValueEx(hParentKey, Nombre, 0, NULL, (BYTE *)Tmp, &Tam);	// Obtengo los datos
 	RegCloseKey(hParentKey);													// Cierro la Clave

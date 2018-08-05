@@ -2,13 +2,16 @@
 
 #include "DUnidadesDisco.h"
 #include "vlc.hpp"
-
+// Thread actualizar BD
 #define WM_TBA_AGREGARDIR			WM_USER + 2000
 #define WM_TBA_AGREGARRAIZ			WM_USER + 2001
-#define WM_TBA_TERMINADO			WM_USER + 2003
-
-#define WM_TAAL_AGREGARMEDIO		WM_USER + 2010
-#define WM_TAAL_TERMINADO			WM_USER + 2011
+#define WM_TBA_TERMINADO			WM_USER + 2002
+// Agregar un medio desde el explorador (dobleclick o menu)
+#define WM_AGREGARMEDIO				WM_USER + 2003
+#define WM_REPRODUCIRMEDIO			WM_USER + 2004
+// Thread agregar medios externos
+#define WM_TAAL_AGREGARMEDIO		WM_USER + 2005
+#define WM_TAAL_TERMINADO			WM_USER + 2006
 
 
 // clase que engloba una raíz
@@ -80,18 +83,13 @@ class RaveBD {
 	const BOOL              AnalizarMedio(std::wstring &mPath, BDMedio &OUT_Medio, const ULONG Longitud = 0);
 
 							// Agrega / Obtiene el Medio de la BD, y lo devuelve.
-	const BOOL				AgregarObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio);
-
-							// Agrega uno o mas medios a la BD y luego los añade a la lista de medios a reproducir
-							// (Esta función se utiliza al soltar archivos en la ventana del reproductor, o al pasarle como argumento inicial uno o mas archivos)
-	void					AgregarMediosExternos(std::vector<std::wstring> &In_Paths);
+//	const BOOL				AgregarObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio);
 
 							// Obtiene un puntero con los datos del medio en la BD (Si el medio no existe devuelve FALSE)
 	const BOOL				ObtenerMedio(const sqlite3_int64 mHash, BDMedio &OUT_Medio);
 	const BOOL				ObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio);
 
 	const BOOL              AsignarTiempoMedio(const libvlc_time_t nTiempo, const sqlite3_int64 mHash);
-
 							
 							// Funciones para buscar una raíz por su path o por su id
 	BDRaiz                 *BuscarRaiz(std::wstring &nPath);

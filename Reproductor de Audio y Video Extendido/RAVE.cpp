@@ -3,6 +3,7 @@
 #include "resource.h"
 #include <Shellapi.h>
 #include <versionhelpers.h>
+#include <Shlobj.h>
 
 #define MUTEX_RAVE L"Mutex_RAVE"
 
@@ -30,10 +31,6 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 	// De esta forma cuando se inicia el reproductor, este espera a que el anterior termine completamente de cargarse.
 	MutexPlayer = OpenMutex(NULL, FALSE, MUTEX_RAVE);
 	if (MutexPlayer == NULL) {
-		// Compruebo si existe una ventana del reproductor, para determinar si este será el reproductor principal
-		if (FindWindow(L"RAVE_VentanaPrincipal", NULL) == NULL) {
-			PlayerInicial = TRUE;
-		}
 		// Creo un mutex para ejecutar ordenadamente otras instancias de este mismo reproductor
 		MutexPlayer = CreateMutex(NULL, FALSE, MUTEX_RAVE);
 	}
@@ -43,9 +40,17 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 	DWORD r = WaitForSingleObject(MutexPlayer, INFINITE);                                               //
 	//////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	// Compruebo si no existe una ventana del reproductor, para determinar si este será el reproductor principal
+	HWND hWndPlayer = FindWindow(L"RAVE_VentanaPrincipal", NULL);
+	if (hWndPlayer == NULL) {
+		PlayerInicial = TRUE;
+	}
+
+
 	// Obtengo el directorio actual de la aplicación, para ello debo obtener el path del ejecutable, y recortarlo
 	TCHAR PathApp[1024];
 	DWORD Size = GetModuleFileName(NULL, PathApp, 1024);
+	std::wstring AppExe = PathApp;
 	for (Size; Size > 0; Size--) {
 		if (PathApp[Size] == TCHAR('\\')) {
 			PathApp[Size + 1] = 0;
@@ -54,18 +59,25 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 		}
 	}
 		
+	// Consola para mensajes de depuración
+	#ifdef RAVE_MOSTRAR_CONSOLA
+		ConsolaDebug.Crear(L"Consola de depuración");
+		Debug_Escribir(L"RAVE::Iniciar\n");
+	#endif
+
 	// Aseguro que el directorio actual sea el del player
 	SetCurrentDirectory(AppPath.c_str());
-	Debug_Escribir_Varg(L"Path del ejecutable : %s.\n", AppPath.c_str());
+	Debug_Escribir_Varg(L"Path del ejecutable : %s\n", AppPath.c_str());
+
+	// Simulo que el path del reproductor está en C:\ProgramFiles\Rave
+	#ifdef RAVE_SIMULAR_APPPATH
+		AppPath = L"C:\\ProgramFiles\\RAVE\\";
+		Debug_Escribir(L"Simulando AppPath en : C:\\ProgramFiles\\Rave\\\n");
+	#endif
 
 	// Obtengo el sistema operativo (NO FUNCIONA BIEN A PARTIR DE WIN 8)
 	ObtenerSO();
 
-	// Consola para mensajes de depuración
-#ifdef RAVE_MOSTRAR_CONSOLA
-	ConsolaDebug.Crear(L"Consola de depuración");
-	Debug_Escribir_Varg(L"RAVE::Iniciar en %s\n", AppPath.c_str());
-#endif
 
 	// Inicializo la librería COM (para el TaskBarList)
 	CoInitializeEx(0, COINIT_MULTITHREADED);
@@ -99,8 +111,13 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 		// Ejecución normal sin parámetros
 		case LineaComando_Nada :
 		case LineaComando_Path :
+		case LineaComando_Reproducir :
 			// Si ya existe un reproductor activo, salgo
 			if (PlayerInicial == FALSE) {				
+				if (Paths.size() > 0) {
+					MemCompartida.Escribir(Paths[Paths.size() - 1]);					
+					SendMessage(hWndPlayer, (Paths[0] == L"-r") ? WM_REPRODUCIRMEDIO : WM_AGREGARMEDIO, 0, 0);
+				}
 				Ret = FALSE;
 				break;
 			}
@@ -110,13 +127,9 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 
 			IniciarUI(nCmdShow);
 
-//			Ret = BD.Tabla_Raiz.Argerar_Raiz(TEXT("D:\\MP3"));
-//			Ret = BD.Tabla_Raiz.Argerar_Raiz(TEXT("D:\\Pelis i Series"));
-			//BD.ActualizarArbol();
-
 			if (Paths.size() > 0) {
 				// Agrega los paths a la lista de medios
-				//VentanaRave.Lista.AgregarMedio();
+				VentanaRave.ThreadArchivosLista.Iniciar(VentanaRave.hWnd(), Paths);
 			}
 			else {
 				// Inicia la acción por defecto al empezar
@@ -130,6 +143,22 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 			VentanaErrorCrit.Crear();
 			ReleaseMutex(MutexPlayer);
 			Ret = TRUE;
+			break;
+
+		// Crea las asociaciones con todas las extensiones aceptadas, y registra la aplicación RAVE
+		case LineaComando_AsociarArchivos:
+			// Si esta aplicación no tiene privilegios de administración, ejecuto una nueva instancia que pedirá privilegios de administración
+			if (IsUserAnAdmin() == FALSE)	{	ShellExecute(NULL, TEXT("RunAs"), AppExe.c_str(), TEXT("-AsociarArchivos"), AppPath.c_str(), SW_SHOWNORMAL);		}
+			else							{	AsociarMedios.RegistrarApp();																						}
+			Ret = FALSE;
+			break;
+
+		// Elimina todos los datos del registro referentes a RAVE, y carga las copias de seguridad
+		case LineaComando_DesasociarArchivos:
+			// Si esta aplicación no tiene privilegios de administración, ejecuto una nueva instancia que pedirá privilegios de administración
+			if (IsUserAnAdmin() == FALSE)	{	ShellExecute(NULL, TEXT("RunAs"), AppExe.c_str(), TEXT("-DesasociarArchivos"), AppPath.c_str(), SW_SHOWNORMAL);	}
+			else							{	AsociarMedios.DesRegistrarApp();																					}
+			Ret = FALSE;
 			break;
 
 		default :
@@ -255,8 +284,8 @@ const LineaComando RAVE::ObtenerLineaComando(std::vector<std::wstring> &Paths) {
 	// Si hay parámetros
 	if (TotalArgs > 1) {
 		// Guardo los argumentos en el vector Paths
-		for (int i = 0; i < TotalArgs -1; i++) {
-			Paths.push_back(Args[i + 1]);
+		for (int i = 1; i < TotalArgs; i++) {
+			Paths.push_back(Args[i]);
 		}
 
 		if (Paths[0][0] == L'-') {
@@ -264,13 +293,14 @@ const LineaComando RAVE::ObtenerLineaComando(std::vector<std::wstring> &Paths) {
 			if (Paths[0] == L"-MostrarErrorCritico") {
 				Ret = LineaComando_ErrorCritico;
 			}
-
 			else if (Paths[0] == L"-AsociarArchivos") {
-
+				Ret = LineaComando_AsociarArchivos;
 			}
-
 			else if (Paths[0] == L"-DesAsociarArchivos") {
-
+				Ret = LineaComando_DesasociarArchivos;
+			}
+			else if (Paths[0] == L"-r") {
+				Ret = LineaComando_Reproducir;
 			}
 		}
 		else {
