@@ -179,3 +179,25 @@ ______    _ _      _          _______        _        ______
 #define COLOR_EDICION_SELECCION						COLOR_ROJO
 #define COLOR_EDICION_SELECCION_TEXTO				RGB(230, 230, 230)
 #define COLOR_EDICION_SELECCION_TEXTO_SOMBRA		RGB( 64,  64,  64)
+
+
+
+/*
+  __  __                  ______      
+ |  \/  |                |  ____|     
+ | \  / | ___ _ __  _   _| |__  __  __
+ | |\/| |/ _ \ '_ \| | | |  __| \ \/ /
+ | |  | |  __/ | | | |_| | |____ >  < 
+ |_|  |_|\___|_| |_|\__,_|______/_/\_\
+                                      
+*/                                      
+
+#define COLOR_MENU_BORDE                            COLOR_BORDE
+#define COLOR_MENU_FONDO							COLOR_FONDO
+#define COLOR_MENU_FONDO_RESALTADO					COLOR_ROJO_RESALTADO
+#define COLOR_MENU_FONDO_PRESIONADO					COLOR_ROJO_PRESIONADO
+#define COLOR_MENU_TEXTO							COLOR_TEXTO
+#define COLOR_MENU_TEXTO_SOMBRA						COLOR_TEXTO_SOMBRA
+#define COLOR_MENU_TEXTO_RESALTADO					COLOR_TEXTO_RESALTADO
+#define COLOR_MENU_TEXTO_PRESIONADO					COLOR_TEXTO_PRESIONADO
+#define COLOR_MENU_TEXTO_DESACTIVADO				COLOR_TEXTO_DESACTIVADO

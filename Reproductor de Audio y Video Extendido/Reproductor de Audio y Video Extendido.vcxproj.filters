@@ -86,14 +86,8 @@
     <Filter Include="DWL\Ventanas\ControlesEx\ArbolEx">
       <UniqueIdentifier>{88c21413-ab56-4b0b-bdee-4770a2f7636e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\Extensiones">
-      <UniqueIdentifier>{dcdeb678-6ac4-415f-b635-e7f19a3ec517}</UniqueIdentifier>
-    </Filter>
     <Filter Include="xXx _MAIN_ xXx">
       <UniqueIdentifier>{33c10cc3-7f24-444b-9777-dac5a9b6874d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DTablaEx, etc...%29">
-      <UniqueIdentifier>{48db754e-13be-43af-8b55-4b4c51d6a432}</UniqueIdentifier>
     </Filter>
     <Filter Include="DWL\Ventanas\ControlesEx\ListaEx">
       <UniqueIdentifier>{10c2859e-f7d4-40cd-8923-0287f6759530}</UniqueIdentifier>
@@ -155,6 +149,15 @@
     <Filter Include="Base de datos\Threads\AgregarArchivosLista">
       <UniqueIdentifier>{0dbc0e65-768e-4a1f-a201-096e4c7bafd8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\MenuEx">
+      <UniqueIdentifier>{94fe7c69-6e5c-4393-84c7-94eb74bcc7ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29">
+      <UniqueIdentifier>{48db754e-13be-43af-8b55-4b4c51d6a432}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\Eventos">
+      <UniqueIdentifier>{89375de0-fa16-44d6-8c74-09d2f8fbd387}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -172,28 +175,7 @@
     <ClInclude Include="sqlite3.h">
       <Filter>Base de datos\SQLite</Filter>
     </ClInclude>
-    <ClInclude Include="TDisco.h">
-      <Filter>Base de datos\Tipos</Filter>
-    </ClInclude>
-    <ClInclude Include="TGenero.h">
-      <Filter>Base de datos\Tipos</Filter>
-    </ClInclude>
-    <ClInclude Include="TGrupo.h">
-      <Filter>Base de datos\Tipos</Filter>
-    </ClInclude>
-    <ClInclude Include="TMedio.h">
-      <Filter>Base de datos\Tipos</Filter>
-    </ClInclude>
-    <ClInclude Include="TRaiz.h">
-      <Filter>Base de datos\Tipos</Filter>
-    </ClInclude>
-    <ClInclude Include="TTipo.h">
-      <Filter>Base de datos\Tipos</Filter>
-    </ClInclude>
     <ClInclude Include="ExtensionesValidas.h">
-      <Filter>Base de datos\Tipos</Filter>
-    </ClInclude>
-    <ClInclude Include="StrTp.h">
       <Filter>Base de datos\Tipos</Filter>
     </ClInclude>
     <ClInclude Include="DDirectoriosWindows.h">
@@ -296,10 +278,10 @@
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
     </ClInclude>
     <ClInclude Include="DListaIconos.h">
-      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DTablaEx, etc...%29</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29</Filter>
     </ClInclude>
     <ClInclude Include="DListaIconos_Icono.h">
-      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DTablaEx, etc...%29</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29</Filter>
     </ClInclude>
     <ClInclude Include="DControlEx.h">
       <Filter>DWL\Ventanas\ControlesEx</Filter>
@@ -346,9 +328,6 @@
     <ClInclude Include="DDlgDirectorios.h">
       <Filter>DWL\Ventanas\Dialogos Comunes\DlgDirectorios</Filter>
     </ClInclude>
-    <ClInclude Include="DControlEx_EventoMouse.h">
-      <Filter>DWL\Ventanas\ControlesEx</Filter>
-    </ClInclude>
     <ClInclude Include="DRegistro.h">
       <Filter>DWL\Sistema\Registro Windows</Filter>
     </ClInclude>
@@ -385,6 +364,12 @@
     </ClInclude>
     <ClInclude Include="ThreadAgregarArchivosLista.h">
       <Filter>Base de datos\Threads\AgregarArchivosLista</Filter>
+    </ClInclude>
+    <ClInclude Include="DMenuEx.h">
+      <Filter>DWL\Ventanas\ControlesEx\MenuEx</Filter>
+    </ClInclude>
+    <ClInclude Include="DEventoMouse.h">
+      <Filter>DWL\Ventanas\Eventos</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -497,7 +482,7 @@
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
     </ClCompile>
     <ClCompile Include="DListaIconos.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DTablaEx, etc...%29</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29</Filter>
     </ClCompile>
     <ClCompile Include="DArbolEx_Nodo.cpp">
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
@@ -571,6 +556,9 @@
     </ClCompile>
     <ClCompile Include="ThreadAgregarArchivosLista.cpp">
       <Filter>Base de datos\Threads\AgregarArchivosLista</Filter>
+    </ClCompile>
+    <ClCompile Include="DMenuEx.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\MenuEx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

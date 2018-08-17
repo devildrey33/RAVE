@@ -585,7 +585,7 @@ namespace DWL {
 	}
 
 	void DListaEx::_Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam) {
-		DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)));
+		DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)));
 //		_mX = cX; _mY = cY;
 		// Utilizo la función _MouseEntrando() para poder recibir los mensajes WM_MOUSELEAVE
 		BOOL bME = _MouseEntrando();
@@ -612,7 +612,7 @@ namespace DWL {
 	}
 
 	void DListaEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {
-		DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
 		SetFocus(hWnd());
 		if (Scrolls_MousePresionado(DatosMouse) == TRUE) { return; }
 
@@ -636,7 +636,7 @@ namespace DWL {
 	}
 
 	void DListaEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
-		DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
 
 		if (Scrolls_MouseSoltado(DatosMouse) == TRUE) { return; }
 
@@ -796,7 +796,7 @@ namespace DWL {
 	}
 
 	void DListaEx::_Evento_MouseDobleClick(const int Boton, WPARAM wParam, LPARAM lParam) {
-		DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
 		Evento_MouseDobleClick(DatosMouse);
 
 //		Evento_MouseDobleClick(Boton, cX, cY, Param);

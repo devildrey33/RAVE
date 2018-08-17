@@ -107,6 +107,12 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 		}
 	#endif
 
+	Gdiplus::GdiplusStartupInput	gdiplusStartupInput;
+	
+
+	// Initialize GDI+.
+	Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+
 	switch (LC) {
 		// Ejecución normal sin parámetros
 		case LineaComando_Nada :
@@ -180,22 +186,38 @@ void RAVE::IniciarUI(int nCmdShow) {
 
 	// Menu Arbol BD
 	Menu_ArbolBD.CrearMenu();
-	Menu_ArbolBD.CrearMenuItem(ID_MENUBD_AGREGARALISTA, L"Añadir a lista");
-	Menu_ArbolBD.CrearMenuItem(ID_MENUBD_AGREGARANUEVALISTA, L"Añadir a una nueva lista");
-	Menu_ArbolBD.CrearMenuItem(ID_MENUBD_ACTUALIZAR, L"Actualizar");
+	Menu_ArbolBD.CrearMenuItem(ID_MENUBD_AGREGARALISTA		, L"Añadir a lista");
+	Menu_ArbolBD.CrearMenuItem(ID_MENUBD_AGREGARANUEVALISTA	, L"Añadir a una nueva lista");
+	Menu_ArbolBD.CrearMenuItem(ID_MENUBD_ACTUALIZAR			, L"Actualizar");
 
 	// Menu Mezclar (shufle)
 	Menu_Mezclar.CrearMenu();
-	Menu_Mezclar.CrearMenuItem(ID_MENUMEZCLAR_NO, L"NO Mezclar");
-	Menu_Mezclar.CrearMenuItem(ID_MENUMEZCLAR_SI, L"Mezclar");
+	Menu_Mezclar.CrearMenuItem(ID_MENUMEZCLAR_NO			, L"NO Mezclar");
+	Menu_Mezclar.CrearMenuItem(ID_MENUMEZCLAR_SI			, L"Mezclar");
 
 	// Menu Repetir
 	Menu_Repetir.CrearMenu();
-	Menu_Mezclar.CrearMenuItem(ID_REPETIR_NO, L"NO Repetir");
-	Menu_Mezclar.CrearMenuItem(ID_REPETIR_SI, L"Repetir");
-	Menu_Mezclar.CrearMenuItem(ID_REPETIR_SI_MEZCLAR, L"Repetir y mezclar");
-	Menu_Mezclar.CrearMenuItem(ID_REPETIR_SI_APAGAR_REP, L"Apagar RAVE");
-	Menu_Mezclar.CrearMenuItem(ID_REPETIR_SI_APAGAR_WIN, L"Apagar Windows");
+	Menu_Repetir.CrearMenuItem(ID_REPETIR_NO				, L"Desactivado");
+	Menu_Repetir.CrearMenuItem(ID_REPETIR_SI				, L"Repetir");
+	Menu_Repetir.CrearMenuItem(ID_REPETIR_SI_MEZCLAR		, L"Repetir y mezclar");
+	Menu_Repetir.CrearMenuItem(ID_REPETIR_SI_APAGAR_REP		, L"Apagar RAVE");
+	Menu_Repetir.CrearMenuItem(ID_REPETIR_SI_APAGAR_WIN		, L"Apagar Windows");
+	Menu_Repetir.CrearMenuItem(ID_REPETIR_SI_HIBERNAR_WIN	, L"Hibernar Windows (Estilo Win8+)");
+
+
+	Menu_Test.AgregarMenu(ID_REPETIR_NO, L"Desactivado", IDI_CANCION);
+	Menu_Test.AgregarMenu(ID_REPETIR_SI, L"Repetir");
+	Menu_Test.AgregarMenu(ID_REPETIR_SI_MEZCLAR, L"Repetir y mezclar");
+	Menu_Test.AgregarSeparador();
+	Menu_Test.AgregarMenu(ID_REPETIR_SI_APAGAR_REP, L"Apagar RAVE");
+	Menu_Test.AgregarMenu(ID_REPETIR_SI_APAGAR_WIN, L"Apagar Windows");
+	DMenuEx *SM = Menu_Test.AgregarMenu(1, L"Test");
+	SM->AgregarMenu(2, L"Test");
+	SM->AgregarMenu(3, L"Test");
+	SM->AgregarMenu(4, L"Test");
+	SM->AgregarMenu(5, L"Test");
+	SM->AgregarMenu(6, L"Test");
+	//	Menu_Test.AgregarMenu(ID_REPETIR_SI_HIBERNAR_WIN, L"Hibernar Windows (Estilo Win8+)");
 
 	// Lista de imagenes de 16 pixeles
 /*	ListaImagenes16.Crear(16, 16);
@@ -224,6 +246,11 @@ void RAVE::Terminar(void) {
 	}
 	
 	CoUninitialize();
+
+	Gdiplus::GdiplusShutdown(gdiplusToken);
+
+	DhWnd::EliminarFuentesEstaticas();
+
 }
 
 
@@ -329,9 +356,10 @@ void RAVE::CerrarSistema(const SOCerrarSistema Forma, const BOOL Forzar) {
 	tkp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
 	AdjustTokenPrivileges(hToken, false, &tkp, NULL, (PTOKEN_PRIVILEGES)NULL, 0);
 	switch (Forma) {
-		case SOCerrarSistema_Apagar			:	Flags = EWX_POWEROFF;	break;
-		case SOCerrarSistema_ReIniciar		:	Flags = EWX_REBOOT;		break;
-		case SOCerrarSistema_CerrarUsuario	:	Flags = EWX_LOGOFF;		break;
+		case SOCerrarSistema_Apagar			:	Flags = EWX_POWEROFF;			break;
+		case SOCerrarSistema_ReIniciar		:	Flags = EWX_REBOOT;				break;
+		case SOCerrarSistema_CerrarUsuario	:	Flags = EWX_LOGOFF;				break;
+		case SOCerrarSistema_Hibernar       :   Flags = EWX_HYBRID_SHUTDOWN;	break;
 	}
 	if (Forzar == TRUE) Flags = (Flags | EWX_FORCE);
 	ExitWindowsEx(Flags, 0);

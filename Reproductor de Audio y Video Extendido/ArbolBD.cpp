@@ -265,7 +265,7 @@ void ArbolBD::ExplorarPath(DWL::DArbolEx_Nodo *nNodo) {
 }
 
 
-void ArbolBD::Evento_MouseSoltado(DControlEx_EventoMouse &DatosMouse) {
+void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 	if (DatosMouse.Boton == 1) {
 		if (_NodoResaltado == NULL) {	// Anulo los menuitems agregar... si no hay un nodo marcado
 			App.Menu_ArbolBD[0]->Activado(FALSE); // Agregar a lista

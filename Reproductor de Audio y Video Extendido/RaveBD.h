@@ -2,6 +2,8 @@
 
 #include "DUnidadesDisco.h"
 #include "vlc.hpp"
+#include "ExtensionesValidas.h"
+
 // Thread actualizar BD
 #define WM_TBA_AGREGARDIR			WM_USER + 2000
 #define WM_TBA_AGREGARRAIZ			WM_USER + 2001
@@ -12,6 +14,28 @@
 // Thread agregar medios externos
 #define WM_TAAL_AGREGARMEDIO		WM_USER + 2005
 #define WM_TAAL_TERMINADO			WM_USER + 2006
+
+
+enum Estados_Medio {
+	Nada      = 0,
+	SinCargar = 1,
+	Abriendo  = 2,
+	EnStop    = 3,
+	EnPlay    = 4,
+	EnPausa   = 5,
+	Terminada = 6,
+	EnError   = 7
+};
+
+
+enum Tipo_Repeat {
+	Tipo_Repeat_NADA				= 0,
+	Tipo_Repeat_RepetirLista		= 1,
+	Tipo_Repeat_RepetirListaShufle  = 2,
+	Tipo_Repeat_ApagarReproductor	= 3,
+	Tipo_Repeat_ApagarOrdenador		= 4,
+	Tipo_Repeat_HibernarOrdenador	= 5
+};
 
 
 // clase que engloba una raíz
@@ -65,111 +89,111 @@ class BDMedio {
 
 class RaveBD {
   public:
-							RaveBD(void);
-	                       ~RaveBD(void);
+								RaveBD(void);
+	                           ~RaveBD(void);
 
-							// Inicia la base de datos
-	const BOOL				Iniciar(void);
-							// Termina la conexión a la base de datos
-	void					Terminar(void);
-							// Consulta básica wchar_t
-	const int				Consulta(const wchar_t *TxtConsulta);
-							// Consulta al estilo printf
-	const int				ConsultaVarg(const wchar_t *TxtConsulta, ...);
-							// Consulta desde un std::wstring
-	inline const int		Consulta(std::wstring &TxtConsulta) { return Consulta(TxtConsulta.c_str()); };
+								// Inicia la base de datos
+	const BOOL					Iniciar(void);
+								// Termina la conexión a la base de datos
+	void						Terminar(void);
+								// Consulta básica wchar_t
+	const int					Consulta(const wchar_t *TxtConsulta);
+								// Consulta al estilo printf
+	const int					ConsultaVarg(const wchar_t *TxtConsulta, ...);
+								// Consulta desde un std::wstring
+	inline const int			Consulta(std::wstring &TxtConsulta) { return Consulta(TxtConsulta.c_str()); };
 
-							// Función que extrae los datos del medio que nos da el path
-	const BOOL              AnalizarMedio(std::wstring &mPath, BDMedio &OUT_Medio, const ULONG Longitud = 0);
+								// Función que extrae los datos del medio que nos da el path
+	const BOOL					AnalizarMedio(std::wstring &mPath, BDMedio &OUT_Medio, const ULONG Longitud = 0);
 
-							// Agrega / Obtiene el Medio de la BD, y lo devuelve.
-//	const BOOL				AgregarObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio);
+								// Agrega / Obtiene el Medio de la BD, y lo devuelve.
+//	const BOOL					AgregarObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio);
 
-							// Obtiene un puntero con los datos del medio en la BD (Si el medio no existe devuelve FALSE)
-	const BOOL				ObtenerMedio(const sqlite3_int64 mHash, BDMedio &OUT_Medio);
-	const BOOL				ObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio);
+								// Obtiene un puntero con los datos del medio en la BD (Si el medio no existe devuelve FALSE)
+	const BOOL					ObtenerMedio(const sqlite3_int64 mHash, BDMedio &OUT_Medio);
+	const BOOL					ObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio);
 
-	const BOOL              AsignarTiempoMedio(const libvlc_time_t nTiempo, const sqlite3_int64 mHash);
+	const BOOL					AsignarTiempoMedio(const libvlc_time_t nTiempo, const sqlite3_int64 mHash);
 							
-							// Funciones para buscar una raíz por su path o por su id
-	BDRaiz                 *BuscarRaiz(std::wstring &nPath);
-	BDRaiz                 *BuscarRaiz(const unsigned long bID);
-							// Función para agregar una raíz a la base de datos
-	BDRaiz                 *AgregarRaiz(std::wstring &nPath);
-							// Función para eliminar una raíz de la base de datos
-	const BOOL              EliminarRaiz(std::wstring &nPath);
-							// Función que obtiene las raices de la base de datos
-	const BOOL              ObtenerRaices(void);
-							// Funciones para obtener los datos de las raices en memória
-	inline const size_t     TotalRaices(void)		{ return _Raices.size(); }
-	inline BDRaiz          *Raiz(const size_t Pos)  { return _Raices[Pos];   }
+								// Funciones para buscar una raíz por su path o por su id
+	BDRaiz                     *BuscarRaiz(std::wstring &nPath);
+	BDRaiz                     *BuscarRaiz(const unsigned long bID);
+								// Función para agregar una raíz a la base de datos
+	BDRaiz                     *AgregarRaiz(std::wstring &nPath);
+								// Función para eliminar una raíz de la base de datos
+	const BOOL					EliminarRaiz(std::wstring &nPath);
+								// Función que obtiene las raices de la base de datos
+	const BOOL					ObtenerRaices(void);
+								// Funciones para obtener los datos de las raices en memória
+	inline const size_t			TotalRaices(void)		{ return _Raices.size(); }
+	inline BDRaiz              *Raiz(const size_t Pos)  { return _Raices[Pos];   }
 
-							// Función que crea un Hash partiendo de la ID del disco y el path del medio
-	const sqlite3_int64     CrearHash(DWORD NSD, std::wstring &nPath);
+								// Función que crea un Hash partiendo de la ID del disco y el path del medio
+	const sqlite3_int64			CrearHash(DWORD NSD, std::wstring &nPath);
 
-							// Devuelve el puntero de la base de datos sqlite 3
-	inline sqlite3         *operator()(void) { return _BD; }
+								// Devuelve el puntero de la base de datos sqlite 3
+	inline sqlite3			   *operator()(void) { return _BD; }
 
-							// Filtros para los strings que sean paths o nombres de medio
-	static void			    FiltroPath(std::wstring &In, std::wstring &Out);
-	static void			    FiltroNombre(std::wstring &In, std::wstring &Out);
+								// Filtros para los strings que sean paths o nombres de medio
+	static void					FiltroPath(std::wstring &In, std::wstring &Out);
+	static void					FiltroNombre(std::wstring &In, std::wstring &Out);
 
-							// Función que obtiene las opciones de la base de datos
-	const BOOL              ObtenerOpciones(void);
-							// NOTA Esta función no guarda la posición en la BD
-	inline void             Opciones_AsignarPosVentana(const int nX, const int nY) { _Opciones_PosX = nX; _Opciones_PosY = nY; };
-							// Opciones que se guardan en la BD
-	const BOOL              Opciones_GuardarOpciones(void);
-	const BOOL              Opciones_GuardarPosTamVentana(void);
+								// Función que obtiene las opciones de la base de datos
+	const BOOL					ObtenerOpciones(void);
+								// NOTA Esta función no guarda la posición en la BD
+	inline void					Opciones_AsignarPosVentana(const int nX, const int nY) { _Opciones_PosX = nX; _Opciones_PosY = nY; };
+								// Opciones que se guardan en la BD
+	const BOOL					Opciones_GuardarOpciones(void);
+	const BOOL					Opciones_GuardarPosTamVentana(void);
 
-	inline const int		Opciones_Volumen(void) { return _Opciones_Volumen; }
-	void					Opciones_Volumen(const int nVolumen);
+	inline const int			Opciones_Volumen(void) { return _Opciones_Volumen; }
+	void						Opciones_Volumen(const int nVolumen);
 
-	inline const int		Opciones_PosX(void) { return _Opciones_PosX; }
-	inline const int		Opciones_PosY(void) { return _Opciones_PosY; }
-	inline const int		Opciones_Ancho(void) { return _Opciones_Ancho; }
-	inline const int		Opciones_Alto(void) { return _Opciones_Alto; }
+	inline const int			Opciones_PosX(void) { return _Opciones_PosX; }
+	inline const int			Opciones_PosY(void) { return _Opciones_PosY; }
+	inline const int			Opciones_Ancho(void) { return _Opciones_Ancho; }
+	inline const int			Opciones_Alto(void) { return _Opciones_Alto; }
 
-	inline const int		Opciones_Shufle(void) { return _Opciones_Shufle; }
-	void					Opciones_Shufle(const int nShufle);
+	inline const int			Opciones_Shufle(void) { return _Opciones_Shufle; }
+	void						Opciones_Shufle(const int nShufle);
 
-	inline const int		Opciones_Repeat(void) { return _Opciones_Repeat; }
-	void					Opciones_Repeat(const int nRepeat);
+	inline const Tipo_Repeat	Opciones_Repeat(void) { return _Opciones_Repeat; }
+	void						Opciones_Repeat(const Tipo_Repeat nRepeat);
 
-	inline const int		Opciones_Inicio(void) { return _Opciones_Inicio; }
-	void					Opciones_Inicio(const int nInicio);
+	inline const int			Opciones_Inicio(void) { return _Opciones_Inicio; }
+	void						Opciones_Inicio(const int nInicio);
 
-	inline const int		Opciones_OcultarMouseEnVideo(void) { return _Opciones_OcultarMouseEnVideo; }
-	void					Opciones_OcultarMouseEnVideo(const int nOcultarMouseEnVideo);
+	inline const int			Opciones_OcultarMouseEnVideo(void) { return _Opciones_OcultarMouseEnVideo; }
+	void						Opciones_OcultarMouseEnVideo(const int nOcultarMouseEnVideo);
 
-	DWL::DUnidadesDisco     Unidades;
+	DWL::DUnidadesDisco			Unidades;
 
   protected:
 
-	const BOOL             _AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre, UINT &nPista);
-    const BOOL		       _EsNumero(const wchar_t Caracter);
+	const BOOL                 _AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre, UINT &nPista);
+    const BOOL		           _EsNumero(const wchar_t Caracter);
 
-	const BOOL			   _CompararRaices(std::wstring &Path1, std::wstring &Path2);
-	void                   _BorrarRaices(void);
-	std::vector<BDRaiz *>  _Raices;
-	const BOOL             _ConsultaObtenerMedio(std::wstring &TxtConsulta, BDMedio &OUT_Medio);
+	const BOOL			       _CompararRaices(std::wstring &Path1, std::wstring &Path2);
+	void                       _BorrarRaices(void);
+	std::vector<BDRaiz *>      _Raices;
+	const BOOL                 _ConsultaObtenerMedio(std::wstring &TxtConsulta, BDMedio &OUT_Medio);
 
-    const BOOL             _CrearTablas(void);
-	std::wstring           _UltimoErrorSQL;
-	sqlite3               *_BD;
+    const BOOL                 _CrearTablas(void);
+	std::wstring               _UltimoErrorSQL;
+	sqlite3                   *_BD;
 
 
-	std::wstring           _Opciones_PathAbrir;
-	int                    _Opciones_Volumen;
-	int                    _Opciones_PosX;
-	int                    _Opciones_PosY;
-	int                    _Opciones_Ancho;
-	int                    _Opciones_Alto;
-	int                    _Opciones_Shufle;
-	int                    _Opciones_Repeat;
-	int                    _Opciones_Inicio;
+	std::wstring               _Opciones_PathAbrir;
+	int                        _Opciones_Volumen;
+	int                        _Opciones_PosX;
+	int                        _Opciones_PosY;
+	int                        _Opciones_Ancho;
+	int                        _Opciones_Alto;
+	int                        _Opciones_Shufle;
+	Tipo_Repeat                _Opciones_Repeat;
+	int                        _Opciones_Inicio;
 	// Tiempo en MS que tarda en ocultarse el mouse y los controles de un video
-	int                    _Opciones_OcultarMouseEnVideo;
+	int                        _Opciones_OcultarMouseEnVideo;
 
 };
 

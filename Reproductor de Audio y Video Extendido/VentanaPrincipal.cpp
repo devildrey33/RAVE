@@ -234,7 +234,7 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 			if (Estado == Terminada) {				
 				App.VLC.Stop();
 				if (Lista.MedioActual == Lista.TotalItems() - 1) {
-					// REPEAT
+					Repeat();
 				}
 				else {
 					Lista_Siguiente();
@@ -243,6 +243,35 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 
 			break;
 		}	
+}
+
+void VentanaPrincipal::Repeat(void) {
+	switch (App.BD.Opciones_Repeat()) {
+		case Tipo_Repeat_NADA :
+			break;
+		case Tipo_Repeat_RepetirLista :
+			Lista_Siguiente();
+			break;
+		case Tipo_Repeat_RepetirListaShufle :
+			if (Lista.TotalItems() > 0) {
+				Lista.Mezclar(TRUE);
+				Lista.MedioActual = -1;
+				Lista.DesSeleccionarTodo();
+				Lista.ItemMarcado(Lista.Item(0));
+				Lista.Item(0)->Seleccionado = TRUE;
+				Lista_Siguiente();
+			}
+			break;
+		case Tipo_Repeat_ApagarReproductor:
+			PostMessage(_hWnd, WM_CLOSE, 0, 0);
+			break;
+		case Tipo_Repeat_ApagarOrdenador:
+			App.CerrarSistema(SOCerrarSistema_Apagar);
+			break;
+		case Tipo_Repeat_HibernarOrdenador:
+			App.CerrarSistema(SOCerrarSistema_Hibernar);
+			break;
+	}
 }
 
 void VentanaPrincipal::Timer_ObtenerTiempoTotal(void) {
@@ -348,8 +377,6 @@ void VentanaPrincipal::Lista_Anterior(void) {
 
 
 void VentanaPrincipal::Evento_BotonEx_Mouse_Click(const UINT cID) {
-	
-
 	switch (cID) {
 		case ID_BOTON_OPCIONES: 
 			Arbol.Visible(FALSE);
@@ -434,7 +461,9 @@ void VentanaPrincipal::Evento_Button_Mouse_Click(const UINT cID) {
 			_Mezclar = Lista.Mezclar(!_Mezclar);
 			break;
 		case ID_BOTON_REPETIR :
-			App.Menu_Repetir.Mostrar(_hWnd);
+			// Muestro el menú para seleccionar el repeat, y asigno el valor en las opciones de la BD
+//			Evento_SelecionarRepeat(App.Menu_Repetir.Mostrar(_hWnd));
+			Evento_SelecionarRepeat(App.Menu_Test.MostrarModal(this));
 			break;
 	}
 }
@@ -745,6 +774,16 @@ void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
 	}
 }
 
+void VentanaPrincipal::Evento_SelecionarRepeat(const UINT mID) {
+	switch (mID) {
+		case ID_REPETIR_NO				:	App.BD.Opciones_Repeat(Tipo_Repeat_NADA);					break;
+		case ID_REPETIR_SI				:	App.BD.Opciones_Repeat(Tipo_Repeat_RepetirLista);			break;
+		case ID_REPETIR_SI_MEZCLAR		:	App.BD.Opciones_Repeat(Tipo_Repeat_RepetirListaShufle);		break;
+		case ID_REPETIR_SI_APAGAR_REP	:	App.BD.Opciones_Repeat(Tipo_Repeat_ApagarReproductor);		break;
+		case ID_REPETIR_SI_APAGAR_WIN	:	App.BD.Opciones_Repeat(Tipo_Repeat_ApagarOrdenador);		break;
+		case ID_REPETIR_SI_HIBERNAR_WIN	:	App.BD.Opciones_Repeat(Tipo_Repeat_HibernarOrdenador);		break;
+	}
+}
 
 LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	std::wstring *TmpStr = NULL;
@@ -815,10 +854,15 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			Evento_Cerrar();
 			return 0;
 		case WM_COMMAND :
-			if (HIWORD(wParam) == BN_CLICKED) {
+			Debug_Escribir_Varg(L"WM_COMMAND %d, %d\n", HIWORD(wParam), LOWORD(wParam));
+			if (HIWORD(wParam) == BN_CLICKED) { // Botón estándar
 				Evento_Button_Mouse_Click(LOWORD(wParam));
 				return 0;
 			}
+/*			else { // Menu estándar
+				Evento_Menu(LOWORD(wParam));
+				return 0;
+			}*/
 			break;
 		case WM_EXITSIZEMOVE  :
 			if (App.VentanaRave.Maximizada() == FALSE) {

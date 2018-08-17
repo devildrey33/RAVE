@@ -20,12 +20,21 @@
 			-  Edició de textes bàsic amb una sola linea (s'ha de poder especificar la part del control que mostrará el control per editar el texte)
 			   +o- Pensat per tenir : una font amb tamany fixe, un color de texte, sombra i un de fondo, amb posibilitat de Resaltat i Presionat
 				-  Al final necesita un backbuffer per poguer pintar el texte en un espai limitat 
-		v  Clase DTemporizador per crear timers sense necesitat de finestra
+		V  Clase DTemporizador per crear timers sense necesitat de finestra
 	RAVE 0.4
 		V  Asociacions d'arxius amb l'explorador
 			- Falta comprobar les asosiacions i mostrar un dialeg com el del bubatronik
-	   +o- Shuffle / repeat (apagar windows sobretot)
+	    V  Shuffle / repeat (apagar windows sobretot)
 	   +o- Dialeg/finestra per afegir/eliminar arrels
+
+
+	RAVE 0.5 
+		-  Analitzar tags dels medis.
+			- Mostrar tooltip informatiu
+		-  Treure tots els buttons estandar i posar dels meus
+		-  Crear l'objecte DMenuEx
+		-  Afegir opcions : assosiacions, llista d'inici, etc..
 		-  Menu per la llista
+
 
 */

@@ -110,9 +110,14 @@ void ControlesPantallaCompleta::Evento_SliderVolumen_Cambio(void) {
 void ControlesPantallaCompleta::Evento_BorraFondo(HDC DC) {
 	RECT RC;
 	GetClientRect(hWnd(), &RC);
-	HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO);
+/*	HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO);
 	FillRect(DC, &RC, BrochaFondo);
-	DeleteObject(BrochaFondo);
+	DeleteObject(BrochaFondo);*/
+
+	Gdiplus::Graphics	Graficos(DC);
+	Gdiplus::Color		ColorFondo(COLOR_FONDO);
+	Gdiplus::SolidBrush BrochaFondo(ColorFondo);
+	Graficos.FillRectangle(&BrochaFondo, 0, 0, RC.right, RC.bottom);
 }
 
 

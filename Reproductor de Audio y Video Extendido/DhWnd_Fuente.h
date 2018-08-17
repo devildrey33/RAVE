@@ -5,15 +5,16 @@
 namespace DWL {
 	class DhWnd_Fuente {
 	  public :
-							DhWnd_Fuente(void) : _Fuente(NULL), _Alto(0)							{ }
-							DhWnd_Fuente(HFONT nFuente) : _Fuente(nFuente)							{ _Alto = Tam(L"W").cy; }
-							DhWnd_Fuente(const DhWnd_Fuente &nFuente) : _Fuente(nFuente._Fuente)	{ _Alto = nFuente._Alto; }
+							DhWnd_Fuente(void)							: _Fuente(NULL), _Alto(0)	{ }
+							DhWnd_Fuente(HFONT nFuente)					: _Fuente(nFuente)			{ _Alto = Tam(L"W").cy; }
+							DhWnd_Fuente(const DhWnd_Fuente &nFuente)	: _Fuente(nFuente._Fuente)	{ _Alto = nFuente._Alto; }
 		                   ~DhWnd_Fuente()															{ }
 
 	    inline HFONT		Fuente(void)															{ return _Fuente; }
 							// Devuelve la altura máxima que puede tener un caracter utilizando la fuente de esta clase
 	    inline const int	Alto(void)																{ return _Alto; }
 
+		void                Destruir(void)                                                          { DeleteObject(_Fuente); _Fuente = NULL; }
 							// Operadores sobrecargados
 		inline void	        operator = (HFONT nFuente)												{ _Fuente = nFuente; _Alto = Tam(L"W").cy; }
 		inline void	        operator = (const DhWnd_Fuente &nFuente)								{ _Fuente = nFuente._Fuente; _Alto = nFuente._Alto; }

@@ -48,7 +48,7 @@ class ArbolBD : public DWL::DArbolEx {
 	void            ExplorarPath(DWL::DArbolEx_Nodo *nNodo);
 	// Falta fer una funció com la de const BOOL ArbolBD::TreeView_Evento_Nodo_Expandiendo(DTreeView_Nodo *nNodo) adaptada a aquesta..... (ArbolBD DEPRECATED.cpp ArbolBD::TreeView_Evento_Nodo_Expandiendo)
 	void			Evento_Nodo_Expandido(DWL::DArbolEx_Nodo *nNodo, const BOOL nExpandido);
-	void			Evento_MouseSoltado(DWL::DControlEx_EventoMouse &DatosMouse);
+	void			Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse);
   protected:
     void           _AgregarMedio(NodoBD *nPadre, BDMedio *nMedio);
 

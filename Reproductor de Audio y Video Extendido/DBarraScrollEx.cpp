@@ -116,7 +116,7 @@ namespace DWL {
 	}
 
 	// Devuelve TRUE si el mouse está dentro de alguna barra de scroll
-	const BOOL DBarraScrollEx::Scrolls_MouseMovimiento(DControlEx_EventoMouse &DatosMouse) {
+	const BOOL DBarraScrollEx::Scrolls_MouseMovimiento(DEventoMouse &DatosMouse) {
 		int cX		= DatosMouse.X(),
 			cY		= DatosMouse.Y();
 
@@ -179,7 +179,7 @@ namespace DWL {
 	}
 
 	// Devuelve TRUE si el mouse está dentro de alguna barra de scroll
-	const BOOL DBarraScrollEx::Scrolls_MousePresionado(DControlEx_EventoMouse &DatosMouse) {
+	const BOOL DBarraScrollEx::Scrolls_MousePresionado(DEventoMouse &DatosMouse) {
 		int cX		= DatosMouse.X(),
 			cY		= DatosMouse.Y();
 
@@ -238,7 +238,7 @@ namespace DWL {
 	}
 
 	// Devuelve TRUE si el mouse está dentro de alguna barra de scroll
-	const BOOL DBarraScrollEx::Scrolls_MouseSoltado(DControlEx_EventoMouse &DatosMouse) {
+	const BOOL DBarraScrollEx::Scrolls_MouseSoltado(DEventoMouse &DatosMouse) {
 		int cX		= DatosMouse.X(),
 			cY		= DatosMouse.Y();
 

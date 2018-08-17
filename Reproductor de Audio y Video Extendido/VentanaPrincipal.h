@@ -10,7 +10,7 @@
 //#include "DMenu.h"
 #include "VerVideo.h"
 #include "DTrackBar.h"
-#include "TMedio.h"
+//#include "TMedio.h"
 #include "DStaticControl.h"
 #include "MarcoControles.h"
 #include "MarcoOpciones.h"
@@ -56,6 +56,8 @@ class VentanaPrincipal : public DWL::DVentana {
 
 	void						Evento_BorraFondo(HDC DC);
 
+	void                        Evento_SelecionarRepeat(const UINT mID);
+
 //	void						Evento_CapturaSoltada(const UINT_PTR ID);
 
 	void						Evento_Cerrar(void);
@@ -65,6 +67,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						PantallaCompleta(const BOOL nActivar);
 	inline const BOOL			PantallaCompleta(void) { return _PantallaCompleta;  }
 	
+	void                        Repeat(void);
+
 	void						ActualizarArbol(void);
 	ThreadActualizarArbol		ThreadActualizar;
 	ThreadAgregarArchivosLista  ThreadArchivosLista;

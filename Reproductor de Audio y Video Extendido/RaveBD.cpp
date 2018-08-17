@@ -578,11 +578,14 @@ void RaveBD::Opciones_Shufle(const int nShufle) {
 	Consulta(Q.c_str());
 }
 
-void RaveBD::Opciones_Repeat(const int nRepeat) {
+void RaveBD::Opciones_Repeat(const Tipo_Repeat nRepeat) {
 	_Opciones_Repeat = nRepeat;
-	std::wstring Q = L"Update Opciones SET Repeat=" + DWL::DString_ToStr(nRepeat) + L" WHERE Id=0";
-	Consulta(Q.c_str());
 
+	// Guardo el valor del repeat en la BD, siempre que el repeat no implique apagar el reproductor o el windows
+	if (nRepeat != Tipo_Repeat_ApagarReproductor && nRepeat != Tipo_Repeat_ApagarOrdenador && nRepeat != Tipo_Repeat_HibernarOrdenador) {
+		std::wstring Q = L"Update Opciones SET Repeat=" + DWL::DString_ToStr(nRepeat) + L" WHERE Id=0";
+		Consulta(Q.c_str());
+	}
 }
 
 void RaveBD::Opciones_Inicio(const int nInicio) {
@@ -618,7 +621,7 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 			_Opciones_Ancho					= static_cast<int>(sqlite3_column_int(SqlQuery, 5));
 			_Opciones_Alto					= static_cast<int>(sqlite3_column_int(SqlQuery, 6));
 			_Opciones_Shufle				= static_cast<int>(sqlite3_column_int(SqlQuery, 7));
-			_Opciones_Repeat				= static_cast<int>(sqlite3_column_int(SqlQuery, 8));
+			_Opciones_Repeat				= static_cast<Tipo_Repeat>(sqlite3_column_int(SqlQuery, 8));
 			_Opciones_Inicio				= static_cast<int>(sqlite3_column_int(SqlQuery, 9));
 			_Opciones_OcultarMouseEnVideo	= static_cast<int>(sqlite3_column_int(SqlQuery, 10));
 		}

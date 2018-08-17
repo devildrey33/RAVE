@@ -30,7 +30,7 @@ class ListaMedios : public DWL::DListaEx {
 							return static_cast<ItemMedio *>(_Items[nPos]); 
 						}
 
-	void				Evento_MouseDobleClick(DWL::DControlEx_EventoMouse &EventoMouse);
+	void				Evento_MouseDobleClick(DWL::DEventoMouse &EventoMouse);
 
 	size_t              MedioActual;
 	size_t              MedioActualOrdenado;

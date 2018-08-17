@@ -27,6 +27,14 @@ namespace DWL {
 		}
 	}
 
+	void DhWnd::EliminarFuentesEstaticas(void) {
+		_Fuente18Normal.Destruir();
+		_Fuente18Negrita.Destruir();
+		_Fuente21Normal.Destruir();
+		_Fuente21Negrita.Destruir();
+		_FuenteTest.Destruir();
+	}
+
 	ATOM DhWnd::RegistrarClase(const TCHAR *nNombre, WNDPROC WindowProcedureInicial, UINT nEstilos, const int nIconoRecursos, HBRUSH nColorFondo, HINSTANCE hInstance) {
 		
 		WNDCLASSEX WndClass;
@@ -119,9 +127,11 @@ namespace DWL {
 		return DefWindowProc(nhWnd, uMsg, wParam, lParam);
 	}
 
-
-
-
+	// Establece la opacidad de la ventana (0 transparente, 255 solido)
+	void DVentana::Opacidad(const BYTE nNivel) {
+		SetWindowLongPtr(_hWnd, GWL_EXSTYLE, WS_EX_LAYERED | WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
+		SetLayeredWindowAttributes(_hWnd, 0, nNivel, LWA_ALPHA);
+	};
 
 
 

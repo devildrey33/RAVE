@@ -43,11 +43,11 @@ void ListaRaices::Evento_PintarSubItem(HDC hDC, const size_t NumItem, const size
 }
 
 
-void ListaRaices::Evento_MousePresionado(DWL::DControlEx_EventoMouse &DatosMouse) {
+void ListaRaices::Evento_MousePresionado(DWL::DEventoMouse &DatosMouse) {
 };
 
 
-void ListaRaices::Evento_MouseSoltado(DWL::DControlEx_EventoMouse &DatosMouse) {
+void ListaRaices::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 	DListaEx_Item *nItemPresionado = ItemPresionado();
 	if (nItemPresionado == NULL) return;
 

@@ -127,11 +127,11 @@ namespace DWL {
 														// Eventos virtuales
 		virtual void          							Evento_MouseEntrando(void)																	{ };
 		virtual void									Evento_MouseSaliendo(void)																	{ };
-		virtual void									Evento_MouseMovimiento(DControlEx_EventoMouse &DatosMouse)									{ };
-		virtual void									Evento_MousePresionado(DControlEx_EventoMouse &DatosMouse)									{ };
-		virtual void									Evento_MouseSoltado(DControlEx_EventoMouse &DatosMouse)										{ };
+		virtual void									Evento_MouseMovimiento(DEventoMouse &DatosMouse)											{ };
+		virtual void									Evento_MousePresionado(DEventoMouse &DatosMouse)											{ };
+		virtual void									Evento_MouseSoltado(DEventoMouse &DatosMouse)												{ };
 		virtual void                                    Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey)		{ };
-		virtual void									Evento_MouseDobleClick(DControlEx_EventoMouse &DatosMouse)									{ };
+		virtual void									Evento_MouseDobleClick(DEventoMouse &DatosMouse)											{ };
 
 		virtual void                                    Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params)		{ };
 		virtual void                                    Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params)			{ };

@@ -11,6 +11,7 @@
 #include "Rave_Skin.h"
 #include "DhWnd_Fuente.h"
 #include "DBarraTareas.h"
+#include "DEventoMouse.h"
 
 namespace DWL {
 
@@ -19,39 +20,42 @@ namespace DWL {
 	// - Está costruida de forma que solo se puede asignar el miembro _hWmd internamente.
 	class DhWnd {
 	  public:
-								DhWnd(void) : _hWnd(0)			{ IniciarMiembrosEstaticos(); };
-								DhWnd(HWND hWnd) : _hWnd(hWnd)	{ };
-                               ~DhWnd(void)						{ Destruir(); };
-		inline HWND				hWnd(void)						{ return _hWnd; };
+									DhWnd(void) : _hWnd(0)			{ IniciarMiembrosEstaticos(); };
+									DhWnd(HWND hWnd) : _hWnd(hWnd)	{ };
+                                   ~DhWnd(void)						{ Destruir(); };
+		inline HWND					hWnd(void)						{ return _hWnd; };
 /*		inline HWND				operator() (void)				{ return _hWnd; };
 		inline const bool		operator== (HWND chWnd)			{ return (_hWnd == chWnd); };
 		inline const bool		operator== (DhWnd *chWnd)		{ return (_hWnd == chWnd->hWnd()); };
 		inline void				operator= (HWND nhWnd)          { _hWnd = nhWnd; };*/
 		inline virtual const BOOL	Activar(const BOOL nActivar)    { return EnableWindow(_hWnd, nActivar); };
-		inline const BOOL		Activado(void)					{ return IsWindowEnabled(_hWnd); };
-		inline const BOOL		Minimizar(void)					{ return ShowWindow(_hWnd, SW_MINIMIZE); };
-		inline const BOOL		Minimizado(void)				{ return IsIconic(_hWnd); };
-		const BOOL				Maximizada(void);
-		inline const HWND		AsignarFoco(void)               { return SetFocus(_hWnd); };
-		inline BOOL				Destruir(void)					{ if (_hWnd == NULL) { return TRUE; } BOOL R = DestroyWindow(_hWnd); _hWnd = NULL; return R; };
-		inline LONG_PTR			ID(void)						{ return GetWindowLongPtr(_hWnd, GWL_ID); };
-		inline HWND				hWndPadre(void)					{ return GetParent(_hWnd); };
-		inline const BOOL		Visible(const BOOL nMostrar)    { return ShowWindow(_hWnd, (nMostrar != TRUE) ? SW_HIDE : SW_SHOW); };
-		inline const BOOL		Visible(void)                   { return IsWindowVisible(_hWnd); };
+		inline virtual const BOOL	Activado(void)					{ return IsWindowEnabled(_hWnd); };
+		inline const BOOL			Minimizar(void)					{ return ShowWindow(_hWnd, SW_MINIMIZE); };
+		inline const BOOL			Minimizado(void)				{ return IsIconic(_hWnd); };
+		const BOOL					Maximizada(void);
+		inline const HWND			AsignarFoco(void)               { return SetFocus(_hWnd); };
+		inline BOOL					Destruir(void)					{ if (_hWnd == NULL) { return TRUE; } BOOL R = DestroyWindow(_hWnd); _hWnd = NULL; return R; };
+		inline LONG_PTR				ID(void)						{ return GetWindowLongPtr(_hWnd, GWL_ID); };
+		inline HWND					hWndPadre(void)					{ return GetParent(_hWnd); };
+		inline const BOOL			Visible(const BOOL nMostrar)    { return ShowWindow(_hWnd, (nMostrar != TRUE) ? SW_HIDE : SW_SHOW); };
+		inline const BOOL			Visible(void)                   { return IsWindowVisible(_hWnd); };
 
-		inline void             BorrarBufferTeclado(void)		{ for (size_t i = 0; i < 256; i++) _Teclado[i] = false; }
-		ATOM					RegistrarClase(const TCHAR *nNombre, WNDPROC WindowProcedureInicial, UINT Estilos = 0, const int nIconoRecursos = 0 ,HBRUSH nColorFondo = NULL, HINSTANCE hInstance = NULL);
-		void                    IniciarMiembrosEstaticos(void);
+		inline void					BorrarBufferTeclado(void)		{ for (size_t i = 0; i < 256; i++) _Teclado[i] = false; }
+		ATOM						RegistrarClase(const TCHAR *nNombre, WNDPROC WindowProcedureInicial, UINT Estilos = 0, const int nIconoRecursos = 0 ,HBRUSH nColorFondo = NULL, HINSTANCE hInstance = NULL);
+		void						IniciarMiembrosEstaticos(void);
+									
+									// Debe utilizarse una sola vez al terminar la apliación
+		static void                 EliminarFuentesEstaticas();
 	  protected:
-		HWND                   _hWnd;
+		HWND                       _hWnd;
 
-		static DhWnd_Fuente    _Fuente18Normal;
-		static DhWnd_Fuente    _Fuente18Negrita;
-		static DhWnd_Fuente    _Fuente21Normal;
-		static DhWnd_Fuente    _Fuente21Negrita;
-		static DhWnd_Fuente    _FuenteTest;
+		static DhWnd_Fuente        _Fuente18Normal;
+		static DhWnd_Fuente        _Fuente18Negrita;
+		static DhWnd_Fuente        _Fuente21Normal;
+		static DhWnd_Fuente        _Fuente21Negrita;
+		static DhWnd_Fuente        _FuenteTest;
 
-		static bool            _Teclado[256];
+		static bool                _Teclado[256];
 		//		static HFONT       _FuenteB;
 
 		/*friend class DVentana;
@@ -78,6 +82,10 @@ namespace DWL {
 		void						Titulo(std::wstring &nTitulo);
 
 		DBarraTareas                BarraTareas;
+
+		void						Opacidad(const BYTE nNivel);
+
+		inline virtual void			Repintar(void) { RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT | RDW_FRAME); };
 
 		virtual LRESULT CALLBACK	GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) { return DefWindowProc(hWnd(), uMsg, wParam, lParam); };
 	  protected:

@@ -10,8 +10,8 @@ class ListaRaices : public DWL::DListaEx {
 	DWL::DListaEx_Item         *AgregarRaiz(const wchar_t *nPath, const BOOL nRepintar = TRUE);
 	void						Evento_PintarSubItem(HDC hDC, const size_t NumItem, const size_t NumSubItem, RECT *Espacio);
 
-	void                        Evento_MousePresionado(DWL::DControlEx_EventoMouse &DatosMouse);
-	void                        Evento_MouseSoltado(DWL::DControlEx_EventoMouse &DatosMouse);
+	void                        Evento_MousePresionado(DWL::DEventoMouse &DatosMouse);
+	void                        Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse);
   protected:
 	DWL::DListaIconos_Icono	  *_IconoPapelera;
 	DWL::DListaIconos_Icono	  *_IconoPapeleraResaltado;

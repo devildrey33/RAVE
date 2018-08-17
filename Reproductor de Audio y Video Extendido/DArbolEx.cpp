@@ -860,7 +860,7 @@ namespace DWL {
 
 		BOOL bME = _MouseEntrando();
 
-		DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)));
+		DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)));
 		int cX		= DatosMouse.X(),
 			cY		= DatosMouse.Y();
 
@@ -883,7 +883,7 @@ namespace DWL {
 
 	void DArbolEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {
 		
-		DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
 		int cX		= DatosMouse.X(),
 			cY		= DatosMouse.Y();
 
@@ -952,13 +952,13 @@ namespace DWL {
 
 		// Envio el evento mousedown a la ventana padre
 		
-//		DControlEx_EventoMouse ParamMouse(cX, cY, GetWindowLongPtr(_hWnd, GWL_ID), Boton);
+//		DEventoMouse ParamMouse(cX, cY, GetWindowLongPtr(_hWnd, GWL_ID), Boton);
 		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_MOUSEPRESIONADO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
 
 	}
 
 	void DArbolEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
-		DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
 		int cX		= DatosMouse.X(),
 			cY		= DatosMouse.Y();
 
@@ -1017,7 +1017,7 @@ namespace DWL {
 		Repintar();
 
 		// Envio el evento click a la ventana padre
-//		DControlEx_EventoMouse ParamMouse(cX, cY, GetWindowLongPtr(_hWnd, GWL_ID), Boton);
+//		DEventoMouse ParamMouse(cX, cY, GetWindowLongPtr(_hWnd, GWL_ID), Boton);
 //		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_MOUSESOLTADO, reinterpret_cast<WPARAM>(&ParamMouse), 0);
 
 	}
@@ -1323,7 +1323,7 @@ namespace DWL {
 			Expandir(_NodoMarcado, !_NodoMarcado->Expandido);
 			SeleccionarNodo(_NodoMarcado, TRUE);
 		}
-		DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
 		Evento_MouseDobleClick(DatosMouse);
 	}
 

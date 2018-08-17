@@ -7,9 +7,9 @@ namespace DWL {
 
 
 
-	#define DARBOLEX_PADDING				2 // Espacio entre el marco de la selección y el texto (tambien se utiliza para espaciar el expansor, el icono y el texto horizontalmente)
-	#define DARBOLEX_MARGEN_Y_SELECCION		1 // Espacio entre la Y inicial / final del texto y el marco de seleccion
-	#define DARBOLEX_TAMEXPANSOR			9 // OJO!! tiene que ser impar para quedar bien
+	#define DARBOLEX_PADDING				2  // Espacio entre el marco de la selección y el texto (tambien se utiliza para espaciar el expansor, el icono y el texto horizontalmente)
+	#define DARBOLEX_MARGEN_Y_SELECCION		1  // Espacio entre la Y inicial / final del texto y el marco de seleccion
+	#define DARBOLEX_TAMEXPANSOR			9  // OJO!! tiene que ser impar para quedar bien
 	#define DARBOLEX_TAMICONO				16 // Tamaño del icono
 
 

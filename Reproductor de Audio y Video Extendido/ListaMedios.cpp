@@ -63,7 +63,7 @@ ItemMedio *ListaMedios::BuscarHash(sqlite3_int64 bHash) {
 }
 
 // Reproduce el medio especificado con el ratón
-void ListaMedios::Evento_MouseDobleClick(DWL::DControlEx_EventoMouse &EventoMouse) {
+void ListaMedios::Evento_MouseDobleClick(DWL::DEventoMouse &EventoMouse) {
 	if (EventoMouse.Boton == 0) {
 		if (_ItemResaltado != -1) {
 			MedioActual = _ItemResaltado;

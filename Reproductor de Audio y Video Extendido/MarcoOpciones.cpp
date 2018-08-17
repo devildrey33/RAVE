@@ -46,7 +46,7 @@ void MarcoOpciones::Pintar(HDC hDC) {
 
 
 LRESULT CALLBACK MarcoOpciones::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	DControlEx_EventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)));
+	DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)));
 
 	switch (uMsg) {
 		// Redirecciono los clics en botones hacia la ventana padre del reproductor

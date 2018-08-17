@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TDisco.h"
+//#include "TDisco.h"
 
 enum Tipo_Medio {
 	Tipo_Medio_INDEFINIDO	= -1,

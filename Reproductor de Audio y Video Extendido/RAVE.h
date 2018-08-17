@@ -7,6 +7,7 @@
 //#include "DImageList.h"
 #include "ControlesPantallaCompleta.h"
 #include "DMenu.h"
+#include "DMenuEx.h"
 #include "RAVE_Configuracion.h"
 #include "VentanaErrorCritico.h"
 #include <stdlib.h>
@@ -15,6 +16,7 @@
 #include "AsociarReproductor.h"
 
 using namespace DWL;
+
 
 enum LineaComando {
 	LineaComando_Nada,					// Sin parámetros extra
@@ -28,7 +30,8 @@ enum LineaComando {
 enum SOCerrarSistema {
 	SOCerrarSistema_Apagar			= EWX_POWEROFF,
 	SOCerrarSistema_ReIniciar		= EWX_REBOOT,
-	SOCerrarSistema_CerrarUsuario	= EWX_LOGOFF
+	SOCerrarSistema_CerrarUsuario	= EWX_LOGOFF,
+	SOCerrarSistema_Hibernar        = EWX_HYBRID_SHUTDOWN
 };
 
 
@@ -70,6 +73,8 @@ class RAVE {
 	DWL::DMenu 						Menu_Mezclar;
 	DWL::DMenu 						Menu_Repetir;
 
+	DWL::DMenuEx                    Menu_Test;
+
 
 	BOOL							PlayerInicial;
 	HANDLE							MutexPlayer;
@@ -84,6 +89,9 @@ class RAVE {
 
 									// Objeto para asociar este reproductor en el registro de windows
 	AsociarReproductor				AsociarMedios;
+
+									// Token para el GDI+
+	ULONG_PTR						gdiplusToken;
 };
 
 extern RAVE *_APLICACION;

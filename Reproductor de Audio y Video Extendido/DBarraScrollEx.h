@@ -20,9 +20,9 @@ namespace DWL {
 		                           ~DBarraScrollEx();
 //		HWND						CrearBarraScrollEx(DhWnd &Padre, const int cX, const int cY, const int cAncho, const int cAlto, const UINT nID);
 		void						Scrolls_Pintar(HDC hDC, RECT &RC); // El HDC especificado se supone que es un back buffer
-		const BOOL					Scrolls_MouseMovimiento(DControlEx_EventoMouse &DatosMouse);
-		const BOOL					Scrolls_MousePresionado(DControlEx_EventoMouse &DatosMouse);
-		const BOOL					Scrolls_MouseSoltado(DControlEx_EventoMouse &DatosMouse);
+		const BOOL					Scrolls_MouseMovimiento(DEventoMouse &DatosMouse);
+		const BOOL					Scrolls_MousePresionado(DEventoMouse &DatosMouse);
+		const BOOL					Scrolls_MouseSoltado(DEventoMouse &DatosMouse);
 
 //		const BOOL					Scrolls_MouseEntrando();
 		const BOOL                  Scrolls_MouseSaliendo();

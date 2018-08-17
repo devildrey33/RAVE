@@ -19,6 +19,11 @@
 
 
 // TODO: mencionar aquí los encabezados adicionales que el programa necesita
+// GDI +
+#include <objidl.h>
+#include <gdiplus.h>
+#pragma comment (lib,"Gdiplus.lib")
+
 
 #pragma comment(lib, "Shlwapi.lib")		// Libreria ShellWinApi.dll (para probar la función PathFileExists)
 #pragma comment(lib, "Comctl32.lib")	// Libreria para InitCommonControlEx
@@ -81,6 +86,8 @@
 #define ID_REPETIR_SI_MEZCLAR			2122
 #define ID_REPETIR_SI_APAGAR_REP		2123
 #define ID_REPETIR_SI_APAGAR_WIN		2124
+#define ID_REPETIR_SI_HIBERNAR_WIN		2125
+#define ID_REPETIR_SEPARADOR            2126
 
 #define TIMER_LISTA						2200
 #define TIMER_TIEMPO					2201
