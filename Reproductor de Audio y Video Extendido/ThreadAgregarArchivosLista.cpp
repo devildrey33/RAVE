@@ -24,9 +24,9 @@ const BOOL ThreadAgregarArchivosLista::Iniciar(HWND nhWndDest, std::vector<std::
 
 	// Iniciamos el Thread
 	_Thread = CreateThread(NULL, 0, (unsigned long(__stdcall *)(void *))this->_ThreadAgregarArchivosLista, (void *)this, 0, NULL);
-	_Mutex.lock();
-	_Cancelar = FALSE;
-	_Mutex.unlock();
+	
+	Cancelar(FALSE);
+
 	if (_Thread == NULL)
 		return FALSE;
 	SetThreadPriority(_Thread, 0);
@@ -41,9 +41,9 @@ void ThreadAgregarArchivosLista::Terminar(void) {
 	_Thread = NULL;
 }
 
-void ThreadAgregarArchivosLista::Cancelar(void) {
+void ThreadAgregarArchivosLista::Cancelar(const BOOL nCancelar) {
 	_Mutex.lock();
-	_Cancelar = TRUE;
+	_Cancelar = nCancelar;
 	_Mutex.unlock();
 }
 
@@ -144,7 +144,7 @@ const UINT ThreadAgregarArchivosLista::_EscanearDirectorio(std::wstring &nPath) 
 			else {
 				TotalArchivosEscaneados++;
 				Medio = new BDMedio;
-				if (_BD.AnalizarMedio(Path, *Medio, FindInfoPoint.nFileSizeLow) == TRUE) {
+				if (_BD.AnalizarMedio(Path, *Medio, FindInfoPoint.nFileSizeLow) != FALSE) {
 					SendMessage(_VentanaPlayer, WM_TAAL_AGREGARMEDIO, reinterpret_cast<WPARAM>(Medio), 0);
 				}
 			}

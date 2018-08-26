@@ -4,6 +4,8 @@
 
 namespace DWL {
 
+	#define DMENUEX_MOSTRARDEBUG	FALSE
+
 	#define DMENUEX_TAMICONO  16	// Tamaño de los iconos
 	#define DMENUEX_MARGEN_X   6	// Margen horizontal para el texto
 	#define DMENUEX_MARGEN_Y   4	// Margen vertical para el texto
@@ -38,7 +40,7 @@ namespace DWL {
 		void					Mostrar(DhWnd *nPadre);
 								// Función que muestra el Menú y espera a que se elija una opción para devolver-la
 								//	NOTA : No desactiva la ventana padre
-		const UINT				MostrarModal(DhWnd *nPadre);
+		DMenuEx			       *MostrarModal(DhWnd *nPadre);
 
 								// Asigna un icono a este menú (requiere repintar)
 		void                    Icono(const int nIconoRecursos);
@@ -59,6 +61,7 @@ namespace DWL {
 
 								// Función que devuelve si el menú está activado
 		inline const BOOL		Activado(void)						{ return _Activado; };
+		const BOOL				Activado(const BOOL nActivar);
 								// Función que asigna el estado activado al menú
 		const BOOL				Activar(const BOOL nActivar);
 

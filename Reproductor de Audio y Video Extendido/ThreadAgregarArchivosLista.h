@@ -8,7 +8,7 @@ class ThreadAgregarArchivosLista {
 								// Inicia la actualización del arbol de la base de datos en un thread nuevo
     const BOOL	           		Iniciar(HWND nhWndDest, std::vector<std::wstring> &Paths);
 	void						Terminar(void);
-	void						Cancelar(void);
+	void						Cancelar(const BOOL nCancelar = TRUE);
   protected:
 	static unsigned long       _ThreadAgregarArchivosLista(void *pThis);
 	const UINT                 _EscanearDirectorio(std::wstring &nPath);

@@ -7,7 +7,7 @@
 #include "ArbolBD.h"
 #include "ListaMedios.h"
 //#include "ListaMedios2.h"
-//#include "DMenu.h"
+#include "DMenuEx.h"
 #include "VerVideo.h"
 #include "DTrackBar.h"
 //#include "TMedio.h"
@@ -56,7 +56,7 @@ class VentanaPrincipal : public DWL::DVentana {
 
 	void						Evento_BorraFondo(HDC DC);
 
-	void                        Evento_SelecionarRepeat(const UINT mID);
+//	void                        Evento_SelecionarRepeat(const UINT mID);
 
 //	void						Evento_CapturaSoltada(const UINT_PTR ID);
 
@@ -68,6 +68,12 @@ class VentanaPrincipal : public DWL::DVentana {
 	inline const BOOL			PantallaCompleta(void) { return _PantallaCompleta;  }
 	
 	void                        Repeat(void);
+	void						Repetir_Click(void);
+
+	DWL::DMenuEx				Menu_Repetir;
+	DWL::DMenuEx 				Menu_ArbolBD;
+//	DWL::DMenuEx 				Menu_Mezclar;
+
 
 	void						ActualizarArbol(void);
 	ThreadActualizarArbol		ThreadActualizar;
@@ -87,6 +93,7 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						Lista_Play(void);
 	void						Lista_Pausa(void);
 	void						Lista_Stop(void);
+
 
 	void						ExploradorAgregarMedio(const BOOL Reproducir);
 

@@ -8,12 +8,13 @@
 #define WM_TBA_AGREGARDIR			WM_USER + 2000
 #define WM_TBA_AGREGARRAIZ			WM_USER + 2001
 #define WM_TBA_TERMINADO			WM_USER + 2002
+#define WM_TBA_TOTALMEDIOS          WM_USER + 2003
 // Agregar un medio desde el explorador (dobleclick o menu)
-#define WM_AGREGARMEDIO				WM_USER + 2003
-#define WM_REPRODUCIRMEDIO			WM_USER + 2004
+#define WM_AGREGARMEDIO				WM_USER + 2004
+#define WM_REPRODUCIRMEDIO			WM_USER + 2005
 // Thread agregar medios externos
-#define WM_TAAL_AGREGARMEDIO		WM_USER + 2005
-#define WM_TAAL_TERMINADO			WM_USER + 2006
+#define WM_TAAL_AGREGARMEDIO		WM_USER + 2006
+#define WM_TAAL_TERMINADO			WM_USER + 2007
 
 
 enum Estados_Medio {
@@ -33,8 +34,8 @@ enum Tipo_Repeat {
 	Tipo_Repeat_RepetirLista		= 1,
 	Tipo_Repeat_RepetirListaShufle  = 2,
 	Tipo_Repeat_ApagarReproductor	= 3,
-	Tipo_Repeat_ApagarOrdenador		= 4,
-	Tipo_Repeat_HibernarOrdenador	= 5
+	Tipo_Repeat_ApagarOrdenador		= 4
+//	Tipo_Repeat_HibernarOrdenador	= 5
 };
 
 
@@ -54,8 +55,8 @@ class BDRaiz {
 // Clase con los datos de un medio
 class BDMedio {
   public :
-						BDMedio() : Pista(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0), Genero(0), Grupo(0), Disco(0) { };
-						BDMedio(UINT nId, sqlite3_int64 nHash, const wchar_t *nPath, const wchar_t *nNombre, Tipo_Medio nTipoMedio, Extension_Medio nExtension, UINT nReproducido, ULONG nLongitud, DWORD nIDDisco, UINT nNota, UINT nGenero, UINT nGrupo, UINT nDisco, UINT nPista, libvlc_time_t nTiempo, const wchar_t *nSubtitulos) : Id(nId), Hash(nHash), Path(nPath), Nombre(nNombre), TipoMedio(nTipoMedio), Extension(nExtension), Longitud(nLongitud), IDDisco(nIDDisco), Nota(nNota), Genero(nGenero), Grupo(nGrupo), Disco(nDisco), Pista(nPista), Tiempo(nTiempo), Subtitulos(nSubtitulos) { }
+						BDMedio() : Pista(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0) { };
+						BDMedio(UINT nId, sqlite3_int64 nHash, const wchar_t *nPath, const wchar_t *nNombre, Tipo_Medio nTipoMedio, Extension_Medio nExtension, UINT nReproducido, ULONG nLongitud, DWORD nIDDisco, UINT nNota, UINT nGenero, UINT nGrupo, UINT nDisco, UINT nPista, libvlc_time_t nTiempo, const wchar_t *nSubtitulos) : Id(nId), Hash(nHash), Path(nPath), Nombre(nNombre), TipoMedio(nTipoMedio), Extension(nExtension), Longitud(nLongitud), IDDisco(nIDDisco), Nota(nNota), Pista(nPista), Tiempo(nTiempo), Subtitulos(nSubtitulos) { }
 						BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
 	                   ~BDMedio() { };
 	
@@ -75,9 +76,9 @@ class BDMedio {
 	UINT                Id;
 	DWORD               IDDisco;
 
-	UINT				Genero;
-	UINT                Grupo;
-	UINT                Disco;
+	std::wstring		Genero;
+	std::wstring        Grupo;
+	std::wstring        Disco;
 	std::wstring        Subtitulos;
 
 	void                PistaStr(std::wstring &nPistaStr);
@@ -114,6 +115,8 @@ class RaveBD {
 	const BOOL					ObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio);
 
 	const BOOL					AsignarTiempoMedio(const libvlc_time_t nTiempo, const sqlite3_int64 mHash);
+
+	const BOOL                  ActualizarMedio(BDMedio *nMedio);
 							
 								// Funciones para buscar una raíz por su path o por su id
 	BDRaiz                     *BuscarRaiz(std::wstring &nPath);
@@ -168,10 +171,10 @@ class RaveBD {
 
 	DWL::DUnidadesDisco			Unidades;
 
-  protected:
+	static const BOOL          _AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre, UINT &nPista);
+protected:
 
-	const BOOL                 _AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre, UINT &nPista);
-    const BOOL		           _EsNumero(const wchar_t Caracter);
+    static const BOOL		   _EsNumero(const wchar_t Caracter);
 
 	const BOOL			       _CompararRaices(std::wstring &Path1, std::wstring &Path2);
 	void                       _BorrarRaices(void);

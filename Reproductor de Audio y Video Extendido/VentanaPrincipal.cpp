@@ -7,6 +7,7 @@
 #include "DDlgDirectorios.h"
 #include <shellapi.h>
 #include "DStringUtils.h"
+#include <versionhelpers.h>
 
 #define RAVE_MIN_ANCHO 660
 #define RAVE_MIN_ALTO  280
@@ -245,6 +246,7 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 		}	
 }
 
+// Función que ejecuta el repeat
 void VentanaPrincipal::Repeat(void) {
 	switch (App.BD.Opciones_Repeat()) {
 		case Tipo_Repeat_NADA :
@@ -266,10 +268,7 @@ void VentanaPrincipal::Repeat(void) {
 			PostMessage(_hWnd, WM_CLOSE, 0, 0);
 			break;
 		case Tipo_Repeat_ApagarOrdenador:
-			App.CerrarSistema(SOCerrarSistema_Apagar);
-			break;
-		case Tipo_Repeat_HibernarOrdenador:
-			App.CerrarSistema(SOCerrarSistema_Hibernar);
+			App.CerrarSistema((IsWindows8OrGreater()) ? SOCerrarSistema_Hibernar : SOCerrarSistema_Apagar);
 			break;
 	}
 }
@@ -461,79 +460,31 @@ void VentanaPrincipal::Evento_Button_Mouse_Click(const UINT cID) {
 			_Mezclar = Lista.Mezclar(!_Mezclar);
 			break;
 		case ID_BOTON_REPETIR :
-			// Muestro el menú para seleccionar el repeat, y asigno el valor en las opciones de la BD
-//			Evento_SelecionarRepeat(App.Menu_Repetir.Mostrar(_hWnd));
-			Evento_SelecionarRepeat(App.Menu_Test.MostrarModal(this));
+			Repetir_Click();
 			break;
 	}
 }
 
-
-// Función que muestra el menú para los nodos del ArbolBD
-/*void VentanaPrincipal::Evento_ArbolEx_Click(DArbolEx_DatosClick *Datos, const UINT aID) {
-	if (Datos->Boton == 1 && aID == ID_ARBOLBD) {		
-		if (Datos->Nodo == NULL) {	// Anulo los menuitems agregar... si no hay un nodo marcado
-			App.Menu_ArbolBD[0]->Activado(FALSE); // Agregar a lista
-			App.Menu_ArbolBD[1]->Activado(FALSE); // Agregar a nueva lista
+void VentanaPrincipal::Repetir_Click(void) {
+	DMenuEx *Ret = Menu_Repetir.MostrarModal(this);
+	if (Ret != NULL) {
+		// Elimino los iconos de todos los submenus
+		for (size_t i = 0; i < Menu_Repetir.TotalMenus(); i++) {
+			Menu_Repetir.Menu(i)->Icono(0);
 		}
-		else {						// activo los menuitems agregar si hay un nodo marcado
-			App.Menu_ArbolBD[0]->Activado(TRUE); // Agregar a lista
-			App.Menu_ArbolBD[1]->Activado(TRUE); // Agregar a nueva lista
-		}
-
-		const BOOL IdMenu = App.Menu_ArbolBD.Mostrar(hWnd());
-		switch (IdMenu) {
-			case ID_MENUBD_AGREGARANUEVALISTA:
-				Lista.BorrarListaReproduccion();
-				Arbol.AgregarNodoALista(Datos->Nodo);
-				Lista_Play();
-				break;
-			case ID_MENUBD_AGREGARALISTA:
-				Arbol.AgregarNodoALista(Datos->Nodo);
-				break;
-			case ID_MENUBD_ACTUALIZAR:
-				App.BD.ActualizarArbol();
-				break;
+		// Asigno el icono de la marca al menú seleccionado
+		Ret->Icono(IDI_CHECK);
+		
+		// Asigno el tipo de repeat 
+		switch (Ret->ID()) {
+			case ID_REPETIR_NO				:	App.BD.Opciones_Repeat(Tipo_Repeat_NADA);					break;
+			case ID_REPETIR_SI				:	App.BD.Opciones_Repeat(Tipo_Repeat_RepetirLista);			break;
+			case ID_REPETIR_SI_MEZCLAR		:	App.BD.Opciones_Repeat(Tipo_Repeat_RepetirListaShufle);		break;
+			case ID_REPETIR_SI_APAGAR_REP	:	App.BD.Opciones_Repeat(Tipo_Repeat_ApagarReproductor);		break;	// No se guarda en la BD
+			case ID_REPETIR_SI_APAGAR_WIN	:	App.BD.Opciones_Repeat(Tipo_Repeat_ApagarOrdenador);		break;	// No se guarda en la BD
 		}
 	}
-}*/
-/*
-void VentanaPrincipal::Evento_TreeView_Mouse_Click(DTreeView_DatosClick *Datos, const UINT tID) {
-	//Datos->Boton;
-	if (Datos->Boton == 1 && tID == ID_ARBOLBD) {
-		const BOOL IdMenu = App.Menu_ArbolBD.Mostrar(hWnd());
-		switch (IdMenu) {
-			case ID_MENUBD_AGREGARANUEVALISTA:
-				Lista.BorrarListaReproduccion();
-				Arbol.AgregarNodoALista(Datos->Nodo);
-				Lista_Play();
-				break;
-			case ID_MENUBD_AGREGARALISTA:
-				Arbol.AgregarNodoALista(Datos->Nodo);
-				break;
-			case ID_MENUBD_ACTUALIZAR:
-				App.BD.ActualizarArbol();
-				break;
-		}
-	}
-}*/
-
-/*
-void VentanaPrincipal::Evento_ListView_Mouse_Click(DListView_DatosClick *DatosClick, const UINT IDListView) {
-
 }
-
-
-void VentanaPrincipal::Evento_ListView_Mouse_DobleClick(DListView_DatosClick *DatosClick, const UINT IDListView) {
-	if (DatosClick->Boton == 0 && IDListView == ID_LISTAMEDIOS) {		
-		if (DatosClick->PosItem != -1) {
-			Lista.Pos = DatosClick->PosItem;
-			TablaMedios_Medio NCan(App.BD(), Lista.Medio(DatosClick->PosItem)->Hash);
-			if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
-			App.VLC.Play();
-		}
-	}
-}*/
 
 
 
@@ -646,6 +597,10 @@ void VentanaPrincipal::Evento_BorraFondo(HDC DC) {
 void VentanaPrincipal::Evento_Cerrar(void) {
 	Visible(FALSE);
 	App.BD.Opciones_GuardarOpciones();
+	
+	ThreadActualizar.Cancelar(TRUE);
+	ThreadArchivosLista.Cancelar(TRUE);
+
 	PostQuitMessage(0);
 }
 
@@ -734,7 +689,7 @@ void VentanaPrincipal::ActualizarArbol(void) {
 	App.BD.Unidades.Escanear_Unidades_Locales();
 	//	if (_hWnd != NULL) return;
 	Arbol.BorrarTodo();
-	App.Menu_ArbolBD[2]->Activado(FALSE);
+	Menu_ArbolBD.Menu(2)->Activado(FALSE);
 
 	NodoBD *Tmp = NULL;
 
@@ -774,16 +729,6 @@ void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
 	}
 }
 
-void VentanaPrincipal::Evento_SelecionarRepeat(const UINT mID) {
-	switch (mID) {
-		case ID_REPETIR_NO				:	App.BD.Opciones_Repeat(Tipo_Repeat_NADA);					break;
-		case ID_REPETIR_SI				:	App.BD.Opciones_Repeat(Tipo_Repeat_RepetirLista);			break;
-		case ID_REPETIR_SI_MEZCLAR		:	App.BD.Opciones_Repeat(Tipo_Repeat_RepetirListaShufle);		break;
-		case ID_REPETIR_SI_APAGAR_REP	:	App.BD.Opciones_Repeat(Tipo_Repeat_ApagarReproductor);		break;
-		case ID_REPETIR_SI_APAGAR_WIN	:	App.BD.Opciones_Repeat(Tipo_Repeat_ApagarOrdenador);		break;
-		case ID_REPETIR_SI_HIBERNAR_WIN	:	App.BD.Opciones_Repeat(Tipo_Repeat_HibernarOrdenador);		break;
-	}
-}
 
 LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	std::wstring *TmpStr = NULL;
@@ -819,12 +764,15 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			Arbol_AgregarDir(TmpStr, TRUE);
 			delete TmpStr; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
 			break;
+		case WM_TBA_TOTALMEDIOS :
+			BarraTareas.Valor(static_cast<UINT>(wParam), static_cast<UINT>(lParam));
+			break;
 //		case WM_TBA_AGREGARAUDIO:
 //			Arbol_AgregarCancion(static_cast<size_t>(lParam));
 //			break;
 		case WM_TBA_TERMINADO:
 			ThreadActualizar.Terminar();
-			App.Menu_ArbolBD[2]->Activado(TRUE);
+			Menu_ArbolBD.Menu(2)->Activado(TRUE);
 			BarraTareas.Estado_SinProgreso();
 			BarraTareas.Resaltar();
 			Debug_Escribir_Varg(L"ThreadActualizarArbol::Terminado %d archivos encontrados\n", lParam);

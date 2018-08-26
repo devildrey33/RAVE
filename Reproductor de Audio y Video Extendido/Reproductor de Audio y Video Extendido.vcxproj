@@ -310,11 +310,13 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\iconos\icon2.ico" />
+    <Image Include="..\iconos\icon3.ico" />
     <Image Include="..\Iconos\IDI_Borrar.ico" />
     <Image Include="..\Iconos\IDI_BorrarResaltado.ico" />
     <Image Include="..\Iconos\IDI_Cancion.ico" />
     <Image Include="..\Iconos\IDI_Cancion2.ico" />
     <Image Include="..\Iconos\IDI_CDAudio.ico" />
+    <Image Include="..\Iconos\IDI_Check.ico" />
     <Image Include="..\Iconos\IDI_Directorio.ico" />
     <Image Include="..\Iconos\IDI_Disco.ico" />
     <Image Include="..\Iconos\IDI_Genero.ico" />

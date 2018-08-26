@@ -26,7 +26,10 @@ namespace DWL {
 		Terminar();
 	}
 
-	const UINT DMenuEx::MostrarModal(DhWnd *nPadre) {
+	// Función que muestra el menú, y espera a una respuesta por parte del usuario
+	// Devuelve NULL si no se ha seleccionado ningún menú, o devuelve el menú seleccionado.
+	DMenuEx *DMenuEx::MostrarModal(DhWnd *nPadre) {
+		_ResultadoModal = NULL;
 		Mostrar(nPadre);
 		while (_hWnd != NULL) {
 			MSG msg;
@@ -36,7 +39,7 @@ namespace DWL {
 			}
 		}
 
-		return (_ResultadoModal != NULL) ? _ResultadoModal->_ID : 0;
+		return _ResultadoModal;
 	}
 
 
@@ -54,17 +57,17 @@ namespace DWL {
 
 			DMouse::CambiarCursor();
 			Opacidad(230);
-			MARGINS Margen = { 0, 0, 1, 0 };
+			MARGINS Margen = { 0, 0, 0, 1 };
 			DwmExtendFrameIntoClientArea(_hWnd, &Margen);
 			//AnimateWindow(_hWnd, 100, AW_HOR_POSITIVE | AW_VER_POSITIVE);
 
 			// Asigno la posición del menú y lo hago siempre visible
 			SetWindowPos(_hWnd, HWND_TOPMOST, Punto.x, Punto.y, Tam.x, Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 
-
-
 			// Asigno la captura del mouse a este menú
-			Debug_Escribir_Varg(L"DMenuEx::Mostrar SetCapture : %d\n", _hWnd);
+			#if DMENUEX_MOSTRARDEBUG == TRUE
+				Debug_Escribir_Varg(L"DMenuEx::Mostrar SetCapture : %d\n", _hWnd);
+			#endif	
 			SetCapture(_hWnd);
 			SetFocus(_hWnd);
 
@@ -142,9 +145,16 @@ namespace DWL {
 		return TRUE;
 	}
 
+	const BOOL DMenuEx::Activado(const BOOL nActivar) {
+		_Activado = nActivar;
+		return TRUE;
+	}
+
 	// Función que termina el menú y elimina la memória
 	void DMenuEx::Terminar(void) {
-		Debug_Escribir(L"DMenuEx::Terminar Ocultar menu\n");
+		#if DMENUEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir(L"DMenuEx::Terminar Ocultar menu\n");
+		#endif
 		Ocultar();
 		for (size_t i = 0; i < _Menus.size(); i++) {
 			delete _Menus[i];
@@ -222,7 +232,7 @@ namespace DWL {
 			Estado = DMenuEx_Estado_Presionado;
 		}
 		// Si no está activado
-		if (_Activado == FALSE) Estado = DMenuEx_Estado_Desactivado;
+		if (pMenu->_Activado == FALSE) Estado = DMenuEx_Estado_Desactivado;
 
 		// Elijo los colores del menú según su estado
 		COLORREF ColFondo;
@@ -340,9 +350,9 @@ namespace DWL {
 	void DMenuEx::_MostrarSubMenu(HWND hWndDestMsg, DMenuEx *nPadre, const int cX, const int cY, const BOOL AsignarFoco) {
 
 		if (_hWnd != NULL) return;
-
-		Debug_Escribir_Varg(L"DMenuEx::_MostrarSubMenu AsignarFoco = %d\n", AsignarFoco);
-
+		#if DMENUEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DMenuEx::_MostrarSubMenu AsignarFoco = %d\n", AsignarFoco);
+		#endif
 		POINT Punto = { cX, cY };
 		RECT WR;
 		GetWindowRect(nPadre->hWnd(), &WR);
@@ -390,7 +400,9 @@ namespace DWL {
 		GetClientRect(_hWnd, &RC);		
 		//´El mouse está dentro de esta ventana
 		if (PtInRect(&RC, Pt) == TRUE) {
-			Debug_Escribir_Varg(L"DMenuEx::Evento_MouseMovimiento hWnd : %d\n", _hWnd);
+			#if DMENUEX_MOSTRARDEBUG == TRUE
+				Debug_Escribir_Varg(L"DMenuEx::Evento_MouseMovimiento hWnd : %d\n", _hWnd);
+			#endif
 			// Busco cual és el menú resaltado
 			for (size_t i = 0; i < _Menus.size(); i++) {
 				// Si el mouse está dentro de este menú
@@ -399,7 +411,9 @@ namespace DWL {
 					if (_MenuResaltado != _Menus[i]) {
 						// Oculto el ultimo menú desplegado
 						if (_MenuDesplegado != _Menus[i] && _MenuDesplegado != NULL) {
-							Debug_Escribir(L"DMenuEx::Evento_MouseMovimiento Ocultar menu desplegado\n");
+							#if DMENUEX_MOSTRARDEBUG == TRUE
+								Debug_Escribir(L"DMenuEx::Evento_MouseMovimiento Ocultar menu desplegado\n");
+							#endif
 							_MenuDesplegado->Ocultar();
 							_MenuDesplegado = NULL;
 						}
@@ -430,11 +444,15 @@ namespace DWL {
 			if (SendMessage(hWndVentana, WM_ESMENUEX, 0, 0) == WM_ESMENUEX) {
 				// Paso la captura a la ventana del submenú
 				SetCapture(hWndVentana);
-				Debug_Escribir_Varg(L"DMenuEx::Evento_MouseMovimiento SetCapture hWnd : %d\n", hWndVentana);
+				#if DMENUEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DMenuEx::Evento_MouseMovimiento SetCapture hWnd : %d\n", hWndVentana);
+				#endif
 			}
 			// No es un SubMenu
-//			else {
-//				Debug_Escribir(L"DMenuEx::Evento_MouseMovimiento NO ES UN SUBMENU\n");
+			else {
+//				#if DMENUEX_MOSTRARDEBUG == TRUE
+//					Debug_Escribir(L"DMenuEx::Evento_MouseMovimiento NO ES UN SUBMENU\n");
+//				#endif
 				// Si hay algún sub-menu desplegado
 /*				if (_MenuDesplegado != NULL) {
 					_MenuDesplegado->Ocultar();
@@ -442,12 +460,14 @@ namespace DWL {
 				}*/
 
 				// Si hay algun menú resaltado
-/*				if (_MenuResaltado != NULL) {
-					_MenuResaltado = NULL;
-					Repintar();
-				}*/
+				if (_MenuResaltado != NULL) {
+					if (_MenuResaltado->TotalMenus() == 0) {
+						_MenuResaltado = NULL;
+						Repintar();
+					}
+				}
 
-//			}
+			}
 		}
 
 	}
@@ -478,7 +498,9 @@ namespace DWL {
 		ReleaseCapture();
 		_ResultadoModal = _MenuPresionado;
 		_MenuPresionado = NULL;
-		Debug_Escribir(L"DMenuEx::_Evento_MouseSoltado Ocultar menu\n");
+		#if DMENUEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir(L"DMenuEx::_Evento_MouseSoltado Ocultar menu\n");
+		#endif
 		Ocultar(TRUE);
 
 		POINT Pt;
@@ -506,11 +528,15 @@ namespace DWL {
 		// Elijo el menu resaltado según la tecla presionada
 		switch (Caracter) {
 			case VK_HOME : 
-				Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada VK_HOME\n");
+				#if DMENUEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada VK_HOME\n");
+				#endif
 				_MenuResaltado = _Menus[0];
 				break;
 			case VK_END:
-				Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada VK_END\n");
+				#if DMENUEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada VK_END\n");
+				#endif
 				_MenuResaltado = _Menus[_Menus.size() - 1];
 				break;
 			case VK_DOWN :
@@ -525,7 +551,9 @@ namespace DWL {
 					// Si es un separador, vuelvo atras
 					if (_Menus[MenuPos]->_Tipo == DMenuEx_Tipo_Separador) MenuPos--;
 				}
-				Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada VK_DOWN\n");
+				#if DMENUEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada VK_DOWN\n");
+				#endif
 				if (MenuPos == -1)	_MenuResaltado = NULL;
 				else				_MenuResaltado = _Menus[MenuPos];
 				_AnularMouseMove = TRUE;
@@ -544,7 +572,9 @@ namespace DWL {
 						if (_Menus[MenuPos]->_Tipo == DMenuEx_Tipo_Separador) MenuPos++;
 					}
 				}
-				Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada VK_UP\n");
+				#if DMENUEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada VK_UP\n");
+				#endif
 				if (MenuPos == -1)	_MenuResaltado = NULL;
 				else				_MenuResaltado = _Menus[MenuPos];
 				_AnularMouseMove = TRUE;
@@ -556,7 +586,9 @@ namespace DWL {
 					Repintar();
 					SetCapture(_Padre->_hWnd);
 				}
-				Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada VK_LEFT\n");
+				#if DMENUEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada VK_LEFT\n");
+				#endif
 				return;
 			case VK_RIGHT :
 				if (_MenuResaltado != NULL) {
@@ -567,11 +599,15 @@ namespace DWL {
 						SetCapture(_MenuResaltado->_hWnd);
 					}
 				}
-				Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada VK_RIGHT\n");
+				#if DMENUEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada VK_RIGHT\n");
+				#endif
 				return;
 			case VK_ESCAPE :
 				Ocultar(TRUE);
-				Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada VK_ESCAPE\n");
+				#if DMENUEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada VK_ESCAPE\n");
+				#endif
 				return;
 		}
 
@@ -579,7 +615,9 @@ namespace DWL {
 		if (_MenuDesplegado != NULL) {
 			// Si el menú desplegado no es el mismo que el menú resaltado
 			if (_MenuDesplegado != _MenuResaltado) {
-				Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada Ocultar menu desplegado\n");
+				#if DMENUEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada Ocultar menu desplegado\n");
+				#endif
 				_MenuDesplegado->Ocultar();
 				_MenuDesplegado = NULL;
 			}
@@ -592,7 +630,9 @@ namespace DWL {
 		if (_MenuResaltado != NULL) {
 			// Si tiene Sub-menus
 			if (_MenuResaltado->TotalMenus() > 0) {
-				Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada MostrarSubmenu sin foco\n");
+				#if DMENUEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada MostrarSubmenu sin foco\n");
+				#endif
 				_MenuResaltado->_MostrarSubMenu(_hWndDest, this, RC.right, _MenuResaltado->_Recta.top, FALSE);
 				_MenuDesplegado = _MenuResaltado;				
 			}
@@ -618,7 +658,9 @@ namespace DWL {
 			HWND VentanaDebajoMouse = WindowFromPoint(Pt);
 			// La ventana que hay debajo del ratón no es un MenuEx
 			if (SendMessage(VentanaDebajoMouse, WM_ESMENUEX, 0, 0) != WM_ESMENUEX) {
-				Debug_Escribir_Varg(L"DMenuEx::GestorMensajes WM_KILLFOCUS Ocultar menu hWnd %d %d\n", UltimoFoco, VentanaDebajoMouse);
+				#if DMENUEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DMenuEx::GestorMensajes WM_KILLFOCUS Ocultar menu hWnd %d %d\n", UltimoFoco, VentanaDebajoMouse);
+				#endif
 				Ocultar(TRUE);
 			}
 			else {
@@ -644,6 +686,8 @@ namespace DWL {
 
 	LRESULT CALLBACK DMenuEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
+		
+
 			case WM_PAINT:			_Evento_Pintar();																															return 0;
 //			case WM_NCPAINT:		_Evento_PintarNC((HRGN)wParam);																												return 0;
 			// Mouse movimiento
@@ -667,7 +711,8 @@ namespace DWL {
 			case WM_KILLFOCUS:		_Evento_FocoPerdido(reinterpret_cast<HWND>(wParam));																						return 0;
 			// Consulta para determinar si la ventana es parte de un MenuEx
 			case WM_ESMENUEX:																																					return WM_ESMENUEX;
-
+			
+			// Sombra de la ventana
 			// https://stackoverflow.com/questions/43818022/borderless-window-with-drop-shadow
 			case WM_NCCALCSIZE:
 				if (wParam == TRUE)	{
@@ -676,7 +721,8 @@ namespace DWL {
 					return TRUE;
 				}				
 				return 0;
-				
+			// Evita que al obtener el foco cambie la parte del caption
+			case WM_NCACTIVATE:																																					return FALSE;
 		}
 		return DefWindowProc(_hWnd, uMsg, wParam, lParam);
 	}

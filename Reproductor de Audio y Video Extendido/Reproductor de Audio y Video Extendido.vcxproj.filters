@@ -636,5 +636,11 @@
     <Image Include="..\Iconos\IDI_BorrarResaltado.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
+    <Image Include="..\iconos\icon3.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Check.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
   </ItemGroup>
 </Project>

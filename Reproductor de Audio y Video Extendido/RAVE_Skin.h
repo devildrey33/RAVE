@@ -192,7 +192,7 @@ ______    _ _      _          _______        _        ______
                                       
 */                                      
 
-#define COLOR_MENU_BORDE                            RGB(150, 150, 150)
+#define COLOR_MENU_BORDE                            RGB(255, 255, 255)
 #define COLOR_MENU_SEPARADOR                        RGB(150, 150, 150)
 #define COLOR_MENU_FONDO							COLOR_FONDO
 #define COLOR_MENU_FONDO_RESALTADO					COLOR_ROJO_RESALTADO

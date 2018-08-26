@@ -6,8 +6,8 @@
 #include "RaveVLC.h"
 //#include "DImageList.h"
 #include "ControlesPantallaCompleta.h"
-#include "DMenu.h"
-#include "DMenuEx.h"
+//#include "DMenu.h"
+//#include "DMenuEx.h"
 #include "RAVE_Configuracion.h"
 #include "VentanaErrorCritico.h"
 #include <stdlib.h>
@@ -69,11 +69,8 @@ class RAVE {
 	ControlesPantallaCompleta		ControlesPC;
 
 
-	DWL::DMenu 						Menu_ArbolBD;
-	DWL::DMenu 						Menu_Mezclar;
-	DWL::DMenu 						Menu_Repetir;
 
-	DWL::DMenuEx                    Menu_Test;
+//	DWL::DMenuEx                    Menu_Test;
 
 
 	BOOL							PlayerInicial;

@@ -268,27 +268,29 @@ void ArbolBD::ExplorarPath(DWL::DArbolEx_Nodo *nNodo) {
 void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 	if (DatosMouse.Boton == 1) {
 		if (_NodoResaltado == NULL) {	// Anulo los menuitems agregar... si no hay un nodo marcado
-			App.Menu_ArbolBD[0]->Activado(FALSE); // Agregar a lista
-			App.Menu_ArbolBD[1]->Activado(FALSE); // Agregar a nueva lista
+			App.VentanaRave.Menu_ArbolBD.Menu(0)->Activado(FALSE); // Agregar a lista
+			App.VentanaRave.Menu_ArbolBD.Menu(1)->Activado(FALSE); // Agregar a nueva lista
 		}
 		else {						// activo los menuitems agregar si hay un nodo marcado
-			App.Menu_ArbolBD[0]->Activado(TRUE); // Agregar a lista
-			App.Menu_ArbolBD[1]->Activado(TRUE); // Agregar a nueva lista
+			App.VentanaRave.Menu_ArbolBD.Menu(0)->Activado(TRUE); // Agregar a lista
+			App.VentanaRave.Menu_ArbolBD.Menu(1)->Activado(TRUE); // Agregar a nueva lista
 		}
 
-		const BOOL IdMenu = App.Menu_ArbolBD.Mostrar(hWnd());
-		switch (IdMenu) {
-			case ID_MENUBD_AGREGARANUEVALISTA:
-				App.VentanaRave.Lista.BorrarListaReproduccion();
-				AgregarNodoALista(_NodoMarcado);
-				App.VentanaRave.Lista_Play();
-				break;
-			case ID_MENUBD_AGREGARALISTA:
-				AgregarNodoALista(_NodoMarcado);
-				break;
-			case ID_MENUBD_ACTUALIZAR:
-				App.VentanaRave.ActualizarArbol();
-				break;
+		DMenuEx *Menu = App.VentanaRave.Menu_ArbolBD.MostrarModal(&App.VentanaRave);
+		if (Menu != NULL) {
+			switch (Menu->ID()) {
+				case ID_MENUBD_AGREGARANUEVALISTA:
+					App.VentanaRave.Lista.BorrarListaReproduccion();
+					AgregarNodoALista(_NodoMarcado);
+					App.VentanaRave.Lista_Play();
+					break;
+				case ID_MENUBD_AGREGARALISTA:
+					AgregarNodoALista(_NodoMarcado);
+					break;
+				case ID_MENUBD_ACTUALIZAR:
+					App.VentanaRave.ActualizarArbol();
+					break;
+			}
 		}
 	}
 };

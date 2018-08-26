@@ -224,6 +224,27 @@ const BOOL RaveBD::ObtenerRaices(void) {
 }
 
 
+// Actualiza los valores del medio en la base de datos
+const BOOL RaveBD::ActualizarMedio(BDMedio *nMedio) {
+	int SqlRet = ConsultaVarg(L"UPDATE Medios SET Nombre=\"%s\","
+		                                         "Reproducido=%d,"
+		                                         "Nota=%d,"
+		                                         "Genero=\"%s\","
+		                                         "Grupo=\"%s\","
+												 "Disco=\"%s\","
+											     "Pista=%d,"
+												 "Tiempo=%d,"
+												 "Subtitulos=\"%s\""
+								" WHERE Id=%d", nMedio->Nombre.c_str(), nMedio->Reproducido, nMedio->Nota, nMedio->Genero.c_str(), nMedio->Grupo.c_str(), 
+												nMedio->Disco.c_str(), nMedio->Pista, nMedio->Tiempo, nMedio->Subtitulos.c_str(), nMedio->Id);
+	if (SqlRet == SQLITE_ERROR) {
+		return FALSE;
+	}
+	return TRUE;
+
+}
+
+
 const BOOL RaveBD::_CrearTablas(void) {
 
 	// Creo la tabla para las opciones
@@ -259,9 +280,9 @@ const BOOL RaveBD::_CrearTablas(void) {
 														 L"Longitud INT, "				\
 														 L"IDDisco INT, "				\
 														 L"Nota SMALLINT, "				\
-														 L"Genero INT, " 				\
-														 L"Grupo INT, "	    			\
-													 	 L"Disco INT, "  				\
+														 L"Genero VARCHAR(128), "		\
+														 L"Grupo VARCHAR(128), "		\
+													 	 L"Disco VARCHAR(128), "		\
 														 L"Pista INT, "					\
 												 		 L"Tiempo INT, "				\
 														 L"Subtitulos VARCHAR(260))";
@@ -361,6 +382,9 @@ const BOOL RaveBD::EliminarRaiz(std::wstring &nPath) {
 }
 
 // Analiza e inserta el medio en la BD
+// Devuelve FALSE si ahy un error
+// Devuelve TRUE si ya se ha añadido el medio
+// Devuelve 2 si el medio ya existia en la BD
 const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const ULONG Longitud) {
 	// Compruebo que existe fisicamente en el disco (comprobar velocidades usando CreateFile)
 	if (GetFileAttributes(nPath.c_str()) == INVALID_FILE_ATTRIBUTES)
@@ -423,7 +447,7 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 			if (SqlRet == SQLITE_DONE)
 				return TRUE; // No existe el hash
 			else if (SqlRet == SQLITE_CONSTRAINT)
-				return TRUE; // Ya existe el hash
+				return 2; // Ya existe el hash
 			else  /* Error ? */
 				return FALSE;
 
@@ -582,7 +606,7 @@ void RaveBD::Opciones_Repeat(const Tipo_Repeat nRepeat) {
 	_Opciones_Repeat = nRepeat;
 
 	// Guardo el valor del repeat en la BD, siempre que el repeat no implique apagar el reproductor o el windows
-	if (nRepeat != Tipo_Repeat_ApagarReproductor && nRepeat != Tipo_Repeat_ApagarOrdenador && nRepeat != Tipo_Repeat_HibernarOrdenador) {
+	if (nRepeat != Tipo_Repeat_ApagarReproductor && nRepeat != Tipo_Repeat_ApagarOrdenador /*&& nRepeat != Tipo_Repeat_HibernarOrdenador*/) {
 		std::wstring Q = L"Update Opciones SET Repeat=" + DWL::DString_ToStr(nRepeat) + L" WHERE Id=0";
 		Consulta(Q.c_str());
 	}
@@ -643,8 +667,6 @@ const BOOL RaveBD::AsignarTiempoMedio(const libvlc_time_t nTiempo, const sqlite3
 	}
 	return TRUE;
 }
-
-
 
 
 /* NOTA es mejor tener 2 selects para las opciones, uno para el tamaño y posición de la ventana, y otro para el resto de valores (shufle, repeat, volumen, etc...)
@@ -724,9 +746,9 @@ BDMedio::BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades) {
 	Longitud		7		INT
 	Raiz			8		INT
 	Nota			9		SMALLINT
-	Genero		   10		INT
-	Grupo		   11		INT
-	Disco		   12		INT
+	Genero		   10		VARCHAR(128)
+	Grupo		   11		VARCHAR(128)
+	Disco		   12		VARCHAR(128)
 	Pista		   13		INT
 	Tiempo		   14		INT
 	Subtitulos	   15		VARCHAR(260)
@@ -742,16 +764,18 @@ void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades)
 	Longitud	= static_cast<DWORD>(sqlite3_column_int(SqlQuery, 7));
 	IDDisco		= static_cast<DWORD>(sqlite3_column_int(SqlQuery, 8));
 	Nota		= static_cast<UINT>(sqlite3_column_int(SqlQuery, 9));
-	Genero		= static_cast<UINT>(sqlite3_column_int(SqlQuery, 10));
-	Grupo		= static_cast<UINT>(sqlite3_column_int(SqlQuery, 11));
-	Disco		= static_cast<UINT>(sqlite3_column_int(SqlQuery, 12));
+	const wchar_t *nGenero = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 10));
+	const wchar_t *nGrupo  = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 11));
+	const wchar_t *nDisco  = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 12));
+	if (nGenero != NULL) Genero = nGenero;
+	if (nGrupo != NULL)  Grupo = nGrupo;
+	if (nDisco != NULL)  Disco = nDisco;
 	Pista		= static_cast<UINT>(sqlite3_column_int(SqlQuery, 13));
 	Tiempo		= static_cast<libvlc_time_t>(sqlite3_column_int(SqlQuery, 14));
 	Subtitulos	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 15));	
 
 	DWL::DUnidadDisco *Unidad = Unidades.Buscar_Numero_Serie(IDDisco);
 	if (Unidad != NULL) Path[0] = Unidad->Letra();
-
 }
 
 void BDMedio::PistaStr(std::wstring &nPistaStr) {

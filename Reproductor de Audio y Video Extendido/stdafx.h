@@ -36,6 +36,8 @@
 
 #pragma comment(lib, "dwmapi")			// Librería para DwmExtendFrameIntoClientArea 
 
+#define VLC_API
+#define VLC_USED
 #include "RAVE.h"
 
 

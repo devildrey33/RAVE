@@ -52,8 +52,8 @@
 
 
 		/* Convierte una cadena a un tipo básico */
-		template <typename T> T DString_StrTo(std::wstring Tmp) {
-			T output;
+		template <typename T> T DString_StrTo(std::wstring &Tmp, T output) {
+//			T output;
 			std::wistringstream in(Tmp);
 			in >> output;
 			return output;
