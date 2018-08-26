@@ -5,7 +5,7 @@
 namespace DWL {
 
 	#define DMENUEX_TAMICONO  16	// Tamaño de los iconos
-	#define DMENUEX_MARGEN_X   2	// Margen horizontal para el texto
+	#define DMENUEX_MARGEN_X   6	// Margen horizontal para el texto
 	#define DMENUEX_MARGEN_Y   4	// Margen vertical para el texto
     #define DMENUEX_BORDE      1    // Tamaño del borde
 
@@ -31,14 +31,14 @@ namespace DWL {
 								DMenuEx();
 							   ~DMenuEx(void);
 							    // Agrega un menú con texto y icono en la posicion especificada (-1 es al final)
-		DMenuEx                *AgregarMenu(const UINT nID, const wchar_t *nTexto, const int nIconoRecursos = NULL, const int Posicion = -1, const BOOL nActivado = FALSE);
+		DMenuEx                *AgregarMenu(const UINT nID, const wchar_t *nTexto, const int nIconoRecursos = NULL, const int Posicion = -1, const BOOL nActivado = TRUE);
 		DMenuEx				   *AgregarSeparador(const int uID = 0, const int Posicion = -1);
 
 								// Función que muestra el Menú en el bucle principal de la aplicación y espera su respuesta en un WM_COMMAND (NO DEVUELVE EL MENÚ PRESIONADO)
 		void					Mostrar(DhWnd *nPadre);
 								// Función que muestra el Menú y espera a que se elija una opción para devolver-la
 								//	NOTA : No desactiva la ventana padre
-		const int				MostrarModal(DhWnd *nPadre);
+		const UINT				MostrarModal(DhWnd *nPadre);
 
 								// Asigna un icono a este menú (requiere repintar)
 		void                    Icono(const int nIconoRecursos);
@@ -62,7 +62,7 @@ namespace DWL {
 								// Función que asigna el estado activado al menú
 		const BOOL				Activar(const BOOL nActivar);
 
-		void                    Ocultar(void);
+		void                    Ocultar(const BOOL OcultarTodos = FALSE);		
 
 		void                    Pintar(HDC hDC);
 
@@ -71,26 +71,31 @@ namespace DWL {
 		void					Terminar(void);
 	  protected:
 								// Constructor menú tipo texto (interno AgregarMenu)
-								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const UINT nID, const wchar_t *nTexto, const int nIconoRecursos = NULL, const BOOL nActivado = FALSE);
+								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const UINT nID, const wchar_t *nTexto, const int nIconoRecursos = NULL, const BOOL nActivado = TRUE);
 								// Constructor menú tipo separador (interno AgregarSeparador)
 								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const UINT nID);
 
+		void				   _OcultarRecursivo(DMenuEx *oMenu);
 								// Función para calcular el tamaño de los menus.
 		const POINT			   _CalcularMedidas(void);		
 								// Función que muestra este menú como un submenú
-		void                   _MostrarSubMenu(HWND hWndDestMsg, DMenuEx *nPadre, const int cX, const int cY);
+		void                   _MostrarSubMenu(HWND hWndDestMsg, DMenuEx *nPadre, const int cX, const int cY, const BOOL AsignarFoco = TRUE);
 								// Función que pinta una fila del menú (devuelve la altura de lo pintado)
 		void                   _PintarMenu(HDC DC, DMenuEx *pMenu);
+								// Función que pinta el separador
 		void                   _PintarSeparador(HDC DC, DMenuEx *pMenu);
+								// Función que pinta el expansor (flecha que indica que contiene uno o mas sub-menus)
+		void                   _PintarExpansor(HDC DC, const int eX, const int eY);
 								// Eventos internos
 		void                   _Evento_Pintar(void);
+		void                   _Evento_PintarNC(HRGN Region);
 		void				   _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
 		void				   _Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam);
 		void				   _Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam);
 		void                   _Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
 		void                   _Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params);
 		void				   _Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param);
-
+		void                   _Evento_FocoPerdido(HWND UltimoFoco);
 
 		RECT                   _Recta;
 
@@ -102,11 +107,16 @@ namespace DWL {
 		DMenuEx               *_Padre;
 
 		DMenuEx               *_MenuResaltado;
+		DMenuEx               *_MenuDesplegado;
 		DMenuEx               *_MenuPresionado;
 
 		BOOL                   _Activado;
 		DMenuEx_Tipo           _Tipo;
 		HWND                   _hWndDest;
+
+		BOOL				   _AnularMouseMove;
+								// Menu resultado para la función MostrarModal
+		static DMenuEx        *_ResultadoModal;
 	};
 }
 

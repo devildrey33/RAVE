@@ -759,7 +759,7 @@ namespace DWL {
 				break;
 			case DWL_CUSTOM_DRAWDLG :
                 // Para dialogos necesito hacer el SendMessage DWL_MSGRESULT, pero para ventanas debo retornar directamente _CustomDraw(lParam);
-				SetWindowLong(hWndPadre(), DWL_MSGRESULT, (LONG)_CustomDraw(lParam));
+				SetWindowLongPtr(hWndPadre(), DWL_MSGRESULT, (LONG)_CustomDraw(lParam));
 				return TRUE; 
 			case DWL_CUSTOM_DRAWWND :
                 // Para ventanas se enlaza directamente con la funcion _CustomDraw(lParam);

@@ -217,6 +217,16 @@ void RAVE::IniciarUI(int nCmdShow) {
 	SM->AgregarMenu(4, L"Test");
 	SM->AgregarMenu(5, L"Test");
 	SM->AgregarMenu(6, L"Test");
+	SM = Menu_Test.AgregarMenu(1, L"Test2");
+	SM->AgregarMenu(2, L"Test2");
+	SM->AgregarMenu(3, L"Test2");
+	SM->AgregarMenu(4, L"Test2");
+	SM->AgregarMenu(5, L"Test2");
+	SM = SM->AgregarMenu(6, L"Test2");
+	SM->AgregarMenu(2, L"Test2.1");
+	SM->AgregarMenu(3, L"Test2.1");
+	SM->AgregarMenu(4, L"Test2.1");
+	SM->AgregarMenu(5, L"Test2.1");
 	//	Menu_Test.AgregarMenu(ID_REPETIR_SI_HIBERNAR_WIN, L"Hibernar Windows (Estilo Win8+)");
 
 	// Lista de imagenes de 16 pixeles
