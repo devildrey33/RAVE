@@ -15,8 +15,9 @@
 #define WM_TAAL_AGREGARMEDIO		WM_USER + 2005
 #define WM_TAAL_TERMINADO			WM_USER + 2006
 // Thread obtener metadatos
-#define WM_TOM_TOTALMEDIOS          WM_USER + 2007
-#define WM_TOM_TERMINADO            WM_USER + 2008
+#define WM_TOM_INICIADO		        WM_USER + 2007
+#define WM_TOM_TOTALMEDIOS          WM_USER + 2008
+#define WM_TOM_TERMINADO            WM_USER + 2009
 
 enum Estados_Medio {
 	Nada      = 0,
@@ -138,7 +139,7 @@ class RaveBD {
 								// Obtiene una lista de paths que pertenecen a medios por parsear (extraer metadatos, id3, etc...)
 	const BOOL                  ObtenerMediosPorParsear(std::vector<std::wstring> &Paths);
 
-	const BOOL					AsignarTiempoMedio(const libvlc_time_t nTiempo, const sqlite3_int64 mHash);
+//	const BOOL					AsignarTiempoMedio(const libvlc_time_t nTiempo, const sqlite3_int64 mHash);
 
 	const BOOL                  ActualizarMedio(BDMedio *nMedio);
 							
@@ -193,6 +194,10 @@ class RaveBD {
 	inline const int			Opciones_OcultarMouseEnVideo(void) { return _Opciones_OcultarMouseEnVideo; }
 	void						Opciones_OcultarMouseEnVideo(const int nOcultarMouseEnVideo);
 
+	inline const BOOL			Opciones_MostrarObtenerMetadatos(void) { return _Opciones_MostrarObtenerMetadatos; }
+	void						Opciones_MostrarObtenerMetadatos(const BOOL nMostrarObtenerMetadatos);
+	
+
 	DWL::DUnidadesDisco			Unidades;
 
 	static const BOOL          _AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre, UINT &nPista);
@@ -222,6 +227,7 @@ protected:
 	float                      _Opciones_Version;
 	// Tiempo en MS que tarda en ocultarse el mouse y los controles de un video
 	int                        _Opciones_OcultarMouseEnVideo;
+	BOOL                       _Opciones_MostrarObtenerMetadatos;
 
 };
 

@@ -1,12 +1,18 @@
 #include "stdafx.h"
 #include "ThreadObtenerMetadatos.h"
 #include "DStringUtils.h"
+#include "DMensajesWnd.h"
+#include "resource.h"
 
-ThreadObtenerMetadatos::ThreadObtenerMetadatos() {
+#define ID_BARRAPROGRESO		1000
+#define ID_BOTONCANCELAR		1001
+#define ID_MARCANOMOSTRARMAS	1002
+
+ThreadObtenerMetadatos::ThreadObtenerMetadatos(void) {
 }
 
 
-ThreadObtenerMetadatos::~ThreadObtenerMetadatos() {
+ThreadObtenerMetadatos::~ThreadObtenerMetadatos(void) {
 }
 
 
@@ -17,6 +23,16 @@ const BOOL ThreadObtenerMetadatos::Iniciar(HWND nhWndDest) {
 
 	// Asigno Ventana para los mensajes
 	_VentanaPlayer = nhWndDest;
+
+	if (App.BD.Opciones_MostrarObtenerMetadatos() == TRUE) {
+		// Creo la ventana que mostrará el progreso
+		CrearVentana(NULL, L"RAVE_ObtenerMetadatos", L"Obteniendo metadatos", 300, 200, 600, 200, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_VISIBLE);
+		RECT RC;
+		GetClientRect(_hWnd, &RC);
+		_BarraProgreso.CrearBarraProgresoEx(this, 10, 80, RC.right - 20, 20, ID_BARRAPROGRESO);
+		_BotonCancelar.CrearBotonEx(this, L"Cancelar", 280, 110, 100, 30, ID_BOTONCANCELAR);
+		_MarcaNoMostrarMas.CrearMarcaEx(this, L"No volver a mostrar esta ventana.", 10, 116, 250, 20, ID_MARCANOMOSTRARMAS, IDI_CHECK2);
+	}
 
 	// Iniciamos el Thread
 	_Thread = CreateThread(NULL, 0, (unsigned long(__stdcall *)(void *))this->_ThreadObtenerMetadatos, (void *)this, 0, NULL);
@@ -34,6 +50,10 @@ const BOOL ThreadObtenerMetadatos::Iniciar(HWND nhWndDest) {
 
 
 void ThreadObtenerMetadatos::Terminar(void) {
+	_BarraProgreso.Destruir();
+	_BotonCancelar.Destruir();
+	_MarcaNoMostrarMas.Destruir();
+	Destruir();
 	CloseHandle(_Thread);
 	_Thread = NULL;
 }
@@ -64,6 +84,9 @@ unsigned long ThreadObtenerMetadatos::_ThreadObtenerMetadatos(void *pThis) {
 
 	int Contador = 0;
 
+	// Mando un me4nsaje con el total de medios por analizar
+	SendMessage(This->_hWnd, WM_TOM_INICIADO, static_cast<WPARAM>(This->_PorParsear.size()), 0);
+
 	// Inicio la transaccion por segunda vez
 	This->_BD.Consulta(L"BEGIN TRANSACTION");
 	// Fase 3 : analizar nuevos medios añadidos a la BD
@@ -82,6 +105,7 @@ unsigned long ThreadObtenerMetadatos::_ThreadObtenerMetadatos(void *pThis) {
 
 		This->_Parsear(VLC, This->_PorParsear[i]);
 		SendMessage(This->_VentanaPlayer, WM_TOM_TOTALMEDIOS, i, static_cast<LPARAM>(This->_PorParsear.size()));
+		if (This->_hWnd != NULL) SendMessage(This->_hWnd, WM_TOM_TOTALMEDIOS, i, static_cast<LPARAM>(This->_PorParsear.size()));
 	}
 
 	// Terminado
@@ -107,6 +131,7 @@ std::wstring ThreadObtenerMetadatos::_ObtenerMeta(libvlc_media_t *Media, libvlc_
 	libvlc_free(Txt);
 	return Ret;
 }
+
 
 void ThreadObtenerMetadatos::_Parsear(libvlc_instance_t *VLC, std::wstring &Path) {
 	// Compruebo que existe el archivo	
@@ -193,4 +218,49 @@ void ThreadObtenerMetadatos::_ParsearTerminado(const libvlc_event_t *event, void
 	HANDLE Sem = (HANDLE)user_data;
 	ReleaseSemaphore(Sem, 1, NULL);
 	//vlc_sem_post(sem);
+}
+
+
+void ThreadObtenerMetadatos::Evento_Pintar(void) {
+	PAINTSTRUCT PS;
+	HDC DC = BeginPaint(_hWnd, &PS);
+	Pintar(DC);
+	EndPaint(_hWnd, &PS);
+}
+
+void ThreadObtenerMetadatos::Pintar(HDC DC) {
+	static const wchar_t pTexto[] = L"Analizando los metadatos de todos los medios en segundo plano.\n"
+								    L"Este proceso recolecta datos tales como el tiempo, genero, grupo, disco, etc... y los\n"
+									L"añade a la base de datos, lo que permite entre otras cosas generar listas aleatorias.";
+	RECT RC;
+	GetClientRect(_hWnd, &RC);
+	// Pinto el fondo
+	HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO);
+	FillRect(DC, &RC, BrochaFondo);
+
+	HFONT VFuente = static_cast<HFONT>(SelectObject(DC, DhWnd::_Fuente18Normal()));
+
+	SetBkMode(DC, TRANSPARENT);
+	RECT RTS = { 11, 11, RC.right - 9, 91 };
+	RECT RT  = { 10, 10, RC.right - 10, 90 };
+	SetTextColor(DC, COLOR_TEXTO_SOMBRA);
+	DrawText(DC, pTexto, -1, &RTS, DT_LEFT);
+	SetTextColor(DC, COLOR_TEXTO);
+	DrawText(DC, pTexto, -1, &RT, DT_LEFT);
+
+	SelectObject(DC, VFuente);
+	DeleteObject(BrochaFondo);
+}
+
+
+LRESULT CALLBACK ThreadObtenerMetadatos::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
+	switch (uMsg) {
+		case WM_PAINT			:	Evento_Pintar();														break;
+		case WM_TOM_TOTALMEDIOS :	_BarraProgreso.Valor(static_cast<float>(wParam));						break;
+		case WM_TOM_INICIADO    :   _BarraProgreso.Maximo(static_cast<float>(wParam));						break;
+		case WM_CLOSE			:   Cancelar(TRUE);															break;
+		case DWL_BOTONEX_CLICK  :   Cancelar(TRUE);															break;
+		case DWL_MARCAEX_CLICK  :   App.BD.Opciones_MostrarObtenerMetadatos(!_MarcaNoMostrarMas.Marcado());	break;
+	}
+	return DefWindowProc(_hWnd, uMsg, wParam, lParam);
 }

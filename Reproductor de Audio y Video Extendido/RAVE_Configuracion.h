@@ -1,16 +1,16 @@
 // Configuración para compilar RAVE
 
 // Versión y titulo
-#define RAVE_VERSION			0, 4, 1, 0
-#define RAVE_VERSIONF			0.410f
-#define RAVE_VERSIONSTR			L"0.410"
-#define RAVE_TITULO				L"RAVE 0.410"
+#define RAVE_VERSION			0, 4, 1, 2
+#define RAVE_VERSIONF			0.412f
+#define RAVE_VERSIONSTR			L"0.412"
+#define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
 #define RAVE_VERSIONBD          L"1.0"
 
 // Mostrar consola de depuración
-//#ifdef _DEBUG
+#ifdef _DEBUG
 	#define RAVE_MOSTRAR_CONSOLA
-//#endif
+#endif
 
 // Simular el AppPath en "C:\ProgramFiles\RAVE\"
 //#define RAVE_SIMULAR_APPPATH

@@ -40,8 +40,9 @@
 				- Aixó requereix tenir un array d'etiquetes amb tipus (Nom, Estil, Grup, Disc), i pasar un algoritme de distancia.... etc...
 		-  Treure tots els buttons estandar i posar de meus
 		-  Afegir opcions : assosiacions d'arxiu, llista d'inici, explicar el tema de les arrels, etc..
+			- Analizar metadatos automaticamente, o anializar metadatos solo al reproducir.
 		-  Menu per la llista
 		-  Crear Icona Buscar en l'arbre de la BD adal a la dreta
-		-  Solucionar Glitch amb la llista i l'arbre, per exemple busca Symphony X sense tenir "Pelis i Series" afegit com arrel, y expandeix-lo
+		-  Solucionar glitch amb la llista i l'arbre, per exemple busca Symphony X sense tenir "Pelis i Series" afegit com arrel, y expandeix-lo
 
 */

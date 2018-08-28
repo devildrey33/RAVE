@@ -628,6 +628,7 @@ namespace DWL {
 		return Tmp->_Siguiente;
 	}
 
+
 	/* Evento que se recibe al cambiar el scroll de posición */
 	void DArbolEx::Scrolls_EventoCambioPosicion(void) {
 		RECT RC, RCS;

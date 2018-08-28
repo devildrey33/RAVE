@@ -181,6 +181,7 @@
     <ClInclude Include="DListaIconos.h" />
     <ClInclude Include="DListaIconos_Icono.h" />
     <ClInclude Include="DDlgDirectorios.h" />
+    <ClInclude Include="DMarcaEx.h" />
     <ClInclude Include="DMenuEx.h" />
     <ClInclude Include="DRegistro.h" />
     <ClInclude Include="DTemporizador.h" />
@@ -225,7 +226,7 @@
     <ClInclude Include="ThreadAgregarArchivosLista.h" />
     <ClInclude Include="DTrackBar.h" />
     <ClInclude Include="ThreadObtenerMetadatos.h" />
-    <ClInclude Include="TODO.h" />
+    <ClInclude Include="RAVE_TODO.h" />
     <ClInclude Include="VentanaErrorCritico.h" />
     <ClInclude Include="VentanaPrincipal.h" />
     <ClInclude Include="VerVideo.h" />
@@ -264,6 +265,7 @@
     <ClCompile Include="DListView_Columna.cpp" />
     <ClCompile Include="DListView_DatosEdicion.cpp" />
     <ClCompile Include="DListView_Item.cpp" />
+    <ClCompile Include="DMarcaEx.cpp" />
     <ClCompile Include="DMenu.cpp" />
     <ClCompile Include="DMenuEx.cpp" />
     <ClCompile Include="DMouse.cpp" />
@@ -319,6 +321,7 @@
     <Image Include="..\Iconos\IDI_Cancion2.ico" />
     <Image Include="..\Iconos\IDI_CDAudio.ico" />
     <Image Include="..\Iconos\IDI_Check.ico" />
+    <Image Include="..\Iconos\IDI_Check2.ico" />
     <Image Include="..\Iconos\IDI_Directorio.ico" />
     <Image Include="..\Iconos\IDI_Disco.ico" />
     <Image Include="..\Iconos\IDI_Genero.ico" />

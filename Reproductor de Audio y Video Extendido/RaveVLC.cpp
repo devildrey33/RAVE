@@ -34,13 +34,16 @@ const BOOL RaveVLC::Iniciar(void) {
 	char OpcionesSMem[1024];
 	sprintf_s(OpcionesSMem,	1024, "smem{audio-prerender-callback=%lld,audio-postrender-callback=%lld,audio-data=%lld}", ((long long int)(intptr_t)(void*)&audio_prerendercb), ((long long int)(intptr_t)(void*)&audio_postrendercb), ((long long int)(intptr_t)(void*)this));
 	const char * const Argumentos[] = {	
-		OpcionesSMem
+		OpcionesSMem,
+//		"--verbose=3"
 	};
 
 	Debug_Escribir_Varg(L"RaveVLC::Iniciar Cargando LibVLC...\n", _Instancia);
 	DWORD t = GetTickCount();
 //	_Instancia = libvlc_new(0, NULL);
 	_Instancia = libvlc_new(sizeof(Argumentos) / sizeof(Argumentos[0]), Argumentos);
+
+//	libvlc_set_log_verbosity(_Instancia, 3);
 
 	const char *ErrorVLC = libvlc_errmsg();
 	/*_Log = libvlc_log_open(_Instancia); // PARTE DEL LOG PARA EL VLC

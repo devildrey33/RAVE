@@ -2,8 +2,12 @@
 
 #include "RaveBD.h"
 #include <mutex>
+#include "DhWnd.h"
+#include "DBarraProgresoEx.h"
+#include "DBotonEx.h"
+#include "DMarcaEx.h"
 
-class ThreadObtenerMetadatos {
+class ThreadObtenerMetadatos :	public DWL::DVentana {
   public:
 							    ThreadObtenerMetadatos();
 	                           ~ThreadObtenerMetadatos();
@@ -11,6 +15,10 @@ class ThreadObtenerMetadatos {
 	void						Terminar(void);
 	void						Cancelar(const BOOL nCancelar);
 	const BOOL                  Cancelar(void);
+
+	void						Pintar(HDC DC);
+	void						Evento_Pintar(void);
+	LRESULT CALLBACK			GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
   protected:
 	static unsigned long       _ThreadObtenerMetadatos(void *pThis);
 
@@ -24,5 +32,10 @@ class ThreadObtenerMetadatos {
 	HANDLE				       _Thread;
 	RaveBD                     _BD;
 	std::vector<std::wstring>  _PorParsear;
+
+
+	DWL::DBarraProgresoEx      _BarraProgreso;
+	DWL::DBotonEx              _BotonCancelar;
+	DWL::DMarcaEx              _MarcaNoMostrarMas;
 };
 

@@ -79,4 +79,7 @@
 	#define DWL_LISTAEX_DOBLECLICK							WM_USER + 303
 
 //	#define DWL_USAR_GESTOR_POR_DEFECTO						WM_USER + 120 //! Macro para definir el valor que debera devolver el GestorMensajes si queremos llamar a la función por defecto del windowprocedure.
+	
+	// DMarcaEx /////////////////////////////////////////////////////////////
+	#define	DWL_MARCAEX_CLICK								WM_USER + 320
 #endif

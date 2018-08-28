@@ -53,9 +53,6 @@
     <Filter Include="VLC">
       <UniqueIdentifier>{9b9da493-5164-46a8-b89a-2dc9d5e0c4ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="A TODO">
-      <UniqueIdentifier>{bdd100ce-18d7-4ba7-970c-96ee27086dc9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DWL\Ventanas\ControlesEx">
       <UniqueIdentifier>{dc872fa4-ea37-42c7-b902-8cec08c6cb7c}</UniqueIdentifier>
     </Filter>
@@ -161,6 +158,9 @@
     <Filter Include="Base de datos\Threads\ObtenerMetadatos">
       <UniqueIdentifier>{f7230b6c-c4c1-4eae-8802-fb48e7e5de1e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\MarcaEx">
+      <UniqueIdentifier>{7ba7b1ff-8132-4dd0-a3e2-67094d0a6f38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -231,9 +231,6 @@
     </ClInclude>
     <ClInclude Include="ControlesPantallaCompleta.h">
       <Filter>Ventanas\Controles</Filter>
-    </ClInclude>
-    <ClInclude Include="TODO.h">
-      <Filter>A TODO</Filter>
     </ClInclude>
     <ClInclude Include="DToolTipEx.h">
       <Filter>DWL\Ventanas\ControlesEx\ToolTipEx</Filter>
@@ -376,6 +373,12 @@
     </ClInclude>
     <ClInclude Include="ThreadObtenerMetadatos.h">
       <Filter>Base de datos\Threads\ObtenerMetadatos</Filter>
+    </ClInclude>
+    <ClInclude Include="RAVE_TODO.h">
+      <Filter>xXx _MAIN_ xXx</Filter>
+    </ClInclude>
+    <ClInclude Include="DMarcaEx.h">
+      <Filter>DWL\Ventanas\ControlesEx\MarcaEx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -569,6 +572,9 @@
     <ClCompile Include="ThreadObtenerMetadatos.cpp">
       <Filter>Base de datos\Threads\ObtenerMetadatos</Filter>
     </ClCompile>
+    <ClCompile Include="DMarcaEx.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\MarcaEx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Reproductor de Audio y Video Extendido.rc">
@@ -649,6 +655,9 @@
       <Filter>Archivos de recursos</Filter>
     </Image>
     <Image Include="..\Iconos\IDI_Check.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Check2.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>

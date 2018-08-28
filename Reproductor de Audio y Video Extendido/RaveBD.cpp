@@ -75,8 +75,14 @@ const int RaveBD::Consulta(const wchar_t *TxtConsulta) {
 		SQLITE_IOERR	: disk I / O error
 		SQLITE_BUSY		: database in use by another process
 		SQLITE_NOMEM	:*/
-	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_BUSY && SqlRet != SQLITE_CONSTRAINT) {
+	int VecesBusy = 0;
+
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
 		SqlRet = sqlite3_step(SqlQuery);
+		if (SqlRet == SQLITE_BUSY) {
+			VecesBusy++;
+			if (VecesBusy == 100) break;
+		}
 	}
 	sqlite3_finalize(SqlQuery);
 	// Si hay un error lo apunto
@@ -310,23 +316,25 @@ const BOOL RaveBD::_CrearTablas(void) {
 
 	// Creo la tabla para las opciones
 	std::wstring CrearTablaOpciones = L"CREATE TABLE Opciones ("
-											L"Id" 				    L" INTEGER PRIMARY KEY, " 
-											L"Volumen"			    L" INTEGER, "             
-											L"PathAbrir"		    L" VARCHAR(260), "	 	  
-											L"PosX"					L" INTEGER, "             
-											L"PosY"					L" INTEGER, "             
-											L"Ancho"				L" INTEGER, "             
-											L"Alto"					L" INTEGER, "             
-											L"Shufle"			    L" INTEGER, "             
-											L"Repeat"			    L" INTEGER, "             
-											L"Inicio"			    L" INTEGER, "             
-											L"OcultarMouseEnVideo"	L" INTEGER, "             
-											L"Version"				L" FLOAT"				  
+											L"Id" 						L" INTEGER PRIMARY KEY," 
+											L"Volumen"					L" INTEGER,"             
+											L"PathAbrir"				L" VARCHAR(260),"	 	  
+											L"PosX"						L" INTEGER,"             
+											L"PosY"						L" INTEGER,"             
+											L"Ancho"					L" INTEGER,"             
+											L"Alto"						L" INTEGER,"             
+											L"Shufle"					L" INTEGER,"             
+											L"Repeat"					L" INTEGER,"             
+											L"Inicio"					L" INTEGER,"             
+											L"OcultarMouseEnVideo"		L" INTEGER,"             
+											L"Version"					L" FLOAT,"				  
+											L"MostrarObtenerMetadatos"	L" INTEGER"
 										")";
 	if (Consulta(CrearTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 
 	// Añado los datos por defecto de las opciones
-	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version) VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ")";
+	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos) "
+										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1)";
 	if (Consulta(ValoresTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 
 	// Creo la tabla para las raices
@@ -739,6 +747,13 @@ void RaveBD::Opciones_OcultarMouseEnVideo(const int nOcultarMouseEnVideo) {
 	Consulta(Q.c_str());
 }
 
+void RaveBD::Opciones_MostrarObtenerMetadatos(const BOOL nMostrarObtenerMetadatos) {
+	_Opciones_MostrarObtenerMetadatos = nMostrarObtenerMetadatos;
+	std::wstring Q = L"Update Opciones SET MostrarObtenerMetadatos=" + DWL::DString_ToStr(nMostrarObtenerMetadatos) + L" WHERE Id=0";
+	int Ret = Consulta(Q.c_str());
+	Ret = Ret;
+}
+
 
 const BOOL RaveBD::ObtenerOpciones(void) {
 
@@ -752,17 +767,18 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
-			_Opciones_Volumen				= static_cast<int>(sqlite3_column_int(SqlQuery, 1));
-			_Opciones_PathAbrir				= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 2));
-			_Opciones_PosX					= static_cast<int>(sqlite3_column_int(SqlQuery, 3));
-			_Opciones_PosY					= static_cast<int>(sqlite3_column_int(SqlQuery, 4));
-			_Opciones_Ancho					= static_cast<int>(sqlite3_column_int(SqlQuery, 5));
-			_Opciones_Alto					= static_cast<int>(sqlite3_column_int(SqlQuery, 6));
-			_Opciones_Shufle				= static_cast<int>(sqlite3_column_int(SqlQuery, 7));
-			_Opciones_Repeat				= static_cast<Tipo_Repeat>(sqlite3_column_int(SqlQuery, 8));
-			_Opciones_Inicio				= static_cast<int>(sqlite3_column_int(SqlQuery, 9));
-			_Opciones_OcultarMouseEnVideo	= static_cast<int>(sqlite3_column_int(SqlQuery, 10));
-			_Opciones_Version				= static_cast<float>(sqlite3_column_double(SqlQuery, 11));
+			_Opciones_Volumen					= static_cast<int>(sqlite3_column_int(SqlQuery, 1));
+			_Opciones_PathAbrir					= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 2));
+			_Opciones_PosX						= static_cast<int>(sqlite3_column_int(SqlQuery, 3));
+			_Opciones_PosY						= static_cast<int>(sqlite3_column_int(SqlQuery, 4));
+			_Opciones_Ancho						= static_cast<int>(sqlite3_column_int(SqlQuery, 5));
+			_Opciones_Alto						= static_cast<int>(sqlite3_column_int(SqlQuery, 6));
+			_Opciones_Shufle					= static_cast<int>(sqlite3_column_int(SqlQuery, 7));
+			_Opciones_Repeat					= static_cast<Tipo_Repeat>(sqlite3_column_int(SqlQuery, 8));
+			_Opciones_Inicio					= static_cast<int>(sqlite3_column_int(SqlQuery, 9));
+			_Opciones_OcultarMouseEnVideo		= static_cast<int>(sqlite3_column_int(SqlQuery, 10));
+			_Opciones_Version					= static_cast<float>(sqlite3_column_double(SqlQuery, 11));
+			_Opciones_MostrarObtenerMetadatos	= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 12));
 		}
 	}
 
@@ -774,14 +790,14 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 
 	return TRUE;
 }
-
+/*
 const BOOL RaveBD::AsignarTiempoMedio(const libvlc_time_t nTiempo, const sqlite3_int64 mHash) {
 	int SqlRet = ConsultaVarg(L"UPDATE Medios SET Tiempo=%d WHERE Hash=%d", nTiempo, mHash);
 	if (SqlRet == SQLITE_ERROR) {
 		return FALSE;
 	}
 	return TRUE;
-}
+}*/
 
 
 /* NOTA es mejor tener 2 selects para las opciones, uno para el tamaño y posición de la ventana, y otro para el resto de valores (shufle, repeat, volumen, etc...)
