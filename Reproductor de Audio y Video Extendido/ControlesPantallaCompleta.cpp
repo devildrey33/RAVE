@@ -24,6 +24,8 @@ void ControlesPantallaCompleta::Crear(void) {
 	LabelTiempoActual.CrearLabelEx(this, L"00:00", RC.right - 265, 12, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
 	LabelTiempoSeparador.CrearLabelEx(this, L"/", RC.right - 210, 12, 10, 20, ID_LABEL_TIEMPOSEPARADOR, TRUE, WS_CHILD | WS_VISIBLE);
 	LabelTiempoTotal.CrearLabelEx(this, L"00:00", RC.right - 200, 12, 55, 20, ID_LABEL_TIEMPOTOTAL, TRUE, WS_CHILD | WS_VISIBLE);
+
+	Opacidad(240);
 }
 
 
@@ -106,28 +108,43 @@ void ControlesPantallaCompleta::Evento_SliderVolumen_Cambio(void) {
 
 }
 
-
-void ControlesPantallaCompleta::Evento_BorraFondo(HDC DC) {
+void ControlesPantallaCompleta::Pintar(HDC DC) {
 	RECT RC;
-	GetClientRect(hWnd(), &RC);
-/*	HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO);
-	FillRect(DC, &RC, BrochaFondo);
-	DeleteObject(BrochaFondo);*/
+	GetClientRect(_hWnd, &RC);
 
-	Gdiplus::Graphics	Graficos(DC);
+/*	Gdiplus::Graphics	Graficos(DC);
 	Gdiplus::Color		ColorFondo(COLOR_FONDO);
+	Gdiplus::Color		ColorBorde(COLOR_MENU_BORDE);
 	Gdiplus::SolidBrush BrochaFondo(ColorFondo);
+	Gdiplus::Pen        PlumaBorde(ColorBorde, 1);
 	Graficos.FillRectangle(&BrochaFondo, 0, 0, RC.right, RC.bottom);
+	Graficos.DrawRectangle(&PlumaBorde, 1, 1, RC.right -1, RC.bottom -1);*/
+
+	HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO);
+	HBRUSH BrochaBorde = CreateSolidBrush(COLOR_BORDE);
+	FillRect(DC, &RC, BrochaFondo);
+	FrameRect(DC, &RC, BrochaBorde);
+	DeleteObject(BrochaFondo);
+	DeleteObject(BrochaBorde);
 }
 
+void ControlesPantallaCompleta::Evento_Pintar(void) {
+	PAINTSTRUCT PS;
+	HDC DC = BeginPaint(_hWnd, &PS);
+	Pintar(DC);
+	EndPaint(_hWnd, &PS);
+}
 
 LRESULT CALLBACK ControlesPantallaCompleta::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	static POINT nPos = { 0, 0 };
 	switch (uMsg) {
 		case WM_ERASEBKGND:
-			Evento_BorraFondo(reinterpret_cast<HDC>(wParam));
+			Pintar(reinterpret_cast<HDC>(wParam));
 			return TRUE;
 
+		case WM_PAINT :
+			Evento_Pintar();
+			break;
 
 		case WM_MOUSEMOVE :
 			DWL::DMouse::ObtenerPosicion(&nPos);

@@ -42,13 +42,23 @@ namespace DWL {
 	}
 
 	HWND DArbolEx::CrearArbolEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, DWORD nEstilos) {
-		if (hWnd()) { Debug_Escribir(L"DArbolEx::CrearArbolEx() Error : ya se ha creado el arbol\n"); return hWnd(); }
+		if (hWnd()) {
+			#if DARBOLEX_MOSTRARDEBUG == TRUE
+				Debug_Escribir(L"DArbolEx::CrearArbolEx() Error : ya se ha creado el arbol\n");
+			#endif
+			return hWnd();
+		}
+		
 		_hWnd = CrearControlEx(nPadre, L"DArbolEx", L"", cID, cX, cY, cAncho, cAlto, nEstilos, NULL, CS_DBLCLKS);  // CS_DBLCLKS (el control recibe notificaciones de doble click)
 		Fuente = _Fuente18Normal;
 		return hWnd();
 	}
 
 	void DArbolEx::BorrarTodo(void) {
+		#if DARBOLEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir(L"DArbolEx::BorrarTodo()\n");
+		#endif
+
 		for (size_t i = 0; i < _Raiz._Hijos.size(); i++) {
 			delete _Raiz._Hijos[i];
 		}
@@ -72,6 +82,10 @@ namespace DWL {
 	}
 
 	DArbolEx_Nodo *DArbolEx::_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre, DListaIconos_Icono *nIcono, DhWnd_Fuente *nFuente, const size_t PosicionNodo) {
+		#if DARBOLEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DArbolEx::_AgregarNodo(%s)\n", nTexto);
+		#endif
+
 		// Asigno el arbol padre
 		nNodo->_Arbol = this;
 
@@ -180,6 +194,11 @@ namespace DWL {
 	DArbolEx_Nodo *DArbolEx::PrimerNodoVisible(void) {
 		// Si no hay nodos, salgo de la función
 		if (_Raiz._Hijos.size() == 0) return NULL;
+
+		#if DARBOLEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DArbolEx::PrimerNodoVisible = %s\n", _Raiz._Hijos[0]->Texto.c_str());
+		#endif
+
 		// Devuelvo el primer nodo
 		return _Raiz._Hijos[0];
 	}
@@ -194,6 +213,9 @@ namespace DWL {
 		while (Tmp->Expandido == TRUE && Tmp->_Hijos.size() > 0) {
 			Tmp = Tmp->_Hijos[Tmp->_Hijos.size() -1];
 		}
+		#if DARBOLEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DArbolEx::PrimerNodoVisible = %s\n", Tmp->Texto.c_str());
+		#endif
 		return Tmp;
 	}
 
@@ -478,6 +500,9 @@ namespace DWL {
 										inicioexpansorX + DARBOLEX_TAMEXPANSOR,		PixelesContados + inicioexpansorY + DARBOLEX_TAMEXPANSOR };
 				if (PtInRect(&RectaExpansor, Pt) != 0) {
 					Parte = DArbolEx_ParteNodo_Expansor;
+					#if DARBOLEX_MOSTRARDEBUG == TRUE
+						Debug_Escribir_Varg(L"DArbolEx::HitTest(%d, %d) = Expansor de '%s'\n", cX, cY, Tmp->Texto.c_str());
+					#endif
 					return Tmp;
 				}
 			}
@@ -492,6 +517,9 @@ namespace DWL {
 								 inicioiconoX + DARBOLEX_TAMICONO,					PixelesContados + inicioiconoY + DARBOLEX_TAMICONO };
 			if (PtInRect(&RectaIcono, Pt) != 0) {
 				Parte = DArbolEx_ParteNodo_Icono;
+				#if DARBOLEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DArbolEx::HitTest(%d, %d) = Icono de '%s'\n", cX, cY, Tmp->Texto.c_str());
+				#endif
 				return Tmp;
 			}
 			int iniciotexto = static_cast<int>((Tmp->_Ancestros - 1) * DARBOLEX_TAMICONO) + DARBOLEX_PADDING + DARBOLEX_TAMEXPANSOR + DARBOLEX_PADDING + DARBOLEX_TAMICONO + 2 + _NodoPaginaHDif;
@@ -500,6 +528,9 @@ namespace DWL {
 								iniciotexto + Tmp->_AnchoTexto + DARBOLEX_PADDING,	PixelesContados + (DARBOLEX_PADDING * 2) + Tmp->_Fuente->Alto() };
 			if (PtInRect(&RectaTexto, Pt) != 0) {
 				Parte = DArbolEx_ParteNodo_Texto;
+				#if DARBOLEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DArbolEx::HitTest(%d, %d) = Texto de '%s'\n", cX, cY, Tmp->Texto.c_str());
+				#endif
 				return Tmp;
 			}
 			// Compruebo si el mouse está dentro del nodo (hay partes del nodo que no pertenecen ni al texto ni al icono ni al expansor)
@@ -507,10 +538,17 @@ namespace DWL {
 								 iniciotodoX + tamtodoX,							PixelesContados + (DARBOLEX_PADDING * 2) + Tmp->_Fuente->Alto() };
 			if (PtInRect(&RectaNodo, Pt) != 0) {
 				Parte = DArbolEx_ParteNodo_Nodo;
+				#if DARBOLEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DArbolEx::HitTest(%d, %d) = Marco de '%s'\n", cX, cY, Tmp->Texto.c_str());
+				#endif
 				return Tmp;
 			}
 
 		}
+
+		#if DARBOLEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DArbolEx::HitTest(%d, %d) = Nada\n", cX, cY);
+		#endif
 		Parte = DArbolEx_ParteNodo_Nada;
 		return NULL;
 	}

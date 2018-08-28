@@ -134,7 +134,7 @@ const BOOL RaveVLC::AbrirMedio(BDMedio &Medio) {
 	App.ControlesPC.SliderTiempo.OcultarToolTip();
 
 	// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
-	std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" - " +  std::wstring(MedioActual.Nombre);
+	std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" - " +  std::wstring(MedioActual.Nombre());
 	App.VentanaRave.Titulo(nTitulo);
 
 	Debug_Escribir_Varg(L"RaveVLC::AbrirMedio Path '%s'\n", MedioActual.Path.c_str());
@@ -244,7 +244,7 @@ const BOOL RaveVLC::Play(void) {
 			hWndVLC = NULL;
 			ActualizarIconos(1);
 			SetTimer(App.VentanaRave.hWnd(), TIMER_OBTENERVLCWND, 100, NULL);
-			SetTimer(App.VentanaRave.hWnd(), TIMER_OBTENER_TIEMPO_TOTAL, 250, NULL);
+//			SetTimer(App.VentanaRave.hWnd(), TIMER_OBTENER_TIEMPO_TOTAL, 250, NULL);
 			if (MedioActual.TipoMedio == Tipo_Medio_Video) { // Desactivo el protector de pantalla si es un video
 				SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, FALSE, NULL, TRUE);
 			}

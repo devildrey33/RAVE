@@ -15,7 +15,9 @@ class ControlesPantallaCompleta :public DVentana {
 	void					Evento_SliderVolumen_Cambio(void);
 	void					Evento_SliderVolumen_Cambiado(void);
 
-	void					Evento_BorraFondo(HDC DC);
+//	void					Evento_BorraFondo(HDC DC);
+	void                    Evento_Pintar(void);
+	void					Pintar(HDC DC);
 
 //	LRESULT					Evento_SliderH(WPARAM wParam, LPARAM lParam);
 
@@ -40,6 +42,7 @@ class ControlesPantallaCompleta :public DVentana {
 	DWL::DLabelEx			LabelTiempoTotal;
 
 //	POINT					uPos;
+
 
 	LRESULT CALLBACK		GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
   protected :

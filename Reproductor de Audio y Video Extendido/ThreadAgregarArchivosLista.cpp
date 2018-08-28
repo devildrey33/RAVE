@@ -77,7 +77,7 @@ unsigned long ThreadAgregarArchivosLista::_ThreadAgregarArchivosLista(void *pThi
 	This->_BD.Consulta(L"COMMIT TRANSACTION");
 	This->_BD.Terminar();
 
-	PostMessage(This->_VentanaPlayer, WM_TAAL_TERMINADO, static_cast<WPARAM>(TotalArchivos), 0);
+	SendMessage(This->_VentanaPlayer, WM_TAAL_TERMINADO, static_cast<WPARAM>(TotalArchivos), 0);
 
 	return 0;
 }

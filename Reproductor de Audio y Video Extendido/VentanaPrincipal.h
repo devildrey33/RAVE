@@ -22,6 +22,7 @@
 #include "DDesplegableEx.h"
 #include "ThreadActualizarArbol.h"
 #include "ThreadAgregarArchivosLista.h"
+#include "ThreadObtenerMetadatos.h"
 
 using namespace DWL;
 
@@ -43,7 +44,7 @@ class VentanaPrincipal : public DWL::DVentana {
 //	void						Evento_ListView_Mouse_Click(DListView_DatosClick *DatosClick, const UINT IDListView);
 	//void						Evento_ListView_Mouse_DobleClick(DListView_DatosClick *DatosClick, const UINT IDListView);
 	void						Evento_Temporizador(const UINT cID);
-	void						Timer_ObtenerTiempoTotal(void);
+//	void						Timer_ObtenerTiempoTotal(void);
 	void						Evento_CambiandoTam(const UINT Lado, RECT *Rectangulo);
 
 //	LRESULT						Evento_SliderH(WPARAM wParam, LPARAM lParam);
@@ -78,6 +79,7 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						ActualizarArbol(void);
 	ThreadActualizarArbol		ThreadActualizar;
 	ThreadAgregarArchivosLista  ThreadArchivosLista;
+	ThreadObtenerMetadatos		ThreadObtenerMeta;
 
 //	NodoBD                     *Arbol_AgregarCancion(const size_t Hash);
 	NodoBD                     *Arbol_AgregarDir(std::wstring *Path, const BOOL nRepintar = FALSE);

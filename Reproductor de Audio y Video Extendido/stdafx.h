@@ -98,7 +98,7 @@
 #define TIMER_REPINTARVLC				2202
 #define TIMER_OBTENERVLCWND				2203
 #define TIMER_CPC_INACTIVIDAD			2204
-#define TIMER_OBTENER_TIEMPO_TOTAL      2205
+//#define TIMER_OBTENER_TIEMPO_TOTAL      2205
 
 // Controles Ventana error crítico
 #define ID_VEC_ENVIAR					2300

@@ -38,7 +38,7 @@ ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {
 	}
 
 	// Paso la pista a string formateada a 2 digitos
-	std::wstring Pista = std::to_wstring(nMedio->Pista);
+	std::wstring Pista = std::to_wstring(nMedio->Pista());
 	if (Pista.size() == 1) Pista = L"0" + Pista;
 
 	// Paso el tiempo a string formateado en mm:ss
@@ -46,7 +46,7 @@ ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {
 	App.VLC.TiempoStr(nMedio->Tiempo, StrTiempo);
 
 	// Agrego el item
-	ItemMedio *TmpMedio = AgregarItem<ItemMedio>(nIcono, DLISTAEX_POSICION_FIN, Pista.c_str(), nMedio->Nombre.c_str(), StrTiempo.c_str());
+	ItemMedio *TmpMedio = AgregarItem<ItemMedio>(nIcono, DLISTAEX_POSICION_FIN, Pista.c_str(), nMedio->Nombre().c_str(), StrTiempo.c_str());
 	// Agrego el item también en el vector MediosOrdenados (por si el shufle está activado)
 	_MediosOrdenados.push_back(TmpMedio);
 	// Asigno el hash al item

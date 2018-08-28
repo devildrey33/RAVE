@@ -27,18 +27,21 @@
 		V  Asociacions d'arxius amb l'explorador
 			- Falta comprobar les asosiacions i mostrar un dialeg com el del bubatronik
 	    V  Shuffle / repeat (apagar windows sobretot)
-	   +o- Dialeg/finestra per afegir/eliminar arrels
+	   +o- Dialeg/finestra per afegir arrels
 		V  Control DMenuEx
 			V Implementar events interns del mouse
 			V Implementar teclat básic
 
 
 	RAVE 0.5 
-		-  Analitzar tags dels medis. (libvlc_media_parse_with_options)
+		V  Analitzar tags dels medis. (libvlc_media_parse_with_options)
 			- Mostrar tooltip informatiu
+			- Fer una llista d'etiquetes (per poder buscar i fer llistes aleatories)
+				- Aixó requereix tenir un array d'etiquetes amb tipus (Nom, Estil, Grup, Disc), i pasar un algoritme de distancia.... etc...
 		-  Treure tots els buttons estandar i posar de meus
-		-  Afegir opcions : assosiacions, llista d'inici, etc..
+		-  Afegir opcions : assosiacions d'arxiu, llista d'inici, explicar el tema de les arrels, etc..
 		-  Menu per la llista
-
+		-  Crear Icona Buscar en l'arbre de la BD adal a la dreta
+		-  Solucionar Glitch amb la llista i l'arbre, per exemple busca Symphony X sense tenir "Pelis i Series" afegit com arrel, y expandeix-lo
 
 */

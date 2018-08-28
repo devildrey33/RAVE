@@ -13,9 +13,9 @@ class ThreadActualizarArbol {
 	void						Cancelar(const BOOL nCancelar);
 	const BOOL                  Cancelar(void);
   protected:
-	void                       _Parsear(libvlc_instance_t *VLC, std::wstring &Path);
+/*	void                       _Parsear(libvlc_instance_t *VLC, std::wstring &Path);
 	std::wstring               _ObtenerMeta(libvlc_media_t *Media, libvlc_meta_t Tipo);
-	static void                _ParsearTerminado(const libvlc_event_t *event, void *user_data);
+	static void                _ParsearTerminado(const libvlc_event_t *event, void *user_data);*/
 
 	static unsigned long       _ThreadActualizar(void *pThis);
 	const UINT                 _EscanearDirectorio(std::wstring &nPath, BDRaiz *Raiz);
@@ -25,6 +25,6 @@ class ThreadActualizarArbol {
 	HWND				       _VentanaPlayer;
 	HANDLE				       _Thread;
 	RaveBD                     _BD;
-	std::vector<std::wstring>  _PorParsear;
+	//std::vector<std::wstring>  _PorParsear;
 };
 

@@ -8,14 +8,15 @@
 #define WM_TBA_AGREGARDIR			WM_USER + 2000
 #define WM_TBA_AGREGARRAIZ			WM_USER + 2001
 #define WM_TBA_TERMINADO			WM_USER + 2002
-#define WM_TBA_TOTALMEDIOS          WM_USER + 2003
 // Agregar un medio desde el explorador (dobleclick o menu)
-#define WM_AGREGARMEDIO				WM_USER + 2004
-#define WM_REPRODUCIRMEDIO			WM_USER + 2005
+#define WM_AGREGARMEDIO				WM_USER + 2003
+#define WM_REPRODUCIRMEDIO			WM_USER + 2004
 // Thread agregar medios externos
-#define WM_TAAL_AGREGARMEDIO		WM_USER + 2006
-#define WM_TAAL_TERMINADO			WM_USER + 2007
-
+#define WM_TAAL_AGREGARMEDIO		WM_USER + 2005
+#define WM_TAAL_TERMINADO			WM_USER + 2006
+// Thread obtener metadatos
+#define WM_TOM_TOTALMEDIOS          WM_USER + 2007
+#define WM_TOM_TERMINADO            WM_USER + 2008
 
 enum Estados_Medio {
 	Nada      = 0,
@@ -55,34 +56,54 @@ class BDRaiz {
 // Clase con los datos de un medio
 class BDMedio {
   public :
-						BDMedio() : Pista(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0) { };
-						BDMedio(UINT nId, sqlite3_int64 nHash, const wchar_t *nPath, const wchar_t *nNombre, Tipo_Medio nTipoMedio, Extension_Medio nExtension, UINT nReproducido, ULONG nLongitud, DWORD nIDDisco, UINT nNota, UINT nGenero, UINT nGrupo, UINT nDisco, UINT nPista, libvlc_time_t nTiempo, const wchar_t *nSubtitulos) : Id(nId), Hash(nHash), Path(nPath), Nombre(nNombre), TipoMedio(nTipoMedio), Extension(nExtension), Longitud(nLongitud), IDDisco(nIDDisco), Nota(nNota), Pista(nPista), Tiempo(nTiempo), Subtitulos(nSubtitulos) { }
-						BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
-	                   ~BDMedio() { };
+							BDMedio() : PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0), Parseado(FALSE) { };
+//							BDMedio(UINT nId, sqlite3_int64 nHash, const wchar_t *nPath, const wchar_t *nNombre, Tipo_Medio nTipoMedio, Extension_Medio nExtension, UINT nReproducido, ULONG nLongitud, DWORD nIDDisco, UINT nNota, UINT nGenero, UINT nGrupo, UINT nDisco, UINT nPista, libvlc_time_t nTiempo, const wchar_t *nSubtitulos) : Id(nId), Hash(nHash), Path(nPath), NombrePath(nNombre), TipoMedio(nTipoMedio), Extension(nExtension), Longitud(nLongitud), IDDisco(nIDDisco), Nota(nNota), Pista(nPista), Tiempo(nTiempo), Subtitulos(nSubtitulos), Parseado(FALSE) { }
+							BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
+	                       ~BDMedio() { };
+
+	UINT					Pista(void);
+	UINT					PistaTag;
+	UINT					PistaPath;
+	BOOL					PistaEleccion;	// Elección : TRUE Path, FALSE Tag 
+
+	std::wstring		   &Nombre(void);
+	std::wstring			NombreTag;
+	std::wstring			NombrePath;
+	BOOL					NombreEleccion;	// Elección : TRUE Path, FALSE Tag 
+
+	sqlite3_int64			Hash;
+	std::wstring			Path;
+
+	Tipo_Medio				TipoMedio;
+	Extension_Medio			Extension;
+	libvlc_time_t			Tiempo;
+	ULONG					Longitud;
+
+	UINT					Reproducido;
+	UINT					Nota;
+
+	UINT					Id;
+	DWORD					IDDisco;
+
+	std::wstring			Genero;
+
+	std::wstring	       &Grupo(void);
+	std::wstring			GrupoTag;
+	std::wstring			GrupoPath;
+	BOOL					GrupoEleccion;	// Elección : TRUE Path, FALSE Tag 
+
+	std::wstring	       &Disco(void);
+	std::wstring			DiscoTag;
+	std::wstring			DiscoPath;
+	BOOL					DiscoEleccion;	// Elección : TRUE Path, FALSE Tag 
+
+	std::wstring			Subtitulos;
+
+	BOOL					Parseado;						
 	
-	UINT				Pista;
-	std::wstring		Nombre;
-	sqlite3_int64		Hash;
-	std::wstring		Path;
-
-	Tipo_Medio          TipoMedio;
-	Extension_Medio     Extension;
-	libvlc_time_t       Tiempo;
-	ULONG               Longitud;
-
-	UINT                Reproducido;
-	UINT                Nota;
-
-	UINT                Id;
-	DWORD               IDDisco;
-
-	std::wstring		Genero;
-	std::wstring        Grupo;
-	std::wstring        Disco;
-	std::wstring        Subtitulos;
-
-	void                PistaStr(std::wstring &nPistaStr);
-	void                ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
+		
+	void					PistaStr(std::wstring &nPistaStr);
+	void					ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
 
 };
 
@@ -113,6 +134,9 @@ class RaveBD {
 								// Obtiene un puntero con los datos del medio en la BD (Si el medio no existe devuelve FALSE)
 	const BOOL					ObtenerMedio(const sqlite3_int64 mHash, BDMedio &OUT_Medio);
 	const BOOL					ObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio);
+
+								// Obtiene una lista de paths que pertenecen a medios por parsear (extraer metadatos, id3, etc...)
+	const BOOL                  ObtenerMediosPorParsear(std::vector<std::wstring> &Paths);
 
 	const BOOL					AsignarTiempoMedio(const libvlc_time_t nTiempo, const sqlite3_int64 mHash);
 
@@ -195,6 +219,7 @@ protected:
 	int                        _Opciones_Shufle;
 	Tipo_Repeat                _Opciones_Repeat;
 	int                        _Opciones_Inicio;
+	float                      _Opciones_Version;
 	// Tiempo en MS que tarda en ocultarse el mouse y los controles de un video
 	int                        _Opciones_OcultarMouseEnVideo;
 

@@ -5,9 +5,12 @@
 #define RAVE_VERSIONF			0.410f
 #define RAVE_VERSIONSTR			L"0.410"
 #define RAVE_TITULO				L"RAVE 0.410"
+#define RAVE_VERSIONBD          L"1.0"
 
 // Mostrar consola de depuración
-#define RAVE_MOSTRAR_CONSOLA
+//#ifdef _DEBUG
+	#define RAVE_MOSTRAR_CONSOLA
+//#endif
 
 // Simular el AppPath en "C:\ProgramFiles\RAVE\"
 //#define RAVE_SIMULAR_APPPATH

@@ -215,9 +215,9 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 				}
 			}
 			break;
-		case TIMER_OBTENER_TIEMPO_TOTAL :
+/*		case TIMER_OBTENER_TIEMPO_TOTAL :
 			Timer_ObtenerTiempoTotal();
-			break;
+			break;*/
 
 		// Temporizador que detecta cuando se termina un medio y avanza al siguiente según las reglas establecidas
 		case TIMER_LISTA:
@@ -272,7 +272,7 @@ void VentanaPrincipal::Repeat(void) {
 			break;
 	}
 }
-
+/*
 void VentanaPrincipal::Timer_ObtenerTiempoTotal(void) {
 	// Actualizo el tiempo del medio actual si es 00:00
 	ItemMedio * rItem = Lista.Medio(Lista.MedioActual);
@@ -294,7 +294,7 @@ void VentanaPrincipal::Timer_ObtenerTiempoTotal(void) {
 		KillTimer(_hWnd, TIMER_OBTENER_TIEMPO_TOTAL);
 	}
 
-}
+}*/
 
 
 void VentanaPrincipal::Lista_Pausa(void) {
@@ -543,6 +543,7 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 	else {
 		ShowWindow(hWnd(), SW_RESTORE);
 		SetWindowLongPtr(hWnd(), GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
+		SetWindowPos(_hWnd, HWND_TOP, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
 		//MoveWindow(Video.hWnd(), 120, 71, RC.right - 120, RC.bottom - 70, TRUE);
 
 		Arbol.Visible(FALSE);
@@ -562,6 +563,8 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 	}
 
 	InvalidateRect(App.VLC.hWndVLC, NULL, TRUE);
+
+
 
 //	SetTimer(hWnd(), TIMER_REPINTARVLC, 1000, NULL);
 //	PostMessage(Video.hWnd(), WM_PAINT, 0, 0);
@@ -764,10 +767,16 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			Arbol_AgregarDir(TmpStr, TRUE);
 			delete TmpStr; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
 			break;
-		case WM_TBA_TOTALMEDIOS :
+		case WM_TOM_TOTALMEDIOS :
 			BarraTareas.Valor(static_cast<UINT>(wParam), static_cast<UINT>(lParam));
 			break;
-//		case WM_TBA_AGREGARAUDIO:
+		case WM_TOM_TERMINADO:
+			ThreadObtenerMeta.Terminar();
+			Debug_Escribir_Varg(L"ThreadObtenerMetadatos::Terminado %d archivos examinados.\n", lParam);
+			BarraTareas.Estado_SinProgreso();
+			BarraTareas.Resaltar();
+			break;
+			//		case WM_TBA_AGREGARAUDIO:
 //			Arbol_AgregarCancion(static_cast<size_t>(lParam));
 //			break;
 		case WM_TBA_TERMINADO:
@@ -775,7 +784,8 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			Menu_ArbolBD.Menu(2)->Activado(TRUE);
 			BarraTareas.Estado_SinProgreso();
 			BarraTareas.Resaltar();
-			Debug_Escribir_Varg(L"ThreadActualizarArbol::Terminado %d archivos encontrados\n", lParam);
+			Debug_Escribir_Varg(L"ThreadActualizarArbol::Terminado %d archivos encontrados.\n", lParam);
+			ThreadObtenerMeta.Iniciar(_hWnd);
 			break;
 
 		case WM_DROPFILES :

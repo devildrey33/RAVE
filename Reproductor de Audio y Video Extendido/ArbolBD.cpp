@@ -136,7 +136,7 @@ void ArbolBD::_AgregarMedio(NodoBD *nPadre, BDMedio *nMedio) {
 			else { // Medio
 				std::wstring nPista;
 				nMedio->PistaStr(nPista);
-				std::wstring nNombre = nPista + L" " + nMedio->Nombre;
+				std::wstring nNombre = nPista + L" " + nMedio->Nombre();
 				App.BD.FiltroNombre(nNombre, Filtrado);
 				ArbolBD_TipoNodo Tipo = (nMedio->TipoMedio == Tipo_Medio_Audio) ? ArbolBD_TipoNodo_Cancion : ArbolBD_TipoNodo_Video;
 				Tmp = AgregarBDNodo(Tipo, TmpPadre, Filtrado.c_str(), nMedio->Hash);

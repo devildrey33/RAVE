@@ -1,5 +1,8 @@
 #pragma once
 
+#include "RaveBD.h"
+#include <mutex>
+
 
 class ThreadAgregarArchivosLista {
   public:

@@ -158,6 +158,9 @@
     <Filter Include="DWL\Ventanas\Eventos">
       <UniqueIdentifier>{89375de0-fa16-44d6-8c74-09d2f8fbd387}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Base de datos\Threads\ObtenerMetadatos">
+      <UniqueIdentifier>{f7230b6c-c4c1-4eae-8802-fb48e7e5de1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -371,6 +374,9 @@
     <ClInclude Include="DEventoMouse.h">
       <Filter>DWL\Ventanas\Eventos</Filter>
     </ClInclude>
+    <ClInclude Include="ThreadObtenerMetadatos.h">
+      <Filter>Base de datos\Threads\ObtenerMetadatos</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -559,6 +565,9 @@
     </ClCompile>
     <ClCompile Include="DMenuEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\MenuEx</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadObtenerMetadatos.cpp">
+      <Filter>Base de datos\Threads\ObtenerMetadatos</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

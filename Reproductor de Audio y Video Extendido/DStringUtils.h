@@ -58,5 +58,14 @@
 			in >> output;
 			return output;
 		}
+
+
+		static const BOOL DString_AnsiToWide(char *IN_Ansi, std::wstring &OUT_Wide) {
+			wchar_t TmpWTxt[4096];
+			int Ret = MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, IN_Ansi, -1, TmpWTxt, 4096);
+
+			OUT_Wide = TmpWTxt;
+			return (Ret > 0) ? TRUE : FALSE;
+		}
 	};
 #endif
