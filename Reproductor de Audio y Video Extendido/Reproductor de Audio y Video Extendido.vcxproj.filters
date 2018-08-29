@@ -59,14 +59,8 @@
     <Filter Include="DWL\Ventanas\ControlesEx\BotonEx">
       <UniqueIdentifier>{387b6b9f-1344-4cff-be71-fa2d6bf42414}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas\Controles\TrackBar %28DEPRECATED%29">
-      <UniqueIdentifier>{bd6b1b75-4b6e-41ab-84a6-58c537a0be5b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DWL\Ventanas\ControlesEx\LabelEx">
       <UniqueIdentifier>{ec2f93a3-f0d3-4895-aedb-dd9521e0b5b0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\Controles\Static Control %28DEPRECATED%29">
-      <UniqueIdentifier>{ca03a1a6-077e-47d3-924d-4cc10a4e3a42}</UniqueIdentifier>
     </Filter>
     <Filter Include="DWL\Ventanas\ControlesEx\BarraProgresoEx">
       <UniqueIdentifier>{d7c9df78-01b9-4dd2-b4df-d2c6df60cfc1}</UniqueIdentifier>
@@ -97,15 +91,6 @@
     </Filter>
     <Filter Include="DWL\Sistema\Graficos">
       <UniqueIdentifier>{c95287fd-0aac-4a4c-8922-d130975d3a89}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\Controles\TreeView %28DEPRECATED%29">
-      <UniqueIdentifier>{fbc6d11b-52ef-463b-b1b3-ed887956edba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\Controles\ListView %28DEPRECATED%29">
-      <UniqueIdentifier>{24876072-6ca4-49c2-aa93-cabb2d9df517}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\Controles\ImageList %28DEPRECATED%29">
-      <UniqueIdentifier>{a722b17b-e26a-4ed7-8bd7-a35ce20283d0}</UniqueIdentifier>
     </Filter>
     <Filter Include="DWL\Ventanas\ControlesEx\EdicionTextoEx">
       <UniqueIdentifier>{f2dead2b-bc03-45d3-baa2-54285f0b675d}</UniqueIdentifier>
@@ -193,20 +178,11 @@
     <ClInclude Include="RAVE.h">
       <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
-    <ClInclude Include="DTreeView.h">
-      <Filter>DWL\Ventanas\Controles\TreeView %28DEPRECATED%29</Filter>
-    </ClInclude>
-    <ClInclude Include="DImageList.h">
-      <Filter>DWL\Ventanas\Controles\ImageList %28DEPRECATED%29</Filter>
-    </ClInclude>
     <ClInclude Include="DConsola.h">
       <Filter>DWL\Ventanas\Consola</Filter>
     </ClInclude>
     <ClInclude Include="DMenu.h">
       <Filter>DWL\Ventanas\Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="DListView.h">
-      <Filter>DWL\Ventanas\Controles\ListView %28DEPRECATED%29</Filter>
     </ClInclude>
     <ClInclude Include="DButton.h">
       <Filter>DWL\Ventanas\Controles\Button</Filter>
@@ -219,12 +195,6 @@
     </ClInclude>
     <ClInclude Include="VerVideo.h">
       <Filter>Ventanas\Controles</Filter>
-    </ClInclude>
-    <ClInclude Include="DTrackBar.h">
-      <Filter>DWL\Ventanas\Controles\TrackBar %28DEPRECATED%29</Filter>
-    </ClInclude>
-    <ClInclude Include="DStaticControl.h">
-      <Filter>DWL\Ventanas\Controles\Static Control %28DEPRECATED%29</Filter>
     </ClInclude>
     <ClInclude Include="MarcoControles.h">
       <Filter>Ventanas\Controles</Filter>
@@ -409,32 +379,11 @@
     <ClCompile Include="RAVE.cpp">
       <Filter>xXx _MAIN_ xXx</Filter>
     </ClCompile>
-    <ClCompile Include="DTreeView.cpp">
-      <Filter>DWL\Ventanas\Controles\TreeView %28DEPRECATED%29</Filter>
-    </ClCompile>
-    <ClCompile Include="DTreeView_Nodo.cpp">
-      <Filter>DWL\Ventanas\Controles\TreeView %28DEPRECATED%29</Filter>
-    </ClCompile>
-    <ClCompile Include="DImageList.cpp">
-      <Filter>DWL\Ventanas\Controles\ImageList %28DEPRECATED%29</Filter>
-    </ClCompile>
     <ClCompile Include="DConsola.cpp">
       <Filter>DWL\Ventanas\Consola</Filter>
     </ClCompile>
     <ClCompile Include="DMenu.cpp">
       <Filter>DWL\Ventanas\Menu</Filter>
-    </ClCompile>
-    <ClCompile Include="DListView.cpp">
-      <Filter>DWL\Ventanas\Controles\ListView %28DEPRECATED%29</Filter>
-    </ClCompile>
-    <ClCompile Include="DListView_Columna.cpp">
-      <Filter>DWL\Ventanas\Controles\ListView %28DEPRECATED%29</Filter>
-    </ClCompile>
-    <ClCompile Include="DListView_DatosEdicion.cpp">
-      <Filter>DWL\Ventanas\Controles\ListView %28DEPRECATED%29</Filter>
-    </ClCompile>
-    <ClCompile Include="DListView_Item.cpp">
-      <Filter>DWL\Ventanas\Controles\ListView %28DEPRECATED%29</Filter>
     </ClCompile>
     <ClCompile Include="DButton.cpp">
       <Filter>DWL\Ventanas\Controles\Button</Filter>
@@ -447,12 +396,6 @@
     </ClCompile>
     <ClCompile Include="VerVideo.cpp">
       <Filter>Ventanas\Controles</Filter>
-    </ClCompile>
-    <ClCompile Include="DTrackBar.cpp">
-      <Filter>DWL\Ventanas\Controles\TrackBar %28DEPRECATED%29</Filter>
-    </ClCompile>
-    <ClCompile Include="DStaticControl.cpp">
-      <Filter>DWL\Ventanas\Controles\Static Control %28DEPRECATED%29</Filter>
     </ClCompile>
     <ClCompile Include="MarcoControles.cpp">
       <Filter>Ventanas\Controles</Filter>

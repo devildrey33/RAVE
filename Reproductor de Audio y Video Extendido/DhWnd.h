@@ -28,7 +28,7 @@ namespace DWL {
 		inline const bool		operator== (HWND chWnd)			{ return (_hWnd == chWnd); };
 		inline const bool		operator== (DhWnd *chWnd)		{ return (_hWnd == chWnd->hWnd()); };
 		inline void				operator= (HWND nhWnd)          { _hWnd = nhWnd; };*/
-		inline virtual const BOOL	Activar(const BOOL nActivar)    { return EnableWindow(_hWnd, nActivar); };
+		inline virtual void			Activado(const BOOL nActivar)   { EnableWindow(_hWnd, nActivar); };
 		inline virtual const BOOL	Activado(void)					{ return IsWindowEnabled(_hWnd); };
 		inline const BOOL			Minimizar(void)					{ return ShowWindow(_hWnd, SW_MINIMIZE); };
 		inline const BOOL			Minimizado(void)				{ return IsIconic(_hWnd); };

@@ -105,11 +105,10 @@ namespace DWL {
 		DeleteDC(Buffer);
 	}
 
-	const BOOL DBotonEx::Activar(const BOOL nActivar) {
+	void DBotonEx::Activado(const BOOL nActivar) {
 		BOOL Ret = FALSE;
 		Ret = EnableWindow(_hWnd, nActivar);
 		Repintar();
-		return Ret;
 	}
 	
 	void DBotonEx::Evento_MouseMovimiento(const int cX, const int cY, const UINT wParam) {

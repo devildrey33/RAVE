@@ -36,13 +36,13 @@ namespace DWL {
 		// Muestro los controles
 		ArbolDirectorios.Visible(TRUE);
 //		BotonAceptar.Visible(TRUE);
-		BotonAceptar.Activar(FALSE);
+		BotonAceptar.Activado(FALSE);
 //		BotonCancelar.Visible(TRUE);
 
 		// Muestro la ventana modal
 		Visible(TRUE);
 		// Des-activo la ventana padre
-		nPadre->Activar(FALSE);
+		nPadre->Activado(FALSE);
 
 		// Bucle de mensajes que espera la respuesta del usuario hasta devolver el control a la ventana principal
 		MSG		msg;
@@ -63,7 +63,7 @@ namespace DWL {
 		Destruir();
 
 		// Re-activo la ventana padre
-		nPadre->Activar(TRUE);
+		nPadre->Activado(TRUE);
 		nPadre->AsignarFoco();
 
 		// Si se ha pulsado cancelar devuleve FALSE
@@ -115,7 +115,7 @@ namespace DWL {
 			}
 		}
 
-		BotonAceptar.Activar(nActivar);
+		BotonAceptar.Activado(nActivar);
 	}
 
 

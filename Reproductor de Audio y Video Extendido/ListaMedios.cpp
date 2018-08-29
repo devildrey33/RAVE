@@ -49,8 +49,9 @@ ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {
 	ItemMedio *TmpMedio = AgregarItem<ItemMedio>(nIcono, DLISTAEX_POSICION_FIN, Pista.c_str(), nMedio->Nombre().c_str(), StrTiempo.c_str());
 	// Agrego el item también en el vector MediosOrdenados (por si el shufle está activado)
 	_MediosOrdenados.push_back(TmpMedio);
-	// Asigno el hash al item
-	TmpMedio->Hash = nMedio->Hash;
+	// Asigno el hash y la Id al item
+	TmpMedio->Hash	= nMedio->Hash;
+	TmpMedio->Id	= nMedio->Id;
 
 	return TmpMedio;
 }

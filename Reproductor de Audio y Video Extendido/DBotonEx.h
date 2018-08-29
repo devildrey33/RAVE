@@ -7,19 +7,18 @@ namespace DWL {
 	enum DBotonEx_Estado {
 		DBotonEx_Estado_Normal,
 		DBotonEx_Estado_Resaltado,
-/*		DBotonEx_Estado_Marcado,
-		DBotonEx_Estado_MarcadoResaltado,*/
 		DBotonEx_Estado_Presionado
 	};
 
 	class DBotonEx : public DControlEx {
 	  public:
-								DBotonEx();
-				               ~DBotonEx();
+								DBotonEx(void);
+				               ~DBotonEx(void);
 		HWND					CrearBotonEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const long Estilos = WS_CHILD | WS_VISIBLE);
 
-		virtual const BOOL		Activar(const BOOL nActivar);
-
+		virtual void			Activado(const BOOL nActivar);
+		inline const BOOL       Activado(void) { return DhWnd::Activado(); }
+		
 		void					PintarBotonEx(HDC DC);
 
 		virtual void			Evento_MouseMovimiento(const int cX, const int cY, const UINT wParam);
@@ -27,20 +26,6 @@ namespace DWL {
 		virtual void			Evento_MouseSoltado(const int cX, const int cY, const UINT wParam);
 
 		LRESULT CALLBACK		GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
-
-/*		COLORREF                ColorBorde;
-		COLORREF                ColorBordeResaltado;
-		COLORREF                ColorBordePresionado;
-		COLORREF                ColorFondo;
-		COLORREF                ColorFondoResaltado;
-		COLORREF                ColorFondoPresionado;
-
-		COLORREF                ColorTexto;
-		COLORREF                ColorTextoResaltado;
-		COLORREF                ColorTextoPresionado;
-		COLORREF                ColorTextoDesactivado;
-
-		COLORREF                ColorTextoSombra;*/
 
 		DhWnd_Fuente            Fuente;
 

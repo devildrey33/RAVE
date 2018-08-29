@@ -9,6 +9,7 @@ class ItemMedio : public DWL::DListaEx_Item {
 		               ~ItemMedio(void) {};
 
     sqlite3_int64		Hash;
+	UINT                Id;
 };
 
 class BDMedio;

@@ -32,23 +32,33 @@ void VentanaAsociarReproductor::Mostrar(void) {
 }
 
 void VentanaAsociarReproductor::Pintar(HDC DC) {
-	static const wchar_t pTexto[] = L"RAVE no es el reproductor predeterminado del sistema.\n"
-								    L"Deseas asignar este reproductor como reproductor predeterminado?";
+	static const wchar_t pTitulo[] = L"RAVE no es el reproductor predeterminado del sistema.\n";
+	static const wchar_t pTexto[]  = L"Deseas asignar este reproductor como reproductor predeterminado?";
 	RECT RC;
 	GetClientRect(_hWnd, &RC);
 	// Pinto el fondo
 	HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO);
 	FillRect(DC, &RC, BrochaFondo);
 
-	HFONT VFuente = static_cast<HFONT>(SelectObject(DC, DhWnd::_Fuente18Normal()));
+	HFONT VFuente = static_cast<HFONT>(SelectObject(DC, DhWnd::_Fuente18Negrita()));
 
+	// Pinto el titulo
 	SetBkMode(DC, TRANSPARENT);
 	RECT RTS = { 11, 11, RC.right - 9, 91 };
 	RECT RT  = { 10, 10, RC.right - 10, 90 };
 	SetTextColor(DC, COLOR_TEXTO_SOMBRA);
+	DrawText(DC, pTitulo, -1, &RTS, DT_LEFT);
+	SetTextColor(DC, COLOR_TEXTO);
+	DrawText(DC, pTitulo, -1, &RT, DT_LEFT);
+
+	// Pinto el texto
+	SelectObject(DC, DhWnd::_Fuente18Normal());
+	RTS.top += 25; RT.top += 26;
+	SetTextColor(DC, COLOR_TEXTO_SOMBRA);
 	DrawText(DC, pTexto, -1, &RTS, DT_LEFT);
 	SetTextColor(DC, COLOR_TEXTO);
-	DrawText(DC, pTexto, -1, &RT, DT_LEFT);
+	DrawText(DC, pTexto, -1, &RT, DT_LEFT); 
+
 
 	SelectObject(DC, VFuente);
 	DeleteObject(BrochaFondo);

@@ -150,14 +150,8 @@ namespace DWL {
 		return TmpMenu;
 	}
 
-	const BOOL DMenuEx::Activar(const BOOL nActivar) {
+	void DMenuEx::Activado(const BOOL nActivar) {
 		_Activado = nActivar;
-		return TRUE;
-	}
-
-	const BOOL DMenuEx::Activado(const BOOL nActivar) {
-		_Activado = nActivar;
-		return TRUE;
 	}
 
 	// Función que termina el menú y elimina la memória

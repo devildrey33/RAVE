@@ -74,7 +74,7 @@ void VentanaErrorCritico::Enviar(void) {
 	E.Enviar(WPathDump, _hWnd);
 	DMouse::CambiarCursor(DMouse_Cursor_FlechaReloj);
 
-	BotonEnviar.Activar(FALSE);
+	BotonEnviar.Activado(FALSE);
 }
 
 void VentanaErrorCritico::Evento_BotonEx_Mouse_Click(const UINT nID) {

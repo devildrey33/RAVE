@@ -34,7 +34,7 @@ namespace DWL {
 		// Creo un DC compatible para el buffer
 		HBITMAP Bmp			= CreateCompatibleBitmap(DC, RC.right, RC.bottom);
 		HBITMAP BmpViejo	= static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
-		HFONT   vFuente		= static_cast<HFONT>(SelectObject(Buffer, DhWnd::_Fuente18Negrita()));
+		HFONT   vFuente		= static_cast<HFONT>(SelectObject(Buffer, DhWnd::_Fuente18Normal()));
 
 		// Pinto el fondo
 		HBRUSH ColorFondo = CreateSolidBrush(COLOR_FONDO);
@@ -47,7 +47,7 @@ namespace DWL {
 		switch (_Estado) {
 			case DMarcaEx_Estado_Normal		:	ColTexto = COLOR_TEXTO;					ColMarcoBorde =	COLOR_BORDE;						break;
 			case DMarcaEx_Estado_Resaltado	:	ColTexto = COLOR_TEXTO_RESALTADO;		ColMarcoBorde = COLOR_ROJO;							break;
-			case DMarcaEx_Estado_Presionado:	ColTexto = COLOR_TEXTO_PRESIONADO;		ColMarcoBorde = COLOR_BORDE;	bPresionado = 1;	break;
+			case DMarcaEx_Estado_Presionado :	ColTexto = COLOR_TEXTO_PRESIONADO;		ColMarcoBorde = COLOR_BORDE;	bPresionado = 1;	break;
 		}
 
 

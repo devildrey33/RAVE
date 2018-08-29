@@ -61,11 +61,9 @@ namespace DWL {
 		inline void             Texto(const wchar_t *nTxt)			{ _Texto = nTxt; }
 		inline void             Texto(std::wstring &nTxt)			{ _Texto = nTxt; }
 
-								// Función que devuelve si el menú está activado
+								// Funciónes que devuelven/asignan si el menú está activado
 		inline const BOOL		Activado(void)						{ return _Activado; };
-		const BOOL				Activado(const BOOL nActivar);
-								// Función que asigna el estado activado al menú
-		const BOOL				Activar(const BOOL nActivar);
+		void					Activado(const BOOL nActivar);
 
 		void                    Ocultar(const BOOL OcultarTodos = FALSE);		
 
