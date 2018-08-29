@@ -9,7 +9,7 @@
 #include "DStringUtils.h"
 #include <versionhelpers.h>
 
-#define RAVE_MIN_ANCHO 660
+#define RAVE_MIN_ANCHO 670
 #define RAVE_MIN_ALTO  280
 #define RAVE_BOTONES_LATERALES_ANCHO 140
 
@@ -22,15 +22,11 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 		App.BD.Opciones_AsignarPosVentana(RectMonitorActual.left + 100, RectMonitorActual.top + 100);
 	}
 
-//	int x = App.BD.Tabla_Opciones.PosX(), y = App.BD.Tabla_Opciones.PosY();
-
-	HWND rhWnd = DVentana::CrearVentana(NULL, L"RAVE_VentanaPrincipal", RAVE_TITULO, App.BD.Opciones_PosX(), App.BD.Opciones_PosY(), App.BD.Opciones_Ancho(), App.BD.Opciones_Alto(), WS_OVERLAPPEDWINDOW, WS_EX_APPWINDOW, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+	int ancho = (App.BD.Opciones_Ancho() > RAVE_MIN_ANCHO) ? App.BD.Opciones_Ancho() : RAVE_MIN_ANCHO;
+	HWND rhWnd = DVentana::CrearVentana(NULL, L"RAVE_VentanaPrincipal", RAVE_TITULO, App.BD.Opciones_PosX(), App.BD.Opciones_PosY(), ancho, App.BD.Opciones_Alto(), WS_OVERLAPPEDWINDOW, WS_EX_APPWINDOW, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 
 	RECT RC; // , RW;
 	GetClientRect(hWnd(), &RC);
-/*	GetWindowRect(hWnd(), &RW);
-	CTW_ExtraX = (RW.right - RW.left) - RC.right;
-	CTW_ExtraY = (RW.bottom - RW.top) - RC.bottom;*/
 
 	Arbol.CrearArbolEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_ARBOLBD);
 	Arbol.Visible(TRUE);
@@ -42,14 +38,6 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	Lista.AgregarColumna(DLISTAEX_COLUMNA_ANCHO_AUTO, DListaEx_Columna_Alineacion_Izquierda);	// Nombre
 	Lista.AgregarColumna(80, DListaEx_Columna_Alineacion_Derecha);								// Tiempo
 
-
-	/*
-	Lista.Crear(hWnd, 140, 81, RC.right - 150, RC.bottom - 90, ID_LISTAMEDIOS, WS_CHILD, LVS_EX_FULLROWSELECT);
-	Lista.AsignarImageList(&App.ListaImagenes16, DEnum_ListView_ImageList_Peque);
-	Lista.AgregarColumna(TEXT("Pista"), 50);
-	Lista.AgregarColumna(TEXT("Nombre"), RC.right - 250);
-	Lista.AgregarColumna(TEXT("Tiempo"), 60, DWL::DEnum_ListView_AlineacionTexto::DEnum_ListView_AlineacionTexto_Derecha);
-	Lista.CambiarVista(DWL::DEnum_ListView_Vista::DEnum_ListView_Vista_Detalles);*/
 	
 	Video.Crear(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_VERVIDEO);
 
@@ -71,21 +59,24 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	/////////////////////////////////////////
 
 	// Marco superior izquierdo /////////////
-	MarcoSI.Crear(this, 10, 10, 360, 30, ID_MARCOSI);
+	MarcoSI.Crear(this, 10, 10, 380, 30, ID_MARCOSI);
 	BotonAtras.Crear(&MarcoSI, L"<", 0, 0, 30, 30, ID_BOTON_ANTERIOR);
 	BotonPlay.Crear(&MarcoSI, L"P", 40, 0, 30, 30, ID_BOTON_PLAY);
 	BotonPausa.Crear(&MarcoSI, L"||", 80, 0, 30, 30, ID_BOTON_PAUSA);
 	BotonStop.Crear(&MarcoSI, L"S", 120, 0, 30, 30, ID_BOTON_STOP);
 	BotonAdelante.Crear(&MarcoSI, L">", 160, 0, 30, 30, ID_BOTON_SIGUIENTE);
 
-	BotonMezclar.Crear(&MarcoSI, L"Mezclar", 210, 0, 70, 30, ID_BOTON_MEZCLAR, TRUE, DEnum_Button_Tipo_Split);
-	BotonRepetir.Crear(&MarcoSI, L"Repetir", 290, 0, 70, 30, ID_BOTON_REPETIR, TRUE, DEnum_Button_Tipo_Split);
+	BotonMezclar.CrearBotonEx(&MarcoSI, L"Mezclar", 205, 0, 80, 30, ID_BOTON_MEZCLAR);
+	if (App.BD.Opciones_Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
+	BotonRepetir.CrearBotonEx(&MarcoSI, L"Repetir", 300, 0, 80, 30, ID_BOTON_REPETIR);
+	if (App.BD.Opciones_Repeat() > 0) BotonRepetir.Marcado(TRUE);
 	//////////////////////////////////////////
 
 	SliderTiempo.CrearBarraDesplazamientoEx(this, 10, 50, RC.right - 20, 20, ID_SLIDER_TIEMPO);
 //	SliderTiempo.Crear(hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO, WS_CHILD | TBS_NOTICKS | WS_VISIBLE, 0, 30000, 0);
 //	SliderTiempo.TamPagina(30000 / 50);
 
+	// Marco superior derecho
 	MarcoSD.Crear(this, RC.right - 260, 14, 250, 24, ID_MARCOSD);
 
 	SliderVolumen.CrearBarraDesplazamientoEx(&MarcoSD, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.BD.Opciones_Volumen()));
@@ -96,7 +87,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	LabelTiempoSeparador.CrearLabelEx(&MarcoSD, L"/", 55, 2, 10, 20, ID_LABEL_TIEMPOSEPARADOR,TRUE,  WS_CHILD | WS_VISIBLE);
 	LabelTiempoTotal.CrearLabelEx(&MarcoSD, L"00:00", 65, 2, 55, 20, ID_LABEL_TIEMPOTOTAL, WS_CHILD | WS_VISIBLE);
 
-	// Marco superior izquierdo /////////////
+	// Marco inferior izquierdo /////////////
 	MarcoII.Crear(this, 10, 80, RAVE_BOTONES_LATERALES_ANCHO, 160, ID_MARCOSI);
 	BotonBD.CrearBotonEx(&MarcoII, L"Base de datos", 0, 0, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_BD);
 	BotonLista.CrearBotonEx(&MarcoII, L"Lista de medios", 0, 40, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_LISTA);
@@ -117,6 +108,11 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 	ActualizarArbol();
 
+	// Compruebo las aosiciaciones de archivo y muestro la ventana si es necesario
+	if (App.AsociarMedios.ComprobarAsociaciones() == FALSE) {
+		VentanaAsociar.Mostrar();
+	}
+
 	return rhWnd;
 }
 
@@ -133,7 +129,7 @@ void VentanaPrincipal::AjustarControles(RECT &RC) {
 	MoveWindow(Opciones.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, TRUE);
 
 	MoveWindow(SliderTiempo.hWnd(), 10, 50, RC.right - 20, 24, TRUE);
-	MoveWindow(MarcoSD.hWnd(), RC.right - 265, 14, 255, 24, TRUE);
+	MoveWindow(MarcoSD.hWnd(), RC.right - 260, 14, 255, 24, TRUE);
 
 	//App.VLC.RepintarVLC();
 	if (App.VLC.hWndVLC != NULL) {
@@ -408,7 +404,20 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(const UINT cID) {
 		case ID_BOTON_AGREGARRAIZ :
 			AgregarRaiz();
 			break;
+		case ID_BOTON_MEZCLAR:
+			Mezclar_Click();
+			break;
+		case ID_BOTON_REPETIR:
+			Repetir_Click();
+			break;
 	}
+}
+
+void VentanaPrincipal::Mezclar_Click(void) {
+	BOOL nMezclar = !App.BD.Opciones_Shufle();
+	Lista.Mezclar(nMezclar);
+	App.BD.Opciones_Shufle(nMezclar);
+	BotonMezclar.Marcado(nMezclar);
 }
 
 void VentanaPrincipal::AgregarRaiz(void) {
@@ -456,17 +465,13 @@ void VentanaPrincipal::Evento_Button_Mouse_Click(const UINT cID) {
 		case ID_BOTON_STOP:
 			Lista_Stop();
 			break;
-		case ID_BOTON_MEZCLAR :
-			_Mezclar = Lista.Mezclar(!_Mezclar);
-			break;
-		case ID_BOTON_REPETIR :
-			Repetir_Click();
-			break;
 	}
 }
 
 void VentanaPrincipal::Repetir_Click(void) {
-	DMenuEx *Ret = Menu_Repetir.MostrarModal(this);
+	RECT RW;
+	GetWindowRect(BotonRepetir.hWnd(), &RW);
+	DMenuEx *Ret = Menu_Repetir.MostrarModal(this, RW.left, RW.bottom);
 	if (Ret != NULL) {
 		// Elimino los iconos de todos los submenus
 		for (size_t i = 0; i < Menu_Repetir.TotalMenus(); i++) {
@@ -483,6 +488,8 @@ void VentanaPrincipal::Repetir_Click(void) {
 			case ID_REPETIR_SI_APAGAR_REP	:	App.BD.Opciones_Repeat(Tipo_Repeat_ApagarReproductor);		break;	// No se guarda en la BD
 			case ID_REPETIR_SI_APAGAR_WIN	:	App.BD.Opciones_Repeat(Tipo_Repeat_ApagarOrdenador);		break;	// No se guarda en la BD
 		}
+		// Marco / desmarco el boton del repeat según la ID
+		BotonRepetir.Marcado((Ret->ID() != ID_REPETIR_NO) ? TRUE : FALSE);  
 	}
 }
 

@@ -328,13 +328,14 @@ const BOOL RaveBD::_CrearTablas(void) {
 											L"Inicio"					L" INTEGER,"             
 											L"OcultarMouseEnVideo"		L" INTEGER,"             
 											L"Version"					L" FLOAT,"				  
-											L"MostrarObtenerMetadatos"	L" INTEGER"
+											L"MostrarObtenerMetadatos"	L" INTEGER,"
+											L"MostrarAsociarArchivos"	L" INTEGER"
 										")";
 	if (Consulta(CrearTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 
 	// Añado los datos por defecto de las opciones
-	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos) "
-										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1)";
+	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos) "
+										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1)";
 	if (Consulta(ValoresTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 
 	// Creo la tabla para las raices
@@ -718,7 +719,7 @@ void RaveBD::Opciones_Volumen(const int nVolumen) {
 	Consulta(Q.c_str());
 }
 
-void RaveBD::Opciones_Shufle(const int nShufle) {
+void RaveBD::Opciones_Shufle(const BOOL nShufle) {
 	_Opciones_Shufle = nShufle;
 	std::wstring Q = L"Update Opciones SET Shufle=" + DWL::DString_ToStr(nShufle) + L" WHERE Id=0";
 	Consulta(Q.c_str());
@@ -754,6 +755,13 @@ void RaveBD::Opciones_MostrarObtenerMetadatos(const BOOL nMostrarObtenerMetadato
 	Ret = Ret;
 }
 
+void RaveBD::Opciones_MostrarAsociarArchivos(const BOOL nMostrarAsociarArchivos) {
+	_Opciones_MostrarObtenerMetadatos = nMostrarAsociarArchivos;
+	std::wstring Q = L"Update Opciones SET MostrarAsociarArchivos=" + DWL::DString_ToStr(nMostrarAsociarArchivos) + L" WHERE Id=0";
+	int Ret = Consulta(Q.c_str());
+	Ret = Ret;
+}
+
 
 const BOOL RaveBD::ObtenerOpciones(void) {
 
@@ -779,6 +787,7 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 			_Opciones_OcultarMouseEnVideo		= static_cast<int>(sqlite3_column_int(SqlQuery, 10));
 			_Opciones_Version					= static_cast<float>(sqlite3_column_double(SqlQuery, 11));
 			_Opciones_MostrarObtenerMetadatos	= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 12));
+			_Opciones_MostrarAsociarArchivos	= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 13));
 		}
 	}
 

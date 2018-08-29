@@ -10,8 +10,6 @@
 		   +o- Acabar el teclat i el mouse amb el shift
 			V  Implementar sub-selecció
 			-  Implementar LabelEdit (estic pensant amb un control d'edició personalitzat que tindra DArbolEx i DListaEx de posibilitats) [DEdicionTextoEx]
-			-  Revisar expandir nodo (si redimensiones la finestra al minim i fas doble click a motorhead veuras.... s'hauria de quedar el nodo pare a _NodoInicioPagina)
-			-  Falta fer una funció HacerVisible(Nodo) per solucionar el problema de la linea d'adalt
 	   +o- Control DListaEx
 			-  Implementar teclat complexe (shifts, controls, av, repag, i tal...) 
 	   +o- Control DExplorarDirectorios que crea un arbre amb l'escriptori, MisDocuemntos, MiPC, i Entorno de Red (per poguer seleccionar un directori) [Extensió de DArbolEx]
@@ -25,7 +23,7 @@
 	
 	RAVE 0.4
 		V  Asociacions d'arxius amb l'explorador
-			- Falta comprobar les asosiacions i mostrar un dialeg com el del bubatronik
+			V Falta comprobar les asosiacions i mostrar un dialeg com el del bubatronik
 	    V  Shuffle / repeat (apagar windows sobretot)
 	   +o- Dialeg/finestra per afegir arrels
 		V  Control DMenuEx
@@ -39,10 +37,12 @@
 			- Fer una llista d'etiquetes (per poder buscar i fer llistes aleatories)
 				- Aixó requereix tenir un array d'etiquetes amb tipus (Nom, Estil, Grup, Disc), i pasar un algoritme de distancia.... etc...
 		-  Treure tots els buttons estandar i posar de meus
-		-  Afegir opcions : assosiacions d'arxiu, llista d'inici, explicar el tema de les arrels, etc..
-			- Analizar metadatos automaticamente, o anializar metadatos solo al reproducir.
+		-  Mostrar les opcions en una finestra nova
+			-  Afegir opcions : assosiacions d'arxiu, llista d'inici, explicar el tema de les arrels, etc..
+				- Analizar metadatos automaticamente, o anializar metadatos solo al reproducir.
 		-  Menu per la llista
 		-  Crear Icona Buscar en l'arbre de la BD adal a la dreta
-		-  Solucionar glitch amb la llista i l'arbre, per exemple busca Symphony X sense tenir "Pelis i Series" afegit com arrel, y expandeix-lo
-
+	   +o- Solucionar glitch amb la llista i l'arbre, per exemple busca Symphony X sense tenir "Pelis i Series" afegit com arrel, y expandeix-lo
+			- Arbre solucionat
+		-  Buscar noves actualitzacións
 */

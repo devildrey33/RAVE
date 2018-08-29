@@ -380,6 +380,9 @@
     <ClInclude Include="DMarcaEx.h">
       <Filter>DWL\Ventanas\ControlesEx\MarcaEx</Filter>
     </ClInclude>
+    <ClInclude Include="VentanaAsociarReproductor.h">
+      <Filter>Ventanas</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -574,6 +577,9 @@
     </ClCompile>
     <ClCompile Include="DMarcaEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\MarcaEx</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaAsociarReproductor.cpp">
+      <Filter>Ventanas</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

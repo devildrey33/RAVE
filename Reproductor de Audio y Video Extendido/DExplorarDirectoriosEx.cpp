@@ -368,9 +368,12 @@ namespace DWL {
 		}
 
 		Debug_Escribir_Varg(L"Local[%d] dwUsage       : 0x%x = ", i, lpnrLocal->dwUsage);
-		if (lpnrLocal->dwUsage & RESOURCEUSAGE_CONNECTABLE)		Debug_EscribirSinMS(L"CONNECTABLE ");
-		if (lpnrLocal->dwUsage & RESOURCEUSAGE_CONTAINER)		Debug_EscribirSinMS(L"CONTAINER ");
+		#ifdef _DEBUG
+			if (lpnrLocal->dwUsage & RESOURCEUSAGE_CONNECTABLE)		Debug_EscribirSinMS(L"CONNECTABLE ");
+			if (lpnrLocal->dwUsage & RESOURCEUSAGE_CONTAINER)		Debug_EscribirSinMS(L"CONTAINER ");
+		#endif
 		Debug_EscribirSinMS(L"\n");
+
 
 		Debug_Escribir_Varg(L"Local[%d] lpLocalname   : %s\n", i, lpnrLocal->lpLocalName);
 		Debug_Escribir_Varg(L"Local[%d] lpRemotename  : %s\n", i, lpnrLocal->lpRemoteName);

@@ -649,6 +649,8 @@ namespace DWL {
 
 		Evento_Nodo_Expandido(nNodo, nExpandir);
 
+		MostrarNodo(nNodo);
+
 		Repintar();
 	}
 

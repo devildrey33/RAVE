@@ -182,8 +182,8 @@ class RaveBD {
 	inline const int			Opciones_Ancho(void) { return _Opciones_Ancho; }
 	inline const int			Opciones_Alto(void) { return _Opciones_Alto; }
 
-	inline const int			Opciones_Shufle(void) { return _Opciones_Shufle; }
-	void						Opciones_Shufle(const int nShufle);
+	inline const BOOL			Opciones_Shufle(void) { return _Opciones_Shufle; }
+	void						Opciones_Shufle(const BOOL nShufle);
 
 	inline const Tipo_Repeat	Opciones_Repeat(void) { return _Opciones_Repeat; }
 	void						Opciones_Repeat(const Tipo_Repeat nRepeat);
@@ -196,7 +196,9 @@ class RaveBD {
 
 	inline const BOOL			Opciones_MostrarObtenerMetadatos(void) { return _Opciones_MostrarObtenerMetadatos; }
 	void						Opciones_MostrarObtenerMetadatos(const BOOL nMostrarObtenerMetadatos);
-	
+
+	inline const BOOL			Opciones_MostrarAsociarArchivos(void) { return _Opciones_MostrarAsociarArchivos; }
+	void						Opciones_MostrarAsociarArchivos(const BOOL nMostrarAsociarArchivos);	
 
 	DWL::DUnidadesDisco			Unidades;
 
@@ -221,13 +223,14 @@ protected:
 	int                        _Opciones_PosY;
 	int                        _Opciones_Ancho;
 	int                        _Opciones_Alto;
-	int                        _Opciones_Shufle;
+	BOOL                       _Opciones_Shufle;
 	Tipo_Repeat                _Opciones_Repeat;
 	int                        _Opciones_Inicio;
 	float                      _Opciones_Version;
 	// Tiempo en MS que tarda en ocultarse el mouse y los controles de un video
 	int                        _Opciones_OcultarMouseEnVideo;
-	BOOL                       _Opciones_MostrarObtenerMetadatos;
+	BOOL                       _Opciones_MostrarObtenerMetadatos;	// Mostrar la ventana del thread obtener metadatos
+	BOOL                       _Opciones_MostrarAsociarArchivos;	// Mostrar la ventana para asociar este reproductor con todas las extensiones de medios conocidas.
 
 };
 

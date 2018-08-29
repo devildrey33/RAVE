@@ -8,8 +8,9 @@
 //#define TAM_BARRA_SCROLL		16
 
 #define COLOR_ROJO									RGB(234,  80,  78)
-#define COLOR_ROJO_RESALTADO						RGB(254,  100,  98)
+#define COLOR_ROJO_RESALTADO						RGB(254, 100,  98)
 #define COLOR_ROJO_PRESIONADO						RGB(214,  60,  58)
+#define COLOR_ROJO_MARCADO							RGB(155,   0,   0)
 
 // Colores básicos para las ventanas y los controles
 #define COLOR_FONDO									RGB( 31,  29,  34)

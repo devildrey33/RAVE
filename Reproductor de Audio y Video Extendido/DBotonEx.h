@@ -7,8 +7,8 @@ namespace DWL {
 	enum DBotonEx_Estado {
 		DBotonEx_Estado_Normal,
 		DBotonEx_Estado_Resaltado,
-		DBotonEx_Estado_Marcado,
-		DBotonEx_Estado_MarcadoResaltado,
+/*		DBotonEx_Estado_Marcado,
+		DBotonEx_Estado_MarcadoResaltado,*/
 		DBotonEx_Estado_Presionado
 	};
 
@@ -28,7 +28,7 @@ namespace DWL {
 
 		LRESULT CALLBACK		GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-		COLORREF                ColorBorde;
+/*		COLORREF                ColorBorde;
 		COLORREF                ColorBordeResaltado;
 		COLORREF                ColorBordePresionado;
 		COLORREF                ColorFondo;
@@ -40,13 +40,16 @@ namespace DWL {
 		COLORREF                ColorTextoPresionado;
 		COLORREF                ColorTextoDesactivado;
 
-		COLORREF                ColorTextoSombra;
+		COLORREF                ColorTextoSombra;*/
 
 		DhWnd_Fuente            Fuente;
 
+		inline const BOOL       Marcado(void) { return _Marcado; }
+		void                    Marcado(const BOOL nMarcar);
 	  protected:
 		std::wstring           _Texto;
 		DBotonEx_Estado		   _Estado;
+		BOOL                   _Marcado;
 	};
 
 }

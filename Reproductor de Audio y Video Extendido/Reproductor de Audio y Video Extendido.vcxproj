@@ -227,6 +227,7 @@
     <ClInclude Include="DTrackBar.h" />
     <ClInclude Include="ThreadObtenerMetadatos.h" />
     <ClInclude Include="RAVE_TODO.h" />
+    <ClInclude Include="VentanaAsociarReproductor.h" />
     <ClInclude Include="VentanaErrorCritico.h" />
     <ClInclude Include="VentanaPrincipal.h" />
     <ClInclude Include="VerVideo.h" />
@@ -305,6 +306,7 @@
     <ClCompile Include="ThreadActualizarArbol.cpp" />
     <ClCompile Include="ThreadAgregarArchivosLista.cpp" />
     <ClCompile Include="ThreadObtenerMetadatos.cpp" />
+    <ClCompile Include="VentanaAsociarReproductor.cpp" />
     <ClCompile Include="VentanaErrorCritico.cpp" />
     <ClCompile Include="VentanaPrincipal.cpp" />
     <ClCompile Include="VerVideo.cpp" />

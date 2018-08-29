@@ -113,6 +113,14 @@ const BOOL ArbolBD::AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 		}
 	}
 	sqlite3_finalize(SqlQuery);
+
+
+	// Ejecuto el shufle si es necesario
+	if (App.BD.Opciones_Shufle() == TRUE) {
+		App.VentanaRave.Lista.Mezclar(TRUE);
+		App.VentanaRave.Lista.MedioActual = 0;
+	}
+
 	return TRUE;
 }
 

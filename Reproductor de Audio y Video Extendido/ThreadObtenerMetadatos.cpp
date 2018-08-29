@@ -26,12 +26,12 @@ const BOOL ThreadObtenerMetadatos::Iniciar(HWND nhWndDest) {
 
 	if (App.BD.Opciones_MostrarObtenerMetadatos() == TRUE) {
 		// Creo la ventana que mostrará el progreso
-		CrearVentana(NULL, L"RAVE_ObtenerMetadatos", L"Obteniendo metadatos", 300, 200, 600, 200, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_VISIBLE);
+		CrearVentana(NULL, L"RAVE_ObtenerMetadatos", L"Obteniendo metadatos", 300, 200, 700, 210, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_VISIBLE);
 		RECT RC;
 		GetClientRect(_hWnd, &RC);
-		_BarraProgreso.CrearBarraProgresoEx(this, 10, 80, RC.right - 20, 20, ID_BARRAPROGRESO);
-		_BotonCancelar.CrearBotonEx(this, L"Cancelar", 280, 110, 100, 30, ID_BOTONCANCELAR);
-		_MarcaNoMostrarMas.CrearMarcaEx(this, L"No volver a mostrar esta ventana.", 10, 116, 250, 20, ID_MARCANOMOSTRARMAS, IDI_CHECK2);
+		_BarraProgreso.CrearBarraProgresoEx(this, 10, 100, RC.right - 20, 20, ID_BARRAPROGRESO);
+		_BotonCancelar.CrearBotonEx(this, L"Cancelar", 300, 130, 100, 30, ID_BOTONCANCELAR);
+		_MarcaNoMostrarMas.CrearMarcaEx(this, L"No volver a mostrar esta ventana.", 10, 136, 250, 20, ID_MARCANOMOSTRARMAS, IDI_CHECK2);
 	}
 
 	// Iniciamos el Thread
@@ -50,6 +50,7 @@ const BOOL ThreadObtenerMetadatos::Iniciar(HWND nhWndDest) {
 
 
 void ThreadObtenerMetadatos::Terminar(void) {
+	Visible(FALSE);
 	_BarraProgreso.Destruir();
 	_BotonCancelar.Destruir();
 	_MarcaNoMostrarMas.Destruir();
@@ -221,7 +222,7 @@ void ThreadObtenerMetadatos::_ParsearTerminado(const libvlc_event_t *event, void
 }
 
 
-void ThreadObtenerMetadatos::Evento_Pintar(void) {
+void ThreadObtenerMetadatos::_Evento_Pintar(void) {
 	PAINTSTRUCT PS;
 	HDC DC = BeginPaint(_hWnd, &PS);
 	Pintar(DC);
@@ -229,9 +230,9 @@ void ThreadObtenerMetadatos::Evento_Pintar(void) {
 }
 
 void ThreadObtenerMetadatos::Pintar(HDC DC) {
-	static const wchar_t pTexto[] = L"Analizando los metadatos de todos los medios en segundo plano.\n"
-								    L"Este proceso recolecta datos tales como el tiempo, genero, grupo, disco, etc... y los\n"
-									L"añade a la base de datos, lo que permite entre otras cosas generar listas aleatorias.";
+	static const wchar_t pTexto[] = L"Analizando los metadatos de todos los medios en segundo plano.\n\n"
+								    L"Este proceso recolecta datos tales como el tiempo, genero, grupo, disco, etc... y los añade a la base\n"
+									L"de datos, lo que permite entre otras cosas conocer su tiempo exacto y generar listas aleatorias.";
 	RECT RC;
 	GetClientRect(_hWnd, &RC);
 	// Pinto el fondo
@@ -255,12 +256,12 @@ void ThreadObtenerMetadatos::Pintar(HDC DC) {
 
 LRESULT CALLBACK ThreadObtenerMetadatos::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
-		case WM_PAINT			:	Evento_Pintar();														break;
-		case WM_TOM_TOTALMEDIOS :	_BarraProgreso.Valor(static_cast<float>(wParam));						break;
-		case WM_TOM_INICIADO    :   _BarraProgreso.Maximo(static_cast<float>(wParam));						break;
-		case WM_CLOSE			:   Cancelar(TRUE);															break;
-		case DWL_BOTONEX_CLICK  :   Cancelar(TRUE);															break;
-		case DWL_MARCAEX_CLICK  :   App.BD.Opciones_MostrarObtenerMetadatos(!_MarcaNoMostrarMas.Marcado());	break;
+		case WM_PAINT			:	_Evento_Pintar();															return 0;
+		case WM_TOM_TOTALMEDIOS :	_BarraProgreso.Valor(static_cast<float>(wParam));							return 0;
+		case WM_TOM_INICIADO    :   _BarraProgreso.Maximo(static_cast<float>(wParam));							return 0;
+		case WM_CLOSE			:   Cancelar(TRUE);																return 0;
+		case DWL_BOTONEX_CLICK  :   Cancelar(TRUE);																return 0;
+		case DWL_MARCAEX_CLICK  :   App.BD.Opciones_MostrarObtenerMetadatos(!_MarcaNoMostrarMas.Marcado());		return 0;
 	}
 	return DefWindowProc(_hWnd, uMsg, wParam, lParam);
 }

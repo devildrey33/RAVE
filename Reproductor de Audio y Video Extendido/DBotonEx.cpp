@@ -5,9 +5,7 @@
 
 namespace DWL {
 
-	DBotonEx::DBotonEx() :	ColorTexto(COLOR_TEXTO), ColorTextoResaltado(COLOR_TEXTO_RESALTADO), ColorTextoPresionado(COLOR_TEXTO_PRESIONADO), ColorTextoSombra(COLOR_TEXTO_SOMBRA), _Estado(DBotonEx_Estado_Normal),
-							ColorBorde(COLOR_BORDE), ColorBordeResaltado(COLOR_BORDE_RESALTADO), ColorBordePresionado(COLOR_BORDE_PRESIONADO), ColorTextoDesactivado(COLOR_TEXTO_DESACTIVADO),
-							ColorFondo(COLOR_BOTON), ColorFondoResaltado(COLOR_BOTON_RESALTADO), ColorFondoPresionado(COLOR_BOTON_PRESIONADO) {
+	DBotonEx::DBotonEx() :	_Marcado(FALSE) {
 	}
 
 
@@ -41,26 +39,30 @@ namespace DWL {
 		COLORREF nColorBorde = 0, nColorTexto = 0, nColorFondo = 0;
 		switch (_Estado) {
 			case DBotonEx_Estado_Normal:
-				nColorFondo = ColorFondo;
-				nColorBorde = ColorBorde;
-				nColorTexto = ColorTexto;
+				nColorFondo = COLOR_BOTON;
+				nColorBorde = COLOR_BORDE;
+				nColorTexto = COLOR_TEXTO;
 				break;
 			case DBotonEx_Estado_Resaltado:
-				nColorFondo = ColorFondoResaltado;
-				nColorBorde = ColorBordeResaltado;
-				nColorTexto = ColorTextoResaltado;
+				nColorFondo = COLOR_BOTON_RESALTADO;
+				nColorBorde = COLOR_BORDE_RESALTADO;
+				nColorTexto = COLOR_TEXTO_RESALTADO;
 				break;
 			case DBotonEx_Estado_Presionado:
-				nColorFondo = ColorFondoPresionado;
-				nColorBorde = ColorBordePresionado;
-				nColorTexto = ColorTextoPresionado;
+				nColorFondo = COLOR_BOTON_PRESIONADO;
+				nColorBorde = COLOR_BORDE_PRESIONADO;
+				nColorTexto = COLOR_TEXTO_PRESIONADO;
 				RCT.top += 2;
 				RCS.top += 2;
 				break;
 		}
 		// Si el control no está activado modifico el color final del texto
 		if (Activado() == FALSE) {
-			nColorTexto = ColorTextoDesactivado;
+			nColorTexto = COLOR_TEXTO_DESACTIVADO;
+		}
+
+		if (_Marcado == TRUE) {
+			nColorBorde = COLOR_ROJO_MARCADO;
 		}
 
 		// Pinto el borde
@@ -73,15 +75,25 @@ namespace DWL {
 		FillRect(Buffer, &RCF, BrochaFondo);
 		DeleteObject(BrochaFondo);
 
-		SetBkMode(Buffer, TRANSPARENT);
-		// Pinto la sombra del texto
-		SetTextColor(Buffer, ColorTextoSombra);
-		DrawText(Buffer, _Texto.c_str(), static_cast<int>(_Texto.size()), &RCS, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+		// Si está marcado, pinto un borde rojo oscuro a la derecha
+		if (_Marcado == TRUE) {
+			HBRUSH BrochaMarcado = CreateSolidBrush(COLOR_ROJO_MARCADO);
+			RECT RM = { RC.right - 5, 0, RC.right, RC.bottom };
+			FillRect(Buffer, &RM, BrochaMarcado);
+			DeleteObject(BrochaMarcado);			
+		}
 
-		// Pinto el texto
-		SetTextColor(Buffer, nColorTexto);
-		DrawText(Buffer, _Texto.c_str(), static_cast<int>(_Texto.size()), &RCT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
+		if (_Texto.size() > 0) {
+			SetBkMode(Buffer, TRANSPARENT);
+			// Pinto la sombra del texto
+			SetTextColor(Buffer, COLOR_TEXTO_SOMBRA);
+			DrawText(Buffer, _Texto.c_str(), static_cast<int>(_Texto.size()), &RCS, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+			// Pinto el texto
+			SetTextColor(Buffer, nColorTexto);
+			DrawText(Buffer, _Texto.c_str(), static_cast<int>(_Texto.size()), &RCT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+		}
 
 		// Copio el buffer al DC
 		BitBlt(DC, RC.left, RC.top, RC.right, RC.bottom, Buffer, 0, 0, SRCCOPY);
@@ -125,9 +137,12 @@ namespace DWL {
 				_Estado = DBotonEx_Estado_Normal;
 			}
 			Repintar();
-
-			
 		}
+	}
+
+	void DBotonEx::Marcado(const BOOL nMarcar) {
+		_Marcado = nMarcar;
+		Repintar();
 	}
 
 	LRESULT CALLBACK DBotonEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {

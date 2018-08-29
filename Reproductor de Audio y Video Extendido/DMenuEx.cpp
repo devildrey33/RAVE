@@ -28,9 +28,9 @@ namespace DWL {
 
 	// Función que muestra el menú, y espera a una respuesta por parte del usuario
 	// Devuelve NULL si no se ha seleccionado ningún menú, o devuelve el menú seleccionado.
-	DMenuEx *DMenuEx::MostrarModal(DhWnd *nPadre) {
+	DMenuEx *DMenuEx::MostrarModal(DhWnd *nPadre, const int PosX, const int PosY) {
 		_ResultadoModal = NULL;
-		Mostrar(nPadre);
+		Mostrar(nPadre, PosX, PosY);
 		while (_hWnd != NULL) {
 			MSG msg;
 			if (TRUE == GetMessage(&msg, 0, 0, 0)) {
@@ -42,10 +42,20 @@ namespace DWL {
 		return _ResultadoModal;
 	}
 
+	DMenuEx *DMenuEx::MostrarModal(DhWnd *nPadre) {
+		POINT Punto;
+		GetCursorPos(&Punto);
+		return MostrarModal(nPadre, Punto.x, Punto.y);
+	}
 
 	void DMenuEx::Mostrar(DhWnd *nPadre) {
 		POINT Punto;
 		GetCursorPos(&Punto);
+		Mostrar(nPadre, Punto.x, Punto.y);
+	}
+
+
+	void DMenuEx::Mostrar(DhWnd *nPadre, const int PosX, const int PosY) {
 
 		// Calculo el tamaño que necesitará el menú
 		POINT Tam = _CalcularMedidas();
@@ -53,7 +63,7 @@ namespace DWL {
 		_hWndDest = nPadre->hWnd();
 
 		if (_hWnd == NULL) {
-			CrearVentana(nPadre, L"DMenuEx", L"", Punto.x, Punto.y, Tam.x, Tam.y, WS_POPUP | WS_CAPTION);
+			CrearVentana(nPadre, L"DMenuEx", L"", PosX, PosY, Tam.x, Tam.y, WS_POPUP | WS_CAPTION);
 
 			DMouse::CambiarCursor();
 			Opacidad(230);
@@ -62,7 +72,7 @@ namespace DWL {
 			//AnimateWindow(_hWnd, 100, AW_HOR_POSITIVE | AW_VER_POSITIVE);
 
 			// Asigno la posición del menú y lo hago siempre visible
-			SetWindowPos(_hWnd, HWND_TOPMOST, Punto.x, Punto.y, Tam.x, Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+			SetWindowPos(_hWnd, HWND_TOPMOST, PosX, PosY, Tam.x, Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 
 			// Asigno la captura del mouse a este menú
 			#if DMENUEX_MOSTRARDEBUG == TRUE

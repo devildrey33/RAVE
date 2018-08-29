@@ -17,9 +17,9 @@ class ThreadObtenerMetadatos :	public DWL::DVentana {
 	const BOOL                  Cancelar(void);
 
 	void						Pintar(HDC DC);
-	void						Evento_Pintar(void);
 	LRESULT CALLBACK			GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
   protected:
+	void					   _Evento_Pintar(void);
 	static unsigned long       _ThreadObtenerMetadatos(void *pThis);
 
 	void                       _Parsear(libvlc_instance_t *VLC, std::wstring &Path);

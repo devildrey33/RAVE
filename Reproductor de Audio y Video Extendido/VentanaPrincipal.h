@@ -23,12 +23,13 @@
 #include "ThreadActualizarArbol.h"
 #include "ThreadAgregarArchivosLista.h"
 #include "ThreadObtenerMetadatos.h"
+#include "VentanaAsociarReproductor.h"
 
 using namespace DWL;
 
 class VentanaPrincipal : public DWL::DVentana {
  public:
-								VentanaPrincipal() : DWL::DVentana(), _PantallaCompleta(FALSE), EstadoMedio(EnStop), MousePos({ 0, 0 }), MonitorDisponible(FALSE), _Mezclar(FALSE) {};
+								VentanaPrincipal() : DWL::DVentana(), _PantallaCompleta(FALSE), EstadoMedio(EnStop), MousePos({ 0, 0 }), MonitorDisponible(FALSE) {};
 					           ~VentanaPrincipal() { };
 	HWND						Crear(int nCmdShow);
 
@@ -39,10 +40,6 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						Evento_BotonEx_Mouse_Click(const UINT cID);
 
 	//void						Evento_ArbolEx_Click(DArbolEx_DatosClick *Datos, const UINT aID);
-
-//	void						Evento_TreeView_Mouse_Click(DTreeView_DatosClick *Datos, const UINT tID);
-//	void						Evento_ListView_Mouse_Click(DListView_DatosClick *DatosClick, const UINT IDListView);
-	//void						Evento_ListView_Mouse_DobleClick(DListView_DatosClick *DatosClick, const UINT IDListView);
 	void						Evento_Temporizador(const UINT cID);
 //	void						Timer_ObtenerTiempoTotal(void);
 	void						Evento_CambiandoTam(const UINT Lado, RECT *Rectangulo);
@@ -57,9 +54,6 @@ class VentanaPrincipal : public DWL::DVentana {
 
 	void						Evento_BorraFondo(HDC DC);
 
-//	void                        Evento_SelecionarRepeat(const UINT mID);
-
-//	void						Evento_CapturaSoltada(const UINT_PTR ID);
 
 	void						Evento_Cerrar(void);
 
@@ -70,6 +64,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	
 	void                        Repeat(void);
 	void						Repetir_Click(void);
+
+	void                        Mezclar_Click(void);
 
 	DWL::DMenuEx				Menu_Repetir;
 	DWL::DMenuEx 				Menu_ArbolBD;
@@ -105,8 +101,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	DWL::DButton				BotonAdelante;
 	DWL::DButton				BotonAtras;
 
-	DWL::DButton				BotonMezclar;
-	DWL::DButton				BotonRepetir;
+	DWL::DBotonEx				BotonMezclar;
+	DWL::DBotonEx				BotonRepetir;
 
 	BarraTiempo					SliderTiempo;
 	//	DWL::DTrackBar			SliderTiempo;
@@ -152,11 +148,11 @@ class VentanaPrincipal : public DWL::DVentana {
 	int							CTW_ExtraX;
 	int							CTW_ExtraY;
 
-
+	VentanaAsociarReproductor   VentanaAsociar;
   protected:
 //	void                       _AgregarNodoALista(DArbolEx_Nodo *nNodo);
 	BOOL                       _PantallaCompleta;
 
-	BOOL                       _Mezclar;
+//	BOOL                       _Mezclar;
 };
 

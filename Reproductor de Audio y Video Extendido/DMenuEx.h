@@ -37,9 +37,11 @@ namespace DWL {
 		DMenuEx				   *AgregarSeparador(const int uID = 0, const int Posicion = -1);
 
 								// Función que muestra el Menú en el bucle principal de la aplicación y espera su respuesta en un WM_COMMAND (NO DEVUELVE EL MENÚ PRESIONADO)
+		void					Mostrar(DhWnd *nPadre, const int PosX, const int PosY);
 		void					Mostrar(DhWnd *nPadre);
 								// Función que muestra el Menú y espera a que se elija una opción para devolver-la
 								//	NOTA : No desactiva la ventana padre
+		DMenuEx			       *MostrarModal(DhWnd *nPadre, const int PosX, const int PosY);
 		DMenuEx			       *MostrarModal(DhWnd *nPadre);
 
 								// Asigna un icono a este menú (requiere repintar)
