@@ -200,7 +200,6 @@
     <ClInclude Include="RAVE_Skin.h" />
     <ClInclude Include="RAVE_Configuracion.h" />
     <ClInclude Include="ControlesPantallaCompleta.h" />
-    <ClInclude Include="DButton.h" />
     <ClInclude Include="DConsola.h" />
     <ClInclude Include="DDirectoriosWindows.h" />
     <ClInclude Include="DhWnd.h" />
@@ -241,7 +240,6 @@
     <ClCompile Include="DBarraScrollEx.cpp" />
     <ClCompile Include="DBarraTareas.cpp" />
     <ClCompile Include="DBotonEx.cpp" />
-    <ClCompile Include="DButton.cpp" />
     <ClCompile Include="DConsola.cpp" />
     <ClCompile Include="DControlEx.cpp" />
     <ClCompile Include="DDesplegableEx.cpp" />
@@ -315,13 +313,18 @@
     <Image Include="..\Iconos\IDI_Genero.ico" />
     <Image Include="..\Iconos\IDI_Grupo.ico" />
     <Image Include="..\Iconos\IDI_ListaCanciones.ico" />
+    <Image Include="..\Iconos\IDI_NEXT64.ico" />
     <Image Include="..\Iconos\IDI_Pausa.ico" />
     <Image Include="..\Iconos\IDI_Pausa2.ico" />
     <Image Include="..\Iconos\IDI_Pausa3.ico" />
+    <Image Include="..\Iconos\IDI_PAUSA32.ico" />
     <Image Include="..\Iconos\IDI_Play.ico" />
     <Image Include="..\Iconos\IDI_Play2.ico" />
     <Image Include="..\Iconos\IDI_Play3.ico" />
+    <Image Include="..\Iconos\IDI_PLAY_32.ico" />
+    <Image Include="..\Iconos\IDI_PREV32.ico" />
     <Image Include="..\Iconos\IDI_Raiz.ico" />
+    <Image Include="..\Iconos\IDI_STOP32.ico" />
     <Image Include="..\Iconos\IDI_Subtitulos.ico" />
     <Image Include="..\Iconos\IDI_Video.ico" />
     <Image Include="..\Iconos\IDI_Video2.ico" />

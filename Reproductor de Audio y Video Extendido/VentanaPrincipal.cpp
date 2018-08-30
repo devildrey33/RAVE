@@ -60,13 +60,13 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 	// Marco superior izquierdo /////////////
 	MarcoSI.Crear(this, 10, 10, 380, 30, ID_MARCOSI);
-	BotonAtras.Crear(&MarcoSI, L"<", 0, 0, 30, 30, ID_BOTON_ANTERIOR);
-	BotonPlay.Crear(&MarcoSI, L"P", 40, 0, 30, 30, ID_BOTON_PLAY);
-	BotonPausa.Crear(&MarcoSI, L"||", 80, 0, 30, 30, ID_BOTON_PAUSA);
-	BotonStop.Crear(&MarcoSI, L"S", 120, 0, 30, 30, ID_BOTON_STOP);
-	BotonAdelante.Crear(&MarcoSI, L">", 160, 0, 30, 30, ID_BOTON_SIGUIENTE);
+	BotonAtras.CrearBotonEx(&MarcoSI, IDI_PREV32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 0, 0, 30, 30, ID_BOTON_ANTERIOR);
+	BotonPlay.CrearBotonEx(&MarcoSI, IDI_PLAY32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 40, 0, 30, 30, ID_BOTON_PLAY);
+	BotonPausa.CrearBotonEx(&MarcoSI, IDI_PAUSA32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 80, 0, 30, 30, ID_BOTON_PAUSA);
+	BotonStop.CrearBotonEx(&MarcoSI, IDI_STOP32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 120, 0, 30, 30, ID_BOTON_STOP);
+	BotonAdelante.CrearBotonEx(&MarcoSI, IDI_NEXT32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 160, 0, 30, 30, ID_BOTON_SIGUIENTE);
 
-	BotonMezclar.CrearBotonEx(&MarcoSI, L"Mezclar", 205, 0, 80, 30, ID_BOTON_MEZCLAR);
+	BotonMezclar.CrearBotonEx(&MarcoSI, L"Mezclar", 210, 0, 80, 30, ID_BOTON_MEZCLAR);
 	if (App.BD.Opciones_Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
 	BotonRepetir.CrearBotonEx(&MarcoSI, L"Repetir", 300, 0, 80, 30, ID_BOTON_REPETIR);
 	if (App.BD.Opciones_Repeat() > 0) BotonRepetir.Marcado(TRUE);
@@ -410,6 +410,22 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(const UINT cID) {
 		case ID_BOTON_REPETIR:
 			Repetir_Click();
 			break;
+		case ID_BOTON_ANTERIOR:
+			Lista_Anterior();
+			break;
+		case ID_BOTON_SIGUIENTE:
+			Lista_Siguiente();
+			break;
+		case ID_BOTON_PLAY:
+			Lista_Play();
+			break;
+		case ID_BOTON_PAUSA:
+			Lista_Pausa();
+			break;
+		case ID_BOTON_STOP:
+			Lista_Stop();
+			break;
+
 	}
 }
 
@@ -418,6 +434,7 @@ void VentanaPrincipal::Mezclar_Click(void) {
 	Lista.Mezclar(nMezclar);
 	App.BD.Opciones_Shufle(nMezclar);
 	BotonMezclar.Marcado(nMezclar);
+	App.ControlesPC.BotonRepetir.Marcado(nMezclar);
 }
 
 void VentanaPrincipal::AgregarRaiz(void) {
@@ -445,28 +462,8 @@ void VentanaPrincipal::AgregarRaiz(void) {
 
 void VentanaPrincipal::EliminarRaiz(std::wstring &Path) {
 	App.BD.EliminarRaiz(Path);
-	
 }
 
-void VentanaPrincipal::Evento_Button_Mouse_Click(const UINT cID) {
-	switch (cID) {
-		case ID_BOTON_ANTERIOR:
-			Lista_Anterior();
-			break;
-		case ID_BOTON_SIGUIENTE:
-			Lista_Siguiente();
-			break;
-		case ID_BOTON_PLAY:
-			Lista_Play();
-			break;
-		case ID_BOTON_PAUSA:
-			Lista_Pausa();
-			break;
-		case ID_BOTON_STOP:
-			Lista_Stop();
-			break;
-	}
-}
 
 void VentanaPrincipal::Repetir_Click(void) {
 	RECT RW;
@@ -488,8 +485,11 @@ void VentanaPrincipal::Repetir_Click(void) {
 			case ID_REPETIR_SI_APAGAR_REP	:	App.BD.Opciones_Repeat(Tipo_Repeat_ApagarReproductor);		break;	// No se guarda en la BD
 			case ID_REPETIR_SI_APAGAR_WIN	:	App.BD.Opciones_Repeat(Tipo_Repeat_ApagarOrdenador);		break;	// No se guarda en la BD
 		}
+		
 		// Marco / desmarco el boton del repeat según la ID
-		BotonRepetir.Marcado((Ret->ID() != ID_REPETIR_NO) ? TRUE : FALSE);  
+		BOOL Marcar = (Ret->ID() != ID_REPETIR_NO) ? TRUE : FALSE;
+		BotonRepetir.Marcado(Marcar);  
+		App.ControlesPC.BotonRepetir.Marcado(Marcar);
 	}
 }
 
@@ -820,10 +820,10 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			return 0;
 		case WM_COMMAND :
 			Debug_Escribir_Varg(L"WM_COMMAND %d, %d\n", HIWORD(wParam), LOWORD(wParam));
-			if (HIWORD(wParam) == BN_CLICKED) { // Botón estándar
+/*			if (HIWORD(wParam) == BN_CLICKED) { // Botón estándar
 				Evento_Button_Mouse_Click(LOWORD(wParam));
 				return 0;
-			}
+			}*/
 /*			else { // Menu estándar
 				Evento_Menu(LOWORD(wParam));
 				return 0;

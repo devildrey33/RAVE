@@ -5,24 +5,55 @@
 
 namespace DWL {
 
-	DBotonEx::DBotonEx() :	_Marcado(FALSE) {
+	DBotonEx::DBotonEx(void) :	_Marcado(FALSE), _PosIconoX(-1), _PosIconoY(-1), _Icono(NULL) {
 	}
 
 
-	DBotonEx::~DBotonEx() {
+	DBotonEx::~DBotonEx(void) {
 	} 
 
+	// Función que crea un BotonEx con texto
 	HWND DBotonEx::CrearBotonEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const long Estilos) {
+		_Texto = nTxt;
+		return _CrearBotonEx(nPadre, cX, cY, cAncho, cAlto, cID, Estilos);
+	}
+
+	// Función que crea un BotonEx con icono
+	HWND DBotonEx::CrearBotonEx(DhWnd *nPadre, const int IDIcono, const int TamIcono, const int PosIconoX, const int PosIconoY, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const long Estilos) {
+		HWND h = _CrearBotonEx(nPadre, cX, cY, cAncho, cAlto, cID, Estilos);
+		Icono(IDIcono, TamIcono, PosIconoX, PosIconoY);
+		return h;
+	}
+
+	// Función que crea un BotonEx con icono y texto
+	HWND DBotonEx::CrearBotonEx(DhWnd *nPadre, const int IDIcono, const int TamIcono, const int PosIconoX, const int PosIconoY, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const long Estilos) {
+		
+		_Texto = nTxt;
+		HWND h =_CrearBotonEx(nPadre, cX, cY, cAncho, cAlto, cID, Estilos);
+		Icono(IDIcono, TamIcono, PosIconoX, PosIconoY);
+		return h;
+	}
+
+	// Función que asigna un icono al BotonEx
+	void DBotonEx::Icono(const int IDIcono, const int TamIcono, const int PosX, const int PosY) {
+		RECT RC;
+		GetClientRect(_hWnd, &RC);
+		_Icono = DListaIconos::AgregarIconoRecursos(IDIcono, TamIcono, TamIcono);
+		_PosIconoX = (PosX == -1) ? (RC.right - TamIcono) / 2 : PosX;
+		_PosIconoY = (PosY == -1) ? (RC.bottom - TamIcono) / 2 : PosX;
+		Repintar();
+	}
+
+	HWND DBotonEx::_CrearBotonEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const long Estilos) {
 		if (hWnd()) { Debug_Escribir(L"DBotonEx::CrearBotonEx() Error : ya se ha creado el botón\n"); return hWnd(); }
-		_hWnd			= CrearControlEx(nPadre, L"DBotonEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
-		_Texto			= nTxt;
-		Fuente			= _Fuente21Negrita;
-		_Estado			= DBotonEx_Estado_Normal;
-		_MouseDentro	= FALSE;
+		_hWnd = CrearControlEx(nPadre, L"DBotonEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
+		Fuente = _Fuente21Negrita;
+		_Estado = DBotonEx_Estado_Normal;
+		_MouseDentro = FALSE;
 		return hWnd();
 	}
 
-	void DBotonEx::PintarBotonEx(HDC DC) {
+	void DBotonEx::Pintar(HDC DC) {
 		RECT    RC, RCF, RCT, RCS;
 		GetClientRect(hWnd(), &RC);
 		RCF = RC; RCF.left++; RCF.top++; RCF.right--; RCF.bottom--;
@@ -36,7 +67,8 @@ namespace DWL {
 		HBITMAP BmpViejo = static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
 		HFONT   vFuente = static_cast<HFONT>(SelectObject(Buffer, Fuente()));
 
-		COLORREF nColorBorde = 0, nColorTexto = 0, nColorFondo = 0;
+		COLORREF nColorBorde = 0, nColorTexto = 0, nColorFondo = 0; 
+		int bPresionado = 0;
 		switch (_Estado) {
 			case DBotonEx_Estado_Normal:
 				nColorFondo = COLOR_BOTON;
@@ -95,6 +127,10 @@ namespace DWL {
 			DrawText(Buffer, _Texto.c_str(), static_cast<int>(_Texto.size()), &RCT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 		}
 
+		if (_Icono != NULL) {
+			DrawIconEx(Buffer, bPresionado + _PosIconoX, bPresionado + _PosIconoY, _Icono->Icono(), _Icono->Ancho(), _Icono->Alto(), 0, 0, DI_NORMAL);
+		}
+
 		// Copio el buffer al DC
 		BitBlt(DC, RC.left, RC.top, RC.right, RC.bottom, Buffer, 0, 0, SRCCOPY);
 
@@ -110,6 +146,7 @@ namespace DWL {
 		Ret = EnableWindow(_hWnd, nActivar);
 		Repintar();
 	}
+
 	
 	void DBotonEx::Evento_MouseMovimiento(const int cX, const int cY, const UINT wParam) {
 	}
@@ -144,16 +181,19 @@ namespace DWL {
 		Repintar();
 	}
 
+	void DBotonEx::_Evento_Pintar(void) {
+		HDC         DC;
+		PAINTSTRUCT PS;
+		DC = BeginPaint(hWnd(), &PS);
+		Pintar(DC);
+		EndPaint(hWnd(), &PS);
+	}
+
+
 	LRESULT CALLBACK DBotonEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
-			case WM_PAINT:
-				HDC         DC;
-				PAINTSTRUCT PS;
-				DC = BeginPaint(hWnd(), &PS);
-				PintarBotonEx(DC);
-				EndPaint(hWnd(), &PS);
-				return 0;
-			case WM_MOUSEMOVE:
+			case WM_PAINT		:		_Evento_Pintar();				return 0;
+			case WM_MOUSEMOVE	:
 				if (_MouseEntrando() == TRUE) {
 					// Mouse enter
 					if (_Estado != DBotonEx_Estado_Presionado) {

@@ -5,13 +5,16 @@ namespace DWL {
 
 	class DListaIconos_Icono {
 	  public:
-							DListaIconos_Icono() : _ID(0) { };
+							DListaIconos_Icono(void) : _ID(0) { };
 							DListaIconos_Icono(HICON nIcono, const int nID, const int nAncho, const int nAlto) : _Icono(nIcono), _ID(nID), _Ancho(nAncho), _Alto(nAlto), _IDStrPos(0) { };
 							DListaIconos_Icono(HICON nIcono, const int nID, const int nAncho, const int nAlto, std::wstring &nIDStr, const int nIDStrPos) : _Icono(nIcono), _ID(nID), _Ancho(nAncho), _Alto(nAlto), _IDStr(nIDStr), _IDStrPos(nIDStrPos) { };
-						   ~DListaIconos_Icono()	{ };
+						   ~DListaIconos_Icono(void) { };
 		inline HICON		Icono(void)				{ return _Icono; }
-		inline const int	ID(void)                { return _ID; }
+		inline const int	ID(void)                { return _ID;    }
 		inline HICON		operator()(void)		{ return _Icono; }
+		inline const int    Ancho(void)             { return _Ancho; }
+		inline const int    Alto(void)              { return _Alto;  }
+
 	  protected :
 		HICON			   _Icono;
 		int			       _ID;

@@ -26,14 +26,8 @@
     <Filter Include="DWL\Ventanas\Consola">
       <UniqueIdentifier>{84928c74-54e6-467a-9fdd-fe4f5ce0a3db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas\Controles">
-      <UniqueIdentifier>{4165fe03-1859-4d0b-bd06-0e52cf551cf3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DWL\Ventanas\Menu">
       <UniqueIdentifier>{582e9ccc-d9e5-4da7-bbb3-6bfe4363b8b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\Controles\Button">
-      <UniqueIdentifier>{1928e800-5d54-49b6-aea9-13ece97b6c06}</UniqueIdentifier>
     </Filter>
     <Filter Include="DWL\Sistema">
       <UniqueIdentifier>{73610f63-b897-4ea5-b3bd-253a763c096e}</UniqueIdentifier>
@@ -183,9 +177,6 @@
     </ClInclude>
     <ClInclude Include="DMenu.h">
       <Filter>DWL\Ventanas\Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="DButton.h">
-      <Filter>DWL\Ventanas\Controles\Button</Filter>
     </ClInclude>
     <ClInclude Include="DMouse.h">
       <Filter>DWL\Sistema\Mouse</Filter>
@@ -384,9 +375,6 @@
     </ClCompile>
     <ClCompile Include="DMenu.cpp">
       <Filter>DWL\Ventanas\Menu</Filter>
-    </ClCompile>
-    <ClCompile Include="DButton.cpp">
-      <Filter>DWL\Ventanas\Controles\Button</Filter>
     </ClCompile>
     <ClCompile Include="DMouse.cpp">
       <Filter>DWL\Sistema\Mouse</Filter>
@@ -607,6 +595,21 @@
       <Filter>Archivos de recursos</Filter>
     </Image>
     <Image Include="..\Iconos\IDI_Check2.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_NEXT64.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_PAUSA32.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_PLAY_32.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_PREV32.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_STOP32.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>

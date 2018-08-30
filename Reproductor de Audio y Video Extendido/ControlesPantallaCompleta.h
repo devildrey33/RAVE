@@ -25,11 +25,14 @@ class ControlesPantallaCompleta :public DVentana {
 	void					Mostrar(void);
 	void					Ocultar(void);
 
-	DWL::DButton			BotonPlay;
-	DWL::DButton			BotonPausa;
-	DWL::DButton			BotonStop;
-	DWL::DButton			BotonAdelante;
-	DWL::DButton			BotonAtras;
+	DWL::DBotonEx			BotonPlay;
+	DWL::DBotonEx			BotonPausa;
+	DWL::DBotonEx			BotonStop;
+	DWL::DBotonEx			BotonAdelante;
+	DWL::DBotonEx			BotonAtras;
+
+	DWL::DBotonEx			BotonMezclar;
+	DWL::DBotonEx			BotonRepetir;
 
 	BarraTiempo				SliderTiempo;
 //	DWL::DTrackBar			SliderTiempo;

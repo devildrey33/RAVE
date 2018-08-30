@@ -2,16 +2,10 @@
 
 
 #include "DhWnd.h"
-#include "DButton.h"
-//#include "ArbolBD.h"
 #include "ArbolBD.h"
 #include "ListaMedios.h"
-//#include "ListaMedios2.h"
 #include "DMenuEx.h"
 #include "VerVideo.h"
-//#include "DTrackBar.h"
-//#include "TMedio.h"
-//#include "DStaticControl.h"
 #include "MarcoControles.h"
 #include "MarcoOpciones.h"
 #include "BarraTiempo.h"
@@ -36,7 +30,7 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						AgregarRaiz(void);
 	void						EliminarRaiz(std::wstring &Path);
 
-	void						Evento_Button_Mouse_Click(const UINT cID);
+//	void						Evento_Button_Mouse_Click(const UINT cID);
 	void						Evento_BotonEx_Mouse_Click(const UINT cID);
 
 	//void						Evento_ArbolEx_Click(DArbolEx_DatosClick *Datos, const UINT aID);
@@ -95,11 +89,11 @@ class VentanaPrincipal : public DWL::DVentana {
 
 	void						ExploradorAgregarMedio(const BOOL Reproducir);
 
-	DWL::DButton				BotonPlay;
-	DWL::DButton				BotonPausa;
-	DWL::DButton				BotonStop;
-	DWL::DButton				BotonAdelante;
-	DWL::DButton				BotonAtras;
+	DWL::DBotonEx				BotonPlay;
+	DWL::DBotonEx				BotonPausa;
+	DWL::DBotonEx				BotonStop;
+	DWL::DBotonEx				BotonAdelante;
+	DWL::DBotonEx				BotonAtras;
 
 	DWL::DBotonEx				BotonMezclar;
 	DWL::DBotonEx				BotonRepetir;

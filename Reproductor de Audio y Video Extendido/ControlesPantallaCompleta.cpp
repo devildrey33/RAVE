@@ -8,11 +8,19 @@ void ControlesPantallaCompleta::Crear(void) {
 	DVentana::CrearVentana(NULL, L"ControlesPantallaCompleta", L"", 0, 0, 500, 80, WS_POPUP, WS_EX_TOOLWINDOW, NULL, NULL, NULL, NULL);
 	RECT RC;
 	GetClientRect(hWnd(), &RC);
-	BotonAtras.Crear(this, L"<", 10, 10, 30, 30, ID_BOTON_ANTERIOR);
-	BotonPlay.Crear(this, L"P", 50, 10, 30, 30, ID_BOTON_PLAY);
-	BotonPausa.Crear(this, L"||", 90, 10, 30, 30, ID_BOTON_PAUSA);
-	BotonStop.Crear(this, L"S", 130, 10, 30, 30, ID_BOTON_STOP);
-	BotonAdelante.Crear(this, L">", 170, 10, 30, 30, ID_BOTON_SIGUIENTE);
+
+	BotonAtras.CrearBotonEx(this, IDI_PREV32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 10, 0, 30, 30, ID_BOTON_ANTERIOR);
+	BotonPlay.CrearBotonEx(this, IDI_PLAY32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 50, 0, 30, 30, ID_BOTON_PLAY);
+	BotonPausa.CrearBotonEx(this, IDI_PAUSA32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 90, 0, 30, 30, ID_BOTON_PAUSA);
+	BotonStop.CrearBotonEx(this, IDI_STOP32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 130, 0, 30, 30, ID_BOTON_STOP);
+	BotonAdelante.CrearBotonEx(this, IDI_NEXT32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 170, 0, 30, 30, ID_BOTON_SIGUIENTE);
+
+
+	BotonMezclar.CrearBotonEx(this, L"Mezclar", 220, 10, 80, 30, ID_BOTON_MEZCLAR);
+	if (App.BD.Opciones_Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
+	BotonRepetir.CrearBotonEx(this, L"Repetir", 310, 10, 80, 30, ID_BOTON_REPETIR);
+	if (App.BD.Opciones_Repeat() > 0) BotonRepetir.Marcado(TRUE);
+
 
 	SliderTiempo.CrearBarraDesplazamientoEx(this, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO);
 //	SliderTiempo.Crear(hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO, WS_CHILD | TBS_NOTICKS | WS_VISIBLE, 0, 30000, 0);
@@ -144,7 +152,7 @@ LRESULT CALLBACK ControlesPantallaCompleta::GestorMensajes(UINT uMsg, WPARAM wPa
 
 		case WM_PAINT :
 			Evento_Pintar();
-			break;
+			return 0;
 
 		case WM_MOUSEMOVE :
 			DWL::DMouse::ObtenerPosicion(&nPos);
@@ -154,32 +162,29 @@ LRESULT CALLBACK ControlesPantallaCompleta::GestorMensajes(UINT uMsg, WPARAM wPa
 				App.VentanaRave.MousePos = nPos;
 				Mostrar();
 			}
-			break;
+			return 0;
 /*		case WM_TIMER :
 			if (wParam == TIMER_CPC_INACTIVIDAD) 
 				Ocultar();
 			break;*/
 
-		case WM_COMMAND :
-			if (HIWORD(wParam) == BN_CLICKED) {
-				App.VentanaRave.Evento_Button_Mouse_Click(LOWORD(wParam));
-				return 0;
-			}
-			break;
+		case DWL_BOTONEX_CLICK:
+			App.VentanaRave.Evento_BotonEx_Mouse_Click(static_cast<UINT>(wParam));
+			return 0;
 
 		case DWL_BARRAEX_CAMBIO :
 			switch (wParam) {
 				case ID_SLIDER_TIEMPO: 					Evento_SliderTiempo_Cambio();					break;
 				case ID_SLIDER_VOLUMEN: 				Evento_SliderVolumen_Cambio();					break;
 			}
-			break;
+			return 0;
 
 		case DWL_BARRAEX_CAMBIADO :
 			switch (wParam) {
 				case ID_SLIDER_TIEMPO: 					Evento_SliderTiempo_Cambiado();					break;
 				case ID_SLIDER_VOLUMEN: 				Evento_SliderVolumen_Cambiado();				break;
 			}
-			break;
+			return 0;
 
 	}
 	return DVentana::GestorMensajes(uMsg, wParam, lParam);
