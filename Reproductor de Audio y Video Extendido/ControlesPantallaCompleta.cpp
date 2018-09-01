@@ -3,17 +3,18 @@
 #include "DMouse.h"
 #include "DMensajesWnd.h"
 #include "Rave_Skin.h"
+#include "resource.h"
 
 void ControlesPantallaCompleta::Crear(void) {	
 	DVentana::CrearVentana(NULL, L"ControlesPantallaCompleta", L"", 0, 0, 500, 80, WS_POPUP, WS_EX_TOOLWINDOW, NULL, NULL, NULL, NULL);
 	RECT RC;
 	GetClientRect(hWnd(), &RC);
 
-	BotonAtras.CrearBotonEx(this, IDI_PREV32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 10, 0, 30, 30, ID_BOTON_ANTERIOR);
-	BotonPlay.CrearBotonEx(this, IDI_PLAY32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 50, 0, 30, 30, ID_BOTON_PLAY);
-	BotonPausa.CrearBotonEx(this, IDI_PAUSA32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 90, 0, 30, 30, ID_BOTON_PAUSA);
-	BotonStop.CrearBotonEx(this, IDI_STOP32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 130, 0, 30, 30, ID_BOTON_STOP);
-	BotonAdelante.CrearBotonEx(this, IDI_NEXT32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 170, 0, 30, 30, ID_BOTON_SIGUIENTE);
+	BotonAtras.CrearBotonEx(this,	 IDI_PREV32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  10, 10, 30, 30, ID_BOTON_ANTERIOR);
+	BotonPlay.CrearBotonEx(this,	 IDI_PLAY32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  50, 10, 30, 30, ID_BOTON_PLAY);
+	BotonPausa.CrearBotonEx(this,	 IDI_PAUSA32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  90, 10, 30, 30, ID_BOTON_PAUSA);
+	BotonStop.CrearBotonEx(this,	 IDI_STOP32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 130, 10, 30, 30, ID_BOTON_STOP);
+	BotonAdelante.CrearBotonEx(this, IDI_NEXT32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 170, 10, 30, 30, ID_BOTON_SIGUIENTE);
 
 
 	BotonMezclar.CrearBotonEx(this, L"Mezclar", 220, 10, 80, 30, ID_BOTON_MEZCLAR);

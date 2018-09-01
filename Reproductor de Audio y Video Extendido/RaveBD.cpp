@@ -257,6 +257,7 @@ const BOOL RaveBD::ObtenerRaices(void) {
 	sqlite3_finalize(SqlQuery);
 
 	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
 		return FALSE;
 	}
 
@@ -305,12 +306,26 @@ const BOOL RaveBD::ActualizarMedio(BDMedio *nMedio) {
 												nMedio->NombreEleccion,		nMedio->GrupoEleccion,		nMedio->DiscoEleccion,		nMedio->PistaEleccion,			
 								nMedio->Id);
 	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+	return TRUE;
+}
+
+// Función que actualiza SOLO los miembros : Genero, GrupoPath, GrupoTag, DiscoPath, DiscoTag
+const BOOL RaveBD::ActualizarMedioAnalisis(BDMedio *nMedio) {
+	int SqlRet = ConsultaVarg(L"UPDATE Medios SET "
+										L"Genero=\"%s\","		L"GrupoPath=\"%s\","		L"GrupoTag=\"%s\","			L"DiscoTag=\"%s\","			L"DiscoPath=\"%s\""
+								" WHERE Id=%d", 
+										nMedio->Genero.c_str(), nMedio->GrupoPath.c_str(),	nMedio->GrupoTag.c_str(),	nMedio->DiscoTag.c_str(),	nMedio->DiscoPath.c_str(),
+								nMedio->Id);
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
 		return FALSE;
 	}
 	return TRUE;
 
 }
-
 
 const BOOL RaveBD::_CrearTablas(void) {
 
@@ -399,6 +414,18 @@ const BOOL RaveBD::_CrearTablas(void) {
 									L")";
 	if (Consulta(CrearTablaMedios.c_str()) == SQLITE_ERROR)
 		return FALSE;
+
+
+	// Creo la tabla para las etiquetas
+	std::wstring CrearTablaEtiquetas = L"CREATE TABLE Etiquetas ("
+											L"Id" 						L" INTEGER PRIMARY KEY," 
+											L"Texto"					L" VARCHAR(260),"	 	  
+											L"Tipo"						L" INTEGER"
+										")";
+
+	if (Consulta(CrearTablaEtiquetas.c_str()) == SQLITE_ERROR) return FALSE;
+
+
 
 	return TRUE;
 }
@@ -538,7 +565,7 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 				FiltroNombre(PathSeparado[PathSeparado.Total() - 3], OUT_Medio.GrupoPath);
 			}
 		case Tipo_Medio_Video:
-			_AnalizarNombre(nPath.substr(PosNombre + 1, (PosExtension - PosNombre) - 1), TmpNombre, Pista);
+			AnalizarNombre(nPath.substr(PosNombre + 1, (PosExtension - PosNombre) - 1), TmpNombre, Pista);
 			FiltroNombre(TmpNombre, NombreFinal);
 			OUT_Medio.Hash			= Hash;
 			OUT_Medio.Path			= PathCortado;
@@ -571,6 +598,7 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 			else if (SqlRet == SQLITE_CONSTRAINT)
 				return 2; // Ya existe el hash
 			else  /* Error ? */
+				_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
 				return FALSE;
 
 			break;
@@ -604,7 +632,7 @@ const sqlite3_int64 RaveBD::CrearHash(DWORD NumeroSerieDisco, std::wstring &nPat
 	Nunca se hace caso a 4 digitos seguidos o mas (ya que son o el año o otra cosa.. pero la pista seguro que no)
 	Se analiza de izquierda a derecha (lo mas normal es que la pista salga a la izquieda nada mas empezar)
 */
-const BOOL RaveBD::_AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre, UINT &nPista) {
+const BOOL RaveBD::AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre, UINT &nPista) {
 	bool PistaEncontrada = false;
 	BOOL C1, C2, C3, C4, C5;
 	for (size_t i = 0; i < Analisis.size(); i++) {
@@ -680,7 +708,7 @@ void RaveBD::FiltroNombre(std::wstring &In, std::wstring &Out) {
 			case ' ':
 				Espacio = false;
 				if (Out.size() != 0) {
-					if (In[Out.size() - 1] != TEXT(' ')) {
+					if (In[Out.size() - 1] != L' ') {
 						Espacio = true;
 					}
 				}
@@ -696,6 +724,19 @@ void RaveBD::FiltroNombre(std::wstring &In, std::wstring &Out) {
 				break;
 		}
 	}
+
+	// Quito los espacios del principio
+	while (Out[0] == L' ') {
+		Out = Out.substr(1);
+	}
+	// Quito los espacios del final
+	if (Out.size() > 0) {
+		while (Out[Out.size() - 1] == L' ') {
+			Out.resize(Out.size() - 2);
+			if (Out.size() == 0) break;
+		}
+	}
+
 	// Primer caracter en mayusculas
 	Out[0] = toupper(Out[0]);
 }
@@ -771,7 +812,10 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 	sqlite3_stmt   *SqlQuery = NULL;
 
 	SqlRet = sqlite3_prepare16_v2(_BD, SqlStr, -1, &SqlQuery, NULL);
-	if (SqlRet) return FALSE;
+	if (SqlRet) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
 	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
@@ -794,6 +838,7 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 	sqlite3_finalize(SqlQuery);
 
 	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
 		return FALSE;
 	}
 
@@ -822,6 +867,7 @@ const BOOL RaveBD::Opciones_GuardarOpciones(void) {
 	int SqlRet = Consulta(Q);
 
 	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
 		return FALSE;
 	}
 	return TRUE;
@@ -839,6 +885,7 @@ const BOOL RaveBD::Opciones_GuardarPosTamVentana(void) {
 		std::wstring Q = L"UPDATE Opciones SET PosX=" + DWL::DString_ToStr(RC.left) + L", PosY=" + DWL::DString_ToStr(RC.top) + L", Ancho=" + DWL::DString_ToStr(_Opciones_Ancho) + L", Alto=" + DWL::DString_ToStr(_Opciones_Alto) + L" WHERE Id=0";
 		int SqlRet = Consulta(Q);
 		if (SqlRet == SQLITE_ERROR) {
+			_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
 			return FALSE;
 		}
 		return TRUE;
@@ -848,7 +895,118 @@ const BOOL RaveBD::Opciones_GuardarPosTamVentana(void) {
 
 
 
+const BOOL RaveBD::ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios) {
+	const wchar_t  *Q = L"SELECT Id, NombrePath, Genero, GrupoPath, DiscoPath, NombreTag, GrupoTag, DiscoTag, Path, PistaTag, PistaPath FROM Medios WHERE TipoMedio=1"; // Tipo_Medio_Audio
+	
+	wchar_t		   *SqlError = NULL;
+	int				SqlRet = 0;
+	sqlite3_stmt   *SqlQuery = NULL;
+	BDMedio         TmpMedio;
 
+	SqlRet = sqlite3_prepare16_v2(_BD, Q, -1, &SqlQuery, NULL);
+	if (SqlRet) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
+		SqlRet = sqlite3_step(SqlQuery);
+		if (SqlRet == SQLITE_ROW) {
+
+			TmpMedio.Id = static_cast<UINT>(sqlite3_column_int(SqlQuery, 0));
+			const wchar_t *nNombrePath	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 1));
+			if (nNombrePath != NULL)	TmpMedio.NombrePath = nNombrePath;
+			const wchar_t *nGenero		= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 2));
+			const wchar_t *nGrupoPath	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 3));
+			const wchar_t *nDiscoPath	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 4));
+			if (nGenero != NULL)		TmpMedio.Genero = nGenero;
+			if (nGrupoPath != NULL)		TmpMedio.GrupoPath = nGrupoPath;
+			if (nDiscoPath != NULL)		TmpMedio.DiscoPath = nDiscoPath;
+			const wchar_t *nNombreTag	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 5));
+			const wchar_t *nGrupoTag	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 6));
+			const wchar_t *nDiscoTag	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 7));
+			if (nNombreTag != NULL)		TmpMedio.NombreTag = nNombreTag;
+			if (nGrupoTag != NULL)		TmpMedio.GrupoTag = nGrupoTag;
+			if (nDiscoTag != NULL)		TmpMedio.DiscoTag = nDiscoTag;
+			TmpMedio.Path               = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 8));
+			TmpMedio.PistaTag			= static_cast<UINT>(sqlite3_column_int(SqlQuery, 9));
+			TmpMedio.PistaPath			= static_cast<UINT>(sqlite3_column_int(SqlQuery, 10));
+			Medios.push_back(TmpMedio);
+		}
+	}
+
+	sqlite3_finalize(SqlQuery);
+
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+
+
+const int RaveBD::Distancia(std::wstring &Origen, std::wstring &Destino) {
+	// Step 1
+	const int n = static_cast<int>(Origen.size());
+	const int m = static_cast<int>(Destino.size());
+
+	if (n < 5) return n + m; // Si origen es mas pequeño que 4 caracteres
+	if (m < 5) return m + n; // Si destino es mas pequeño que 4 caracteres
+							 //	if (n < 3) return n; // Si origen es mas pequeño que 2 caracteres
+							 //	if (m < 3) return m; // Si destino es mas pequeño que 2 caracteres
+
+	typedef std::vector< std::vector<int> > Tmatrix;
+	Tmatrix matrix(n + 1);
+
+	// Size the vectors in the 2.nd dimension. Unfortunately C++ doesn't
+	// allow for allocation on declaration of 2.nd dimension of vec of vec
+	for (int i = 0; i <= n; i++) matrix[i].resize(m + 1);
+
+	// Step 2
+	for (int i = 0; i <= n; i++) matrix[i][0] = i;
+	for (int j = 0; j <= m; j++) matrix[0][j] = j;
+	// Si se llevan mas de dos caracteres de tamaño no hace falta comprobar nada
+	if (n - m < 2 && n - m > -2) {
+		// Step 3
+		for (int i = 1; i <= n; i++) {
+			const TCHAR s_i = Origen[i - 1];
+			// Step 4
+			for (int j = 1; j <= m; j++) {
+				const TCHAR t_j = Destino[j - 1];
+
+				// Step 5
+				int cost;
+				if (s_i == t_j)  cost = 0;
+				else		     cost = 1;
+
+				// Step 6
+				const int above = matrix[i - 1][j];
+				const int left = matrix[i][j - 1];
+				const int diag = matrix[i - 1][j - 1];
+				int       cell = min(above + 1, min(left + 1, diag + cost));
+
+				// Step 6A: Cover transposition, in addition to deletion,
+				// insertion and substitution. This step is taken from:
+				// Berghel, Hal ; Roach, David : "An Extension of Ukkonen's 
+				// Enhanced Dynamic Programming ASM Algorithm"
+				// (http://www.acm.org/~hlb/publications/asm/asm.html)
+
+				if (i > 2 && j > 2) {
+					int trans = matrix[i - 2][j - 2] + 1;
+					if (Origen[i - 2] != t_j)	trans++;
+					if (s_i != Destino[j - 2])	trans++;
+					if (cell > trans)			cell = trans;
+				}
+				matrix[i][j] = cell;
+			}
+		}
+	}
+
+	if (n - m < 2 && n - m > -2)	return matrix[n][m];
+	else							return 100;
+}
 
 
 
@@ -868,7 +1026,7 @@ const BOOL RaveBD::Opciones_GuardarPosTamVentana(void) {
 
 
 // Constructor que obtiene los datos de una fila
-BDMedio::BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades) {
+BDMedio::BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades) : Actualizar(FALSE) {
 	ObtenerFila(SqlQuery, Unidades);
 }
 

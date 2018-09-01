@@ -134,11 +134,11 @@
     <Filter Include="DWL\Ventanas\Eventos">
       <UniqueIdentifier>{89375de0-fa16-44d6-8c74-09d2f8fbd387}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Base de datos\Threads\ObtenerMetadatos">
-      <UniqueIdentifier>{f7230b6c-c4c1-4eae-8802-fb48e7e5de1e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DWL\Ventanas\ControlesEx\MarcaEx">
       <UniqueIdentifier>{7ba7b1ff-8132-4dd0-a3e2-67094d0a6f38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base de datos\Threads\Analisis">
+      <UniqueIdentifier>{f7230b6c-c4c1-4eae-8802-fb48e7e5de1e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -332,9 +332,6 @@
     <ClInclude Include="DEventoMouse.h">
       <Filter>DWL\Ventanas\Eventos</Filter>
     </ClInclude>
-    <ClInclude Include="ThreadObtenerMetadatos.h">
-      <Filter>Base de datos\Threads\ObtenerMetadatos</Filter>
-    </ClInclude>
     <ClInclude Include="RAVE_TODO.h">
       <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
@@ -343,6 +340,12 @@
     </ClInclude>
     <ClInclude Include="VentanaAsociarReproductor.h">
       <Filter>Ventanas</Filter>
+    </ClInclude>
+    <ClInclude Include="EtiquetaBD.h">
+      <Filter>Base de datos</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadAnalisis.h">
+      <Filter>Base de datos\Threads\Analisis</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -503,14 +506,17 @@
     <ClCompile Include="DMenuEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\MenuEx</Filter>
     </ClCompile>
-    <ClCompile Include="ThreadObtenerMetadatos.cpp">
-      <Filter>Base de datos\Threads\ObtenerMetadatos</Filter>
-    </ClCompile>
     <ClCompile Include="DMarcaEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\MarcaEx</Filter>
     </ClCompile>
     <ClCompile Include="VentanaAsociarReproductor.cpp">
       <Filter>Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="EtiquetaBD.cpp">
+      <Filter>Base de datos</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadAnalisis.cpp">
+      <Filter>Base de datos\Threads\Analisis</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

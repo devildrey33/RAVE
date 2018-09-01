@@ -33,10 +33,10 @@
 
 	RAVE 0.5 
 		V  Analitzar tags dels medis. (libvlc_media_parse_with_options)
-			- Mostrar tooltip informatiu
-			- Fer una llista d'etiquetes (per poder buscar i fer llistes aleatories)
-				- Aixó requereix tenir un array d'etiquetes amb tipus (Nom, Estil, Grup, Disc), i pasar un algoritme de distancia.... etc...
-		-  Treure tots els buttons estandar i posar de meus
+			V  Revisar tags dels medis, i trobar coincidencies semblants per unificarles
+				V  Fer una llista d'etiquetes (les etiquetes poden ser d'una o mes propietats entre les segûents : Genero, GrupoPath, GrupoTag, DiscoPath, DiscoTag)
+			-  Mostrar tooltip informatiu				
+	   +o- Treure tots els buttons estandar i posar de meus (falta posar uns icones menys bastos...)
 		-  Mostrar les opcions en una finestra nova
 			-  Afegir opcions : assosiacions d'arxiu, llista d'inici, explicar el tema de les arrels, etc..
 				- Analizar metadatos automaticamente, o anializar metadatos solo al reproducir.

@@ -3,6 +3,7 @@
 #include "DUnidadesDisco.h"
 #include "vlc.hpp"
 #include "ExtensionesValidas.h"
+#include "EtiquetaBD.h"
 
 // Thread actualizar BD
 #define WM_TBA_AGREGARDIR			WM_USER + 2000
@@ -15,9 +16,14 @@
 #define WM_TAAL_AGREGARMEDIO		WM_USER + 2005
 #define WM_TAAL_TERMINADO			WM_USER + 2006
 // Thread obtener metadatos
-#define WM_TOM_INICIADO		        WM_USER + 2007
-#define WM_TOM_TOTALMEDIOS          WM_USER + 2008
-#define WM_TOM_TERMINADO            WM_USER + 2009
+#define WM_TOM_INICIADO1	        WM_USER + 2007
+#define WM_TOM_INICIADO2	        WM_USER + 2008
+#define WM_TOM_INICIADO3	        WM_USER + 2009
+#define WM_TOM_TOTALMEDIOS1         WM_USER + 2010
+#define WM_TOM_TOTALMEDIOS2         WM_USER + 2011
+#define WM_TOM_TOTALMEDIOS3         WM_USER + 2012
+#define WM_TOM_TERMINADO            WM_USER + 2013
+
 
 enum Estados_Medio {
 	Nada      = 0,
@@ -44,9 +50,9 @@ enum Tipo_Repeat {
 // clase que engloba una raíz
 class BDRaiz {
   public:
-						BDRaiz(void) : ID_Disco(0), Id(0), Letra('C') { };
+						BDRaiz(void)				: ID_Disco(0), Id(0), Letra('C') { };
 						BDRaiz(std::wstring &nPath) : ID_Disco(0), Id(0), Letra('C'), Path(nPath) { };
-						BDRaiz(const BDRaiz &c) : ID_Disco(c.ID_Disco), Path(c.Path), Id(c.Id), Letra(c.Letra) { };
+						BDRaiz(const BDRaiz &c)		: ID_Disco(c.ID_Disco), Path(c.Path), Id(c.Id), Letra(c.Letra) { };
 	                   ~BDRaiz(void) { };
 	std::wstring        Path;
 	unsigned long		ID_Disco;	// Numero de serie de la unidad
@@ -57,7 +63,7 @@ class BDRaiz {
 // Clase con los datos de un medio
 class BDMedio {
   public :
-							BDMedio() : PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0), Parseado(FALSE) { };
+							BDMedio() : PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0), Parseado(FALSE), Actualizar(FALSE) { };
 //							BDMedio(UINT nId, sqlite3_int64 nHash, const wchar_t *nPath, const wchar_t *nNombre, Tipo_Medio nTipoMedio, Extension_Medio nExtension, UINT nReproducido, ULONG nLongitud, DWORD nIDDisco, UINT nNota, UINT nGenero, UINT nGrupo, UINT nDisco, UINT nPista, libvlc_time_t nTiempo, const wchar_t *nSubtitulos) : Id(nId), Hash(nHash), Path(nPath), NombrePath(nNombre), TipoMedio(nTipoMedio), Extension(nExtension), Longitud(nLongitud), IDDisco(nIDDisco), Nota(nNota), Pista(nPista), Tiempo(nTiempo), Subtitulos(nSubtitulos), Parseado(FALSE) { }
 							BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
 	                       ~BDMedio() { };
@@ -101,7 +107,7 @@ class BDMedio {
 	std::wstring			Subtitulos;
 
 	BOOL					Parseado;						
-	
+	BOOL                    Actualizar; // NO SE GUARDA EN LA BD, ES SOLO PARA SABER SI HAY QUE ACTUALIZAR EL MEDIO O NO:...
 		
 	void					PistaStr(std::wstring &nPistaStr);
 	void					ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
@@ -109,6 +115,7 @@ class BDMedio {
 };
 
 
+class ThreadAnalisis;
 
 class RaveBD {
   public:
@@ -138,11 +145,11 @@ class RaveBD {
 
 								// Obtiene una lista de paths que pertenecen a medios por parsear (extraer metadatos, id3, etc...)
 	const BOOL                  ObtenerMediosPorParsear(std::vector<std::wstring> &Paths);
-
+	const BOOL                  ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios);
 //	const BOOL					AsignarTiempoMedio(const libvlc_time_t nTiempo, const sqlite3_int64 mHash);
 
 	const BOOL                  ActualizarMedio(BDMedio *nMedio);
-							
+
 								// Funciones para buscar una raíz por su path o por su id
 	BDRaiz                     *BuscarRaiz(std::wstring &nPath);
 	BDRaiz                     *BuscarRaiz(const unsigned long bID);
@@ -161,10 +168,6 @@ class RaveBD {
 
 								// Devuelve el puntero de la base de datos sqlite 3
 	inline sqlite3			   *operator()(void) { return _BD; }
-
-								// Filtros para los strings que sean paths o nombres de medio
-	static void					FiltroPath(std::wstring &In, std::wstring &Out);
-	static void					FiltroNombre(std::wstring &In, std::wstring &Out);
 
 								// Función que obtiene las opciones de la base de datos
 	const BOOL					ObtenerOpciones(void);
@@ -202,8 +205,18 @@ class RaveBD {
 
 	DWL::DUnidadesDisco			Unidades;
 
-	static const BOOL          _AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre, UINT &nPista);
+								// Filtros estaticos
+								// Filtros para los strings que sean paths o nombres de medio
+	static void					FiltroPath(std::wstring &In, std::wstring &Out);
+	static void					FiltroNombre(std::wstring &In, std::wstring &Out);
+								// Filtro que anializa path y devuelve el nombre del medio y la pista
+	static const BOOL           AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre, UINT &nPista);
+
+								// Distancia entre 2 strings
+	static const int            Distancia(std::wstring &Origen, std::wstring &Destino);
 protected:
+	const BOOL                  ActualizarMedioAnalisis(BDMedio *nMedio);
+
 
     static const BOOL		   _EsNumero(const wchar_t Caracter);
 
@@ -216,8 +229,8 @@ protected:
 	std::wstring               _UltimoErrorSQL;
 	sqlite3                   *_BD;
 
-
-	std::wstring               _Opciones_PathAbrir;
+								// Opciones en memória
+	std::wstring               _Opciones_PathAbrir;					// Ultimo path donde se ha abierto un archivo externo
 	int                        _Opciones_Volumen;
 	int                        _Opciones_PosX;
 	int                        _Opciones_PosY;
@@ -225,12 +238,12 @@ protected:
 	int                        _Opciones_Alto;
 	BOOL                       _Opciones_Shufle;
 	Tipo_Repeat                _Opciones_Repeat;
-	int                        _Opciones_Inicio;
-	float                      _Opciones_Version;
-	// Tiempo en MS que tarda en ocultarse el mouse y los controles de un video
-	int                        _Opciones_OcultarMouseEnVideo;
+	int                        _Opciones_Inicio;					// Como se inicia el reproductor (lista de inicio)
+	float                      _Opciones_Version;					// Versión de la base de datos
+	int                        _Opciones_OcultarMouseEnVideo;		// Tiempo en MS que tarda en ocultarse el mouse y los controles de un video
 	BOOL                       _Opciones_MostrarObtenerMetadatos;	// Mostrar la ventana del thread obtener metadatos
 	BOOL                       _Opciones_MostrarAsociarArchivos;	// Mostrar la ventana para asociar este reproductor con todas las extensiones de medios conocidas.
 
+	friend class ThreadAnalisis;
 };
 

@@ -60,11 +60,11 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 	// Marco superior izquierdo /////////////
 	MarcoSI.Crear(this, 10, 10, 380, 30, ID_MARCOSI);
-	BotonAtras.CrearBotonEx(&MarcoSI, IDI_PREV32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 0, 0, 30, 30, ID_BOTON_ANTERIOR);
-	BotonPlay.CrearBotonEx(&MarcoSI, IDI_PLAY32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 40, 0, 30, 30, ID_BOTON_PLAY);
-	BotonPausa.CrearBotonEx(&MarcoSI, IDI_PAUSA32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 80, 0, 30, 30, ID_BOTON_PAUSA);
-	BotonStop.CrearBotonEx(&MarcoSI, IDI_STOP32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 120, 0, 30, 30, ID_BOTON_STOP);
-	BotonAdelante.CrearBotonEx(&MarcoSI, IDI_NEXT32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 160, 0, 30, 30, ID_BOTON_SIGUIENTE);
+	BotonAtras.CrearBotonEx(&MarcoSI,	 IDI_PREV32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,   0, 0, 30, 30, ID_BOTON_ANTERIOR);
+	BotonPlay.CrearBotonEx(&MarcoSI,	 IDI_PLAY32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  40, 0, 30, 30, ID_BOTON_PLAY);
+	BotonPausa.CrearBotonEx(&MarcoSI,	 IDI_PAUSA32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  80, 0, 30, 30, ID_BOTON_PAUSA);
+	BotonStop.CrearBotonEx(&MarcoSI,	 IDI_STOP32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 120, 0, 30, 30, ID_BOTON_STOP);
+	BotonAdelante.CrearBotonEx(&MarcoSI, IDI_NEXT32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 160, 0, 30, 30, ID_BOTON_SIGUIENTE);
 
 	BotonMezclar.CrearBotonEx(&MarcoSI, L"Mezclar", 210, 0, 80, 30, ID_BOTON_MEZCLAR);
 	if (App.BD.Opciones_Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
@@ -774,12 +774,12 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			Arbol_AgregarDir(TmpStr, TRUE);
 			delete TmpStr; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
 			break;
-		case WM_TOM_TOTALMEDIOS :
+		case WM_TOM_TOTALMEDIOS1 :
 			BarraTareas.Valor(static_cast<UINT>(wParam), static_cast<UINT>(lParam));
 			break;
 		case WM_TOM_TERMINADO:
-			ThreadObtenerMeta.Terminar();
-			Debug_Escribir_Varg(L"ThreadObtenerMetadatos::Terminado %d archivos examinados.\n", lParam);
+			ThreadAnalizar.Terminar();
+			Debug_Escribir_Varg(L"ThreadAnalisis::Terminado %d archivos examinados.\n", lParam);
 			BarraTareas.Estado_SinProgreso();
 			BarraTareas.Resaltar();
 			break;
@@ -790,9 +790,9 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			ThreadActualizar.Terminar();
 			Menu_ArbolBD.Menu(2)->Activado(TRUE);
 			BarraTareas.Estado_SinProgreso();
-			BarraTareas.Resaltar();
+//			BarraTareas.Resaltar();
 			Debug_Escribir_Varg(L"ThreadActualizarArbol::Terminado %d archivos encontrados.\n", lParam);
-			ThreadObtenerMeta.Iniciar(_hWnd);
+			ThreadAnalizar.Iniciar(_hWnd);
 			break;
 
 		case WM_DROPFILES :

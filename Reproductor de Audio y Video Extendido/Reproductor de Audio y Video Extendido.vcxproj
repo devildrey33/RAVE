@@ -185,6 +185,7 @@
     <ClInclude Include="DMenuEx.h" />
     <ClInclude Include="DRegistro.h" />
     <ClInclude Include="DTemporizador.h" />
+    <ClInclude Include="EtiquetaBD.h" />
     <ClInclude Include="ListaMedios.h" />
     <ClInclude Include="ListaRaices.h" />
     <ClInclude Include="MarcoOpciones.h" />
@@ -219,7 +220,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ThreadActualizarArbol.h" />
     <ClInclude Include="ThreadAgregarArchivosLista.h" />
-    <ClInclude Include="ThreadObtenerMetadatos.h" />
+    <ClInclude Include="ThreadAnalisis.h" />
     <ClInclude Include="RAVE_TODO.h" />
     <ClInclude Include="VentanaAsociarReproductor.h" />
     <ClInclude Include="VentanaErrorCritico.h" />
@@ -265,6 +266,7 @@
     <ClCompile Include="DToolTipEx.cpp" />
     <ClCompile Include="DUnidadesDisco.cpp" />
     <ClCompile Include="EnviarDump.cpp" />
+    <ClCompile Include="EtiquetaBD.cpp" />
     <ClCompile Include="ExtensionesValidas.cpp" />
     <ClCompile Include="ListaMedios.cpp" />
     <ClCompile Include="ListaRaices.cpp" />
@@ -289,7 +291,7 @@
     </ClCompile>
     <ClCompile Include="ThreadActualizarArbol.cpp" />
     <ClCompile Include="ThreadAgregarArchivosLista.cpp" />
-    <ClCompile Include="ThreadObtenerMetadatos.cpp" />
+    <ClCompile Include="ThreadAnalisis.cpp" />
     <ClCompile Include="VentanaAsociarReproductor.cpp" />
     <ClCompile Include="VentanaErrorCritico.cpp" />
     <ClCompile Include="VentanaPrincipal.cpp" />

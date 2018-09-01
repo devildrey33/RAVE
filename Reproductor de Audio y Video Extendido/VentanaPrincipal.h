@@ -16,7 +16,7 @@
 #include "DDesplegableEx.h"
 #include "ThreadActualizarArbol.h"
 #include "ThreadAgregarArchivosLista.h"
-#include "ThreadObtenerMetadatos.h"
+#include "ThreadAnalisis.h"
 #include "VentanaAsociarReproductor.h"
 
 using namespace DWL;
@@ -69,7 +69,7 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						ActualizarArbol(void);
 	ThreadActualizarArbol		ThreadActualizar;
 	ThreadAgregarArchivosLista  ThreadArchivosLista;
-	ThreadObtenerMetadatos		ThreadObtenerMeta;
+	ThreadAnalisis				ThreadAnalizar;
 
 //	NodoBD                     *Arbol_AgregarCancion(const size_t Hash);
 	NodoBD                     *Arbol_AgregarDir(std::wstring *Path, const BOOL nRepintar = FALSE);
