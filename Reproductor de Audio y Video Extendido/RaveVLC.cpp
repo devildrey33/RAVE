@@ -376,6 +376,13 @@ void RaveVLC::TiempoActual(float nTiempo) {
 	}
 }
 
+void RaveVLC::Ratio(const float R) {
+	int r;
+	if (_MediaPlayer != NULL) {
+		r = libvlc_media_player_set_rate(_MediaPlayer, R);
+	}
+}
+
 void RaveVLC::RepintarVLC(void) {
 	if (hWndVLC != NULL) {
 /*		Debug_Escribir_Varg(L"RepintarVLC %d\n", hWndVLC);

@@ -10,7 +10,7 @@
 #define ID_BOTONCANCELAR		1003
 #define ID_MARCANOMOSTRARMAS	1004
 
-ThreadAnalisis::ThreadAnalisis(void) {
+ThreadAnalisis::ThreadAnalisis(void) : _FASE(0) {
 }
 
 
@@ -28,12 +28,12 @@ const BOOL ThreadAnalisis::Iniciar(HWND nhWndDest) {
 
 	if (App.BD.Opciones_MostrarObtenerMetadatos() == TRUE) {
 		// Creo la ventana que mostrará el progreso
-		CrearVentana(NULL, L"RAVE_ObtenerMetadatos", L"Obteniendo metadatos", 300, 200, 700, 410, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_VISIBLE);
+		CrearVentana(NULL, L"RAVE_ObtenerMetadatos", L"Analizando...", 300, 200, 700, 410, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_VISIBLE);
 		RECT RC;
 		GetClientRect(_hWnd, &RC);
-		_BarraProgreso1.CrearBarraProgresoEx(this, 10, 100, RC.right - 20, 20, ID_BARRAPROGRESO1);
-		_BarraProgreso2.CrearBarraProgresoEx(this, 10, 200, RC.right - 20, 20, ID_BARRAPROGRESO2);
-		_BarraProgreso3.CrearBarraProgresoEx(this, 10, 300, RC.right - 20, 20, ID_BARRAPROGRESO3);
+		_BarraProgreso1.CrearBarraProgresoEx(this, 30, 105, RC.right - 60, 20, ID_BARRAPROGRESO1);
+		_BarraProgreso2.CrearBarraProgresoEx(this, 30, 205, RC.right - 60, 20, ID_BARRAPROGRESO2);
+		_BarraProgreso3.CrearBarraProgresoEx(this, 30, 305, RC.right - 60, 20, ID_BARRAPROGRESO3);
 		_BotonCancelar.CrearBotonEx(this, L"Cancelar", 300, 330, 100, 30, ID_BOTONCANCELAR);
 		_MarcaNoMostrarMas.CrearMarcaEx(this, L"No volver a mostrar esta ventana.", 10, 336, 250, 20, ID_MARCANOMOSTRARMAS, IDI_CHECK2);
 	}
@@ -254,18 +254,18 @@ void ThreadAnalisis::_RevisarMedios(void) {
 
 	_BD.Consulta(L"TRUNCATE TABLE Etiquetas");
 	for (i = 0; i < _Medios.size(); i++) {
-		_AgregarEtiqueta(_Medios[i].Genero,		TIPO_GENERO);
-		_AgregarEtiqueta(_Medios[i].GrupoPath,	TIPO_GRUPOPATH);
-		_AgregarEtiqueta(_Medios[i].GrupoTag,	TIPO_GRUPOTAG);
-		_AgregarEtiqueta(_Medios[i].DiscoPath,	TIPO_DISCOPATH);
-		_AgregarEtiqueta(_Medios[i].DiscoTag,	TIPO_DISCOTAG);
+		_AgregarEtiqueta(_Medios[i].Genero,		TIPO_GENERO,	_Medios[i].Nota, _Medios[i].Tiempo);
+		_AgregarEtiqueta(_Medios[i].GrupoPath,	TIPO_GRUPOPATH, _Medios[i].Nota, _Medios[i].Tiempo);
+		_AgregarEtiqueta(_Medios[i].GrupoTag,	TIPO_GRUPOTAG,  _Medios[i].Nota, _Medios[i].Tiempo);
+		_AgregarEtiqueta(_Medios[i].DiscoPath,	TIPO_DISCOPATH, _Medios[i].Nota, _Medios[i].Tiempo);
+		_AgregarEtiqueta(_Medios[i].DiscoTag,	TIPO_DISCOTAG,  _Medios[i].Nota, _Medios[i].Tiempo);
 		if (_hWnd != NULL) SendMessage(_hWnd, WM_TOM_TOTALMEDIOS3, i, 0);
 		if (Cancelar() == TRUE) return;
 	}
 
 
 	for (i = 0; i < _Etiquetas.size(); i++) {
-		_BD.ConsultaVarg(L"INSERT INTO Etiquetas (Texto, Tipo) VALUES(\"%s\", %d)", _Etiquetas[i].Texto.c_str(), _Etiquetas[i].Tipo );
+		_BD.ConsultaVarg(L"INSERT INTO Etiquetas (Texto, Tipo, Medios, Nota, Tiempo) VALUES(\"%s\", %d, %d, %f, %d)", _Etiquetas[i].Texto.c_str(), _Etiquetas[i].Tipo, _Etiquetas[i].Medios, _Etiquetas[i].Nota, _Etiquetas[i].Tiempo );
 	}
 
 	_BD.Consulta(L"COMMIT TRANSACTION");
@@ -414,15 +414,18 @@ void ThreadAnalisis::_AgregarMedio(std::vector<CoincidenciasTexto *> &ListaMedio
 	ListaMedios.push_back(new CoincidenciasTexto(Medio, Texto));
 }
 
-void ThreadAnalisis::_AgregarEtiqueta(std::wstring &nTexto, const DWORD nTipo) {
+void ThreadAnalisis::_AgregarEtiqueta(std::wstring &nTexto, const DWORD nTipo, const float nNota, const libvlc_time_t nTiempo) {
 	if (nTexto.size() == 0) return;
 	for (size_t i = 0; i < _Etiquetas.size(); i++) {
 		if (nTexto == _Etiquetas[i].Texto) {
 			_Etiquetas[i].AgregarTipo(nTipo);
+			_Etiquetas[i].Medios++;
+			_Etiquetas[i].Nota += nNota;
+			_Etiquetas[i].Tiempo += nTiempo;
 			return;
 		}
 	}
-	_Etiquetas.push_back(EtiquetaBD(nTexto, nTipo));
+	_Etiquetas.push_back(EtiquetaBD(nTexto, nTipo, nNota, nTiempo));
 }
 
 // Función que obtiene un metadato desde la LibVLC
@@ -535,9 +538,7 @@ void ThreadAnalisis::_Evento_Pintar(void) {
 }
 
 void ThreadAnalisis::Pintar(HDC DC) {
-	static const wchar_t pTexto1[] = L"Analizando los datos de los medios en segundo plano.\n\n"
-								     L"Examinar los metadatos de todos los medios para extraer su : genero, grupo, disco,\n"
-								     L"nombre, pista, y tiempo.";
+
 	RECT RC;
 	GetClientRect(_hWnd, &RC);
 	// Pinto el fondo
@@ -547,15 +548,36 @@ void ThreadAnalisis::Pintar(HDC DC) {
 	HFONT VFuente = static_cast<HFONT>(SelectObject(DC, DhWnd::_Fuente18Normal()));
 
 	SetBkMode(DC, TRANSPARENT);
-	RECT RTS = { 11, 11, RC.right - 9, 91 };
-	RECT RT  = { 10, 10, RC.right - 10, 90 };
-	SetTextColor(DC, COLOR_TEXTO_SOMBRA);
-	DrawText(DC, pTexto1, -1, &RTS, DT_LEFT);
-	SetTextColor(DC, COLOR_TEXTO);
-	DrawText(DC, pTexto1, -1, &RT, DT_LEFT);
+	_PintarTexto(DC, L"Analizando los datos de los medios en segundo plano.", 10, 10);
+	
+	COLORREF ColFase1 = (_FASE == 1) ? COLOR_TEXTO_RESALTADO : COLOR_TEXTO_DESACTIVADO;
+	COLORREF ColFase2 = (_FASE == 2) ? COLOR_TEXTO_RESALTADO : COLOR_TEXTO_DESACTIVADO;;
+	COLORREF ColFase3 = (_FASE == 3) ? COLOR_TEXTO_RESALTADO : COLOR_TEXTO_DESACTIVADO;;
+
+	SelectObject(DC, DhWnd::_Fuente18Negrita());
+	_PintarTexto(DC, L"FASE 1 :", 10, 40, ColFase1);
+	_PintarTexto(DC, L"FASE 2 :", 10, 140, ColFase2);
+	_PintarTexto(DC, L"FASE 3 :", 10, 240, ColFase3);
+
+	SelectObject(DC, DhWnd::_Fuente18Normal());
+	_PintarTexto(DC, L"Examinar los metadatos de todos los medios para extraer : generos, grupos, discos, nombres,", 30, 60, ColFase1);
+	_PintarTexto(DC, L"pistas, y tiempos.", 30, 80, ColFase1);
+
+	_PintarTexto(DC, L"Analizar todos los datos en busca de coincidencias muy parecidas entre si, y determinar si", 30, 160, ColFase2);
+	_PintarTexto(DC, L"realmente son lo mismo o no.", 30, 180, ColFase2);
+
+	_PintarTexto(DC, L"Generar una lista de etiquetas de cada genero, grupo, y disco.", 30, 260, ColFase3);
+	_PintarTexto(DC, L"Con la lista de etiquetas será posible crear listas aleatórias utilizando una etiqueta.", 30, 280, ColFase3);
 
 	SelectObject(DC, VFuente);
 	DeleteObject(BrochaFondo);
+}
+
+void ThreadAnalisis::_PintarTexto(HDC DC, const wchar_t *pTexto, const int PosX, const int PosY, COLORREF ColorTexto, COLORREF ColorSombra) {
+	SetTextColor(DC, ColorSombra);
+	TextOut(DC, PosX + 1, PosY + 1, pTexto, static_cast<int>(wcslen(pTexto)));
+	SetTextColor(DC, ColorTexto);
+	TextOut(DC, PosX, PosY, pTexto, static_cast<int>(wcslen(pTexto)));
 }
 
 
@@ -564,11 +586,11 @@ LRESULT CALLBACK ThreadAnalisis::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM
 	switch (uMsg) {
 		case WM_PAINT			 :	_Evento_Pintar();																return 0;
 		case WM_TOM_TOTALMEDIOS1 :	_BarraProgreso1.Valor(static_cast<float>(wParam));								return 0;
-		case WM_TOM_INICIADO1    :  _BarraProgreso1.Maximo(static_cast<float>(wParam));								return 0;
+		case WM_TOM_INICIADO1    :  _BarraProgreso1.Maximo(static_cast<float>(wParam));	 _FASE = 1;  Repintar();	return 0;
 		case WM_TOM_TOTALMEDIOS2 :	_BarraProgreso2.Valor(_BarraProgreso2.Valor() + 1);								return 0;
-		case WM_TOM_INICIADO2    :  _BarraProgreso2.Maximo(static_cast<float>(wParam));								return 0;
+		case WM_TOM_INICIADO2    :  _BarraProgreso2.Maximo(static_cast<float>(wParam));	 _FASE = 2;	 Repintar();	return 0;
 		case WM_TOM_TOTALMEDIOS3 :	_BarraProgreso3.Valor(static_cast<float>(wParam));								return 0;
-		case WM_TOM_INICIADO3    :  _BarraProgreso3.Maximo(static_cast<float>(wParam));								return 0;
+		case WM_TOM_INICIADO3    :  _BarraProgreso3.Maximo(static_cast<float>(wParam));	 _FASE = 3;  Repintar();	return 0;
 		case WM_CLOSE			 :   Cancelar(TRUE);																return 0;
 		case DWL_BOTONEX_CLICK   :   Cancelar(TRUE);																return 0;
 		case DWL_MARCAEX_CLICK   :   App.BD.Opciones_MostrarObtenerMetadatos(!_MarcaNoMostrarMas.Marcado());		return 0;

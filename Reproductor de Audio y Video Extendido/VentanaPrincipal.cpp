@@ -370,6 +370,18 @@ void VentanaPrincipal::Lista_Anterior(void) {
 	}
 }
 
+void VentanaPrincipal::Evento_BotonEx_Mouse_Down(const UINT cID) {
+	_BotonExMouseDownTick = GetTickCount();
+	switch (cID) {
+		case ID_BOTON_ANTERIOR:	
+			App.VLC.Ratio(-2.0f);
+			break;
+		case ID_BOTON_SIGUIENTE:
+			App.VLC.Ratio(2.0f);
+			break;
+	}
+
+}
 
 void VentanaPrincipal::Evento_BotonEx_Mouse_Click(const UINT cID) {
 	switch (cID) {
@@ -411,10 +423,16 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(const UINT cID) {
 			Repetir_Click();
 			break;
 		case ID_BOTON_ANTERIOR:
-			Lista_Anterior();
+			App.VLC.Ratio(1.0f);
+			if (GetTickCount() < _BotonExMouseDownTick + 200) {
+				Lista_Anterior();
+			}
 			break;
 		case ID_BOTON_SIGUIENTE:
-			Lista_Siguiente();
+			App.VLC.Ratio(1.0f);
+			if (GetTickCount() < _BotonExMouseDownTick + 200) {
+				Lista_Siguiente();
+			}
 			break;
 		case ID_BOTON_PLAY:
 			Lista_Play();
@@ -865,6 +883,9 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 
 		case DWL_BOTONEX_CLICK :
 			Evento_BotonEx_Mouse_Click(static_cast<UINT>(wParam));
+			return 0;
+		case DWL_BOTONEX_MOUSEDOWN :
+			Evento_BotonEx_Mouse_Down(static_cast<UINT>(wParam));
 			return 0;
 
 /*		case DWL_ARBOLEX_CLICK :

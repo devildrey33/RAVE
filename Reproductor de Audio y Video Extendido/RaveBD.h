@@ -63,7 +63,7 @@ class BDRaiz {
 // Clase con los datos de un medio
 class BDMedio {
   public :
-							BDMedio() : PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0), Parseado(FALSE), Actualizar(FALSE) { };
+							BDMedio() : PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0), Parseado(FALSE), Actualizar(FALSE), Nota(2.5f) { };
 //							BDMedio(UINT nId, sqlite3_int64 nHash, const wchar_t *nPath, const wchar_t *nNombre, Tipo_Medio nTipoMedio, Extension_Medio nExtension, UINT nReproducido, ULONG nLongitud, DWORD nIDDisco, UINT nNota, UINT nGenero, UINT nGrupo, UINT nDisco, UINT nPista, libvlc_time_t nTiempo, const wchar_t *nSubtitulos) : Id(nId), Hash(nHash), Path(nPath), NombrePath(nNombre), TipoMedio(nTipoMedio), Extension(nExtension), Longitud(nLongitud), IDDisco(nIDDisco), Nota(nNota), Pista(nPista), Tiempo(nTiempo), Subtitulos(nSubtitulos), Parseado(FALSE) { }
 							BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
 	                       ~BDMedio() { };
@@ -87,7 +87,7 @@ class BDMedio {
 	ULONG					Longitud;
 
 	UINT					Reproducido;
-	UINT					Nota;
+	float					Nota;
 
 	UINT					Id;
 	DWORD					IDDisco;

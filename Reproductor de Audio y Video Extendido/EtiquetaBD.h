@@ -22,8 +22,8 @@ enum EtiquetaBD_Tipo {
 
 class EtiquetaBD {
   public:
-						EtiquetaBD(void) : Tipo(0)															{ };
-						EtiquetaBD(std::wstring &nTexto, const DWORD nTipo) : Tipo(nTipo), Texto(nTexto)	{ };
+						EtiquetaBD(void) : Tipo(0), Nota(0.0f), Tiempo(0), Medios(0)						{ };
+						EtiquetaBD(std::wstring &nTexto, const DWORD nTipo, const float nNota, const libvlc_time_t nTiempo) : Tipo(nTipo), Texto(nTexto), Nota(nNota), Tiempo(nTiempo), Medios(1)	{ };
 					   ~EtiquetaBD(void)																	{ };
 
 	inline const DWORD	AgregarTipo(const EtiquetaBD_Tipo nTipo)											{ Tipo |= nTipo;	return Tipo;			}
@@ -40,5 +40,9 @@ class EtiquetaBD {
 //	std::wstring       &SqlEtiquetas(void);
 
 	std::wstring		Texto;
+
+	UINT                Medios;
+	libvlc_time_t       Tiempo;
+	float               Nota;		// Suma de todas las notas, (para extraer la media hay que dividir la Nota por Medios.size())
 };
 

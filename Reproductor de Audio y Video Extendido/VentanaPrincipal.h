@@ -32,6 +32,7 @@ class VentanaPrincipal : public DWL::DVentana {
 
 //	void						Evento_Button_Mouse_Click(const UINT cID);
 	void						Evento_BotonEx_Mouse_Click(const UINT cID);
+	void                        Evento_BotonEx_Mouse_Down(const UINT cID);
 
 	//void						Evento_ArbolEx_Click(DArbolEx_DatosClick *Datos, const UINT aID);
 	void						Evento_Temporizador(const UINT cID);
@@ -147,6 +148,7 @@ class VentanaPrincipal : public DWL::DVentana {
 //	void                       _AgregarNodoALista(DArbolEx_Nodo *nNodo);
 	BOOL                       _PantallaCompleta;
 
+	DWORD                      _BotonExMouseDownTick;
 //	BOOL                       _Mezclar;
 };
 

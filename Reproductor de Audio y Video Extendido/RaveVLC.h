@@ -107,6 +107,7 @@ class RaveVLC {
 	const UINT64							TiempoTotalMs(void);
 	const UINT64							TiempoActualMs(void);
 
+	void                                    Ratio(const float R);
 
 	void									TiempoStr(UINT64 TMS, wchar_t *StrTiempo);
 	void									TiempoStr(UINT64 TMS, std::wstring &StrTiempo);

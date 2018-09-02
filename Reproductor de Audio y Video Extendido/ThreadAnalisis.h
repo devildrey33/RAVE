@@ -43,6 +43,7 @@ class ThreadAnalisis :	public DWL::DVentana {
 	LRESULT CALLBACK					GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
   protected:
 	void					           _Evento_Pintar(void);
+	void                               _PintarTexto(HDC DC, const wchar_t *pTexto, const int PosX, const int PosY, COLORREF ColorTexto = COLOR_TEXTO, COLORREF ColorSombra = COLOR_TEXTO_SOMBRA);
 	static unsigned long               _ThreadAnalisis(void *pThis);
 
 	void                               _Parsear(libvlc_instance_t *VLC, std::wstring &Path);
@@ -68,7 +69,7 @@ class ThreadAnalisis :	public DWL::DVentana {
 	void                               _LimpiarAnomalias(void);
 	void                               _RevisarMedios(void);
 	void                               _CrearListaAnomalias(std::vector<CoincidenciasTexto *> &Coincidencias, std::vector<AnomaliasTexto *> &Anomalias, const UINT TipoCoincidencia);
-	void                               _AgregarEtiqueta(std::wstring &nTexto, const DWORD nTipo);
+	void                               _AgregarEtiqueta(std::wstring &nTexto, const DWORD nTipo, const float nNota, const libvlc_time_t nTiempo);
 	std::vector<BDMedio>			   _Medios;
 	std::vector<CoincidenciasTexto *>  _Generos;
 //	std::vector<CoincidenciasTexto *>  _GruposPath;
@@ -85,5 +86,8 @@ class ThreadAnalisis :	public DWL::DVentana {
 	std::vector<AnomaliasTexto *>      _AnomaliasDiscoTag;
 	
 	std::vector<EtiquetaBD>			   _Etiquetas;
+
+										// OJO esta variable solo se puede utilizar desde el thread principal, para ello si hay que actualizarla se utilizara un sendmessage desde el ThreadAnalisis al principal
+	int                                _FASE; // Fase actual del analisis (para el pintado)
 };
 

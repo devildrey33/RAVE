@@ -155,6 +155,7 @@ namespace DWL {
 		SetCapture(hWnd());
 		_Estado = DBotonEx_Estado_Presionado;
 		Repintar();
+		SendMessage(GetParent(hWnd()), DWL_BOTONEX_MOUSEDOWN, static_cast<WPARAM>(GetWindowLongPtr(hWnd(), GWL_ID)), MAKELPARAM(cX, cY));
 	}
 
 	void DBotonEx::Evento_MouseSoltado(const int cX, const int cY, const UINT wParam) {
@@ -167,7 +168,7 @@ namespace DWL {
 			POINT Pt = { cX, cY };
 			if (PtInRect(&RC, Pt) != 0) {
 				_Estado = DBotonEx_Estado_Resaltado;
-				PostMessage(GetParent(hWnd()), DWL_BOTONEX_CLICK, static_cast<WPARAM>(GetWindowLongPtr(hWnd(), GWL_ID)), MAKELPARAM(cX, cY));
+				SendMessage(GetParent(hWnd()), DWL_BOTONEX_CLICK, static_cast<WPARAM>(GetWindowLongPtr(hWnd(), GWL_ID)), MAKELPARAM(cX, cY));
 			}
 			else {
 				_Estado = DBotonEx_Estado_Normal;

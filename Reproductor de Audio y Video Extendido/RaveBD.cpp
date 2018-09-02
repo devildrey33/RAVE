@@ -277,7 +277,7 @@ const BOOL RaveBD::ObtenerRaices(void) {
 		UINT				Reproducido		    6			INT
 		ULONG				Longitud		    7			INT
 		DWORD				IDDisco			    8			INT
-		UINT				Nota			    9			SMALLINT
+		float				Nota			    9			DOUBLE
 		std::wstring		Genero		       10			VARCHAR(128)
 		std::wstring		GrupoPath	       11			VARCHAR(128)
 		std::wstring		DiscoPath	       12			VARCHAR(128)
@@ -295,7 +295,7 @@ const BOOL RaveBD::ObtenerRaices(void) {
 		BOOL				PistaEleccion      24			TINYINT(1)				*/
 const BOOL RaveBD::ActualizarMedio(BDMedio *nMedio) {
 	int SqlRet = ConsultaVarg(L"UPDATE Medios SET "
-												L"NombrePath=\"%s\","		L"Reproducido=%d,"			L"Nota=%d,"					L"Genero=\"%s\","				L"GrupoPath=\"%s\","
+												L"NombrePath=\"%s\","		L"Reproducido=%d,"			L"Nota=%f,"					L"Genero=\"%s\","				L"GrupoPath=\"%s\","
 												L"DiscoPath=\"%s\","		L"PistaPath=%d,"			L"Tiempo=%d,"				L"Subtitulos=\"%s\","			L"Parseado=%d,"
 												L"NombreTag=\"%s\","		L"GrupoTag=\"%s\","			L"DiscoTag=\"%s\","			L"PistaTag=%d,"
 												L"NombreEleccion=%d,"		L"GrupoEleccion=%d,"		L"DiscoEleccion=%d,"		L"PistaEleccion=%d"
@@ -342,7 +342,7 @@ const BOOL RaveBD::_CrearTablas(void) {
 											L"Repeat"					L" INTEGER,"             
 											L"Inicio"					L" INTEGER,"             
 											L"OcultarMouseEnVideo"		L" INTEGER,"             
-											L"Version"					L" FLOAT,"				  
+											L"Version"					L" DOUBLE,"				  
 											L"MostrarObtenerMetadatos"	L" INTEGER,"
 											L"MostrarAsociarArchivos"	L" INTEGER"
 										")";
@@ -368,7 +368,7 @@ const BOOL RaveBD::_CrearTablas(void) {
 		UINT				Reproducido		    6			INT
 		ULONG				Longitud		    7			INT
 		DWORD				IDDisco			    8			INT
-		UINT				Nota			    9			SMALLINT
+		float				Nota			    9			DOUBLE
 		std::wstring		Genero		       10			VARCHAR(128)
 		std::wstring		GrupoPath	       11			VARCHAR(128)
 		std::wstring		DiscoPath	       12			VARCHAR(128)
@@ -395,7 +395,7 @@ const BOOL RaveBD::_CrearTablas(void) {
 										L"Reproducido "		L"INT, "					//  6
 										L"Longitud "		L"INT, "					//  7
 										L"IDDisco "			L"INT, "					//  8
-										L"Nota "			L"SMALLINT, "				//  9
+										L"Nota "			L"DOUBLE, "					//  9
 										L"Genero "			L"VARCHAR(128), "			// 10
 										L"GrupoPath "		L"VARCHAR(128), "			// 11
 										L"DiscoPath "		L"VARCHAR(128), "			// 12
@@ -418,9 +418,12 @@ const BOOL RaveBD::_CrearTablas(void) {
 
 	// Creo la tabla para las etiquetas
 	std::wstring CrearTablaEtiquetas = L"CREATE TABLE Etiquetas ("
-											L"Id" 						L" INTEGER PRIMARY KEY," 
-											L"Texto"					L" VARCHAR(260),"	 	  
-											L"Tipo"						L" INTEGER"
+											L"Id" 				L" INTEGER PRIMARY KEY," 
+											L"Texto"			L" VARCHAR(260),"	 	  
+											L"Tipo"				L" INTEGER,"
+											L"Medios"			L" INTEGER,"
+											L"Nota "			L" DOUBLE,"				
+											L"Tiempo "			L" BIGINT"				
 										")";
 
 	if (Consulta(CrearTablaEtiquetas.c_str()) == SQLITE_ERROR) return FALSE;
@@ -586,7 +589,7 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 												DString_ToStr(Pista)						+ L"," +				// PistaPath
 												DString_ToStr(UnidadDisco->Numero_Serie())	+ L"," +				// ID Disco Duro
 												DString_ToStr(Longitud)						+ L"," +				// Longitud en bytes
-												L"2," +																// Nota
+												L"2.5," +															// Nota
 												L"0," +																// Tiempo
 												L"\"\"," +															// Subtitulos
 												L"0,\"" +															// Parseado
@@ -896,7 +899,7 @@ const BOOL RaveBD::Opciones_GuardarPosTamVentana(void) {
 
 
 const BOOL RaveBD::ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios) {
-	const wchar_t  *Q = L"SELECT Id, NombrePath, Genero, GrupoPath, DiscoPath, NombreTag, GrupoTag, DiscoTag, Path, PistaTag, PistaPath FROM Medios WHERE TipoMedio=1"; // Tipo_Medio_Audio
+	const wchar_t  *Q = L"SELECT Id, NombrePath, Genero, GrupoPath, DiscoPath, NombreTag, GrupoTag, DiscoTag, Path, PistaTag, PistaPath, Nota, Tiempo FROM Medios WHERE TipoMedio=1"; // Tipo_Medio_Audio
 	
 	wchar_t		   *SqlError = NULL;
 	int				SqlRet = 0;
@@ -931,6 +934,8 @@ const BOOL RaveBD::ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios) {
 			TmpMedio.Path               = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 8));
 			TmpMedio.PistaTag			= static_cast<UINT>(sqlite3_column_int(SqlQuery, 9));
 			TmpMedio.PistaPath			= static_cast<UINT>(sqlite3_column_int(SqlQuery, 10));
+			TmpMedio.Nota				= static_cast<float>(sqlite3_column_double(SqlQuery, 11));
+			TmpMedio.Tiempo				= static_cast<libvlc_time_t>(sqlite3_column_int(SqlQuery, 12));
 			Medios.push_back(TmpMedio);
 		}
 	}
@@ -1072,7 +1077,7 @@ void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades)
 	Reproducido		= static_cast<UINT>(sqlite3_column_int(SqlQuery, 6));
 	Longitud		= static_cast<DWORD>(sqlite3_column_int(SqlQuery, 7));
 	IDDisco			= static_cast<DWORD>(sqlite3_column_int(SqlQuery, 8));
-	Nota			= static_cast<UINT>(sqlite3_column_int(SqlQuery, 9));
+	Nota			= static_cast<float>(sqlite3_column_double(SqlQuery, 9));
 	const wchar_t *nGenero		= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 10));
 	const wchar_t *nGrupoPath	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 11));
 	const wchar_t *nDiscoPath	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 12));

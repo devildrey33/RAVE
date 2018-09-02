@@ -5,7 +5,9 @@
 	#define DWL_BARRAEX_CAMBIADO							WM_USER + 2
 
 	// BotonEx
-	#define DWL_BOTONEX_CLICK								WM_USER + 3
+	#define DWL_BOTONEX_MOUSEDOWN							WM_USER + 3
+	#define DWL_BOTONEX_MOUSEUP								WM_USER + 4
+	#define DWL_BOTONEX_CLICK								WM_USER + 4
 
 	// EditBox /////////////////////////////////////////////////////////////
 	#define DWL_EDITBOX_CLICK_IZQUIERDO						WM_USER + 12
