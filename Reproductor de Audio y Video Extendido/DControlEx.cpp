@@ -4,6 +4,8 @@
 namespace DWL {
 
 	HWND DControlEx::CrearControlEx(DhWnd *nPadre, const TCHAR *nNombre, const TCHAR *nTexto, const INT_PTR cID, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos, UINT nEstilosClase, HBRUSH nColorFondo) {
+		BOOL Is = IsWindow(_hWnd);
+		if (_hWnd != NULL && IsWindow(_hWnd) == 0) { Destruir(); }
 		if (hWnd()) { Debug_Escribir(L"DControlEx::Crear() Error : ya se ha creado el control extendido\n"); return hWnd(); }
 		ATOM CA = RegistrarClase(nNombre, _GestorMensajes, nEstilosClase);
 		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;

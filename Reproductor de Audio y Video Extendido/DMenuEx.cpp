@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "DMenuEx.h"
 #include "DMouse.h"
-#include "dwmapi.h"
+#include <dwmapi.h>
 
 
 namespace DWL {
@@ -9,15 +9,15 @@ namespace DWL {
 	DMenuEx *DMenuEx::_ResultadoModal = NULL;
 
 
-	DMenuEx::DMenuEx(void) : _Padre(NULL), _Tipo(DMenuEx_Tipo_Raiz), _hWndDest(NULL), _ID(0), _Activado(TRUE), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL), _AnularMouseMove(NULL) {
+	DMenuEx::DMenuEx(void) : DWL::DVentana(), _Padre(NULL), _Tipo(DMenuEx_Tipo_Raiz), _hWndDest(NULL), _ID(0), _Activado(TRUE), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL), _AnularMouseMove(NULL) {
 		_Recta = { 0, 0, 0, 0 };
 	}
 
-	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const UINT nID) : _Padre(nPadre), _Tipo(DMenuEx_Tipo_Separador), _hWndDest(nhWndPadre), _ID(nID), _MenuResaltado(NULL), _MenuPresionado(NULL), _Activado(TRUE), _MenuDesplegado(NULL), _AnularMouseMove(NULL) {
+	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const UINT nID) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Separador), _hWndDest(nhWndPadre), _ID(nID), _MenuResaltado(NULL), _MenuPresionado(NULL), _Activado(TRUE), _MenuDesplegado(NULL), _AnularMouseMove(NULL) {
 		_Recta = { 0, 0, 0, 0 };
 	}
 
-	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const UINT nID, const wchar_t *nTexto, const int nIconoRecursos, const BOOL nActivado) : _Padre(nPadre), _Tipo(DMenuEx_Tipo_Texto), _hWndDest(nhWndPadre), _ID(nID), _Texto(nTexto), _Activado(nActivado), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL), _AnularMouseMove(NULL) {
+	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const UINT nID, const wchar_t *nTexto, const int nIconoRecursos, const BOOL nActivado) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Texto), _hWndDest(nhWndPadre), _ID(nID), _Texto(nTexto), _Activado(nActivado), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL), _AnularMouseMove(NULL) {
 		_Recta = { 0, 0, 0, 0 };
 		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DMENUEX_TAMICONO, DMENUEX_TAMICONO);
 	}

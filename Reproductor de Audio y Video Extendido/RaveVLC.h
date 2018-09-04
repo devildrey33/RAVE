@@ -109,8 +109,8 @@ class RaveVLC {
 
 	void                                    Ratio(const float R);
 
-	void									TiempoStr(UINT64 TMS, wchar_t *StrTiempo);
-	void									TiempoStr(UINT64 TMS, std::wstring &StrTiempo);
+	static void								TiempoStr(UINT64 TMS, wchar_t *StrTiempo);
+	static void								TiempoStr(UINT64 TMS, std::wstring &StrTiempo);
 	//	void									TiempoStrL(UINT64 TMS, wchar_t *StrTiempo);
 
 	void									ActualizarIconos(int nIcono);

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "DToolTipEx.h"
 #include "Rave_Skin.h"
-
+#include <dwmapi.h>
 
 namespace DWL {
 
@@ -15,7 +15,9 @@ namespace DWL {
 
 
 	HWND DToolTipEx::CrearToolTipEx(void) {
-		_hWnd = DVentana::CrearVentana(NULL, L"DToolTipEx", L"", 0, 0, 0, 0, WS_POPUP, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
+		_hWnd = DVentana::CrearVentana(NULL, L"DToolTipEx", L"", 0, 0, 0, 0, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
+		MARGINS Margen = { 0, 0, 0, 1 };
+		DwmExtendFrameIntoClientArea(_hWnd, &Margen);
 		_Fuente = _Fuente18Normal;
 		return hWnd();
 	}
@@ -86,17 +88,28 @@ namespace DWL {
 
 	LRESULT CALLBACK DToolTipEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
-		case WM_MOUSEMOVE:
-			ShowWindow(hWnd(), SW_HIDE);
-			break;
-		case WM_PAINT:
-			HDC         DC;
-			PAINTSTRUCT PS;
-			DC = BeginPaint(hWnd(), &PS);
-			PintarToolTipEx(DC);
-			EndPaint(hWnd(), &PS);
-			return 0;
-			break;
+			case WM_MOUSEMOVE:
+				ShowWindow(hWnd(), SW_HIDE);
+				break;
+			case WM_PAINT:
+				HDC         DC;
+				PAINTSTRUCT PS;
+				DC = BeginPaint(hWnd(), &PS);
+				PintarToolTipEx(DC);
+				EndPaint(hWnd(), &PS);
+				return 0;
+				break;
+			// Sombra de la ventana
+			// https://stackoverflow.com/questions/43818022/borderless-window-with-drop-shadow
+			case WM_NCCALCSIZE:
+				if (wParam == TRUE)	{
+					// DWL_MSGRESULT (no esta definit)
+					SetWindowLongPtr(_hWnd, 0, 0);
+					return TRUE;
+				}				
+				return 0;
+			// Evita que al obtener el foco cambie la parte del caption
+			case WM_NCACTIVATE:																																					return FALSE;
 		}
 		return DefWindowProc(hWnd(), uMsg, wParam, lParam);
 	}

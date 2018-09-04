@@ -26,6 +26,7 @@
 #define COLOR_TEXTO_PRESIONADO						RGB(215, 215, 215) //RGB(255, 255, 255)
 #define COLOR_TEXTO_DESACTIVADO						RGB(100, 100, 100) //RGB(255, 255, 255)
 
+#define COLOR_BORDE_POPUP                           RGB(255, 255, 255)
 
  
 /*
@@ -52,7 +53,7 @@ ____                       ______
 
 /*
 */
-#define COLOR_TOOLTIP_BORDE							COLOR_BORDE //RGB(155, 155, 155)
+#define COLOR_TOOLTIP_BORDE							COLOR_BORDE_POPUP //RGB(155, 155, 155)
 #define COLOR_TOOLTIP_FONDO							RGB( 21,  19,  24) //COLOR_FONDO
 #define COLOR_TOOLTIP_TEXTO							COLOR_TEXTO //RGB(  0,   0,   0)
 
@@ -193,7 +194,7 @@ ______    _ _      _          _______        _        ______
                                       
 */                                      
 
-#define COLOR_MENU_BORDE                            RGB(255, 255, 255)
+#define COLOR_MENU_BORDE                            COLOR_BORDE_POPUP
 #define COLOR_MENU_SEPARADOR                        RGB(150, 150, 150)
 #define COLOR_MENU_FONDO							COLOR_FONDO
 #define COLOR_MENU_FONDO_RESALTADO					COLOR_ROJO_RESALTADO

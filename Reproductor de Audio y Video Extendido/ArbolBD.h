@@ -2,7 +2,7 @@
 
 #include "DArbolEx.h"
 #include "sqlite3.h"
-//#include "TablaMedios.h"
+#include "ToolTipEtiqueta.h"
 
 enum ArbolBD_TipoNodo {
 	ArbolBD_TipoNodo_Indefinido = -1,
@@ -34,23 +34,25 @@ class BDMedio;
 
 class ArbolBD : public DWL::DArbolEx {
   public:
-					ArbolBD();
-	               ~ArbolBD();
-	NodoBD		   *BuscarHash(sqlite3_int64 bHash);
-	NodoBD         *AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre, const TCHAR *cTexto, const sqlite3_int64 nHash = 0);
-	const BOOL      AgregarNodoALista(DWL::DArbolEx_Nodo *nNodo);
+						ArbolBD(void);
+	                   ~ArbolBD(void);
+	NodoBD		       *BuscarHash(sqlite3_int64 bHash);
+	NodoBD             *AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre, const TCHAR *cTexto, const sqlite3_int64 nHash = 0);
+	const BOOL			AgregarNodoALista(DWL::DArbolEx_Nodo *nNodo);
 
-					// Busca el primer nodo hijo que tiene el texto Buscar
-	NodoBD         *BuscarHijoTxt(std::wstring &Buscar, NodoBD *Padre = NULL);
-	inline NodoBD  *BDNodo(const size_t nPos)      { return static_cast<NodoBD *>(Nodo(nPos));  }
+						// Busca el primer nodo hijo que tiene el texto Buscar
+	NodoBD             *BuscarHijoTxt(std::wstring &Buscar, NodoBD *Padre = NULL);
+	inline NodoBD      *BDNodo(const size_t nPos)      { return static_cast<NodoBD *>(Nodo(nPos));  }
 
-	void            ObtenerPath(DWL::DArbolEx_Nodo *nNodo, std::wstring &rPath);
-	void            ExplorarPath(DWL::DArbolEx_Nodo *nNodo);
-	// Falta fer una funció com la de const BOOL ArbolBD::TreeView_Evento_Nodo_Expandiendo(DTreeView_Nodo *nNodo) adaptada a aquesta..... (ArbolBD DEPRECATED.cpp ArbolBD::TreeView_Evento_Nodo_Expandiendo)
-	void			Evento_Nodo_Expandido(DWL::DArbolEx_Nodo *nNodo, const BOOL nExpandido);
-	void			Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse);
-  protected:
-    void           _AgregarMedio(NodoBD *nPadre, BDMedio *nMedio);
+	void				ObtenerPath(DWL::DArbolEx_Nodo *nNodo, std::wstring &rPath);
+	void				ExplorarPath(DWL::DArbolEx_Nodo *nNodo);
+						// Falta fer una funció com la de const BOOL ArbolBD::TreeView_Evento_Nodo_Expandiendo(DTreeView_Nodo *nNodo) adaptada a aquesta..... (ArbolBD DEPRECATED.cpp ArbolBD::TreeView_Evento_Nodo_Expandiendo)
+	void				Evento_Nodo_Expandido(DWL::DArbolEx_Nodo *nNodo, const BOOL nExpandido);
+	void				Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse);
+	void				Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse);
+protected:
+    void               _AgregarMedio(NodoBD *nPadre, BDMedio *nMedio);
+	ToolTipEtiqueta    _ToolTip;
 
 };
 

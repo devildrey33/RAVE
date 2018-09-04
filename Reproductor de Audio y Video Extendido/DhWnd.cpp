@@ -88,7 +88,9 @@ namespace DWL {
 
 
 	HWND DVentana::CrearVentana(DhWnd *nPadre, const TCHAR *nNombre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos, UINT nEstilosClase, HMENU nMenu, HBRUSH nColorFondo, const int nIconoRecursos) {
-//		if (hWnd() != NULL) hWnd.Destruir();
+		// La ventana ya no existe pero tenemos el hWnd, por lo que elimino toda la memória
+		if (_hWnd != NULL && IsWindow(_hWnd) == 0) {	Destruir();		}
+
 		if (hWnd()) { Debug_Escribir(L"DVentana::Crear() Error : ya se ha creado la ventana\n"); return hWnd(); }
 		// hWnd del padre
 		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : HWND_DESKTOP;
@@ -145,7 +147,8 @@ namespace DWL {
 
 
 	HWND DControl::CrearControl(DhWnd *nPadre, const TCHAR *nNombre, const TCHAR *nTexto, const INT_PTR cID, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos, HBRUSH nColorFondo) {
-		//	ATOM CA = hWnd.RegistrarClase(nNombre, _GestorMensajes, 0, nColorFondo);
+		// La ventana ya no existe pero tenemos el hWnd, por lo que elimino toda la memória
+		if (_hWnd != NULL && IsWindow(_hWnd) == 0) { Destruir(); }
 		if (hWnd()) { Debug_Escribir(L"DControl::Crear() Error : ya se ha creado el control\n"); return hWnd(); }
 
 		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;

@@ -9,8 +9,9 @@
 #define ID_BARRAPROGRESO3		1002
 #define ID_BOTONCANCELAR		1003
 #define ID_MARCANOMOSTRARMAS	1004
+#define ID_BOTONOCULTAR			1005
 
-ThreadAnalisis::ThreadAnalisis(void) : _FASE(0) {
+ThreadAnalisis::ThreadAnalisis(void) : DWL::DVentana(), _FASE(0) {
 }
 
 
@@ -28,14 +29,15 @@ const BOOL ThreadAnalisis::Iniciar(HWND nhWndDest) {
 
 	if (App.BD.Opciones_MostrarObtenerMetadatos() == TRUE) {
 		// Creo la ventana que mostrará el progreso
-		CrearVentana(NULL, L"RAVE_ObtenerMetadatos", L"Analizando...", 300, 200, 700, 410, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_VISIBLE);
+		CrearVentana(NULL, L"RAVE_ObtenerMetadatos", L"Analizando...", 300, 200, 700, 420, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_VISIBLE, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 		RECT RC;
 		GetClientRect(_hWnd, &RC);
 		_BarraProgreso1.CrearBarraProgresoEx(this, 30, 105, RC.right - 60, 20, ID_BARRAPROGRESO1);
 		_BarraProgreso2.CrearBarraProgresoEx(this, 30, 205, RC.right - 60, 20, ID_BARRAPROGRESO2);
 		_BarraProgreso3.CrearBarraProgresoEx(this, 30, 305, RC.right - 60, 20, ID_BARRAPROGRESO3);
-		_BotonCancelar.CrearBotonEx(this, L"Cancelar", 300, 330, 100, 30, ID_BOTONCANCELAR);
-		_MarcaNoMostrarMas.CrearMarcaEx(this, L"No volver a mostrar esta ventana.", 10, 336, 250, 20, ID_MARCANOMOSTRARMAS, IDI_CHECK2);
+		_BotonOcultar.CrearBotonEx(this, L"Ocultar", 300, 340, 100, 30, ID_BOTONOCULTAR);
+		_BotonCancelar.CrearBotonEx(this, L"Cancelar", 410, 340, 100, 30, ID_BOTONCANCELAR);
+		_MarcaNoMostrarMas.CrearMarcaEx(this, L"No volver a mostrar esta ventana.", 10, 346, 250, 20, ID_MARCANOMOSTRARMAS, IDI_CHECK2);
 	}
 
 	// Iniciamos el Thread
@@ -55,11 +57,12 @@ const BOOL ThreadAnalisis::Iniciar(HWND nhWndDest) {
 
 void ThreadAnalisis::Terminar(void) {
 	Visible(FALSE);
-	_BarraProgreso1.Destruir();
+/*	_BarraProgreso1.Destruir();
 	_BarraProgreso2.Destruir();
 	_BarraProgreso3.Destruir();
 	_BotonCancelar.Destruir();
-	_MarcaNoMostrarMas.Destruir();
+	_BotonOcultar.Destruir();
+	_MarcaNoMostrarMas.Destruir();*/
 	Destruir();
 	CloseHandle(_Thread);
 	_Thread = NULL;
@@ -156,7 +159,7 @@ void ThreadAnalisis::_RevisarMedios(void) {
 	}
 
 	if (_hWnd != NULL) SendMessage(_hWnd, WM_TOM_INICIADO2, static_cast<WPARAM>(_Generos.size() + _GruposTag.size() + _DiscosTag.size()), 0);
-
+	SendMessage(_VentanaPlayer, WM_TOM_INICIADO2, static_cast<WPARAM>(_Generos.size() + _GruposTag.size() + _DiscosTag.size()), 0);
 
 	// FASE 2 : Creo las listas de anomalias por Genero, GrupoPath, GrupoTag, DiscoPath, DiscoTag. Y las resuelvo con la anómalia que tiene mas medios
 	// Creo la lista de anomalias para los generos
@@ -260,6 +263,7 @@ void ThreadAnalisis::_RevisarMedios(void) {
 		_AgregarEtiqueta(_Medios[i].DiscoPath,	TIPO_DISCOPATH, _Medios[i].Nota, _Medios[i].Tiempo);
 		_AgregarEtiqueta(_Medios[i].DiscoTag,	TIPO_DISCOTAG,  _Medios[i].Nota, _Medios[i].Tiempo);
 		if (_hWnd != NULL) SendMessage(_hWnd, WM_TOM_TOTALMEDIOS3, i, 0);
+		SendMessage(_VentanaPlayer, WM_TOM_TOTALMEDIOS3, i, _Medios.size());
 		if (Cancelar() == TRUE) return;
 	}
 
@@ -280,6 +284,7 @@ void ThreadAnalisis::_CrearListaAnomalias(std::vector<CoincidenciasTexto *> &Coi
 	// Creo la lista de anomalias para los discos del tag
 	for (i = 0; i < Coincidencias.size(); i++) {
 		if (_hWnd != NULL) SendMessage(_hWnd, WM_TOM_TOTALMEDIOS2, 0, 0);
+		SendMessage(_VentanaPlayer, WM_TOM_TOTALMEDIOS2, 0, 0);
 
 		if (Cancelar() == TRUE) return;
 		for (i2 = 0; i2 < Coincidencias.size(); i2++) {
@@ -548,39 +553,45 @@ void ThreadAnalisis::Pintar(HDC DC) {
 	HFONT VFuente = static_cast<HFONT>(SelectObject(DC, DhWnd::_Fuente18Normal()));
 
 	SetBkMode(DC, TRANSPARENT);
-	_PintarTexto(DC, L"Analizando los datos de los medios en segundo plano.", 10, 10);
+	PintarTexto(DC, L"Analizando los datos de los medios en segundo plano.", 10, 10);
 	
 	COLORREF ColFase1 = (_FASE == 1) ? COLOR_TEXTO_RESALTADO : COLOR_TEXTO_DESACTIVADO;
 	COLORREF ColFase2 = (_FASE == 2) ? COLOR_TEXTO_RESALTADO : COLOR_TEXTO_DESACTIVADO;;
 	COLORREF ColFase3 = (_FASE == 3) ? COLOR_TEXTO_RESALTADO : COLOR_TEXTO_DESACTIVADO;;
 
 	SelectObject(DC, DhWnd::_Fuente18Negrita());
-	_PintarTexto(DC, L"FASE 1 :", 10, 40, ColFase1);
-	_PintarTexto(DC, L"FASE 2 :", 10, 140, ColFase2);
-	_PintarTexto(DC, L"FASE 3 :", 10, 240, ColFase3);
+	PintarTexto(DC, L"FASE 1 :", 10, 40, ColFase1);
+	PintarTexto(DC, L"FASE 2 :", 10, 140, ColFase2);
+	PintarTexto(DC, L"FASE 3 :", 10, 240, ColFase3);
 
 	SelectObject(DC, DhWnd::_Fuente18Normal());
-	_PintarTexto(DC, L"Examinar los metadatos de todos los medios para extraer : generos, grupos, discos, nombres,", 30, 60, ColFase1);
-	_PintarTexto(DC, L"pistas, y tiempos.", 30, 80, ColFase1);
+	PintarTexto(DC, L"Examinar los metadatos de todos los medios para extraer : generos, grupos, discos, nombres,", 30, 60, ColFase1);
+	PintarTexto(DC, L"pistas, y tiempos.", 30, 80, ColFase1);
 
-	_PintarTexto(DC, L"Analizar todos los datos en busca de coincidencias muy parecidas entre si, y determinar si", 30, 160, ColFase2);
-	_PintarTexto(DC, L"realmente son lo mismo o no.", 30, 180, ColFase2);
+	PintarTexto(DC, L"Analizar todos los datos en busca de coincidencias muy parecidas entre si, y determinar si", 30, 160, ColFase2);
+	PintarTexto(DC, L"realmente son lo mismo o no.", 30, 180, ColFase2);
 
-	_PintarTexto(DC, L"Generar una lista de etiquetas de cada genero, grupo, y disco.", 30, 260, ColFase3);
-	_PintarTexto(DC, L"Con la lista de etiquetas será posible crear listas aleatórias utilizando una etiqueta.", 30, 280, ColFase3);
+	PintarTexto(DC, L"Generar una lista de etiquetas de cada genero, grupo, y disco.", 30, 260, ColFase3);
+	PintarTexto(DC, L"Con la lista de etiquetas será posible crear listas aleatórias utilizando una etiqueta.", 30, 280, ColFase3);
 
 	SelectObject(DC, VFuente);
 	DeleteObject(BrochaFondo);
 }
-
+/*
 void ThreadAnalisis::_PintarTexto(HDC DC, const wchar_t *pTexto, const int PosX, const int PosY, COLORREF ColorTexto, COLORREF ColorSombra) {
 	SetTextColor(DC, ColorSombra);
 	TextOut(DC, PosX + 1, PosY + 1, pTexto, static_cast<int>(wcslen(pTexto)));
 	SetTextColor(DC, ColorTexto);
 	TextOut(DC, PosX, PosY, pTexto, static_cast<int>(wcslen(pTexto)));
+}*/
+
+void ThreadAnalisis::Evento_BotonEx_Mouse_Click(const UINT cID) {
+	switch (cID) {
+		case ID_BOTONCANCELAR	:	Cancelar(TRUE);						break;
+		case ID_BOTONOCULTAR	:	ShowWindow(_hWnd, SW_MINIMIZE);		break;
+	}
+
 }
-
-
 
 LRESULT CALLBACK ThreadAnalisis::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
@@ -592,7 +603,7 @@ LRESULT CALLBACK ThreadAnalisis::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM
 		case WM_TOM_TOTALMEDIOS3 :	_BarraProgreso3.Valor(static_cast<float>(wParam));								return 0;
 		case WM_TOM_INICIADO3    :  _BarraProgreso3.Maximo(static_cast<float>(wParam));	 _FASE = 3;  Repintar();	return 0;
 		case WM_CLOSE			 :   Cancelar(TRUE);																return 0;
-		case DWL_BOTONEX_CLICK   :   Cancelar(TRUE);																return 0;
+		case DWL_BOTONEX_CLICK   :   Evento_BotonEx_Mouse_Click(static_cast<UINT>(wParam));							return 0;
 		case DWL_MARCAEX_CLICK   :   App.BD.Opciones_MostrarObtenerMetadatos(!_MarcaNoMostrarMas.Marcado());		return 0;
 	}
 	return DefWindowProc(_hWnd, uMsg, wParam, lParam);

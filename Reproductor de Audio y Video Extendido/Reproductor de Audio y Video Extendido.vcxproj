@@ -222,6 +222,7 @@
     <ClInclude Include="ThreadAgregarArchivosLista.h" />
     <ClInclude Include="ThreadAnalisis.h" />
     <ClInclude Include="RAVE_TODO.h" />
+    <ClInclude Include="ToolTipEtiqueta.h" />
     <ClInclude Include="VentanaAsociarReproductor.h" />
     <ClInclude Include="VentanaErrorCritico.h" />
     <ClInclude Include="VentanaPrincipal.h" />
@@ -292,6 +293,7 @@
     <ClCompile Include="ThreadActualizarArbol.cpp" />
     <ClCompile Include="ThreadAgregarArchivosLista.cpp" />
     <ClCompile Include="ThreadAnalisis.cpp" />
+    <ClCompile Include="ToolTipEtiqueta.cpp" />
     <ClCompile Include="VentanaAsociarReproductor.cpp" />
     <ClCompile Include="VentanaErrorCritico.cpp" />
     <ClCompile Include="VentanaPrincipal.cpp" />
@@ -315,7 +317,7 @@
     <Image Include="..\Iconos\IDI_Genero.ico" />
     <Image Include="..\Iconos\IDI_Grupo.ico" />
     <Image Include="..\Iconos\IDI_ListaCanciones.ico" />
-    <Image Include="..\Iconos\IDI_NEXT64.ico" />
+    <Image Include="..\Iconos\IDI_NEXT32.ico" />
     <Image Include="..\Iconos\IDI_Pausa.ico" />
     <Image Include="..\Iconos\IDI_Pausa2.ico" />
     <Image Include="..\Iconos\IDI_Pausa3.ico" />
@@ -323,7 +325,7 @@
     <Image Include="..\Iconos\IDI_Play.ico" />
     <Image Include="..\Iconos\IDI_Play2.ico" />
     <Image Include="..\Iconos\IDI_Play3.ico" />
-    <Image Include="..\Iconos\IDI_PLAY_32.ico" />
+    <Image Include="..\Iconos\IDI_PLAY32.ico" />
     <Image Include="..\Iconos\IDI_PREV32.ico" />
     <Image Include="..\Iconos\IDI_Raiz.ico" />
     <Image Include="..\Iconos\IDI_STOP32.ico" />

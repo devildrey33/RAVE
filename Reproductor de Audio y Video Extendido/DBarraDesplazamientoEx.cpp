@@ -20,7 +20,7 @@ namespace DWL {
 
 
 	HWND DBarraDesplazamientoEx::CrearBarraDesplazamientoEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const float nMinimo, const float nMaximo, const float nValor) {
-		if (hWnd()) { Debug_Escribir(L"DBarraDesplazamientoEx::CrearBarraEx() Error : ya se ha creado la barra\n"); return hWnd(); }
+//		if (hWnd()) { Debug_Escribir(L"DBarraDesplazamientoEx::CrearBarraEx() Error : ya se ha creado la barra\n"); return hWnd(); }
 		_hWnd = CrearControlEx(nPadre, L"DBarraDesplazamientoEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD | WS_VISIBLE, NULL, CS_HREDRAW | CS_VREDRAW);
 		_Minimo = nMinimo;
 		_Maximo = nMaximo;

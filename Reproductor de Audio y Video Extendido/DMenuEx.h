@@ -30,7 +30,7 @@ namespace DWL {
 
 	class DMenuEx : protected DWL::DVentana {
   	  public:
-								DMenuEx();
+								DMenuEx(void);
 							   ~DMenuEx(void);
 							    // Agrega un menú con texto y icono en la posicion especificada (-1 es al final)
 		DMenuEx                *AgregarMenu(const UINT nID, const wchar_t *nTexto, const int nIconoRecursos = NULL, const int Posicion = -1, const BOOL nActivado = TRUE);

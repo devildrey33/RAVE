@@ -127,11 +127,12 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 				Ret = FALSE;
 				break;
 			}
-
-			VLC.Iniciar();
+			// Inicio la base de datos y cargo las opciones antes de mostrar la ventana
 			BD.Iniciar();
-
+			// Muestro la ventana principal y creo los menús
 			IniciarUI(nCmdShow);
+			// Cargo la LibVLC
+			VLC.Iniciar();
 
 			if (Paths.size() > 0) {
 				// Agrega los paths a la lista de medios
@@ -382,3 +383,28 @@ void RAVE::CerrarSistema(const SOCerrarSistema Forma, const BOOL Forzar) {
 	if (Forzar == TRUE) Flags = (Flags | EWX_FORCE);
 	ExitWindowsEx(Flags, 0);
 };
+
+
+
+
+
+
+
+
+
+
+/*
+void PintarTexto(HDC DC, const wchar_t *pTexto, const int PosX, const int PosY, COLORREF ColorTexto, COLORREF ColorSombra) {
+	SetTextColor(DC, ColorSombra);
+	TextOut(DC, PosX + 1, PosY + 1, pTexto, static_cast<int>(wcslen(pTexto)));
+	SetTextColor(DC, ColorTexto);
+	TextOut(DC, PosX, PosY, pTexto, static_cast<int>(wcslen(pTexto)));
+}
+
+void PintarTexto(HDC DC, std::wstring &sTexto, const int PosX, const int PosY, COLORREF ColorTexto, COLORREF ColorSombra) {
+	SetTextColor(DC, ColorSombra);
+	TextOut(DC, PosX + 1, PosY + 1, sTexto.c_str(), static_cast<int>(sTexto.size()));
+	SetTextColor(DC, ColorTexto);
+	TextOut(DC, PosX, PosY, sTexto.c_str(), static_cast<int>(sTexto.size()));
+}
+*/

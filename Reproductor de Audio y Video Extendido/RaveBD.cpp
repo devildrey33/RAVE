@@ -562,9 +562,11 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 			return FALSE;
 		case Tipo_Medio_Audio:
 			if (PathSeparado.Total() > 1) {
+//				OUT_Medio.DiscoPath = PathSeparado[PathSeparado.Total() - 2];
 				FiltroNombre(PathSeparado[PathSeparado.Total() - 2], OUT_Medio.DiscoPath);
 			}
 			if (PathSeparado.Total() > 2) {
+//				OUT_Medio.GrupoPath = PathSeparado[PathSeparado.Total() - 3];
 				FiltroNombre(PathSeparado[PathSeparado.Total() - 3], OUT_Medio.GrupoPath);
 			}
 		case Tipo_Medio_Video:
@@ -735,7 +737,7 @@ void RaveBD::FiltroNombre(std::wstring &In, std::wstring &Out) {
 	// Quito los espacios del final
 	if (Out.size() > 0) {
 		while (Out[Out.size() - 1] == L' ') {
-			Out.resize(Out.size() - 2);
+			Out.resize(Out.size() - 1);
 			if (Out.size() == 0) break;
 		}
 	}
@@ -1012,6 +1014,50 @@ const int RaveBD::Distancia(std::wstring &Origen, std::wstring &Destino) {
 	if (n - m < 2 && n - m > -2)	return matrix[n][m];
 	else							return 100;
 }
+
+
+
+const BOOL RaveBD::ObtenerEtiqueta(std::wstring &eTexto, EtiquetaBD &Etiqueta) {
+	std::wstring Q = L"SELECT * FROM Etiquetas WHERE Texto=\"";	Q += eTexto.c_str(); Q += L"\""; // Tipo_Medio_Audio
+//	std::wstring Q = L"SELECT * FROM Etiquetas WHERE Texto=\"" eTexto.c_str() L"\""; // Tipo_Medio_Audio
+
+	wchar_t		   *SqlError = NULL;
+	int				SqlRet = 0;
+	sqlite3_stmt   *SqlQuery = NULL;
+	BDMedio         TmpMedio;
+
+	SqlRet = sqlite3_prepare16_v2(_BD, Q.c_str(), -1, &SqlQuery, NULL);
+	if (SqlRet) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
+		SqlRet = sqlite3_step(SqlQuery);
+		if (SqlRet == SQLITE_ROW) { // La iD es el 0, pero no la necesito para nada.
+			Etiqueta.Texto	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 1));
+			Etiqueta.Tipo	= static_cast<UINT>(sqlite3_column_int(SqlQuery, 2));
+			Etiqueta.Medios	= static_cast<UINT>(sqlite3_column_int(SqlQuery, 3));
+			Etiqueta.Nota	= static_cast<float>(sqlite3_column_double(SqlQuery, 4));
+			Etiqueta.Tiempo = static_cast<libvlc_time_t>(sqlite3_column_int(SqlQuery, 5));
+		}
+	}
+
+	sqlite3_finalize(SqlQuery);
+
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+
+	return (Etiqueta.Texto.size() > 0);
+
+}
+
+
+
+
+
 
 
 

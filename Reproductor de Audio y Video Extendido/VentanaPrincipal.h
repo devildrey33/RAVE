@@ -23,8 +23,8 @@ using namespace DWL;
 
 class VentanaPrincipal : public DWL::DVentana {
  public:
-								VentanaPrincipal() : DWL::DVentana(), _PantallaCompleta(FALSE), EstadoMedio(EnStop), MousePos({ 0, 0 }), MonitorDisponible(FALSE) {};
-					           ~VentanaPrincipal() { };
+								VentanaPrincipal(void) : DWL::DVentana(), _PantallaCompleta(FALSE), EstadoMedio(EnStop), MousePos({ 0, 0 }), MonitorDisponible(FALSE), _MaximoTotalMedios2(0), _ValorMedios2(0) {};
+					           ~VentanaPrincipal(void) { };
 	HWND						Crear(int nCmdShow);
 
 	void						AgregarRaiz(void);
@@ -149,6 +149,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	BOOL                       _PantallaCompleta;
 
 	DWORD                      _BotonExMouseDownTick;
+	UINT                       _MaximoTotalMedios2; // Total de medios en la fase 2 del analisis
+	UINT                       _ValorMedios2;
 //	BOOL                       _Mezclar;
 };
 

@@ -374,7 +374,7 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Down(const UINT cID) {
 	_BotonExMouseDownTick = GetTickCount();
 	switch (cID) {
 		case ID_BOTON_ANTERIOR:	
-			App.VLC.Ratio(-2.0f);
+			App.VLC.Ratio(0.5f);
 			break;
 		case ID_BOTON_SIGUIENTE:
 			App.VLC.Ratio(2.0f);
@@ -792,7 +792,17 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			Arbol_AgregarDir(TmpStr, TRUE);
 			delete TmpStr; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
 			break;
-		case WM_TOM_TOTALMEDIOS1 :
+		case WM_TOM_INICIADO2 :
+			_MaximoTotalMedios2 = static_cast<UINT>(wParam);
+			_ValorMedios2 = 0;
+			break;
+		case WM_TOM_TOTALMEDIOS1:
+			BarraTareas.Valor(static_cast<UINT>(wParam), static_cast<UINT>(lParam));
+			break;
+		case WM_TOM_TOTALMEDIOS2:
+			BarraTareas.Valor(++_ValorMedios2, _MaximoTotalMedios2);
+			break;
+		case WM_TOM_TOTALMEDIOS3:
 			BarraTareas.Valor(static_cast<UINT>(wParam), static_cast<UINT>(lParam));
 			break;
 		case WM_TOM_TERMINADO:

@@ -301,5 +301,38 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 			}
 		}
 	}
+	// Muestro el nodo resaltado con un ToolTip
+	else if (DatosMouse.Boton == 2 && _NodoResaltado != NULL) {
+		//App.BD.Consulta();
+		std::wstring EtiquetaFiltrada;
+		RaveBD::FiltroNombre(_NodoResaltado->Texto, EtiquetaFiltrada);
+		EtiquetaBD Etiqueta;
+
+
+		if (App.BD.ObtenerEtiqueta(EtiquetaFiltrada, Etiqueta) == TRUE) {
+			_ToolTip.Destruir();
+			_ToolTip.Mostrar(Etiqueta);
+		}
+	}
+	
+	// Oculto el tooltip por que no hay Nodo resaltado, o por que se ha presionado un boton que no es el del medio
+	if (DatosMouse.Boton != 2 || _NodoResaltado == NULL) {
+		_ToolTip.Destruir();
+	}
+
+
+
 };
 
+void ArbolBD::Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse) {
+	if (_NodoResaltado == NULL) {
+		_ToolTip.Destruir();
+	}
+	else {
+		std::wstring EtiquetaFiltrada;
+		RaveBD::FiltroNombre(_NodoResaltado->Texto, EtiquetaFiltrada);
+		if (_ToolTip.Texto() != EtiquetaFiltrada) {
+			_ToolTip.Destruir();
+		}
+	}
+}

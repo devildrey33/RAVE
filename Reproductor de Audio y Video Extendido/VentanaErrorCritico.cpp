@@ -12,7 +12,7 @@
 
 #define ID_TEMPORIZADOR 100
 
-VentanaErrorCritico::VentanaErrorCritico(void) /*: _EstadoError(FALSE) */ {
+VentanaErrorCritico::VentanaErrorCritico(void) : DWL::DVentana() {
 }
 
 
@@ -21,7 +21,7 @@ VentanaErrorCritico::~VentanaErrorCritico(void) {
 
 
 HWND VentanaErrorCritico::Crear(void) {
-	CrearVentana(NULL, L"Rave_ErrorCritico", L"Error crítico", 100, 100, 440, 300, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
+	CrearVentana(NULL, L"Rave_ErrorCritico", L"Error crítico", 100, 100, 440, 300, WS_OVERLAPPEDWINDOW | WS_VISIBLE, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 	
 	RECT RC;
 	GetClientRect(hWnd(), &RC);

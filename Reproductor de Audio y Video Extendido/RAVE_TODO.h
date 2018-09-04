@@ -35,7 +35,8 @@
 		V  Analitzar tags dels medis. (libvlc_media_parse_with_options)
 			V  Revisar tags dels medis, i trobar coincidencies semblants per unificarles
 				V  Fer una llista d'etiquetes (les etiquetes poden ser d'una o mes propietats entre les segûents : Genero, GrupoPath, GrupoTag, DiscoPath, DiscoTag)
-			-  Mostrar tooltip informatiu				
+		   -o-  Mostrar tooltip informatiu				
+				V  Fet tooltip per les etiquetes, ara falta el tooltip per els medis
 	   +o- Treure tots els buttons estandar i posar de meus (falta posar uns icones menys bastos...)
 		-  Mostrar les opcions en una finestra nova
 			-  Afegir opcions : assosiacions d'arxiu, llista d'inici, explicar el tema de les arrels, etc..
@@ -43,6 +44,7 @@
 		-  Menu per la llista
 		-  Crear Icona Buscar en l'arbre de la BD adal a la dreta
 	   +o- Solucionar glitch amb la llista i l'arbre, per exemple busca Symphony X sense tenir "Pelis i Series" afegit com arrel, y expandeix-lo
-			- Arbre solucionat
+			V  Arbre solucionat, i a la llista no m'ha tornat a pasar res raro...
+		-  Solucionar problema amb el buto PREV, que pot deixar al MedioActual a -1, per lo que calen dos NEXT per pasar al segon medi.
 		-  Buscar noves actualitzacións
 */

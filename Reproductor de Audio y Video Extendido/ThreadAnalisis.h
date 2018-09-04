@@ -41,9 +41,11 @@ class ThreadAnalisis :	public DWL::DVentana {
 
 	void								Pintar(HDC DC);
 	LRESULT CALLBACK					GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+	void								Evento_BotonEx_Mouse_Click(const UINT cID);
   protected:
 	void					           _Evento_Pintar(void);
-	void                               _PintarTexto(HDC DC, const wchar_t *pTexto, const int PosX, const int PosY, COLORREF ColorTexto = COLOR_TEXTO, COLORREF ColorSombra = COLOR_TEXTO_SOMBRA);
+//	void                               _PintarTexto(HDC DC, const wchar_t *pTexto, const int PosX, const int PosY, COLORREF ColorTexto = COLOR_TEXTO, COLORREF ColorSombra = COLOR_TEXTO_SOMBRA);
 	static unsigned long               _ThreadAnalisis(void *pThis);
 
 	void                               _Parsear(libvlc_instance_t *VLC, std::wstring &Path);
@@ -61,6 +63,7 @@ class ThreadAnalisis :	public DWL::DVentana {
 	DWL::DBarraProgresoEx			   _BarraProgreso1;
 	DWL::DBarraProgresoEx			   _BarraProgreso2;
 	DWL::DBarraProgresoEx			   _BarraProgreso3;
+	DWL::DBotonEx					   _BotonOcultar;
 	DWL::DBotonEx					   _BotonCancelar;
 	DWL::DMarcaEx					   _MarcaNoMostrarMas;
 

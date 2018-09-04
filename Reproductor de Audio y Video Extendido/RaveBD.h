@@ -47,6 +47,8 @@ enum Tipo_Repeat {
 };
 
 
+class EtiquetaBD;
+
 // clase que engloba una raíz
 class BDRaiz {
   public:
@@ -147,6 +149,9 @@ class RaveBD {
 	const BOOL                  ObtenerMediosPorParsear(std::vector<std::wstring> &Paths);
 	const BOOL                  ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios);
 //	const BOOL					AsignarTiempoMedio(const libvlc_time_t nTiempo, const sqlite3_int64 mHash);
+								
+								// Obtiene la etiqueta con el texto especificado
+	const BOOL                  ObtenerEtiqueta(std::wstring &eTexto, EtiquetaBD &Etiqueta);
 
 	const BOOL                  ActualizarMedio(BDMedio *nMedio);
 
