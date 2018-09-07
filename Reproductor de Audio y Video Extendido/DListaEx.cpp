@@ -594,13 +594,6 @@ namespace DWL {
 		if (Scrolls_MouseMovimiento(DatosMouse) == TRUE) { return; } // las coordenadas pertenecen al scroll (salgo del evento)
 		
 		_ItemResaltado = HitTest(DatosMouse.X(), DatosMouse.Y(), &_SubItemResaltado);
-
-		// Comprueba si el item resaltado es el mismo que la ultima vez, y si no lo és repinta el control
-		if (_ItemResaltado != _ItemUResaltado || _SubItemResaltado != _SubItemUResaltado) {
-			_ItemUResaltado = _ItemResaltado;
-			_SubItemUResaltado = _SubItemResaltado;
-			Repintar();
-		}
 		
 		Evento_MouseMovimiento(DatosMouse);
 
@@ -609,6 +602,12 @@ namespace DWL {
 		// Envio el evento mouseup a la ventana padre
 		SendMessage(GetParent(hWnd()), DWL_LISTAEX_MOUSEMOVIMIENTO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
 
+		// Comprueba si el item resaltado es el mismo que la ultima vez, y si no lo és repinta el control
+		if (_ItemResaltado != _ItemUResaltado || _SubItemResaltado != _SubItemUResaltado) {
+			_ItemUResaltado = _ItemResaltado;
+			_SubItemUResaltado = _SubItemResaltado;
+			Repintar();
+		}
 	}
 
 	void DListaEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {

@@ -79,6 +79,38 @@ void ListaMedios::Evento_MouseDobleClick(DWL::DEventoMouse &EventoMouse) {
 	}
 }
 
+void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
+	if (DatosMouse.Boton == 2) {		
+		if (_ItemResaltado != -1) {
+			BDMedio nMedio;
+			App.BD.ObtenerMedio(Medio(_ItemResaltado)->Hash, nMedio);
+
+			_ToolTip.Destruir();
+			_ToolTip.Mostrar(nMedio);
+		}
+	}
+
+	// Oculto el tooltip por que no hay Nodo resaltado, o por que se ha presionado un boton que no es el del medio
+	if (DatosMouse.Boton != 2 || _ItemResaltado == -1) {
+		_ToolTip.Destruir();
+	}
+}
+
+void ListaMedios::Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse) {
+	if (_ItemResaltado == -1) {
+		_ToolTip.Destruir();
+	}
+	else {
+		if (_ItemResaltado != _ItemUResaltado) {
+			_ToolTip.Destruir();
+		}
+		else {
+			_ToolTip.Mover();
+		}
+	}
+}
+
+
 // 	Función que mezcla las canciones de la lista (TRUE), o restaura el orden original en que se añadieron (FALSE)
 const BOOL ListaMedios::Mezclar(const BOOL nMezclar) {
 	size_t	i	= 0;

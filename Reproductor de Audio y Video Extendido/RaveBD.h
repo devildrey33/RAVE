@@ -91,7 +91,7 @@ class BDMedio {
 	UINT					Reproducido;
 	float					Nota;
 
-	UINT					Id;
+	UINT					Id;					// ID unica que identifica al medio (mucho mkas recomendable que el Hash)
 	DWORD					IDDisco;
 
 	std::wstring			Genero;
@@ -108,7 +108,7 @@ class BDMedio {
 
 	std::wstring			Subtitulos;
 
-	BOOL					Parseado;						
+	BOOL					Parseado;	// Determina si se ha parseado/analizado el medio en busca de metadatos
 	BOOL                    Actualizar; // NO SE GUARDA EN LA BD, ES SOLO PARA SABER SI HAY QUE ACTUALIZAR EL MEDIO O NO:...
 		
 	void					PistaStr(std::wstring &nPistaStr);

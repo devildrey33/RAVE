@@ -222,7 +222,7 @@
     <ClInclude Include="ThreadAgregarArchivosLista.h" />
     <ClInclude Include="ThreadAnalisis.h" />
     <ClInclude Include="RAVE_TODO.h" />
-    <ClInclude Include="ToolTipEtiqueta.h" />
+    <ClInclude Include="ToolTipBD.h" />
     <ClInclude Include="VentanaAsociarReproductor.h" />
     <ClInclude Include="VentanaErrorCritico.h" />
     <ClInclude Include="VentanaPrincipal.h" />
@@ -293,7 +293,7 @@
     <ClCompile Include="ThreadActualizarArbol.cpp" />
     <ClCompile Include="ThreadAgregarArchivosLista.cpp" />
     <ClCompile Include="ThreadAnalisis.cpp" />
-    <ClCompile Include="ToolTipEtiqueta.cpp" />
+    <ClCompile Include="ToolTipBD.cpp" />
     <ClCompile Include="VentanaAsociarReproductor.cpp" />
     <ClCompile Include="VentanaErrorCritico.cpp" />
     <ClCompile Include="VentanaPrincipal.cpp" />

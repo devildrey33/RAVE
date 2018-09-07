@@ -909,16 +909,18 @@ namespace DWL {
 		if (Scrolls_MouseMovimiento(DatosMouse) == TRUE) { return; } // las coordenadas pertenecen al scroll (salgo del evento)
 		_NodoResaltado = HitTest(cX, cY, _NodoResaltadoParte);
 
+		// Eventos virtuales
+		Evento_MouseMovimiento(DatosMouse);
+		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_MOUSEPRESIONADO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
+		if (bME == TRUE)	Evento_MouseEntrando();
+
 		// Comprueba si el nodo resaltado es el mismo que la ultima vez, y si no lo és repinta el control
 		if (_NodoUResaltado != _NodoResaltado || _NodoResaltadoParte != _NodoUResaltadoParte) {
 			_NodoUResaltado = _NodoResaltado;
 			_NodoUResaltadoParte = _NodoResaltadoParte;
 			Repintar(); // TODO : substituir per un RepintarNodo(nNodo, nUNodo)
 		}
-		// Eventos virtuales
-		Evento_MouseMovimiento(DatosMouse);
-		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_MOUSEPRESIONADO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
-		if (bME == TRUE)	Evento_MouseEntrando();
+
 
 	}
 

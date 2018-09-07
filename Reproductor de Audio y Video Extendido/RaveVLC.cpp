@@ -32,7 +32,7 @@ const BOOL RaveVLC::Iniciar(void) {
 	//_Instancia = VLC::Instance(0, NULL);
 
 	char OpcionesSMem[1024];
-	sprintf_s(OpcionesSMem,	1024, "smem{audio-prerender-callback=%lld,audio-postrender-callback=%lld,audio-data=%lld}", ((long long int)(intptr_t)(void*)&audio_prerendercb), ((long long int)(intptr_t)(void*)&audio_postrendercb), ((long long int)(intptr_t)(void*)this));
+	sprintf_s(OpcionesSMem,	1024, "smem{audio-prerender-callback=\"%lld\",audio-postrender-callback=\"%lld\",audio-data=\"%lld\"}", ((long long int)(intptr_t)(void*)&audio_prerendercb), ((long long int)(intptr_t)(void*)&audio_postrendercb), ((long long int)(intptr_t)(void*)this));
 	const char * const Argumentos[] = {	
 		OpcionesSMem,
 //		"--verbose=3"

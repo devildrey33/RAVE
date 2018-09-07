@@ -35,9 +35,10 @@
 		V  Analitzar tags dels medis. (libvlc_media_parse_with_options)
 			V  Revisar tags dels medis, i trobar coincidencies semblants per unificarles
 				V  Fer una llista d'etiquetes (les etiquetes poden ser d'una o mes propietats entre les segûents : Genero, GrupoPath, GrupoTag, DiscoPath, DiscoTag)
-		   -o-  Mostrar tooltip informatiu				
-				V  Fet tooltip per les etiquetes, ara falta el tooltip per els medis
-	   +o- Treure tots els buttons estandar i posar de meus (falta posar uns icones menys bastos...)
+		    V  Mostrar tooltip informatiu				
+				V  Fet tooltip per les etiquetes
+				V  Fet tooltip pels medis
+	    V  Treure tots els buttons estandar i posar de meus (falta posar uns icones menys bastos...)
 		-  Mostrar les opcions en una finestra nova
 			-  Afegir opcions : assosiacions d'arxiu, llista d'inici, explicar el tema de les arrels, etc..
 				- Analizar metadatos automaticamente, o anializar metadatos solo al reproducir.

@@ -349,11 +349,11 @@
     <ClInclude Include="ThreadAnalisis.h">
       <Filter>Base de datos\Threads\Analisis</Filter>
     </ClInclude>
-    <ClInclude Include="ToolTipEtiqueta.h">
-      <Filter>Ventanas</Filter>
-    </ClInclude>
     <ClInclude Include="MemoriaCompartida.h">
       <Filter>xXx _MAIN_ xXx\Memoria compartida</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolTipBD.h">
+      <Filter>Ventanas</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -525,11 +525,11 @@
     <ClCompile Include="ThreadAnalisis.cpp">
       <Filter>Base de datos\Threads\Analisis</Filter>
     </ClCompile>
-    <ClCompile Include="ToolTipEtiqueta.cpp">
-      <Filter>Ventanas</Filter>
-    </ClCompile>
     <ClCompile Include="MemoriaCompartida.cpp">
       <Filter>xXx _MAIN_ xXx\Memoria compartida</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolTipBD.cpp">
+      <Filter>Ventanas</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

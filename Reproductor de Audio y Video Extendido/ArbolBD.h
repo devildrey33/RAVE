@@ -2,7 +2,7 @@
 
 #include "DArbolEx.h"
 #include "sqlite3.h"
-#include "ToolTipEtiqueta.h"
+#include "ToolTipBD.h"
 
 enum ArbolBD_TipoNodo {
 	ArbolBD_TipoNodo_Indefinido = -1,
@@ -50,9 +50,9 @@ class ArbolBD : public DWL::DArbolEx {
 	void				Evento_Nodo_Expandido(DWL::DArbolEx_Nodo *nNodo, const BOOL nExpandido);
 	void				Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse);
 	void				Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse);
-protected:
+  protected:
     void               _AgregarMedio(NodoBD *nPadre, BDMedio *nMedio);
-	ToolTipEtiqueta    _ToolTip;
+	ToolTipBD          _ToolTip;
 
 };
 

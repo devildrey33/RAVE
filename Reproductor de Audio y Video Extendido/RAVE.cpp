@@ -134,6 +134,13 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 			// Cargo la LibVLC
 			VLC.Iniciar();
 
+			// Compruebo las aosiciaciones de archivo y muestro la ventana si es necesario
+			if (AsociarMedios.ComprobarAsociaciones() == FALSE) {
+				VentanaAsociar.Mostrar();
+			}
+
+
+			// Hay uno o mas paths por agregar a la lista
 			if (Paths.size() > 0) {
 				// Agrega los paths a la lista de medios
 				VentanaRave.ThreadArchivosLista.Iniciar(VentanaRave.hWnd(), Paths);

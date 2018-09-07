@@ -1,19 +1,16 @@
 #pragma once
 
 #include "VentanaPrincipal.h"
-//#include "BaseDatos.h"
 #include "DConsola.h"
 #include "RaveVLC.h"
-//#include "DImageList.h"
 #include "ControlesPantallaCompleta.h"
-//#include "DMenu.h"
-//#include "DMenuEx.h"
 #include "RAVE_Configuracion.h"
 #include "VentanaErrorCritico.h"
-#include <stdlib.h>
 #include "MemoriaCompartida.h"
 #include "RaveBD.h"
 #include "AsociarReproductor.h"
+#include "VentanaAsociarReproductor.h"
+#include <stdlib.h>
 
 using namespace DWL;
 
@@ -61,10 +58,18 @@ class RAVE {
 //	int							Rand()
 
 	void							Terminar(void);
+
+									// Ventana principal del reproductor
 	VentanaPrincipal				VentanaRave;
+									// Ventana para mostrar errores criticos
+	VentanaErrorCritico				VentanaErrorCrit;
+									// Ventana que muestra el mensaje para las asociaciones de archivo
+	VentanaAsociarReproductor		VentanaAsociar;
+									// Ventana que muestra una consola al estilo MS-DOS para depuración
+	DConsola						ConsolaDebug;
+
 	RaveBD							BD;
 //	BaseDatos						BD;
-	DConsola						ConsolaDebug;
 	RaveVLC							VLC;
 	ControlesPantallaCompleta		ControlesPC;
 
@@ -76,7 +81,6 @@ class RAVE {
 	BOOL							PlayerInicial;
 	HANDLE							MutexPlayer;
 
-	VentanaErrorCritico				VentanaErrorCrit;
 
 	std::wstring					SO;
 									// Directorio de la aplicación, Siempre termina con "\"
@@ -89,6 +93,8 @@ class RAVE {
 
 									// Token para el GDI+
 	ULONG_PTR						gdiplusToken;
+
+
 };
 
 

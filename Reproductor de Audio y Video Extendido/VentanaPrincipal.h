@@ -17,7 +17,6 @@
 #include "ThreadActualizarArbol.h"
 #include "ThreadAgregarArchivosLista.h"
 #include "ThreadAnalisis.h"
-#include "VentanaAsociarReproductor.h"
 
 using namespace DWL;
 
@@ -143,7 +142,6 @@ class VentanaPrincipal : public DWL::DVentana {
 	int							CTW_ExtraX;
 	int							CTW_ExtraY;
 
-	VentanaAsociarReproductor   VentanaAsociar;
   protected:
 //	void                       _AgregarNodoALista(DArbolEx_Nodo *nNodo);
 	BOOL                       _PantallaCompleta;

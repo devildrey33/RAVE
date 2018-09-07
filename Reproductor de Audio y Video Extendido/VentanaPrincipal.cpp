@@ -108,11 +108,6 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 	ActualizarArbol();
 
-	// Compruebo las aosiciaciones de archivo y muestro la ventana si es necesario
-	if (App.AsociarMedios.ComprobarAsociaciones() == FALSE) {
-		VentanaAsociar.Mostrar();
-	}
-
 	return rhWnd;
 }
 

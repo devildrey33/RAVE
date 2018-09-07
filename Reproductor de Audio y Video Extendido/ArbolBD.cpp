@@ -52,8 +52,9 @@ NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre,
 			break;
 	}
 
-	NodoBD *nNodo = AgregarNodo<NodoBD>(cTexto, nPadre, nIcono, nFuente, DARBOLEX_POSICIONNODO_ORDENADO);
-	nNodo->Hash = nHash;
+	NodoBD *nNodo	= AgregarNodo<NodoBD>(cTexto, nPadre, nIcono, nFuente, DARBOLEX_POSICIONNODO_ORDENADO);
+	nNodo->Hash		= nHash;
+	nNodo->TipoNodo = nTipoNodo;
 	nNodo->MostrarExpansor(nExpansor);
 	return nNodo;
 	
@@ -303,16 +304,38 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 	}
 	// Muestro el nodo resaltado con un ToolTip
 	else if (DatosMouse.Boton == 2 && _NodoResaltado != NULL) {
+		NodoBD *NodoRes = static_cast<NodoBD *>(_NodoResaltado);
+
+
 		//App.BD.Consulta();
 		std::wstring EtiquetaFiltrada;
-		RaveBD::FiltroNombre(_NodoResaltado->Texto, EtiquetaFiltrada);
+		RaveBD::FiltroNombre(NodoRes->Texto, EtiquetaFiltrada);
 		EtiquetaBD Etiqueta;
+		BDMedio    Medio;
 
 
-		if (App.BD.ObtenerEtiqueta(EtiquetaFiltrada, Etiqueta) == TRUE) {
-			_ToolTip.Destruir();
-			_ToolTip.Mostrar(Etiqueta);
+		switch (NodoRes->TipoNodo) {
+			case ArbolBD_TipoNodo_Directorio :
+			case ArbolBD_TipoNodo_Genero	 :
+			case ArbolBD_TipoNodo_Grupo		 :
+			case ArbolBD_TipoNodo_Disco		 :
+				if (App.BD.ObtenerEtiqueta(EtiquetaFiltrada, Etiqueta) == TRUE) {
+					Debug_Escribir(L"Destruir1\n");
+					_ToolTip.Destruir();
+					_ToolTip.Mostrar(Etiqueta);
+				}
+				break;
+			case ArbolBD_TipoNodo_Cancion	 :
+			case ArbolBD_TipoNodo_Video		 :
+				if (App.BD.ObtenerMedio(NodoRes->Hash, Medio) == TRUE) {
+					Debug_Escribir(L"Destruir1\n");
+					_ToolTip.Destruir();
+					_ToolTip.Mostrar(Medio);
+				}				
+				break;
 		}
+
+
 	}
 	
 	// Oculto el tooltip por que no hay Nodo resaltado, o por que se ha presionado un boton que no es el del medio
@@ -329,10 +352,11 @@ void ArbolBD::Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse) {
 		_ToolTip.Destruir();
 	}
 	else {
-		std::wstring EtiquetaFiltrada;
-		RaveBD::FiltroNombre(_NodoResaltado->Texto, EtiquetaFiltrada);
-		if (_ToolTip.Texto() != EtiquetaFiltrada) {
+		if (_NodoUResaltado != _NodoResaltado) {
 			_ToolTip.Destruir();
+		}
+		else {
+			_ToolTip.Mover();
 		}
 	}
 }

@@ -29,10 +29,10 @@
 		const size_t DString_ContarCaracter(std::wstring &Texto, wchar_t Caracter);
 
 
-		/* Convierte cualquier tipo básico a cadena, se puede especificar si se quiere un número fijo de digitos */
+		/* Convierte cualquier valor decimal a cadena de caracteres, se puede especificar si se quiere un número de decimales. */
 		template <typename T> std::wstring DString_ToStrF(T Tmp, int Decimales = 0) {
 			std::wostringstream out;
-			out << std::fixed << std::setprecision(2) << Tmp;
+			out << std::fixed << std::setprecision(Decimales) << Tmp;
 			return out.str();
 		}
 
@@ -66,6 +66,23 @@
 
 			OUT_Wide = TmpWTxt;
 			return (Ret > 0) ? TRUE : FALSE;
+		}
+
+
+
+		/* Devuelve un string con el numero de bytes en formato legible (Bytes, KiloBytes, MegaBytes, GigaBytes, TeraBytes) */
+		static std::wstring &DString_FormatoBytes(const long long nBytes, std::wstring &OUT_StrBytes) {
+			const wchar_t  *Medidas[5] = { L"B", L"KB", L"MB", L"GB", L"TB" };
+			int				PosMedidas = 0;
+			long double		Resultado  = static_cast<long double>(nBytes);
+			long long       Bytes	   = nBytes;
+			for (PosMedidas = 0; PosMedidas < 5 && Bytes >= 1024; PosMedidas++, Bytes /= 1024) {
+				Resultado = static_cast<long double>(Bytes) / 1024.0f;
+			}
+
+			OUT_StrBytes = DString_ToStrF(Resultado, 2) + Medidas[PosMedidas];
+
+			return OUT_StrBytes;
 		}
 	};
 #endif
