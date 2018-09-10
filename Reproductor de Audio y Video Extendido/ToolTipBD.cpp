@@ -82,7 +82,7 @@ const POINT ToolTipBD::_CalcularEtiqueta(EtiquetaBD &nEtiqueta) {
 	std::wstring    Col2[NumFilas];
 
 	Col2[0] = std::to_wstring(nEtiqueta.Medios);
-	Col2[1] = DWL::DString_ToStrF(static_cast<float>(nEtiqueta.Nota / static_cast<float>(nEtiqueta.Medios)), 2);
+	Col2[1] = DWL::Strings::ToStrF(static_cast<float>(nEtiqueta.Nota / static_cast<float>(nEtiqueta.Medios)), 2);
 	RaveVLC::TiempoStr(nEtiqueta.Tiempo, Col2[2]);
 
 	// Miro el ancho del titulo
@@ -139,8 +139,8 @@ const POINT ToolTipBD::_CalcularMedio(BDMedio &nMedio) {
 	Col2[2] = nMedio.Grupo();
 	Col2[3] = nMedio.Disco();
 	RaveVLC::TiempoStr(nMedio.Tiempo, Col2[4]);
-	DString_FormatoBytes(nMedio.Longitud, Col2[5]);
-	Col2[6] = DWL::DString_ToStrF(nMedio.Nota, 2);
+	Strings::FormatoBytes(nMedio.Longitud, Col2[5]);
+	Col2[6] = DWL::Strings::ToStrF(nMedio.Nota, 2);
 
 
 	// Miro el ancho del titulo
@@ -216,14 +216,14 @@ void ToolTipBD::Pintar(HDC hDC) {
 
 	// Pinto la columna con los nombres de los datos, y tambien pinto los 2 puntos
 	SelectObject(DC, _Fuente18Negrita.Fuente());
-	for (int i = 0; i < _Col1.size(); i++) {
+	for (int i = 0; i < static_cast<int>(_Col1.size()); i++) {
 		PintarTexto(DC, _Col1[i].Texto, 10, 35 + (i * 20));
 		PintarTexto(DC, L":", _AnchoCol1 - 10, 35 + (i * 20));
 	}
 	
 	// Pinto los datos
 	SelectObject(DC, _Fuente18Normal.Fuente());
-	for (int i = 0; i < _Col2.size(); i++) {
+	for (int i = 0; i < static_cast<int>(_Col2.size()); i++) {
 		PintarTexto(DC, _Col2[i].Texto, RC.right - MARGEN - _Col2[i].Ancho, 35 + (i * 20));
 	}
 

@@ -32,6 +32,7 @@
 
 
 	RAVE 0.5 
+		V  Refer totes les ConsultaVarg i ferles amb el Consulta normal... amb el printf no está garantit el que pasa quan un dels parametres es un string NULL.. i en x86 em peta el analisis, pero en x64 no.. 
 		V  Analitzar tags dels medis. (libvlc_media_parse_with_options)
 			V  Revisar tags dels medis, i trobar coincidencies semblants per unificarles
 				V  Fer una llista d'etiquetes (les etiquetes poden ser d'una o mes propietats entre les segûents : Genero, GrupoPath, GrupoTag, DiscoPath, DiscoTag)

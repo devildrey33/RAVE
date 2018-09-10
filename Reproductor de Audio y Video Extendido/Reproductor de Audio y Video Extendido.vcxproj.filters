@@ -355,6 +355,12 @@
     <ClInclude Include="ToolTipBD.h">
       <Filter>Ventanas</Filter>
     </ClInclude>
+    <ClInclude Include="VentanaPrecarga.h">
+      <Filter>Ventanas</Filter>
+    </ClInclude>
+    <ClInclude Include="VentanaOpcionesRAVE.h">
+      <Filter>Ventanas</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -531,6 +537,12 @@
     <ClCompile Include="ToolTipBD.cpp">
       <Filter>Ventanas</Filter>
     </ClCompile>
+    <ClCompile Include="VentanaPrecarga.cpp">
+      <Filter>Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaOpcionesRAVE.cpp">
+      <Filter>Ventanas</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Reproductor de Audio y Video Extendido.rc">
@@ -562,16 +574,10 @@
     <Image Include="..\Iconos\IDI_Grupo.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="..\Iconos\IDI_ListaCanciones.ico">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
     <Image Include="..\Iconos\IDI_Raiz.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
     <Image Include="..\Iconos\IDI_Subtitulos.ico">
-      <Filter>Archivos de recursos</Filter>
-    </Image>
-    <Image Include="..\Iconos\IDI_Video.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
     <Image Include="..\Iconos\IDI_Pausa.ico">
@@ -629,6 +635,9 @@
       <Filter>Archivos de recursos</Filter>
     </Image>
     <Image Include="..\Iconos\IDI_PLAY32.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_VLC.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>

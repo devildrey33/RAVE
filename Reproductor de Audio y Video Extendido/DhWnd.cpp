@@ -101,7 +101,6 @@ namespace DWL {
 		SendMessage(hWnd(), WM_SETFONT, (WPARAM)_Fuente18Normal(), 0);
 		BarraTareas._Iniciar(_hWnd);
 		return hWnd();
-
 	}
 
 	void DVentana::Titulo(std::wstring & nTitulo) {

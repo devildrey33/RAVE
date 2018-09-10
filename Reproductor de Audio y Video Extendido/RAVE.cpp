@@ -5,6 +5,7 @@
 #include <versionhelpers.h>
 #include <Shlobj.h>
 
+
 #define MUTEX_RAVE L"Mutex_RAVE"
 
 void RAVE_Iniciar(void) {
@@ -129,10 +130,12 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 			}
 			// Inicio la base de datos y cargo las opciones antes de mostrar la ventana
 			BD.Iniciar();
-			// Muestro la ventana principal y creo los menús
-			IniciarUI(nCmdShow);
+
 			// Cargo la LibVLC
 			VLC.Iniciar();
+
+			// Muestro la ventana principal y creo los menús
+			IniciarUI(nCmdShow);
 
 			// Compruebo las aosiciaciones de archivo y muestro la ventana si es necesario
 			if (AsociarMedios.ComprobarAsociaciones() == FALSE) {

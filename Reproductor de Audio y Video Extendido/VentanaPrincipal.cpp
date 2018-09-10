@@ -356,7 +356,7 @@ void VentanaPrincipal::Lista_Anterior(void) {
 	Lista.MedioActual--;
 	if (Lista.MedioActual < 0) Lista.MedioActual = TotalItems;
 
-	if (Lista.MedioActual >= 0 && Lista.MedioActual <= TotalItems) {
+	if (Lista.MedioActual >= 0 && static_cast<int>(Lista.MedioActual) <= TotalItems) {
 		BDMedio NCan;
 		App.BD.ObtenerMedio(Lista.Medio(Lista.MedioActual)->Hash, NCan);
 //		TablaMedios_Medio NCan(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
@@ -386,6 +386,7 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(const UINT cID) {
 			Video.Visible(FALSE);
 			Opciones.Visible(TRUE);
 			Opciones.AsignarFoco();
+			App.VentanaOpciones.Crear();
 			break;
 		case ID_BOTON_BD:
 			Arbol.Visible(TRUE);
@@ -666,15 +667,15 @@ NodoBD *VentanaPrincipal::Arbol_AgregarDir(std::wstring *Path, const BOOL nRepin
 	NodoBD *TmpNodo = static_cast<NodoBD *>(Arbol.BuscarHijoTxt(Raiz->Path, NULL));
 	// Busco el ultimo nodo padre
 	std::wstring tmp = Path->substr(Raiz->Path.size(), Path->size() - Raiz->Path.size());
-	DWL::DSplit Split(tmp, L'\\');
+	DWL::Strings::Split nSplit(tmp, L'\\');
 
-	for (size_t i = 0; i < static_cast<int>(Split.Total()) - 1; i++) {
-		TmpNodo = static_cast<NodoBD *>(Arbol.BuscarHijoTxt(Split[i], TmpNodo));
+	for (int i = 0; i < static_cast<int>(nSplit.Total()) - 1; i++) {
+		TmpNodo = static_cast<NodoBD *>(Arbol.BuscarHijoTxt(nSplit[i], TmpNodo));
 	}
 
 	std::wstring Filtrado;
 
-	RaveBD::FiltroPath(Split[Split.Total() - 1], Filtrado);
+	RaveBD::FiltroPath(nSplit[nSplit.Total() - 1], Filtrado);
 
 	NodoBD *Ret = Arbol.BuscarHijoTxt(Filtrado, TmpNodo);
 	// Agrego el directorio
@@ -707,12 +708,24 @@ NodoBD *VentanaPrincipal::Arbol_AgregarCancion(const size_t Hash) {
 }*/
 
 void VentanaPrincipal::ActualizarArbol(void) {
+	// Para evitar un posible dead lock miro si el menú está activado, y si no lo está es que se acaba de llamar a esta función y se está esperando a que termine el thread del analisis
+	if (Menu_ArbolBD.Menu(2)->Activado() == FALSE) return;
+
+	// Desactivo el menú actualizar
+	Menu_ArbolBD.Menu(2)->Activado(FALSE);
+
+	// Envio la señal para cancelar el thread del analisis
+	ThreadAnalizar.Cancelar(TRUE);
+	// Espero a que se termine el thread del analisis
+	while (ThreadAnalizar.Thread() != NULL) {
+		App.Eventos_Mirar();
+	}
+
 	BarraTareas.Estado_Indeterminado();
 	// Re-escaneo las unidades de disco
 	App.BD.Unidades.Escanear_Unidades_Locales();
 	//	if (_hWnd != NULL) return;
 	Arbol.BorrarTodo();
-	Menu_ArbolBD.Menu(2)->Activado(FALSE);
 
 	NodoBD *Tmp = NULL;
 
@@ -726,6 +739,7 @@ void VentanaPrincipal::ActualizarArbol(void) {
 	// Inicio el thread de la busqueda
 	ThreadActualizar.Iniciar(hWnd());
 }
+
 
 // Agrega un medio desde el explorador (haciendo dobleclick o desde el menú)
 void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
@@ -800,6 +814,13 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 		case WM_TOM_TOTALMEDIOS3:
 			BarraTareas.Valor(static_cast<UINT>(wParam), static_cast<UINT>(lParam));
 			break;
+		case WM_TOM_CANCELADO:
+			ThreadAnalizar.Terminar();
+			Debug_Escribir_Varg(L"ThreadAnalisis::Cancelado %d archivos examinados.\n", lParam);
+			BarraTareas.Estado_SinProgreso();
+			BarraTareas.Resaltar();
+			break;
+
 		case WM_TOM_TERMINADO:
 			ThreadAnalizar.Terminar();
 			Debug_Escribir_Varg(L"ThreadAnalisis::Terminado %d archivos examinados.\n", lParam);

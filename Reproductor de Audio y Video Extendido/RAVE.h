@@ -10,6 +10,7 @@
 #include "RaveBD.h"
 #include "AsociarReproductor.h"
 #include "VentanaAsociarReproductor.h"
+#include "VentanaOpcionesRAVE.h"
 #include <stdlib.h>
 
 using namespace DWL;
@@ -65,6 +66,8 @@ class RAVE {
 	VentanaErrorCritico				VentanaErrorCrit;
 									// Ventana que muestra el mensaje para las asociaciones de archivo
 	VentanaAsociarReproductor		VentanaAsociar;
+									// Ventana para mostrar las opciones
+	VentanaOpcionesRAVE             VentanaOpciones;
 									// Ventana que muestra una consola al estilo MS-DOS para depuración
 	DConsola						ConsolaDebug;
 

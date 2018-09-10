@@ -74,7 +74,7 @@ void AsociarReproductor::RegistrarApp(void) {
 	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.Audio", L"", L"Archivo de Audio");
 	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.Audio", L"", L"Archivo de Audio");
 	// - Icono 53
-	TmpTxt = App.AppPath + L"RAVE.exe,53";	
+	TmpTxt = App.AppPath + L"RAVE.exe,14";	
 	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.Audio\\DefaultIcon", L"", TmpTxt.c_str());
 	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.Audio\\DefaultIcon", L"", TmpTxt.c_str());
 	// - Shell
@@ -97,7 +97,7 @@ void AsociarReproductor::RegistrarApp(void) {
 	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.Video", L"", L"Archivo de Video");
 	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.Video", L"", L"Archivo de Video");
 	// - Icono 52
-	TmpTxt = App.AppPath + L"RAVE.exe,52";
+	TmpTxt = App.AppPath + L"RAVE.exe,19";
 	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.Video\\DefaultIcon", L"", TmpTxt.c_str());
 	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.Video\\DefaultIcon", L"", TmpTxt.c_str());
 	// - Shell

@@ -127,19 +127,19 @@ const BOOL ArbolBD::AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 
 // Asegura que el medio agregado a la lista, tambien exista en el arbol
 void ArbolBD::_AgregarMedio(NodoBD *nPadre, BDMedio *nMedio) {
-	DWL::DSplit Split(nMedio->Path.c_str(), L'\\');
+	DWL::Strings::Split nSplit(nMedio->Path.c_str(), L'\\');
 	size_t TA = nPadre->Ancestros() + 1;
 	std::wstring Filtrado;
 	NodoBD *TmpPadre = nPadre, *Tmp = NULL;
 	// Busco si están creados los subdirectorios
-	for (size_t TA = nPadre->Ancestros() + 1; TA < Split.Total(); TA++) {
-		Tmp = BuscarHijoTxt(Split[TA], TmpPadre);
+	for (size_t TA = nPadre->Ancestros() + 1; TA < nSplit.Total(); TA++) {
+		Tmp = BuscarHijoTxt(nSplit[TA], TmpPadre);
 		if (Tmp != NULL) { // El nodo ya existe
 			TmpPadre = Tmp;
 		}
 		else { // No existe, hay que crearlo
-			if (TA < Split.Total() - 1) { // Directorio				
-				App.BD.FiltroPath(Split[TA], Filtrado);
+			if (TA < nSplit.Total() - 1) { // Directorio				
+				App.BD.FiltroPath(nSplit[TA], Filtrado);
 				TmpPadre = AgregarBDNodo(ArbolBD_TipoNodo_Directorio, TmpPadre, Filtrado.c_str());
 			}
 			else { // Medio
@@ -240,7 +240,7 @@ void ArbolBD::ExplorarPath(DWL::DArbolEx_Nodo *nNodo) {
 		SqlRet = sqlite3_prepare16_v2(App.BD(), SqlStr.c_str(), -1, &SqlQuery, NULL);
 		if (SqlRet) return; // Error
 
-		size_t BarrasPath = DWL::DString_ContarCaracter(nPath, L'\\'), BarrasMedio = 0; // Cuento las antibarras del path
+		size_t BarrasPath = DWL::Strings::ContarCaracter(nPath, L'\\'), BarrasMedio = 0; // Cuento las antibarras del path
 
 		while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
 			SqlRet = sqlite3_step(SqlQuery);
@@ -252,7 +252,7 @@ void ArbolBD::ExplorarPath(DWL::DArbolEx_Nodo *nNodo) {
 				UINT             mPista		= static_cast<UINT>(sqlite3_column_int(SqlQuery, 13));
 				ArbolBD_TipoNodo mTipoNodo = ArbolBD_TipoNodo_Indefinido;
 
-				BarrasMedio = DWL::DString_ContarCaracter(mPath, L'\\');
+				BarrasMedio = DWL::Strings::ContarCaracter(mPath, L'\\');
 
 				if (BarrasPath == BarrasMedio) {
 					if (mPista < 10) { nTmpTxt = L"0" + std::to_wstring(mPista) + L" " + mNombre; }

@@ -23,6 +23,7 @@
 #define WM_TOM_TOTALMEDIOS2         WM_USER + 2011
 #define WM_TOM_TOTALMEDIOS3         WM_USER + 2012
 #define WM_TOM_TERMINADO            WM_USER + 2013
+#define WM_TOM_CANCELADO            WM_USER + 2014
 
 
 enum Estados_Medio {
@@ -131,7 +132,7 @@ class RaveBD {
 								// Consulta básica wchar_t
 	const int					Consulta(const wchar_t *TxtConsulta);
 								// Consulta al estilo printf
-	const int					ConsultaVarg(const wchar_t *TxtConsulta, ...);
+//	const int					ConsultaVarg(const wchar_t *TxtConsulta, ...);
 								// Consulta desde un std::wstring
 	inline const int			Consulta(std::wstring &TxtConsulta) { return Consulta(TxtConsulta.c_str()); };
 

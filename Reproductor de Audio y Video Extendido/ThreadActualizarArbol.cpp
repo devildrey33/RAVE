@@ -107,7 +107,7 @@ const UINT ThreadActualizarArbol::_EscanearDirectorio(std::wstring &nPath, BDRai
 	}
 	else {
 		// SOLO Si es un directorio hijo de la raiz (evito el resto de subdirectorios)
-		if ((DString_ContarCaracter(Raiz->Path, L'\\') + 1) == DString_ContarCaracter(Path, L'\\')) { 
+		if ((Strings::ContarCaracter(Raiz->Path, L'\\') + 1) == Strings::ContarCaracter(Path, L'\\')) { 
 			StringDirectorio = new std::wstring(nPath);
 			// Informo al hilo principal que se ha agregado un directorio
 			SendMessage(_VentanaPlayer, WM_TBA_AGREGARDIR, 0, reinterpret_cast<LPARAM>(StringDirectorio));

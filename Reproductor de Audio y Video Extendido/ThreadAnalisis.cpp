@@ -54,6 +54,9 @@ const BOOL ThreadAnalisis::Iniciar(HWND nhWndDest) {
 	return TRUE;
 }
 
+HANDLE ThreadAnalisis::Thread(void) {
+	return _Thread;
+}
 
 void ThreadAnalisis::Terminar(void) {
 	Visible(FALSE);
@@ -134,7 +137,8 @@ unsigned long ThreadAnalisis::_ThreadAnalisis(void *pThis) {
 
 	This->_BD.Terminar();
 
-	SendMessage(This->_VentanaPlayer, WM_TOM_TERMINADO, 0, static_cast<LPARAM>(This->_PorParsear.size()));
+	if (This->Cancelar() == TRUE)	SendMessage(This->_VentanaPlayer, WM_TOM_CANCELADO, 0, static_cast<LPARAM>(This->_PorParsear.size()));
+	else                            SendMessage(This->_VentanaPlayer, WM_TOM_TERMINADO, 0, static_cast<LPARAM>(This->_PorParsear.size()));
 
 	return 0;
 }
@@ -269,7 +273,15 @@ void ThreadAnalisis::_RevisarMedios(void) {
 
 
 	for (i = 0; i < _Etiquetas.size(); i++) {
-		_BD.ConsultaVarg(L"INSERT INTO Etiquetas (Texto, Tipo, Medios, Nota, Tiempo) VALUES(\"%s\", %d, %d, %f, %d)", _Etiquetas[i].Texto.c_str(), _Etiquetas[i].Tipo, _Etiquetas[i].Medios, _Etiquetas[i].Nota, _Etiquetas[i].Tiempo );
+		std::wstring Q = L"INSERT INTO Etiquetas (Texto, Tipo, Medios, Nota, Tiempo) "
+							L"VALUES(\"" +	_Etiquetas[i].Texto							+ L"\", " + 
+											std::to_wstring(_Etiquetas[i].Tipo)			+ L", " + 
+											std::to_wstring(_Etiquetas[i].Medios)		+ L", " +
+											DWL::Strings::ToStrF(_Etiquetas[i].Nota, 2)	+ L", " + 
+											std::to_wstring(_Etiquetas[i].Tiempo)		+ L")";
+
+//		_BD.ConsultaVarg(L"INSERT INTO Etiquetas (Texto, Tipo, Medios, Nota, Tiempo) VALUES(\"%s\", %d, %d, %f, %d)", _Etiquetas[i].Texto.c_str(), _Etiquetas[i].Tipo, _Etiquetas[i].Medios, _Etiquetas[i].Nota, _Etiquetas[i].Tiempo );
+		_BD.Consulta(Q);
 	}
 
 	_BD.Consulta(L"COMMIT TRANSACTION");
@@ -332,8 +344,8 @@ const int ThreadAnalisis::_CompararCoincidencias(CoincidenciasTexto *Coincidenci
 		// 0   1              2              3     4
 		// En el caso de que cualquiera de los dos no tenga mas de 4 
 		if (Distancia2 == 0 || Distancia2 == 1) {
-			DSplit Split1(Coincidencia1->Medios[0]->Path, L'\\');
-			DSplit Split2(Coincidencia2->Medios[0]->Path, L'\\');
+			Strings::Split Split1(Coincidencia1->Medios[0]->Path, L'\\');
+			Strings::Split Split2(Coincidencia2->Medios[0]->Path, L'\\');
 			if (Split1.Total() > 3 && Split2.Total() > 3) {
 				if (Split1[Split1.Total() - 3] == Split2[Split2.Total() - 3]) { // los dos directorios de penultimo nivel son iguales
 					return 1;
@@ -439,7 +451,7 @@ std::wstring ThreadAnalisis::_ObtenerMeta(libvlc_media_t *Media, libvlc_meta_t T
 	char *Txt = libvlc_media_get_meta(Media, Tipo);
 	if (Txt != NULL) {
 		std::wstring TmpTxt; // = DString_ToStr(Txt);
-		DString_AnsiToWide(Txt, TmpTxt);
+		Strings::AnsiToWide(Txt, TmpTxt);
 		RaveBD::FiltroNombre(TmpTxt, Ret);
 	}
 	libvlc_free(Txt);
@@ -485,7 +497,7 @@ void ThreadAnalisis::_Parsear(libvlc_instance_t *VLC, std::wstring &Path) {
 //		UINT nPista;
 
 		char *Txt = libvlc_media_get_meta(Media, libvlc_meta_Title);
-		DString_AnsiToWide(Txt, TmpTxt);
+		Strings::AnsiToWide(Txt, TmpTxt);
 		libvlc_free(Txt);
 
 //		TmpTxt			= _ObtenerMeta(Media, libvlc_meta_Title);
@@ -503,7 +515,7 @@ void ThreadAnalisis::_Parsear(libvlc_instance_t *VLC, std::wstring &Path) {
 		Medio.DiscoTag	= _ObtenerMeta(Media, libvlc_meta_Album);
 		Medio.Genero	= _ObtenerMeta(Media, libvlc_meta_Genre);
 		TmpTxt			= _ObtenerMeta(Media, libvlc_meta_TrackNumber);
-		Medio.PistaTag	= DString_StrTo(TmpTxt, Medio.PistaTag);
+		Medio.PistaTag	= Strings::StrTo(TmpTxt, Medio.PistaTag);
 		Medio.Parseado	= TRUE;
 
 

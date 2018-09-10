@@ -225,6 +225,8 @@
     <ClInclude Include="ToolTipBD.h" />
     <ClInclude Include="VentanaAsociarReproductor.h" />
     <ClInclude Include="VentanaErrorCritico.h" />
+    <ClInclude Include="VentanaOpcionesRAVE.h" />
+    <ClInclude Include="VentanaPrecarga.h" />
     <ClInclude Include="VentanaPrincipal.h" />
     <ClInclude Include="VerVideo.h" />
     <ClInclude Include="vlc.hpp" />
@@ -296,6 +298,8 @@
     <ClCompile Include="ToolTipBD.cpp" />
     <ClCompile Include="VentanaAsociarReproductor.cpp" />
     <ClCompile Include="VentanaErrorCritico.cpp" />
+    <ClCompile Include="VentanaOpcionesRAVE.cpp" />
+    <ClCompile Include="VentanaPrecarga.cpp" />
     <ClCompile Include="VentanaPrincipal.cpp" />
     <ClCompile Include="VerVideo.cpp" />
   </ItemGroup>
@@ -316,7 +320,6 @@
     <Image Include="..\Iconos\IDI_Disco.ico" />
     <Image Include="..\Iconos\IDI_Genero.ico" />
     <Image Include="..\Iconos\IDI_Grupo.ico" />
-    <Image Include="..\Iconos\IDI_ListaCanciones.ico" />
     <Image Include="..\Iconos\IDI_NEXT32.ico" />
     <Image Include="..\Iconos\IDI_Pausa.ico" />
     <Image Include="..\Iconos\IDI_Pausa2.ico" />
@@ -330,8 +333,8 @@
     <Image Include="..\Iconos\IDI_Raiz.ico" />
     <Image Include="..\Iconos\IDI_STOP32.ico" />
     <Image Include="..\Iconos\IDI_Subtitulos.ico" />
-    <Image Include="..\Iconos\IDI_Video.ico" />
     <Image Include="..\Iconos\IDI_Video2.ico" />
+    <Image Include="..\Iconos\IDI_VLC.ico" />
     <Image Include="Reproductor de Audio y Video Extendido.ico" />
     <Image Include="small.ico" />
   </ItemGroup>

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "RaveVLC.h"
 #include "RAVE_Iconos.h"
+#include "VentanaPrecarga.h"
 
 RaveVLC::RaveVLC() : _Log(NULL), _MediaPlayer(NULL), _Instancia(NULL), MedioActual(), hWndVLC(NULL), _Eventos(NULL) {
 }
@@ -30,6 +31,10 @@ const BOOL RaveVLC::Iniciar(void) {
 	ArgsVLC.AgregarArgumento(Tmp.c_str());				// Path del directorio de plugins
 //	ArgsVLC.AgregarArgumento("--no-video-title-show");	// No mostrar el titulo del video */
 	//_Instancia = VLC::Instance(0, NULL);
+	
+	// Ventana de precarga
+	VentanaPrecarga Precarga;
+
 
 	char OpcionesSMem[1024];
 	sprintf_s(OpcionesSMem,	1024, "smem{audio-prerender-callback=\"%lld\",audio-postrender-callback=\"%lld\",audio-data=\"%lld\"}", ((long long int)(intptr_t)(void*)&audio_prerendercb), ((long long int)(intptr_t)(void*)&audio_postrendercb), ((long long int)(intptr_t)(void*)this));
@@ -51,6 +56,7 @@ const BOOL RaveVLC::Iniciar(void) {
 
 	Debug_Escribir_Varg(L"RaveVLC::Iniciar Cargado en %d MS, Instancia = '%x' \n", GetTickCount() - t, _Instancia);
 
+	Precarga.Destruir();
 	return TRUE;
 }
 

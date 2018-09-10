@@ -98,7 +98,6 @@ namespace DWL {
 				PintarToolTipEx(DC);
 				EndPaint(hWnd(), &PS);
 				return 0;
-				break;
 			// Sombra de la ventana
 			// https://stackoverflow.com/questions/43818022/borderless-window-with-drop-shadow
 			case WM_NCCALCSIZE:

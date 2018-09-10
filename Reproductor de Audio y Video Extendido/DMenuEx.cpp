@@ -522,7 +522,7 @@ namespace DWL {
 		// Obtengo la posición del menu resaltado dentro del vector
 		int MenuPos = -1;
 		if (_MenuResaltado != NULL) {
-			for (MenuPos = 0; MenuPos < _Menus.size(); MenuPos++) {
+			for (MenuPos = 0; MenuPos < static_cast<int>(_Menus.size()); MenuPos++) {
 				if (_Menus[MenuPos] == _MenuResaltado) {
 					break;
 				}

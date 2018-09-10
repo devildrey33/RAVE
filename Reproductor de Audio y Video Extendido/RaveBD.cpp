@@ -50,7 +50,7 @@ void RaveBD::Terminar(void) {
 	_BD = NULL;
 }
 
-
+/*
 const int RaveBD::ConsultaVarg(const wchar_t *TxtConsulta, ...) {
 	static wchar_t  Texto[4096];
 	va_list			Marker;
@@ -58,7 +58,7 @@ const int RaveBD::ConsultaVarg(const wchar_t *TxtConsulta, ...) {
 	vswprintf_s(Texto, 4096, TxtConsulta, Marker);
 	va_end(Marker);
 	return Consulta(Texto);
-}
+}*/
 
 // Función para realizar consultas simples 
 const int RaveBD::Consulta(const wchar_t *TxtConsulta) {
@@ -95,7 +95,7 @@ const int RaveBD::Consulta(const wchar_t *TxtConsulta) {
 }
 
 const BOOL RaveBD::ObtenerMedio(const sqlite3_int64 mHash, BDMedio &OUT_Medio) {
-	std::wstring    SqlStr = L"SELECT * FROM Medios WHERE Hash =" + DWL::DString_ToStr(mHash);
+	std::wstring    SqlStr = L"SELECT * FROM Medios WHERE Hash =" + std::to_wstring(mHash);
 	return _ConsultaObtenerMedio(SqlStr, OUT_Medio);
 }
 
@@ -294,17 +294,39 @@ const BOOL RaveBD::ObtenerRaices(void) {
 		BOOL				DiscoEleccion      23			TINYINT(1)
 		BOOL				PistaEleccion      24			TINYINT(1)				*/
 const BOOL RaveBD::ActualizarMedio(BDMedio *nMedio) {
-	int SqlRet = ConsultaVarg(L"UPDATE Medios SET "
+	std::wstring Q =	L"UPDATE Medios SET "
+							L"NombrePath=\""	+ nMedio->NombrePath						+ L"\","
+							L"Reproducido="		+ std::to_wstring(nMedio->Reproducido)		+ L","
+							L"Nota="			+ DWL::Strings::ToStrF(nMedio->Nota, 1)		+ L","
+							L"Genero=\""		+ nMedio->Genero							+ L"\","
+							L"GrupoPath=\""		+ nMedio->GrupoPath							+ L"\","
+							L"DiscoPath=\""		+ nMedio->DiscoPath							+ L"\","
+							L"PistaPath="		+ std::to_wstring(nMedio->PistaPath)		+ L","
+							L"Tiempo="			+ std::to_wstring(nMedio->Tiempo)			+ L","
+							L"Subtitulos=\""	+ nMedio->Subtitulos						+ L"\","
+							L"Parseado="		+ std::to_wstring(nMedio->Parseado)			+ L","
+							L"NombreTag=\""		+ nMedio->NombreTag							+ L"\","
+							L"GrupoTag=\""		+ nMedio->GrupoTag							+ L"\","
+							L"DiscoTag=\""		+ nMedio->DiscoTag							+ L"\","
+							L"PistaTag="		+ std::to_wstring(nMedio->PistaTag)			+ L","
+							L"NombreEleccion="	+ std::to_wstring(nMedio->NombreEleccion)	+ L","
+							L"GrupoEleccion="	+ std::to_wstring(nMedio->GrupoEleccion)	+ L","
+							L"DiscoEleccion="	+ std::to_wstring(nMedio->DiscoEleccion)	+ L","
+							L"PistaEleccion="	+ std::to_wstring(nMedio->PistaEleccion)	+ L" "
+						L"WHERE Id=" + std::to_wstring(nMedio->Id);
+
+/*	int SqlRet = ConsultaVarg(L"UPDATE Medios SET "
 												L"NombrePath=\"%s\","		L"Reproducido=%d,"			L"Nota=%f,"					L"Genero=\"%s\","				L"GrupoPath=\"%s\","
 												L"DiscoPath=\"%s\","		L"PistaPath=%d,"			L"Tiempo=%d,"				L"Subtitulos=\"%s\","			L"Parseado=%d,"
 												L"NombreTag=\"%s\","		L"GrupoTag=\"%s\","			L"DiscoTag=\"%s\","			L"PistaTag=%d,"
 												L"NombreEleccion=%d,"		L"GrupoEleccion=%d,"		L"DiscoEleccion=%d,"		L"PistaEleccion=%d"
 
-								" WHERE Id=%d", nMedio->NombrePath.c_str(), nMedio->Reproducido,		nMedio->Nota,				nMedio->Genero.c_str(),			nMedio->GrupoPath.c_str(), 
+							   L" WHERE Id=%d", nMedio->NombrePath.c_str(), nMedio->Reproducido,		nMedio->Nota,				nMedio->Genero.c_str(),			nMedio->GrupoPath.c_str(), 
 												nMedio->DiscoPath.c_str(),	nMedio->PistaPath,			nMedio->Tiempo,				nMedio->Subtitulos.c_str(),		nMedio->Parseado, 
 												nMedio->NombreTag.c_str(),	nMedio->GrupoTag.c_str(),	nMedio->DiscoTag.c_str(),	nMedio->PistaTag,
 												nMedio->NombreEleccion,		nMedio->GrupoEleccion,		nMedio->DiscoEleccion,		nMedio->PistaEleccion,			
-								nMedio->Id);
+								nMedio->Id);*/
+	int SqlRet = Consulta(Q);
 	if (SqlRet == SQLITE_ERROR) {
 		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
 		return FALSE;
@@ -314,11 +336,19 @@ const BOOL RaveBD::ActualizarMedio(BDMedio *nMedio) {
 
 // Función que actualiza SOLO los miembros : Genero, GrupoPath, GrupoTag, DiscoPath, DiscoTag
 const BOOL RaveBD::ActualizarMedioAnalisis(BDMedio *nMedio) {
-	int SqlRet = ConsultaVarg(L"UPDATE Medios SET "
+	std::wstring Q =	L"UPDATE Medios SET " 
+							L"Genero=\""	+ nMedio->Genero	+ L"\","	
+							L"GrupoPath=\"" + nMedio->GrupoPath	+ L"\","	
+							L"GrupoTag=\""  + nMedio->GrupoTag  + L"\","		
+							L"DiscoPath=\""	+ nMedio->DiscoPath + L"\","
+							L"DiscoTag=\""	+ nMedio->DiscoTag	+ L"\" "		
+						"WHERE Id=" + std::to_wstring(nMedio->Id);
+/*	int SqlRet = ConsultaVarg(L"UPDATE Medios SET "
 										L"Genero=\"%s\","		L"GrupoPath=\"%s\","		L"GrupoTag=\"%s\","			L"DiscoTag=\"%s\","			L"DiscoPath=\"%s\""
 								" WHERE Id=%d", 
 										nMedio->Genero.c_str(), nMedio->GrupoPath.c_str(),	nMedio->GrupoTag.c_str(),	nMedio->DiscoTag.c_str(),	nMedio->DiscoPath.c_str(),
-								nMedio->Id);
+								nMedio->Id);*/
+	int SqlRet = Consulta(Q);
 	if (SqlRet == SQLITE_ERROR) {
 		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
 		return FALSE;
@@ -493,7 +523,7 @@ BDRaiz *RaveBD::AgregarRaiz(std::wstring &nPath) {
 	if (BR != NULL) {
 		// La nueva raíz es el padre/abuelo/etc.. de una o mas raices definidas anteriormente (TODO !! solo arreglo una raiz)
 		if (BR->Path.size() > PathFinal.size()) {
-			std::wstring SqlUpdateStr = L"UPDATE Raiz SET Path=\"" + PathFinal + L"\"WHERE Id=" + DWL::DString_ToStr(BR->Id);
+			std::wstring SqlUpdateStr = L"UPDATE Raiz SET Path=\"" + PathFinal + L"\"WHERE Id=" + std::to_wstring(BR->Id);
 			SqlRet = sqlite3_prepare16_v2(_BD, SqlUpdateStr.c_str(), -1, &SqlQuery, NULL);
 			Consulta(SqlUpdateStr);
 			ObtenerRaices();
@@ -507,7 +537,7 @@ BDRaiz *RaveBD::AgregarRaiz(std::wstring &nPath) {
 	if (Unidad == NULL)
 		return NULL;
 
-	std::wstring SqlStr = L"INSERT INTO Raiz (Path, IDDisco) VALUES(\"" + PathFinal + L"\", " + DWL::DString_ToStr(Unidad->Numero_Serie()) + L")";
+	std::wstring SqlStr = L"INSERT INTO Raiz (Path, IDDisco) VALUES(\"" + PathFinal + L"\", " + std::to_wstring(Unidad->Numero_Serie()) + L")";
 	Consulta(SqlStr);
 	
 	ObtenerRaices();
@@ -517,8 +547,12 @@ BDRaiz *RaveBD::AgregarRaiz(std::wstring &nPath) {
 
 
 const BOOL RaveBD::EliminarRaiz(std::wstring &nPath) {
-	BOOL Ret = ConsultaVarg(L"DELETE FROM Raiz WHERE Path ='%s'", nPath.c_str());
-
+	std::wstring Q = L"DELETE FROM Raiz WHERE Path=\"" + nPath + L"\"";
+	int SqlRet = Consulta(Q);
+//	BOOL Ret = ConsultaVarg(L"DELETE FROM Raiz WHERE Path ='%s'", nPath.c_str());
+	if (SqlRet == SQLITE_ERROR) {
+		return FALSE;
+	}
 	ObtenerRaices();
 	return TRUE;
 }
@@ -555,7 +589,7 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 	int                 SqlRet = 0;
 //	ULONG               Longitud = 0;
 
-	DSplit PathSeparado(nPath, L'\\');
+	Strings::Split PathSeparado(nPath, L'\\');
 
 	switch (Tipo) {
 		case Tipo_Medio_INDEFINIDO:
@@ -583,20 +617,20 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 			OUT_Medio.Nota          = 2;
 			OUT_Medio.Tiempo        = 0;
 			SqlStr = L"INSERT INTO Medios (Hash, Path, NombrePath, TipoMedio, Extension, PistaPath, IDDisco, Longitud, Nota, Tiempo, Subtitulos, Parseado, DiscoPath, GrupoPath)"
-								  L" VALUES(" +	DString_ToStr(Hash)							+ L",\"" +				// Hash
-												PathCortado									+ L"\",\"" +			// Path
-												NombreFinal									+ L"\", " +				// NombrePath
-												DString_ToStr(Tipo)							+ L"," +				// Tipo
-												DString_ToStr(Extension)					+ L"," +				// Extension
-												DString_ToStr(Pista)						+ L"," +				// PistaPath
-												DString_ToStr(UnidadDisco->Numero_Serie())	+ L"," +				// ID Disco Duro
-												DString_ToStr(Longitud)						+ L"," +				// Longitud en bytes
+								  L" VALUES(" + std::to_wstring(Hash)							+ L",\"" +				// Hash
+												PathCortado										+ L"\",\"" +			// Path
+												NombreFinal										+ L"\", " +				// NombrePath
+												std::to_wstring(Tipo)							+ L"," +				// Tipo
+												std::to_wstring(Extension)						+ L"," +				// Extension
+												std::to_wstring(Pista)							+ L"," +				// PistaPath
+												std::to_wstring(UnidadDisco->Numero_Serie())	+ L"," +				// ID Disco Duro
+												std::to_wstring(Longitud)						+ L"," +				// Longitud en bytes
 												L"2.5," +															// Nota
 												L"0," +																// Tiempo
 												L"\"\"," +															// Subtitulos
 												L"0,\"" +															// Parseado
-												OUT_Medio.DiscoPath							+ L"\",\"" +			// DiscoPath
-												OUT_Medio.GrupoPath							+ L"\")";				// GrupoPath
+												OUT_Medio.DiscoPath								+ L"\",\"" +			// DiscoPath
+												OUT_Medio.GrupoPath								+ L"\")";				// GrupoPath
 			SqlRet = Consulta(SqlStr);
 			if (SqlRet == SQLITE_DONE)
 				return TRUE; // No existe el hash
@@ -625,7 +659,7 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 const sqlite3_int64 RaveBD::CrearHash(DWORD NumeroSerieDisco, std::wstring &nPath) {
 	//	std::wstring PathCortado = Path.substr(2, Path.size() - 2);
 	std::hash<std::wstring> HashFunc;
-	return HashFunc(DWL::DString_ToStr(NumeroSerieDisco) + nPath.substr(2, nPath.size() - 2));
+	return HashFunc(std::to_wstring(NumeroSerieDisco) + nPath.substr(2, nPath.size() - 2));
 }
 
 
@@ -761,13 +795,13 @@ void RaveBD::FiltroPath(std::wstring &In, std::wstring &Out) {
 
 void RaveBD::Opciones_Volumen(const int nVolumen) {
 	_Opciones_Volumen = nVolumen;
-	std::wstring Q = L"Update Opciones SET Volumen=" + DWL::DString_ToStr(nVolumen) + L" WHERE Id=0";
+	std::wstring Q = L"Update Opciones SET Volumen=" + std::to_wstring(nVolumen) + L" WHERE Id=0";
 	Consulta(Q.c_str());
 }
 
 void RaveBD::Opciones_Shufle(const BOOL nShufle) {
 	_Opciones_Shufle = nShufle;
-	std::wstring Q = L"Update Opciones SET Shufle=" + DWL::DString_ToStr(nShufle) + L" WHERE Id=0";
+	std::wstring Q = L"Update Opciones SET Shufle=" + std::to_wstring(nShufle) + L" WHERE Id=0";
 	Consulta(Q.c_str());
 }
 
@@ -776,34 +810,34 @@ void RaveBD::Opciones_Repeat(const Tipo_Repeat nRepeat) {
 
 	// Guardo el valor del repeat en la BD, siempre que el repeat no implique apagar el reproductor o el windows
 	if (nRepeat != Tipo_Repeat_ApagarReproductor && nRepeat != Tipo_Repeat_ApagarOrdenador /*&& nRepeat != Tipo_Repeat_HibernarOrdenador*/) {
-		std::wstring Q = L"Update Opciones SET Repeat=" + DWL::DString_ToStr(nRepeat) + L" WHERE Id=0";
+		std::wstring Q = L"Update Opciones SET Repeat=" + std::to_wstring(nRepeat) + L" WHERE Id=0";
 		Consulta(Q.c_str());
 	}
 }
 
 void RaveBD::Opciones_Inicio(const int nInicio) {
 	_Opciones_Inicio = nInicio;
-	std::wstring Q = L"Update Opciones SET Inicio=" + DWL::DString_ToStr(nInicio) + L" WHERE Id=0";
+	std::wstring Q = L"Update Opciones SET Inicio=" + std::to_wstring(nInicio) + L" WHERE Id=0";
 	Consulta(Q.c_str());
 }
 
 
 void RaveBD::Opciones_OcultarMouseEnVideo(const int nOcultarMouseEnVideo) {
 	_Opciones_OcultarMouseEnVideo = nOcultarMouseEnVideo;
-	std::wstring Q = L"Update Opciones SET OcultarMouseEnVideo=" + DWL::DString_ToStr(nOcultarMouseEnVideo) + L" WHERE Id=0";
+	std::wstring Q = L"Update Opciones SET OcultarMouseEnVideo=" + std::to_wstring(nOcultarMouseEnVideo) + L" WHERE Id=0";
 	Consulta(Q.c_str());
 }
 
 void RaveBD::Opciones_MostrarObtenerMetadatos(const BOOL nMostrarObtenerMetadatos) {
 	_Opciones_MostrarObtenerMetadatos = nMostrarObtenerMetadatos;
-	std::wstring Q = L"Update Opciones SET MostrarObtenerMetadatos=" + DWL::DString_ToStr(nMostrarObtenerMetadatos) + L" WHERE Id=0";
+	std::wstring Q = L"Update Opciones SET MostrarObtenerMetadatos=" + std::to_wstring(nMostrarObtenerMetadatos) + L" WHERE Id=0";
 	int Ret = Consulta(Q.c_str());
 	Ret = Ret;
 }
 
 void RaveBD::Opciones_MostrarAsociarArchivos(const BOOL nMostrarAsociarArchivos) {
 	_Opciones_MostrarObtenerMetadatos = nMostrarAsociarArchivos;
-	std::wstring Q = L"Update Opciones SET MostrarAsociarArchivos=" + DWL::DString_ToStr(nMostrarAsociarArchivos) + L" WHERE Id=0";
+	std::wstring Q = L"Update Opciones SET MostrarAsociarArchivos=" + std::to_wstring(nMostrarAsociarArchivos) + L" WHERE Id=0";
 	int Ret = Consulta(Q.c_str());
 	Ret = Ret;
 }
@@ -887,7 +921,7 @@ const BOOL RaveBD::Opciones_GuardarPosTamVentana(void) {
 		_Opciones_Ancho = abs(RC.right - RC.left);
 		_Opciones_Alto = abs(RC.bottom - RC.top);
 
-		std::wstring Q = L"UPDATE Opciones SET PosX=" + DWL::DString_ToStr(RC.left) + L", PosY=" + DWL::DString_ToStr(RC.top) + L", Ancho=" + DWL::DString_ToStr(_Opciones_Ancho) + L", Alto=" + DWL::DString_ToStr(_Opciones_Alto) + L" WHERE Id=0";
+		std::wstring Q = L"UPDATE Opciones SET PosX=" + std::to_wstring(RC.left) + L", PosY=" + std::to_wstring(RC.top) + L", Ancho=" + std::to_wstring(_Opciones_Ancho) + L", Alto=" + std::to_wstring(_Opciones_Alto) + L" WHERE Id=0";
 		int SqlRet = Consulta(Q);
 		if (SqlRet == SQLITE_ERROR) {
 			_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
