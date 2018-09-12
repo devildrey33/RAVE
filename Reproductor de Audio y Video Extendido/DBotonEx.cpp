@@ -148,27 +148,35 @@ namespace DWL {
 	}
 
 	
-	void DBotonEx::Evento_MouseMovimiento(const int cX, const int cY, const UINT wParam) {
+
+	void DBotonEx::_Evento_MouseMovimiento(const WPARAM wParam, const LPARAM lParam) {
+		DEventoMouse DatosMouse(wParam, lParam, ID());
+		Evento_MouseMovimiento(DatosMouse);
 	}
 
-	void DBotonEx::Evento_MousePresionado(const int cX, const int cY, const UINT wParam) {
+
+	void DBotonEx::_Evento_MousePresionado(const WPARAM wParam, const LPARAM lParam, const int Boton) {
+		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
 		SetCapture(hWnd());
 		_Estado = DBotonEx_Estado_Presionado;
+		SendMessage(GetParent(hWnd()), DWL_BOTONEX_MOUSEDOWN, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
+		Evento_MousePresionado(DatosMouse);
 		Repintar();
-		SendMessage(GetParent(hWnd()), DWL_BOTONEX_MOUSEDOWN, static_cast<WPARAM>(GetWindowLongPtr(hWnd(), GWL_ID)), MAKELPARAM(cX, cY));
 	}
 
-	void DBotonEx::Evento_MouseSoltado(const int cX, const int cY, const UINT wParam) {
+	void DBotonEx::_Evento_MouseSoltado(const WPARAM wParam, const LPARAM lParam, const int Boton) {
+		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
 		if (_Estado == DBotonEx_Estado_Presionado) {
 			ReleaseCapture();
 
 			RECT RC;
 			GetClientRect(hWnd(), &RC);
 
-			POINT Pt = { cX, cY };
+			POINT Pt = { DatosMouse.X(), DatosMouse.Y() };
 			if (PtInRect(&RC, Pt) != 0) {
 				_Estado = DBotonEx_Estado_Resaltado;
-				SendMessage(GetParent(hWnd()), DWL_BOTONEX_CLICK, static_cast<WPARAM>(GetWindowLongPtr(hWnd(), GWL_ID)), MAKELPARAM(cX, cY));
+				Evento_MouseSoltado(DatosMouse);
+				SendMessage(GetParent(hWnd()), DWL_BOTONEX_CLICK, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
 			}
 			else {
 				_Estado = DBotonEx_Estado_Normal;
@@ -201,8 +209,8 @@ namespace DWL {
 						_Estado = DBotonEx_Estado_Resaltado;
 						Repintar();
 					}
-				}
-				Evento_MouseMovimiento(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
+				}				
+				_Evento_MouseMovimiento(wParam, lParam);
 				break;
 			case WM_MOUSELEAVE:
 				_MouseDentro = FALSE;
@@ -212,12 +220,23 @@ namespace DWL {
 				}
 				break;
 			case WM_LBUTTONDOWN:
-				Evento_MousePresionado(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
-				break;
+				_Evento_MousePresionado(wParam, lParam, 0);
+				return 0;
+			case WM_RBUTTONDOWN:
+				_Evento_MousePresionado(wParam, lParam, 1);
+				return 0;
+			case WM_MBUTTONDOWN:
+				_Evento_MousePresionado(wParam, lParam, 2);
+				return 0;
 			case WM_LBUTTONUP:
-				Evento_MouseSoltado(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
-				break;
-				return DefWindowProc(hWnd(), uMsg, wParam, lParam);
+				_Evento_MouseSoltado(wParam, lParam, 0);
+				return 0;
+			case WM_RBUTTONUP:
+				_Evento_MouseSoltado(wParam, lParam, 1);
+				return 0;
+			case WM_MBUTTONUP:
+				_Evento_MouseSoltado(wParam, lParam, 2);
+				return 0;
 		}
 		return DefWindowProc(hWnd(), uMsg, wParam, lParam);
 	}

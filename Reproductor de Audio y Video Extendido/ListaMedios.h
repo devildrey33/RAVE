@@ -28,7 +28,7 @@ class ListaMedios : public DWL::DListaEx {
 
 	inline ItemMedio           *Medio(const size_t nPos) { return static_cast<ItemMedio *>(_Items[nPos]); 						}
 
-	inline ItemMedio		   *MedioResaltado(void) { return static_cast<ItemMedio *>(ItemResaltado()); }
+	inline ItemMedio		   *MedioResaltado(void)  { return static_cast<ItemMedio *>(ItemResaltado()); }
 	inline ItemMedio           *UMedioResaltado(void) { return static_cast<ItemMedio *>((_ItemUResaltado == -1) ? NULL : _Items[_ItemUResaltado]); }
 
 	void						Evento_MouseDobleClick(DWL::DEventoMouse &EventoMouse);

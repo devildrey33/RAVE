@@ -86,7 +86,7 @@ namespace DWL {
 
 
 
-
+																																																							        /* NO SE UTILIZA */
 	HWND DVentana::CrearVentana(DhWnd *nPadre, const TCHAR *nNombre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos, UINT nEstilosClase, HMENU nMenu, HBRUSH nColorFondo, const int nIconoRecursos) {
 		// La ventana ya no existe pero tenemos el hWnd, por lo que elimino toda la memória
 		if (_hWnd != NULL && IsWindow(_hWnd) == 0) {	Destruir();		}
@@ -95,8 +95,11 @@ namespace DWL {
 		// hWnd del padre
 		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : HWND_DESKTOP;
 
-		ATOM RetRgistrarClase = RegistrarClase(nNombre, reinterpret_cast<WNDPROC>(_GestorMensajes), nEstilosClase, nIconoRecursos, nColorFondo);
-		_hWnd = CreateWindowEx(nEstilosExtendidos, nNombre, nTexto, nEstilos, cX, cY, cAncho, cAlto, HWND_DESKTOP, nMenu, GetModuleHandle(NULL), this);
+		// Afegit expresament per borrar el fondo amb els colors del RAVE
+		static HBRUSH ColFondo = CreateSolidBrush(COLOR_FONDO);
+
+		ATOM RetRgistrarClase = RegistrarClase(nNombre, reinterpret_cast<WNDPROC>(_GestorMensajes), nEstilosClase, nIconoRecursos, ColFondo);
+		_hWnd = CreateWindowEx(nEstilosExtendidos, nNombre, nTexto, nEstilos, cX, cY, cAncho, cAlto, hWndPadre, nMenu, GetModuleHandle(NULL), this);
 		Debug_MostrarUltimoError();
 		SendMessage(hWnd(), WM_SETFONT, (WPARAM)_Fuente18Normal(), 0);
 		BarraTareas._Iniciar(_hWnd);
@@ -135,7 +138,9 @@ namespace DWL {
 	};
 
 
-
+	LRESULT CALLBACK DVentana::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
+		return DefWindowProc(hWnd(), uMsg, wParam, lParam);
+	} 
 
 
 

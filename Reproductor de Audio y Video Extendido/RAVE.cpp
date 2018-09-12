@@ -199,20 +199,28 @@ void RAVE::IniciarUI(int nCmdShow) {
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_AGREGARALISTA		, L"Añadir a lista");
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_AGREGARANUEVALISTA	, L"Añadir a una nueva lista");
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ACTUALIZAR			, L"Actualizar");
-
-	// Menu Mezclar (shufle)
-//	VentanaRave.Menu_Mezclar.AgregarMenu(ID_MENUMEZCLAR_NO			, L"NO Mezclar");
-//	VentanaRave.Menu_Mezclar.AgregarMenu(ID_MENUMEZCLAR_SI			, L"Mezclar");
+	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ANALIZAR				, L"Analizar");
+	// Menu Boton Arbol BD	
+	VentanaRave.Menu_BotonArbolBD.AgregarMenu(ID_MENUBD_ACTUALIZAR		, L"Actualizar");
+	VentanaRave.Menu_BotonArbolBD.AgregarMenu(ID_MENUBD_ANALIZAR		, L"Analizar");
+	
+	// Menu Lista
+	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_ABRIRCARPETA		, L"Abrir carpeta en el explorador");
+	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_ELIMINAR			, L"Eliminar");
+	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_MOSTRARBD			, L"Mostrar en la base de datos");
+	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_NOTA				, L"Nota");
+	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_PROPIEDADES			, L"Propiedades");
+	// Menu Boton Lista
+	VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_BORRAR	, L"Borrar Lista");
+	VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_GENERAR	, L"Generar Lista");
 
 	// Menu Repetir
-	//Menu_Repetir.CrearMenu();
 	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_NO					, L"Desactivado");
 	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI					, L"Repetir");
 	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI_MEZCLAR			, L"Repetir y mezclar");
 	VentanaRave.Menu_Repetir.AgregarSeparador();
 	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI_APAGAR_REP		, L"Apagar RAVE");
 	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI_APAGAR_WIN		, L"Apagar Windows");
-	//Menu_Repetir.AgregarMenu(ID_REPETIR_SI_HIBERNAR_WIN	, L"Hibernar Windows (Estilo Win8+)");
 
 	switch (BD.Opciones_Repeat()) {
 		case Tipo_Repeat_NADA				:		VentanaRave.Menu_Repetir.Menu(0)->Icono(IDI_CHECK);		break;
@@ -223,43 +231,6 @@ void RAVE::IniciarUI(int nCmdShow) {
 //		case Tipo_Repeat_ApagarOrdenador	:		Menu_Repetir.Menu(4)->Icono(IDI_CHECK);		break;
 	}
 
-	/*
-	Menu_Test.AgregarMenu(ID_REPETIR_NO, L"Desactivado", IDI_CHECK);
-	Menu_Test.AgregarMenu(ID_REPETIR_SI, L"Repetir");
-	Menu_Test.AgregarMenu(ID_REPETIR_SI_MEZCLAR, L"Repetir y mezclar");
-	Menu_Test.AgregarSeparador();
-	Menu_Test.AgregarMenu(ID_REPETIR_SI_APAGAR_REP, L"Apagar RAVE");
-	Menu_Test.AgregarMenu(ID_REPETIR_SI_APAGAR_WIN, L"Apagar Windows");
-	DMenuEx *SM = Menu_Test.AgregarMenu(1, L"Test");
-	SM->AgregarMenu(2, L"Test");
-	SM->AgregarMenu(3, L"Test");
-	SM->AgregarMenu(4, L"Test");
-	SM->AgregarMenu(5, L"Test");
-	SM->AgregarMenu(6, L"Test");
-	SM = Menu_Test.AgregarMenu(1, L"Test2");
-	SM->AgregarMenu(2, L"Test2");
-	SM->AgregarMenu(3, L"Test2");
-	SM->AgregarMenu(4, L"Test2");
-	SM->AgregarMenu(5, L"Test2");
-	SM = SM->AgregarMenu(6, L"Test2");
-	SM->AgregarMenu(2, L"Test2.1");
-	SM->AgregarMenu(3, L"Test2.1");
-	SM->AgregarMenu(4, L"Test2.1");
-	SM->AgregarMenu(5, L"Test2.1");*/
-	//	Menu_Test.AgregarMenu(ID_REPETIR_SI_HIBERNAR_WIN, L"Hibernar Windows (Estilo Win8+)");
-
-	// Lista de imagenes de 16 pixeles
-/*	ListaImagenes16.Crear(16, 16);
-	ListaImagenes16.AgregarIconoRecursos(IDI_GENERO);				// 0
-	ListaImagenes16.AgregarIconoRecursos(IDI_GRUPO);				// 1
-	ListaImagenes16.AgregarIconoRecursos(IDI_DISCO);				// 2
-	ListaImagenes16.AgregarIconoRecursos(IDI_CANCION);				// 3
-	ListaImagenes16.AgregarIconoRecursos(IDI_VIDEO);				// 4
-	ListaImagenes16.AgregarIconoRecursos(IDI_CDAUDIO);	     		// 5
-	ListaImagenes16.AgregarIconoRecursos(IDI_LISTACANCIONES);		// 6
-	ListaImagenes16.AgregarIconoRecursos(IDI_SUBTITULOS);			// 7
-	ListaImagenes16.AgregarIconoRecursos(IDI_DIRECTORIO);			// 8
-	ListaImagenes16.AgregarIconoRecursos(IDI_RAIZ);					// 9*/
 
 	// Ventana principal
 	VentanaRave.Crear(nCmdShow);

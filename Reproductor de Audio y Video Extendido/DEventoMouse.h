@@ -5,6 +5,9 @@
 //! Espacio de nombres DWL
 namespace DWL {
 
+	#define WPARAM_TO_DEVENTOMOUSE(WP) *reinterpret_cast<DWL::DEventoMouse *>(WP)
+	#define DEVENTOMOUSE_TO_WPARAM(DE) reinterpret_cast<WPARAM>(&DE)
+
 	//! Clase que contiene los parametros de un evento del mouse (mouseup, down, move, click, dobleckick, etc...) para pasarlos a la función de su ventana padre.
 	class DEventoMouse {
 	  public: //////////////////////////// Miembros publicos

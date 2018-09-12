@@ -365,9 +365,9 @@ void VentanaPrincipal::Lista_Anterior(void) {
 	}
 }
 
-void VentanaPrincipal::Evento_BotonEx_Mouse_Down(const UINT cID) {
+void VentanaPrincipal::Evento_BotonEx_Mouse_Down(DWL::DEventoMouse &DatosMouse) {
 	_BotonExMouseDownTick = GetTickCount();
-	switch (cID) {
+	switch (DatosMouse.ID) {
 		case ID_BOTON_ANTERIOR:	
 			App.VLC.Ratio(0.5f);
 			break;
@@ -378,68 +378,82 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Down(const UINT cID) {
 
 }
 
-void VentanaPrincipal::Evento_BotonEx_Mouse_Click(const UINT cID) {
-	switch (cID) {
-		case ID_BOTON_OPCIONES: 
-			Arbol.Visible(FALSE);
-			Lista.Visible(FALSE);
-			Video.Visible(FALSE);
-			Opciones.Visible(TRUE);
-			Opciones.AsignarFoco();
-			App.VentanaOpciones.Crear();
-			break;
-		case ID_BOTON_BD:
-			Arbol.Visible(TRUE);
-			Lista.Visible(FALSE);
-			Video.Visible(FALSE);
-			Opciones.Visible(FALSE);
-			Arbol.AsignarFoco();
-			break;
-		case ID_BOTON_LISTA:
-			Arbol.Visible(FALSE);
-			Lista.Visible(TRUE);
-			Video.Visible(FALSE);
-			Opciones.Visible(FALSE);
-			Lista.AsignarFoco();
-			break;
-		case ID_BOTON_VIDEO:
-			Arbol.Visible(FALSE);
-			Lista.Visible(FALSE);
-			Video.Visible(TRUE);
-			Opciones.Visible(FALSE);
-			Video.AsignarFoco();
-			break;
-		case ID_BOTON_AGREGARRAIZ :
-			AgregarRaiz();
-			break;
-		case ID_BOTON_MEZCLAR:
-			Mezclar_Click();
-			break;
-		case ID_BOTON_REPETIR:
-			Repetir_Click();
-			break;
-		case ID_BOTON_ANTERIOR:
-			App.VLC.Ratio(1.0f);
-			if (GetTickCount() < _BotonExMouseDownTick + 200) {
-				Lista_Anterior();
-			}
-			break;
-		case ID_BOTON_SIGUIENTE:
-			App.VLC.Ratio(1.0f);
-			if (GetTickCount() < _BotonExMouseDownTick + 200) {
-				Lista_Siguiente();
-			}
-			break;
-		case ID_BOTON_PLAY:
-			Lista_Play();
-			break;
-		case ID_BOTON_PAUSA:
-			Lista_Pausa();
-			break;
-		case ID_BOTON_STOP:
-			Lista_Stop();
-			break;
-
+void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse) {
+	if (DatosMouse.Boton == 0) {
+		switch (DatosMouse.ID) {
+			case ID_BOTON_OPCIONES:
+				Arbol.Visible(FALSE);
+				Lista.Visible(FALSE);
+				Video.Visible(FALSE);
+				Opciones.Visible(TRUE);
+				Opciones.AsignarFoco();
+				App.VentanaOpciones.Crear();
+				break;
+			case ID_BOTON_BD:
+				Arbol.Visible(TRUE);
+				Lista.Visible(FALSE);
+				Video.Visible(FALSE);
+				Opciones.Visible(FALSE);
+				Arbol.AsignarFoco();
+				break;
+			case ID_BOTON_LISTA:
+				Arbol.Visible(FALSE);
+				Lista.Visible(TRUE);
+				Video.Visible(FALSE);
+				Opciones.Visible(FALSE);
+				Lista.AsignarFoco();
+				break;
+			case ID_BOTON_VIDEO:
+				Arbol.Visible(FALSE);
+				Lista.Visible(FALSE);
+				Video.Visible(TRUE);
+				Opciones.Visible(FALSE);
+				Video.AsignarFoco();
+				break;
+			case ID_BOTON_AGREGARRAIZ:
+				AgregarRaiz();
+				break;
+			case ID_BOTON_MEZCLAR:
+				Mezclar_Click();
+				break;
+			case ID_BOTON_REPETIR:
+				Repetir_Click();
+				break;
+			case ID_BOTON_ANTERIOR:
+				App.VLC.Ratio(1.0f);
+				if (GetTickCount() < _BotonExMouseDownTick + 200) {
+					Lista_Anterior();
+				}
+				break;
+			case ID_BOTON_SIGUIENTE:
+				App.VLC.Ratio(1.0f);
+				if (GetTickCount() < _BotonExMouseDownTick + 200) {
+					Lista_Siguiente();
+				}
+				break;
+			case ID_BOTON_PLAY:
+				Lista_Play();
+				break;
+			case ID_BOTON_PAUSA:
+				Lista_Pausa();
+				break;
+			case ID_BOTON_STOP:
+				Lista_Stop();
+				break;
+		}
+	}
+	else if (DatosMouse.Boton == 1) {
+		RECT RV;		
+		switch (DatosMouse.ID) {
+			case ID_BOTON_BD:
+				GetWindowRect(BotonBD.hWnd(), &RV);
+				Menu_BotonArbolBD.Mostrar(this, RV.left, RV.bottom);
+				break;
+			case ID_BOTON_LISTA:
+				GetWindowRect(BotonLista.hWnd(), &RV);
+				Menu_BotonLista.Mostrar(this, RV.left, RV.bottom);
+				break;
+		}
 	}
 }
 
@@ -707,6 +721,15 @@ NodoBD *VentanaPrincipal::Arbol_AgregarCancion(const size_t Hash) {
 	return TmpNodo;
 }*/
 
+void VentanaPrincipal::AnalizarBD(void) {
+	// ya se está analizando
+	if (Menu_ArbolBD.Menu(3)->Activado() == FALSE) return;	
+	// Desactivo el menú analizar
+	Menu_ArbolBD.Menu(3)->Activado(FALSE);
+	// Inicio el thread del analisis
+	ThreadAnalizar.Iniciar(_hWnd);
+}
+
 void VentanaPrincipal::ActualizarArbol(void) {
 	// Para evitar un posible dead lock miro si el menú está activado, y si no lo está es que se acaba de llamar a esta función y se está esperando a que termine el thread del analisis
 	if (Menu_ArbolBD.Menu(2)->Activado() == FALSE) return;
@@ -819,6 +842,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			Debug_Escribir_Varg(L"ThreadAnalisis::Cancelado %d archivos examinados.\n", lParam);
 			BarraTareas.Estado_SinProgreso();
 			BarraTareas.Resaltar();
+			Menu_ArbolBD.Menu(3)->Activado(TRUE);
 			break;
 
 		case WM_TOM_TERMINADO:
@@ -826,6 +850,8 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			Debug_Escribir_Varg(L"ThreadAnalisis::Terminado %d archivos examinados.\n", lParam);
 			BarraTareas.Estado_SinProgreso();
 			BarraTareas.Resaltar();
+			App.BD.ObtenerEtiquetas();
+			Menu_ArbolBD.Menu(3)->Activado(TRUE);
 			break;
 			//		case WM_TBA_AGREGARAUDIO:
 //			Arbol_AgregarCancion(static_cast<size_t>(lParam));
@@ -836,7 +862,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			BarraTareas.Estado_SinProgreso();
 //			BarraTareas.Resaltar();
 			Debug_Escribir_Varg(L"ThreadActualizarArbol::Terminado %d archivos encontrados.\n", lParam);
-			ThreadAnalizar.Iniciar(_hWnd);
+			AnalizarBD();
 			break;
 
 		case WM_DROPFILES :
@@ -908,10 +934,10 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			break;
 
 		case DWL_BOTONEX_CLICK :
-			Evento_BotonEx_Mouse_Click(static_cast<UINT>(wParam));
+			Evento_BotonEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
 		case DWL_BOTONEX_MOUSEDOWN :
-			Evento_BotonEx_Mouse_Down(static_cast<UINT>(wParam));
+			Evento_BotonEx_Mouse_Down(*reinterpret_cast<DWL::DEventoMouse *>(wParam));
 			return 0;
 
 /*		case DWL_ARBOLEX_CLICK :

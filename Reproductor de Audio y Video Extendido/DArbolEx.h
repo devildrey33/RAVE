@@ -40,29 +40,6 @@ namespace DWL {
 		DArbolEx_ParteNodo_Texto	= 4
 	};
 
-	/* Datos que devuelve un click / dobleclick */
-	/*class DArbolEx_DatosClick {
-	  public :
-						DArbolEx_DatosClick() : X(0), Y(0), Boton(0), Nodo(NULL) { };
-		  				DArbolEx_DatosClick(const int nX, const int nY, const int nBoton, DArbolEx_Nodo *nNodo) : X(nX), Y(nY), Boton(nBoton), Nodo(nNodo) { };
-				       ~DArbolEx_DatosClick() { };
-  		int				X;
-		int				Y;
-		int				Boton;
-		DArbolEx_Nodo  *Nodo;
-	};*/
-
-	/* Comportamiento del ArbolEx */
-/*	class DArbolEx_Comportamiento {
-	  public : 
-						DArbolEx_Comportamiento(void) : MultiSeleccion(TRUE), SubSeleccion(TRUE) { };
-		               ~DArbolEx_Comportamiento(void) { };
-		  BOOL			MultiSeleccion;
-		  BOOL			SubSeleccion;
-		  // labeledit
-		  // drag & drop
-
-	};*/
 
 	class DDesplegableEx;
 

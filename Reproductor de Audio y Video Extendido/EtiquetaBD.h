@@ -9,6 +9,7 @@
 #define TIPO_GRUPOTAG		0x10 
 #define TIPO_DISCOTAG		0x20 
 #define TIPO_NOMBRETAG		0x40 
+//#define TIPO_TOOS			TIPO_GENERO | TIPO_GRUPOPATH | TIPO_DISCOPATH | TIPO_NOMBREPATH | TIPO_GRUPOTAG | TIPO_DISCOTAG | TIPO_NOMBRETAG
 
 
 enum EtiquetaBD_Tipo {
@@ -25,26 +26,24 @@ enum EtiquetaBD_Tipo {
 class EtiquetaBD {
   public:
 						EtiquetaBD(void) : Tipo(0), Nota(0.0f), Tiempo(0), Medios(0)						{ };
-						EtiquetaBD(std::wstring &nTexto, const DWORD nTipo, const float nNota, const libvlc_time_t nTiempo) : Tipo(nTipo), Texto(nTexto), Nota(nNota), Tiempo(nTiempo), Medios(1)	{ };
+						EtiquetaBD(std::wstring &nTexto, const DWORD nTipo, const float nNota, const libvlc_time_t nTiempo, const UINT nMedios = 1) : Tipo(nTipo), Texto(nTexto), Nota(nNota), Tiempo(nTiempo), Medios(nMedios) { };
 					   ~EtiquetaBD(void)																	{ };
 
 	inline const DWORD	AgregarTipo(const EtiquetaBD_Tipo nTipo)											{ Tipo |= nTipo;	return Tipo;			}
 	inline const DWORD	AgregarTipo(const DWORD nTipo)														{ Tipo |= nTipo;	return Tipo;			}
-	inline const BOOL   EsGenero(void)																		{ return ((Tipo & TIPO_GENERO) > 0);		}
-	inline const BOOL   EsGrupoPath(void)																	{ return ((Tipo & TIPO_GRUPOPATH) > 0);		}
-	inline const BOOL   EsDiscoPath(void)																	{ return ((Tipo & TIPO_DISCOPATH) > 0);		}
-	inline const BOOL   EsNombrePath(void)																	{ return ((Tipo & TIPO_NOMBREPATH) > 0);	}
-	inline const BOOL   EsGrupoTag(void)																	{ return ((Tipo & TIPO_GRUPOTAG) > 0);		}
-	inline const BOOL   EsDiscoTag(void)																	{ return ((Tipo & TIPO_DISCOTAG) > 0);		}
-	inline const BOOL   EsNombreTag(void)																	{ return ((Tipo & TIPO_NOMBRETAG) > 0);		}
+
+	inline const BOOL   EsGenero(void)																		{ return ((Tipo & TIPO_GENERO)		> 0);	}
+	inline const BOOL   EsGrupoPath(void)																	{ return ((Tipo & TIPO_GRUPOPATH)	> 0);	}
+	inline const BOOL   EsDiscoPath(void)																	{ return ((Tipo & TIPO_DISCOPATH)	> 0);	}
+	inline const BOOL   EsNombrePath(void)																	{ return ((Tipo & TIPO_NOMBREPATH)	> 0);	}
+	inline const BOOL   EsGrupoTag(void)																	{ return ((Tipo & TIPO_GRUPOTAG)	> 0);	}
+	inline const BOOL   EsDiscoTag(void)																	{ return ((Tipo & TIPO_DISCOTAG)	> 0);	}
+	inline const BOOL   EsNombreTag(void)																	{ return ((Tipo & TIPO_NOMBRETAG)	> 0);	}
+
 	DWORD				Tipo;
-
-//	std::wstring       &SqlEtiquetas(void);
-
 	std::wstring		Texto;
-
 	UINT                Medios;
 	libvlc_time_t       Tiempo;
-	float               Nota;		// Suma de todas las notas, (para extraer la media hay que dividir la Nota por Medios.size())
+	float               Nota;		// Suma de todas las notas, (para extraer la media hay que dividir la Nota por el total de Medios)
 };
 

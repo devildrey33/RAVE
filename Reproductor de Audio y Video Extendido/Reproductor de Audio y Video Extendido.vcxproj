@@ -269,7 +269,6 @@
     <ClCompile Include="DToolTipEx.cpp" />
     <ClCompile Include="DUnidadesDisco.cpp" />
     <ClCompile Include="EnviarDump.cpp" />
-    <ClCompile Include="EtiquetaBD.cpp" />
     <ClCompile Include="ExtensionesValidas.cpp" />
     <ClCompile Include="ListaMedios.cpp" />
     <ClCompile Include="ListaRaices.cpp" />

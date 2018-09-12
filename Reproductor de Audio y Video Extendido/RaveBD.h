@@ -152,7 +152,9 @@ class RaveBD {
 //	const BOOL					AsignarTiempoMedio(const libvlc_time_t nTiempo, const sqlite3_int64 mHash);
 								
 								// Obtiene la etiqueta con el texto especificado
-	const BOOL                  ObtenerEtiqueta(std::wstring &eTexto, EtiquetaBD &Etiqueta);
+	EtiquetaBD                 *ObtenerEtiqueta(std::wstring &eTexto);
+								// Obtiene la lista completa de etiquetas
+	const BOOL                  ObtenerEtiquetas(void);
 
 	const BOOL                  ActualizarMedio(BDMedio *nMedio);
 
@@ -211,6 +213,7 @@ class RaveBD {
 
 	DWL::DUnidadesDisco			Unidades;
 
+
 								// Filtros estaticos
 								// Filtros para los strings que sean paths o nombres de medio
 	static void					FiltroPath(std::wstring &In, std::wstring &Out);
@@ -229,6 +232,7 @@ protected:
 	const BOOL			       _CompararRaices(std::wstring &Path1, std::wstring &Path2);
 	void                       _BorrarRaices(void);
 	std::vector<BDRaiz *>      _Raices;
+	std::vector<EtiquetaBD>    _Etiquetas;
 	const BOOL                 _ConsultaObtenerMedio(std::wstring &TxtConsulta, BDMedio &OUT_Medio);
 
     const BOOL                 _CrearTablas(void);

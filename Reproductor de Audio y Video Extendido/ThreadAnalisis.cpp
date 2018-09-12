@@ -29,7 +29,7 @@ const BOOL ThreadAnalisis::Iniciar(HWND nhWndDest) {
 
 	if (App.BD.Opciones_MostrarObtenerMetadatos() == TRUE) {
 		// Creo la ventana que mostrará el progreso
-		CrearVentana(NULL, L"RAVE_ObtenerMetadatos", L"Analizando...", 300, 200, 700, 420, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_VISIBLE, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+		CrearVentana(NULL, L"RAVE_ObtenerMetadatos", L"Analizando...", 300, 200, 700, 420, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 		RECT RC;
 		GetClientRect(_hWnd, &RC);
 		_BarraProgreso1.CrearBarraProgresoEx(this, 30, 105, RC.right - 60, 20, ID_BARRAPROGRESO1);
@@ -94,47 +94,50 @@ unsigned long ThreadAnalisis::_ThreadAnalisis(void *pThis) {
 	This->_PorParsear.resize(0);
 	This->_BD.ObtenerMediosPorParsear(This->_PorParsear);
 
-	// Fase 2 : Iniciar la VLC en este thread
-	const char * const Argumentos[] = { "-v", "--vout=vdummy" };
-	libvlc_instance_t *VLC = libvlc_new(2, Argumentos);
+	if (This->_PorParsear.size() > 0) {
+		ShowWindow(This->hWnd(), SW_SHOW);
 
-	int Contador = 0;
+		// Fase 2 : Iniciar la VLC en este thread
+		const char * const Argumentos[] = { "-v", "--vout=vdummy" };
+		libvlc_instance_t *VLC = libvlc_new(2, Argumentos);
 
-	// Mando un mensaje con el total de medios en los que hay que analizar sus metadatos
-	SendMessage(This->_hWnd, WM_TOM_INICIADO1, static_cast<WPARAM>(This->_PorParsear.size()), 0);
+		int Contador = 0;
 
-	// Inicio la transaccion por segunda vez
-	This->_BD.Consulta(L"BEGIN TRANSACTION");
-	// Fase 3 : analizar nuevos medios añadidos a la BD
-	for (size_t i = 0; i < This->_PorParsear.size(); i++) {
-		if (This->Cancelar() == TRUE) {
-			break;
+		// Mando un mensaje con el total de medios en los que hay que analizar sus metadatos
+		SendMessage(This->_hWnd, WM_TOM_INICIADO1, static_cast<WPARAM>(This->_PorParsear.size()), 0);
+
+		// Inicio la transaccion por segunda vez
+		This->_BD.Consulta(L"BEGIN TRANSACTION");
+		// Fase 3 : analizar nuevos medios añadidos a la BD
+		for (size_t i = 0; i < This->_PorParsear.size(); i++) {
+			if (This->Cancelar() == TRUE) {
+				break;
+			}
+
+			// Guardo los datos en la BD cada 50 iteraciones
+			if (Contador < 50) { Contador++; }
+			else {
+				This->_BD.Consulta(L"COMMIT TRANSACTION");
+				This->_BD.Consulta(L"BEGIN TRANSACTION");
+				Contador = 0;
+			}
+
+			This->_Parsear(VLC, This->_PorParsear[i]);
+			SendMessage(This->_VentanaPlayer, WM_TOM_TOTALMEDIOS1, i, static_cast<LPARAM>(This->_PorParsear.size()));
+			if (This->_hWnd != NULL) SendMessage(This->_hWnd, WM_TOM_TOTALMEDIOS1, i, static_cast<LPARAM>(This->_PorParsear.size()));
 		}
 
-		// Guardo los datos en la BD cada 50 iteraciones
-		if (Contador < 50) { Contador++; }
-		else {
-			This->_BD.Consulta(L"COMMIT TRANSACTION");
-			This->_BD.Consulta(L"BEGIN TRANSACTION");
-			Contador = 0;
-		}
+		if (This->_hWnd != NULL) SendMessage(This->_hWnd, WM_TOM_TOTALMEDIOS1, static_cast<WPARAM>(This->_PorParsear.size()), static_cast<LPARAM>(This->_PorParsear.size()));
 
-		This->_Parsear(VLC, This->_PorParsear[i]);
-		SendMessage(This->_VentanaPlayer, WM_TOM_TOTALMEDIOS1, i, static_cast<LPARAM>(This->_PorParsear.size()));
-		if (This->_hWnd != NULL) SendMessage(This->_hWnd, WM_TOM_TOTALMEDIOS1, i, static_cast<LPARAM>(This->_PorParsear.size()));
+		// Terminada la FASE 3
+		libvlc_release(VLC);
+		This->_BD.Consulta(L"COMMIT TRANSACTION");
+
+
+		// FASE 4 Revisión de anomalias en los generos, grupos y discos (solo del Tag)
+		This->_RevisarMedios();
+		This->_LimpiarAnomalias();
 	}
-
-	if (This->_hWnd != NULL) SendMessage(This->_hWnd, WM_TOM_TOTALMEDIOS1, static_cast<WPARAM>(This->_PorParsear.size()), static_cast<LPARAM>(This->_PorParsear.size()));
-
-	// Terminada la FASE 3
-	libvlc_release(VLC);
-	This->_BD.Consulta(L"COMMIT TRANSACTION");
-
-
-	// FASE 4 Revisión de anomalias en los generos, grupos y discos (solo del Tag)
-	This->_RevisarMedios();
-	This->_LimpiarAnomalias();
-
 	This->_BD.Terminar();
 
 	if (This->Cancelar() == TRUE)	SendMessage(This->_VentanaPlayer, WM_TOM_CANCELADO, 0, static_cast<LPARAM>(This->_PorParsear.size()));
@@ -194,18 +197,6 @@ void ThreadAnalisis::_RevisarMedios(void) {
 		}
 	}
 
-	// Actualizo los datos de los GruposPath en memória
-	/*for (i = 0; i < _AnomaliasGrupoPath.size(); i++) {
-		TmpTxt = _AnomaliasGrupoPath[i]->TextoFinal(Pos);
-		for (i2 = 0; i2 < _AnomaliasGrupoPath[i]->Anomalias.size(); i2++) {
-			if (i2 != Pos) { // Si no es la posición con el texto final
-				for (i3 = 0; i3 < _AnomaliasGrupoPath[i]->Anomalias[i2]->Medios.size(); i3++) {
-					_AnomaliasGrupoPath[i]->Anomalias[i2]->Medios[i3]->GrupoPath = TmpTxt;
-					_AnomaliasGrupoPath[i]->Anomalias[i2]->Medios[i3]->Actualizar = TRUE;
-				}
-			}
-		}
-	}*/
 
 	// Actualizo los datos de los GruposTag en memória
 	for (i = 0; i < _AnomaliasGrupoTag.size(); i++) {
@@ -220,19 +211,7 @@ void ThreadAnalisis::_RevisarMedios(void) {
 		}
 	}
 
-	// Actualizo los datos de los DiscosPath en memória
-	/*for (i = 0; i < _AnomaliasDiscoPath.size(); i++) {
-		TmpTxt = _AnomaliasDiscoPath[i]->TextoFinal(Pos);
-		for (i2 = 0; i2 < _AnomaliasDiscoPath[i]->Anomalias.size(); i2++) {
-			if (i2 != Pos) { // Si no es la posición con el texto final
-				for (i3 = 0; i3 < _AnomaliasDiscoPath[i]->Anomalias[i2]->Medios.size(); i3++) {
-					_AnomaliasDiscoPath[i]->Anomalias[i2]->Medios[i3]->DiscoPath = TmpTxt;
-					_AnomaliasDiscoPath[i]->Anomalias[i2]->Medios[i3]->Actualizar = TRUE;
-				}
-			}
-		}
-	}*/
-
+	
 	// Actualizo los datos de los DiscosTag en memória
 	for (i = 0; i < _AnomaliasDiscoTag.size(); i++) {
 		TmpTxt = _AnomaliasDiscoTag[i]->TextoFinal(Pos);
@@ -255,11 +234,18 @@ void ThreadAnalisis::_RevisarMedios(void) {
 		}
 	}
 
+	_BD.Consulta(L"COMMIT TRANSACTION");
+	
 
 	// FASE 5 : Una vez actualizadas las anomalias, creo una lista de etiquetas, de los generos, grupos, y discos (tanto del tag como del path)
 	if (_hWnd != NULL) SendMessage(_hWnd, WM_TOM_INICIADO3, static_cast<WPARAM>(_Medios.size()), 0);
 
-	_BD.Consulta(L"TRUNCATE TABLE Etiquetas");
+	// TRUNCATE TABLE no se puede ejecutar dentro de una transacción.
+	// TRUNCATE TABLE no funciona... hay que utilizar un DELETE sin clausula WHERE
+	_BD.Consulta(L"DELETE FROM Etiquetas"); 
+
+	_BD.Consulta(L"BEGIN TRANSACTION");
+
 	for (i = 0; i < _Medios.size(); i++) {
 		_AgregarEtiqueta(_Medios[i].Genero,		TIPO_GENERO,	_Medios[i].Nota, _Medios[i].Tiempo);
 		_AgregarEtiqueta(_Medios[i].GrupoPath,	TIPO_GRUPOPATH, _Medios[i].Nota, _Medios[i].Tiempo);
@@ -460,9 +446,13 @@ std::wstring ThreadAnalisis::_ObtenerMeta(libvlc_media_t *Media, libvlc_meta_t T
 
 
 void ThreadAnalisis::_Parsear(libvlc_instance_t *VLC, std::wstring &Path) {
+	BDMedio Medio;
+	_BD.ObtenerMedio(Path, Medio);
+
 	// Compruebo que existe el archivo	
 	if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(Path.c_str())) {
-//		Debug_Escribir_Varg(L"ThreadAnalisis::_Parsear  El archivo '%s' NO EXISTE!\n", .Path.c_str());
+		Medio.Parseado = TRUE;
+		_BD.ActualizarMedio(&Medio);
 		return;
 	}
 
@@ -490,8 +480,6 @@ void ThreadAnalisis::_Parsear(libvlc_instance_t *VLC, std::wstring &Path) {
 
 	// Si se ha realizado el parsing correctamente
 	if (libvlc_media_get_parsed_status(Media) == libvlc_media_parsed_status_done) {		
-		BDMedio Medio;
-		_BD.ObtenerMedio(Path, Medio);
 
 		std::wstring TmpTxt, TmpPath, Filtrado;
 //		UINT nPista;
@@ -531,9 +519,11 @@ void ThreadAnalisis::_Parsear(libvlc_instance_t *VLC, std::wstring &Path) {
 
 		_BD.ActualizarMedio(&Medio);
 	}
-	// Ha pasado el tiempo..
+	// Ha fallado..
 	else {
 		libvlc_media_parse_stop(Media);
+		Medio.Parseado = TRUE;
+		_BD.ActualizarMedio(&Medio);
 	}
 
 	libvlc_media_release(Media);

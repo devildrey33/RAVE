@@ -525,9 +525,6 @@
     <ClCompile Include="VentanaAsociarReproductor.cpp">
       <Filter>Ventanas</Filter>
     </ClCompile>
-    <ClCompile Include="EtiquetaBD.cpp">
-      <Filter>Base de datos</Filter>
-    </ClCompile>
     <ClCompile Include="ThreadAnalisis.cpp">
       <Filter>Base de datos\Threads\Analisis</Filter>
     </ClCompile>

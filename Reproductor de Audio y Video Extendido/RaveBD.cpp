@@ -40,6 +40,8 @@ const BOOL RaveBD::Iniciar(void) {
 	ObtenerRaices();
 	// Obtengo las opciones de la base de datos
 	ObtenerOpciones();
+	// Obtengo las etiquetas
+	ObtenerEtiquetas();
 
 	return TRUE;
 }
@@ -164,7 +166,7 @@ const BOOL RaveBD::ObtenerMediosPorParsear(std::vector<std::wstring> &Paths) {
 		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
 		return FALSE;
 	}
-	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
 			Medio.ObtenerFila(SqlQuery, Unidades);
@@ -199,7 +201,7 @@ const BOOL RaveBD::_ConsultaObtenerMedio(std::wstring &TxtConsulta, BDMedio &OUT
 	DWL::DUnidadDisco *Unidad = NULL;
 
 
-	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
 			OUT_Medio.ObtenerFila(SqlQuery, Unidades);
@@ -228,7 +230,6 @@ void RaveBD::_BorrarRaices(void) {
 // Función que obtiene todas las raices de la base de datos, y las carga en memória
 const BOOL RaveBD::ObtenerRaices(void) {
 	_BorrarRaices();
-	wchar_t		       *SqlError = NULL;
 	int				    SqlRet = 0;
 	const wchar_t      *SqlStr = L"SELECT * FROM Raiz";
 	DWL::DUnidadesDisco nUnidades;
@@ -237,13 +238,13 @@ const BOOL RaveBD::ObtenerRaices(void) {
 	SqlRet = sqlite3_prepare16_v2(_BD, SqlStr, -1, &SqlQuery, NULL);
 	if (SqlRet) return FALSE;
 
-	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
 			BDRaiz *TmpRaiz		= new BDRaiz;
 			TmpRaiz->Id			= static_cast<unsigned long>(sqlite3_column_int64(SqlQuery, 0));
 			TmpRaiz->Path		= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 1));
-			TmpRaiz->ID_Disco	= static_cast<unsigned long>(sqlite3_column_int64(SqlQuery, 2));
+			TmpRaiz->ID_Disco	= static_cast<unsigned long>(sqlite3_column_int64(SqlQuery, 2));			
 			// Asigno la letra de unidad a la raíz ya que las unidades extraibles pueden cambiar de letra pero siempre tienen el mismo número de serie.
 			Unidad = nUnidades.Buscar_Numero_Serie(TmpRaiz->ID_Disco);
 			if (Unidad != NULL) {
@@ -262,6 +263,49 @@ const BOOL RaveBD::ObtenerRaices(void) {
 	}
 
 	return TRUE;
+}
+
+
+const BOOL RaveBD::ObtenerEtiquetas(void) {
+	_Etiquetas.resize(0);
+
+	const wchar_t      *SqlStr = L"SELECT * FROM Etiquetas ORDER BY Texto";
+	int				    SqlRet = 0;
+	sqlite3_stmt       *SqlQuery = NULL;
+
+	SqlRet = sqlite3_prepare16_v2(_BD, SqlStr, -1, &SqlQuery, NULL);
+	if (SqlRet) return FALSE;
+
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
+		SqlRet = sqlite3_step(SqlQuery);
+		if (SqlRet == SQLITE_ROW) {
+
+/*			std::wstring CrearTablaEtiquetas = L"CREATE TABLE Etiquetas ("
+				L"Id" 				L" INTEGER PRIMARY KEY,"
+				L"Texto"			L" VARCHAR(260),"
+				L"Tipo"				L" INTEGER,"
+				L"Medios"			L" INTEGER,"
+				L"Nota"				L" DOUBLE,"
+				L"Tiempo"			L" BIGINT"
+			")";*/
+			std::wstring	Texto	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 1));
+			UINT			Tipo	= static_cast<UINT>(sqlite3_column_int(SqlQuery, 2));
+			UINT			Medios	= static_cast<UINT>(sqlite3_column_int(SqlQuery, 3));
+			float			Nota	= static_cast<float>(sqlite3_column_double(SqlQuery, 4));
+			libvlc_time_t	Tiempo  = static_cast<libvlc_time_t>(sqlite3_column_int64(SqlQuery, 5));
+			_Etiquetas.push_back(EtiquetaBD(Texto, Tipo, Nota, Tiempo, Medios));
+		}
+	}
+
+	sqlite3_finalize(SqlQuery);
+
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+
+	return TRUE;
+
 }
 
 
@@ -452,8 +496,8 @@ const BOOL RaveBD::_CrearTablas(void) {
 											L"Texto"			L" VARCHAR(260),"	 	  
 											L"Tipo"				L" INTEGER,"
 											L"Medios"			L" INTEGER,"
-											L"Nota "			L" DOUBLE,"				
-											L"Tiempo "			L" BIGINT"				
+											L"Nota"				L" DOUBLE,"				
+											L"Tiempo"			L" BIGINT"				
 										")";
 
 	if (Consulta(CrearTablaEtiquetas.c_str()) == SQLITE_ERROR) return FALSE;
@@ -1051,9 +1095,17 @@ const int RaveBD::Distancia(std::wstring &Origen, std::wstring &Destino) {
 
 
 
+EtiquetaBD *RaveBD::ObtenerEtiqueta(std::wstring &eTexto) {
+	for (size_t i = 0; i < _Etiquetas.size(); i++) {
+		if (_Etiquetas[i].Texto == eTexto) {
+			return &_Etiquetas[i];
+		}
+	}
+	return NULL;
+}
+/*
 const BOOL RaveBD::ObtenerEtiqueta(std::wstring &eTexto, EtiquetaBD &Etiqueta) {
-	std::wstring Q = L"SELECT * FROM Etiquetas WHERE Texto=\"";	Q += eTexto.c_str(); Q += L"\""; // Tipo_Medio_Audio
-//	std::wstring Q = L"SELECT * FROM Etiquetas WHERE Texto=\"" eTexto.c_str() L"\""; // Tipo_Medio_Audio
+	std::wstring Q = L"SELECT * FROM Etiquetas WHERE Texto=\"";	Q += eTexto.c_str(); Q += L"\""; 
 
 	wchar_t		   *SqlError = NULL;
 	int				SqlRet = 0;
@@ -1087,7 +1139,7 @@ const BOOL RaveBD::ObtenerEtiqueta(std::wstring &eTexto, EtiquetaBD &Etiqueta) {
 	return (Etiqueta.Texto.size() > 0);
 
 }
-
+*/
 
 
 

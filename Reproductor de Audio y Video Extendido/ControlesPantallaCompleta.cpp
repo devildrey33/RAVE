@@ -170,10 +170,10 @@ LRESULT CALLBACK ControlesPantallaCompleta::GestorMensajes(UINT uMsg, WPARAM wPa
 			break;*/
 
 		case DWL_BOTONEX_CLICK:
-			App.VentanaRave.Evento_BotonEx_Mouse_Click(static_cast<UINT>(wParam));
+			App.VentanaRave.Evento_BotonEx_Mouse_Click(reinterpret_cast<DEventoMouse &>(wParam));
 			return 0;
 		case DWL_BOTONEX_MOUSEDOWN:
-			App.VentanaRave.Evento_BotonEx_Mouse_Down(static_cast<UINT>(wParam));
+			App.VentanaRave.Evento_BotonEx_Mouse_Down(reinterpret_cast<DEventoMouse &>(wParam));
 			return 0;
 
 		case DWL_BARRAEX_CAMBIO :

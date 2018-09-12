@@ -299,6 +299,9 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 				case ID_MENUBD_ACTUALIZAR:
 					App.VentanaRave.ActualizarArbol();
 					break;
+				case ID_MENUBD_ANALIZAR :
+					App.VentanaRave.AnalizarBD();
+					break;
 			}
 		}
 	}
@@ -310,8 +313,8 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 		//App.BD.Consulta();
 		std::wstring EtiquetaFiltrada;
 		RaveBD::FiltroNombre(NodoRes->Texto, EtiquetaFiltrada);
-		EtiquetaBD Etiqueta;
-		BDMedio    Medio;
+		EtiquetaBD *Etiqueta = NULL;
+		BDMedio     Medio;
 
 
 		switch (NodoRes->TipoNodo) {
@@ -319,10 +322,11 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 			case ArbolBD_TipoNodo_Genero	 :
 			case ArbolBD_TipoNodo_Grupo		 :
 			case ArbolBD_TipoNodo_Disco		 :
-				if (App.BD.ObtenerEtiqueta(EtiquetaFiltrada, Etiqueta) == TRUE) {
+				Etiqueta = App.BD.ObtenerEtiqueta(EtiquetaFiltrada);
+				if (Etiqueta != NULL) {
 					Debug_Escribir(L"Destruir1\n");
 					_ToolTip.Destruir();
-					_ToolTip.Mostrar(Etiqueta);
+					_ToolTip.Mostrar(*Etiqueta);
 				}
 				break;
 			case ArbolBD_TipoNodo_Cancion	 :

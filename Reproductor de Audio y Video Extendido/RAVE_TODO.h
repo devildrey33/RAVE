@@ -40,13 +40,63 @@
 				V  Fet tooltip per les etiquetes
 				V  Fet tooltip pels medis
 	    V  Treure tots els buttons estandar i posar de meus (falta posar uns icones menys bastos...)
+		-  Generar llistes aleatories per etiqueta
+			- poder escollir tipus d'etiqueta (estil, grup, disc)
+			- Requereix tenir en memoria les etiquetes (que en un futur també servira per fer les cerques de la BD)
 		-  Mostrar les opcions en una finestra nova
-			-  Afegir opcions : assosiacions d'arxiu, llista d'inici, explicar el tema de les arrels, etc..
-				- Analizar metadatos automaticamente, o anializar metadatos solo al reproducir.
-		-  Menu per la llista
+			-  Afegir opcions : 
+				- Assosiacions d'arxiu
+					- Asociacions individuals per cada extensio
+					- Mostrar finestra per preguntar pel reproductor predeterminat
+						- No se si es en win10 o que.. pero si desde l'explorador esculleixes un reproductor, per molt que fagi les asociacions, aquell tipus sembla que no funciona...
+				- Llistes
+					- llista d'inici
+						- res
+						- l'ultima llista
+						- etiqueta aleatoria
+						- etiqeuta estil aleatoria
+						- etiqeuta grup aleatoria
+						- etiqeuta disc aleatoria
+					- Afegir cançons amb menys de 2.5 de nota a llistes aleatories.
+				- BD
+					- explicar el tema de les arrels, etc..
+					- Analitzar metadades automaticament, o anializar metadatos solo al reproducir.
+					- Mostrar finestra del analisis
+				- General
+					- Reproductor sempre devant
+					- Buscar actualitzacions
+					- Teclat amb el focus en el reproductor (play / pausa, stop, volum +, volum -, següent medi, anterior medi, accelerar x2.0, frenar a x0.5)
+						- De teclat global (hook) si que haig de mirar la tecla play / pausa , pero el tema del volum amb tecles exteses el porta el sistema operatiu, suposo que tambe interesa el següent i l'anterior medi...
+
+
+		-  Menu per la llista (val tant per audio com per video)
+			- Mostrar en la BD
+			- Mostrar directorio
+			- Nota
+			- Eliminar
+			- Propiedades
+
 		-  Crear Icona Buscar en l'arbre de la BD adal a la dreta
 	   +o- Solucionar glitch amb la llista i l'arbre, per exemple busca Symphony X sense tenir "Pelis i Series" afegit com arrel, y expandeix-lo
 			V  Arbre solucionat, i a la llista no m'ha tornat a pasar res raro...
 		-  Solucionar problema amb el buto PREV, que pot deixar al MedioActual a -1, per lo que calen dos NEXT per pasar al segon medi.
 		-  Buscar noves actualitzacións
+		-  Test básic en win 7
+		-  Crear instalador (amb lo que tingui el visual studio)
+		-  Teclat per la DListaEx (suprimir, shift, control)
+		-  Drag & drop intern a la DListaEx per moure items (multiselecció incosa)
+
+		- La idea es tenir les opcions suficients per posarles en un arbre (OJU que aixo es un canvi drástic i que a l'hora podria ordenar molt mes tot el projecte, inclus podria suposar crear una taula d'audio u una video separades i no com ara que els dos son un medio)
+				- o inclus crear una taula medios global amb un tipo (audio / video / lista / cdaudio), i despres crear una taula per cada un d'ells amb una id
+			-  Dividir Base de Datos en : Mi música , i Mis Videos, en 2 butons i en 2 arbres diferents
+			-  Afegir buto mis listas
+
+		- En pantalla completa m'agrada l'estil del VLC, 1000ms sense mousemove per ocultar a saco.
+
+
+	RAVE 0.65
+		- Finestra de propietats per un medi o una etiqueta
+		- Mostrar la llista de medis al reproduir un medi de forma "diferent", per exemple una liista translucida reduida (pensa que aixó nomes pasara si el reproductor no está maximitzat i está reproduint video)
+		- Si la llista / BD (autio/video) está buida mostrar un icona que inciti a arrosegar un arxiu / directori
+
 */

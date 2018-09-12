@@ -8,7 +8,7 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	                   ~VentanaOpcionesRAVE();
 	void				Crear();
 
-	void				Evento_BorraFondo(HDC DC);
+//	void				Evento_BorraFondo(HDC DC);
 
 	LRESULT CALLBACK	GestorMensajes(UINT uMSg, WPARAM wParam, LPARAM lParam);
 

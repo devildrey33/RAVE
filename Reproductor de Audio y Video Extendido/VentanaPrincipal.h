@@ -30,8 +30,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						EliminarRaiz(std::wstring &Path);
 
 //	void						Evento_Button_Mouse_Click(const UINT cID);
-	void						Evento_BotonEx_Mouse_Click(const UINT cID);
-	void                        Evento_BotonEx_Mouse_Down(const UINT cID);
+	void						Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse);
+	void                        Evento_BotonEx_Mouse_Down(DWL::DEventoMouse &DatosMouse);
 
 	//void						Evento_ArbolEx_Click(DArbolEx_DatosClick *Datos, const UINT aID);
 	void						Evento_Temporizador(const UINT cID);
@@ -63,10 +63,15 @@ class VentanaPrincipal : public DWL::DVentana {
 
 	DWL::DMenuEx				Menu_Repetir;
 	DWL::DMenuEx 				Menu_ArbolBD;
-//	DWL::DMenuEx 				Menu_Mezclar;
+	DWL::DMenuEx                Menu_Lista;
+
+	DWL::DMenuEx                Menu_BotonLista;
+	DWL::DMenuEx                Menu_BotonArbolBD;
+	//	DWL::DMenuEx 				Menu_Mezclar;
 
 
 	void						ActualizarArbol(void);
+	void                        AnalizarBD(void);
 	ThreadActualizarArbol		ThreadActualizar;
 	ThreadAgregarArchivosLista  ThreadArchivosLista;
 	ThreadAnalisis				ThreadAnalizar;

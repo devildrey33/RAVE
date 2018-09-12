@@ -35,7 +35,7 @@ namespace DWL {
 		const BOOL					Maximizada(void);
 		inline const HWND			AsignarFoco(void)               { return SetFocus(_hWnd); };
 		inline BOOL					Destruir(void)					{ if (_hWnd == NULL) { return TRUE; } BOOL R = DestroyWindow(_hWnd); _hWnd = NULL; return R; };
-		inline LONG_PTR				ID(void)						{ return GetWindowLongPtr(_hWnd, GWL_ID); };
+		inline UINT					ID(void)						{ return static_cast<UINT>(GetWindowLongPtr(_hWnd, GWL_ID)); };
 		inline HWND					hWndPadre(void)					{ return GetParent(_hWnd); };
 		inline const BOOL			Visible(const BOOL nMostrar)    { return ShowWindow(_hWnd, (nMostrar != TRUE) ? SW_HIDE : SW_SHOW); };
 		inline const BOOL			Visible(void)                   { return IsWindowVisible(_hWnd); };
@@ -76,7 +76,7 @@ namespace DWL {
 	  public:
 									DVentana(void) : DhWnd() { }
 		                           ~DVentana(void) { }
-									// Función para crear una ventana
+									// Función para crear una ventana																																																	  /* NO SE UTILIZA */								
 		HWND						CrearVentana(DhWnd *nPadre, const TCHAR *nNombre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos = NULL, UINT nEstilosClase = NULL, HMENU nMenu = NULL, HBRUSH nColorFondo = NULL, const int nIconoRecursos = 32512);
 
 		void						Titulo(std::wstring &nTitulo);
@@ -87,7 +87,7 @@ namespace DWL {
 
 		inline virtual void			Repintar(void) { RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT | RDW_FRAME); };
 
-		virtual LRESULT CALLBACK	GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) { return DefWindowProc(hWnd(), uMsg, wParam, lParam); };
+		virtual LRESULT CALLBACK	GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	  protected:
 		static LRESULT CALLBACK    _GestorMensajes(HWND HandleVentana, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	};

@@ -483,7 +483,14 @@ namespace DWL {
 		HWND WFP = WindowFromPoint(Pt);
 		// Si la ventana debajo del mouse no es un MenuEx
 		if (SendMessage(WFP, WM_ESMENUEX, 0, 0) != WM_ESMENUEX) {
+			switch (Boton) {
+				case 0: SendMessage(WFP, WM_LBUTTONDOWN, wParam, lParam); break;
+				case 1: SendMessage(WFP, WM_RBUTTONDOWN, wParam, lParam); break;
+				case 2: SendMessage(WFP, WM_MBUTTONDOWN, wParam, lParam); break;
+			}
 			SetFocus(WFP);
+			Ocultar(TRUE);
+			return;
 		}
 
 
@@ -512,6 +519,11 @@ namespace DWL {
 		HWND WFP = WindowFromPoint(Pt);
 		// Si la ventana debajo del mouse no es un MenuEx
 		if (SendMessage(WFP, WM_ESMENUEX, 0, 0) != WM_ESMENUEX) {			
+			switch (Boton) {
+				case 0: SendMessage(WFP, WM_LBUTTONUP, wParam, lParam); break;
+				case 1: SendMessage(WFP, WM_RBUTTONUP, wParam, lParam); break;
+				case 2: SendMessage(WFP, WM_MBUTTONUP, wParam, lParam); break;
+			}
 			SetFocus(WFP);
 		}
 	}
