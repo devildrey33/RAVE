@@ -205,7 +205,6 @@
     <ClInclude Include="DDirectoriosWindows.h" />
     <ClInclude Include="DhWnd.h" />
     <ClInclude Include="DMensajesWnd.h" />
-    <ClInclude Include="DMenu.h" />
     <ClInclude Include="DMouse.h" />
     <ClInclude Include="DStringUtils.h" />
     <ClInclude Include="DToolTipEx.h" />
@@ -259,7 +258,6 @@
     <ClCompile Include="DListaEx_SubItem.cpp" />
     <ClCompile Include="DListaIconos.cpp" />
     <ClCompile Include="DMarcaEx.cpp" />
-    <ClCompile Include="DMenu.cpp" />
     <ClCompile Include="DMenuEx.cpp" />
     <ClCompile Include="DMouse.cpp" />
     <ClCompile Include="DDlgDirectorios.cpp" />

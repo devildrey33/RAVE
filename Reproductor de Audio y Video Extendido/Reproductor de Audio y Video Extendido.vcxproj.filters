@@ -26,9 +26,6 @@
     <Filter Include="DWL\Ventanas\Consola">
       <UniqueIdentifier>{84928c74-54e6-467a-9fdd-fe4f5ce0a3db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas\Menu">
-      <UniqueIdentifier>{582e9ccc-d9e5-4da7-bbb3-6bfe4363b8b8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DWL\Sistema">
       <UniqueIdentifier>{73610f63-b897-4ea5-b3bd-253a763c096e}</UniqueIdentifier>
     </Filter>
@@ -177,9 +174,6 @@
     </ClInclude>
     <ClInclude Include="DConsola.h">
       <Filter>DWL\Ventanas\Consola</Filter>
-    </ClInclude>
-    <ClInclude Include="DMenu.h">
-      <Filter>DWL\Ventanas\Menu</Filter>
     </ClInclude>
     <ClInclude Include="DMouse.h">
       <Filter>DWL\Sistema\Mouse</Filter>
@@ -389,9 +383,6 @@
     </ClCompile>
     <ClCompile Include="DConsola.cpp">
       <Filter>DWL\Ventanas\Consola</Filter>
-    </ClCompile>
-    <ClCompile Include="DMenu.cpp">
-      <Filter>DWL\Ventanas\Menu</Filter>
     </ClCompile>
     <ClCompile Include="DMouse.cpp">
       <Filter>DWL\Sistema\Mouse</Filter>

@@ -365,6 +365,29 @@ void VentanaPrincipal::Lista_Anterior(void) {
 	}
 }
 
+void VentanaPrincipal::GenerarListaAleatoria(const TipoListaAleatoria nTipo) {
+	std::vector<BDMedio> Medios;
+	App.BD.GenerarListaAleatoria(Medios, nTipo);
+	Lista.BorrarListaReproduccion();
+	for (size_t i = 0; i < Medios.size(); i++) {
+		Lista.AgregarMedio(&Medios[i]);
+	}
+//	Lista.Repintar();
+	App.VentanaRave.Lista_Play();
+}
+
+void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
+	switch (cID) {
+		case ID_MENUBOTONLISTA_GENERAR			:	GenerarListaAleatoria();				break;
+		case ID_MENUBOTONLISTA_GENERAR_GENERO	:	GenerarListaAleatoria(TLA_Genero);		break;
+		case ID_MENUBOTONLISTA_GENERAR_GRUPO	:	GenerarListaAleatoria(TLA_Grupo);		break;
+		case ID_MENUBOTONLISTA_GENERAR_DISCO	:	GenerarListaAleatoria(TLA_Disco);		break;
+		case ID_MENUBOTONLISTA_GENERAR_50MEDIOS	:	GenerarListaAleatoria(TLA_50Medios);	break;
+		case ID_MENUBOTONLISTA_BORRAR			:	Lista.BorrarListaReproduccion();		break;
+	}
+}
+
+
 void VentanaPrincipal::Evento_BotonEx_Mouse_Down(DWL::DEventoMouse &DatosMouse) {
 	_BotonExMouseDownTick = GetTickCount();
 	switch (DatosMouse.ID) {
@@ -375,7 +398,6 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Down(DWL::DEventoMouse &DatosMouse) 
 			App.VLC.Ratio(2.0f);
 			break;
 	}
-
 }
 
 void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse) {
@@ -890,15 +912,8 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			return 0;
 		case WM_COMMAND :
 			Debug_Escribir_Varg(L"WM_COMMAND %d, %d\n", HIWORD(wParam), LOWORD(wParam));
-/*			if (HIWORD(wParam) == BN_CLICKED) { // Botón estándar
-				Evento_Button_Mouse_Click(LOWORD(wParam));
-				return 0;
-			}*/
-/*			else { // Menu estándar
-				Evento_Menu(LOWORD(wParam));
-				return 0;
-			}*/
-			break;
+			Evento_MenuEx_Click(LOWORD(wParam));
+			return 0;
 		case WM_EXITSIZEMOVE  :
 			if (App.VentanaRave.Maximizada() == FALSE) {
 				App.BD.Opciones_GuardarPosTamVentana();

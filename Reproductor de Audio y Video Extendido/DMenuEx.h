@@ -115,7 +115,7 @@ namespace DWL {
 
 		BOOL                   _Activado;
 		DMenuEx_Tipo           _Tipo;
-		HWND                   _hWndDest;
+		static HWND            _hWndDest;
 
 		BOOL				   _AnularMouseMove;
 								// Menu resultado para la función MostrarModal

@@ -12,6 +12,7 @@
 #include "VentanaAsociarReproductor.h"
 #include "VentanaOpcionesRAVE.h"
 #include <stdlib.h>
+#include <random>
 
 using namespace DWL;
 
@@ -44,8 +45,13 @@ class RAVE {
 									// Inicia los menús y la ventana principal
 	void							IniciarUI(int nCmdShow);
 
-	template <typename T = int> T	Rand(const T Max, const T Min = 0) {
-										return static_cast<T>((double)rand() / (RAND_MAX + 1) * (Max - Min) + Min);
+	template <typename T = int>  T	Rand(T Max, T Min = 0) {
+										std::mt19937 mt(_rd());
+										std::uniform_real_distribution<double> dist(static_cast<double>(Min), static_cast<double>(Max));
+										return static_cast<T>(dist(mt));
+
+//										T Rnd = static_cast<T>(rand()) / static_cast<T>(RAND_MAX);
+//										return Rnd * (Max - Min) + Min;
 									}
 									// Obtiene la linea de comando y determina que hay que hacer
 	const LineaComando				ObtenerLineaComando(std::vector<std::wstring> &Paths);
@@ -97,7 +103,7 @@ class RAVE {
 									// Token para el GDI+
 	ULONG_PTR						gdiplusToken;
 
-
+	std::random_device			   _rd;
 };
 
 

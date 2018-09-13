@@ -118,6 +118,14 @@ class BDMedio {
 };
 
 
+enum TipoListaAleatoria {
+	TLA_Genero		= 0,
+	TLA_Grupo		= 1,
+	TLA_Disco		= 2,
+	TLA_50Medios	= 3,
+	TLA_LoQueSea	= 4
+};
+
 class ThreadAnalisis;
 
 class RaveBD {
@@ -139,9 +147,6 @@ class RaveBD {
 								// Función que extrae los datos del medio que nos da el path
 	const BOOL					AnalizarMedio(std::wstring &mPath, BDMedio &OUT_Medio, const ULONG Longitud = 0);
 
-								// Agrega / Obtiene el Medio de la BD, y lo devuelve.
-//	const BOOL					AgregarObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio);
-
 								// Obtiene un puntero con los datos del medio en la BD (Si el medio no existe devuelve FALSE)
 	const BOOL					ObtenerMedio(const sqlite3_int64 mHash, BDMedio &OUT_Medio);
 	const BOOL					ObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio);
@@ -149,14 +154,17 @@ class RaveBD {
 								// Obtiene una lista de paths que pertenecen a medios por parsear (extraer metadatos, id3, etc...)
 	const BOOL                  ObtenerMediosPorParsear(std::vector<std::wstring> &Paths);
 	const BOOL                  ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios);
-//	const BOOL					AsignarTiempoMedio(const libvlc_time_t nTiempo, const sqlite3_int64 mHash);
 								
 								// Obtiene la etiqueta con el texto especificado
 	EtiquetaBD                 *ObtenerEtiqueta(std::wstring &eTexto);
 								// Obtiene la lista completa de etiquetas
 	const BOOL                  ObtenerEtiquetas(void);
 
+								// Guarda los datos del medio especificado en la BD
 	const BOOL                  ActualizarMedio(BDMedio *nMedio);
+
+								// Genera una lista aleatoria por el tipo especificado
+	const BOOL                  GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const TipoListaAleatoria nTipo = TLA_LoQueSea);
 
 								// Funciones para buscar una raíz por su path o por su id
 	BDRaiz                     *BuscarRaiz(std::wstring &nPath);
@@ -226,7 +234,7 @@ class RaveBD {
 protected:
 	const BOOL                  ActualizarMedioAnalisis(BDMedio *nMedio);
 
-
+								// Devuelve TRUE si es un número del 0 al 9, no acepta comas para decimales
     static const BOOL		   _EsNumero(const wchar_t Caracter);
 
 	const BOOL			       _CompararRaices(std::wstring &Path1, std::wstring &Path2);

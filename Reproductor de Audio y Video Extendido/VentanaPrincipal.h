@@ -29,7 +29,7 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						AgregarRaiz(void);
 	void						EliminarRaiz(std::wstring &Path);
 
-//	void						Evento_Button_Mouse_Click(const UINT cID);
+	void						Evento_MenuEx_Click(const UINT cID);
 	void						Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse);
 	void                        Evento_BotonEx_Mouse_Down(DWL::DEventoMouse &DatosMouse);
 
@@ -52,6 +52,9 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						Evento_Cerrar(void);
 
 	void						AjustarControles(RECT &RC);
+
+	void                        GenerarListaAleatoria(const TipoListaAleatoria nTipo = TLA_LoQueSea);
+
 
 	void						PantallaCompleta(const BOOL nActivar);
 	inline const BOOL			PantallaCompleta(void) { return _PantallaCompleta;  }

@@ -198,7 +198,7 @@ const BOOL RaveBD::_ConsultaObtenerMedio(std::wstring &TxtConsulta, BDMedio &OUT
 	std::wstring TmpPath;
 
 	//BDRaiz *TmpRaiz = NULL;
-	DWL::DUnidadDisco *Unidad = NULL;
+//	DWL::DUnidadDisco *Unidad = NULL;
 
 
 	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
@@ -398,7 +398,75 @@ const BOOL RaveBD::ActualizarMedioAnalisis(BDMedio *nMedio) {
 		return FALSE;
 	}
 	return TRUE;
+}
 
+const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const TipoListaAleatoria nTipo) {
+	TipoListaAleatoria Tipo = nTipo;
+	if (Tipo == TLA_LoQueSea) {
+		Tipo = static_cast<TipoListaAleatoria>(App.Rand(static_cast<int>(TLA_LoQueSea - 1), static_cast<int>(TLA_Genero)));
+	}
+
+	std::vector<EtiquetaBD *> Etiquetas;
+	std::wstring Q;
+	size_t Rand;
+	switch (Tipo) {
+		case TLA_Genero:
+			for (size_t i = 0; i < _Etiquetas.size(); i++) {
+				if (_Etiquetas[i].EsGenero() == TRUE) Etiquetas.push_back(&_Etiquetas[i]);
+			}
+			Rand = App.Rand<size_t>(Etiquetas.size());
+			Q = L"SELECT * FROM Medios WHERE Genero=\"" + Etiquetas[Rand]->Texto + L"\"";
+			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Genero (%s)\n", Etiquetas[Rand]->Texto.c_str());
+			break;
+		case TLA_Grupo:
+			for (size_t i = 0; i < _Etiquetas.size(); i++) {
+				if (_Etiquetas[i].EsGrupoPath() == TRUE || _Etiquetas[i].EsGrupoTag() == TRUE) Etiquetas.push_back(&_Etiquetas[i]);
+			}
+			Rand = App.Rand<size_t>(Etiquetas.size());
+			Q = L"SELECT * FROM Medios WHERE (GrupoPath=\"" + Etiquetas[Rand]->Texto + L"\") OR (GrupoTag=\"" + Etiquetas[Rand]->Texto + L"\")";
+			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Grupo (%s)\n", Etiquetas[Rand]->Texto.c_str());
+			break;
+		case TLA_Disco:
+			for (size_t i = 0; i < _Etiquetas.size(); i++) {
+				if (_Etiquetas[i].EsDiscoPath() == TRUE || _Etiquetas[i].EsDiscoTag() == TRUE) Etiquetas.push_back(&_Etiquetas[i]);
+			}
+			Rand = App.Rand<size_t>(Etiquetas.size());
+			Q = L"SELECT * FROM Medios WHERE (DiscoPath=\"" + Etiquetas[Rand]->Texto + L"\") OR (DiscoTag=\"" + Etiquetas[Rand]->Texto + L"\")";
+			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Disco (%s)\n", Etiquetas[Rand]->Texto.c_str());
+			break;
+		case TLA_50Medios:
+			Q = L"SELECT * FROM Medios WHERE TipoMedio=1 ORDER BY RANDOM() LIMIT 50";
+			Debug_Escribir(L"RaveBD::GenerarListaAleatoria Tipo : 50 Canciones.\n");
+			break;
+	}
+
+	
+	int				    SqlRet = 0;
+	sqlite3_stmt       *SqlQuery = NULL;
+
+	SqlRet = sqlite3_prepare16_v2(_BD, Q.c_str(), -1, &SqlQuery, NULL);
+	if (SqlRet) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
+		SqlRet = sqlite3_step(SqlQuery);
+		if (SqlRet == SQLITE_ROW) {
+			BDMedio TmpMedio;
+			TmpMedio.ObtenerFila(SqlQuery, Unidades);
+			OUT_Medios.push_back(TmpMedio);
+		}
+	}
+
+	sqlite3_finalize(SqlQuery);
+
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+
+	return TRUE;
 }
 
 const BOOL RaveBD::_CrearTablas(void) {
