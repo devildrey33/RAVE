@@ -40,7 +40,7 @@ void VentanaAsociarReproductor::Pintar(HDC DC) {
 	HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO);
 	FillRect(DC, &RC, BrochaFondo);
 
-	HFONT VFuente = static_cast<HFONT>(SelectObject(DC, DhWnd::_Fuente18Negrita()));
+	HFONT VFuente = static_cast<HFONT>(SelectObject(DC, DhWnd::Fuente18Negrita()));
 
 	// Pinto el titulo
 	SetBkMode(DC, TRANSPARENT);
@@ -52,7 +52,7 @@ void VentanaAsociarReproductor::Pintar(HDC DC) {
 	DrawText(DC, pTitulo, -1, &RT, DT_LEFT);
 
 	// Pinto el texto
-	SelectObject(DC, DhWnd::_Fuente18Normal());
+	SelectObject(DC, DhWnd::Fuente18Normal());
 	RTS.top += 25; RT.top += 26;
 	SetTextColor(DC, COLOR_TEXTO_SOMBRA);
 	DrawText(DC, pTexto, -1, &RTS, DT_LEFT);

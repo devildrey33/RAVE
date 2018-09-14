@@ -13,7 +13,7 @@ namespace DWL {
 		Debug_UltimoError(0);		// Reseteo el ultimo error del WINAPI
 		_hWnd = CrearControlEx(NULL, L"DArbolEx", L"", NULL, RC.left, RC.bottom, RC.right - RC.left, 200, WS_POPUP | WS_BORDER, WS_EX_NOACTIVATE | WS_EX_TOPMOST | WS_EX_TOOLWINDOW, NULL);  // CS_DBLCLKS (el control recibe notificaciones de doble click)
 		Debug_MostrarUltimoError(); // Muestra el error de CreateWindowEx por la consola (si ha sucedido uno)
-		Fuente = _Fuente18Normal;
+		Fuente = Fuente18Normal;
 //		SetLayeredWindowAttributes(_hWnd, 0, 240, LWA_ALPHA);
 		ActualizarDirectorios();
 		//SetForegroundWindow(App.VentanaRave.hWnd());

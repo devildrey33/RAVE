@@ -47,6 +47,15 @@ enum Tipo_Repeat {
 //	Tipo_Repeat_HibernarOrdenador	= 5
 };
 
+enum Tipo_Inicio {
+	Tipo_Inicio_NADA		= 0,
+	Tipo_Inicio_Genero		= 1,
+	Tipo_Inicio_Grupo		= 2,
+	Tipo_Inicio_Disco		= 3,
+	Tipo_Inicio_50Medios	= 4,
+	Tipo_Inicio_LoQueSea    = 5,
+	Tipo_Inicio_UltimaLista = 6
+};
 
 class EtiquetaBD;
 
@@ -114,7 +123,6 @@ class BDMedio {
 		
 	void					PistaStr(std::wstring &nPistaStr);
 	void					ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
-
 };
 
 
@@ -185,6 +193,10 @@ class RaveBD {
 								// Devuelve el puntero de la base de datos sqlite 3
 	inline sqlite3			   *operator()(void) { return _BD; }
 
+
+	const BOOL                  ObtenerUltimaLista(void);
+	const BOOL                  GuardarUltimaLista(void);
+
 								// Función que obtiene las opciones de la base de datos
 	const BOOL					ObtenerOpciones(void);
 								// NOTA Esta función no guarda la posición en la BD
@@ -207,8 +219,8 @@ class RaveBD {
 	inline const Tipo_Repeat	Opciones_Repeat(void) { return _Opciones_Repeat; }
 	void						Opciones_Repeat(const Tipo_Repeat nRepeat);
 
-	inline const int			Opciones_Inicio(void) { return _Opciones_Inicio; }
-	void						Opciones_Inicio(const int nInicio);
+	inline const Tipo_Inicio	Opciones_Inicio(void) { return _Opciones_Inicio; }
+	void						Opciones_Inicio(const Tipo_Inicio nInicio);
 
 	inline const int			Opciones_OcultarMouseEnVideo(void) { return _Opciones_OcultarMouseEnVideo; }
 	void						Opciones_OcultarMouseEnVideo(const int nOcultarMouseEnVideo);
@@ -256,7 +268,7 @@ protected:
 	int                        _Opciones_Alto;
 	BOOL                       _Opciones_Shufle;
 	Tipo_Repeat                _Opciones_Repeat;
-	int                        _Opciones_Inicio;					// Como se inicia el reproductor (lista de inicio)
+	Tipo_Inicio                _Opciones_Inicio;					// Como se inicia el reproductor (lista de inicio)
 	float                      _Opciones_Version;					// Versión de la base de datos
 	int                        _Opciones_OcultarMouseEnVideo;		// Tiempo en MS que tarda en ocultarse el mouse y los controles de un video
 	BOOL                       _Opciones_MostrarObtenerMetadatos;	// Mostrar la ventana del thread obtener metadatos

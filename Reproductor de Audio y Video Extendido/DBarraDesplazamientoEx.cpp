@@ -88,8 +88,8 @@ namespace DWL {
 		Evento_MostrarToolTip(valor, TextoToolTip);
 
 		switch (_MostrarToolTip) {
-			case DBarraDesplazamientoEx_ToolTip_Superior:		_ToolTip.MostrarToolTipEx(RW.left + cX, RW.top - 35, TextoToolTip);		break;
-			case DBarraDesplazamientoEx_ToolTip_Inferior:		_ToolTip.MostrarToolTipEx(RW.left + cX, RW.bottom + 10, TextoToolTip);	break;
+			case DBarraDesplazamientoEx_ToolTip_Superior:		_ToolTip.Mostrar(RW.left + cX, RW.top - 35, TextoToolTip);		break;
+			case DBarraDesplazamientoEx_ToolTip_Inferior:		_ToolTip.Mostrar(RW.left + cX, RW.bottom + 10, TextoToolTip);	break;
 		}
 		if (_Estado == DBarraDesplazamientoEx_Estado_Presionado) {
 			float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
@@ -158,7 +158,7 @@ namespace DWL {
 				Evento_MouseMovimiento(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
 				break;
 			case WM_MOUSELEAVE:
-				_ToolTip.OcultarToolTipEx();
+				_ToolTip.Ocultar();
 				_MouseDentro = FALSE;
 				if (_Estado != DBarraDesplazamientoEx_Estado_Presionado) {
 					_Estado = DBarraDesplazamientoEx_Estado_Normal;

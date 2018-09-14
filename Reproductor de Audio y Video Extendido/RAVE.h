@@ -11,6 +11,7 @@
 #include "AsociarReproductor.h"
 #include "VentanaAsociarReproductor.h"
 #include "VentanaOpcionesRAVE.h"
+#include "DToolTipEx.h"
 #include <stdlib.h>
 #include <random>
 
@@ -62,7 +63,9 @@ class RAVE {
 
 	void							CerrarSistema(const SOCerrarSistema Forma = SOCerrarSistema_Apagar, const BOOL Forzar = FALSE);
 
-//	int							Rand()
+	void                            MostrarToolTip(DhWnd &Padre, const wchar_t *Texto);
+	void                            MostrarToolTip(DhWnd &Padre, std::wstring &Texto);
+	//	int							Rand()
 
 	void							Terminar(void);
 
@@ -100,10 +103,13 @@ class RAVE {
 									// Objeto para asociar este reproductor en el registro de windows
 	AsociarReproductor				AsociarMedios;
 
-									// Token para el GDI+
-	ULONG_PTR						gdiplusToken;
+  protected:
+
+	DToolTipEx                     _ToolTip;
 
 	std::random_device			   _rd;
+	// Token para el GDI+
+	ULONG_PTR					   _gdiplusToken;
 };
 
 

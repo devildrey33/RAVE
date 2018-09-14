@@ -20,7 +20,7 @@ namespace DWL {
 		_hWnd = CrearControlEx(nPadre, L"DDesplegableEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, NULL);  // CS_DBLCLKS (el control recibe notificaciones de doble click)
 		_TipoEdicion		= nTipoEdicion;
 		_TipoDesplegable	= nTipoDesplegable;
-		Fuente				= _Fuente18Normal;
+		Fuente				= Fuente18Normal;
 
 		// Creo el tipo de desplegable especificado
 		switch (_TipoDesplegable) {

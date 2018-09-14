@@ -189,7 +189,7 @@ namespace DWL {
 		if (hWnd()) { Debug_Escribir(L"DEdicionTextoEx::CrearEdicionTextoEx() Error : ya se ha creado el control...\n"); return hWnd(); }
 		_hWnd = CrearControlEx(nPadre, L"DEdicionTextoEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
 		_Texto = nTxt;
-		Fuente = _Fuente18Normal;
+		Fuente = Fuente18Normal;
 
 		Icono(nIcono, FALSE);
 

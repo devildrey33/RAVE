@@ -408,6 +408,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 
 	std::vector<EtiquetaBD *> Etiquetas;
 	std::wstring Q;
+	std::wstring ToolTip;
 	size_t Rand;
 	switch (Tipo) {
 		case TLA_Genero:
@@ -416,6 +417,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 			}
 			Rand = App.Rand<size_t>(Etiquetas.size());
 			Q = L"SELECT * FROM Medios WHERE Genero=\"" + Etiquetas[Rand]->Texto + L"\"";
+			ToolTip = L"Lista aleatória por Genero :\"" + Etiquetas[Rand]->Texto + L"\" generada.";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Genero (%s)\n", Etiquetas[Rand]->Texto.c_str());
 			break;
 		case TLA_Grupo:
@@ -424,6 +426,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 			}
 			Rand = App.Rand<size_t>(Etiquetas.size());
 			Q = L"SELECT * FROM Medios WHERE (GrupoPath=\"" + Etiquetas[Rand]->Texto + L"\") OR (GrupoTag=\"" + Etiquetas[Rand]->Texto + L"\")";
+			ToolTip = L"Lista aleatória por Grupo :\"" + Etiquetas[Rand]->Texto + L"\" generada.";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Grupo (%s)\n", Etiquetas[Rand]->Texto.c_str());
 			break;
 		case TLA_Disco:
@@ -432,14 +435,17 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 			}
 			Rand = App.Rand<size_t>(Etiquetas.size());
 			Q = L"SELECT * FROM Medios WHERE (DiscoPath=\"" + Etiquetas[Rand]->Texto + L"\") OR (DiscoTag=\"" + Etiquetas[Rand]->Texto + L"\")";
+			ToolTip = L"Lista aleatória por Disco :\"" + Etiquetas[Rand]->Texto + L"\" generada.";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Disco (%s)\n", Etiquetas[Rand]->Texto.c_str());
 			break;
 		case TLA_50Medios:
 			Q = L"SELECT * FROM Medios WHERE TipoMedio=1 ORDER BY RANDOM() LIMIT 50";
 			Debug_Escribir(L"RaveBD::GenerarListaAleatoria Tipo : 50 Canciones.\n");
+			ToolTip = L"Lista aleatória con 50 canciones generada.";
 			break;
 	}
 
+	App.MostrarToolTip(App.VentanaRave, ToolTip);
 	
 	int				    SqlRet = 0;
 	sqlite3_stmt       *SqlQuery = NULL;
@@ -470,6 +476,10 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 }
 
 const BOOL RaveBD::_CrearTablas(void) {
+
+	// Creo la tabla para guardar la ultima lista reproducida
+	std::wstring CrearTablaUltimaLista = L"CREATE TABLE UltimaLista (Hash BIGINT)";
+	if (Consulta(CrearTablaUltimaLista.c_str()) == SQLITE_ERROR) return FALSE;
 
 	// Creo la tabla para las opciones
 	std::wstring CrearTablaOpciones = L"CREATE TABLE Opciones ("
@@ -775,6 +785,57 @@ const sqlite3_int64 RaveBD::CrearHash(DWORD NumeroSerieDisco, std::wstring &nPat
 }
 
 
+const BOOL RaveBD::ObtenerUltimaLista(void) {
+
+	App.VentanaRave.Lista.BorrarListaReproduccion();
+
+	const wchar_t  *SqlStr = L"SELECT * FROM UltimaLista";
+	wchar_t		   *SqlError = NULL;
+	int				SqlRet = 0;
+	sqlite3_stmt   *SqlQuery = NULL;
+
+	SqlRet = sqlite3_prepare16_v2(_BD, SqlStr, -1, &SqlQuery, NULL);
+	if (SqlRet) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
+		SqlRet = sqlite3_step(SqlQuery);
+		if (SqlRet == SQLITE_ROW) {
+			BDMedio Medio;
+			ObtenerMedio(sqlite3_column_int64(SqlQuery, 0), Medio);
+			App.VentanaRave.Lista.AgregarMedio(&Medio);
+		}
+	}
+
+	sqlite3_finalize(SqlQuery);
+	App.VentanaRave.Lista_Play();
+
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+
+
+	return TRUE;
+
+}
+
+const BOOL RaveBD::GuardarUltimaLista(void) {
+	// Botto todos los datos de la tabla UltimaLista sin borrar la tabla
+	Consulta(L"DELETE FROM UltimaLista");
+	std::wstring Q;
+	int          SqlRet;
+	for (size_t i = 0; i < App.VentanaRave.Lista.TotalItems(); i++) {
+		Q = L"INSERT INTO UltimaLista (Hash) VALUES(" + std::to_wstring(App.VentanaRave.Lista.Medio(i)->Hash) + L")";
+		SqlRet = Consulta(Q);
+		if (SqlRet != SQLITE_DONE) return FALSE;
+	}
+	return TRUE;
+}
+
+
 /*
 	IN  -> Analisis
 	OUT -> nNombre
@@ -927,7 +988,7 @@ void RaveBD::Opciones_Repeat(const Tipo_Repeat nRepeat) {
 	}
 }
 
-void RaveBD::Opciones_Inicio(const int nInicio) {
+void RaveBD::Opciones_Inicio(const Tipo_Inicio nInicio) {
 	_Opciones_Inicio = nInicio;
 	std::wstring Q = L"Update Opciones SET Inicio=" + std::to_wstring(nInicio) + L" WHERE Id=0";
 	Consulta(Q.c_str());
@@ -978,7 +1039,7 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 			_Opciones_Alto						= static_cast<int>(sqlite3_column_int(SqlQuery, 6));
 			_Opciones_Shufle					= static_cast<int>(sqlite3_column_int(SqlQuery, 7));
 			_Opciones_Repeat					= static_cast<Tipo_Repeat>(sqlite3_column_int(SqlQuery, 8));
-			_Opciones_Inicio					= static_cast<int>(sqlite3_column_int(SqlQuery, 9));
+			_Opciones_Inicio					= static_cast<Tipo_Inicio>(sqlite3_column_int(SqlQuery, 9));
 			_Opciones_OcultarMouseEnVideo		= static_cast<int>(sqlite3_column_int(SqlQuery, 10));
 			_Opciones_Version					= static_cast<float>(sqlite3_column_double(SqlQuery, 11));
 			_Opciones_MostrarObtenerMetadatos	= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 12));

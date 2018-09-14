@@ -44,7 +44,7 @@ namespace DWL {
 		DMenuEx			       *MostrarModal(DhWnd *nPadre, const int PosX, const int PosY);
 		DMenuEx			       *MostrarModal(DhWnd *nPadre);
 
-								// Asigna un icono a este menú (requiere repintar)
+								// Asigna un icono a este menú 
 		void                    Icono(const int nIconoRecursos);
 		inline void             Icono(DListaIconos_Icono *nIcono)	{ _Icono = nIcono; }
 
@@ -57,9 +57,9 @@ namespace DWL {
 
 								// Función para obtener el texto del menú
 		inline std::wstring    &Texto(void)							{ return _Texto; }
-								// Funciones para asignar el texto al menú (requiere repintar)
-		inline void             Texto(const wchar_t *nTxt)			{ _Texto = nTxt; }
-		inline void             Texto(std::wstring &nTxt)			{ _Texto = nTxt; }
+								// Funciones para asignar el texto al menú
+		void					Texto(const wchar_t *nTxt);
+		void					Texto(std::wstring &nTxt);
 
 								// Funciónes que devuelven/asignan si el menú está activado
 		inline const BOOL		Activado(void)						{ return _Activado; };

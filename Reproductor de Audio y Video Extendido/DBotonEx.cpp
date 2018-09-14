@@ -47,7 +47,7 @@ namespace DWL {
 	HWND DBotonEx::_CrearBotonEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const long Estilos) {
 //		if (hWnd()) { Debug_Escribir(L"DBotonEx::CrearBotonEx() Error : ya se ha creado el botón\n"); return hWnd(); }
 		_hWnd = CrearControlEx(nPadre, L"DBotonEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
-		Fuente = _Fuente21Negrita;
+		Fuente = Fuente21Negrita;
 		_Estado = DBotonEx_Estado_Normal;
 		_MouseDentro = FALSE;
 		return hWnd();

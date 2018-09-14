@@ -47,7 +47,7 @@ void VentanaPrecarga::Pintar(HDC hDC) {
 	// Pinto el texto
 	SetBkMode(DC, TRANSPARENT);
 	SetTextColor(DC, COLOR_TEXTO_SOMBRA);
-	HFONT vFuente = static_cast<HFONT>(SelectObject(DC, _Fuente21Negrita()));
+	HFONT vFuente = static_cast<HFONT>(SelectObject(DC, Fuente21Negrita()));
 	const wchar_t Cargando[] = L"Cargando LibVLC...";
 	TextOut(DC, 20, 140, Cargando, static_cast<int>(wcslen(Cargando)));
 	SelectObject(DC, vFuente);

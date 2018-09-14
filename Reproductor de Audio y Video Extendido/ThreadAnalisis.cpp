@@ -552,7 +552,7 @@ void ThreadAnalisis::Pintar(HDC DC) {
 	HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO);
 	FillRect(DC, &RC, BrochaFondo);
 
-	HFONT VFuente = static_cast<HFONT>(SelectObject(DC, DhWnd::_Fuente18Normal()));
+	HFONT VFuente = static_cast<HFONT>(SelectObject(DC, DhWnd::Fuente18Normal()));
 
 	SetBkMode(DC, TRANSPARENT);
 	PintarTexto(DC, L"Analizando los datos de los medios en segundo plano.", 10, 10);
@@ -561,12 +561,12 @@ void ThreadAnalisis::Pintar(HDC DC) {
 	COLORREF ColFase2 = (_FASE == 2) ? COLOR_TEXTO_RESALTADO : COLOR_TEXTO_DESACTIVADO;;
 	COLORREF ColFase3 = (_FASE == 3) ? COLOR_TEXTO_RESALTADO : COLOR_TEXTO_DESACTIVADO;;
 
-	SelectObject(DC, DhWnd::_Fuente18Negrita());
+	SelectObject(DC, DhWnd::Fuente18Negrita());
 	PintarTexto(DC, L"FASE 1 :", 10, 40, ColFase1);
 	PintarTexto(DC, L"FASE 2 :", 10, 140, ColFase2);
 	PintarTexto(DC, L"FASE 3 :", 10, 240, ColFase3);
 
-	SelectObject(DC, DhWnd::_Fuente18Normal());
+	SelectObject(DC, DhWnd::Fuente18Normal());
 	PintarTexto(DC, L"Examinar los metadatos de todos los medios para extraer : generos, grupos, discos, nombres,", 30, 60, ColFase1);
 	PintarTexto(DC, L"pistas, y tiempos.", 30, 80, ColFase1);
 

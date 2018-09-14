@@ -112,7 +112,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 	
 
 	// Initialize GDI+.
-	Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+	Gdiplus::GdiplusStartup(&_gdiplusToken, &gdiplusStartupInput, NULL);
 
 	switch (LC) {
 		// Ejecución normal sin parámetros
@@ -142,7 +142,6 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 				VentanaAsociar.Mostrar();
 			}
 
-
 			// Hay uno o mas paths por agregar a la lista
 			if (Paths.size() > 0) {
 				// Agrega los paths a la lista de medios
@@ -150,6 +149,16 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 			}
 			else {
 				// Inicia la acción por defecto al empezar
+				Debug_Escribir_Varg(L"Rave::Iniciar ->  Acción de inicio : %d\n", BD.Opciones_Inicio());
+				switch (BD.Opciones_Inicio()) {
+					case Tipo_Inicio_NADA			:																		break;
+					case Tipo_Inicio_Genero			:	VentanaRave.GenerarListaAleatoria(TLA_Genero);						break;
+					case Tipo_Inicio_Grupo			:	VentanaRave.GenerarListaAleatoria(TLA_Grupo);						break;
+					case Tipo_Inicio_Disco			:	VentanaRave.GenerarListaAleatoria(TLA_Disco);						break;
+					case Tipo_Inicio_50Medios		:	VentanaRave.GenerarListaAleatoria(TLA_50Medios);					break;
+					case Tipo_Inicio_LoQueSea		:	VentanaRave.GenerarListaAleatoria(TLA_LoQueSea);					break;
+					case Tipo_Inicio_UltimaLista	:	BD.ObtenerUltimaLista();											break;
+				}
 			}
 			
 			Ret = TRUE;
@@ -192,7 +201,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 
 
 void RAVE::IniciarUI(int nCmdShow) {
-
+	_ToolTip.CrearToolTipEx(DWL::DhWnd::Fuente18Normal);
 //	Fuente13 = CreateFont(13, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, L"Tahoma");
 
 	// Menu Arbol BD	
@@ -251,7 +260,7 @@ void RAVE::Terminar(void) {
 	
 	CoUninitialize();
 
-	Gdiplus::GdiplusShutdown(gdiplusToken);
+	Gdiplus::GdiplusShutdown(_gdiplusToken);
 
 	DhWnd::EliminarFuentesEstaticas();
 
@@ -370,9 +379,18 @@ void RAVE::CerrarSistema(const SOCerrarSistema Forma, const BOOL Forzar) {
 };
 
 
+void RAVE::MostrarToolTip(DhWnd &Padre, const wchar_t *Texto) {
+	std::wstring nTexto = Texto;
+	MostrarToolTip(Padre, nTexto);
+}
 
-
-
+void RAVE::MostrarToolTip(DhWnd &Padre, std::wstring &Texto) {
+	_ToolTip.Ocultar();
+	RECT RV;
+	GetWindowRect(Padre.hWnd(), &RV);
+	SIZE Tam = _ToolTip.CalcularTam(Texto);
+	_ToolTip.Mostrar(RV.right - (Tam.cx + 20), RV.bottom - (Tam.cy + 20), Texto, Tam.cx, Tam.cy);
+}
 
 
 

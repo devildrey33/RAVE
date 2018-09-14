@@ -15,7 +15,7 @@ namespace DWL {
 		_hWnd = CrearControlEx(nPadre, L"DLabelEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
 
 		_Formato = (nCentrado == TRUE) ? DT_CENTER : DT_LEFT;
-		Fuente = _Fuente18Normal;
+		Fuente = Fuente18Normal;
 		_Texto = nTxt;
 		return hWnd();
 	}

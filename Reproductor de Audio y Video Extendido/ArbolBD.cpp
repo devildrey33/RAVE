@@ -40,7 +40,7 @@ NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre,
 //	size_t			nPos = 0;
 	switch (nTipoNodo) {
 		case ArbolBD_TipoNodo_Raiz:			// Raíz añadida por el usuario
-			nFuente = &_Fuente21Negrita;
+			nFuente = &Fuente21Negrita;
 			nIcono = RAVE_Iconos::RAVE_Icono_Raiz;
 			break;
 		case ArbolBD_TipoNodo_Directorio:	// Directorio dentro de una raíz
@@ -121,6 +121,7 @@ const BOOL ArbolBD::AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 		App.VentanaRave.Lista.Mezclar(TRUE);
 		App.VentanaRave.Lista.MedioActual = 0;
 	}
+	App.VentanaRave.Lista.Repintar();
 
 	return TRUE;
 }
@@ -280,7 +281,7 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 			App.VentanaRave.Menu_ArbolBD.Menu(0)->Activado(FALSE); // Agregar a lista
 			App.VentanaRave.Menu_ArbolBD.Menu(1)->Activado(FALSE); // Agregar a nueva lista
 		}
-		else {						// activo los menuitems agregar si hay un nodo marcado
+		else {							// activo los menuitems agregar si hay un nodo marcado
 			App.VentanaRave.Menu_ArbolBD.Menu(0)->Activado(TRUE); // Agregar a lista
 			App.VentanaRave.Menu_ArbolBD.Menu(1)->Activado(TRUE); // Agregar a nueva lista
 		}
@@ -292,15 +293,17 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 					App.VentanaRave.Lista.BorrarListaReproduccion();
 					AgregarNodoALista(_NodoMarcado);
 					App.VentanaRave.Lista_Play();
+					App.MostrarToolTip(App.VentanaRave, L"\"" + _NodoMarcado->Texto + L"\" añadido a una nueva lista.");
 					break;
 				case ID_MENUBD_AGREGARALISTA:
 					AgregarNodoALista(_NodoMarcado);
+					App.MostrarToolTip(App.VentanaRave, L"\"" + _NodoMarcado->Texto + L"\" añadido a la lista.");
 					break;
 				case ID_MENUBD_ACTUALIZAR:
-					App.VentanaRave.ActualizarArbol();
+					App.VentanaRave.ActualizarArbol();					
 					break;
 				case ID_MENUBD_ANALIZAR :
-					App.VentanaRave.AnalizarBD();
+					App.VentanaRave.AnalizarBD();					
 					break;
 			}
 		}
@@ -308,7 +311,6 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 	// Muestro el nodo resaltado con un ToolTip
 	else if (DatosMouse.Boton == 2 && _NodoResaltado != NULL) {
 		NodoBD *NodoRes = static_cast<NodoBD *>(_NodoResaltado);
-
 
 		//App.BD.Consulta();
 		std::wstring EtiquetaFiltrada;

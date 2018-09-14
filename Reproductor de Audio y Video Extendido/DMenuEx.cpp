@@ -153,6 +153,11 @@ namespace DWL {
 
 	void DMenuEx::Activado(const BOOL nActivar) {
 		_Activado = nActivar;
+		if (_Padre != NULL) {
+			if (_Padre->_hWnd != NULL) {
+				_Padre->Repintar();
+			}
+		}
 	}
 
 	// Función que termina el menú y elimina la memória
@@ -174,7 +179,31 @@ namespace DWL {
 
 	void DMenuEx::Icono(const int nIconoRecursos) {
 		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DMENUEX_TAMICONO, DMENUEX_TAMICONO);
+		if (_Padre != NULL) {
+			if (_Padre->_hWnd != NULL) {
+				_Padre->Repintar();
+			}
+		}
 	}
+
+	void DMenuEx::Texto(const wchar_t *nTxt) { 
+		_Texto = nTxt; 
+		if (_Padre != NULL) {
+			if (_Padre->_hWnd != NULL) {
+				_Padre->Repintar();
+			}
+		}
+	}
+
+	void DMenuEx::Texto(std::wstring &nTxt) { 
+		_Texto = nTxt; 
+		if (_Padre != NULL) {
+			if (_Padre->_hWnd != NULL) {
+				_Padre->Repintar();
+			}
+		}
+	}
+
 
 
 	void DMenuEx::Pintar(HDC hDC) {
@@ -186,7 +215,7 @@ namespace DWL {
 		HDC		DC		 = CreateCompatibleDC(NULL);
 		HBITMAP Bmp		 = CreateCompatibleBitmap(hDC, RC.right, RC.bottom);
 		HBITMAP BmpViejo = static_cast<HBITMAP>(SelectObject(DC, Bmp));
-		HFONT	VFont	 = static_cast<HFONT>(SelectObject(DC, _Fuente21Normal.Fuente()));
+		HFONT	VFont	 = static_cast<HFONT>(SelectObject(DC, Fuente21Normal.Fuente()));
 
 		// Pinto el borde
 		HBRUSH BrochaBorde = CreateSolidBrush(COLOR_MENU_BORDE);
@@ -302,7 +331,7 @@ namespace DWL {
 		POINT Ret		= { 0, 0 };
 		SIZE  Tam		= { 0, 0 };
 		HDC   hDC		= GetDC(NULL);
-		HFONT VFont		= static_cast<HFONT>(SelectObject(hDC, _Fuente21Normal.Fuente()));
+		HFONT VFont		= static_cast<HFONT>(SelectObject(hDC, Fuente21Normal.Fuente()));
 
 		for (size_t i = 0; i < _Menus.size(); i++) {
 			switch (_Menus[i]->_Tipo) {
@@ -725,7 +754,9 @@ namespace DWL {
 			case WM_CHAR:           _Evento_Tecla(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));																	return 0;
 			
 			// Print y Print Client (para AnimateWindow)
+			case WM_PRINT:			Pintar(reinterpret_cast<HDC>(wParam));																										return 0;
 			case WM_PRINTCLIENT:    Pintar(reinterpret_cast<HDC>(wParam));																										return 0;
+
 			// Si pierde el foco, compruebo que el nuevo foco vaya a otro MenuEx, o en caso contrario oculto todo.
 			case WM_KILLFOCUS:		_Evento_FocoPerdido(reinterpret_cast<HWND>(wParam));																						return 0;
 			// Consulta para determinar si la ventana es parte de un MenuEx

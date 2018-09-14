@@ -40,9 +40,12 @@
 				V  Fet tooltip per les etiquetes
 				V  Fet tooltip pels medis
 	    V  Treure tots els buttons estandar i posar de meus (falta posar uns icones menys bastos...)
-		-  Generar llistes aleatories per etiqueta
-			- poder escollir tipus d'etiqueta (estil, grup, disc)
-			- Requereix tenir en memoria les etiquetes (que en un futur també servira per fer les cerques de la BD)
+		V  Generar llistes aleatories per etiqueta
+			V poder escollir tipus d'etiqueta (estil, grup, disc)
+			V Requereix tenir en memoria les etiquetes (que en un futur també servira per fer les cerques de la BD)
+			V Fer l'inici amb llistes 
+		V  Repintar MenuEx al modificar el estat activat, el texte o l'icona
+		V  Crear tooltip abaix a la dreta de la finestra, per avisar a l'usuari de certes tasques, (analisis acabat, llista generada per.., etc...)
 		-  Mostrar les opcions en una finestra nova
 			-  Afegir opcions : 
 				- Assosiacions d'arxiu

@@ -24,7 +24,7 @@ namespace DWL {
 	
 	HWND DListaEx::CrearListaEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID) {
 //		if (hWnd()) { Debug_Escribir(L"DListaEx::CrearListaEx() Error : ya se ha creado la lista\n"); return hWnd(); }
-		Fuente = _Fuente18Normal;
+		Fuente = Fuente18Normal;
 		_hWnd = CrearControlEx(nPadre, L"DListaEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, CS_DBLCLKS); // CS_DBLCLKS (el control recibe notificaciones de doble click)
 		return hWnd();
 	}
@@ -61,6 +61,7 @@ namespace DWL {
 			delete _Items[i];
 		}
 		_Items.resize(0);
+		_Repintar = TRUE;
 	}
 
 	void DListaEx::EliminarTodasLasColumnas(void) {
@@ -68,6 +69,7 @@ namespace DWL {
 			delete _Columnas[i];
 		}
 		_Columnas.resize(0);
+		_Repintar = TRUE;
 	}
 
 	void DListaEx::Pintar(HDC hDC) {
@@ -86,10 +88,10 @@ namespace DWL {
 		HBITMAP BmpViejo	= static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
 
 
-//		LONG PixelInicio = static_cast<LONG>((static_cast<float>(_TotalAltoVisible) / 100.0f) * _ScrollV_Posicion);
-		//LONG PixelFin = PixelInicio + RCS.bottom;
+		//		LONG PixelInicio = static_cast<LONG>((static_cast<float>(_TotalAltoVisible) / 100.0f) * _ScrollV_Posicion);
+				//LONG PixelFin = PixelInicio + RCS.bottom;
 
-		// Diferencia de pixeles Vertical (puede ser negativo si el primer item es parcialmente visible, o 0 si el primer item está justo al principio del área visible)
+				// Diferencia de pixeles Vertical (puede ser negativo si el primer item es parcialmente visible, o 0 si el primer item está justo al principio del área visible)
 		LONG DifInicioV = _ItemPaginaVDif;
 
 		size_t nItemFin = _ItemPaginaFin;
@@ -127,6 +129,7 @@ namespace DWL {
 	}
 
 	void DListaEx::PintarItem(HDC hDC, const size_t nPosItem, RECT &Espacio) {
+		if (_Items.size() == 0) return;
 
 		BOOL bResaltado		= (nPosItem == _ItemResaltado) ? TRUE : FALSE;
 		BOOL bPresionado	= (nPosItem == _ItemPresionado) ? TRUE : FALSE;

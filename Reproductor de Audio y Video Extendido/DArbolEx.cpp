@@ -50,7 +50,7 @@ namespace DWL {
 		}
 		
 		_hWnd = CrearControlEx(nPadre, L"DArbolEx", L"", cID, cX, cY, cAncho, cAlto, nEstilos, NULL, CS_DBLCLKS);  // CS_DBLCLKS (el control recibe notificaciones de doble click)
-		Fuente = _Fuente18Normal;
+		Fuente = Fuente18Normal;
 		return hWnd();
 	}
 

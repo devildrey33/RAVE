@@ -70,7 +70,7 @@ const POINT ToolTipBD::_CalcularEtiqueta(EtiquetaBD &nEtiqueta) {
 	_Icono = DListaIconos::AgregarIconoRecursos(IDI_DIRECTORIO, 16, 16);
 
 	HDC   hDC   = GetDC(NULL);
-	HFONT VFont = static_cast<HFONT>(SelectObject(hDC, _Fuente21Negrita.Fuente()));
+	HFONT VFont = static_cast<HFONT>(SelectObject(hDC, Fuente21Negrita.Fuente()));
 	POINT Ret   = { 0, (MARGEN * 2) + 25 };
 
 	_Col1.resize(0);
@@ -94,12 +94,12 @@ const POINT ToolTipBD::_CalcularEtiqueta(EtiquetaBD &nEtiqueta) {
 	int Ancho1 = 0, Ancho2 = 0;
 	// Miro el ancho de cada columna y guardo las columnas
 	for (size_t i = 0; i < NumFilas; i++) {
-		SelectObject(hDC, _Fuente18Negrita.Fuente());
+		SelectObject(hDC, Fuente18Negrita.Fuente());
 		GetTextExtentPoint32(hDC, Col1[i], static_cast<int>(wcslen(Col1[i])), &Tam);
 		if (Tam.cx > Ancho1) Ancho1 = Tam.cx;
 		_Col1.push_back(ToolTipBD_Celda(Col1[i], Tam.cx));
 
-		SelectObject(hDC, _Fuente18Normal.Fuente());
+		SelectObject(hDC, Fuente18Normal.Fuente());
 		GetTextExtentPoint32(hDC, Col2[i].c_str(), static_cast<int>(Col2[i].size()), &Tam);
 		if (Tam.cx > Ancho2) Ancho2 = Tam.cx;
 		_Col2.push_back(ToolTipBD_Celda(Col2[i], Tam.cx));
@@ -123,7 +123,7 @@ const POINT ToolTipBD::_CalcularMedio(BDMedio &nMedio) {
 	if (nMedio.TipoMedio == Tipo_Medio_Video)	{	_Icono = DListaIconos::AgregarIconoRecursos(IDI_VIDEO2, 16, 16);	}
 	else										{	_Icono = DListaIconos::AgregarIconoRecursos(IDI_CANCION2, 16, 16);	}
 	HDC   hDC = GetDC(NULL);
-	HFONT VFont = static_cast<HFONT>(SelectObject(hDC, _Fuente21Negrita.Fuente()));
+	HFONT VFont = static_cast<HFONT>(SelectObject(hDC, Fuente21Negrita.Fuente()));
 	POINT Ret = { 0, (MARGEN * 2) + 25 };
 
 	_Col1.resize(0);
@@ -155,12 +155,12 @@ const POINT ToolTipBD::_CalcularMedio(BDMedio &nMedio) {
 		// Si la segunda columna tiene resultado
 		// Por ejemplo un video no tiene ni grupo ni disco, y estos tendran un tamaño de 0, por lo que no hace falta añadirlos a la lista final
 		if (Col2[i].size() > 0) { 
-			SelectObject(hDC, _Fuente18Negrita.Fuente());
+			SelectObject(hDC, Fuente18Negrita.Fuente());
 			GetTextExtentPoint32(hDC, Col1[i], static_cast<int>(wcslen(Col1[i])), &Tam);
 			if (Tam.cx > Ancho1) Ancho1 = Tam.cx;
 			_Col1.push_back(ToolTipBD_Celda(Col1[i], Tam.cx));
 
-			SelectObject(hDC, _Fuente18Normal.Fuente());
+			SelectObject(hDC, Fuente18Normal.Fuente());
 			GetTextExtentPoint32(hDC, Col2[i].c_str(), static_cast<int>(Col2[i].size()), &Tam);
 			if (Tam.cx > Ancho2) Ancho2 = Tam.cx;
 			_Col2.push_back(ToolTipBD_Celda(Col2[i], Tam.cx));
@@ -191,7 +191,7 @@ void ToolTipBD::Pintar(HDC hDC) {
 	HDC		DC			= CreateCompatibleDC(NULL);
 	HBITMAP Bmp			= CreateCompatibleBitmap(hDC, RC.right, RC.bottom);
 	HBITMAP BmpViejo	= static_cast<HBITMAP>(SelectObject(DC, Bmp));
-	HFONT	VFont		= static_cast<HFONT>(SelectObject(DC, _Fuente21Negrita.Fuente()));
+	HFONT	VFont		= static_cast<HFONT>(SelectObject(DC, Fuente21Negrita.Fuente()));
 
 	// Pinto el fondo
 	HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO);
@@ -215,14 +215,14 @@ void ToolTipBD::Pintar(HDC hDC) {
 	PintarTexto(DC, _Titulo, 10 + TamIcono, 10);
 
 	// Pinto la columna con los nombres de los datos, y tambien pinto los 2 puntos
-	SelectObject(DC, _Fuente18Negrita.Fuente());
+	SelectObject(DC, Fuente18Negrita.Fuente());
 	for (int i = 0; i < static_cast<int>(_Col1.size()); i++) {
 		PintarTexto(DC, _Col1[i].Texto, 10, 35 + (i * 20));
 		PintarTexto(DC, L":", _AnchoCol1 - 10, 35 + (i * 20));
 	}
 	
 	// Pinto los datos
-	SelectObject(DC, _Fuente18Normal.Fuente());
+	SelectObject(DC, Fuente18Normal.Fuente());
 	for (int i = 0; i < static_cast<int>(_Col2.size()); i++) {
 		PintarTexto(DC, _Col2[i].Texto, RC.right - MARGEN - _Col2[i].Ancho, 35 + (i * 20));
 	}

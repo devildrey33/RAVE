@@ -46,14 +46,15 @@ namespace DWL {
 									
 									// Debe utilizarse una sola vez al terminar la apliación
 		static void                 EliminarFuentesEstaticas();
+
+		static DhWnd_Fuente         Fuente18Normal;
+		static DhWnd_Fuente         Fuente18Negrita;
+		static DhWnd_Fuente         Fuente21Normal;
+		static DhWnd_Fuente         Fuente21Negrita;
+		static DhWnd_Fuente         FuenteTest;
 	  protected:
 		HWND                       _hWnd;
 
-		static DhWnd_Fuente        _Fuente18Normal;
-		static DhWnd_Fuente        _Fuente18Negrita;
-		static DhWnd_Fuente        _Fuente21Normal;
-		static DhWnd_Fuente        _Fuente21Negrita;
-		static DhWnd_Fuente        _FuenteTest;
 
 		static bool                _Teclado[256];
 		//		static HFONT       _FuenteB;

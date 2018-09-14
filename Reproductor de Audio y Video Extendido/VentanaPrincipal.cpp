@@ -55,7 +55,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 /*	ComboRaiz.CrearDesplegable(&Opciones, 10, 100, 300, 30, ID_OPCIONES, DDesplegableEx_TipoEdicion_SinEdicion, DDesplegableEx_TipoDesplegable_ExplorarDirectorios);
 	ComboRaiz.Visible(TRUE);*/
 	BotonAgregarRaiz.CrearBotonEx(&Opciones, L"Agregar Raiz", 10, 100, 150, 24, ID_BOTON_AGREGARRAIZ);
-	BotonAgregarRaiz.Fuente = _Fuente21Normal;
+	BotonAgregarRaiz.Fuente = Fuente21Normal;
 	/////////////////////////////////////////
 
 	// Marco superior izquierdo /////////////
@@ -372,7 +372,7 @@ void VentanaPrincipal::GenerarListaAleatoria(const TipoListaAleatoria nTipo) {
 	for (size_t i = 0; i < Medios.size(); i++) {
 		Lista.AgregarMedio(&Medios[i]);
 	}
-//	Lista.Repintar();
+	Lista.Repintar();
 	App.VentanaRave.Lista_Play();
 }
 
@@ -383,7 +383,11 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		case ID_MENUBOTONLISTA_GENERAR_GRUPO	:	GenerarListaAleatoria(TLA_Grupo);		break;
 		case ID_MENUBOTONLISTA_GENERAR_DISCO	:	GenerarListaAleatoria(TLA_Disco);		break;
 		case ID_MENUBOTONLISTA_GENERAR_50MEDIOS	:	GenerarListaAleatoria(TLA_50Medios);	break;
-		case ID_MENUBOTONLISTA_BORRAR			:	Lista.BorrarListaReproduccion();		break;
+		case ID_MENUBOTONLISTA_BORRAR			:	
+			App.MostrarToolTip(*this, L"Lista de reproducción borrada.");
+			Lista.BorrarListaReproduccion();	
+			Lista.Repintar();
+			break;
 	}
 }
 
@@ -656,8 +660,11 @@ void VentanaPrincipal::Evento_BorraFondo(HDC DC) {
 
 void VentanaPrincipal::Evento_Cerrar(void) {
 	Visible(FALSE);
+	App.BD.Consulta(L"BEGIN TRANSACTION");
+	App.BD.GuardarUltimaLista();
 	App.BD.Opciones_GuardarOpciones();
-	
+	App.BD.Consulta(L"COMMIT TRANSACTION");
+
 	ThreadActualizar.Cancelar(TRUE);
 	ThreadArchivosLista.Cancelar(TRUE);
 
@@ -828,44 +835,45 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			Medio = reinterpret_cast<BDMedio *>(wParam);
 			Lista.AgregarMedio(Medio);
 			delete Medio;
-			break;
+			return 0;
 		case WM_TAAL_TERMINADO:
 			ThreadArchivosLista.Terminar();
 			BarraTareas.Estado_SinProgreso();
 			BarraTareas.Resaltar();
 			Lista.Repintar();
 			Lista_Play();
-			break;
+			return 0;
 		case WM_TBA_AGREGARRAIZ:
 			TmpStr = reinterpret_cast<std::wstring *>(lParam);
 			Arbol_AgregarRaiz(TmpStr);
 			delete TmpStr; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
-			break;
+			return 0;
 		case WM_TBA_AGREGARDIR:
 			TmpStr = reinterpret_cast<std::wstring *>(lParam);
 			Arbol_AgregarDir(TmpStr, TRUE);
 			delete TmpStr; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
-			break;
+			return 0;
 		case WM_TOM_INICIADO2 :
 			_MaximoTotalMedios2 = static_cast<UINT>(wParam);
 			_ValorMedios2 = 0;
-			break;
+			return 0;
 		case WM_TOM_TOTALMEDIOS1:
 			BarraTareas.Valor(static_cast<UINT>(wParam), static_cast<UINT>(lParam));
-			break;
+			return 0;
 		case WM_TOM_TOTALMEDIOS2:
 			BarraTareas.Valor(++_ValorMedios2, _MaximoTotalMedios2);
-			break;
+			return 0;
 		case WM_TOM_TOTALMEDIOS3:
 			BarraTareas.Valor(static_cast<UINT>(wParam), static_cast<UINT>(lParam));
-			break;
+			return 0;
 		case WM_TOM_CANCELADO:
 			ThreadAnalizar.Terminar();
 			Debug_Escribir_Varg(L"ThreadAnalisis::Cancelado %d archivos examinados.\n", lParam);
 			BarraTareas.Estado_SinProgreso();
 			BarraTareas.Resaltar();
 			Menu_ArbolBD.Menu(3)->Activado(TRUE);
-			break;
+			App.MostrarToolTip(App.VentanaRave, L"Análisis cancelado, se han analizado " + std::to_wstring(lParam) + L" medios.");
+			return 0;
 
 		case WM_TOM_TERMINADO:
 			ThreadAnalizar.Terminar();
@@ -874,7 +882,8 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			BarraTareas.Resaltar();
 			App.BD.ObtenerEtiquetas();
 			Menu_ArbolBD.Menu(3)->Activado(TRUE);
-			break;
+			App.MostrarToolTip(App.VentanaRave, L"Análisis terminado, se han analizado " + std::to_wstring(lParam) + L" medios.");
+			return 0;
 			//		case WM_TBA_AGREGARAUDIO:
 //			Arbol_AgregarCancion(static_cast<size_t>(lParam));
 //			break;
@@ -884,12 +893,13 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			BarraTareas.Estado_SinProgreso();
 //			BarraTareas.Resaltar();
 			Debug_Escribir_Varg(L"ThreadActualizarArbol::Terminado %d archivos encontrados.\n", lParam);
+			App.MostrarToolTip(App.VentanaRave, L"Arbol actualizado.");
 			AnalizarBD();
-			break;
+			return 0;
 
 		case WM_DROPFILES :
 			Evento_SoltarArchivos(wParam);
-			break;
+			return 0;
 
 		case WM_KEYDOWN:
 			Debug_Escribir_Varg(L"t:%d r:%d p:%d\n", static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));
@@ -919,13 +929,13 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 				App.BD.Opciones_GuardarPosTamVentana();
 			}			
 			Debug_Escribir_Varg(L"WM_EXITSIZEMOVE %d, %d\n", wParam, lParam);
-			break;
+			return 0;
 		case WM_SIZE :
 			RECT RCWMS;
 			GetClientRect(hWnd(), &RCWMS);
 			AjustarControles(RCWMS);
 			Debug_Escribir_Varg(L"WM_SIZE %d, %d\n", wParam, lParam);
-			break;
+			return 0;
 
 		case WM_SIZING :
 			Evento_CambiandoTam(static_cast<UINT>(wParam), reinterpret_cast<RECT *>(lParam));
@@ -940,13 +950,13 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			switch (wParam) {
 				case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambio();					break;
 			}
-			break;
+			return 0;
 		case DWL_BARRAEX_CAMBIADO:
 			switch (wParam) {
 				case ID_SLIDER_TIEMPO:						Evento_SliderTiempo_Cambiado();					break;
 				case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambiado();				break;
 			}
-			break;
+			return 0;
 
 		case DWL_BOTONEX_CLICK :
 			Evento_BotonEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));
