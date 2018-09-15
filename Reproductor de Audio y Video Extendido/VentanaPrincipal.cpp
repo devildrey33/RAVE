@@ -185,25 +185,35 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 		// Temporizador para actualizar el tiempo actual del medio que se está reproduciendo
 		case TIMER_TIEMPO :
 			if (!Minimizado()) {
-				// Si el slider del tiempo tiene la captura, es porque se esta modificando el tiempo, por lo que no hay que actualizar la posición en ese momento.
-				if (SliderTiempo.Estado() != DBarraDesplazamientoEx_Estado_Presionado && App.ControlesPC.SliderTiempo.Estado() != DBarraDesplazamientoEx_Estado_Presionado) {
-					SliderTiempo.Valor(App.VLC.TiempoActual());
-//					SliderTiempo.Posicion(static_cast<UINT64>(App.VLC.TiempoActual() * 30000));
-					App.ControlesPC.SliderTiempo.Valor(App.VLC.TiempoActual());
-					// Lo mismo pasa con el tiempo actual
-					App.VLC.TiempoStr(App.VLC.TiempoActualMs(), TiempoStr);
-					LabelTiempoActual.Texto(TiempoStr);
-					App.ControlesPC.LabelTiempoActual.Texto(TiempoStr);
+				if (App.VLC.ComprobarEstado == EnPlay || pp.VLC.ComprobarEstado == EnPausa) { // EnPlay y EnPausa
+					// Si el slider del tiempo tiene la captura, es porque se esta modificando el tiempo, por lo que no hay que actualizar la posición en ese momento.
+					if (SliderTiempo.Estado() != DBarraDesplazamientoEx_Estado_Presionado && App.ControlesPC.SliderTiempo.Estado() != DBarraDesplazamientoEx_Estado_Presionado) {
+						SliderTiempo.Valor(App.VLC.TiempoActual());
+						//					SliderTiempo.Posicion(static_cast<UINT64>(App.VLC.TiempoActual() * 30000));
+						App.ControlesPC.SliderTiempo.Valor(App.VLC.TiempoActual());
+						// Lo mismo pasa con el tiempo actual
+						App.VLC.TiempoStr(App.VLC.TiempoActualMs(), TiempoStr);
+						LabelTiempoActual.Texto(TiempoStr);
+						App.ControlesPC.LabelTiempoActual.Texto(TiempoStr);
+					}
+					// El tiempo total solo se actualiza cuando es distinto al anterior
+					UINT64 T = App.VLC.TiempoTotalMs();
+					if (T != App.VLC.TiempoTotal) {
+						TiempoStr = L"";
+						App.VLC.TiempoTotal = T;
+						App.VLC.TiempoStr(T, TiempoStr);
+						LabelTiempoTotal.Texto(TiempoStr);
+						App.ControlesPC.LabelTiempoTotal.Texto(TiempoStr);
+					}
 				}
-				// El tiempo total solo se actualiza cuando es distinto al anterior
-				UINT64 T = App.VLC.TiempoTotalMs();
-				if (T != App.VLC.TiempoTotal) {
-					TiempoStr = L"";
-					App.VLC.TiempoTotal = T;
-					App.VLC.TiempoStr(T, TiempoStr);
-					LabelTiempoTotal.Texto(TiempoStr);
-					App.ControlesPC.LabelTiempoTotal.Texto(TiempoStr);
+				else { //if (App.VLC.ComprobarEstado == EnStop || App.VLC.ComprobarEstado == SinCargar || App.VLC.ComprobarEstado == Abriendo || App.VLC.ComprobarEstado == Terminada || App.VLC.ComprobarEstado == EnError || App.VLC.ComprobarEstado == Nada) {
+					std::wstring Tiempo(L"00:00");
+					LabelTiempoActual.Texto(Tiempo);
+					LabelTiempoTotal.Texto(Tiempo);
+					App.ControlesPC.LabelTiempoActual.Texto(Tiempo);
+					App.ControlesPC.LabelTiempoTotal.Texto(Tiempo);
 				}
+
 			}
 			break;
 /*		case TIMER_OBTENER_TIEMPO_TOTAL :
@@ -674,6 +684,8 @@ void VentanaPrincipal::Evento_Cerrar(void) {
 void VentanaPrincipal::Evento_SoltarArchivos(WPARAM wParam) {
 	TCHAR        Archivo[MAX_PATH];
 	unsigned int TotalSoltados = DragQueryFile((HDROP)wParam, static_cast<unsigned int>(-1), 0, 0);
+	App.MostrarToolTip(App.VentanaRave, L"Añadiendo archivos desde el explorador.");
+	
 	std::vector<std::wstring> Paths;
 
 	for (unsigned int i = 0; i < TotalSoltados; i++) {
@@ -841,7 +853,8 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			BarraTareas.Estado_SinProgreso();
 			BarraTareas.Resaltar();
 			Lista.Repintar();
-			Lista_Play();
+			Lista_Play();			
+			AnalizarBD();
 			return 0;
 		case WM_TBA_AGREGARRAIZ:
 			TmpStr = reinterpret_cast<std::wstring *>(lParam);
@@ -897,7 +910,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			AnalizarBD();
 			return 0;
 
-		case WM_DROPFILES :
+		case WM_DROPFILES :			
 			Evento_SoltarArchivos(wParam);
 			return 0;
 
