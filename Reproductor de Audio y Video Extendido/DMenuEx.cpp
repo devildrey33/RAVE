@@ -59,7 +59,7 @@ namespace DWL {
 	void DMenuEx::Mostrar(DhWnd *nPadre, const int PosX, const int PosY) {
 
 		// Calculo el tamaño que necesitará el menú
-		POINT Tam = _CalcularMedidas();
+		POINT Tam = CalcularEspacio();
 
 		_hWndDest = nPadre->hWnd();
 
@@ -326,7 +326,7 @@ namespace DWL {
 	}
 
 
-	const POINT DMenuEx::_CalcularMedidas(void) {
+	const POINT DMenuEx::CalcularEspacio(void) {
 		LONG  TmpAncho  = 0;
 		POINT Ret		= { 0, 0 };
 		SIZE  Tam		= { 0, 0 };
@@ -392,7 +392,7 @@ namespace DWL {
 		GetWindowRect(nPadre->hWnd(), &WR);
 
 		// Calculo el tamaño que necesitará el menú
-		POINT Tam = _CalcularMedidas();
+		POINT Tam = CalcularEspacio();
 
 		CrearVentana(nPadre, L"DMenuEx", L"", -4 + WR.left + Punto.x, -1 + WR.top + Punto.y, Tam.x, Tam.y, WS_POPUP | WS_CAPTION);
 

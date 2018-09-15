@@ -72,6 +72,11 @@ namespace DWL {
 		inline void				Repintar(void)						{ RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT); };
 
 		void					Terminar(void);
+		// Función para calcular el tamaño de los menus.
+		const POINT			    CalcularEspacio(void);
+
+		inline const BOOL       Visible(void) { return (_hWnd != NULL); }
+
 	  protected:
 								// Constructor menú tipo texto (interno AgregarMenu)
 								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const UINT nID, const wchar_t *nTexto, const int nIconoRecursos = NULL, const BOOL nActivado = TRUE);
@@ -79,8 +84,6 @@ namespace DWL {
 								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const UINT nID);
 
 		void				   _OcultarRecursivo(DMenuEx *oMenu);
-								// Función para calcular el tamaño de los menus.
-		const POINT			   _CalcularMedidas(void);		
 								// Función que muestra este menú como un submenú
 		void                   _MostrarSubMenu(HWND hWndDestMsg, DMenuEx *nPadre, const int cX, const int cY, const BOOL AsignarFoco = TRUE);
 								// Función que pinta una fila del menú (devuelve la altura de lo pintado)

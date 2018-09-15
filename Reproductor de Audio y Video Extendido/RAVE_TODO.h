@@ -46,6 +46,21 @@
 			V Fer l'inici amb llistes 
 		V  Repintar MenuEx al modificar el estat activat, el texte o l'icona
 		V  Crear tooltip abaix a la dreta de la finestra, per avisar a l'usuari de certes tasques, (analisis acabat, llista generada per.., etc...)
+
+		// URGENT //////// (ara es el meu reproductor principal i necesito funcionabilitats bàsiques) /////////////////////////////////
+		V  Mirar bug : Pantalla completa + Duplicar pantallas :
+			V Pas 1 posar pantalla completa amb l'escriptori ampliat a 2 pantalles
+			V Pas 2 Inicio + P -> Duplicado
+			V Pas 3 Sortir de pantalla completa
+			V Al fer aquests pasos la finestra es queda com maximitzada peró está normal, lo que ocupa tota la pantalla...
+
+		V  Mirar bug : Al acabar un video en pantalla completa, en el següent video ja no surten els ComtrolesPantallaCompleta... :/
+			V El bug es soluciona pasan a pantalla nomral, i despres unaltre cop a pantalla completa
+		V  Mirar bug : no funciona el shufle ni el repeat desde els controles pantalla completa, bueno ni cap buto.. nomes les barres...
+		V  Mirar bug : Matar el timer per ocultar els ControlesPantallaCompleta al fer mouseUp sobre un buto, i suposo que amb les barres també... (NO AMB LA DEL VOLUM, NI AMB LA DEL TEMPS)
+		V  Mirar bug : al fer el ShowWindow dels controles pantalla completa el reproductor perd el focus... aviam si ho puc solucionar sense trencar moltes coses...
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		-  Mostrar les opcions en una finestra nova
 			-  Afegir opcions : 
 				- Assosiacions d'arxiu
@@ -70,6 +85,12 @@
 					- Buscar actualitzacions
 					- Teclat amb el focus en el reproductor (play / pausa, stop, volum +, volum -, següent medi, anterior medi, accelerar x2.0, frenar a x0.5)
 						- De teclat global (hook) si que haig de mirar la tecla play / pausa , pero el tema del volum amb tecles exteses el porta el sistema operatiu, suposo que tambe interesa el següent i l'anterior medi...
+				- Video
+					- Tiempo de inactividad para ocultar los controles
+					- Valor del ratio para MouseDown en botones |< >|
+					- Mostrar nombre del video al abrir
+					
+					? Fuente por defecto en subtitulos externos
 
 
 		-  Menu per la llista (val tant per audio com per video)

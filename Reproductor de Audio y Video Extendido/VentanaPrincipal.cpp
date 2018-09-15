@@ -185,7 +185,7 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 		// Temporizador para actualizar el tiempo actual del medio que se está reproduciendo
 		case TIMER_TIEMPO :
 			if (!Minimizado()) {
-				if (App.VLC.ComprobarEstado == EnPlay || pp.VLC.ComprobarEstado == EnPausa) { // EnPlay y EnPausa
+				if (Estado == EnPlay || Estado == EnPausa) { // EnPlay y EnPausa
 					// Si el slider del tiempo tiene la captura, es porque se esta modificando el tiempo, por lo que no hay que actualizar la posición en ese momento.
 					if (SliderTiempo.Estado() != DBarraDesplazamientoEx_Estado_Presionado && App.ControlesPC.SliderTiempo.Estado() != DBarraDesplazamientoEx_Estado_Presionado) {
 						SliderTiempo.Valor(App.VLC.TiempoActual());
@@ -498,7 +498,7 @@ void VentanaPrincipal::Mezclar_Click(void) {
 	Lista.Mezclar(nMezclar);
 	App.BD.Opciones_Shufle(nMezclar);
 	BotonMezclar.Marcado(nMezclar);
-	App.ControlesPC.BotonRepetir.Marcado(nMezclar);
+	App.ControlesPC.BotonMezclar.Marcado(nMezclar);
 }
 
 void VentanaPrincipal::AgregarRaiz(void) {
@@ -530,9 +530,19 @@ void VentanaPrincipal::EliminarRaiz(std::wstring &Path) {
 
 
 void VentanaPrincipal::Repetir_Click(void) {
-	RECT RW;
-	GetWindowRect(BotonRepetir.hWnd(), &RW);
-	DMenuEx *Ret = Menu_Repetir.MostrarModal(this, RW.left, RW.bottom);
+	RECT     RW;
+	DMenuEx *Ret = NULL;
+	if (_PantallaCompleta == TRUE) {	
+		GetWindowRect(App.ControlesPC.BotonRepetir.hWnd(), &RW);
+		POINT Espacio = Menu_Repetir.CalcularEspacio();
+		Ret = Menu_Repetir.MostrarModal(this, RW.left, RW.top - Espacio.y);
+	}
+	else {
+		GetWindowRect(BotonRepetir.hWnd(), &RW);         
+		Ret = Menu_Repetir.MostrarModal(this, RW.left, RW.bottom);
+	}
+
+	 
 	if (Ret != NULL) {
 		// Elimino los iconos de todos los submenus
 		for (size_t i = 0; i < Menu_Repetir.TotalMenus(); i++) {
@@ -570,9 +580,10 @@ void VentanaPrincipal::Evento_CambiandoTam(const UINT Lado, RECT *Rectangulo) {
 	RC.right = (Rectangulo->right - Rectangulo->left) - CTW_ExtraX;
 	RC.bottom = (Rectangulo->bottom - Rectangulo->top) - CTW_ExtraY;
 
-
+	App.OcultarToolTip();
 
 	Debug_Escribir_Varg(L"Evento_CambiandoTam %d, %d\n", RC.right, RC.bottom);
+
 //	AjustarControles(RC);
 
 	// repinto el control del video
@@ -585,6 +596,8 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 	RECT RC; 
 	_PantallaCompleta = nActivar;
 	if (nActivar == TRUE) {
+		App.OcultarToolTip();
+
 		SetWindowLongPtr(hWnd(), GWL_STYLE, WS_POPUP | WS_SYSMENU | WS_VISIBLE);
 		ShowWindow(hWnd(), SW_MAXIMIZE);
 		GetClientRect(hWnd(), &RC);
@@ -612,9 +625,15 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 	}
 
 	else {
+		EnumDisplayMonitors(NULL, NULL, VentanaPrincipal::EnumerarPantallas, NULL);
+		// Si el monitor donde se guardo la ultima posición no está disponible busco una nueva posición
+		if (MonitorDisponible == FALSE) {
+			App.BD.Opciones_AsignarPosVentana(RectMonitorActual.left + 100, RectMonitorActual.top + 100);
+		}
+
 		ShowWindow(hWnd(), SW_RESTORE);
 		SetWindowLongPtr(hWnd(), GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
-		SetWindowPos(_hWnd, HWND_TOP, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
+		SetWindowPos(_hWnd, HWND_TOP, App.BD.Opciones_PosX(), App.BD.Opciones_PosY(), App.BD.Opciones_Ancho(), App.BD.Opciones_Alto(), SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 		//MoveWindow(Video.hWnd(), 120, 71, RC.right - 120, RC.bottom - 70, TRUE);
 
 		Arbol.Visible(FALSE);

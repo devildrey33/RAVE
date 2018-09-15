@@ -6,7 +6,7 @@
 #include "resource.h"
 
 void ControlesPantallaCompleta::Crear(void) {	
-	DVentana::CrearVentana(NULL, L"ControlesPantallaCompleta", L"", 0, 0, 500, 80, WS_POPUP, WS_EX_TOOLWINDOW, NULL, NULL, NULL, NULL);
+	DVentana::CrearVentana(NULL, L"ControlesPantallaCompleta", L"", 0, 0, 500, 80, WS_POPUP, WS_EX_TOOLWINDOW | WS_EX_TOPMOST, NULL, NULL, NULL, NULL);
 	RECT RC;
 	GetClientRect(hWnd(), &RC);
 
@@ -47,14 +47,14 @@ void ControlesPantallaCompleta::Mostrar(void) {
 //	_Visible = TRUE;
 	RECT RC;
 	GetWindowRect(App.VentanaRave.hWnd(), &RC);
-	RC.right = RC.right - 200;
+	RC.right = RC.right - 400;
 
 /*	WINDOWPLACEMENT WP;
 	WP.length = sizeof(WINDOWPLACEMENT);
 	GetWindowPlacement(App.VentanaRave.hWnd(), &WP);*/
 
 	int Ancho = abs(RC.right - (RC.left));
-	MoveWindow(hWnd(), RC.left + 100, RC.bottom - 80, Ancho, 80, TRUE);
+	MoveWindow(hWnd(), RC.left + 200, RC.bottom - 80, Ancho, 80, TRUE);
 
 	MoveWindow(SliderTiempo.hWnd(),				10, 45, Ancho - 20, 24, TRUE);
 	MoveWindow(SliderVolumen.hWnd(),			Ancho - 145, 13, 90, 16, TRUE);
@@ -63,7 +63,7 @@ void ControlesPantallaCompleta::Mostrar(void) {
 	MoveWindow(LabelTiempoSeparador.hWnd(),		Ancho - 210, 12, 10, 20, TRUE);
 	MoveWindow(LabelTiempoTotal.hWnd(),			Ancho - 200, 12, 55, 20, TRUE);
 
-	Visible(TRUE);
+	ShowWindow(_hWnd, SW_SHOWNOACTIVATE);
 
 	DMouse::ObtenerPosicion(&App.VentanaRave.MousePos);
 	DMouse::Visible(TRUE);
@@ -72,9 +72,21 @@ void ControlesPantallaCompleta::Mostrar(void) {
 }
 
 void ControlesPantallaCompleta::Ocultar(void) {
+	// Si el menú del repeat está visible no oculto nada
+	if (App.VentanaRave.Menu_Repetir.Visible() == TRUE) return;
+
+	// Obtengo la recta de esta ventana, y la posición del mouse
+	RECT RV;
+	GetWindowRect(_hWnd, &RV);
+	DMouse::ObtenerPosicion(&App.VentanaRave.MousePos);
+	
+	// Si el mouse está dentro del control no oculto nada
+	if (PtInRect(&RV, App.VentanaRave.MousePos) == TRUE) return;
+	
+
 	Debug_Escribir(L"ControlesPantallaCompleta::Ocultar\n");
 	KillTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD);
-	DMouse::ObtenerPosicion(&App.VentanaRave.MousePos);
+
 	Visible(FALSE);
 	DMouse::Visible(FALSE);
 //	_Visible = FALSE;
@@ -130,7 +142,7 @@ void ControlesPantallaCompleta::Pintar(HDC DC) {
 	Graficos.DrawRectangle(&PlumaBorde, 1, 1, RC.right -1, RC.bottom -1);*/
 
 	HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO);
-	HBRUSH BrochaBorde = CreateSolidBrush(COLOR_BORDE);
+	HBRUSH BrochaBorde = CreateSolidBrush(COLOR_MENU_BORDE);
 	FillRect(DC, &RC, BrochaFondo);
 	FrameRect(DC, &RC, BrochaBorde);
 	DeleteObject(BrochaFondo);
@@ -170,10 +182,10 @@ LRESULT CALLBACK ControlesPantallaCompleta::GestorMensajes(UINT uMsg, WPARAM wPa
 			break;*/
 
 		case DWL_BOTONEX_CLICK:
-			App.VentanaRave.Evento_BotonEx_Mouse_Click(reinterpret_cast<DEventoMouse &>(wParam));
+			App.VentanaRave.Evento_BotonEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
 		case DWL_BOTONEX_MOUSEDOWN:
-			App.VentanaRave.Evento_BotonEx_Mouse_Down(reinterpret_cast<DEventoMouse &>(wParam));
+			App.VentanaRave.Evento_BotonEx_Mouse_Down(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
 
 		case DWL_BARRAEX_CAMBIO :

@@ -21,9 +21,15 @@ LRESULT CALLBACK VerVideo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lPara
 /*		case WM_ERASEBKGND :
 			return 1;*/
 		case WM_PAINT :
-			return Pintar();
+			HDC         DC;
+			PAINTSTRUCT PS;
+			DC = BeginPaint(hWnd(), &PS);
+			Pintar(DC);
+			EndPaint(hWnd(), &PS);
+			return 0;
 		case WM_SIZING:
-			return Pintar();
+			Repintar();
+			return 0;
 		case WM_MOUSEMOVE :
 //			Debug_Escribir(L"VerView::GestorMensajes uMsg = WM_MOUSEMOVE\n");
 			DWL::DMouse::ObtenerPosicion(&nPos);
@@ -44,18 +50,11 @@ LRESULT CALLBACK VerVideo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lPara
 }
 
 
-LRESULT VerVideo::Pintar(void) {
-	PAINTSTRUCT PS;
-	HDC hDC = BeginPaint(hWnd(), &PS);
-	
-	//HBRUSH Negro = (HBRUSH)GetStockObject(BLACK_BRUSH);
-	HBRUSH Fondo = CreateSolidBrush(COLOR_TOOLTIP_FONDO);
+void VerVideo::Pintar(HDC hDC) {
 	RECT R;
-	
 	GetClientRect(hWnd(), &R);
-	FillRect(hDC, &R, Fondo);
 
+	HBRUSH Fondo = CreateSolidBrush(COLOR_TOOLTIP_FONDO);
+	FillRect(hDC, &R, Fondo);
 	DeleteObject(Fondo);
-	EndPaint(hWnd(), &PS);
-	return 0;
 }
