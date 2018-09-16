@@ -5,7 +5,7 @@
 
 enum RAVE_Iconos {
 	RAVE_Icono_Cancion		= IDI_CANCION2,
-	RAVE_Icono_Video		= IDI_VIDEO2,
+	RAVE_Icono_Video		= IDI_VIDEO3,
 	RAVE_Icono_Directorio	= IDI_DIRECTORIO,
 	RAVE_Icono_Raiz			= IDI_RAIZ,
 	RAVE_Icono_Genero		= IDI_GENERO,

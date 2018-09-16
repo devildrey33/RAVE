@@ -52,7 +52,7 @@ void ListaRaices::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 	if (nItemPresionado == NULL) return;
 
 	if (nItemPresionado == ItemResaltado() && _SubItemResaltado == 1) {
-		App.VentanaRave.EliminarRaiz(nItemPresionado->Texto());
+		App.VentanaOpciones.EliminarRaiz(nItemPresionado->Texto());
 		EliminarItem(nItemPresionado);
 //		Repintar();
 	}

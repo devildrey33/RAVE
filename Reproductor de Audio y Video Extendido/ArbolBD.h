@@ -50,6 +50,11 @@ class ArbolBD : public DWL::DArbolEx {
 	void				Evento_Nodo_Expandido(DWL::DArbolEx_Nodo *nNodo, const BOOL nExpandido);
 	void				Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse);
 	void				Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse);
+
+	void				Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
+	void				Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params);
+	void				Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param);
+
   protected:
     void               _AgregarMedio(NodoBD *nPadre, BDMedio *nMedio);
 	ToolTipBD          _ToolTip;

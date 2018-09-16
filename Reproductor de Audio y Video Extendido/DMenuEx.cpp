@@ -14,11 +14,11 @@ namespace DWL {
 		_Recta = { 0, 0, 0, 0 };
 	}
 
-	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const UINT nID) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Separador), _ID(nID), _MenuResaltado(NULL), _MenuPresionado(NULL), _Activado(TRUE), _MenuDesplegado(NULL), _AnularMouseMove(NULL) {
+	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const INT_PTR nID) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Separador), _ID(nID), _MenuResaltado(NULL), _MenuPresionado(NULL), _Activado(TRUE), _MenuDesplegado(NULL), _AnularMouseMove(NULL) {
 		_Recta = { 0, 0, 0, 0 };
 	}
 
-	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const UINT nID, const wchar_t *nTexto, const int nIconoRecursos, const BOOL nActivado) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Texto), _ID(nID), _Texto(nTexto), _Activado(nActivado), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL), _AnularMouseMove(NULL) {
+	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Texto), _ID(nID), _Texto(nTexto), _Activado(nActivado), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL), _AnularMouseMove(NULL) {
 		_Recta = { 0, 0, 0, 0 };
 		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DMENUEX_TAMICONO, DMENUEX_TAMICONO);
 	}
@@ -126,7 +126,7 @@ namespace DWL {
 	}
 
 
-	DMenuEx *DMenuEx::AgregarMenu(const UINT nID, const wchar_t *nTexto, const int nIconoRecursos, const int nPosicion, const BOOL nActivado) {
+	DMenuEx *DMenuEx::AgregarMenu(const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const int nPosicion, const BOOL nActivado) {
 		int Pos = nPosicion;
 		if (nPosicion == -1) {
 			Pos = static_cast<int>(_Menus.size());
@@ -140,7 +140,7 @@ namespace DWL {
 	}
 
 
-	DMenuEx *DMenuEx::AgregarSeparador(const int uID, const int nPosicion) {
+	DMenuEx *DMenuEx::AgregarSeparador(const INT_PTR uID, const int nPosicion) {
 		int Pos = nPosicion;
 		if (nPosicion == -1) {
 			Pos = static_cast<int>(_Menus.size());

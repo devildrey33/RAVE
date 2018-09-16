@@ -56,7 +56,7 @@ namespace DWL {
 		inline const size_t				TotalHijos(void)													{ return _Hijos.size();					}
 		inline DArbolEx_Nodo           *UltimoHijo(void)													{ return (_Hijos.size() == 0) ? NULL : _Hijos[_Hijos.size() - 1]; }
 
-		inline const int                IDIcono(void)														{ return _Icono->ID(); }
+		inline const INT_PTR            IDIcono(void)														{ return _Icono->ID(); }
 		void                            Icono(const int nIconoRecursos);
 		void                            Icono(const GUID nIconoKnownFolder);
 		void                            Icono(const wchar_t *nIconoPath, const int nIconoPos);

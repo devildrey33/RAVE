@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DhWnd.h"
+#include "DControlEx.h"
 
 namespace DWL {
 
@@ -11,7 +11,7 @@ namespace DWL {
 							DToolTipEx(void);
 		                   ~DToolTipEx(void);
 							// Función que crea la ventana del tooltip para futuras interacciones
-		HWND				CrearToolTipEx(DhWnd_Fuente Fuente = DhWnd::Fuente18Normal);
+		HWND				CrearToolTipEx(DhWnd_Fuente Fuente = DhWnd::Fuente18Normal, DhWnd *Padre = NULL);
 		SIZE                CalcularTam(std::wstring &Str);
 		void				Mostrar(const int cX, const int cY, std::wstring &Str);
 		void				Mostrar(const int cX, const int cY, std::wstring &Str, const int cAncho, const int cAlto);

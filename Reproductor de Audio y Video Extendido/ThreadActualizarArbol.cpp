@@ -51,6 +51,11 @@ const BOOL ThreadActualizarArbol::Cancelar(void) {
 	return Ret;
 }
 
+HANDLE ThreadActualizarArbol::Thread(void) {
+	return _Thread;
+}
+
+
 
 unsigned long ThreadActualizarArbol::_ThreadActualizar(void *pThis) {
 	ThreadActualizarArbol *This = reinterpret_cast<ThreadActualizarArbol *>(pThis);

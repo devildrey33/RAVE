@@ -15,6 +15,17 @@ HWND VerVideo::Crear(DhWnd *Padre, const int cX, const int cY, const int cAncho,
 	return DControlEx::CrearControlEx(Padre, L"VerVideo", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, CS_DBLCLKS /*| CS_VREDRAW | CS_HREDRAW */);
 }
 
+void VerVideo::Evento_MenuEx_Click(const UINT cID) {
+	switch (cID) {
+		case ID_MENUVIDEO_AUDIO:
+			break;
+		case ID_MENUVIDEO_VIDEO:
+			break;
+		case ID_MENUVIDEO_SUBTITULOS:
+			break;
+	}
+}
+
 LRESULT CALLBACK VerVideo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	static POINT nPos = { 0 , 0 };
 	switch (uMsg) {
@@ -39,12 +50,21 @@ LRESULT CALLBACK VerVideo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lPara
 					App.ControlesPC.Mostrar();
 				}
 			}
-			break;
+			return 0;
 		case WM_LBUTTONDBLCLK :
 		case WM_RBUTTONDBLCLK :
 		case WM_MBUTTONDBLCLK :
 			App.VentanaRave.PantallaCompleta(!App.VentanaRave.PantallaCompleta());
-			break;
+			return 0;
+		case WM_RBUTTONUP:
+			App.VentanaRave.Menu_Video.Mostrar(this);
+			return 0;
+/*		case WM_KEYUP:
+			if (wParam == VK_ESCAPE) {
+				App.VentanaRave.PantallaCompleta(FALSE);
+			}
+			return 0;*/
+
 	}
 	return DefWindowProc(hWnd(), uMsg, wParam, lParam);
 }

@@ -1,17 +1,15 @@
 #pragma once
 
-
-#include "DhWnd.h"
 #include "ArbolBD.h"
 #include "ListaMedios.h"
 #include "DMenuEx.h"
 #include "VerVideo.h"
 #include "MarcoControles.h"
-#include "MarcoOpciones.h"
+//#include "MarcoOpciones.h"
 #include "BarraTiempo.h"
 #include "BarraVolumen.h"
 #include "DBotonEx.h"
-#include "DLabelEx.h"
+#include "DEtiquetaEx.h"
 #include "ListaRaices.h"
 #include "DDesplegableEx.h"
 #include "ThreadActualizarArbol.h"
@@ -26,30 +24,25 @@ class VentanaPrincipal : public DWL::DVentana {
 					           ~VentanaPrincipal(void) { };
 	HWND						Crear(int nCmdShow);
 
-	void						AgregarRaiz(void);
-	void						EliminarRaiz(std::wstring &Path);
+/*	void						AgregarRaiz(void);
+	void						EliminarRaiz(std::wstring &Path);*/
 
 	void						Evento_MenuEx_Click(const UINT cID);
 	void						Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse);
 	void                        Evento_BotonEx_Mouse_Down(DWL::DEventoMouse &DatosMouse);
-
-	//void						Evento_ArbolEx_Click(DArbolEx_DatosClick *Datos, const UINT aID);
 	void						Evento_Temporizador(const UINT cID);
-//	void						Timer_ObtenerTiempoTotal(void);
 	void						Evento_CambiandoTam(const UINT Lado, RECT *Rectangulo);
-
-//	LRESULT						Evento_SliderH(WPARAM wParam, LPARAM lParam);
-
 	void						Evento_SliderTiempo_Cambiado(void);
 	void						Evento_SliderVolumen_Cambiado(void);
 	void						Evento_SliderVolumen_Cambio(void);
-
 	void						Evento_SoltarArchivos(WPARAM wParam);
-
 	void						Evento_BorraFondo(HDC DC);
-
-
 	void						Evento_Cerrar(void);
+	void                        Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
+	void                        Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params);
+	void						Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param);
+
+
 
 	void						AjustarControles(RECT &RC);
 
@@ -67,6 +60,7 @@ class VentanaPrincipal : public DWL::DVentana {
 	DWL::DMenuEx				Menu_Repetir;
 	DWL::DMenuEx 				Menu_ArbolBD;
 	DWL::DMenuEx                Menu_Lista;
+	DWL::DMenuEx                Menu_Video;
 
 	DWL::DMenuEx                Menu_BotonLista;
 	DWL::DMenuEx                Menu_BotonArbolBD;
@@ -98,7 +92,7 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						ExploradorAgregarMedio(const BOOL Reproducir);
 
 	DWL::DBotonEx				BotonPlay;
-	DWL::DBotonEx				BotonPausa;
+//	DWL::DBotonEx				BotonPausa;
 	DWL::DBotonEx				BotonStop;
 	DWL::DBotonEx				BotonAdelante;
 	DWL::DBotonEx				BotonAtras;
@@ -115,15 +109,15 @@ class VentanaPrincipal : public DWL::DVentana {
 								// Marco que contiene los botones lista bd video
 	MarcoControles				MarcoII;
 
-	MarcoOpciones				Opciones;
+//	MarcoOpciones				Opciones;
 
 	BarraVolumen				SliderVolumen;
 
-	DWL::DLabelEx				LabelVolumen;
+	DWL::DEtiquetaEx			LabelVolumen;
 
-	DWL::DLabelEx				LabelTiempoActual;
-	DWL::DLabelEx				LabelTiempoSeparador;
-	DWL::DLabelEx				LabelTiempoTotal;
+	DWL::DEtiquetaEx			LabelTiempoActual;
+	DWL::DEtiquetaEx			LabelTiempoSeparador;
+	DWL::DEtiquetaEx			LabelTiempoTotal;
 
 	DWL::DBotonEx				BotonBD;
 	DWL::DBotonEx				BotonLista;
@@ -131,8 +125,8 @@ class VentanaPrincipal : public DWL::DVentana {
 
 	DWL::DBotonEx				BotonOpciones;
 
-	ListaRaices					ListaRaiz;
-	DWL::DBotonEx				BotonAgregarRaiz;
+/*	ListaRaices					ListaRaiz;
+	DWL::DBotonEx				BotonAgregarRaiz;*/
 
 	ListaMedios					Lista;
 	VerVideo					Video;

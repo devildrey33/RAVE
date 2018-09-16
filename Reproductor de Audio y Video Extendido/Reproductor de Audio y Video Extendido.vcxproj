@@ -166,6 +166,7 @@
     <ClInclude Include="DArbolEx_Nodo.h" />
     <ClInclude Include="DBarraScrollEx.h" />
     <ClInclude Include="DBarraTareas.h" />
+    <ClInclude Include="DControl.h" />
     <ClInclude Include="DControlEx.h" />
     <ClInclude Include="DEventoMouse.h" />
     <ClInclude Include="DDesplegableEx.h" />
@@ -185,17 +186,17 @@
     <ClInclude Include="DMenuEx.h" />
     <ClInclude Include="DRegistro.h" />
     <ClInclude Include="DTemporizador.h" />
+    <ClInclude Include="DVentana.h" />
     <ClInclude Include="EtiquetaBD.h" />
     <ClInclude Include="ListaMedios.h" />
     <ClInclude Include="ListaRaices.h" />
-    <ClInclude Include="MarcoOpciones.h" />
     <ClInclude Include="MemoriaCompartida.h" />
     <ClInclude Include="RaveBD.h" />
     <ClInclude Include="RAVE_CuentaEmail.h" />
     <ClInclude Include="DBarraDesplazamientoEx.h" />
     <ClInclude Include="DBarraProgresoEx.h" />
     <ClInclude Include="DBotonEx.h" />
-    <ClInclude Include="DLabelEx.h" />
+    <ClInclude Include="DEtiquetaEx.h" />
     <ClInclude Include="EnviarDump.h" />
     <ClInclude Include="RAVE_Iconos.h" />
     <ClInclude Include="RAVE_Skin.h" />
@@ -244,6 +245,7 @@
     <ClCompile Include="DBarraTareas.cpp" />
     <ClCompile Include="DBotonEx.cpp" />
     <ClCompile Include="DConsola.cpp" />
+    <ClCompile Include="DControl.cpp" />
     <ClCompile Include="DControlEx.cpp" />
     <ClCompile Include="DDesplegableEx.cpp" />
     <ClCompile Include="DDesplegableEx_ExplorarDirectoriosEx.cpp" />
@@ -251,7 +253,7 @@
     <ClCompile Include="DExplorarDirectoriosEx.cpp" />
     <ClCompile Include="DGDI.cpp" />
     <ClCompile Include="DhWnd.cpp" />
-    <ClCompile Include="DLabelEx.cpp" />
+    <ClCompile Include="DEtiquetaEx.cpp" />
     <ClCompile Include="DListaEx.cpp" />
     <ClCompile Include="DListaEx_Columna.cpp" />
     <ClCompile Include="DListaEx_Item.cpp" />
@@ -266,12 +268,12 @@
     <ClCompile Include="DTemporizador.cpp" />
     <ClCompile Include="DToolTipEx.cpp" />
     <ClCompile Include="DUnidadesDisco.cpp" />
+    <ClCompile Include="DVentana.cpp" />
     <ClCompile Include="EnviarDump.cpp" />
     <ClCompile Include="ExtensionesValidas.cpp" />
     <ClCompile Include="ListaMedios.cpp" />
     <ClCompile Include="ListaRaices.cpp" />
     <ClCompile Include="MarcoControles.cpp" />
-    <ClCompile Include="MarcoOpciones.cpp" />
     <ClCompile Include="MemoriaCompartida.cpp" />
     <ClCompile Include="RAVE.cpp" />
     <ClCompile Include="RaveBD.cpp" />
@@ -331,6 +333,7 @@
     <Image Include="..\Iconos\IDI_STOP32.ico" />
     <Image Include="..\Iconos\IDI_Subtitulos.ico" />
     <Image Include="..\Iconos\IDI_Video2.ico" />
+    <Image Include="..\Iconos\IDI_Video3.ico" />
     <Image Include="..\Iconos\IDI_VLC.ico" />
     <Image Include="Reproductor de Audio y Video Extendido.ico" />
     <Image Include="small.ico" />

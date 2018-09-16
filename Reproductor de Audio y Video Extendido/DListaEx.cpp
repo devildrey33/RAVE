@@ -61,6 +61,9 @@ namespace DWL {
 			delete _Items[i];
 		}
 		_Items.resize(0);
+		_ItemResaltado	= -1;
+		_ItemMarcado	= -1;
+		_ItemPresionado = -1;
 		_Repintar = TRUE;
 	}
 
@@ -384,20 +387,12 @@ namespace DWL {
 		if (nRepintar == TRUE) Repintar();
 	}
 
-/*	DListaEx_Item * DListaEx::ItemResaltado(void) { 
-		if (_ItemResaltado == -1) return NULL;
-		return _Items[_ItemResaltado];
-	};
 
-	DListaEx_Item * DListaEx::ItemPresionado(void) { 
-		if (_ItemPresionado == -1) return NULL;
-		return _Items[_ItemPresionado];
-	};
-
-	DListaEx_Item * DListaEx::ItemMarcado(void) { 
-		if (_ItemMarcado == -1) return NULL;
-		return _Items[_ItemMarcado];
-	};*/
+	const BOOL DListaEx::Destruir(void) {
+		EliminarTodasLasColumnas();
+		EliminarTodosLosItems();
+		return DControlEx::Destruir();
+	}
 
 	
 	// Obtiene la recta absoluta del item
@@ -692,29 +687,25 @@ namespace DWL {
 		// Marco la tecla como presionada
 		DhWnd::_Teclado[Caracter] = true;
 
-		// Si no hay nodos, salgo de la función
-		if (_Items.size() == 0) {
-			Evento_TeclaPresionada(Caracter, Repeticion, Params);
-			return;
-		}
+		// Si hay nodos ...
+		if (_Items.size() > 0) {
+			// Me guardo el item marcado para indicar desde donde empieza el shift
+			if (Caracter == VK_SHIFT) {
+				if (_ItemShift == -1) {
+					_ItemShift = (_ItemMarcado == NULL) ? _ItemPaginaInicio : _ItemMarcado;
+				}
+			}
 
-		// Me guardo el item marcado para indicar desde donde empieza el shift
-		if (Caracter == VK_SHIFT) {
-			if (_ItemShift == -1) {
-				_ItemShift = (_ItemMarcado == NULL) ? _ItemPaginaInicio : _ItemMarcado;
+			switch (Caracter) {
+			case VK_HOME: _Tecla_Inicio();								break;
+			case VK_END: _Tecla_Fin();									break;
+			case VK_UP: _Tecla_CursorArriba();							break;
+			case VK_DOWN: _Tecla_CursorAbajo();							break;
+			case VK_PRIOR: _Tecla_RePag();								break; // RePag
+			case VK_NEXT: _Tecla_AvPag();								break; // AvPag
+			default: Evento_Tecla(Caracter, Repeticion, Params);	break; // if (Caracter >= 0x30 && Caracter <= 0x5A) // Cualquier tecla valida
 			}
 		}
-
-		switch (Caracter) {
-			case VK_HOME		: _Tecla_Inicio();								break;
-			case VK_END			: _Tecla_Fin();									break;
-			case VK_UP			: _Tecla_CursorArriba();						break;
-			case VK_DOWN		: _Tecla_CursorAbajo();							break;
-			case VK_PRIOR		: _Tecla_RePag();								break; // RePag
-			case VK_NEXT		: _Tecla_AvPag();								break; // AvPag
-			default				: Evento_Tecla(Caracter, Repeticion, Params);	break; // if (Caracter >= 0x30 && Caracter <= 0x5A) // Cualquier tecla valida
-		}
-
 		Evento_TeclaPresionada(Caracter, Repeticion, Params);
 
 	}

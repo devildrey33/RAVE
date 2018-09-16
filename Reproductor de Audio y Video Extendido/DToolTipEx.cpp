@@ -16,8 +16,8 @@ namespace DWL {
 	}
 
 
-	HWND DToolTipEx::CrearToolTipEx(DhWnd_Fuente Fuente) {
-		_hWnd = DVentana::CrearVentana(NULL, L"DToolTipEx", L"", 0, 0, 0, 0, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
+	HWND DToolTipEx::CrearToolTipEx(DhWnd_Fuente Fuente, DhWnd *Padre) {
+		_hWnd = DVentana::CrearVentana(Padre, L"DToolTipEx", L"", 0, 0, 0, 0, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
 		MARGINS Margen = { 0, 0, 0, 1 };
 		DwmExtendFrameIntoClientArea(_hWnd, &Margen);
 		_Fuente = Fuente; // _Fuente18Normal;
@@ -51,9 +51,12 @@ namespace DWL {
 	void DToolTipEx::Mostrar(const int cX, const int cY, std::wstring &Str) {
 		SIZE Ret = CalcularTam(Str);
 		_Str = Str;
-		MoveWindow(hWnd(), cX - static_cast<int>(Ret.cx / 2), cY, Ret.cx, Ret.cy, FALSE);
-		ShowWindow(hWnd(), SW_SHOWNOACTIVATE);
+//		MoveWindow(hWnd(), cX - static_cast<int>(Ret.cx / 2), cY, Ret.cx, Ret.cy, FALSE);
+
+		SetWindowPos(_hWnd, HWND_TOPMOST, cX - static_cast<int>(Ret.cx / 2), cY, Ret.cx, Ret.cy, SWP_SHOWWINDOW | SWP_NOACTIVATE);
+
 		RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT);
+
 	}
 
 	void DToolTipEx::Mostrar(const int cX, const int cY, std::wstring &Str, const int cAncho, const int cAlto) {

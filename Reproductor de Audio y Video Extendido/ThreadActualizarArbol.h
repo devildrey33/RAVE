@@ -12,6 +12,7 @@ class ThreadActualizarArbol {
 	void						Terminar(void);
 	void						Cancelar(const BOOL nCancelar);
 	const BOOL                  Cancelar(void);
+	HANDLE                      Thread(void);
   protected:
 /*	void                       _Parsear(libvlc_instance_t *VLC, std::wstring &Path);
 	std::wstring               _ObtenerMeta(libvlc_media_t *Media, libvlc_meta_t Tipo);

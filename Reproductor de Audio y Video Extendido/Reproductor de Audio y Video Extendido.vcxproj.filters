@@ -50,9 +50,6 @@
     <Filter Include="DWL\Ventanas\ControlesEx\BotonEx">
       <UniqueIdentifier>{387b6b9f-1344-4cff-be71-fa2d6bf42414}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\LabelEx">
-      <UniqueIdentifier>{ec2f93a3-f0d3-4895-aedb-dd9521e0b5b0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DWL\Ventanas\ControlesEx\BarraProgresoEx">
       <UniqueIdentifier>{d7c9df78-01b9-4dd2-b4df-d2c6df60cfc1}</UniqueIdentifier>
     </Filter>
@@ -140,6 +137,9 @@
     <Filter Include="xXx _MAIN_ xXx\Memoria compartida">
       <UniqueIdentifier>{4f7591fc-0edf-4df2-8bc0-f189ff6b24cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DWL\Ventanas\ControlesEx\EtiquetaEx">
+      <UniqueIdentifier>{ec2f93a3-f0d3-4895-aedb-dd9521e0b5b0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -205,9 +205,6 @@
     <ClInclude Include="DBotonEx.h">
       <Filter>DWL\Ventanas\ControlesEx\BotonEx</Filter>
     </ClInclude>
-    <ClInclude Include="DLabelEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\LabelEx</Filter>
-    </ClInclude>
     <ClInclude Include="DBarraProgresoEx.h">
       <Filter>DWL\Ventanas\ControlesEx\BarraProgresoEx</Filter>
     </ClInclude>
@@ -226,9 +223,6 @@
     <ClInclude Include="RAVE_Skin.h">
       <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
-    <ClInclude Include="MarcoOpciones.h">
-      <Filter>Ventanas\Controles</Filter>
-    </ClInclude>
     <ClInclude Include="DArbolEx_Nodo.h">
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
     </ClInclude>
@@ -240,9 +234,6 @@
     </ClInclude>
     <ClInclude Include="DListaIconos_Icono.h">
       <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29</Filter>
-    </ClInclude>
-    <ClInclude Include="DControlEx.h">
-      <Filter>DWL\Ventanas\ControlesEx</Filter>
     </ClInclude>
     <ClInclude Include="ArbolBD.h">
       <Filter>Ventanas\Controles</Filter>
@@ -355,6 +346,18 @@
     <ClInclude Include="VentanaOpcionesRAVE.h">
       <Filter>Ventanas</Filter>
     </ClInclude>
+    <ClInclude Include="DControlEx.h">
+      <Filter>DWL\Ventanas\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="DControl.h">
+      <Filter>DWL\Ventanas\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="DVentana.h">
+      <Filter>DWL\Ventanas\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="DEtiquetaEx.h">
+      <Filter>DWL\Ventanas\ControlesEx\EtiquetaEx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -411,9 +414,6 @@
     <ClCompile Include="DBotonEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\BotonEx</Filter>
     </ClCompile>
-    <ClCompile Include="DLabelEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\LabelEx</Filter>
-    </ClCompile>
     <ClCompile Include="DBarraProgresoEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\BarraProgresoEx</Filter>
     </ClCompile>
@@ -426,9 +426,6 @@
     <ClCompile Include="DBarraScrollEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\BarraScrollEx</Filter>
     </ClCompile>
-    <ClCompile Include="MarcoOpciones.cpp">
-      <Filter>Ventanas\Controles</Filter>
-    </ClCompile>
     <ClCompile Include="DArbolEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
     </ClCompile>
@@ -437,9 +434,6 @@
     </ClCompile>
     <ClCompile Include="DArbolEx_Nodo.cpp">
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
-    </ClCompile>
-    <ClCompile Include="DControlEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx</Filter>
     </ClCompile>
     <ClCompile Include="ArbolBD.cpp">
       <Filter>Ventanas\Controles</Filter>
@@ -530,6 +524,18 @@
     </ClCompile>
     <ClCompile Include="VentanaOpcionesRAVE.cpp">
       <Filter>Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="DControlEx.cpp">
+      <Filter>DWL\Ventanas\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="DControl.cpp">
+      <Filter>DWL\Ventanas\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="DVentana.cpp">
+      <Filter>DWL\Ventanas\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="DEtiquetaEx.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\EtiquetaEx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -626,6 +632,9 @@
       <Filter>Archivos de recursos</Filter>
     </Image>
     <Image Include="..\Iconos\IDI_VLC.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Video3.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>

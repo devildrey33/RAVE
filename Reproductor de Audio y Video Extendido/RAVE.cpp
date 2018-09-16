@@ -47,6 +47,11 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 		PlayerInicial = TRUE;
 	}
 
+	// Ignoro players previos y muestro la ventana igualmente en modo DEBUG
+	#ifdef RAVE_IGNORAR_INSTANCIAS_PREVIAS
+		PlayerInicial = TRUE;
+	#endif
+
 
 	// Obtengo el directorio actual de la aplicación, para ello debo obtener el path del ejecutable, y recortarlo
 	TCHAR PathApp[1024];
@@ -201,7 +206,6 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 
 
 void RAVE::IniciarUI(int nCmdShow) {
-	_ToolTip.CrearToolTipEx(DWL::DhWnd::Fuente18Normal);
 //	Fuente13 = CreateFont(13, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, L"Tahoma");
 
 	// Menu Arbol BD	
@@ -244,11 +248,18 @@ void RAVE::IniciarUI(int nCmdShow) {
 //		case Tipo_Repeat_ApagarOrdenador	:		Menu_Repetir.Menu(4)->Icono(IDI_CHECK);		break;
 	}
 
+	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_AUDIO		, L"Audio");
+	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_VIDEO		, L"Video");
+	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_SUBTITULOS	, L"Subtitulos");
+
 
 	// Ventana principal
 	VentanaRave.Crear(nCmdShow);
 	// Controles pantalla completa
 	ControlesPC.Crear();
+
+	_ToolTip.CrearToolTipEx(DWL::DhWnd::Fuente18Normal, &VentanaRave);
+
 }
 
 void RAVE::Terminar(void) {
@@ -386,6 +397,14 @@ void RAVE::MostrarToolTip(DhWnd &Padre, const wchar_t *Texto) {
 
 void RAVE::MostrarToolTip(DhWnd &Padre, std::wstring &Texto) {
 	_ToolTip.Ocultar();
+	HWND Foco = GetFocus();
+	while (GetParent(Foco) != NULL) {
+		Foco = GetParent(Foco);
+	}
+	// Si el foco no pertenece a la ventana padre o a uno de sus 
+	if (Padre.hWnd() != Foco && Foco != VentanaAsociar.hWnd() && Foco != VentanaOpciones.hWnd()) {
+		return; 
+	}
 	RECT RV;
 	GetWindowRect(Padre.hWnd(), &RV);
 	SIZE Tam = _ToolTip.CalcularTam(Texto);

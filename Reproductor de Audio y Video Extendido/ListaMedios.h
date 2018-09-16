@@ -31,6 +31,10 @@ class ListaMedios : public DWL::DListaEx {
 	inline ItemMedio		   *MedioResaltado(void)  { return static_cast<ItemMedio *>(ItemResaltado()); }
 	inline ItemMedio           *UMedioResaltado(void) { return static_cast<ItemMedio *>((_ItemUResaltado == -1) ? NULL : _Items[_ItemUResaltado]); }
 
+	void                        Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
+	void                        Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params);
+	void						Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param);
+
 	void						Evento_MouseDobleClick(DWL::DEventoMouse &EventoMouse);
 	void						Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse);
 	void						Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse);

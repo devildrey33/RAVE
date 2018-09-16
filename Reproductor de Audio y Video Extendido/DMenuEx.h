@@ -1,6 +1,7 @@
 #ifndef DMENUEX_H
 #define DMENUEX_H
 
+#include "DVentana.h"
 
 namespace DWL {
 
@@ -33,8 +34,8 @@ namespace DWL {
 								DMenuEx(void);
 							   ~DMenuEx(void);
 							    // Agrega un menú con texto y icono en la posicion especificada (-1 es al final)
-		DMenuEx                *AgregarMenu(const UINT nID, const wchar_t *nTexto, const int nIconoRecursos = NULL, const int Posicion = -1, const BOOL nActivado = TRUE);
-		DMenuEx				   *AgregarSeparador(const int uID = 0, const int Posicion = -1);
+		DMenuEx                *AgregarMenu(const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos = NULL, const int Posicion = -1, const BOOL nActivado = TRUE);
+		DMenuEx				   *AgregarSeparador(const INT_PTR uID = 0, const int Posicion = -1);
 
 								// Función que muestra el Menú en el bucle principal de la aplicación y espera su respuesta en un WM_COMMAND (NO DEVUELVE EL MENÚ PRESIONADO)
 		void					Mostrar(DhWnd *nPadre, const int PosX, const int PosY);
@@ -53,7 +54,7 @@ namespace DWL {
 		inline const size_t		TotalMenus(void)					{ return _Menus.size(); }
 		inline DMenuEx         *MenuPadre(void)						{ return _Padre; }
 
-		inline const UINT       ID(void)							{ return _ID; }
+		inline const INT_PTR    ID(void)							{ return _ID; }
 
 								// Función para obtener el texto del menú
 		inline std::wstring    &Texto(void)							{ return _Texto; }
@@ -79,9 +80,9 @@ namespace DWL {
 
 	  protected:
 								// Constructor menú tipo texto (interno AgregarMenu)
-								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const UINT nID, const wchar_t *nTexto, const int nIconoRecursos = NULL, const BOOL nActivado = TRUE);
+								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos = 0, const BOOL nActivado = TRUE);
 								// Constructor menú tipo separador (interno AgregarSeparador)
-								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const UINT nID);
+								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const INT_PTR nID);
 
 		void				   _OcultarRecursivo(DMenuEx *oMenu);
 								// Función que muestra este menú como un submenú
@@ -107,7 +108,7 @@ namespace DWL {
 
 		LRESULT CALLBACK        GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 		std::vector<DMenuEx *> _Menus;
-		UINT                   _ID;
+		INT_PTR                _ID;
 		std::wstring           _Texto;
 		DListaIconos_Icono	  *_Icono;
 		DMenuEx               *_Padre;

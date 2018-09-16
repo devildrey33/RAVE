@@ -1,9 +1,9 @@
 // Configuración para compilar RAVE
 
 // Versión y titulo
-#define RAVE_VERSION			0, 4, 2, 7
-#define RAVE_VERSIONF			0.427f
-#define RAVE_VERSIONSTR			L"0.427"
+#define RAVE_VERSION			0, 4, 3, 0
+#define RAVE_VERSIONF			0.430f
+#define RAVE_VERSIONSTR			L"0.430"
 #define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
 #define RAVE_VERSIONBD          L"1.0"
 
@@ -13,6 +13,9 @@
 
 	// Simular el AppPath en "C:\ProgramFiles\RAVE\"
 	#define RAVE_SIMULAR_APPPATH
+
+	// Si ya existe un reproductor encendido, se arranca igual
+	#define RAVE_IGNORAR_INSTANCIAS_PREVIAS
 
 	// Muestra la ventana para alertar de un error crítico
 	//#define RAVE_MOSTRAR_ERRORCRITICO

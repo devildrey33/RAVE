@@ -34,6 +34,7 @@ namespace DWL {
 		                                               ~DListaEx(void);
 														// Crea el control ListaEx
 		HWND											CrearListaEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID);
+		const BOOL										Destruir(void);
 
 		DListaEx_Columna							   *AgregarColumna(const int nAncho = DLISTAEX_COLUMNA_ANCHO_AUTO, DListaEx_Columna_Alineacion nAlineacion = DListaEx_Columna_Alineacion_Izquierda);
 
@@ -84,7 +85,7 @@ namespace DWL {
 		inline DListaEx_Item                           *ItemMarcado(void)		{ if (_ItemMarcado == -1)    { return NULL; }	return _Items[_ItemMarcado]; };
 		void											ItemMarcado(DListaEx_Item *NuevoItemMarcado, const BOOL nRepintar = FALSE);
 														// Devuelve la posición del DListaEx_Item que está dentro de esta lista
-		const size_t                                    ItemPos(DListaEx_Item *pItem);
+		const size_t                                    ItemPos(DListaEx_Item *pItem);		
 
 		void											DesSeleccionarTodo(void);
 		void											MostrarItem(const size_t iPos);

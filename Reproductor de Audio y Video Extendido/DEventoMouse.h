@@ -29,7 +29,7 @@ namespace DWL {
 											\param[in]	cBoton	: Botón del mouse pulsado (si es -1 es que no se ha pulsado ningún botón).
 											\return		No devuelve nada.
 										*/
-										DEventoMouse(WPARAM nwParam, LPARAM nlParam, const UINT cID, const int cBoton = -1) :
+										DEventoMouse(WPARAM nwParam, LPARAM nlParam, const INT_PTR cID, const int cBoton = -1) :
 											wParam(nwParam), lParam(nlParam), ID(cID), Boton(cBoton) {
 										};
 
@@ -97,7 +97,7 @@ namespace DWL {
 										// wParam que devuelven los mensajes del mouse
 		LPARAM                          lParam;
 										// ID del control
-		UINT                            ID;
+		INT_PTR                         ID;
 										// Botón presionado (puede ser -1)
 		int                             Boton;
 

@@ -32,13 +32,7 @@ namespace DWL {
 	};
 
 	DArbolEx::~DArbolEx(void) {
-		BorrarTodo();
-		// Elimino el buffer para pintar el nodo
-		if (_BufferNodo != NULL) {
-			SelectObject(_BufferNodo, _BufferNodoBmpViejo);
-			DeleteObject(_BufferNodoBmp);
-			DeleteDC(_BufferNodo);
-		}
+		Destruir();
 	}
 
 	HWND DArbolEx::CrearArbolEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, DWORD nEstilos) {
@@ -80,6 +74,18 @@ namespace DWL {
 
 		_Repintar = TRUE;
 	}
+
+	const BOOL DArbolEx::Destruir(void) {
+		BorrarTodo();
+		// Elimino el buffer para pintar el nodo
+		if (_BufferNodo != NULL) {
+			SelectObject(_BufferNodo, _BufferNodoBmpViejo);
+			DeleteObject(_BufferNodoBmp);
+			DeleteDC(_BufferNodo);
+		}
+		return DControlEx::Destruir();
+	}
+
 
 	DArbolEx_Nodo *DArbolEx::_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre, DListaIconos_Icono *nIcono, DhWnd_Fuente *nFuente, const size_t PosicionNodo) {
 		#if DARBOLEX_MOSTRARDEBUG == TRUE

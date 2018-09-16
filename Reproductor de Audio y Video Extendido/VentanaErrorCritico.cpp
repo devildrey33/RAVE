@@ -26,18 +26,18 @@ HWND VentanaErrorCritico::Crear(void) {
 	RECT RC;
 	GetClientRect(hWnd(), &RC);
 
-	TextoTitulo.CrearLabelEx(this, L"Error crítico!", 10, 10, RC.right - 20, 20, ID_VEC_TEXTOERROR, TRUE, WS_CHILD);
-	TextoTitulo.Fuente = Fuente21Negrita();
+	TextoTitulo.CrearEtiquetaEx(this, L"Error crítico!", 10, 10, RC.right - 20, 20, ID_VEC_TEXTOERROR, TRUE, WS_CHILD);
+	TextoTitulo.Fuente = Fuente21Negrita;
 	TextoTitulo.ColorTexto = COLOR_BOTON_RESALTADO;
 	TextoTitulo.Visible(TRUE);
 
-	std::wstring TE =	std::wstring(L"Se ha detectado un error, y el Reproductor de Audio y Video\nExtendido debe cerrarse.\n\n") + 
-						std::wstring(L"Si lo deseas puedes mandar el informe de errores para que \n") +
-						std::wstring(L"sea revisado pulsando el boton Enviar. De esta forma estaras \n") +
-						std::wstring(L"ayudando al desarrollo de este reproductor.") +
-						std::wstring(L"\n\nEn caso contrario pula el boton Salir. ");
-	TextoError.CrearLabelEx(this, TE.c_str(), 10, 40, RC.right - 20, 150, ID_VEC_TEXTOERROR, FALSE, WS_CHILD | WS_VISIBLE);
-	TextoError.Fuente = Fuente18Normal();
+	std::wstring TE =	L"Se ha detectado un error, y el Reproductor de Audio y Video\nExtendido debe cerrarse.\n\n"
+						L"Si lo deseas puedes mandar el informe de errores para que \n"
+						L"sea revisado pulsando el boton Enviar. De esta forma estaras \n"
+						L"ayudando al desarrollo de este reproductor."
+						L"\n\nEn caso contrario pula el boton Salir. ";
+	TextoError.CrearEtiquetaEx(this, TE.c_str(), 10, 40, RC.right - 20, 150, ID_VEC_TEXTOERROR, FALSE, WS_CHILD | WS_VISIBLE);
+	TextoError.Fuente = Fuente18Normal;
 
 	BarraProgreso.CrearBarraProgresoEx(this, 10, 200, RC.right - 20, 10, ID_VEC_PROGRESO, 0.0f, 100.0f, 0.0f);
 	

@@ -12,6 +12,7 @@ class ThreadAgregarArchivosLista {
     const BOOL	           		Iniciar(HWND nhWndDest, std::vector<std::wstring> &Paths);
 	void						Terminar(void);
 	void						Cancelar(const BOOL nCancelar = TRUE);
+	HANDLE                      Thread(void);
   protected:
 	static unsigned long       _ThreadAgregarArchivosLista(void *pThis);
 	const UINT                 _EscanearDirectorio(std::wstring &nPath);

@@ -11,6 +11,19 @@ ArbolBD::~ArbolBD() {
 }
 
 
+void ArbolBD::Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
+	App.VentanaRave.Evento_TeclaPresionada(Caracter, Repeticion, Params);
+}
+
+void ArbolBD::Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
+	App.VentanaRave.Evento_TeclaSoltada(Caracter, Repeticion, Params);
+}
+
+void ArbolBD::Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param) {
+	App.VentanaRave.Evento_Tecla(Caracter, Repeticion, Param);
+}
+
+
 NodoBD *ArbolBD::BuscarHash(sqlite3_int64 bHash) {
 	if (_Raiz.TotalHijos() == 0) return NULL;
 	NodoBD *Tmp = static_cast<NodoBD *>(_Raiz.Hijo(0));

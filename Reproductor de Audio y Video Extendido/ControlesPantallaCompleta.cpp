@@ -7,14 +7,20 @@
 
 void ControlesPantallaCompleta::Crear(void) {	
 	DVentana::CrearVentana(NULL, L"ControlesPantallaCompleta", L"", 0, 0, 500, 80, WS_POPUP, WS_EX_TOOLWINDOW | WS_EX_TOPMOST, NULL, NULL, NULL, NULL);
+	
+	//AnimateWindow(_hWnd, 100, AW_HOR_POSITIVE | AW_VER_POSITIVE);
+
+	// Asigno la posición del menú y lo hago siempre visible
+//	SetWindowPos(_hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOSIZE | SWP_NOMOVE);
+
 	RECT RC;
 	GetClientRect(hWnd(), &RC);
 
 	BotonAtras.CrearBotonEx(this,	 IDI_PREV32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  10, 10, 30, 30, ID_BOTON_ANTERIOR);
 	BotonPlay.CrearBotonEx(this,	 IDI_PLAY32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  50, 10, 30, 30, ID_BOTON_PLAY);
-	BotonPausa.CrearBotonEx(this,	 IDI_PAUSA32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  90, 10, 30, 30, ID_BOTON_PAUSA);
-	BotonStop.CrearBotonEx(this,	 IDI_STOP32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 130, 10, 30, 30, ID_BOTON_STOP);
-	BotonAdelante.CrearBotonEx(this, IDI_NEXT32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 170, 10, 30, 30, ID_BOTON_SIGUIENTE);
+//	BotonPausa.CrearBotonEx(this,	 IDI_PAUSA32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  90, 10, 30, 30, ID_BOTON_PAUSA);
+	BotonStop.CrearBotonEx(this,	 IDI_STOP32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  90, 10, 30, 30, ID_BOTON_STOP);
+	BotonAdelante.CrearBotonEx(this, IDI_NEXT32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 130, 10, 30, 30, ID_BOTON_SIGUIENTE);
 
 
 	BotonMezclar.CrearBotonEx(this, L"Mezclar", 220, 10, 80, 30, ID_BOTON_MEZCLAR);
@@ -28,11 +34,11 @@ void ControlesPantallaCompleta::Crear(void) {
 //	SliderTiempo.TamPagina(30000 / 50);
 
 	SliderVolumen.CrearBarraDesplazamientoEx(this, RC.right - 145, 13, 90, 16, ID_SLIDER_VOLUMEN, 0, 200, 100);
-	LabelVolumen.CrearLabelEx(this, L"100%", RC.right - 40, 12, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
+	LabelVolumen.CrearEtiquetaEx(this, L"100%", RC.right - 40, 12, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
 
-	LabelTiempoActual.CrearLabelEx(this, L"00:00", RC.right - 265, 12, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
-	LabelTiempoSeparador.CrearLabelEx(this, L"/", RC.right - 210, 12, 10, 20, ID_LABEL_TIEMPOSEPARADOR, TRUE, WS_CHILD | WS_VISIBLE);
-	LabelTiempoTotal.CrearLabelEx(this, L"00:00", RC.right - 200, 12, 55, 20, ID_LABEL_TIEMPOTOTAL, TRUE, WS_CHILD | WS_VISIBLE);
+	LabelTiempoActual.CrearEtiquetaEx(this, L"00:00", RC.right - 265, 12, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
+	LabelTiempoSeparador.CrearEtiquetaEx(this, L"/", RC.right - 210, 12, 10, 20, ID_LABEL_TIEMPOSEPARADOR, TRUE, WS_CHILD | WS_VISIBLE);
+	LabelTiempoTotal.CrearEtiquetaEx(this, L"00:00", RC.right - 200, 12, 55, 20, ID_LABEL_TIEMPOTOTAL, TRUE, WS_CHILD | WS_VISIBLE);
 
 	Opacidad(240);
 }
@@ -47,14 +53,10 @@ void ControlesPantallaCompleta::Mostrar(void) {
 //	_Visible = TRUE;
 	RECT RC;
 	GetWindowRect(App.VentanaRave.hWnd(), &RC);
-	RC.right = RC.right - 400;
+	LONG X = (RC.right - 1000) / 2;
 
-/*	WINDOWPLACEMENT WP;
-	WP.length = sizeof(WINDOWPLACEMENT);
-	GetWindowPlacement(App.VentanaRave.hWnd(), &WP);*/
-
-	int Ancho = abs(RC.right - (RC.left));
-	MoveWindow(hWnd(), RC.left + 200, RC.bottom - 80, Ancho, 80, TRUE);
+	int Ancho = 1000;
+	MoveWindow(hWnd(), X, RC.bottom - 80, Ancho, 80, TRUE);
 
 	MoveWindow(SliderTiempo.hWnd(),				10, 45, Ancho - 20, 24, TRUE);
 	MoveWindow(SliderVolumen.hWnd(),			Ancho - 145, 13, 90, 16, TRUE);
@@ -72,8 +74,9 @@ void ControlesPantallaCompleta::Mostrar(void) {
 }
 
 void ControlesPantallaCompleta::Ocultar(void) {
-	// Si el menú del repeat está visible no oculto nada
+	// Si el menú del repeat o del video estan visibles no oculto nada
 	if (App.VentanaRave.Menu_Repetir.Visible() == TRUE) return;
+	if (App.VentanaRave.Menu_Video.Visible() == TRUE) return;
 
 	// Obtengo la recta de esta ventana, y la posición del mouse
 	RECT RV;
@@ -201,6 +204,7 @@ LRESULT CALLBACK ControlesPantallaCompleta::GestorMensajes(UINT uMsg, WPARAM wPa
 				case ID_SLIDER_VOLUMEN: 				Evento_SliderVolumen_Cambiado();				break;
 			}
 			return 0;
+
 
 	}
 	return DVentana::GestorMensajes(uMsg, wParam, lParam);

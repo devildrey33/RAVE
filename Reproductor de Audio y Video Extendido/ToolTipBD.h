@@ -2,6 +2,7 @@
 
 #include "EtiquetaBD.h"
 #include "DListaIconos.h"
+#include "DVentana.h"
 
 #define POS_MOUSE -1
 

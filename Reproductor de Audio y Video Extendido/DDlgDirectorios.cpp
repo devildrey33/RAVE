@@ -10,11 +10,11 @@ namespace DWL {
 	#define ID_BOTONACEPTAR			WM_USER + 1002
 	#define ID_BOTONCANCELAR		WM_USER + 1003
 
-	DDlgDirectorios::DDlgDirectorios() {
+	DDlgDirectorios::DDlgDirectorios(void) {
 	}
 
 
-	DDlgDirectorios::~DDlgDirectorios() {
+	DDlgDirectorios::~DDlgDirectorios(void) {
 	}
 
 
@@ -74,8 +74,8 @@ namespace DWL {
 		_Terminado = 2; // cancelado
 	}
 
-	void DDlgDirectorios::Evento_BotonEx_Mouse_Click(const UINT cID) {
-		switch (cID) {
+	void DDlgDirectorios::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse) {
+		switch (DatosMouse.ID) {
 			case ID_BOTONACEPTAR :
 				_Terminado = 1;
 				break;
@@ -128,7 +128,7 @@ namespace DWL {
 				Evento_Cerrar();
 				return 0;
 			case DWL_BOTONEX_CLICK:
-				Evento_BotonEx_Mouse_Click(static_cast<UINT>(wParam));
+				Evento_BotonEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));
 				return 0;
 			case DWL_ARBOLEX_CLICK: 
 				_ActualizarAceptar();

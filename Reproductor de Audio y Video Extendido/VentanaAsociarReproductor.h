@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DhWnd.h"
+#include "DVentana.h"
 #include "DBotonEx.h"
 #include "DMarcaEx.h"
 
@@ -10,7 +10,7 @@ class VentanaAsociarReproductor : public DWL::DVentana {
 	                           ~VentanaAsociarReproductor(void);
 	void                        Mostrar(void);
 	void						Pintar(HDC DC);
-	void						Evento_BotonEx_Mouse_Click(const UINT cID);
+	void						Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse);
 	LRESULT CALLBACK			GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
   protected:
 	void					   _Evento_Pintar(void);

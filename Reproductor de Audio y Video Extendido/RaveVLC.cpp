@@ -143,7 +143,7 @@ const BOOL RaveVLC::AbrirMedio(BDMedio &Medio) {
 	App.ControlesPC.SliderTiempo.OcultarToolTip();
 
 	// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
-	std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" - " +  std::wstring(MedioActual.Nombre());
+	std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" - " +  MedioActual.Nombre();
 	App.VentanaRave.Titulo(nTitulo);
 
 	Debug_Escribir_Varg(L"RaveVLC::AbrirMedio Path '%s'\n", MedioActual.Path.c_str());

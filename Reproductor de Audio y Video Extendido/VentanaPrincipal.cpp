@@ -34,37 +34,20 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	Lista.CrearListaEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_LISTAMEDIOS);
 
 	// Columnas
-	Lista.AgregarColumna(45, DListaEx_Columna_Alineacion_Izquierda);							// Icono y pista
+	Lista.AgregarColumna(50, DListaEx_Columna_Alineacion_Derecha);							// Icono y pista
 	Lista.AgregarColumna(DLISTAEX_COLUMNA_ANCHO_AUTO, DListaEx_Columna_Alineacion_Izquierda);	// Nombre
 	Lista.AgregarColumna(80, DListaEx_Columna_Alineacion_Derecha);								// Tiempo
 
 	
 	Video.Crear(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_VERVIDEO);
 
-	// Opciones /////////////////////////////
-	Opciones.Crear(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_OPCIONES);
-	Opciones.Visible(FALSE);
-
-	ListaRaiz.CrearListaRaiz(&Opciones, 10, 10, 300, 80, ID_LISTARAIZ);
-
-	for (size_t i = 0; i < App.BD.TotalRaices(); i++) {
-		ListaRaiz.AgregarRaiz(App.BD.Raiz(i)->Path.c_str());
-	}
-	ListaRaiz.Visible(TRUE);
-
-/*	ComboRaiz.CrearDesplegable(&Opciones, 10, 100, 300, 30, ID_OPCIONES, DDesplegableEx_TipoEdicion_SinEdicion, DDesplegableEx_TipoDesplegable_ExplorarDirectorios);
-	ComboRaiz.Visible(TRUE);*/
-	BotonAgregarRaiz.CrearBotonEx(&Opciones, L"Agregar Raiz", 10, 100, 150, 24, ID_BOTON_AGREGARRAIZ);
-	BotonAgregarRaiz.Fuente = Fuente21Normal;
-	/////////////////////////////////////////
-
 	// Marco superior izquierdo /////////////
 	MarcoSI.Crear(this, 10, 10, 380, 30, ID_MARCOSI);
 	BotonAtras.CrearBotonEx(&MarcoSI,	 IDI_PREV32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,   0, 0, 30, 30, ID_BOTON_ANTERIOR);
 	BotonPlay.CrearBotonEx(&MarcoSI,	 IDI_PLAY32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  40, 0, 30, 30, ID_BOTON_PLAY);
-	BotonPausa.CrearBotonEx(&MarcoSI,	 IDI_PAUSA32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  80, 0, 30, 30, ID_BOTON_PAUSA);
-	BotonStop.CrearBotonEx(&MarcoSI,	 IDI_STOP32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 120, 0, 30, 30, ID_BOTON_STOP);
-	BotonAdelante.CrearBotonEx(&MarcoSI, IDI_NEXT32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 160, 0, 30, 30, ID_BOTON_SIGUIENTE);
+//	BotonPausa.CrearBotonEx(&MarcoSI,	 IDI_PAUSA32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  80, 0, 30, 30, ID_BOTON_PAUSA);
+	BotonStop.CrearBotonEx(&MarcoSI,	 IDI_STOP32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  80, 0, 30, 30, ID_BOTON_STOP);
+	BotonAdelante.CrearBotonEx(&MarcoSI, IDI_NEXT32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 120, 0, 30, 30, ID_BOTON_SIGUIENTE);
 
 	BotonMezclar.CrearBotonEx(&MarcoSI, L"Mezclar", 210, 0, 80, 30, ID_BOTON_MEZCLAR);
 	if (App.BD.Opciones_Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
@@ -81,11 +64,11 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 	SliderVolumen.CrearBarraDesplazamientoEx(&MarcoSD, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.BD.Opciones_Volumen()));
 	std::wstring TxtVolumen = std::to_wstring(App.BD.Opciones_Volumen()) + L"%";
-	LabelVolumen.CrearLabelEx(&MarcoSD, TxtVolumen.c_str(), 215, 2, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
+	LabelVolumen.CrearEtiquetaEx(&MarcoSD, TxtVolumen.c_str(), 215, 2, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
 
-	LabelTiempoActual.CrearLabelEx(&MarcoSD, L"00:00", 0, 2, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
-	LabelTiempoSeparador.CrearLabelEx(&MarcoSD, L"/", 55, 2, 10, 20, ID_LABEL_TIEMPOSEPARADOR,TRUE,  WS_CHILD | WS_VISIBLE);
-	LabelTiempoTotal.CrearLabelEx(&MarcoSD, L"00:00", 65, 2, 55, 20, ID_LABEL_TIEMPOTOTAL, WS_CHILD | WS_VISIBLE);
+	LabelTiempoActual.CrearEtiquetaEx(&MarcoSD, L"00:00", 0, 2, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
+	LabelTiempoSeparador.CrearEtiquetaEx(&MarcoSD, L"/", 55, 2, 10, 20, ID_LABEL_TIEMPOSEPARADOR,TRUE,  WS_CHILD | WS_VISIBLE);
+	LabelTiempoTotal.CrearEtiquetaEx(&MarcoSD, L"00:00", 65, 2, 55, 20, ID_LABEL_TIEMPOTOTAL, WS_CHILD | WS_VISIBLE);
 
 	// Marco inferior izquierdo /////////////
 	MarcoII.Crear(this, 10, 80, RAVE_BOTONES_LATERALES_ANCHO, 160, ID_MARCOSI);
@@ -121,7 +104,6 @@ void VentanaPrincipal::AjustarControles(RECT &RC) {
 	MoveWindow(Lista.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, TRUE);
 	MoveWindow(Arbol.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, TRUE);
 	MoveWindow(Video.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, TRUE);
-	MoveWindow(Opciones.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, TRUE);
 
 	MoveWindow(SliderTiempo.hWnd(), 10, 50, RC.right - 20, 24, TRUE);
 	MoveWindow(MarcoSD.hWnd(), RC.right - 260, 14, 255, 24, TRUE);
@@ -299,6 +281,8 @@ void VentanaPrincipal::Timer_ObtenerTiempoTotal(void) {
 
 
 void VentanaPrincipal::Lista_Pausa(void) {
+	BotonPlay.Icono(IDI_PLAY32, 32);
+	App.ControlesPC.BotonPlay.Icono(IDI_PLAY32, 32);
 	App.VLC.Pausa();
 }
 
@@ -315,7 +299,8 @@ void VentanaPrincipal::Lista_Play(void) {
 //				NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
 				if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
 				if (App.VLC.Play() == TRUE) {
-//					Lista.Medio(Lista.Pos)->Icono(9);
+					BotonPlay.Icono(IDI_PAUSA32, 32);
+					App.ControlesPC.BotonPlay.Icono(IDI_PAUSA32, 32);
 				}
 			}
 			break;
@@ -332,8 +317,15 @@ void VentanaPrincipal::Lista_Play(void) {
 			break;
 		case EnStop:
 		case EnPausa:
-			App.VLC.Play();
+			if (App.VLC.Play() == TRUE) {
+				BotonPlay.Icono(IDI_PAUSA32, 32);
+				App.ControlesPC.BotonPlay.Icono(IDI_PAUSA32, 32);
+			}			
 			break;
+		case EnPlay: 
+			Lista_Pausa();
+			break;
+		
 	}
 }
 
@@ -418,37 +410,29 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse)
 	if (DatosMouse.Boton == 0) {
 		switch (DatosMouse.ID) {
 			case ID_BOTON_OPCIONES:
-				Arbol.Visible(FALSE);
-				Lista.Visible(FALSE);
-				Video.Visible(FALSE);
-				Opciones.Visible(TRUE);
-				Opciones.AsignarFoco();
 				App.VentanaOpciones.Crear();
 				break;
 			case ID_BOTON_BD:
 				Arbol.Visible(TRUE);
 				Lista.Visible(FALSE);
 				Video.Visible(FALSE);
-				Opciones.Visible(FALSE);
 				Arbol.AsignarFoco();
 				break;
 			case ID_BOTON_LISTA:
 				Arbol.Visible(FALSE);
 				Lista.Visible(TRUE);
 				Video.Visible(FALSE);
-				Opciones.Visible(FALSE);
 				Lista.AsignarFoco();
 				break;
 			case ID_BOTON_VIDEO:
 				Arbol.Visible(FALSE);
 				Lista.Visible(FALSE);
 				Video.Visible(TRUE);
-				Opciones.Visible(FALSE);
 				Video.AsignarFoco();
 				break;
-			case ID_BOTON_AGREGARRAIZ:
+/*			case ID_BOTON_AGREGARRAIZ:
 				AgregarRaiz();
-				break;
+				break;*/
 			case ID_BOTON_MEZCLAR:
 				Mezclar_Click();
 				break;
@@ -470,9 +454,9 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse)
 			case ID_BOTON_PLAY:
 				Lista_Play();
 				break;
-			case ID_BOTON_PAUSA:
+/*			case ID_BOTON_PAUSA:
 				Lista_Pausa();
-				break;
+				break;*/
 			case ID_BOTON_STOP:
 				Lista_Stop();
 				break;
@@ -500,7 +484,7 @@ void VentanaPrincipal::Mezclar_Click(void) {
 	BotonMezclar.Marcado(nMezclar);
 	App.ControlesPC.BotonMezclar.Marcado(nMezclar);
 }
-
+/*
 void VentanaPrincipal::AgregarRaiz(void) {
 	DDlgDirectorios          DialogoDirectorios;
 	std::wstring             Path;
@@ -526,7 +510,7 @@ void VentanaPrincipal::AgregarRaiz(void) {
 
 void VentanaPrincipal::EliminarRaiz(std::wstring &Path) {
 	App.BD.EliminarRaiz(Path);
-}
+}*/
 
 
 void VentanaPrincipal::Repetir_Click(void) {
@@ -697,6 +681,7 @@ void VentanaPrincipal::Evento_Cerrar(void) {
 	ThreadActualizar.Cancelar(TRUE);
 	ThreadArchivosLista.Cancelar(TRUE);
 
+	Destruir();
 	PostQuitMessage(0);
 }
 
@@ -849,6 +834,24 @@ void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
 	}
 }
 
+void VentanaPrincipal::Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
+	DhWnd::_Teclado[Caracter] = true;
+}
+
+void VentanaPrincipal::Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
+	DhWnd::_Teclado[Caracter] = false;
+	switch (Caracter) {
+		case VK_SPACE :
+			Lista_Play();
+			break;
+	}
+}
+
+void VentanaPrincipal::Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param) {
+
+}
+
+
 
 LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	std::wstring *TmpStr = NULL;
@@ -902,7 +905,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			ThreadAnalizar.Terminar();
 			Debug_Escribir_Varg(L"ThreadAnalisis::Cancelado %d archivos examinados.\n", lParam);
 			BarraTareas.Estado_SinProgreso();
-			BarraTareas.Resaltar();
+//			BarraTareas.Resaltar();
 			Menu_ArbolBD.Menu(3)->Activado(TRUE);
 			App.MostrarToolTip(App.VentanaRave, L"Análisis cancelado, se han analizado " + std::to_wstring(lParam) + L" medios.");
 			return 0;
@@ -911,7 +914,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			ThreadAnalizar.Terminar();
 			Debug_Escribir_Varg(L"ThreadAnalisis::Terminado %d archivos examinados.\n", lParam);
 			BarraTareas.Estado_SinProgreso();
-			BarraTareas.Resaltar();
+//			BarraTareas.Resaltar();
 			App.BD.ObtenerEtiquetas();
 			Menu_ArbolBD.Menu(3)->Activado(TRUE);
 			App.MostrarToolTip(App.VentanaRave, L"Análisis terminado, se han analizado " + std::to_wstring(lParam) + L" medios.");
@@ -926,22 +929,23 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 //			BarraTareas.Resaltar();
 			Debug_Escribir_Varg(L"ThreadActualizarArbol::Terminado %d archivos encontrados.\n", lParam);
 			App.MostrarToolTip(App.VentanaRave, L"Arbol actualizado.");
-			AnalizarBD();
+			// Si la opción de analizar medios pendientes está activa
+			if (App.BD.Opciones_AnalizarMediosPendientes() == TRUE) AnalizarBD();
 			return 0;
 
 		case WM_DROPFILES :			
 			Evento_SoltarArchivos(wParam);
 			return 0;
 
-		case WM_KEYDOWN:
-			Debug_Escribir_Varg(L"t:%d r:%d p:%d\n", static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));
+		// Teclado
+		case WM_KEYDOWN:		
+			Evento_TeclaPresionada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															
 			return 0;
 		case WM_KEYUP:
-			Debug_Escribir_Varg(L"t:%d r:%d p:%d\n", static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));
+			Evento_TeclaSoltada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));
 			return 0;
 		case WM_CHAR:
-			Debug_Escribir_Varg(L"t:%d r:%d p:%d\n", static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));
-			//				Debug_Escribir(L"DArbolEx::CrearArbolEx() Error : ya se ha creado el arbol\n");
+			Evento_Tecla(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));			
 			return 0;
 
 
@@ -972,18 +976,21 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 		case WM_SIZING :
 			Evento_CambiandoTam(static_cast<UINT>(wParam), reinterpret_cast<RECT *>(lParam));
 			return 0;
+		case WM_MOVING :
+			App.OcultarToolTip();
+			return TRUE;
 
 		case WM_ERASEBKGND :
 			Evento_BorraFondo(reinterpret_cast<HDC>(wParam));
 			return TRUE;
 
 		// Barra de desplazamiento (barra de tiempo y volumen)
-		case DWL_BARRAEX_CAMBIO:
+		case DWL_BARRAEX_CAMBIO:	// Se está modificando (mouse down)
 			switch (wParam) {
 				case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambio();					break;
 			}
 			return 0;
-		case DWL_BARRAEX_CAMBIADO:
+		case DWL_BARRAEX_CAMBIADO:  // Se ha modificado	(mouse up)
 			switch (wParam) {
 				case ID_SLIDER_TIEMPO:						Evento_SliderTiempo_Cambiado();					break;
 				case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambiado();				break;

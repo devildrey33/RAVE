@@ -11,6 +11,18 @@ ListaMedios::~ListaMedios() {
 }
 
 
+void ListaMedios::Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
+	App.VentanaRave.Evento_TeclaPresionada(Caracter, Repeticion, Params);
+}
+
+void ListaMedios::Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
+	App.VentanaRave.Evento_TeclaSoltada(Caracter, Repeticion, Params);
+}
+
+void ListaMedios::Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param) {
+	App.VentanaRave.Evento_Tecla(Caracter, Repeticion, Param);
+}
+
 
 
 void ListaMedios::BorrarListaReproduccion(void) {

@@ -120,7 +120,7 @@ const POINT ToolTipBD::_CalcularEtiqueta(EtiquetaBD &nEtiqueta) {
 
 
 const POINT ToolTipBD::_CalcularMedio(BDMedio &nMedio) {
-	if (nMedio.TipoMedio == Tipo_Medio_Video)	{	_Icono = DListaIconos::AgregarIconoRecursos(IDI_VIDEO2, 16, 16);	}
+	if (nMedio.TipoMedio == Tipo_Medio_Video)	{	_Icono = DListaIconos::AgregarIconoRecursos(IDI_VIDEO3, 16, 16);	}
 	else										{	_Icono = DListaIconos::AgregarIconoRecursos(IDI_CANCION2, 16, 16);	}
 	HDC   hDC = GetDC(NULL);
 	HFONT VFont = static_cast<HFONT>(SelectObject(hDC, Fuente21Negrita.Fuente()));

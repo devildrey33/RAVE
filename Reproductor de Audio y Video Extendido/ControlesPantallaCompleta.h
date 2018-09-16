@@ -1,7 +1,8 @@
 #pragma once
-#include "DhWnd.h"
+#include "DVentana.h"
 #include "BarraTiempo.h"
 #include "BarraVolumen.h"
+#include "DEtiquetaEx.h"
 
 class ControlesPantallaCompleta :public DVentana {
   public:
@@ -26,7 +27,7 @@ class ControlesPantallaCompleta :public DVentana {
 	void					Ocultar(void);
 
 	DWL::DBotonEx			BotonPlay;
-	DWL::DBotonEx			BotonPausa;
+//	DWL::DBotonEx			BotonPausa;
 	DWL::DBotonEx			BotonStop;
 	DWL::DBotonEx			BotonAdelante;
 	DWL::DBotonEx			BotonAtras;
@@ -38,11 +39,11 @@ class ControlesPantallaCompleta :public DVentana {
 //	DWL::DTrackBar			SliderTiempo;
 	BarraVolumen			SliderVolumen;
 
-	DWL::DLabelEx			LabelVolumen;
+	DWL::DEtiquetaEx		LabelVolumen;
 
-	DWL::DLabelEx			LabelTiempoActual;
-	DWL::DLabelEx			LabelTiempoSeparador;
-	DWL::DLabelEx			LabelTiempoTotal;
+	DWL::DEtiquetaEx		LabelTiempoActual;
+	DWL::DEtiquetaEx		LabelTiempoSeparador;
+	DWL::DEtiquetaEx		LabelTiempoTotal;
 
 //	POINT					uPos;
 

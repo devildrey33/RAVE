@@ -496,13 +496,14 @@ const BOOL RaveBD::_CrearTablas(void) {
 											L"OcultarMouseEnVideo"		L" INTEGER,"             
 											L"Version"					L" DOUBLE,"				  
 											L"MostrarObtenerMetadatos"	L" INTEGER,"
-											L"MostrarAsociarArchivos"	L" INTEGER"
+											L"MostrarAsociarArchivos"	L" INTEGER,"
+											L"AnalizarMediosPendientes" L" INTEGER"
 										")";
 	if (Consulta(CrearTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 
 	// Añado los datos por defecto de las opciones
-	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos) "
-										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1)";
+	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes) "
+										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1, 1)";
 	if (Consulta(ValoresTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 
 	// Creo la tabla para las raices
@@ -601,8 +602,6 @@ BDRaiz *RaveBD::AgregarRaiz(std::wstring &nPath) {
 	if (PathFinal[PathFinal.size() - 1] != TEXT('\\')) PathFinal += TEXT('\\');
 
 	/*
-
-
 	std::wstring    RaizFinal = PathFinal;
 
 	// Busco raices similares
@@ -1015,6 +1014,12 @@ void RaveBD::Opciones_MostrarAsociarArchivos(const BOOL nMostrarAsociarArchivos)
 	Ret = Ret;
 }
 
+void RaveBD::Opciones_AnalizarMediosPendientes(const BOOL nAnalizarMediosPendientes) {
+	_Opciones_AnalizarMediosPendientes = nAnalizarMediosPendientes;
+	std::wstring Q = L"Update Opciones SET AnalizarMediosPendientes=" + std::to_wstring(nAnalizarMediosPendientes) + L" WHERE Id=0";
+	int Ret = Consulta(Q.c_str());
+	Ret = Ret;
+}
 
 const BOOL RaveBD::ObtenerOpciones(void) {
 
@@ -1044,6 +1049,7 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 			_Opciones_Version					= static_cast<float>(sqlite3_column_double(SqlQuery, 11));
 			_Opciones_MostrarObtenerMetadatos	= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 12));
 			_Opciones_MostrarAsociarArchivos	= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 13));
+			_Opciones_AnalizarMediosPendientes  = static_cast<BOOL>(sqlite3_column_int(SqlQuery, 14));
 		}
 	}
 

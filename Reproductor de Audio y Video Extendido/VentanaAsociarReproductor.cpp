@@ -21,7 +21,7 @@ void VentanaAsociarReproductor::Mostrar(void) {
 	if (App.BD.Opciones_MostrarAsociarArchivos() == FALSE) return;
 
 	// Creo la ventana que mostrará el progreso
-	CrearVentana(NULL, L"RAVE_AsociarReproductor", L"Asociar Reproductor", 400, 300, 510, 155, WS_CAPTION | WS_SYSMENU | WS_VISIBLE, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+	CrearVentana(&App.VentanaRave, L"RAVE_AsociarReproductor", L"Asociar Reproductor", 400, 300, 510, 155, WS_CAPTION | WS_SYSMENU | WS_VISIBLE, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 	RECT RC;
 	GetClientRect(_hWnd, &RC);
 
@@ -72,10 +72,10 @@ void VentanaAsociarReproductor::_Evento_Pintar(void) {
 }
 
 
-void VentanaAsociarReproductor::Evento_BotonEx_Mouse_Click(const UINT cID) {
+void VentanaAsociarReproductor::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse) {
 	std::wstring PathExe = App.AppPath + L"RAVE.exe";
 
-	if (cID == ID_BOTONACEPTAR) {
+	if (DatosMouse.ID == ID_BOTONACEPTAR) {
 		ShellExecute(NULL, TEXT("RunAs"), PathExe.c_str(), TEXT("-AsociarArchivos"), App.AppPath.c_str(), SW_SHOWNORMAL);
 	}
 	
@@ -88,11 +88,26 @@ void VentanaAsociarReproductor::Evento_BotonEx_Mouse_Click(const UINT cID) {
 
 LRESULT CALLBACK VentanaAsociarReproductor::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
-		case WM_PAINT			:	_Evento_Pintar();															return 0;
-		case WM_ERASEBKGND		:	Pintar(reinterpret_cast<HDC>(wParam));										return TRUE;
-		case DWL_BOTONEX_CLICK  :   Evento_BotonEx_Mouse_Click(static_cast<UINT>(wParam));						return 0;
-		case DWL_MARCAEX_CLICK  :   App.BD.Opciones_MostrarAsociarArchivos(!_MarcaNoMostrarMas.Marcado());		return 0;
-		case WM_KEYUP			:	if (wParam == VK_ESCAPE) { Evento_BotonEx_Mouse_Click(ID_BOTONCANCELAR); }	return 0;
+		case WM_PAINT			:	
+			_Evento_Pintar();															
+			return 0;
+		case WM_ERASEBKGND		:	
+			Pintar(reinterpret_cast<HDC>(wParam));										
+			return TRUE;
+		case DWL_BOTONEX_CLICK  :   
+			Evento_BotonEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));				
+			return 0;
+		case DWL_MARCAEX_CLICK  :   
+			App.BD.Opciones_MostrarAsociarArchivos(!_MarcaNoMostrarMas.Marcado());	
+			return 0;
+		case WM_KEYUP			:	
+			if (wParam == VK_ESCAPE) { 
+				Evento_BotonEx_Mouse_Click(DWL::DEventoMouse(0, 0, ID_BOTONCANCELAR)); 
+			}	
+			return 0;
+		case WM_CLOSE :
+			Evento_BotonEx_Mouse_Click(DWL::DEventoMouse(0, 0, ID_BOTONCANCELAR));
+			return 0;
 	}
 	return DefWindowProc(_hWnd, uMsg, wParam, lParam);
 }

@@ -26,8 +26,7 @@ namespace DWL {
 	}
 
 	// Función que crea un BotonEx con icono y texto
-	HWND DBotonEx::CrearBotonEx(DhWnd *nPadre, const int IDIcono, const int TamIcono, const int PosIconoX, const int PosIconoY, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const long Estilos) {
-		
+	HWND DBotonEx::CrearBotonEx(DhWnd *nPadre, const int IDIcono, const int TamIcono, const int PosIconoX, const int PosIconoY, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const long Estilos) {		
 		_Texto = nTxt;
 		HWND h =_CrearBotonEx(nPadre, cX, cY, cAncho, cAlto, cID, Estilos);
 		Icono(IDIcono, TamIcono, PosIconoX, PosIconoY);
@@ -71,7 +70,7 @@ namespace DWL {
 		int bPresionado = 0;
 		switch (_Estado) {
 			case DBotonEx_Estado_Normal:
-				nColorFondo = COLOR_BOTON;
+				nColorFondo = (_Marcado == TRUE) ? COLOR_ROJO_MARCADO : COLOR_BOTON;
 				nColorBorde = COLOR_BORDE;
 				nColorTexto = COLOR_TEXTO;
 				break;
@@ -93,9 +92,9 @@ namespace DWL {
 			nColorTexto = COLOR_TEXTO_DESACTIVADO;
 		}
 
-		if (_Marcado == TRUE) {
+/*		if (_Marcado == TRUE) {
 			nColorBorde = COLOR_ROJO_MARCADO;
-		}
+		}*/
 
 		// Pinto el borde
 		HBRUSH BrochaBorde = CreateSolidBrush(nColorBorde);
@@ -108,12 +107,12 @@ namespace DWL {
 		DeleteObject(BrochaFondo);
 
 		// Si está marcado, pinto un borde rojo oscuro a la derecha
-		if (_Marcado == TRUE) {
+/*		if (_Marcado == TRUE) {
 			HBRUSH BrochaMarcado = CreateSolidBrush(COLOR_ROJO_MARCADO);
 			RECT RM = { RC.right - 5, 0, RC.right, RC.bottom };
 			FillRect(Buffer, &RM, BrochaMarcado);
 			DeleteObject(BrochaMarcado);			
-		}
+		}*/
 
 
 		if (_Texto.size() > 0) {
@@ -164,9 +163,9 @@ namespace DWL {
 		Repintar();
 	}
 
-	void DBotonEx::_Evento_MouseSoltado(const WPARAM wParam, const LPARAM lParam, const int Boton) {
-		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
+	void DBotonEx::_Evento_MouseSoltado(const WPARAM wParam, const LPARAM lParam, const int Boton) {		
 		if (_Estado == DBotonEx_Estado_Presionado) {
+			DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
 			ReleaseCapture();
 
 			RECT RC;
@@ -212,31 +211,19 @@ namespace DWL {
 				}				
 				_Evento_MouseMovimiento(wParam, lParam);
 				break;
-			case WM_MOUSELEAVE:
+			case WM_MOUSELEAVE	:
 				_MouseDentro = FALSE;
 				if (_Estado != DBotonEx_Estado_Presionado) {
 					_Estado = DBotonEx_Estado_Normal;
 					Repintar();
 				}
-				break;
-			case WM_LBUTTONDOWN:
-				_Evento_MousePresionado(wParam, lParam, 0);
 				return 0;
-			case WM_RBUTTONDOWN:
-				_Evento_MousePresionado(wParam, lParam, 1);
-				return 0;
-			case WM_MBUTTONDOWN:
-				_Evento_MousePresionado(wParam, lParam, 2);
-				return 0;
-			case WM_LBUTTONUP:
-				_Evento_MouseSoltado(wParam, lParam, 0);
-				return 0;
-			case WM_RBUTTONUP:
-				_Evento_MouseSoltado(wParam, lParam, 1);
-				return 0;
-			case WM_MBUTTONUP:
-				_Evento_MouseSoltado(wParam, lParam, 2);
-				return 0;
+			case WM_LBUTTONDOWN	:				_Evento_MousePresionado(wParam, lParam, 0);				return 0;
+			case WM_RBUTTONDOWN	:				_Evento_MousePresionado(wParam, lParam, 1);				return 0;
+			case WM_MBUTTONDOWN	:				_Evento_MousePresionado(wParam, lParam, 2);				return 0;
+			case WM_LBUTTONUP	:				_Evento_MouseSoltado(wParam, lParam, 0);				return 0;
+			case WM_RBUTTONUP	:				_Evento_MouseSoltado(wParam, lParam, 1);				return 0;
+			case WM_MBUTTONUP	:				_Evento_MouseSoltado(wParam, lParam, 2);				return 0;
 		}
 		return DefWindowProc(hWnd(), uMsg, wParam, lParam);
 	}

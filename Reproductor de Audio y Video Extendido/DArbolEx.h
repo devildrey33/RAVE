@@ -52,6 +52,7 @@ namespace DWL {
 
 														// Crea el control ArbolEx
 		HWND											CrearArbolEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, DWORD nEstilos = WS_CHILD);
+		const BOOL										Destruir(void);
 
 		void											Expandir(DArbolEx_Nodo *nNodo, const BOOL nExpandir);
 

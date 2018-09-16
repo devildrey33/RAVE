@@ -1,16 +1,16 @@
 #include "stdafx.h"
-#include "DLabelEx.h"
+#include "DEtiquetaEx.h"
 #include "Rave_Skin.h"
 
 namespace DWL {
-	DLabelEx::DLabelEx(void) : _Formato(DT_LEFT), ColorTexto(COLOR_TEXTO), ColorTextoSombra(COLOR_TEXTO_SOMBRA), ColorFondo(COLOR_FONDO) {
+	DEtiquetaEx::DEtiquetaEx(void) : _Formato(DT_LEFT), ColorTexto(COLOR_TEXTO), ColorTextoSombra(COLOR_TEXTO_SOMBRA), ColorFondo(COLOR_FONDO) {
 	}
 
 
-	DLabelEx::~DLabelEx(void) {
+	DEtiquetaEx::~DEtiquetaEx(void) {
 	}
 
-	HWND DLabelEx::CrearLabelEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const BOOL nCentrado, const long Estilos) {
+	HWND DEtiquetaEx::CrearEtiquetaEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const BOOL nCentrado, const long Estilos) {
 //		if (hWnd()) { Debug_Escribir(L"DLabelEx::CreadLabelEx() Error : ya se ha creado el label\n"); return hWnd(); }
 		_hWnd = CrearControlEx(nPadre, L"DLabelEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
 
@@ -21,7 +21,7 @@ namespace DWL {
 	}
 
 
-	void DLabelEx::PintarLabelEx(HDC DC) {
+	void DEtiquetaEx::Pintar(HDC DC) {
 		RECT RC;
 		GetClientRect(hWnd(), &RC);
 		RECT RC2 = RC;
@@ -54,18 +54,18 @@ namespace DWL {
 		DeleteDC(TmphDC);
 	}
 
-	void DLabelEx::Texto(std::wstring &nTexto) {
+	void DEtiquetaEx::Texto(std::wstring &nTexto) {
 		_Texto = nTexto;
 		Repintar();
 	}
 
-	LRESULT CALLBACK DLabelEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
+	LRESULT CALLBACK DEtiquetaEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
 			case WM_PAINT :
 				HDC         DC;
 				PAINTSTRUCT PS;
 				DC = BeginPaint(hWnd(), &PS);
-				PintarLabelEx(DC);
+				Pintar(DC);
 				EndPaint(hWnd(), &PS);
 				return 0;
 				break;

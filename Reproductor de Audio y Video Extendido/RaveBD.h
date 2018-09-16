@@ -229,7 +229,10 @@ class RaveBD {
 	void						Opciones_MostrarObtenerMetadatos(const BOOL nMostrarObtenerMetadatos);
 
 	inline const BOOL			Opciones_MostrarAsociarArchivos(void) { return _Opciones_MostrarAsociarArchivos; }
-	void						Opciones_MostrarAsociarArchivos(const BOOL nMostrarAsociarArchivos);	
+	void						Opciones_MostrarAsociarArchivos(const BOOL nMostrarAsociarArchivos);
+
+	inline const BOOL			Opciones_AnalizarMediosPendientes(void) { return _Opciones_AnalizarMediosPendientes; }
+	void						Opciones_AnalizarMediosPendientes(const BOOL nAnalizarMediosPendientes);
 
 	DWL::DUnidadesDisco			Unidades;
 
@@ -273,7 +276,7 @@ protected:
 	int                        _Opciones_OcultarMouseEnVideo;		// Tiempo en MS que tarda en ocultarse el mouse y los controles de un video
 	BOOL                       _Opciones_MostrarObtenerMetadatos;	// Mostrar la ventana del thread obtener metadatos
 	BOOL                       _Opciones_MostrarAsociarArchivos;	// Mostrar la ventana para asociar este reproductor con todas las extensiones de medios conocidas.
-
+	BOOL					   _Opciones_AnalizarMediosPendientes;	// Analizar medios pendientes al actualizar el arbol de la base de datos
 	friend class ThreadAnalisis;
 };
 

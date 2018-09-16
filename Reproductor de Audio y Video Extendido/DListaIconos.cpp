@@ -7,7 +7,7 @@
 namespace DWL {
 
 	std::vector<DListaIconos_Icono *>  DListaIconos::_Iconos;
-	int                                DListaIconos::_IDNegativa = 0;
+	INT_PTR                            DListaIconos::_IDNegativa = 0;
 
 	DListaIconos::DListaIconos(void) {
 	}
@@ -21,7 +21,7 @@ namespace DWL {
 	}
 
 
-	DListaIconos_Icono *DListaIconos::AgregarIconoRecursos(const int IDRecursos, const int nAncho, const int nAlto) {
+	DListaIconos_Icono *DListaIconos::AgregarIconoRecursos(const INT_PTR IDRecursos, const int nAncho, const int nAlto) {
 		for (size_t i = 0; i < _Iconos.size(); i++) {
 			if (_Iconos[i]->_ID == IDRecursos && _Iconos[i]->_Alto == nAlto && _Iconos[i]->_Ancho == nAncho) return _Iconos[i];
 		}

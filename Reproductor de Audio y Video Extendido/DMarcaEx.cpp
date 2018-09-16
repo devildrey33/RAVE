@@ -100,35 +100,67 @@ namespace DWL {
 	}
 
 
-
-
-	void DMarcaEx::Evento_MouseMovimiento(const int cX, const int cY, const UINT wParam) {
-	}
-
-	void DMarcaEx::Evento_MousePresionado(const int cX, const int cY, const UINT wParam) {
-		SetCapture(hWnd());
-		_Estado = DMarcaEx_Estado_Presionado;
+	void DMarcaEx::Marcado(const BOOL nMarcado) {
+		_Marcado = nMarcado;
 		Repintar();
 	}
 
-	void DMarcaEx::Evento_MouseSoltado(const int cX, const int cY, const UINT wParam) {
+	void DMarcaEx::_Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam) {
+		BOOL nRepintar = FALSE;
+		DEventoMouse DatosMouse(wParam, lParam, ID(), -1);
+		if (_MouseEntrando() == TRUE) {
+			// Mouse enter
+			if (_Estado != DMarcaEx_Estado_Presionado) {
+				_Estado = DMarcaEx_Estado_Resaltado;
+				nRepintar = TRUE;
+			}
+		}
+		Evento_MouseMovimiento(DatosMouse);
+
+		if (nRepintar == TRUE)	Repintar();
+	}
+
+	void DMarcaEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {
+		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
+		SetCapture(hWnd());
+		_Estado = DMarcaEx_Estado_Presionado;
+		Evento_MousePresionado(DatosMouse);
+		Repintar();
+	}
+
+	void DMarcaEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
+		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
+		BOOL nRepintar = FALSE;
 		if (_Estado == DMarcaEx_Estado_Presionado) {
 			ReleaseCapture();
 
 			RECT RC;
 			GetClientRect(hWnd(), &RC);
 
-			POINT Pt = { cX, cY };
+			POINT Pt = { DatosMouse.X(), DatosMouse.Y() };
 			if (PtInRect(&RC, Pt) != 0) {
 				_Estado = DMarcaEx_Estado_Resaltado;
 				_Marcado = !_Marcado;
-				PostMessage(GetParent(hWnd()), DWL_MARCAEX_CLICK, static_cast<WPARAM>(GetWindowLongPtr(hWnd(), GWL_ID)), MAKELPARAM(cX, cY));
+				SendMessage(GetParent(hWnd()), DWL_MARCAEX_CLICK, reinterpret_cast<WPARAM>(&DatosMouse), 0);
 			}
 			else {
 				_Estado = DMarcaEx_Estado_Normal;
 			}
-			Repintar();
+			nRepintar = TRUE;
 		}
+		Evento_MouseSoltado(DatosMouse);
+		if (nRepintar == TRUE)	Repintar();
+	}
+
+	void DMarcaEx::_Evento_MouseSaliendo(void) {
+		_MouseDentro = FALSE;
+		BOOL nRepintar = FALSE;
+		if (_Estado != DMarcaEx_Estado_Presionado) {
+			_Estado = DMarcaEx_Estado_Normal;
+			nRepintar = TRUE;
+		}
+		Evento_MouseSaliendo();
+		if (nRepintar == TRUE)	Repintar();
 	}
 
 	LRESULT CALLBACK DMarcaEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
@@ -136,29 +168,17 @@ namespace DWL {
 			case WM_PAINT	: 
 				_Evento_Pintar();			
 				break;
-			case WM_MOUSEMOVE:
-				if (_MouseEntrando() == TRUE) {
-					// Mouse enter
-					if (_Estado != DMarcaEx_Estado_Presionado) {
-						_Estado = DMarcaEx_Estado_Resaltado;
-						Repintar();
-					}
-				}
-				Evento_MouseMovimiento(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
-				break;
-			case WM_MOUSELEAVE:
-				_MouseDentro = FALSE;
-				if (_Estado != DMarcaEx_Estado_Presionado) {
-					_Estado = DMarcaEx_Estado_Normal;
-					Repintar();
-				}
-				break;
-			case WM_LBUTTONDOWN:
-				Evento_MousePresionado(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
-				break;
-			case WM_LBUTTONUP:
-				Evento_MouseSoltado(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
-				break;
+			case WM_MOUSEMOVE:		_Evento_MouseMovimiento(wParam, lParam);																									return 0;
+			case WM_MOUSELEAVE:		_Evento_MouseSaliendo();																													return 0;
+				// Mouse presionado
+			case WM_LBUTTONDOWN:	_Evento_MousePresionado(0, wParam, lParam);																									return 0;
+			case WM_RBUTTONDOWN:	_Evento_MousePresionado(1, wParam, lParam);																									return 0;
+			case WM_MBUTTONDOWN:	_Evento_MousePresionado(2, wParam, lParam);																									return 0;
+				// Mouse soltado
+			case WM_LBUTTONUP:		_Evento_MouseSoltado(0, wParam, lParam);																									return 0;
+			case WM_RBUTTONUP:		_Evento_MouseSoltado(1, wParam, lParam);																									return 0;
+			case WM_MBUTTONUP:		_Evento_MouseSoltado(2, wParam, lParam);																									return 0;
+
 		}
 		return DefWindowProc(_hWnd, uMsg, wParam, lParam);
 	}

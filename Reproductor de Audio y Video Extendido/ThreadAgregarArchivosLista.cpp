@@ -83,6 +83,11 @@ unsigned long ThreadAgregarArchivosLista::_ThreadAgregarArchivosLista(void *pThi
 }
 
 
+HANDLE ThreadAgregarArchivosLista::Thread(void) {
+	return _Thread;
+}
+
+
 
 const UINT ThreadAgregarArchivosLista::_EscanearDirectorio(std::wstring &nPath) {
 	WIN32_FIND_DATA		FindInfoPoint;

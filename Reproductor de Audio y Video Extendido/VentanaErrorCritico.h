@@ -1,7 +1,7 @@
 #pragma once
 
-#include "DhWnd.h"
-#include "DLabelEx.h"
+#include "DVentana.h"
+#include "DEtiquetaEx.h"
 #include "DBotonEx.h"
 #include "DBarraProgresoEx.h"
 
@@ -17,8 +17,8 @@ class VentanaErrorCritico : public DVentana {
 	void				Enviar(void);
 
 
-	DLabelEx			TextoTitulo;
-	DLabelEx			TextoError;
+	DEtiquetaEx			TextoTitulo;
+	DEtiquetaEx			TextoError;
 	DBotonEx			BotonEnviar;
 	DBotonEx			BotonSalir;
 	DBarraProgresoEx	BarraProgreso;

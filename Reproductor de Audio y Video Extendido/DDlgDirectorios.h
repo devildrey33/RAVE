@@ -22,7 +22,7 @@ namespace DWL {
 		DBotonEx                    BotonCancelar;
 
 		void                        Evento_Cerrar(void);
-		void						Evento_BotonEx_Mouse_Click(const UINT cID);
+		void						Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse);
 		void						Evento_BorraFondo(HDC DC);
 		virtual LRESULT CALLBACK	GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	  protected :

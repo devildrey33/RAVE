@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DhWnd.h"
+#include "DVentana.h"
 
 // Ventana que advierte de que se está cargando la LibVLC
 class VentanaPrecarga : public DWL::DVentana {

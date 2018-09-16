@@ -12,6 +12,7 @@
 #include "DhWnd_Fuente.h"
 #include "DBarraTareas.h"
 #include "DEventoMouse.h"
+#include "DMensajesWnd.h"
 
 namespace DWL {
 
@@ -34,7 +35,7 @@ namespace DWL {
 		inline const BOOL			Minimizado(void)				{ return IsIconic(_hWnd); };
 		const BOOL					Maximizada(void);
 		inline const HWND			AsignarFoco(void)               { return SetFocus(_hWnd); };
-		inline BOOL					Destruir(void)					{ if (_hWnd == NULL) { return TRUE; } BOOL R = DestroyWindow(_hWnd); _hWnd = NULL; return R; };
+		inline virtual const BOOL	Destruir(void)					{ if (_hWnd == NULL) { return TRUE; } BOOL R = DestroyWindow(_hWnd); _hWnd = NULL; return R; };
 		inline UINT					ID(void)						{ return static_cast<UINT>(GetWindowLongPtr(_hWnd, GWL_ID)); };
 		inline HWND					hWndPadre(void)					{ return GetParent(_hWnd); };
 		inline const BOOL			Visible(const BOOL nMostrar)    { return ShowWindow(_hWnd, (nMostrar != TRUE) ? SW_HIDE : SW_SHOW); };
@@ -72,46 +73,6 @@ namespace DWL {
 
 
 
-
-	class DVentana : public DhWnd {
-	  public:
-									DVentana(void) : DhWnd() { }
-		                           ~DVentana(void) { }
-									// Función para crear una ventana																																																	  /* NO SE UTILIZA */								
-		HWND						CrearVentana(DhWnd *nPadre, const TCHAR *nNombre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos = NULL, UINT nEstilosClase = NULL, HMENU nMenu = NULL, HBRUSH nColorFondo = NULL, const int nIconoRecursos = 32512);
-
-		void						Titulo(std::wstring &nTitulo);
-
-		DBarraTareas                BarraTareas;
-
-		void						Opacidad(const BYTE nNivel);
-
-		inline virtual void			Repintar(void) { RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT | RDW_FRAME); };
-
-		virtual LRESULT CALLBACK	GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
-	  protected:
-		static LRESULT CALLBACK    _GestorMensajes(HWND HandleVentana, UINT uMsg, WPARAM wParam, LPARAM lParam);
-	};
-
-
-
-
-	/* Controles estandar del windows */
-	class DControl : public DhWnd {
-	  public:
-									DControl(void) : DhWnd() { }
-		                           ~DControl(void) { }
-
-		HWND						CrearControl(DhWnd *nPadre, const TCHAR *nNombre, const TCHAR *nTexto, const INT_PTR cID, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos, HBRUSH nColorFondo = NULL);
-
-		virtual LRESULT CALLBACK	GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) { return _GestorMensajesOriginal(hWnd(), uMsg, wParam, lParam); };
-	  protected:
-		void					   _ConectarControl(const UINT nID, DhWnd *nPadre);
-		static LRESULT CALLBACK    _GestorMensajes(HWND HandleVentana, UINT uMsg, WPARAM wParam, LPARAM lParam);
-									//! WindowProcedure Orignal del control estándar
-		WNDPROC                    _GestorMensajesOriginal;
-
-	};
 
 
 

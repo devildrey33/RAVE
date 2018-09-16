@@ -61,8 +61,24 @@
 		V  Mirar bug : al fer el ShowWindow dels controles pantalla completa el reproductor perd el focus... aviam si ho puc solucionar sense trencar moltes coses...
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+		V  Fer que l'espai sigui play / pausa, quan el reproductor te el focus
+		V  Eliminar buto pausa i fer-ho tot amb el mateix buto del play
+
+		-  Al arrosegar arxius / directoris, s'ha d'afegir les seves arrels.
+			- Aixo vol dir que s'ha de modificar la funció agregar raiz de forma que cada cop que n'agregui una, comprovi si n'hi ha una o mes per fusionar.
+
 		-  Mostrar les opcions en una finestra nova
 			-  Afegir opcions : 
+				- BD
+					V explicar el tema de les arrels, i posar controls per afegir arrels.
+						- Falta refinar el dialeg per seleccionar directoris...
+					V Analitzar metadades pendents automaticament al actualitzar la base de dades.
+					V Mostrar finestra del analisis
+				- General
+					- Reproductor sempre devant
+					- Buscar actualitzacions
+					- Teclat amb el focus en el reproductor (play / pausa, stop, volum +, volum -, següent medi, anterior medi, accelerar x2.0, frenar a x0.5)
+						- De teclat global (hook) si que haig de mirar la tecla play / pausa , pero el tema del volum amb tecles exteses el porta el sistema operatiu, suposo que tambe interesa el següent i l'anterior medi...
 				- Assosiacions d'arxiu
 					- Asociacions individuals per cada extensio
 					- Mostrar finestra per preguntar pel reproductor predeterminat
@@ -76,15 +92,6 @@
 						- etiqeuta grup aleatoria
 						- etiqeuta disc aleatoria
 					- Afegir cançons amb menys de 2.5 de nota a llistes aleatories.
-				- BD
-					- explicar el tema de les arrels, etc..
-					- Analitzar metadades automaticament, o anializar metadatos solo al reproducir.
-					- Mostrar finestra del analisis
-				- General
-					- Reproductor sempre devant
-					- Buscar actualitzacions
-					- Teclat amb el focus en el reproductor (play / pausa, stop, volum +, volum -, següent medi, anterior medi, accelerar x2.0, frenar a x0.5)
-						- De teclat global (hook) si que haig de mirar la tecla play / pausa , pero el tema del volum amb tecles exteses el porta el sistema operatiu, suposo que tambe interesa el següent i l'anterior medi...
 				- Video
 					- Tiempo de inactividad para ocultar los controles
 					- Valor del ratio para MouseDown en botones |< >|
@@ -115,8 +122,7 @@
 			-  Dividir Base de Datos en : Mi música , i Mis Videos, en 2 butons i en 2 arbres diferents
 			-  Afegir buto mis listas
 
-		- En pantalla completa m'agrada l'estil del VLC, 1000ms sense mousemove per ocultar a saco.
-
+		
 
 	RAVE 0.65
 		- Finestra de propietats per un medi o una etiqueta
