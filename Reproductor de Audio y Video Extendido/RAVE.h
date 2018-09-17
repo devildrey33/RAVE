@@ -66,7 +66,10 @@ class RAVE {
 	void                            MostrarToolTip(DhWnd &Padre, const wchar_t *Texto);
 	void                            MostrarToolTip(DhWnd &Padre, std::wstring &Texto);
 
-	inline void                     OcultarToolTip(void) { _ToolTip.Ocultar(); }
+	void                            MostrarToolTip2(DhWnd &Padre, const wchar_t *Texto);
+	void                            MostrarToolTip2(DhWnd &Padre, std::wstring &Texto);
+
+	inline void                     OcultarToolTip(void) { _ToolTip.Ocultar(); _ToolTip2.Ocultar(); }
 	//	int							Rand()
 
 	void							Terminar(void);
@@ -108,6 +111,7 @@ class RAVE {
   protected:
 
 	DToolTipEx                     _ToolTip;
+	DToolTipEx                     _ToolTip2;
 
 	std::random_device			   _rd;
 	// Token para el GDI+

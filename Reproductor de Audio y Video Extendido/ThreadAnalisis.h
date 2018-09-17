@@ -42,7 +42,7 @@ class ThreadAnalisis :	public DWL::DVentana {
 	void								Pintar(HDC DC);
 	LRESULT CALLBACK					GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-	void								Evento_BotonEx_Mouse_Click(const UINT cID);
+	void								Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse);
 	HANDLE                              Thread(void);
   protected:
 	void					           _Evento_Pintar(void);

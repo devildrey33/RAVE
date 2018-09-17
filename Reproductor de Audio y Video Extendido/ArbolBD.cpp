@@ -114,7 +114,7 @@ const BOOL ArbolBD::AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 		return FALSE;
 	}
 
-
+	int VecesBusy = 0;
 	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_MISUSE) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
@@ -125,6 +125,11 @@ const BOOL ArbolBD::AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 
 			delete Medio;
 		}
+		if (SqlRet == SQLITE_BUSY) {
+			VecesBusy++;
+			if (VecesBusy == 100) break;
+		}
+
 	}
 	sqlite3_finalize(SqlQuery);
 
@@ -136,7 +141,7 @@ const BOOL ArbolBD::AgregarNodoALista(DArbolEx_Nodo *nNodo) {
 	}
 	App.VentanaRave.Lista.Repintar();
 
-	return TRUE;
+	return (SqlRet != SQLITE_BUSY);
 }
 
 // Asegura que el medio agregado a la lista, tambien exista en el arbol
@@ -255,7 +260,7 @@ void ArbolBD::ExplorarPath(DWL::DArbolEx_Nodo *nNodo) {
 		if (SqlRet) return; // Error
 
 		size_t BarrasPath = DWL::Strings::ContarCaracter(nPath, L'\\'), BarrasMedio = 0; // Cuento las antibarras del path
-
+		int VecesBusy = 0;
 		while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
 			SqlRet = sqlite3_step(SqlQuery);
 			if (SqlRet == SQLITE_ROW) {
@@ -277,6 +282,10 @@ void ArbolBD::ExplorarPath(DWL::DArbolEx_Nodo *nNodo) {
 					}
 					AgregarBDNodo(mTipoNodo, static_cast<NodoBD *>(nNodo), nTmpTxt.c_str(), mHash);
 				}
+			}
+			if (SqlRet == SQLITE_BUSY) {
+				VecesBusy++;
+				if (VecesBusy == 100) break;
 			}
 		}
 
@@ -311,6 +320,7 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 				case ID_MENUBD_AGREGARALISTA:
 					AgregarNodoALista(_NodoMarcado);
 					App.MostrarToolTip(App.VentanaRave, L"\"" + _NodoMarcado->Texto + L"\" añadido a la lista.");
+					if (App.VLC.ComprobarEstado() != EnPlay) App.VentanaRave.Lista_Play();
 					break;
 				case ID_MENUBD_ACTUALIZAR:
 					App.VentanaRave.ActualizarArbol();					

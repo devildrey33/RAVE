@@ -535,6 +535,7 @@ namespace DWL {
 		}
 	}
 
+
 	void DMenuEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
 		ReleaseCapture();
 		_ResultadoModal = _MenuPresionado;
@@ -542,7 +543,6 @@ namespace DWL {
 		#if DMENUEX_MOSTRARDEBUG == TRUE
 			Debug_Escribir(L"DMenuEx::_Evento_MouseSoltado Ocultar menu\n");
 		#endif
-		Ocultar(TRUE);
 
 		POINT Pt;
 		DWL::DMouse::ObtenerPosicion(&Pt);
@@ -556,6 +556,8 @@ namespace DWL {
 			}
 			SetFocus(WFP);
 		}
+
+		Ocultar(TRUE);
 
 		if (_ResultadoModal != NULL) SendMessage(_hWndDest, WM_COMMAND, _ResultadoModal->ID(), 0);
 	}

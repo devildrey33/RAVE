@@ -147,22 +147,29 @@ void VentanaOpcionesRAVE::AgregarRaiz(void) {
 	DDlgDirectorios          DialogoDirectorios;
 	std::wstring             Path;
 
+	App.VentanaRave.ThreadActualizar.Cancelar(TRUE);
+	App.VentanaRave.ThreadAnalizar.Cancelar(TRUE);
+
 	BOOL Ret = DialogoDirectorios.Mostrar(this, Path);
 	//	SetFocus(_hWnd);
 	if (Ret == TRUE) {
 		// Agrego la raíz a la BD.
 		//		BDRaiz *nRaiz = NULL;
+		int AR = App.BD.AgregarRaiz(Path);
 		// Puede que esa raíz sea parte de otra raíz existente o viceversa, en ese caso no se agrega una nueva raíz a la lista, habrá que modificar la lista
-		if (App.BD.AgregarRaiz(Path) != NULL) {
-			ListaRaiz.AgregarRaiz(Path.c_str());
-			Debug_Escribir(L"VentanaPrincipal::AgregarRaiz Nueva raíz agregada.\n");
+		if (AR == 1) {
+//			ListaRaiz.AgregarRaiz(Path.c_str());
+			Debug_Escribir(L"VentanaOpcionesRAVE::AgregarRaiz Nueva raíz agregada.\n");
+			App.MostrarToolTip2(*this, L"Nueva raiz añadida.");
 		}
-		else { // La raiz ya existia o es un error
-			Debug_Escribir(L"VentanaPrincipal::AgregarRaiz La raíz se ha fusionado a una raíz existente.\n");
+		else if (AR == 0) { // La raiz ya existia o es un error
+			Debug_Escribir(L"VentanaOpcionesRAVE::AgregarRaiz La raíz ya existia.\n");
+			App.MostrarToolTip2(*this, L"La raíz especificada ya existe.");
 		}
-
-
-		App.VentanaRave.ThreadActualizar.Cancelar(TRUE);
+		else {
+			Debug_Escribir(L"VentanaOpcionesRAVE::AgregarRaiz La raíz se ha fusionado a una raíz existente.\n");
+			App.MostrarToolTip2(*this, L"Se han fusionado una o mas raices con la nueva raíz.");
+		}
 		// Espero a que se termine el thread del analisis
 		while (App.VentanaRave.ThreadActualizar.Thread() != NULL) {
 			App.Eventos_Mirar();
@@ -171,8 +178,14 @@ void VentanaOpcionesRAVE::AgregarRaiz(void) {
 		App.VentanaRave.ActualizarArbol();
 	}
 	else {
-		Debug_Escribir(L"VentanaPrincipal::AgregarRaiz Cancelado por el usuario.\n");
+		Debug_Escribir(L"VentanaOpcionesRAVE::AgregarRaiz Cancelado por el usuario.\n");
 	}
+
+	ListaRaiz.EliminarTodosLosItems();
+	for (size_t i = 0; i < App.BD.TotalRaices(); i++) {
+		ListaRaiz.AgregarRaiz(App.BD.Raiz(i)->Path.c_str());
+	}
+	ListaRaiz.Repintar();
 }
 
 void VentanaOpcionesRAVE::EliminarRaiz(std::wstring &Path) {

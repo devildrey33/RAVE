@@ -67,9 +67,12 @@ unsigned long ThreadAgregarArchivosLista::_ThreadAgregarArchivosLista(void *pThi
 		}
 		// Archivo
 		else {
-			TotalArchivos++;
+//			DWL::DUnidadDisco  *UnidadDisco = This->_BD.Unidades.Buscar_Letra(This->_Paths[i][0]);
 			Medio = new BDMedio;
-			This->_BD.AnalizarMedio(This->_Paths[i], *Medio);
+			if (This->_BD.ObtenerMedio(This->_Paths[i], *Medio) == FALSE) {
+				This->_BD.AnalizarMedio(This->_Paths[i], *Medio);
+			}
+			TotalArchivos++;
 			SendMessage(This->_VentanaPlayer, WM_TAAL_AGREGARMEDIO, reinterpret_cast<LPARAM>(Medio), 0);
 		}
 	}
@@ -149,7 +152,12 @@ const UINT ThreadAgregarArchivosLista::_EscanearDirectorio(std::wstring &nPath) 
 			else {
 				TotalArchivosEscaneados++;
 				Medio = new BDMedio;
-				if (_BD.AnalizarMedio(Path, *Medio, FindInfoPoint.nFileSizeLow) != FALSE) {
+				if (_BD.ObtenerMedio(Path, *Medio) == FALSE) {
+					if (_BD.AnalizarMedio(Path, *Medio, FindInfoPoint.nFileSizeLow) != FALSE) {
+						SendMessage(_VentanaPlayer, WM_TAAL_AGREGARMEDIO, reinterpret_cast<WPARAM>(Medio), 0);
+					}
+				}
+				else {
 					SendMessage(_VentanaPlayer, WM_TAAL_AGREGARMEDIO, reinterpret_cast<WPARAM>(Medio), 0);
 				}
 			}

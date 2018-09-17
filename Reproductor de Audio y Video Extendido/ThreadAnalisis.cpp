@@ -60,12 +60,6 @@ HANDLE ThreadAnalisis::Thread(void) {
 
 void ThreadAnalisis::Terminar(void) {
 	Visible(FALSE);
-/*	_BarraProgreso1.Destruir();
-	_BarraProgreso2.Destruir();
-	_BarraProgreso3.Destruir();
-	_BotonCancelar.Destruir();
-	_BotonOcultar.Destruir();
-	_MarcaNoMostrarMas.Destruir();*/
 	Destruir();
 	CloseHandle(_Thread);
 	_Thread = NULL;
@@ -587,8 +581,8 @@ void ThreadAnalisis::_PintarTexto(HDC DC, const wchar_t *pTexto, const int PosX,
 	TextOut(DC, PosX, PosY, pTexto, static_cast<int>(wcslen(pTexto)));
 }*/
 
-void ThreadAnalisis::Evento_BotonEx_Mouse_Click(const UINT cID) {
-	switch (cID) {
+void ThreadAnalisis::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse) {
+	switch (DatosMouse.ID) {
 		case ID_BOTONCANCELAR	:	Cancelar(TRUE);						break;
 		case ID_BOTONOCULTAR	:	ShowWindow(_hWnd, SW_MINIMIZE);		break;
 	}
@@ -597,17 +591,17 @@ void ThreadAnalisis::Evento_BotonEx_Mouse_Click(const UINT cID) {
 
 LRESULT CALLBACK ThreadAnalisis::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
-		case WM_PAINT			 :	_Evento_Pintar();																return 0;
-		case WM_TOM_TOTALMEDIOS1 :	_BarraProgreso1.Valor(static_cast<float>(wParam));								return 0;
-		case WM_TOM_INICIADO1    :  _BarraProgreso1.Maximo(static_cast<float>(wParam));	 _FASE = 1;  Repintar();	return 0;
-		case WM_TOM_TOTALMEDIOS2 :	_BarraProgreso2.Valor(_BarraProgreso2.Valor() + 1);								return 0;
-		case WM_TOM_INICIADO2    :  _BarraProgreso2.Maximo(static_cast<float>(wParam));	 _FASE = 2;	 Repintar();	return 0;
-		case WM_TOM_TOTALMEDIOS3 :	_BarraProgreso3.Valor(static_cast<float>(wParam));								return 0;
-		case WM_TOM_INICIADO3    :  _BarraProgreso3.Maximo(static_cast<float>(wParam));	 _FASE = 3;  Repintar();	return 0;
-		case WM_CLOSE			 :   Cancelar(TRUE);																return 0;
-		case DWL_BOTONEX_CLICK   :   Evento_BotonEx_Mouse_Click(static_cast<UINT>(wParam));							return 0;
-		case DWL_MARCAEX_CLICK   :   App.BD.Opciones_MostrarObtenerMetadatos(!_MarcaNoMostrarMas.Marcado());		return 0;
-		case WM_KEYUP			 :	if (wParam == VK_ESCAPE) { Evento_BotonEx_Mouse_Click(ID_BOTONOCULTAR); }		return 0;
+		case WM_PAINT			 :	_Evento_Pintar();																					return 0;
+		case WM_TOM_TOTALMEDIOS1 :	_BarraProgreso1.Valor(static_cast<float>(wParam));													return 0;
+		case WM_TOM_INICIADO1    :  _BarraProgreso1.Maximo(static_cast<float>(wParam));	 _FASE = 1;  Repintar();						return 0;
+		case WM_TOM_TOTALMEDIOS2 :	_BarraProgreso2.Valor(_BarraProgreso2.Valor() + 1);													return 0;
+		case WM_TOM_INICIADO2    :  _BarraProgreso2.Maximo(static_cast<float>(wParam));	 _FASE = 2;	 Repintar();						return 0;
+		case WM_TOM_TOTALMEDIOS3 :	_BarraProgreso3.Valor(static_cast<float>(wParam));													return 0;
+		case WM_TOM_INICIADO3    :  _BarraProgreso3.Maximo(static_cast<float>(wParam));	 _FASE = 3;  Repintar();						return 0;
+		case WM_CLOSE			 :   Cancelar(TRUE);																					return 0;
+		case DWL_BOTONEX_CLICK   :   Evento_BotonEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));										return 0;
+		case DWL_MARCAEX_CLICK   :   App.BD.Opciones_MostrarObtenerMetadatos(!_MarcaNoMostrarMas.Marcado());							return 0;
+		case WM_KEYUP			 :	if (wParam == VK_ESCAPE) { Evento_BotonEx_Mouse_Click(DWL::DEventoMouse(0, 0, ID_BOTONOCULTAR)); }	return 0;
 	}
 	return DefWindowProc(_hWnd, uMsg, wParam, lParam);
 }

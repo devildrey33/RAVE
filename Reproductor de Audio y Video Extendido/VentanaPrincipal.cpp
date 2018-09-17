@@ -324,8 +324,7 @@ void VentanaPrincipal::Lista_Play(void) {
 			break;
 		case EnPlay: 
 			Lista_Pausa();
-			break;
-		
+			break;		
 	}
 }
 
@@ -686,16 +685,21 @@ void VentanaPrincipal::Evento_Cerrar(void) {
 }
 
 void VentanaPrincipal::Evento_SoltarArchivos(WPARAM wParam) {
-	TCHAR        Archivo[MAX_PATH];
+	TCHAR        Archivo[1024];
 	unsigned int TotalSoltados = DragQueryFile((HDROP)wParam, static_cast<unsigned int>(-1), 0, 0);
 	App.MostrarToolTip(App.VentanaRave, L"Añadiendo archivos desde el explorador.");
 	
-	std::vector<std::wstring> Paths;
+	ThreadActualizar.Cancelar(TRUE);
+	ThreadAnalizar.Cancelar(TRUE);
 
+	std::vector<std::wstring> Paths;
+	std::wstring Tmp;
 	for (unsigned int i = 0; i < TotalSoltados; i++) {
-		DragQueryFile((HDROP)wParam, i, Archivo, MAX_PATH);
-//		if (FILE_ATTRIBUTE_DIRECTORY & GetFileAttributes(Archivo))	SoltarArchivos_BuscarArchivos(Archivo);
-//		else														SoltarArchivos_AgregarArchivo(Archivo);
+		DragQueryFile((HDROP)wParam, i, Archivo, 1024);
+		Tmp = Archivo;
+		// Si no es un directorio, recorto el path para agregar la raiz
+		if ((FILE_ATTRIBUTE_DIRECTORY & GetFileAttributes(Archivo)) == FALSE) Tmp = Tmp.substr(0, Tmp.find_last_of(L'\\'));
+		App.BD.AgregarRaiz(Tmp);
 		Paths.push_back(Archivo);
 	}
 	DragFinish((HDROP)wParam);
@@ -874,9 +878,16 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			ThreadArchivosLista.Terminar();
 			BarraTareas.Estado_SinProgreso();
 			BarraTareas.Resaltar();
+			// Ejecuto el shufle si es necesario
+			if (App.BD.Opciones_Shufle() == TRUE) {
+				App.VentanaRave.Lista.Mezclar(TRUE);
+				App.VentanaRave.Lista.MedioActual = 0;
+			}
 			Lista.Repintar();
-			Lista_Play();			
-			AnalizarBD();
+			if (App.VLC.ComprobarEstado() != EnPlay)	Lista_Play();
+//			Lista_Stop();
+//			Lista_Play();			
+			if (App.BD.Opciones_AnalizarMediosPendientes() == TRUE) AnalizarBD();
 			return 0;
 		case WM_TBA_AGREGARRAIZ:
 			TmpStr = reinterpret_cast<std::wstring *>(lParam);

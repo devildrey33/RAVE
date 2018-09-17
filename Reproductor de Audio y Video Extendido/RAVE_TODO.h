@@ -64,8 +64,8 @@
 		V  Fer que l'espai sigui play / pausa, quan el reproductor te el focus
 		V  Eliminar buto pausa i fer-ho tot amb el mateix buto del play
 
-		-  Al arrosegar arxius / directoris, s'ha d'afegir les seves arrels.
-			- Aixo vol dir que s'ha de modificar la funció agregar raiz de forma que cada cop que n'agregui una, comprovi si n'hi ha una o mes per fusionar.
+		V  Al arrosegar arxius / directoris, s'ha d'afegir les seves arrels.
+			V Aixo vol dir que s'ha de modificar la funció agregar raiz de forma que cada cop que n'agregui una, comprovi si n'hi ha una o mes per fusionar.
 
 		-  Mostrar les opcions en una finestra nova
 			-  Afegir opcions : 
@@ -77,6 +77,7 @@
 				- General
 					- Reproductor sempre devant
 					- Buscar actualitzacions
+					- Valor del ratio para MouseDown en botones |< >|
 					- Teclat amb el focus en el reproductor (play / pausa, stop, volum +, volum -, següent medi, anterior medi, accelerar x2.0, frenar a x0.5)
 						- De teclat global (hook) si que haig de mirar la tecla play / pausa , pero el tema del volum amb tecles exteses el porta el sistema operatiu, suposo que tambe interesa el següent i l'anterior medi...
 				- Assosiacions d'arxiu
@@ -94,9 +95,7 @@
 					- Afegir cançons amb menys de 2.5 de nota a llistes aleatories.
 				- Video
 					- Tiempo de inactividad para ocultar los controles
-					- Valor del ratio para MouseDown en botones |< >|
-					- Mostrar nombre del video al abrir
-					
+					- Mostrar nombre del video al abrir					
 					? Fuente por defecto en subtitulos externos
 
 

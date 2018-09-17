@@ -178,7 +178,7 @@ class RaveBD {
 	BDRaiz                     *BuscarRaiz(std::wstring &nPath);
 	BDRaiz                     *BuscarRaiz(const unsigned long bID);
 								// Función para agregar una raíz a la base de datos
-	BDRaiz                     *AgregarRaiz(std::wstring &nPath);
+	const int                   AgregarRaiz(std::wstring &nPath);
 								// Función para eliminar una raíz de la base de datos
 	const BOOL					EliminarRaiz(std::wstring &nPath);
 								// Función que obtiene las raices de la base de datos

@@ -259,6 +259,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 	ControlesPC.Crear();
 
 	_ToolTip.CrearToolTipEx(DWL::DhWnd::Fuente18Normal, &VentanaRave);
+	_ToolTip2.CrearToolTipEx(DWL::DhWnd::Fuente18Normal);
 
 }
 
@@ -402,13 +403,35 @@ void RAVE::MostrarToolTip(DhWnd &Padre, std::wstring &Texto) {
 		Foco = GetParent(Foco);
 	}
 	// Si el foco no pertenece a la ventana padre o a uno de sus 
-	if (Padre.hWnd() != Foco && Foco != VentanaAsociar.hWnd() && Foco != VentanaOpciones.hWnd()) {
-		return; 
+	if (Padre.hWnd() != Foco && Foco != VentanaAsociar.hWnd() && Foco != VentanaOpciones.hWnd() && Foco != VentanaRave.hWnd()) {
+		return;
 	}
 	RECT RV;
 	GetWindowRect(Padre.hWnd(), &RV);
 	SIZE Tam = _ToolTip.CalcularTam(Texto);
 	_ToolTip.Mostrar(RV.right - (Tam.cx + 20), RV.bottom - (Tam.cy + 20), Texto, Tam.cx, Tam.cy);
+}
+
+
+void RAVE::MostrarToolTip2(DhWnd &Padre, const wchar_t *Texto) {
+	std::wstring nTexto = Texto;
+	MostrarToolTip2(Padre, nTexto);
+}
+
+void RAVE::MostrarToolTip2(DhWnd &Padre, std::wstring &Texto) {
+	_ToolTip2.Ocultar();
+	HWND Foco = GetFocus();
+	while (GetParent(Foco) != NULL) {
+		Foco = GetParent(Foco);
+	}
+	// Si el foco no pertenece a la ventana padre o a uno de sus 
+	if (Padre.hWnd() != Foco && Foco != VentanaAsociar.hWnd() && Foco != VentanaOpciones.hWnd() && Foco != VentanaRave.hWnd()) {
+		return;
+	}
+	RECT RV;
+	GetWindowRect(Padre.hWnd(), &RV);
+	SIZE Tam = _ToolTip2.CalcularTam(Texto);
+	_ToolTip2.Mostrar(RV.right - (Tam.cx + 20), RV.bottom - (Tam.cy + 20), Texto, Tam.cx, Tam.cy);
 }
 
 
