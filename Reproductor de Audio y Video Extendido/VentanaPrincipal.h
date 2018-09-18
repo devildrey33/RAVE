@@ -38,9 +38,11 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						Evento_SoltarArchivos(WPARAM wParam);
 	void						Evento_BorraFondo(HDC DC);
 	void						Evento_Cerrar(void);
-	void                        Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
-	void                        Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params);
-	void						Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param);
+	void                        Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado);
+	void                        Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado);
+	void						Evento_Tecla(DWL::DEventoTeclado &DatosTeclado);
+	void						Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse);
+	void						Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse);
 
 
 

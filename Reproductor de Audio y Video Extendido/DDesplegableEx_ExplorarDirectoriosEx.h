@@ -11,8 +11,8 @@ namespace DWL {
 							DDesplegableEx_ExplorarDirectoriosEx(DDesplegableEx *nPadre);
 		                   ~DDesplegableEx_ExplorarDirectoriosEx();
 //		virtual void		Evento_MouseMovimiento(const int cX, const int cY, const UINT Param)					{ };
-		void				Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param);
-		void				Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param);
+		void				Evento_MousePresionado(DEventoMouse &DatosMouse);
+		void				Evento_MouseSoltado(DEventoMouse &DatosMouse);
 
 		void				Evento_FocoPerdido(HWND hWndNuevoFoco);
 

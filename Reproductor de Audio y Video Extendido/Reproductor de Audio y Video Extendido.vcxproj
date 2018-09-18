@@ -172,6 +172,8 @@
     <ClInclude Include="DDesplegableEx.h" />
     <ClInclude Include="DDesplegableEx_ExplorarDirectoriosEx.h" />
     <ClInclude Include="DEdicionTextoEx.h" />
+    <ClInclude Include="DEventoMouseRueda.h" />
+    <ClInclude Include="DEventoTeclado.h" />
     <ClInclude Include="DExplorarDirectoriosEx.h" />
     <ClInclude Include="DGDI.h" />
     <ClInclude Include="DhWnd_Fuente.h" />

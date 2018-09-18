@@ -562,8 +562,9 @@ namespace DWL {
 		if (_ResultadoModal != NULL) SendMessage(_hWndDest, WM_COMMAND, _ResultadoModal->ID(), 0);
 	}
 
-	void DMenuEx::_Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
-		DhWnd::_Teclado[Caracter] = true;
+	void DMenuEx::_Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam) {
+		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		DhWnd::_Teclado[DatosTeclado.TeclaVirtual()] = true;
 		
 		// Obtengo la posición del menu resaltado dentro del vector
 		int MenuPos = -1;
@@ -576,7 +577,7 @@ namespace DWL {
 		}
 
 		// Elijo el menu resaltado según la tecla presionada
-		switch (Caracter) {
+		switch (DatosTeclado.TeclaVirtual()) {
 			case VK_HOME : 
 				#if DMENUEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada VK_HOME\n");
@@ -691,12 +692,13 @@ namespace DWL {
 
 	}
 
-	void DMenuEx::_Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
-		DhWnd::_Teclado[Caracter] = false;
+	void DMenuEx::_Evento_TeclaSoltada(WPARAM wParam, LPARAM lParam) {
+		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		DhWnd::_Teclado[DatosTeclado.TeclaVirtual()] = false;
 
 	}
 
-	void DMenuEx::_Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param) {
+	void DMenuEx::_Evento_Tecla(WPARAM wParam, LPARAM lParam) {
 
 	}
 
@@ -751,9 +753,9 @@ namespace DWL {
 			case WM_RBUTTONUP:		_Evento_MouseSoltado(1, wParam, lParam);																									return 0;
 			case WM_MBUTTONUP:		_Evento_MouseSoltado(2, wParam, lParam);																									return 0;
 			// Teclado
-			case WM_KEYDOWN:		_Evento_TeclaPresionada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;
-			case WM_KEYUP:			_Evento_TeclaSoltada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;
-			case WM_CHAR:           _Evento_Tecla(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));																	return 0;
+			case WM_KEYDOWN:		_Evento_TeclaPresionada(wParam, lParam);																									return 0;
+			case WM_KEYUP:			_Evento_TeclaSoltada(wParam, lParam);																										return 0;
+			case WM_CHAR:           _Evento_Tecla(wParam, lParam);																												return 0;
 			
 			// Print y Print Client (para AnimateWindow)
 			case WM_PRINT:			Pintar(reinterpret_cast<HDC>(wParam));																										return 0;

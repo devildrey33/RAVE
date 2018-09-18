@@ -35,9 +35,9 @@ namespace DWL {
 	   virtual void								Evento_PintarBarra(HDC DC, RECT &RBarra);
 	   virtual void								Evento_PintarFondo(HDC DC, RECT &RFondo);
 		
-	   virtual void								Evento_MouseMovimiento(const int cX, const int cY, const UINT wParam);
-	   virtual void								Evento_MousePresionado(const int cX, const int cY, const UINT wParam);
-	   virtual void								Evento_MouseSoltado(const int cX, const int cY, const UINT wParam);
+	   virtual void								Evento_MouseMovimiento(DEventoMouse &DatosMouse) { };
+	   virtual void								Evento_MousePresionado(DEventoMouse &DatosMouse) { };
+	   virtual void								Evento_MouseSoltado(DEventoMouse &DatosMouse) { };
 
 	   virtual void								Evento_MostrarToolTip(float nValor, std::wstring &Texto);
 
@@ -50,11 +50,15 @@ namespace DWL {
 
 	   LRESULT CALLBACK							GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	  protected:
-	   DBarraDesplazamientoEx_ToolTip		   _MostrarToolTip;
-	   DToolTipEx							   _ToolTip;
+		void								   _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
+		void								   _Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam);
+		void								   _Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam);
+
+	    DBarraDesplazamientoEx_ToolTip		   _MostrarToolTip;
+	    DToolTipEx							   _ToolTip;
 
 
-	   DBarraDesplazamientoEx_Estado		   _Estado;
+	    DBarraDesplazamientoEx_Estado		   _Estado;
 
 	};
 }

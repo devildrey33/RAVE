@@ -74,10 +74,11 @@ namespace DWL {
 	}
 
 
-	void DBarraDesplazamientoEx::Evento_MouseMovimiento(const int cX, const int cY, const UINT wParam) {
+	void DBarraDesplazamientoEx::_Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam) {
+		DEventoMouse DatosMouse(wParam, lParam, ID());
 		RECT  RC = { 0, 0, 0, 0 };
 		GetClientRect(hWnd(), &RC);
-
+		int cX = DatosMouse.X(); //  , cY = DatosMouse.Y();
 		float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
 		float valor = (static_cast<float>(cX - RC.left) * Parte) - _Minimo;
 
@@ -97,7 +98,8 @@ namespace DWL {
 			if (_Valor > _Maximo) { _Valor = _Maximo; }
 			if (_Valor < _Minimo) { _Valor = _Minimo; }
 			Repintar();
-			SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIO, (WPARAM)GetWindowLongPtr(hWnd(), GWL_ID), 0);
+			SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
+			Evento_MouseMovimiento(DatosMouse);
 		}
 	}
 
@@ -105,22 +107,25 @@ namespace DWL {
 		Texto = std::to_wstring(nValor);
 	}
 
-	void DBarraDesplazamientoEx::Evento_MousePresionado(const int cX, const int cY, const UINT wParam) {
-		POINT Pt = { cX, cY };
+	void DBarraDesplazamientoEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {
+		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
+		POINT Pt = { DatosMouse.X(), DatosMouse.Y() };
 		RECT  RC = { 0, 0, 0, 0 };
 		GetClientRect(hWnd(), &RC);
 		if (PtInRect(&RC, Pt) == TRUE) {
 			SetCapture(hWnd());
 			_Estado = DBarraDesplazamientoEx_Estado_Presionado;
 			float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
-			_Valor = (static_cast<float>(cX - RC.left) * Parte) - _Minimo;
+			_Valor = (static_cast<float>(Pt.x - RC.left) * Parte) - _Minimo;
 			Repintar();
-			SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIO, (WPARAM)GetWindowLongPtr(hWnd(), GWL_ID), 0);
+			SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
+			Evento_MousePresionado(DatosMouse);
 		}
 	}
 
-	void DBarraDesplazamientoEx::Evento_MouseSoltado(const int cX, const int cY, const UINT wParam) {
-		POINT Pt = { cX, cY };
+	void DBarraDesplazamientoEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
+		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
+		POINT Pt = { DatosMouse.X(), DatosMouse.Y() };
 		RECT  RC = { 0, 0, 0, 0 };
 		GetClientRect(hWnd(), &RC);
 		ReleaseCapture();
@@ -128,12 +133,13 @@ namespace DWL {
 		else { _Estado = DBarraDesplazamientoEx_Estado_Normal; }
 
 		float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
-		_Valor = (static_cast<float>(cX - RC.left) * Parte) - _Minimo;
+		_Valor = (static_cast<float>(Pt.x - RC.left) * Parte) - _Minimo;
 		if (_Valor > _Maximo) { _Valor = _Maximo; }
 		if (_Valor < _Minimo) { _Valor = _Minimo; }
-		SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIADO, (WPARAM)GetWindowLongPtr(hWnd(), GWL_ID), 0);
+		SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIADO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
 		Repintar();
 	}
+
 
 	LRESULT CALLBACK DBarraDesplazamientoEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
@@ -155,7 +161,7 @@ namespace DWL {
 						Repintar();
 					}
 				}
-				Evento_MouseMovimiento(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
+				_Evento_MouseMovimiento(wParam, lParam);
 				break;
 			case WM_MOUSELEAVE:
 				_ToolTip.Ocultar();
@@ -166,10 +172,22 @@ namespace DWL {
 				}
 				break;
 			case WM_LBUTTONDOWN:
-				Evento_MousePresionado(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
+				_Evento_MousePresionado(0, wParam, lParam);
+				break;
+			case WM_RBUTTONDOWN:
+				_Evento_MousePresionado(1, wParam, lParam);
+				break;
+			case WM_MBUTTONDOWN:
+				_Evento_MousePresionado(2, wParam, lParam);
 				break;
 			case WM_LBUTTONUP:
-				Evento_MouseSoltado(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));
+				_Evento_MouseSoltado(0, wParam, lParam);
+				break;
+			case WM_RBUTTONUP:
+				_Evento_MouseSoltado(1, wParam, lParam);
+				break;
+			case WM_MBUTTONUP:
+				_Evento_MouseSoltado(2, wParam, lParam);
 				break;
 		}
 		return DefWindowProc(hWnd(), uMsg, wParam, lParam);

@@ -52,34 +52,34 @@ namespace DWL {
 		void									Pintar(HDC hDC);
 
 												// Eventos virtuales
-		virtual void          					Evento_MouseEntrando(void)																{ };
-		virtual void							Evento_MouseSaliendo(void)																{ };
-		virtual void							Evento_MouseMovimiento(const int cX, const int cY, const UINT Param)					{ };
-		virtual void							Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param)	{ };
-		virtual void							Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param)		{ };
-		virtual void					        Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey)	{ };
+		virtual void          					Evento_MouseEntrando(void)									{ };
+		virtual void							Evento_MouseSaliendo(void)									{ };
+		virtual void							Evento_MouseMovimiento(DEventoMouse &DatosMouse)			{ };
+		virtual void							Evento_MousePresionado(DEventoMouse &DatosMouse)			{ };
+		virtual void							Evento_MouseSoltado(DEventoMouse &DatosMouse)				{ };
+		virtual void					        Evento_MouseRueda(DEventoMouseRueda &DatosMouse)			{ };
 
-		virtual void				            Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params)	{ };
-		virtual void							Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params)		{ };
-		virtual void							Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param)				{ };
+		virtual void				            Evento_TeclaPresionada(DEventoTeclado &DatosTeclado)		{ };
+		virtual void							Evento_TeclaSoltada(DEventoTeclado &DatosTeclado)			{ };
+		virtual void							Evento_Tecla(DEventoTeclado &DatosTeclado)					{ };
 
 
 		LRESULT CALLBACK						GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-		inline void                             AsignarIcono(DListaIconos_Icono *nIcono)												{ _Icono = nIcono; }
+		inline void                             AsignarIcono(DListaIconos_Icono *nIcono)					{ _Icono = nIcono; }
 	  protected:
 //		void                                   _MostrarExplorarDirectorios(void);
 
 		void								   _Evento_Pintar(void);
-		void								   _Evento_MouseMovimiento(const int cX, const int cY, const UINT Param);
-		void								   _Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param);
-		void								   _Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param);
-		void						           _Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey);
+		void								   _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
+		void								   _Evento_MousePresionado(const UINT Boton, WPARAM wParam, LPARAM lParam);
+		void								   _Evento_MouseSoltado(const UINT Boton, WPARAM wParam, LPARAM lParam);
+		void						           _Evento_MouseRueda(WPARAM wParam, LPARAM lParam);
 //		void								   _Evento_MouseDobleClick(const UINT Boton, const int cX, const int cY, const UINT Param);
 		void								   _Evento_MouseSaliendo(void);
-		void						           _Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
-		void							       _Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params);
-		void								   _Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param);
+		void						           _Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam);
+		void							       _Evento_TeclaSoltada(WPARAM wParam, LPARAM lParam);
+		void								   _Evento_Tecla(WPARAM wParam, LPARAM lParam);
 
 		DDesplegableEx_TipoEdicion			   _TipoEdicion;				
 		DDesplegableEx_TipoDesplegable		   _TipoDesplegable;			

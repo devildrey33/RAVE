@@ -16,13 +16,13 @@ namespace DWL {
 		void                    EdicionTexto_Pintar(HDC hDC);
 
 								// Eventos que hay que enlazar (devuelven TRUE si hay que repintar)
-		void                    EdicionTexto_Evento_MouseMovimiento(const int cX, const int cY, const UINT Param);
-		void                    EdicionTexto_Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param);
-		void                    EdicionTexto_Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param);
+		void                    EdicionTexto_Evento_MouseMovimiento(DEventoMouse &DatosMouse);
+		void                    EdicionTexto_Evento_MousePresionado(DEventoMouse &DatosMouse);
+		void                    EdicionTexto_Evento_MouseSoltado(DEventoMouse &DatosMouse);
 
-		const BOOL              EdicionTexto_Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
-		const BOOL              EdicionTexto_Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params);
-		const BOOL				EdicionTexto_Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param);
+		const BOOL              EdicionTexto_Evento_TeclaPresionada(DEventoTeclado &DatosTeclado);
+		const BOOL              EdicionTexto_Evento_TeclaSoltada(DEventoTeclado &DatosTeclado);
+		const BOOL				EdicionTexto_Evento_Tecla(DEventoTeclado &DatosTeclado);
 
 		void				    EdicionTexto_Evento_FocoObtenido(HWND hWndUltimoFoco);
 		void					EdicionTexto_Evento_FocoPerdido(HWND hWndNuevoFoco);
@@ -65,9 +65,9 @@ namespace DWL {
 	protected:
 		void					   _Evento_Pintar(void);
 		void                       _Evento_Size(void);
-		void                       _Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
-		void					   _Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params);
-		void					   _Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param);
+		void                       _Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam);
+		void					   _Evento_TeclaSoltada(WPARAM wParam, LPARAM lParam);
+		void					   _Evento_Tecla(WPARAM wParam, LPARAM lParam);
 
 		DListaIconos_Icono        *_Icono;
 	};

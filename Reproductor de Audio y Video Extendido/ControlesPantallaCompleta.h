@@ -16,6 +16,9 @@ class ControlesPantallaCompleta :public DVentana {
 	void					Evento_SliderVolumen_Cambio(void);
 	void					Evento_SliderVolumen_Cambiado(void);
 
+	void					Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse);
+	void					Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse);
+
 //	void					Evento_BorraFondo(HDC DC);
 	void                    Evento_Pintar(void);
 	void					Pintar(HDC DC);

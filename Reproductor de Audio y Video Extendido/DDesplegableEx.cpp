@@ -173,20 +173,32 @@ namespace DWL {
 		EndPaint(hWnd(), &PS);
 	}
 
-	void DDesplegableEx::_Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
-		if (EdicionTexto_Evento_TeclaPresionada(Caracter, Repeticion, Params) == TRUE) Repintar();
+	void DDesplegableEx::_Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam) {
+		BOOL nRepintar = FALSE;
+		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		nRepintar = EdicionTexto_Evento_TeclaPresionada(DatosTeclado);
+		Evento_TeclaPresionada(DatosTeclado);
+		if (nRepintar == TRUE) Repintar();
 	}
 
-	void DDesplegableEx::_Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
-		if (EdicionTexto_Evento_TeclaSoltada(Caracter, Repeticion, Params) == TRUE) Repintar();
+	void DDesplegableEx::_Evento_TeclaSoltada(WPARAM wParam, LPARAM lParam) {
+		BOOL nRepintar = FALSE;
+		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		nRepintar = EdicionTexto_Evento_TeclaSoltada(DatosTeclado);
+		Evento_TeclaSoltada(DatosTeclado);
+		if (nRepintar == TRUE) Repintar();
 	}
 
-	void DDesplegableEx::_Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param) {
-		if (EdicionTexto_Evento_Tecla(Caracter, Repeticion, Param) == TRUE) Repintar();
+	void DDesplegableEx::_Evento_Tecla(WPARAM wParam, LPARAM lParam) {
+		BOOL nRepintar = FALSE;
+		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		nRepintar = EdicionTexto_Evento_Tecla(DatosTeclado);
+		Evento_Tecla(DatosTeclado);
+		if (nRepintar == TRUE) Repintar();
 	}
 
-	void DDesplegableEx::_Evento_MouseMovimiento(const int cX, const int cY, const UINT Param) {
-
+	void DDesplegableEx::_Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam) {
+		DEventoMouse DatosMouse(wParam, lParam, ID());
 		BOOL bME = _MouseEntrando();
 
 		RECT RC; 
@@ -194,7 +206,7 @@ namespace DWL {
 		RECT RBoton = { RC.right - RC.bottom, 0, RC.right, RC.bottom };
 		RECT RVisor = { 0, 0, RC.right - RC.bottom, RC.bottom };
 
-		POINT Pt = { cX, cY };
+		POINT Pt = { DatosMouse.X(), DatosMouse.Y() };
 		// Está dentro del botón
 		if (PtInRect(&RBoton, Pt) == TRUE) {
 			if		(_Presionado == DDesplegableEx_Presionado_Nada)		_EstadoBoton = DDesplegableEx_Estado_Resaltado;
@@ -221,12 +233,13 @@ namespace DWL {
 			Repintar();
 		}
 
-		Evento_MouseMovimiento(cX, cY, Param);
+		Evento_MouseMovimiento(DatosMouse);
 
 		if (bME == TRUE)	Evento_MouseEntrando();
 	}
 
-	void DDesplegableEx::_Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param) {
+	void DDesplegableEx::_Evento_MousePresionado(const UINT Boton, WPARAM wParam, LPARAM lParam) {
+		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
 		SetFocus(_hWnd);
 		RECT RC;
 		GetClientRect(_hWnd, &RC);
@@ -235,7 +248,7 @@ namespace DWL {
 
 		SetCapture(_hWnd);
 
-		POINT Pt = { cX, cY };
+		POINT Pt = { DatosMouse.X(), DatosMouse.Y() };
 		// Está dentro del botón
 		if (PtInRect(&RBoton, Pt) == TRUE) {
 			_EstadoBoton = DDesplegableEx_Estado_Presionado;
@@ -247,10 +260,12 @@ namespace DWL {
 			_Presionado  = DDesplegableEx_Presionado_Visor;
 		}
 
+		Evento_MousePresionado(DatosMouse);
 		Repintar();
 	}
 
-	void DDesplegableEx::_Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param) {
+	void DDesplegableEx::_Evento_MouseSoltado(const UINT Boton, WPARAM wParam, LPARAM lParam) {
+		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
 		ReleaseCapture();
 
 		RECT RC;
@@ -261,7 +276,7 @@ namespace DWL {
 		_EstadoBoton = DDesplegableEx_Estado_Normal;
 		_EstadoVisor = DDesplegableEx_Estado_Normal;
 
-		POINT Pt = { cX, cY };
+		POINT Pt = { DatosMouse.X(), DatosMouse.Y() };
 		// Está dentro del botón
 		if (PtInRect(&RBoton, Pt) == TRUE) {
 			_EstadoBoton = DDesplegableEx_Estado_Resaltado;
@@ -273,11 +288,13 @@ namespace DWL {
 		}
 
 		_Presionado = DDesplegableEx_Presionado_Nada;
-
+		Evento_MouseSoltado(DatosMouse);
 		Repintar();
 	}
 
-	void DDesplegableEx::_Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey) {
+	void DDesplegableEx::_Evento_MouseRueda(WPARAM wParam, LPARAM lParam) {
+		DEventoMouseRueda DatosMouse(wParam, lParam, ID());
+		Evento_MouseRueda(DatosMouse);
 	}
 
 	void DDesplegableEx::_Evento_MouseSaliendo(void) {
@@ -295,27 +312,27 @@ namespace DWL {
 			case WM_SETFOCUS:		BorrarBufferTeclado();																														return 0;
 			case WM_KILLFOCUS:		BorrarBufferTeclado();																														return 0;
 
-			case WM_KEYDOWN:		_Evento_TeclaPresionada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;
-			case WM_KEYUP:			_Evento_TeclaSoltada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;		
-			case WM_CHAR: 			_Evento_Tecla(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));																	return 0;
-
+			case WM_KEYDOWN:		_Evento_TeclaPresionada(wParam, lParam);																									return 0;
+			case WM_KEYUP:			_Evento_TeclaSoltada(wParam, lParam);																										return 0;
+			case WM_CHAR: 			_Evento_Tecla(wParam, lParam);																												return 0;
+							
 			case WM_SIZE:			Repintar();																																	return 0;
 
 			case WM_PAINT:			_Evento_Pintar();																															return 0;
 
-			case WM_MOUSEMOVE:		_Evento_MouseMovimiento(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));												return 0;
+			case WM_MOUSEMOVE:		_Evento_MouseMovimiento(wParam, lParam);																									return 0;
 
 			case WM_MOUSELEAVE:		_Evento_MouseSaliendo();																													return 0;
 
-			case WM_MOUSEWHEEL:		_Evento_MouseRueda(static_cast<short>(HIWORD(wParam)), GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(LOWORD(wParam)));		return 0;
+			case WM_MOUSEWHEEL:		_Evento_MouseRueda(wParam, lParam);																											return 0;
 
-			case WM_LBUTTONDOWN:	_Evento_MousePresionado(0, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
-			case WM_RBUTTONDOWN:	_Evento_MousePresionado(1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
-			case WM_MBUTTONDOWN:	_Evento_MousePresionado(2, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
+			case WM_LBUTTONDOWN:	_Evento_MousePresionado(0, wParam, lParam);																									return 0;
+			case WM_RBUTTONDOWN:	_Evento_MousePresionado(1, wParam, lParam);																									return 0;
+			case WM_MBUTTONDOWN:	_Evento_MousePresionado(2, wParam, lParam);																									return 0;
 
-			case WM_LBUTTONUP:		_Evento_MouseSoltado(0, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));												return 0;
-			case WM_RBUTTONUP:		_Evento_MouseSoltado(1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));												return 0;
-			case WM_MBUTTONUP:		_Evento_MouseSoltado(2, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));												return 0;
+			case WM_LBUTTONUP:		_Evento_MouseSoltado(0, wParam, lParam);																									return 0;
+			case WM_RBUTTONUP:		_Evento_MouseSoltado(1, wParam, lParam);																									return 0;
+			case WM_MBUTTONUP:		_Evento_MouseSoltado(2, wParam, lParam);																									return 0;
 
 /*			case WM_LBUTTONDBLCLK:	_Evento_MouseDobleClick(0, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
 			case WM_RBUTTONDBLCLK:	_Evento_MouseDobleClick(1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;

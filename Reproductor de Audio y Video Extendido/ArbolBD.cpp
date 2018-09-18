@@ -3,26 +3,25 @@
 #include "RAVE_Iconos.h"
 #include "DStringUtils.h"
 
-ArbolBD::ArbolBD() {
+ArbolBD::ArbolBD(void) {
 }
 
 
-ArbolBD::~ArbolBD() {
+ArbolBD::~ArbolBD(void) {
 }
 
 
-void ArbolBD::Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
-	App.VentanaRave.Evento_TeclaPresionada(Caracter, Repeticion, Params);
+void ArbolBD::Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado) {
+	App.VentanaRave.Evento_TeclaPresionada(DatosTeclado);
 }
 
-void ArbolBD::Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
-	App.VentanaRave.Evento_TeclaSoltada(Caracter, Repeticion, Params);
+void ArbolBD::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
+	App.VentanaRave.Evento_TeclaSoltada(DatosTeclado);
 }
 
-void ArbolBD::Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param) {
-	App.VentanaRave.Evento_Tecla(Caracter, Repeticion, Param);
+void ArbolBD::Evento_Tecla(DWL::DEventoTeclado &DatosTeclado) {
+	App.VentanaRave.Evento_Tecla(DatosTeclado);
 }
-
 
 NodoBD *ArbolBD::BuscarHash(sqlite3_int64 bHash) {
 	if (_Raiz.TotalHijos() == 0) return NULL;

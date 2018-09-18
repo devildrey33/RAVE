@@ -74,8 +74,8 @@ namespace DWL {
 											return -1;								  // No se ha presionado ningún botón del mouse.
 										};*/
 
-										//! Función que devuelve si se ha presionado la tecla Control.
-										/*! Función que devuelve si se ha presionado la tecla Control.
+										//! Función que devuelve si la tecla Control está presionada.
+										/*! Función que devuelve si la tecla Control está presionada.
 											\fn			inline const int Control(void);
 											\return		devuelve TRUE si la tecla control está presionada.
 										*/
@@ -104,7 +104,7 @@ namespace DWL {
 	  private: /////////////////////////// Miembros privados
 
 										//! Constructor copia des-habilitado
-										DEventoMouse(const DEventoMouse &) : wParam(0), lParam(0) { };
+										DEventoMouse(const DEventoMouse &) : wParam(0), lParam(0), ID(0), Boton(-1) { };
 										//! Operador = des-habilitado
 		inline DEventoMouse			    &operator=(const DEventoMouse &) { return *this; };
 

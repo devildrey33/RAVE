@@ -113,13 +113,13 @@ namespace DWL {
 		virtual void									Evento_MouseMovimiento(DEventoMouse &DatosMouse)											{ };
 		virtual void									Evento_MousePresionado(DEventoMouse &DatosMouse)											{ };
 		virtual void									Evento_MouseSoltado(DEventoMouse &DatosMouse)												{ };
-		virtual void                                    Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey)		{ };
+		virtual void                                    Evento_MouseRueda(DEventoMouseRueda &DatosMouse)											{ };
 		virtual void									Evento_MouseDobleClick(DEventoMouse &DatosMouse)											{ };
 
 
-		virtual void                                    Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params)		{ };
-		virtual void                                    Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params)			{ };
-		virtual void									Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param)					{ };
+		virtual void                                    Evento_TeclaPresionada(DEventoTeclado &DatosTeclado)										{ };
+		virtual void                                    Evento_TeclaSoltada(DEventoTeclado &DatosTeclado)											{ };
+		virtual void									Evento_Tecla(DEventoTeclado &DatosTeclado)													{ };
 
 		virtual void								    Evento_FocoObtenido(HWND hWndUltimoFoco)													{ };
 		virtual void								    Evento_FocoPerdido(HWND hWndNuevoFoco)														{ };
@@ -138,13 +138,13 @@ namespace DWL {
 		void										   _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
 		void										   _Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam);
 		void										   _Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam);
-		void                                           _Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey);
+		void                                           _Evento_MouseRueda(WPARAM wParam, LPARAM lParam);
 		void										   _Evento_MouseSaliendo(void);
 		void										   _Evento_MouseDobleClick(const int Boton, WPARAM wParam, LPARAM lParam);
 
-		void                                           _Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
-		void                                           _Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params);
-		void										   _Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param);
+		void                                           _Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam);
+		void                                           _Evento_TeclaSoltada(WPARAM wParam, LPARAM lParam);
+		void										   _Evento_Tecla(WPARAM wParam, LPARAM lParam);
 
 		void										   _Evento_FocoObtenido(HWND hWndUltimoFoco);
 		void										   _Evento_FocoPerdido(HWND hWndNuevoFoco);

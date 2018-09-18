@@ -137,6 +137,7 @@ void VentanaOpcionesRAVE::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMou
 		case ID_BOTON_GENERAL:
 		case ID_BOTON_ASOCIACIONESARCHIVOS:
 		case ID_BOTON_LISTAS:
+		case ID_BOTON_VIDEO:
 			AsignarMarco(DatosMouse.ID);
 			break;
 	}

@@ -838,23 +838,35 @@ void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
 	}
 }
 
-void VentanaPrincipal::Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
-	DhWnd::_Teclado[Caracter] = true;
+void VentanaPrincipal::Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado) {
+	DhWnd::_Teclado[DatosTeclado.TeclaVirtual()] = true;
 }
 
-void VentanaPrincipal::Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
-	DhWnd::_Teclado[Caracter] = false;
-	switch (Caracter) {
+void VentanaPrincipal::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
+	DhWnd::_Teclado[DatosTeclado.TeclaVirtual()] = false;
+	switch (DatosTeclado.TeclaVirtual()) {
 		case VK_SPACE :
 			Lista_Play();
 			break;
 	}
 }
 
-void VentanaPrincipal::Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param) {
+void VentanaPrincipal::Evento_Tecla(DWL::DEventoTeclado &DatosTeclado) {
 
 }
 
+void VentanaPrincipal::Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse) {
+	switch (DatosMouse.ID) {
+		case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambio();					break;
+	}
+}
+
+void VentanaPrincipal::Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse) {
+	switch (DatosMouse.ID) {
+		case ID_SLIDER_TIEMPO:						Evento_SliderTiempo_Cambiado();					break;
+		case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambiado();				break;
+	}
+}
 
 
 LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
@@ -950,13 +962,13 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 
 		// Teclado
 		case WM_KEYDOWN:		
-			Evento_TeclaPresionada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															
+			Evento_TeclaPresionada(DWL::DEventoTeclado(wParam, lParam, ID()));															
 			return 0;
 		case WM_KEYUP:
-			Evento_TeclaSoltada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));
+			Evento_TeclaSoltada(DWL::DEventoTeclado(wParam, lParam, ID()));
 			return 0;
 		case WM_CHAR:
-			Evento_Tecla(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));			
+			Evento_Tecla(DWL::DEventoTeclado(wParam, lParam, ID()));
 			return 0;
 
 
@@ -997,15 +1009,10 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 
 		// Barra de desplazamiento (barra de tiempo y volumen)
 		case DWL_BARRAEX_CAMBIO:	// Se está modificando (mouse down)
-			switch (wParam) {
-				case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambio();					break;
-			}
+			Evento_BarraEx_Cambio(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
 		case DWL_BARRAEX_CAMBIADO:  // Se ha modificado	(mouse up)
-			switch (wParam) {
-				case ID_SLIDER_TIEMPO:						Evento_SliderTiempo_Cambiado();					break;
-				case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambiado();				break;
-			}
+			Evento_BarraEx_Cambiado(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
 
 		case DWL_BOTONEX_CLICK :

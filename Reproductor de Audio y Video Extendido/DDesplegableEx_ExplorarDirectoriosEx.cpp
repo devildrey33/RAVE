@@ -45,11 +45,11 @@ namespace DWL {
 		Debug_Escribir_Varg(L"Foco perdido : %d\n", hWndNuevoFoco);
 	}
 
-	void DDesplegableEx_ExplorarDirectoriosEx::Evento_MousePresionado(const UINT Boton, const int cX, const int cY, const UINT Param) { 
+	void DDesplegableEx_ExplorarDirectoriosEx::Evento_MousePresionado(DEventoMouse &DatosMouse) {
 //		SetFocus(_Padre->hWnd()); 
 	};
 
-	void DDesplegableEx_ExplorarDirectoriosEx::Evento_MouseSoltado(const UINT Boton, const int cX, const int cY, const UINT Param) { 
+	void DDesplegableEx_ExplorarDirectoriosEx::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 		if (_NodoResaltado != NULL && _NodoResaltado == _NodoPresionado) {													// Si el nodo presionado es el mismo que el nodo resaltado (indica que el nodo presionado es el mismo en el mousedown que en el mouseup)
 			if (_NodoMarcado->Activado == TRUE) {																			// Si el nodo está activado (los nodos desactivados son paths a los que no se puede acceder con los privilegios actuales)
 				if (_NodoPresionadoParte == _NodoResaltadoParte && _NodoPresionadoParte != DArbolEx_ParteNodo_Expansor) {	// Si la parte presionada del nodo NO es el expansor 

@@ -99,9 +99,9 @@ namespace DWL {
 		void				   _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
 		void				   _Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam);
 		void				   _Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam);
-		void                   _Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params);
-		void                   _Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params);
-		void				   _Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param);
+		void                   _Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam);
+		void                   _Evento_TeclaSoltada(WPARAM wParam, LPARAM lParam);
+		void				   _Evento_Tecla(WPARAM wParam, LPARAM lParam);
 		void                   _Evento_FocoPerdido(HWND UltimoFoco);
 
 		RECT                   _Recta;

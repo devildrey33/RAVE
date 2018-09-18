@@ -110,8 +110,8 @@ namespace DWL {
 	}
 
 
-	const BOOL DEdicionTextoEx_Nucleo::EdicionTexto_Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
-		switch (Caracter) {
+	const BOOL DEdicionTextoEx_Nucleo::EdicionTexto_Evento_TeclaPresionada(DEventoTeclado &DatosTeclado) {
+		switch (DatosTeclado.Caracter()) {
 			case VK_SHIFT:
 				break;
 			case VK_HOME:
@@ -133,16 +133,16 @@ namespace DWL {
 		return TRUE;
 	}
 
-	const BOOL DEdicionTextoEx_Nucleo::EdicionTexto_Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
-		switch (Caracter) {
+	const BOOL DEdicionTextoEx_Nucleo::EdicionTexto_Evento_TeclaSoltada(DEventoTeclado &DatosTeclado) {
+		switch (DatosTeclado.TeclaVirtual()) {
 			case VK_SHIFT:
 				break;
 		}
 		return FALSE;
 	}
 
-	const BOOL DEdicionTextoEx_Nucleo::EdicionTexto_Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param) {
-		switch (Caracter) {
+	const BOOL DEdicionTextoEx_Nucleo::EdicionTexto_Evento_Tecla(DEventoTeclado &DatosTeclado) {
+		switch (DatosTeclado.TeclaVirtual()) {
 			case VK_RETURN:
 				if (TextoEditable == FALSE) return FALSE;
 				break;
@@ -155,10 +155,10 @@ namespace DWL {
 				break;
 			default:
 				if (_PosCursor == _Texto.size()) {
-					_Texto += static_cast<wchar_t>(Caracter);
+					_Texto += static_cast<wchar_t>(DatosTeclado.TeclaVirtual());
 				}
 				else {
-					_Texto.insert(_PosCursor, 1, static_cast<wchar_t>(Caracter));
+					_Texto.insert(_PosCursor, 1, static_cast<wchar_t>(DatosTeclado.TeclaVirtual()));
 				}
 				_PosCursor++;
 				break;
@@ -240,16 +240,19 @@ namespace DWL {
 		DeleteDC(Buffer);
 	}
 
-	void DEdicionTextoEx::_Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
-		if (EdicionTexto_Evento_TeclaPresionada(Caracter, Repeticion, Params) == TRUE) Repintar();
+	void DEdicionTextoEx::_Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam) {
+		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		if (EdicionTexto_Evento_TeclaPresionada(DatosTeclado) == TRUE) Repintar();
 	}
 
-	void DEdicionTextoEx::_Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
-		if (EdicionTexto_Evento_TeclaSoltada(Caracter, Repeticion, Params) == TRUE) Repintar();
+	void DEdicionTextoEx::_Evento_TeclaSoltada(WPARAM wParam, LPARAM lParam) {
+		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		if (EdicionTexto_Evento_TeclaSoltada(DatosTeclado) == TRUE) Repintar();
 	}
 
-	void DEdicionTextoEx::_Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param) {
-		if (EdicionTexto_Evento_Tecla(Caracter, Repeticion, Param) == TRUE) Repintar();
+	void DEdicionTextoEx::_Evento_Tecla(WPARAM wParam, LPARAM lParam) {
+		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		if (EdicionTexto_Evento_Tecla(DatosTeclado) == TRUE) Repintar();
 	}
 
 	void DEdicionTextoEx::_Evento_Pintar(void) {
@@ -288,9 +291,9 @@ namespace DWL {
 			case WM_SETFOCUS:		BorrarBufferTeclado();																														return 0;
 			case WM_KILLFOCUS:		BorrarBufferTeclado();																														return 0;
 
-			case WM_KEYDOWN:		_Evento_TeclaPresionada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;
-			case WM_KEYUP:			_Evento_TeclaSoltada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;
-			case WM_CHAR: 			_Evento_Tecla(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));																	return 0;
+			case WM_KEYDOWN:		_Evento_TeclaPresionada(wParam, lParam);																									return 0;
+			case WM_KEYUP:			_Evento_TeclaSoltada(wParam, lParam);																										return 0;
+			case WM_CHAR: 			_Evento_Tecla(wParam, lParam);																												return 0;
 
 			case WM_SIZE:			Repintar();																																	return 0;
 

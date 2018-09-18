@@ -653,7 +653,9 @@ namespace DWL {
 
 	}
 
-	void DListaEx::_Evento_MouseRueda(const short Delta, const int cX, const int cY, const UINT VirtKey) {
+	void DListaEx::_Evento_MouseRueda(WPARAM wParam, LPARAM lParam) {
+		DEventoMouseRueda DatosMouse(wParam, lParam, ID());
+
 		RECT RW;
 		GetWindowRect(hWnd(), &RW);
 
@@ -662,7 +664,7 @@ namespace DWL {
 		#endif
 
 
-		if (Delta > 0) { // hacia arriba
+		if (DatosMouse.Delta() > 0) { // hacia arriba
 			_ScrollV_Posicion -= _ScrollV_Pagina / 10.0f;
 			if (_ScrollV_Posicion < 0.0f) _ScrollV_Posicion = 0.0f;
 		}
@@ -673,47 +675,52 @@ namespace DWL {
 
 		_CalcularScrolls();
 		// Las coordenadas X e Y son relativas a la pantalla...
-		LONG ncX = RW.left - cX;
-		LONG ncY = RW.top - cY;
+		LONG ncX = RW.left - DatosMouse.X();
+		LONG ncY = RW.top - DatosMouse.Y();
 		_ItemResaltado = HitTest(ncX, ncY);
 		_ItemUResaltado = _ItemResaltado;
 
-		Evento_MouseRueda(Delta, ncX, ncY, VirtKey);
+		Evento_MouseRueda(DatosMouse);
 		Repintar();
 	}
 
 
-	void DListaEx::_Evento_TeclaPresionada(const UINT Caracter, const UINT Repeticion, const UINT Params) { 
+	void DListaEx::_Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam) {
+		DEventoTeclado DatosTeclado(wParam, lParam, ID());
 		// Marco la tecla como presionada
-		DhWnd::_Teclado[Caracter] = true;
+		DhWnd::_Teclado[DatosTeclado.TeclaVirtual()] = true;
 
 		// Si hay nodos ...
 		if (_Items.size() > 0) {
 			// Me guardo el item marcado para indicar desde donde empieza el shift
-			if (Caracter == VK_SHIFT) {
+			if (DatosTeclado.TeclaVirtual() == VK_SHIFT) {
 				if (_ItemShift == -1) {
 					_ItemShift = (_ItemMarcado == NULL) ? _ItemPaginaInicio : _ItemMarcado;
 				}
 			}
 
-			switch (Caracter) {
-			case VK_HOME: _Tecla_Inicio();								break;
-			case VK_END: _Tecla_Fin();									break;
-			case VK_UP: _Tecla_CursorArriba();							break;
-			case VK_DOWN: _Tecla_CursorAbajo();							break;
-			case VK_PRIOR: _Tecla_RePag();								break; // RePag
-			case VK_NEXT: _Tecla_AvPag();								break; // AvPag
-			default: Evento_Tecla(Caracter, Repeticion, Params);	break; // if (Caracter >= 0x30 && Caracter <= 0x5A) // Cualquier tecla valida
+			switch (DatosTeclado.TeclaVirtual()) {
+				case VK_HOME	: _Tecla_Inicio();				break;
+				case VK_END		: _Tecla_Fin();					break;
+				case VK_UP		: _Tecla_CursorArriba();		break;
+				case VK_DOWN	: _Tecla_CursorAbajo();			break;
+				case VK_PRIOR	: _Tecla_RePag();				break; // RePag
+				case VK_NEXT	: _Tecla_AvPag();				break; // AvPag
+				default			: Evento_Tecla(DatosTeclado);	break; // if (Caracter >= 0x30 && Caracter <= 0x5A) // Cualquier tecla valida
 			}
 		}
-		Evento_TeclaPresionada(Caracter, Repeticion, Params);
+		Evento_TeclaPresionada(DatosTeclado);
 
 	}
 
-	void DListaEx::_Evento_TeclaSoltada(const UINT Caracter, const UINT Repeticion, const UINT Params) {
+	void DListaEx::_Evento_TeclaSoltada(WPARAM wParam, LPARAM lParam) {
+		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		Evento_TeclaSoltada(DatosTeclado);
 	}
 
-	void DListaEx::_Evento_Tecla(const UINT Caracter, const UINT Repeticion, const UINT Param) {
+	void DListaEx::_Evento_Tecla(WPARAM wParam, LPARAM lParam) {
+		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		Evento_Tecla(DatosTeclado);
 	}
 
 
@@ -833,12 +840,12 @@ namespace DWL {
 			case WM_MBUTTONDBLCLK:	_Evento_MouseDobleClick(2, wParam, lParam);																									return 0;
 
 			// Mouse rueda
-			case WM_MOUSEWHEEL:		_Evento_MouseRueda(static_cast<short>(HIWORD(wParam)), GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(LOWORD(wParam)));		return 0;
+			case WM_MOUSEWHEEL:		_Evento_MouseRueda(wParam, lParam);																											return 0;
 			// Teclado
-			case WM_KEYDOWN:		_Evento_TeclaPresionada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;
-			case WM_KEYUP:			_Evento_TeclaSoltada(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));															return 0;
-			case WM_CHAR:           _Evento_Tecla(static_cast<UINT>(wParam), LOWORD(lParam), HIWORD(lParam));																	return 0;
-		}
+			case WM_KEYDOWN:		_Evento_TeclaPresionada(wParam, lParam);																									return 0;
+			case WM_KEYUP:			_Evento_TeclaSoltada(wParam, lParam);																										return 0;
+			case WM_CHAR:           _Evento_Tecla(wParam, lParam);																												return 0;
+		}	
 		return DefWindowProc(hWnd(), uMsg, wParam, lParam);
 	}
 

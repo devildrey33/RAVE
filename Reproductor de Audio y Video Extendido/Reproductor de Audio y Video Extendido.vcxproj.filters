@@ -358,6 +358,12 @@
     <ClInclude Include="DEtiquetaEx.h">
       <Filter>DWL\Ventanas\ControlesEx\EtiquetaEx</Filter>
     </ClInclude>
+    <ClInclude Include="DEventoTeclado.h">
+      <Filter>DWL\Ventanas\Eventos</Filter>
+    </ClInclude>
+    <ClInclude Include="DEventoMouseRueda.h">
+      <Filter>DWL\Ventanas\Eventos</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
