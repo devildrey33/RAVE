@@ -26,7 +26,7 @@ VentanaOpcionesRAVE::~VentanaOpcionesRAVE(void) {
 }
 
 void VentanaOpcionesRAVE::Crear(void) {
-	DVentana::CrearVentana(NULL, L"RAVE_VentanaOpciones", L"Opciones", 100, 100, 590, 400, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+	DVentana::CrearVentana(NULL, L"RAVE_VentanaOpciones", L"Opciones", App.BD.Opciones_VentanaOpciones_PosX(), App.BD.Opciones_VentanaOpciones_PosY(), 590, 450, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 
 	RECT RC;
 	GetClientRect(_hWnd, &RC);
@@ -202,9 +202,16 @@ void VentanaOpcionesRAVE::Evento_MarcaEx_Mouse_Click(DWL::DEventoMouse &DatosMou
 	switch (DatosMouse.ID) {
 		case ID_MARCA_MOSTRARANALISIS :
 			App.BD.Opciones_MostrarObtenerMetadatos(MarcaMostrarAnalisis.Marcado());
+			if (MarcaMostrarAnalisis.Marcado() == TRUE)	App.MostrarToolTip2(*this, L"La ventana del análisis no se mostrará más.");
+			else                                        App.MostrarToolTip2(*this, L"La ventana del análisis se mostrará siempre.");
 			break;
 		case ID_MARCA_ANALIZARPENDIENTES :
 			App.BD.Opciones_AnalizarMediosPendientes(MarcaAnalizarMediosPendientes.Marcado());
+			if (MarcaAnalizarMediosPendientes.Marcado() == TRUE)
+				App.MostrarToolTip2(*this,	L"Los medios pendientes se analizarán automaticamente.");
+			else
+				App.MostrarToolTip2(*this,	L"Los medios pendientes no se analizarán automaticamente.\n"
+											L"Para analizar los medios pendientes, haz click derecho encima de la base de datos, y pulsa Analizar.");
 			break;
 	}
 }
@@ -219,6 +226,12 @@ LRESULT CALLBACK VentanaOpcionesRAVE::GestorMensajes(UINT uMsg, WPARAM wParam, L
 			return 0;
 		case DWL_MARCAEX_CLICK:
 			Evento_MarcaEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));
+			return 0;
+		case WM_EXITSIZEMOVE:
+			App.BD.Opciones_GuardarPosVentanaOpciones();
+			return 0;
+		case WM_MOVING :
+			App.OcultarToolTip2();
 			return 0;
 
 	}

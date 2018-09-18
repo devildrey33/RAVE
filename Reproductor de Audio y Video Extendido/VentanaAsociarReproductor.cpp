@@ -21,7 +21,7 @@ void VentanaAsociarReproductor::Mostrar(void) {
 	if (App.BD.Opciones_MostrarAsociarArchivos() == FALSE) return;
 
 	// Creo la ventana que mostrará el progreso
-	CrearVentana(&App.VentanaRave, L"RAVE_AsociarReproductor", L"Asociar Reproductor", 400, 300, 510, 155, WS_CAPTION | WS_SYSMENU | WS_VISIBLE, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+	CrearVentana(&App.VentanaRave, L"RAVE_AsociarReproductor", L"Asociar Reproductor", App.BD.Opciones_VentanaAsociar_PosX(), App.BD.Opciones_VentanaAsociar_PosY(), 510, 155, WS_CAPTION | WS_SYSMENU | WS_VISIBLE, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 	RECT RC;
 	GetClientRect(_hWnd, &RC);
 
@@ -108,6 +108,10 @@ LRESULT CALLBACK VentanaAsociarReproductor::GestorMensajes(UINT uMsg, WPARAM wPa
 		case WM_CLOSE :
 			Evento_BotonEx_Mouse_Click(DWL::DEventoMouse(0, 0, ID_BOTONCANCELAR));
 			return 0;
+		case WM_EXITSIZEMOVE:
+			App.BD.Opciones_GuardarPosVentanaAsociar();
+			return 0;
+
 	}
 	return DefWindowProc(_hWnd, uMsg, wParam, lParam);
 }

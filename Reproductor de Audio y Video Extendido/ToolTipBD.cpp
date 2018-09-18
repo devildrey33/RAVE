@@ -45,7 +45,7 @@ void ToolTipBD::_Mostrar(POINT &Tam, const int PosX, const int PosY) {
 	}
 
 	// Asigno la posición del menú y lo hago siempre visible
-	SetWindowPos(_hWnd, HWND_TOPMOST, Punto.x, Punto.y, Tam.x, Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+	SetWindowPos(_hWnd, GetWindow(App.VentanaRave.hWnd(), GW_HWNDNEXT), Punto.x, Punto.y, Tam.x, Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 
 	//	AnimateWindow(_hWnd, 200, AW_BLEND);
 	SetFocus(App.VentanaRave.hWnd());
@@ -62,7 +62,7 @@ void ToolTipBD::Mover(const int PosX, const int PosY) {
 		Punto.y += 20;
 	}
 
-	SetWindowPos(_hWnd, HWND_TOPMOST, Punto.x, Punto.y, _Tam.x, _Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+	SetWindowPos(_hWnd, GetWindow(_hWnd, GW_HWNDNEXT), Punto.x, Punto.y, _Tam.x, _Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 }
 
 const POINT ToolTipBD::_CalcularEtiqueta(EtiquetaBD &nEtiqueta) {

@@ -519,13 +519,19 @@ const BOOL RaveBD::_CrearTablas(void) {
 											L"Version"					L" DOUBLE,"				  
 											L"MostrarObtenerMetadatos"	L" INTEGER,"
 											L"MostrarAsociarArchivos"	L" INTEGER,"
-											L"AnalizarMediosPendientes" L" INTEGER"
+											L"AnalizarMediosPendientes" L" INTEGER,"
+											L"VentanaOpciones_PosX"		L" INTEGER,"             
+											L"VentanaOpciones_PosY"		L" INTEGER,"             
+											L"VentanaAsociar_PosX"		L" INTEGER,"             
+											L"VentanaAsociar_PosY"		L" INTEGER," 
+											L"VentanaAnalizar_PosX"		L" INTEGER,"             
+											L"VentanaAnalizar_PosY"		L" INTEGER" 
 										")";
 	if (Consulta(CrearTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 
 	// Añado los datos por defecto de las opciones
-	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes) "
-										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1, 1)";
+	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes, VentanaOpciones_PosX, VentanaOpciones_PosY, VentanaAsociar_PosX, VentanaAsociar_PosY, VentanaAnalizar_PosX, VentanaAnalizar_PosY) "
+										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1, 1, 400, 300, 500, 400, 300, 200)";
 	if (Consulta(ValoresTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 
 	// Creo la tabla para las raices
@@ -1055,6 +1061,12 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 			_Opciones_MostrarObtenerMetadatos	= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 12));
 			_Opciones_MostrarAsociarArchivos	= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 13));
 			_Opciones_AnalizarMediosPendientes  = static_cast<BOOL>(sqlite3_column_int(SqlQuery, 14));
+			_Opciones_VentanaOpciones_PosX		= static_cast<int>(sqlite3_column_int(SqlQuery, 15));
+			_Opciones_VentanaOpciones_PosY		= static_cast<int>(sqlite3_column_int(SqlQuery, 16));
+			_Opciones_VentanaAsociar_PosX		= static_cast<int>(sqlite3_column_int(SqlQuery, 17));
+			_Opciones_VentanaAsociar_PosY		= static_cast<int>(sqlite3_column_int(SqlQuery, 18));
+			_Opciones_VentanaAnalizar_PosX		= static_cast<int>(sqlite3_column_int(SqlQuery, 19));
+			_Opciones_VentanaAnalizar_PosY		= static_cast<int>(sqlite3_column_int(SqlQuery, 20));
 		}
 		if (SqlRet == SQLITE_BUSY) {
 			VecesBusy++;
@@ -1118,6 +1130,48 @@ const BOOL RaveBD::Opciones_GuardarPosTamVentana(void) {
 		return TRUE;
 	}
 	return FALSE;
+}
+
+const BOOL RaveBD::Opciones_GuardarPosVentanaOpciones(void) {
+	RECT RV;
+	GetWindowRect(App.VentanaOpciones.hWnd(), &RV);
+	_Opciones_VentanaOpciones_PosX = RV.left;
+	_Opciones_VentanaOpciones_PosY = RV.top;
+	std::wstring Q = L"UPDATE Opciones SET VentanaOpciones_PosX=" + std::to_wstring(RV.left) + L", VentanaOpciones_PosY=" + std::to_wstring(RV.top) + L" WHERE Id=0";
+	int SqlRet = Consulta(Q);
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+	return TRUE;
+}
+
+const BOOL RaveBD::Opciones_GuardarPosVentanaAsociar(void) {
+	RECT RV;
+	GetWindowRect(App.VentanaAsociar.hWnd(), &RV);
+	_Opciones_VentanaAsociar_PosX = RV.left;
+	_Opciones_VentanaAsociar_PosY = RV.top;
+	std::wstring Q = L"UPDATE Opciones SET VentanaAsociar_PosX=" + std::to_wstring(RV.left) + L", VentanaAsociar_PosY=" + std::to_wstring(RV.top) + L" WHERE Id=0";
+	int SqlRet = Consulta(Q);
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+	return TRUE;
+}
+
+const BOOL RaveBD::Opciones_GuardarPosVentanaAnalizar(void) {
+	RECT RV;
+	GetWindowRect(App.VentanaRave.ThreadAnalizar.hWnd(), &RV);
+	_Opciones_VentanaAnalizar_PosX = RV.left;
+	_Opciones_VentanaAnalizar_PosY = RV.top;
+	std::wstring Q = L"UPDATE Opciones SET VentanaAnalizar_PosX=" + std::to_wstring(RV.left) + L", VentanaAnalizar_PosY=" + std::to_wstring(RV.top) + L" WHERE Id=0";
+	int SqlRet = Consulta(Q);
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+	return TRUE;
 }
 
 

@@ -8,7 +8,7 @@
 namespace DWL {
 
 
-	DToolTipEx::DToolTipEx() : _Fuente(NULL) {
+	DToolTipEx::DToolTipEx() : _Fuente(NULL), Padre(NULL) {
 	}
 
 
@@ -16,8 +16,12 @@ namespace DWL {
 	}
 
 
-	HWND DToolTipEx::CrearToolTipEx(DhWnd_Fuente Fuente, DhWnd *Padre) {
-		_hWnd = DVentana::CrearVentana(Padre, L"DToolTipEx", L"", 0, 0, 0, 0, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
+	HWND DToolTipEx::CrearToolTipEx(DhWnd_Fuente Fuente, DhWnd *nPadre) {
+		_hWnd = DVentana::CrearVentana(nPadre, L"DToolTipEx", L"", 0, 0, 0, 0, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
+		Padre = nPadre->hWnd();
+		while (GetParent(Padre) != NULL) {
+			Padre = GetParent(Padre);
+		}
 		MARGINS Margen = { 0, 0, 0, 1 };
 		DwmExtendFrameIntoClientArea(_hWnd, &Margen);
 		_Fuente = Fuente; // _Fuente18Normal;
@@ -35,15 +39,18 @@ namespace DWL {
 		SIZE		Ret		= { 0, 0 };
 		//	int			Padding = 8; // 8 pixeles de margen
 
-		GetTextExtentPoint32(hDC, Str.c_str(), static_cast<int>(Str.size()), &Ret);
+//		GetTextExtentPoint32(hDC, Str.c_str(), static_cast<int>(Str.size()), &Ret);
+		
+		RECT Tam = { 0, 0, 0, 0 };
+		int Al = DrawText(hDC, Str.c_str(), static_cast<int>(Str.size()), &Tam, DT_CALCRECT);
 
 		SelectObject(hDC, vFuente);
 		SelectObject(hDC, Viejo);
 		DeleteObject(Bmp);
 		DeleteDC(hDC);
 
-		Ret.cx += (DTOOLTIPEX_PADDING * 2);
-		Ret.cy += (DTOOLTIPEX_PADDING * 2);
+		Ret.cx = Tam.right + (DTOOLTIPEX_PADDING * 2);
+		Ret.cy = Tam.bottom + (DTOOLTIPEX_PADDING * 2);
 		return Ret;
 	}
 
@@ -53,7 +60,9 @@ namespace DWL {
 		_Str = Str;
 //		MoveWindow(hWnd(), cX - static_cast<int>(Ret.cx / 2), cY, Ret.cx, Ret.cy, FALSE);
 
-		SetWindowPos(_hWnd, HWND_TOPMOST, cX - static_cast<int>(Ret.cx / 2), cY, Ret.cx, Ret.cy, SWP_SHOWWINDOW | SWP_NOACTIVATE);
+//		HWND Before = GetWindow(Padre, GW_HWNDNEXT);
+		//if (Before == NULL) Before = HWND_TOP;
+		SetWindowPos(_hWnd, HWND_TOP, cX - static_cast<int>(Ret.cx / 2), cY, Ret.cx, Ret.cy, SWP_SHOWWINDOW | SWP_NOACTIVATE);
 
 		RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT);
 
@@ -61,11 +70,26 @@ namespace DWL {
 
 	void DToolTipEx::Mostrar(const int cX, const int cY, std::wstring &Str, const int cAncho, const int cAlto) {
 		_Str = Str;
-		MoveWindow(hWnd(), cX, cY, cAncho, cAlto, FALSE);
+//		MoveWindow(hWnd(), cX, cY, cAncho, cAlto, FALSE);
+		HWND Before = GetWindow(Padre, GW_HWNDPREV);
+		while (IsWindowVisible(Before) == FALSE) {
+			Before = GetWindow(Before, GW_HWNDPREV);
+		}
+		/*
+		HWND After = GetWindow(Padre, GW_HWNDNEXT);
+		wchar_t Txt[128], Txt2[128];
+		wchar_t Txt3[128], Txt4[128];
+		GetWindowText(Before, Txt, 128);
+		GetClassName(Before, Txt2, 128);
+		GetWindowText(After, Txt3, 128);
+		GetClassName(After, Txt4, 128);
+		Debug_Escribir_Varg(L"%s | %s ||,|| %s | %s\n", Txt, Txt2, Txt3, Txt4);*/
+//		if (Before == NULL) Before = HWND_TOP;
+		SetWindowPos(_hWnd, Before, cX, cY, cAncho, cAlto, SWP_SHOWWINDOW | SWP_NOACTIVATE);
 		
-		//ShowWindow(hWnd(), SW_SHOWNOACTIVATE);
-		AnimateWindow(_hWnd, 200, AW_BLEND);
-//		RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT);
+//		ShowWindow(hWnd(), SW_SHOWNOACTIVATE);
+//		AnimateWindow(_hWnd, 100, AW_BLEND);
+		RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT);
 
 		SetTimer(_hWnd, ID_TEMPORIZADOR_OCULTAR, 5000, NULL);
 	}
@@ -75,14 +99,16 @@ namespace DWL {
 	}
 
 	void DToolTipEx::OcultarAnimado(void) {
-		AnimateWindow(_hWnd, 200, AW_HIDE | AW_BLEND);
-//		ShowWindow(hWnd(), SW_HIDE);
+//		AnimateWindow(_hWnd, 100, AW_HIDE | AW_BLEND);
+		ShowWindow(hWnd(), SW_HIDE);
 	}
 
 	void DToolTipEx::Pintar(HDC DC) {
-		RECT RC, RCF;
+		RECT RC;
 		GetClientRect(hWnd(), &RC);
-		RCF = RC; RCF.left++; RCF.top++; RCF.right--; RCF.bottom--;
+		RECT RCF = { RC.left + 1, RC.top + 1, RC.right - 1, RC.bottom - 1 };
+		RECT RCT = { RC.left + DTOOLTIPEX_PADDING, RC.top + DTOOLTIPEX_PADDING, RC.right + (DTOOLTIPEX_PADDING * 2), RC.bottom + (DTOOLTIPEX_PADDING * 2) };
+		
 		// Creo un buffer en memória para pintar el control
 		HDC		Buffer = CreateCompatibleDC(NULL);
 		// Creo un DC compatible para el buffer
@@ -100,7 +126,10 @@ namespace DWL {
 		SetBkMode(Buffer, TRANSPARENT);
 		SetTextColor(Buffer, COLOR_TOOLTIP_TEXTO);
 		HFONT vFuente = static_cast<HFONT>(SelectObject(Buffer, _Fuente()));
-		TextOut(Buffer, DTOOLTIPEX_PADDING, DTOOLTIPEX_PADDING, _Str.c_str(), static_cast<int>(_Str.size()));
+		
+		DrawText(Buffer, _Str.c_str(), static_cast<int>(_Str.size()), &RCT, DT_LEFT);
+
+		//TextOut(Buffer, DTOOLTIPEX_PADDING, DTOOLTIPEX_PADDING, _Str.c_str(), static_cast<int>(_Str.size()));
 		SelectObject(Buffer, vFuente);
 
 		// Copio el buffer al DC

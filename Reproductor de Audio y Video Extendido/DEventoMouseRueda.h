@@ -8,7 +8,7 @@ namespace DWL {
 	#define WPARAM_TO_DEVENTOMOUSERUEDA(WP) *reinterpret_cast<DWL::DEventoMouseRueda *>(WP)
 	#define DEVENTOMOUSERUEDA_TO_WPARAM(DE) reinterpret_cast<WPARAM>(&DE)
 
-	//! Clase que contiene los parametros de un evento del mouse (mouseup, down, move, click, dobleckick, etc...) para pasarlos a la función de su ventana padre.
+	//! Clase que contiene los parametros de un evento de la rueda del mouse, para pasarlos a la función de su ventana padre.
 
 	class DEventoMouseRueda	{
 	  public:

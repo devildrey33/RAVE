@@ -259,7 +259,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 	ControlesPC.Crear();
 
 	_ToolTip.CrearToolTipEx(DWL::DhWnd::Fuente18Normal, &VentanaRave);
-	_ToolTip2.CrearToolTipEx(DWL::DhWnd::Fuente18Normal);
+	_ToolTip2.CrearToolTipEx(DWL::DhWnd::Fuente18Normal, &VentanaOpciones);
 
 }
 
@@ -409,7 +409,13 @@ void RAVE::MostrarToolTip(DhWnd &Padre, std::wstring &Texto) {
 	RECT RV;
 	GetWindowRect(Padre.hWnd(), &RV);
 	SIZE Tam = _ToolTip.CalcularTam(Texto);
-	_ToolTip.Mostrar(RV.right - (Tam.cx + 20), RV.bottom - (Tam.cy + 20), Texto, Tam.cx, Tam.cy);
+	if (RV.right - RV.left > Tam.cx) {
+		_ToolTip.Mostrar(RV.right - (Tam.cx + 20), RV.bottom - (Tam.cy + 20), Texto, Tam.cx, Tam.cy);
+	}
+	else {
+		int x = (Tam.cx - (RV.right - RV.left)) / 2;
+		_ToolTip.Mostrar(RV.left - x, RV.bottom - (Tam.cy + 20), Texto, Tam.cx, Tam.cy);
+	}
 }
 
 
@@ -421,9 +427,10 @@ void RAVE::MostrarToolTip2(DhWnd &Padre, const wchar_t *Texto) {
 void RAVE::MostrarToolTip2(DhWnd &Padre, std::wstring &Texto) {
 	_ToolTip2.Ocultar();
 	HWND Foco = GetFocus();
-	while (GetParent(Foco) != NULL) {
+/*	while (GetParent(Foco) != NULL) {
 		Foco = GetParent(Foco);
-	}
+	}*/
+	_ToolTip2.Padre = Padre.hWnd();
 	// Si el foco no pertenece a la ventana padre o a uno de sus 
 	if (Padre.hWnd() != Foco && Foco != VentanaAsociar.hWnd() && Foco != VentanaOpciones.hWnd() && Foco != VentanaRave.hWnd()) {
 		return;
@@ -431,7 +438,14 @@ void RAVE::MostrarToolTip2(DhWnd &Padre, std::wstring &Texto) {
 	RECT RV;
 	GetWindowRect(Padre.hWnd(), &RV);
 	SIZE Tam = _ToolTip2.CalcularTam(Texto);
-	_ToolTip2.Mostrar(RV.right - (Tam.cx + 20), RV.bottom - (Tam.cy + 20), Texto, Tam.cx, Tam.cy);
+
+	if (RV.right - RV.left > Tam.cx) {
+		_ToolTip2.Mostrar(RV.right - (Tam.cx + 20), RV.bottom - (Tam.cy + 20), Texto, Tam.cx, Tam.cy);
+	}
+	else {
+		int x = (Tam.cx - (RV.right - RV.left)) / 2;
+		_ToolTip2.Mostrar(RV.left - x, RV.bottom - (Tam.cy + 20), Texto, Tam.cx, Tam.cy);
+	}
 }
 
 

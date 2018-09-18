@@ -69,7 +69,8 @@ class RAVE {
 	void                            MostrarToolTip2(DhWnd &Padre, const wchar_t *Texto);
 	void                            MostrarToolTip2(DhWnd &Padre, std::wstring &Texto);
 
-	inline void                     OcultarToolTip(void) { _ToolTip.Ocultar(); _ToolTip2.Ocultar(); }
+	inline void                     OcultarToolTip(void) { _ToolTip.Ocultar(); }
+	inline void                     OcultarToolTip2(void) { _ToolTip2.Ocultar(); }
 	//	int							Rand()
 
 	void							Terminar(void);

@@ -25,7 +25,7 @@ namespace DWL {
 		_Minimo = nMinimo;
 		_Maximo = nMaximo;
 		_Valor = nValor;
-		_ToolTip.CrearToolTipEx();
+		_ToolTip.CrearToolTipEx(Fuente18Normal, nPadre);
 		return hWnd();
 	}
 

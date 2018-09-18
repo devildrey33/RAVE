@@ -204,12 +204,22 @@ class RaveBD {
 								// Opciones que se guardan en la BD
 	const BOOL					Opciones_GuardarOpciones(void);
 	const BOOL					Opciones_GuardarPosTamVentana(void);
+	const BOOL					Opciones_GuardarPosVentanaOpciones(void);
+	const BOOL					Opciones_GuardarPosVentanaAsociar(void);
+	const BOOL					Opciones_GuardarPosVentanaAnalizar(void);
 
 	inline const int			Opciones_Volumen(void) { return _Opciones_Volumen; }
 	void						Opciones_Volumen(const int nVolumen);
 
 	inline const int			Opciones_PosX(void) { return _Opciones_PosX; }
 	inline const int			Opciones_PosY(void) { return _Opciones_PosY; }
+	inline const int			Opciones_VentanaOpciones_PosX(void) { return _Opciones_VentanaOpciones_PosX; }
+	inline const int			Opciones_VentanaOpciones_PosY(void) { return _Opciones_VentanaOpciones_PosY; }
+	inline const int			Opciones_VentanaAsociar_PosX(void) { return _Opciones_VentanaAsociar_PosX; }
+	inline const int			Opciones_VentanaAsociar_PosY(void) { return _Opciones_VentanaAsociar_PosY; }
+	inline const int			Opciones_VentanaAnalizar_PosX(void) { return _Opciones_VentanaAnalizar_PosX; }
+	inline const int			Opciones_VentanaAnalizar_PosY(void) { return _Opciones_VentanaAnalizar_PosY; }
+
 	inline const int			Opciones_Ancho(void) { return _Opciones_Ancho; }
 	inline const int			Opciones_Alto(void) { return _Opciones_Alto; }
 
@@ -267,6 +277,12 @@ protected:
 	int                        _Opciones_Volumen;
 	int                        _Opciones_PosX;
 	int                        _Opciones_PosY;
+	int                        _Opciones_VentanaOpciones_PosX;
+	int                        _Opciones_VentanaOpciones_PosY;
+	int                        _Opciones_VentanaAsociar_PosX;
+	int                        _Opciones_VentanaAsociar_PosY;
+	int                        _Opciones_VentanaAnalizar_PosX;
+	int                        _Opciones_VentanaAnalizar_PosY;
 	int                        _Opciones_Ancho;
 	int                        _Opciones_Alto;
 	BOOL                       _Opciones_Shufle;

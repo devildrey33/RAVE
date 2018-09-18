@@ -125,9 +125,6 @@
     <Filter Include="DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29">
       <UniqueIdentifier>{48db754e-13be-43af-8b55-4b4c51d6a432}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas\Eventos">
-      <UniqueIdentifier>{89375de0-fa16-44d6-8c74-09d2f8fbd387}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DWL\Ventanas\ControlesEx\MarcaEx">
       <UniqueIdentifier>{7ba7b1ff-8132-4dd0-a3e2-67094d0a6f38}</UniqueIdentifier>
     </Filter>
@@ -139,6 +136,9 @@
     </Filter>
     <Filter Include="DWL\Ventanas\ControlesEx\EtiquetaEx">
       <UniqueIdentifier>{ec2f93a3-f0d3-4895-aedb-dd9521e0b5b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DWL\Ventanas\Base\Eventos">
+      <UniqueIdentifier>{89375de0-fa16-44d6-8c74-09d2f8fbd387}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -317,7 +317,7 @@
       <Filter>DWL\Ventanas\ControlesEx\MenuEx</Filter>
     </ClInclude>
     <ClInclude Include="DEventoMouse.h">
-      <Filter>DWL\Ventanas\Eventos</Filter>
+      <Filter>DWL\Ventanas\Base\Eventos</Filter>
     </ClInclude>
     <ClInclude Include="RAVE_TODO.h">
       <Filter>xXx _MAIN_ xXx</Filter>
@@ -359,10 +359,10 @@
       <Filter>DWL\Ventanas\ControlesEx\EtiquetaEx</Filter>
     </ClInclude>
     <ClInclude Include="DEventoTeclado.h">
-      <Filter>DWL\Ventanas\Eventos</Filter>
+      <Filter>DWL\Ventanas\Base\Eventos</Filter>
     </ClInclude>
     <ClInclude Include="DEventoMouseRueda.h">
-      <Filter>DWL\Ventanas\Eventos</Filter>
+      <Filter>DWL\Ventanas\Base\Eventos</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
