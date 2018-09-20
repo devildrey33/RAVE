@@ -462,7 +462,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 			break;
 	}
 
-	App.MostrarToolTip(App.VentanaRave, ToolTip);
+	App.MostrarToolTipPlayer(App.VentanaRave, ToolTip);
 	
 	int				    SqlRet = 0;
 	sqlite3_stmt       *SqlQuery = NULL;

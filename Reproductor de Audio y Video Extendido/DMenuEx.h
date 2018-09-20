@@ -35,6 +35,7 @@ namespace DWL {
 							   ~DMenuEx(void);
 							    // Agrega un menú con texto y icono en la posicion especificada (-1 es al final)
 		DMenuEx                *AgregarMenu(const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos = NULL, const int Posicion = -1, const BOOL nActivado = TRUE);
+		inline DMenuEx         *AgregarMenu(const INT_PTR nID, std::wstring &nTexto, const INT_PTR nIconoRecursos = NULL, const int Posicion = -1, const BOOL nActivado = TRUE) { return AgregarMenu(nID, nTexto.c_str(), nIconoRecursos, Posicion, nActivado); };
 		DMenuEx				   *AgregarSeparador(const INT_PTR uID = 0, const int Posicion = -1);
 
 								// Función que muestra el Menú en el bucle principal de la aplicación y espera su respuesta en un WM_COMMAND (NO DEVUELVE EL MENÚ PRESIONADO)
@@ -44,6 +45,8 @@ namespace DWL {
 								//	NOTA : No desactiva la ventana padre
 		DMenuEx			       *MostrarModal(DhWnd *nPadre, const int PosX, const int PosY);
 		DMenuEx			       *MostrarModal(DhWnd *nPadre);
+
+		DMenuEx                *BuscarMenu(const INT_PTR bID);
 
 								// Asigna un icono a este menú 
 		void                    Icono(const int nIconoRecursos);
@@ -66,11 +69,17 @@ namespace DWL {
 		inline const BOOL		Activado(void)						{ return _Activado; };
 		void					Activado(const BOOL nActivar);
 
+								// Función para ocutar los menus
 		void                    Ocultar(const BOOL OcultarTodos = FALSE);		
 
-		void                    Pintar(HDC hDC);
+								// Función para eliminar el menu especificado por la ID
+		void                    EliminarMenu(const INT_PTR eID);
+								// Función para eliminar el menu especificado por el objeto
+		void					EliminarMenu(DMenuEx *eMenu);
+								// Función para eliminar todos los menus
+		void                    EliminarTodosLosMenus(void);
 
-		inline void				Repintar(void)						{ RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT); };
+		void                    Pintar(HDC hDC);		
 
 		void					Terminar(void);
 		// Función para calcular el tamaño de los menus.

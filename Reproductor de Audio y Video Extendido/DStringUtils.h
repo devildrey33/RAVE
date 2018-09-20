@@ -1,5 +1,5 @@
-#ifndef DSPLIT_H
-	#define DSPLIT_H
+#ifndef DSTRINGUTILS_H
+	#define DSTRINGUTILS_H
 
 //	#include "DObjeto.h"
 	#include <vector>

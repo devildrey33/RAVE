@@ -67,6 +67,8 @@
 		V  Al arrosegar arxius / directoris, s'ha d'afegir les seves arrels.
 			V  Aixo vol dir que s'ha de modificar la funció agregar raiz de forma que cada cop que n'agregui una, comprovi si n'hi ha una o mes per fusionar.
 
+		-  Crear un nou correu pels dumps... que pugui fer servir per enviar...
+
 		-  Mostrar les opcions en una finestra nova
 			-  Afegir opcions : 
 				- BD
@@ -76,8 +78,8 @@
 					V Mostrar finestra del analisis
 				- General
 					- Reproductor sempre devant
-					X Buscar actualitzacions
-					- Valor del ratio para MouseDown en botones |< >|
+					- Buscar actualitzacions (amb la calma... perque haure de mirar si en el github ho puc fer...)
+					- Valor del ratio per MouseDown en butons |< >|
 					- Teclat amb el focus en el reproductor (play / pausa, stop, volum +, volum -, següent medi, anterior medi, accelerar x2.0, frenar a x0.5)
 						- De teclat global (hook) si que haig de mirar la tecla play / pausa , pero el tema del volum amb tecles exteses el porta el sistema operatiu, suposo que tambe interesa el següent i l'anterior medi...
 				- Assosiacions d'arxiu

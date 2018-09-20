@@ -46,7 +46,9 @@ namespace DWL {
 		inline void					BorrarBufferTeclado(void)		{ for (size_t i = 0; i < 256; i++) _Teclado[i] = false; }
 		ATOM						RegistrarClase(const TCHAR *nNombre, WNDPROC WindowProcedureInicial, UINT Estilos = 0, const int nIconoRecursos = 0 ,HBRUSH nColorFondo = NULL, HINSTANCE hInstance = NULL);
 		void						IniciarMiembrosEstaticos(void);
-									
+									// Repinta la ventana
+		inline virtual void			Repintar(void)					{ RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT); };
+
 									// Debe utilizarse una sola vez al terminar la apliación
 		static void                 EliminarFuentesEstaticas();
 

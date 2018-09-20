@@ -63,14 +63,14 @@ class RAVE {
 
 	void							CerrarSistema(const SOCerrarSistema Forma = SOCerrarSistema_Apagar, const BOOL Forzar = FALSE);
 
-	void                            MostrarToolTip(DhWnd &Padre, const wchar_t *Texto);
-	void                            MostrarToolTip(DhWnd &Padre, std::wstring &Texto);
+	void                            MostrarToolTipPlayer(DhWnd &Padre, const wchar_t *Texto);
+	void                            MostrarToolTipPlayer(DhWnd &Padre, std::wstring &Texto);
 
-	void                            MostrarToolTip2(DhWnd &Padre, const wchar_t *Texto);
-	void                            MostrarToolTip2(DhWnd &Padre, std::wstring &Texto);
+	void                            MostrarToolTipOpciones(DhWnd &Padre, const wchar_t *Texto);
+	void                            MostrarToolTipOpciones(DhWnd &Padre, std::wstring &Texto);
 
-	inline void                     OcultarToolTip(void) { _ToolTip.Ocultar(); }
-	inline void                     OcultarToolTip2(void) { _ToolTip2.Ocultar(); }
+	inline void                     OcultarToolTipPlayer(void) { _ToolTip.Ocultar(); }
+	inline void                     OcultarToolTipOpciones(void) { _ToolTip2.Ocultar(); }
 	//	int							Rand()
 
 	void							Terminar(void);
@@ -108,7 +108,8 @@ class RAVE {
 
 									// Objeto para asociar este reproductor en el registro de windows
 	AsociarReproductor				AsociarMedios;
-
+									// ID_MENUVIDEO_AUDIO_PISTA_AUDIO
+	DMenuEx                        *MenuPistasDeAudio;
   protected:
 
 	DToolTipEx                     _ToolTip;

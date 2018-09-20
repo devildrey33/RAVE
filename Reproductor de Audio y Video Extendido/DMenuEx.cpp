@@ -73,7 +73,7 @@ namespace DWL {
 			//AnimateWindow(_hWnd, 100, AW_HOR_POSITIVE | AW_VER_POSITIVE);
 
 			// Asigno la posición del menú y lo hago siempre visible
-			SetWindowPos(_hWnd, HWND_TOPMOST, PosX, PosY, Tam.x, Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+			SetWindowPos(_hWnd, HWND_TOP, PosX, PosY, Tam.x, Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 
 			// Asigno la captura del mouse a este menú
 			#if DMENUEX_MOSTRARDEBUG == TRUE
@@ -125,6 +125,13 @@ namespace DWL {
 		}
 	}
 
+	// Busca un sub-menu de este menú por su ID
+	DMenuEx *DMenuEx::BuscarMenu(const INT_PTR bID) {
+		for (size_t i = 0; i < _Menus.size(); i++) {
+			if (bID == _Menus[i]->ID()) return _Menus[i];
+		}
+		return NULL;
+	}
 
 	DMenuEx *DMenuEx::AgregarMenu(const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const int nPosicion, const BOOL nActivado) {
 		int Pos = nPosicion;
@@ -166,16 +173,40 @@ namespace DWL {
 			Debug_Escribir(L"DMenuEx::Terminar Ocultar menu\n");
 		#endif
 		Ocultar();
-		for (size_t i = 0; i < _Menus.size(); i++) {
-			delete _Menus[i];
-		}
-		_Menus.resize(0);
+		EliminarTodosLosMenus();
 		_hWndDest	= NULL;
 		_Padre		= NULL;
 		_Tipo		= DMenuEx_Tipo_Raiz;
 		_ID			= 0;
 	}
 
+	// Función para eliminar todos los menus
+	void DMenuEx::EliminarTodosLosMenus(void) {		
+		for (size_t i = 0; i < _Menus.size(); i++) {
+			delete _Menus[i];
+		}
+		_Menus.resize(0);
+	}
+
+	// Función para eliminar el menu especificado por la ID
+	void DMenuEx::EliminarMenu(const INT_PTR eID) {
+		for (size_t i = 0; i < _Menus.size(); i++) {
+			if (_Menus[i]->ID() == eID) {
+				delete _Menus[i];
+				_Menus.erase(_Menus.begin() + i);
+			}
+		}
+	}
+
+	// Función para eliminar el menu especificado por el objeto
+	void DMenuEx::EliminarMenu(DMenuEx *eMenu) {
+		for (size_t i = 0; i < _Menus.size(); i++) {
+			if (_Menus[i] == eMenu) {
+				delete _Menus[i];
+				_Menus.erase(_Menus.begin() + i);
+			}
+		}
+	}
 
 	void DMenuEx::Icono(const int nIconoRecursos) {
 		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DMENUEX_TAMICONO, DMENUEX_TAMICONO);
@@ -511,12 +542,13 @@ namespace DWL {
 		POINT Pt;
 		DWL::DMouse::ObtenerPosicion(&Pt);
 		HWND WFP = WindowFromPoint(Pt);
+		ScreenToClient(WFP, &Pt);
 		// Si la ventana debajo del mouse no es un MenuEx
 		if (SendMessage(WFP, WM_ESMENUEX, 0, 0) != WM_ESMENUEX) {
 			switch (Boton) {
-				case 0: SendMessage(WFP, WM_LBUTTONDOWN, wParam, lParam); break;
-				case 1: SendMessage(WFP, WM_RBUTTONDOWN, wParam, lParam); break;
-				case 2: SendMessage(WFP, WM_MBUTTONDOWN, wParam, lParam); break;
+				case 0: PostMessage(WFP, WM_LBUTTONDOWN, wParam, MAKELPARAM(Pt.x, Pt.y)); break;
+				case 1: PostMessage(WFP, WM_RBUTTONDOWN, wParam, MAKELPARAM(Pt.x, Pt.y)); break;
+				case 2: PostMessage(WFP, WM_MBUTTONDOWN, wParam, MAKELPARAM(Pt.x, Pt.y)); break;
 			}
 			SetFocus(WFP);
 			Ocultar(TRUE);
@@ -547,19 +579,22 @@ namespace DWL {
 		POINT Pt;
 		DWL::DMouse::ObtenerPosicion(&Pt);
 		HWND WFP = WindowFromPoint(Pt);
+		ScreenToClient(WFP, &Pt);
+//		RECT RV;
+//		GetWindowRect(WFP, &RV);
 		// Si la ventana debajo del mouse no es un MenuEx
 		if (SendMessage(WFP, WM_ESMENUEX, 0, 0) != WM_ESMENUEX) {			
 			switch (Boton) {
-				case 0: SendMessage(WFP, WM_LBUTTONUP, wParam, lParam); break;
-				case 1: SendMessage(WFP, WM_RBUTTONUP, wParam, lParam); break;
-				case 2: SendMessage(WFP, WM_MBUTTONUP, wParam, lParam); break;
+				case 0: PostMessage(WFP, WM_LBUTTONUP, wParam, MAKELPARAM(Pt.x, Pt.y)); break;
+				case 1: PostMessage(WFP, WM_RBUTTONUP, wParam, MAKELPARAM(Pt.x, Pt.y)); break;
+				case 2: PostMessage(WFP, WM_MBUTTONUP, wParam, MAKELPARAM(Pt.x, Pt.y)); break;
 			}
 			SetFocus(WFP);
 		}
 
 		Ocultar(TRUE);
 
-		if (_ResultadoModal != NULL) SendMessage(_hWndDest, WM_COMMAND, _ResultadoModal->ID(), 0);
+		if (_ResultadoModal != NULL) PostMessage(_hWndDest, WM_COMMAND, _ResultadoModal->ID(), 0);
 	}
 
 	void DMenuEx::_Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam) {

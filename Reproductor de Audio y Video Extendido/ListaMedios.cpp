@@ -26,7 +26,7 @@ void ListaMedios::Evento_Tecla(DWL::DEventoTeclado &DatosTeclado) {
 
 
 void ListaMedios::BorrarListaReproduccion(void) {
-	App.VLC.Stop();
+//	App.VLC.Stop();
 	App.VLC.CerrarMedio();
 
 	EliminarTodosLosItems();

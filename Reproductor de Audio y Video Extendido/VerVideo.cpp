@@ -2,6 +2,7 @@
 #include "VerVideo.h"
 #include "DMouse.h"
 #include "Rave_Skin.h"
+#include "resource.h"
 
 VerVideo::VerVideo() {
 }
@@ -16,19 +17,34 @@ HWND VerVideo::Crear(DhWnd *Padre, const int cX, const int cY, const int cAncho,
 }
 
 void VerVideo::Evento_MenuEx_Click(const UINT cID) {
-	switch (cID) {
+/*	switch (cID) {
 		case ID_MENUVIDEO_AUDIO:
 			break;
 		case ID_MENUVIDEO_VIDEO:
 			break;
 		case ID_MENUVIDEO_SUBTITULOS:
 			break;
+	}*/
+	// Des-marco todas las pistas de audio
+	if (cID >= ID_MENUVIDEO_AUDIO_PISTAS_AUDIO && cID < ID_MENUVIDEO_AUDIO_PISTAS_AUDIO_FIN) {
+		for (size_t i = 0; i < App.MenuPistasDeAudio->TotalMenus(); i++) {
+			App.MenuPistasDeAudio->Menu(i)->Icono(0);
+		}
 	}
+	// Marco la pista de audio actual (si existe, ... que debería)
+	DMenuEx *MenuClick = App.MenuPistasDeAudio->BuscarMenu(cID);
+	if (MenuClick != NULL) MenuClick->Icono(IDI_CHECK2);
+
+	App.VLC.AsignarPistaAudio(cID - ID_MENUVIDEO_AUDIO_PISTAS_AUDIO);
 }
 
 LRESULT CALLBACK VerVideo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	static POINT nPos = { 0 , 0 };
 	switch (uMsg) {
+		case WM_COMMAND:
+			Evento_MenuEx_Click(LOWORD(wParam));
+			return 0;
+
 /*		case WM_ERASEBKGND :
 			return 1;*/
 		case WM_PAINT :
@@ -74,7 +90,7 @@ void VerVideo::Pintar(HDC hDC) {
 	RECT R;
 	GetClientRect(hWnd(), &R);
 
-	HBRUSH Fondo = CreateSolidBrush(COLOR_TOOLTIP_FONDO);
-	FillRect(hDC, &R, Fondo);
-	DeleteObject(Fondo);
+//	HBRUSH Fondo = CreateSolidBrush(COLOR_TOOLTIP_FONDO);
+	FillRect(hDC, &R, (HBRUSH)GetStockObject(BLACK_BRUSH));
+//	DeleteObject(Fondo);
 }

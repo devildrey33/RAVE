@@ -16,7 +16,7 @@ void RAVE_Iniciar(void) {
 
 RAVE *_APLICACION = NULL;
 
-RAVE::RAVE(void) : PlayerInicial(FALSE), MutexPlayer(NULL) {
+RAVE::RAVE(void) : PlayerInicial(FALSE), MutexPlayer(NULL), MenuPistasDeAudio(NULL) {
 	// Inicio la semilla para generar números aleatórios
 //	srand(GetTickCount());
 }
@@ -248,9 +248,11 @@ void RAVE::IniciarUI(int nCmdShow) {
 //		case Tipo_Repeat_ApagarOrdenador	:		Menu_Repetir.Menu(4)->Icono(IDI_CHECK);		break;
 	}
 
-	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_AUDIO		, L"Audio");
-	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_VIDEO		, L"Video");
-	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_SUBTITULOS	, L"Subtitulos");
+	DMenuEx *MAudio = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_AUDIO		, L"Audio");
+	MenuPistasDeAudio = MAudio->AgregarMenu(ID_MENUVIDEO_AUDIO_PISTA_AUDIO			, L"Pistas de audio");
+																						// ID_MENUVIDEO_AUDIO_PISTAS_AUDIO <-> ID_MENUVIDEO_AUDIO_PISTAS_AUDIO_FIN (Espacio para 20 pistas de audio para no hacer corto...)
+	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_VIDEO						, L"Video");
+	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_SUBTITULOS					, L"Subtitulos");
 
 
 	// Ventana principal
@@ -391,17 +393,18 @@ void RAVE::CerrarSistema(const SOCerrarSistema Forma, const BOOL Forzar) {
 };
 
 
-void RAVE::MostrarToolTip(DhWnd &Padre, const wchar_t *Texto) {
+void RAVE::MostrarToolTipPlayer(DhWnd &Padre, const wchar_t *Texto) {
 	std::wstring nTexto = Texto;
-	MostrarToolTip(Padre, nTexto);
+	MostrarToolTipPlayer(Padre, nTexto);
 }
 
-void RAVE::MostrarToolTip(DhWnd &Padre, std::wstring &Texto) {
+void RAVE::MostrarToolTipPlayer(DhWnd &Padre, std::wstring &Texto) {
 	_ToolTip.Ocultar();
 	HWND Foco = GetFocus();
 	while (GetParent(Foco) != NULL) {
 		Foco = GetParent(Foco);
 	}
+	_ToolTip.Padre = Padre.hWnd();
 	// Si el foco no pertenece a la ventana padre o a uno de sus 
 	if (Padre.hWnd() != Foco && Foco != VentanaAsociar.hWnd() && Foco != VentanaOpciones.hWnd() && Foco != VentanaRave.hWnd()) {
 		return;
@@ -419,17 +422,17 @@ void RAVE::MostrarToolTip(DhWnd &Padre, std::wstring &Texto) {
 }
 
 
-void RAVE::MostrarToolTip2(DhWnd &Padre, const wchar_t *Texto) {
+void RAVE::MostrarToolTipOpciones(DhWnd &Padre, const wchar_t *Texto) {
 	std::wstring nTexto = Texto;
-	MostrarToolTip2(Padre, nTexto);
+	MostrarToolTipOpciones(Padre, nTexto);
 }
 
-void RAVE::MostrarToolTip2(DhWnd &Padre, std::wstring &Texto) {
+void RAVE::MostrarToolTipOpciones(DhWnd &Padre, std::wstring &Texto) {
 	_ToolTip2.Ocultar();
 	HWND Foco = GetFocus();
-/*	while (GetParent(Foco) != NULL) {
+	while (GetParent(Foco) != NULL) {
 		Foco = GetParent(Foco);
-	}*/
+	}
 	_ToolTip2.Padre = Padre.hWnd();
 	// Si el foco no pertenece a la ventana padre o a uno de sus 
 	if (Padre.hWnd() != Foco && Foco != VentanaAsociar.hWnd() && Foco != VentanaOpciones.hWnd() && Foco != VentanaRave.hWnd()) {

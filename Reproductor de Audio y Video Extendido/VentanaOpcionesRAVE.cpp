@@ -161,15 +161,15 @@ void VentanaOpcionesRAVE::AgregarRaiz(void) {
 		if (AR == 1) {
 //			ListaRaiz.AgregarRaiz(Path.c_str());
 			Debug_Escribir(L"VentanaOpcionesRAVE::AgregarRaiz Nueva raíz agregada.\n");
-			App.MostrarToolTip2(*this, L"Nueva raiz añadida.");
+			App.MostrarToolTipOpciones(*this, L"Nueva raiz añadida.");
 		}
 		else if (AR == 0) { // La raiz ya existia o es un error
 			Debug_Escribir(L"VentanaOpcionesRAVE::AgregarRaiz La raíz ya existia.\n");
-			App.MostrarToolTip2(*this, L"La raíz especificada ya existe.");
+			App.MostrarToolTipOpciones(*this, L"La raíz especificada ya existe.");
 		}
 		else {
 			Debug_Escribir(L"VentanaOpcionesRAVE::AgregarRaiz La raíz se ha fusionado a una raíz existente.\n");
-			App.MostrarToolTip2(*this, L"Se han fusionado una o mas raices con la nueva raíz.");
+			App.MostrarToolTipOpciones(*this, L"Se han fusionado una o mas raices con la nueva raíz.");
 		}
 		// Espero a que se termine el thread del analisis
 		while (App.VentanaRave.ThreadActualizar.Thread() != NULL) {
@@ -196,22 +196,23 @@ void VentanaOpcionesRAVE::EliminarRaiz(std::wstring &Path) {
 void VentanaOpcionesRAVE::Evento_Cerrar(void) {
 //	ListaRaiz.Destruir();
 	Destruir();
+	App.OcultarToolTipOpciones();
 }
 
 void VentanaOpcionesRAVE::Evento_MarcaEx_Mouse_Click(DWL::DEventoMouse &DatosMouse) {
 	switch (DatosMouse.ID) {
 		case ID_MARCA_MOSTRARANALISIS :
 			App.BD.Opciones_MostrarObtenerMetadatos(MarcaMostrarAnalisis.Marcado());
-			if (MarcaMostrarAnalisis.Marcado() == TRUE)	App.MostrarToolTip2(*this, L"La ventana del análisis no se mostrará más.");
-			else                                        App.MostrarToolTip2(*this, L"La ventana del análisis se mostrará siempre.");
+			if (MarcaMostrarAnalisis.Marcado() == TRUE)	App.MostrarToolTipOpciones(*this, L"La ventana del análisis no se mostrará más.");
+			else                                        App.MostrarToolTipOpciones(*this, L"La ventana del análisis se mostrará siempre.");
 			break;
 		case ID_MARCA_ANALIZARPENDIENTES :
 			App.BD.Opciones_AnalizarMediosPendientes(MarcaAnalizarMediosPendientes.Marcado());
 			if (MarcaAnalizarMediosPendientes.Marcado() == TRUE)
-				App.MostrarToolTip2(*this,	L"Los medios pendientes se analizarán automaticamente.");
+				App.MostrarToolTipOpciones(*this,	L"Los medios pendientes se analizarán automáticamente.");
 			else
-				App.MostrarToolTip2(*this,	L"Los medios pendientes no se analizarán automaticamente.\n"
-											L"Para analizar los medios pendientes, haz click derecho encima de la base de datos, y pulsa Analizar.");
+				App.MostrarToolTipOpciones(*this,	L"Los medios pendientes no se analizarán automaticamente.\n"
+													L"Para analizar los medios pendientes, haz click derecho encima de la base de datos, y pulsa Analizar.");
 			break;
 	}
 }
@@ -231,7 +232,7 @@ LRESULT CALLBACK VentanaOpcionesRAVE::GestorMensajes(UINT uMsg, WPARAM wParam, L
 			App.BD.Opciones_GuardarPosVentanaOpciones();
 			return 0;
 		case WM_MOVING :
-			App.OcultarToolTip2();
+			App.OcultarToolTipOpciones();
 			return 0;
 
 	}

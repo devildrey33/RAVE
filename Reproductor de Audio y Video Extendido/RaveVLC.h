@@ -8,7 +8,11 @@
 
 
 #ifdef _WIN64
-	#pragma comment(lib, "..\\VLCx64\\libvlc.lib")	// LibVLC x64
+//	#ifdef _DEBUG
+//		#pragma comment(lib, "..\\VLCx64-Debug\\libvlc.lib")	// LibVLC x64 Depuración
+//	#else
+		#pragma comment(lib, "..\\VLCx64\\libvlc.lib")	// LibVLC x64
+//	#endif
 #else 
 	#pragma comment(lib, "..\\VLCx86\\libvlc.lib")	// LibVLC x86
 #endif
@@ -82,11 +86,6 @@ class RaveVLC {
 	const BOOL								Iniciar(void);
 	void									Terminar(void);
 
-	libvlc_instance_t					  *_Instancia;
-	libvlc_media_player_t				  *_MediaPlayer;
-	libvlc_log_t						  *_Log;
-	libvlc_event_manager_t				  *_Eventos;
-
 //	void CALLBACK							EventosVLC(const libvlc_event_t* event, void* ptr);
 
 	const BOOL								AbrirMedio(BDMedio &Medio);
@@ -119,16 +118,25 @@ class RaveVLC {
 
 	UINT64                                  TiempoTotal;
 
-	void									RepintarVLC(void);
-
+//	void									RepintarVLC(void);
+	void									AsignarPistaAudio(int nPista);
 
 	static BOOL CALLBACK					EnumeracionVLC(HWND hWndWnd, LPARAM lParam);
 
 	HWND									hWndVLC;
 
-
-
 	static void								audio_prerendercb(void* data, unsigned char** buffer, size_t size);
 	static void								audio_postrendercb(void* data, unsigned char* buffer, unsigned int channels, unsigned int rate, unsigned int nb_samples, unsigned int bits_per_sample, size_t size, int64_t pts);
-};
 
+	inline const BOOL                       Parseado(void) { return _Parseado; }
+	void									ObtenerDatosParsing(void);
+  protected:
+	BOOL                                   _Parseado;
+	//libvlc_media_t                        *_Media;
+	libvlc_instance_t					  *_Instancia;
+	libvlc_media_player_t				  *_MediaPlayer;
+	libvlc_log_t						  *_Log;
+	libvlc_event_manager_t				  *_Eventos;
+
+
+};

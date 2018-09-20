@@ -111,7 +111,7 @@ void VentanaPrincipal::AjustarControles(RECT &RC) {
 	//App.VLC.RepintarVLC();
 	if (App.VLC.hWndVLC != NULL) {
 		InvalidateRect(App.VLC.hWndVLC, &RC, TRUE);
-		App.VLC.RepintarVLC();
+//		App.VLC.RepintarVLC();
 	}
 //	RedrawWindow(App.VLC.hWndVLC, &RC, NULL, RDW_ERASE | RDW_INVALIDATE | RDW_NOCHILDREN);
 
@@ -160,12 +160,13 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 			if (App.VLC.hWndVLC != NULL) KillTimer(hWnd(), TIMER_OBTENERVLCWND);
 			break;
 		// Temporizador para repintar el VLC?¿?
-		case TIMER_REPINTARVLC :
+/*		case TIMER_REPINTARVLC :
 			App.VLC.RepintarVLC();
 			KillTimer(hWnd(), TIMER_REPINTARVLC);
-			break;
+			break;*/
 		// Temporizador para actualizar el tiempo actual del medio que se está reproduciendo
 		case TIMER_TIEMPO :
+			App.VLC.ObtenerDatosParsing();
 			if (!Minimizado()) {
 				if (Estado == EnPlay || Estado == EnPausa) { // EnPlay y EnPausa
 					// Si el slider del tiempo tiene la captura, es porque se esta modificando el tiempo, por lo que no hay que actualizar la posición en ese momento.
@@ -331,6 +332,8 @@ void VentanaPrincipal::Lista_Play(void) {
 
 void VentanaPrincipal::Lista_Stop(void) {
 	Lista.Errores = 0;
+	BotonPlay.Icono(IDI_PLAY32, 32);
+	App.ControlesPC.BotonPlay.Icono(IDI_PLAY32, 32);
 	App.VLC.Stop();
 }
 
@@ -385,7 +388,7 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		case ID_MENUBOTONLISTA_GENERAR_DISCO	:	GenerarListaAleatoria(TLA_Disco);		break;
 		case ID_MENUBOTONLISTA_GENERAR_50MEDIOS	:	GenerarListaAleatoria(TLA_50Medios);	break;
 		case ID_MENUBOTONLISTA_BORRAR			:	
-			App.MostrarToolTip(*this, L"Lista de reproducción borrada.");
+			App.MostrarToolTipPlayer(*this, L"Lista de reproducción borrada.");
 			Lista.BorrarListaReproduccion();	
 			Lista.Repintar();
 			break;
@@ -409,7 +412,8 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse)
 	if (DatosMouse.Boton == 0) {
 		switch (DatosMouse.ID) {
 			case ID_BOTON_OPCIONES:
-				App.VentanaOpciones.Crear();
+				if (App.VentanaOpciones.hWnd() == NULL)		App.VentanaOpciones.Crear();
+				else                                        SetFocus(App.VentanaOpciones.hWnd());
 				break;
 			case ID_BOTON_BD:
 				Arbol.Visible(TRUE);
@@ -465,8 +469,9 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse)
 		RECT RV;		
 		switch (DatosMouse.ID) {
 			case ID_BOTON_BD:
-				GetWindowRect(BotonBD.hWnd(), &RV);
-				Menu_BotonArbolBD.Mostrar(this, RV.left, RV.bottom);
+//				GetWindowRect(BotonBD.hWnd(), &RV);
+//				Menu_BotonArbolBD.Mostrar(this, RV.left, RV.bottom);
+				App.VLC.Stop();
 				break;
 			case ID_BOTON_LISTA:
 				GetWindowRect(BotonLista.hWnd(), &RV);
@@ -563,7 +568,7 @@ void VentanaPrincipal::Evento_CambiandoTam(const UINT Lado, RECT *Rectangulo) {
 	RC.right = (Rectangulo->right - Rectangulo->left) - CTW_ExtraX;
 	RC.bottom = (Rectangulo->bottom - Rectangulo->top) - CTW_ExtraY;
 
-	App.OcultarToolTip();
+	App.OcultarToolTipPlayer();
 
 	Debug_Escribir_Varg(L"Evento_CambiandoTam %d, %d\n", RC.right, RC.bottom);
 
@@ -579,7 +584,8 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 	RECT RC; 
 	_PantallaCompleta = nActivar;
 	if (nActivar == TRUE) {
-		App.OcultarToolTip();
+		App.OcultarToolTipPlayer();
+		App.OcultarToolTipOpciones();
 
 		SetWindowLongPtr(hWnd(), GWL_STYLE, WS_POPUP | WS_SYSMENU | WS_VISIBLE);
 		ShowWindow(hWnd(), SW_MAXIMIZE);
@@ -601,7 +607,7 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 //		RedrawWindow(App.VLC.hWndVLC, NULL, NULL, RDW_ERASE | RDW_INVALIDATE | RDW_ALLCHILDREN);
 
 
-		SetTimer(hWnd(), TIMER_REPINTARVLC, 250, NULL);
+//		SetTimer(hWnd(), TIMER_REPINTARVLC, 250, NULL);
 		/*		KillTimer(hWnd(), TIMER_CPC_INACTIVIDAD);
 		SetTimer(hWnd(), TIMER_CPC_INACTIVIDAD,		, NULL);*/
 
@@ -687,7 +693,7 @@ void VentanaPrincipal::Evento_Cerrar(void) {
 void VentanaPrincipal::Evento_SoltarArchivos(WPARAM wParam) {
 	TCHAR        Archivo[1024];
 	unsigned int TotalSoltados = DragQueryFile((HDROP)wParam, static_cast<unsigned int>(-1), 0, 0);
-	App.MostrarToolTip(App.VentanaRave, L"Añadiendo archivos desde el explorador.");
+	App.MostrarToolTipPlayer(App.VentanaRave, L"Añadiendo archivos desde el explorador.");
 	
 	ThreadActualizar.Cancelar(TRUE);
 	ThreadAnalizar.Cancelar(TRUE);
@@ -930,7 +936,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			BarraTareas.Estado_SinProgreso();
 //			BarraTareas.Resaltar();
 			Menu_ArbolBD.Menu(3)->Activado(TRUE);
-			App.MostrarToolTip(App.VentanaRave, L"Análisis cancelado, se han analizado " + std::to_wstring(lParam) + L" medios.");
+			App.MostrarToolTipPlayer(App.VentanaRave, L"Análisis cancelado, se han analizado " + std::to_wstring(lParam) + L" medios.");
 			return 0;
 
 		case WM_TOM_TERMINADO:
@@ -940,7 +946,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 //			BarraTareas.Resaltar();
 			App.BD.ObtenerEtiquetas();
 			Menu_ArbolBD.Menu(3)->Activado(TRUE);
-			App.MostrarToolTip(App.VentanaRave, L"Análisis terminado, se han analizado " + std::to_wstring(lParam) + L" medios.");
+			App.MostrarToolTipPlayer(App.VentanaRave, L"Análisis terminado, se han analizado " + std::to_wstring(lParam) + L" medios.");
 			return 0;
 			//		case WM_TBA_AGREGARAUDIO:
 //			Arbol_AgregarCancion(static_cast<size_t>(lParam));
@@ -951,7 +957,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			BarraTareas.Estado_SinProgreso();
 //			BarraTareas.Resaltar();
 			Debug_Escribir_Varg(L"ThreadActualizarArbol::Terminado %d archivos encontrados.\n", lParam);
-			App.MostrarToolTip(App.VentanaRave, L"Arbol actualizado.");
+			App.MostrarToolTipPlayer(App.VentanaRave, L"Arbol actualizado.");
 			// Si la opción de analizar medios pendientes está activa
 			if (App.BD.Opciones_AnalizarMediosPendientes() == TRUE) AnalizarBD();
 			return 0;
@@ -1000,7 +1006,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			Evento_CambiandoTam(static_cast<UINT>(wParam), reinterpret_cast<RECT *>(lParam));
 			return 0;
 		case WM_MOVING :
-			App.OcultarToolTip();
+			App.OcultarToolTipPlayer();
 			return TRUE;
 
 		case WM_ERASEBKGND :

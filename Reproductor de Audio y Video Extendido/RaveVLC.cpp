@@ -2,8 +2,9 @@
 #include "RaveVLC.h"
 #include "RAVE_Iconos.h"
 #include "VentanaPrecarga.h"
+#include "DStringUtils.h"
 
-RaveVLC::RaveVLC() : _Log(NULL), _MediaPlayer(NULL), _Instancia(NULL), MedioActual(), hWndVLC(NULL), _Eventos(NULL) {
+RaveVLC::RaveVLC() : _Log(NULL), _MediaPlayer(NULL), _Instancia(NULL), MedioActual(), hWndVLC(NULL), _Eventos(NULL), _Parseado(FALSE) {
 }
 
 
@@ -102,6 +103,7 @@ const BOOL RaveVLC::AbrirMedio(BDMedio &Medio) {
 	CerrarMedio();
 	TiempoTotal = 0;
 	MedioActual = Medio;
+	_Parseado = FALSE;
 
 	if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(MedioActual.Path.c_str())) {
 		Debug_Escribir_Varg(L"RaveVLC::AbrirMedio  El archivo '%s' NO EXISTE!\n", MedioActual.Path.c_str());
@@ -114,11 +116,10 @@ const BOOL RaveVLC::AbrirMedio(BDMedio &Medio) {
 	int		TamRes		= WideCharToMultiByte(CP_UTF8, NULL, MedioActual.Path.c_str(), static_cast<int>(TamnTexto), Destino, MAX_PATH, NULL, NULL);
 	Destino[TamRes] = 0;	// finalizo el string porque en la versión RELEASE de WideCharToMultiByte no se pone el terminador de cadenas, en la debug si.... (NO TESTEADO DESDE VS2008)
 
-	
-	libvlc_media_t *Media = NULL;
-	Media = libvlc_media_new_path(_Instancia, Destino);
-	_MediaPlayer = libvlc_media_player_new_from_media(Media);
-	libvlc_media_release(Media);
+	libvlc_media_t *_Media = NULL;
+	_Media = libvlc_media_new_path(_Instancia, Destino);
+	_MediaPlayer = libvlc_media_player_new_from_media(_Media);
+	libvlc_media_release(_Media);
 	
 //	_Eventos = libvlc_media_player_event_manager(_MediaPlayer);
 //	libvlc_event_attach(_Eventos, libvlc_MediaStateChanged, EventosVLC, this);				// no va
@@ -161,7 +162,7 @@ void RaveVLC::CerrarMedio(void) {
 		libvlc_event_detach(_Eventos, libvlc_MediaDurationChanged,	EventosVLC, this);
 		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEndReached,			EventosVLC, this);
 		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEncounteredError,	EventosVLC, this);*/
-
+		Debug_Escribir(L"RaveVLC::CerrarMedio\n");
 		libvlc_media_player_release(_MediaPlayer);
 		_MediaPlayer = NULL;
 	}
@@ -175,7 +176,6 @@ void RaveVLC::CerrarMedio(void) {
 
 void RaveVLC::ActualizarIconos(int nTipo) {
 	if (MedioActual.Hash != 0) {
-
 		int nIcono = 0;
 		switch (nTipo) {
 			case 0 : // normal
@@ -209,12 +209,10 @@ void RaveVLC::ActualizarIconos(int nTipo) {
 			Item->Texto(0) = StrTiempo;
 		}*/
 	}
-
 }
 
-const BOOL RaveVLC::Stop(void) {
-	SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, TRUE, NULL, TRUE); // Activo protector de pantalla
 
+const BOOL RaveVLC::Stop(void) {
 	if (_MediaPlayer != NULL) {
 		ActualizarIconos(0);
 
@@ -226,8 +224,17 @@ const BOOL RaveVLC::Stop(void) {
 		App.ControlesPC.SliderTiempo.ToolTip(DBarraDesplazamientoEx_ToolTip_SinToolTip);
 
 //		Sistema.App.MediaPlayer.HackVLCWNDPROC(false);
+		Debug_Escribir(L"RaveVLC::Stop\n");
+//		App.Eventos_Mirar();		
+//		Sleep(1000);
+//		libvlc_media_player_set_hwnd(_MediaPlayer, App.VentanaRave.Video.hWnd());
+
+		// Deadlock just despres de mostrar un MenuEx en un video i utilitzar el stop....
 		libvlc_media_player_stop(_MediaPlayer);
 		hWndVLC = NULL;
+
+		SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, TRUE, NULL, TRUE); // Activo protector de pantalla
+
 		return TRUE;
 	}
 	return FALSE;
@@ -261,6 +268,34 @@ const BOOL RaveVLC::Play(void) {
 		}
 	}
 	return FALSE;	
+}
+
+void RaveVLC::ObtenerDatosParsing(void) {
+	if (_MediaPlayer == NULL) return;
+	libvlc_state_t nEstado = libvlc_media_player_get_state(_MediaPlayer);
+	if (_Parseado == FALSE && nEstado == libvlc_Playing) {
+		int TotalPîstas = libvlc_audio_get_track_count(_MediaPlayer);
+		libvlc_track_description_t *Desc = libvlc_audio_get_track_description(_MediaPlayer);
+		
+		std::wstring Texto;
+		App.MenuPistasDeAudio->EliminarTodosLosMenus();
+		for (int i = 0; i < TotalPîstas; i++) {
+			if (i != 0) {
+				DWL::Strings::AnsiToWide(Desc->psz_name, Texto);
+				App.MenuPistasDeAudio->AgregarMenu(ID_MENUVIDEO_AUDIO_PISTAS_AUDIO + i, Texto);
+			}			
+			Desc = Desc->p_next;
+		}
+		int PistaActual = libvlc_audio_get_track(_MediaPlayer);
+		DMenuEx *MenuPistaActual = App.MenuPistasDeAudio->BuscarMenu(ID_MENUVIDEO_AUDIO_PISTAS_AUDIO + PistaActual);
+		if (MenuPistaActual != NULL) MenuPistaActual->Icono(IDI_CHECK2);
+		libvlc_track_description_list_release(Desc);
+		_Parseado = TRUE;
+	}
+}
+
+void RaveVLC::AsignarPistaAudio(const int nPista) {
+	libvlc_audio_set_track(_MediaPlayer, nPista);
 }
 
 Estados_Medio RaveVLC::ComprobarEstado(void) {
@@ -389,13 +424,9 @@ void RaveVLC::Ratio(const float R) {
 	}
 }
 
+/*
 void RaveVLC::RepintarVLC(void) {
 	if (hWndVLC != NULL) {
-/*		Debug_Escribir_Varg(L"RepintarVLC %d\n", hWndVLC);
-		RECT RC;
-		GetClientRect(hWndVLC, &RC);
-		InvalidateRect(hWndVLC, &RC, FALSE);
-		UpdateWindow(hWndVLC);*/
 		Debug_Escribir_Varg(L"RepintarVLC %d\n", hWndVLC);
 		HDC hDC = GetDC(hWndVLC);
 		HBRUSH Brocha = (HBRUSH)GetStockObject(BLACK_BRUSH);
@@ -404,7 +435,7 @@ void RaveVLC::RepintarVLC(void) {
 		FillRect(hDC, &RC, Brocha);
 		ReleaseDC(hWndVLC, hDC);
 	}
-}
+}*/
 
 
 // Necesito encontrar la ventana del VLC que se crea dentro del VerVideo para repintar el fondo negro

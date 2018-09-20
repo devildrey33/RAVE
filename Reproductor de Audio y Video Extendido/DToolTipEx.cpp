@@ -75,8 +75,8 @@ namespace DWL {
 		while (IsWindowVisible(Before) == FALSE) {
 			Before = GetWindow(Before, GW_HWNDPREV);
 		}
-		/*
-		HWND After = GetWindow(Padre, GW_HWNDNEXT);
+		
+/*		HWND After = GetWindow(Padre, GW_HWNDNEXT);
 		wchar_t Txt[128], Txt2[128];
 		wchar_t Txt3[128], Txt4[128];
 		GetWindowText(Before, Txt, 128);
@@ -99,8 +99,8 @@ namespace DWL {
 	}
 
 	void DToolTipEx::OcultarAnimado(void) {
-//		AnimateWindow(_hWnd, 100, AW_HIDE | AW_BLEND);
-		ShowWindow(hWnd(), SW_HIDE);
+		AnimateWindow(_hWnd, 100, AW_HIDE | AW_BLEND);
+//		ShowWindow(hWnd(), SW_HIDE);
 	}
 
 	void DToolTipEx::Pintar(HDC DC) {

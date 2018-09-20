@@ -314,11 +314,11 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 					App.VentanaRave.Lista.BorrarListaReproduccion();
 					AgregarNodoALista(_NodoMarcado);
 					App.VentanaRave.Lista_Play();
-					App.MostrarToolTip(App.VentanaRave, L"\"" + _NodoMarcado->Texto + L"\" añadido a una nueva lista.");
+					App.MostrarToolTipPlayer(App.VentanaRave, L"\"" + _NodoMarcado->Texto + L"\" añadido a una nueva lista.");
 					break;
 				case ID_MENUBD_AGREGARALISTA:
 					AgregarNodoALista(_NodoMarcado);
-					App.MostrarToolTip(App.VentanaRave, L"\"" + _NodoMarcado->Texto + L"\" añadido a la lista.");
+					App.MostrarToolTipPlayer(App.VentanaRave, L"\"" + _NodoMarcado->Texto + L"\" añadido a la lista.");
 					if (App.VLC.ComprobarEstado() != EnPlay) App.VentanaRave.Lista_Play();
 					break;
 				case ID_MENUBD_ACTUALIZAR:

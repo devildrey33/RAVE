@@ -111,6 +111,10 @@
 #define ID_MENUVIDEO_AUDIO						2150
 #define ID_MENUVIDEO_VIDEO						2151
 #define ID_MENUVIDEO_SUBTITULOS					2152
+#define ID_MENUVIDEO_AUDIO_PISTA_AUDIO			2153
+#define ID_MENUVIDEO_AUDIO_PISTAS_AUDIO			2160 // Inicio de las pistas de audio del VLC 
+													 // (DEJAR COMO MÍNIMO 10)
+#define ID_MENUVIDEO_AUDIO_PISTAS_AUDIO_FIN		2180
 
 #define TIMER_LISTA								2200
 #define TIMER_TIEMPO							2201
