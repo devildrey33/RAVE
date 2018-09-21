@@ -12,7 +12,7 @@ class VentanaErrorCritico : public DVentana {
 	HWND				Crear(void);
 
 	void				Evento_BorraFondo(HDC DC);
-	void				Evento_BotonEx_Mouse_Click(const UINT nID);
+	void				Evento_BotonEx_Mouse_Click(DEventoMouse &DatosTeclado);
 //	void				Evento_Temporizador(void);
 	void				Enviar(void);
 

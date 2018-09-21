@@ -48,10 +48,10 @@ void ToolTipBD::_Mostrar(POINT &Tam, const int PosX, const int PosY) {
 	SetWindowPos(_hWnd, HWND_TOP, Punto.x, Punto.y, Tam.x, Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 
 	//	AnimateWindow(_hWnd, 200, AW_BLEND);
-	SetFocus(App.VentanaRave.hWnd());
+//	SetFocus(App.VentanaRave.hWnd());
 
 	// Envio el mensaje WM_NCACTIVATE a la ventana principal para que no se vea como pierde el foco, y parezca que el desplegable es un hijo de la ventana principal
-	SendMessage(App.VentanaRave.hWnd(), WM_NCACTIVATE, TRUE, 0);
+//	SendMessage(App.VentanaRave.hWnd(), WM_NCACTIVATE, TRUE, 0);
 }
 
 void ToolTipBD::Mover(const int PosX, const int PosY) {

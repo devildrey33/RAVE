@@ -106,6 +106,15 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 	if (DatosMouse.Boton != 2 || _ItemResaltado == -1) {
 		_ToolTip.Destruir();
 	}
+
+	// Mostrar el menú
+	if (DatosMouse.Boton == 1) {
+		BOOL nActivar = (_ItemResaltado == -1) ? FALSE : TRUE;
+		for (size_t i = 0; i < App.VentanaRave.Menu_Lista.TotalMenus(); i++) {
+			App.VentanaRave.Menu_Lista.Menu(i)->Activado(nActivar);
+		}
+		App.VentanaRave.Menu_Lista.Mostrar(&App.VentanaRave);
+	}
 }
 
 void ListaMedios::Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse) {

@@ -7,7 +7,7 @@
 
 namespace DWL {
 
-	#define DLISTAEX_MOSTRARDEBUG	FALSE
+	#define DLISTAEX_MOSTRARDEBUG	TRUE
 
 	#ifdef _WIN64
 		#define DLISTAEX_POSICION_INICIO	0
@@ -86,7 +86,7 @@ namespace DWL {
 		void											ItemMarcado(DListaEx_Item *NuevoItemMarcado, const BOOL nRepintar = FALSE);
 														// Devuelve la posición del DListaEx_Item que está dentro de esta lista
 		const size_t                                    ItemPos(DListaEx_Item *pItem);		
-
+		inline virtual void								Repintar(void)			{ _Repintar = TRUE;	RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT); };
 		void											DesSeleccionarTodo(void);
 		void											MostrarItem(const size_t iPos);
 		void											MostrarItem(DListaEx_Item *eItem);

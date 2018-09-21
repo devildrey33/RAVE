@@ -418,10 +418,19 @@ const BOOL RaveBD::ActualizarMedioAnalisis(BDMedio *nMedio) {
 }
 
 const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const TipoListaAleatoria nTipo) {
+	// si no hay etiquetas solo se puede generar listas aleatorias de 50 medios sin ninguna base, si el tipo especificado no se puede gemerar. salgo
+	if (_Etiquetas.size() == 0 && nTipo != TLA_50Medios && nTipo != TLA_LoQueSea) {
+		App.MostrarToolTipPlayer(App.VentanaRave, L"No se pueden generar listas aleatórias hasta que no se analize la base de datos.");
+		return FALSE;
+	}
+
 	TipoListaAleatoria Tipo = nTipo;
 	if (Tipo == TLA_LoQueSea) {
 		Tipo = static_cast<TipoListaAleatoria>(App.Rand(static_cast<int>(TLA_LoQueSea - 1), static_cast<int>(TLA_Genero)));
 	}
+
+	// Si no hay etiquetas solo se puede generar una lista por TLA_50Medios
+	if (_Etiquetas.size() == 0)		Tipo = TLA_50Medios;
 
 	std::vector<EtiquetaBD *> Etiquetas;
 	std::wstring Q;

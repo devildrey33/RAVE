@@ -77,8 +77,8 @@ void VentanaErrorCritico::Enviar(void) {
 	BotonEnviar.Activado(FALSE);
 }
 
-void VentanaErrorCritico::Evento_BotonEx_Mouse_Click(const UINT nID) {
-	switch (nID) {
+void VentanaErrorCritico::Evento_BotonEx_Mouse_Click(DEventoMouse &DatosTeclado) {
+	switch (DatosTeclado.ID) {
 		case ID_VEC_ENVIAR:
 			Enviar();
 			break;
@@ -118,7 +118,7 @@ LRESULT CALLBACK VentanaErrorCritico::GestorMensajes(UINT uMsg, WPARAM wParam, L
 			PostQuitMessage(0);
 			break;
 		case DWL_BOTONEX_CLICK:
-			Evento_BotonEx_Mouse_Click(static_cast<UINT>(wParam));
+			Evento_BotonEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));
 			break;
 	}
 	return DefWindowProc(hWnd(), uMsg, wParam, lParam);

@@ -152,10 +152,6 @@ const BOOL RaveVLC::AbrirMedio(BDMedio &Medio) {
 	App.VentanaRave.SliderTiempo.OcultarToolTip();
 	App.ControlesPC.SliderTiempo.OcultarToolTip();
 
-	// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
-	std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" - " +  MedioActual.Nombre();
-	App.VentanaRave.Titulo(nTitulo);
-
 	Debug_Escribir_Varg(L"RaveVLC::AbrirMedio Path '%s'\n", MedioActual.Path.c_str());
 
 	return TRUE;
@@ -223,6 +219,8 @@ void RaveVLC::ActualizarIconos(int nTipo) {
 
 const BOOL RaveVLC::Stop(void) {
 	if (_MediaPlayer != NULL) {
+		Debug_Escribir_Varg(L"RaveVLC::Stop %d\n", _MediaPlayer);
+
 		ActualizarIconos(0);
 
 		// Escondo los tooltip de las barras de tiempo
@@ -232,23 +230,19 @@ const BOOL RaveVLC::Stop(void) {
 		App.VentanaRave.SliderTiempo.ToolTip(DBarraDesplazamientoEx_ToolTip_SinToolTip);
 		App.ControlesPC.SliderTiempo.ToolTip(DBarraDesplazamientoEx_ToolTip_SinToolTip);
 
-//		Sistema.App.MediaPlayer.HackVLCWNDPROC(false);
-		Debug_Escribir_Varg(L"RaveVLC::Stop %d\n", _MediaPlayer);
-//		App.Eventos_Mirar();
-//		Sleep(1000);
-		//		libvlc_media_player_set_hwnd(_MediaPlayer, App.VentanaRave.Video.hWnd());
-//		App.VentanaRave.Video.Visible(FALSE);
-//		App.Eventos_Mirar();
 		// Para evitar un deadlock si se está reproduciendo un video y el foco está en otra parte
 		HWND Foco = SetFocus(App.VentanaRave.hWnd());
-		// Deadlock just despres de mostrar un MenuEx en un video i utilitzar el stop....
+		// Deadlock just despres de mostrar un DMenuEx en un video i utilitzar el stop.... SOLUCIONAT, pero s'ha d'anar amb cuidado al utilitzar SetFocus...
 		libvlc_media_player_stop(_MediaPlayer);
-		SetFocus(Foco);
 
 		App.VentanaRave.Video.Visible(TRUE);
 		hWndVLC = NULL;
 
 		SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, TRUE, NULL, TRUE); // Activo protector de pantalla
+		
+		// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
+//		std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" - " +  MedioActual.Nombre();
+		App.VentanaRave.Titulo(std::wstring(RAVE_TITULO));
 
 		return TRUE;
 	}
@@ -279,6 +273,11 @@ const BOOL RaveVLC::Play(void) {
 			if (MedioActual.TipoMedio == Tipo_Medio_Video) { // Desactivo el protector de pantalla si es un video
 				SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, FALSE, NULL, TRUE);
 			}
+
+			// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
+			std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" - " + MedioActual.Nombre();
+			App.VentanaRave.Titulo(nTitulo);
+
 			return TRUE;
 		}
 	}

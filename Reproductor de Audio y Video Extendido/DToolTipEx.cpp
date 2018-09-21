@@ -72,8 +72,18 @@ namespace DWL {
 		_Str = Str;
 //		MoveWindow(hWnd(), cX, cY, cAncho, cAlto, FALSE);
 		HWND Before = GetWindow(Padre, GW_HWNDPREV);
-		while (IsWindowVisible(Before) == FALSE) {
-			Before = GetWindow(Before, GW_HWNDPREV);
+		if (Before == NULL) {
+			Before = HWND_TOP;
+		}
+		else {
+			while (IsWindowVisible(Before) == FALSE) {
+				if (GetWindow(Before, GW_HWNDPREV) != NULL) {
+					Before = GetWindow(Before, GW_HWNDPREV);
+				}
+				else {
+					break;
+				}
+			}
 		}
 		
 /*		HWND After = GetWindow(Padre, GW_HWNDNEXT);

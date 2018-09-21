@@ -76,12 +76,13 @@ namespace DWL {
 	}
 
 	void DListaEx::Pintar(HDC hDC) {
-
+		#if DLISTAEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DListaEx::Pintar -> _Repintar = %d\n", _Repintar);
+		#endif
 		if (_Repintar == TRUE) {
 			_Repintar = FALSE;
 			_CalcularScrolls();
 		}
-
 
 		RECT	RC, RCS;
 		ObtenerRectaCliente(&RC, &RCS);
@@ -610,7 +611,7 @@ namespace DWL {
 
 	void DListaEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {
 		DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
-		SetFocus(hWnd());
+		SetFocus(_hWnd);
 		if (Scrolls_MousePresionado(DatosMouse) == TRUE) { return; }
 
 		_ItemPresionado = HitTest(DatosMouse.X(), DatosMouse.Y(), &_SubItemPresionado);
@@ -660,7 +661,7 @@ namespace DWL {
 		GetWindowRect(hWnd(), &RW);
 
 		#if DLISTAEX_MOSTRARDEBUG == TRUE
-			Debug_Escribir_Varg(L"DListaEx::_Evento_MouseRueda cX:%d cY:%d mX:%d mY:%d\n", RW.left - cX , RW.top - cY);
+			Debug_Escribir_Varg(L"DListaEx::_Evento_MouseRueda cX:%d cY:%d mX:%d mY:%d\n", RW.left - DatosMouse.X() , RW.top - DatosMouse.Y());
 		#endif
 
 

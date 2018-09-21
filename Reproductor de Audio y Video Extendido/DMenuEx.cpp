@@ -83,8 +83,6 @@ namespace DWL {
 				Debug_Escribir_Varg(L"DMenuEx::Mostrar SetCapture : %d\n", _hWnd);
 			#endif	
 			SetCapture(_hWnd);
-//			SetFocus(_hWnd);
-
 			// Envio el mensaje WM_NCACTIVATE a la ventana principal para que no se vea como pierde el foco, y parezca que el desplegable es un hijo de la ventana principal
 //			SendMessage(_hWndPadre, WM_NCACTIVATE, TRUE, 0);
 		}
@@ -586,6 +584,7 @@ namespace DWL {
 		return FALSE;
 	}
 
+	
 	void DMenuEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
 		ReleaseCapture();
 		_ResultadoModal = _MenuPresionado;
@@ -617,6 +616,7 @@ namespace DWL {
 		if (_ResultadoModal != NULL) PostMessage(_hWndDest, WM_COMMAND, _ResultadoModal->ID(), 0);
 	}
 
+	/*
 	void DMenuEx::_Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam) {
 		DEventoTeclado DatosTeclado(wParam, lParam, ID());
 		DhWnd::_Teclado[DatosTeclado.TeclaVirtual()] = true;
@@ -758,7 +758,7 @@ namespace DWL {
 
 	void DMenuEx::_Evento_Tecla(WPARAM wParam, LPARAM lParam) {
 
-	}
+	}*/
 
 	void DMenuEx::_Evento_FocoPerdido(HWND UltimoFoco) {
 		// El nuevo foco no es parte de un MenuEx
@@ -810,10 +810,10 @@ namespace DWL {
 			case WM_LBUTTONUP:		_Evento_MouseSoltado(0, wParam, lParam);																									return 0;
 			case WM_RBUTTONUP:		_Evento_MouseSoltado(1, wParam, lParam);																									return 0;
 			case WM_MBUTTONUP:		_Evento_MouseSoltado(2, wParam, lParam);																									return 0;
-			// Teclado
-			case WM_KEYDOWN:		_Evento_TeclaPresionada(wParam, lParam);																									return 0;
+			// Teclado (Sin SetFocus no hay teclado)
+/*			case WM_KEYDOWN:		_Evento_TeclaPresionada(wParam, lParam);																									return 0;
 			case WM_KEYUP:			_Evento_TeclaSoltada(wParam, lParam);																										return 0;
-			case WM_CHAR:           _Evento_Tecla(wParam, lParam);																												return 0;
+			case WM_CHAR:           _Evento_Tecla(wParam, lParam);																												return 0;*/
 			
 			// Print y Print Client (para AnimateWindow)
 			case WM_PRINT:			Pintar(reinterpret_cast<HDC>(wParam));																										return 0;

@@ -68,7 +68,6 @@ class VentanaPrincipal : public DWL::DVentana {
 	DWL::DMenuEx                Menu_BotonArbolBD;
 	//	DWL::DMenuEx 				Menu_Mezclar;
 
-
 	void						ActualizarArbol(void);
 	void                        AnalizarBD(void);
 	ThreadActualizarArbol		ThreadActualizar;
@@ -147,6 +146,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	int							CTW_ExtraY;
 
   protected:
+    void					   _MostrarMarco(const INT_PTR ID);
+
 //	void                       _AgregarNodoALista(DArbolEx_Nodo *nNodo);
 	BOOL                       _PantallaCompleta;
 

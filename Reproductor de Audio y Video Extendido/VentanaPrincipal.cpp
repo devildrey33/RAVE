@@ -73,6 +73,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	// Marco inferior izquierdo /////////////
 	MarcoII.Crear(this, 10, 80, RAVE_BOTONES_LATERALES_ANCHO, 160, ID_MARCOSI);
 	BotonBD.CrearBotonEx(&MarcoII, L"Base de datos", 0, 0, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_BD);
+	BotonBD.Marcado(TRUE);
 	BotonLista.CrearBotonEx(&MarcoII, L"Lista de medios", 0, 40, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_LISTA);
 	BotonVideo.CrearBotonEx(&MarcoII, L"Ver video", 0, 80, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_VIDEO);
 	BotonOpciones.CrearBotonEx(&MarcoII, L"Opciones", 0, 120, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_OPCIONES);
@@ -388,9 +389,9 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		case ID_MENUBOTONLISTA_GENERAR_DISCO	:	GenerarListaAleatoria(TLA_Disco);		break;
 		case ID_MENUBOTONLISTA_GENERAR_50MEDIOS	:	GenerarListaAleatoria(TLA_50Medios);	break;
 		case ID_MENUBOTONLISTA_BORRAR			:	
-			App.MostrarToolTipPlayer(*this, L"Lista de reproducción borrada.");
 			Lista.BorrarListaReproduccion();	
-			Lista.Repintar();
+			if (Lista.Visible() == TRUE) Lista.Repintar();
+			App.MostrarToolTipPlayer(*this, L"Lista de reproducción borrada.");
 			break;
 	}
 }
@@ -408,6 +409,15 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Down(DWL::DEventoMouse &DatosMouse) 
 	}
 }
 
+void VentanaPrincipal::_MostrarMarco(const INT_PTR ID) {
+	BotonBD.Marcado((ID == ID_BOTON_BD) ? TRUE: FALSE);
+	BotonLista.Marcado((ID == ID_BOTON_LISTA) ? TRUE : FALSE);
+	BotonVideo.Marcado((ID == ID_BOTON_VIDEO) ? TRUE : FALSE);
+	Arbol.Visible((ID == ID_BOTON_BD) ? TRUE : FALSE);
+	Lista.Visible((ID == ID_BOTON_LISTA) ? TRUE : FALSE);
+	Video.Visible((ID == ID_BOTON_VIDEO) ? TRUE : FALSE);
+}
+
 void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse) {
 	if (DatosMouse.Boton == 0) {
 		switch (DatosMouse.ID) {
@@ -416,22 +426,9 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse)
 				else                                        SetFocus(App.VentanaOpciones.hWnd());
 				break;
 			case ID_BOTON_BD:
-				Arbol.Visible(TRUE);
-				Lista.Visible(FALSE);
-				Video.Visible(FALSE);
-				Arbol.AsignarFoco();
-				break;
 			case ID_BOTON_LISTA:
-				Arbol.Visible(FALSE);
-				Lista.Visible(TRUE);
-				Video.Visible(FALSE);
-				Lista.AsignarFoco();
-				break;
 			case ID_BOTON_VIDEO:
-				Arbol.Visible(FALSE);
-				Lista.Visible(FALSE);
-				Video.Visible(TRUE);
-				Video.AsignarFoco();
+				_MostrarMarco(DatosMouse.ID);
 				break;
 /*			case ID_BOTON_AGREGARRAIZ:
 				AgregarRaiz();
@@ -946,7 +943,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 //			BarraTareas.Resaltar();
 			App.BD.ObtenerEtiquetas();
 			Menu_ArbolBD.Menu(3)->Activado(TRUE);
-			App.MostrarToolTipPlayer(App.VentanaRave, L"Análisis terminado, se han analizado " + std::to_wstring(lParam) + L" medios.");
+			App.MostrarToolTipPlayer(App.VentanaRave, L"Análisis terminado, se han analizado " + std::to_wstring(lParam) + L" medios.");			
 			return 0;
 			//		case WM_TBA_AGREGARAUDIO:
 //			Arbol_AgregarCancion(static_cast<size_t>(lParam));
@@ -960,6 +957,9 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			App.MostrarToolTipPlayer(App.VentanaRave, L"Arbol actualizado.");
 			// Si la opción de analizar medios pendientes está activa
 			if (App.BD.Opciones_AnalizarMediosPendientes() == TRUE) AnalizarBD();
+			return 0;
+		case WM_TOM_MOSTRARVENTANA :
+			ShowWindow(ThreadAnalizar.hWnd(), SW_SHOW);
 			return 0;
 
 		case WM_DROPFILES :			

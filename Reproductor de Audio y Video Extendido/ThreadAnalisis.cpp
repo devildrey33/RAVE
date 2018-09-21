@@ -89,7 +89,7 @@ unsigned long ThreadAnalisis::_ThreadAnalisis(void *pThis) {
 	This->_BD.ObtenerMediosPorParsear(This->_PorParsear);
 
 	if (This->_PorParsear.size() > 0) {
-		ShowWindow(This->hWnd(), SW_SHOW);
+		PostMessage(This->_VentanaPlayer, WM_TOM_MOSTRARVENTANA, 0, 0);		
 
 		// Fase 2 : Iniciar la VLC en este thread
 		const char * const Argumentos[] = { "-v", "--vout=vdummy" };

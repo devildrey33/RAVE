@@ -67,7 +67,6 @@
 		V  Al arrosegar arxius / directoris, s'ha d'afegir les seves arrels.
 			V  Aixo vol dir que s'ha de modificar la funció agregar raiz de forma que cada cop que n'agregui una, comprovi si n'hi ha una o mes per fusionar.
 
-		-  Crear un nou correu pels dumps... que pugui fer servir per enviar...
 		V  Hi ha un deadlock chunguisim... al reproduir un video, si fas un stop a traves d'un DMenuEx el libvlc_stop es queda pillat...
 			V  GdiPlus eliminat i la cosa segueix igual....
 			X  Probar de fer que els menus deixin la finestra creada i nomes la mostrin / ocultin (de moment queda anulat)
@@ -76,11 +75,11 @@
 					V s'ha de revisar _hWndDest i _hWndPadre exactament per que serveixen i com tractarles... (_hWndPadre FORA)
 			V  DMenuEx re-adaptat sense SetFocus
 
-		
+		-  Crear un nou correu pels dumps... que pugui fer servir per enviar...
 
 		-  Mostrar les opcions en una finestra nova
 			-  Afegir opcions : 
-				- BD
+				V BD
 					V explicar el tema de les arrels, i posar controls per afegir arrels.
 						- Falta refinar el dialeg per seleccionar directoris...
 					V Analitzar metadades pendents automaticament al actualitzar la base de dades.

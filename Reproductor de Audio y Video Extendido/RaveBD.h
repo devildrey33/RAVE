@@ -24,6 +24,7 @@
 #define WM_TOM_TOTALMEDIOS3         WM_USER + 2012
 #define WM_TOM_TERMINADO            WM_USER + 2013
 #define WM_TOM_CANCELADO            WM_USER + 2014
+#define WM_TOM_MOSTRARVENTANA		WM_USER + 2015
 
 
 enum Estados_Medio {
