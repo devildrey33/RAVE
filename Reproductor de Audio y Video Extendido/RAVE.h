@@ -110,6 +110,7 @@ class RAVE {
 	AsociarReproductor				AsociarMedios;
 									// ID_MENUVIDEO_AUDIO_PISTA_AUDIO
 	DMenuEx                        *MenuPistasDeAudio;
+	DMenuEx                        *MenuProporcion;
   protected:
 
 	DToolTipEx                     _ToolTip;
@@ -117,7 +118,7 @@ class RAVE {
 
 	std::random_device			   _rd;
 	// Token para el GDI+
-	ULONG_PTR					   _gdiplusToken;
+//	ULONG_PTR					   _gdiplusToken;
 };
 
 

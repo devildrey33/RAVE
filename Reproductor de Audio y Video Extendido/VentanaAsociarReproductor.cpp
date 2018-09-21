@@ -83,6 +83,7 @@ void VentanaAsociarReproductor::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &Da
 	_BotonAceptar.Destruir();
 	_BotonCancelar.Destruir();
 	_MarcaNoMostrarMas.Destruir();
+	SetFocus(App.VentanaRave.hWnd());
 	Destruir();
 }
 

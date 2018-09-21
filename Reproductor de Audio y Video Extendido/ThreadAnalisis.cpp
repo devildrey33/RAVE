@@ -98,7 +98,7 @@ unsigned long ThreadAnalisis::_ThreadAnalisis(void *pThis) {
 		int Contador = 0;
 
 		// Mando un mensaje con el total de medios en los que hay que analizar sus metadatos
-		SendMessage(This->_hWnd, WM_TOM_INICIADO1, static_cast<WPARAM>(This->_PorParsear.size()), 0);
+		PostMessage(This->_hWnd, WM_TOM_INICIADO1, static_cast<WPARAM>(This->_PorParsear.size()), 0);
 
 		// Inicio la transaccion por segunda vez
 		This->_BD.Consulta(L"BEGIN TRANSACTION");
@@ -117,11 +117,11 @@ unsigned long ThreadAnalisis::_ThreadAnalisis(void *pThis) {
 			}
 
 			This->_Parsear(VLC, This->_PorParsear[i]);
-			SendMessage(This->_VentanaPlayer, WM_TOM_TOTALMEDIOS1, i, static_cast<LPARAM>(This->_PorParsear.size()));
-			if (This->_hWnd != NULL) SendMessage(This->_hWnd, WM_TOM_TOTALMEDIOS1, i, static_cast<LPARAM>(This->_PorParsear.size()));
+			PostMessage(This->_VentanaPlayer, WM_TOM_TOTALMEDIOS1, i, static_cast<LPARAM>(This->_PorParsear.size()));
+			if (This->_hWnd != NULL) PostMessage(This->_hWnd, WM_TOM_TOTALMEDIOS1, i, static_cast<LPARAM>(This->_PorParsear.size()));
 		}
 
-		if (This->_hWnd != NULL) SendMessage(This->_hWnd, WM_TOM_TOTALMEDIOS1, static_cast<WPARAM>(This->_PorParsear.size()), static_cast<LPARAM>(This->_PorParsear.size()));
+		if (This->_hWnd != NULL) PostMessage(This->_hWnd, WM_TOM_TOTALMEDIOS1, static_cast<WPARAM>(This->_PorParsear.size()), static_cast<LPARAM>(This->_PorParsear.size()));
 
 		// Terminada la FASE 3
 		libvlc_release(VLC);
@@ -134,8 +134,8 @@ unsigned long ThreadAnalisis::_ThreadAnalisis(void *pThis) {
 	}
 	This->_BD.Terminar();
 
-	if (This->Cancelar() == TRUE)	SendMessage(This->_VentanaPlayer, WM_TOM_CANCELADO, 0, static_cast<LPARAM>(This->_PorParsear.size()));
-	else                            SendMessage(This->_VentanaPlayer, WM_TOM_TERMINADO, 0, static_cast<LPARAM>(This->_PorParsear.size()));
+	if (This->Cancelar() == TRUE)	PostMessage(This->_VentanaPlayer, WM_TOM_CANCELADO, 0, static_cast<LPARAM>(This->_PorParsear.size()));
+	else                            PostMessage(This->_VentanaPlayer, WM_TOM_TERMINADO, 0, static_cast<LPARAM>(This->_PorParsear.size()));
 
 	return 0;
 }
@@ -159,8 +159,8 @@ void ThreadAnalisis::_RevisarMedios(void) {
 		_AgregarMedio(_DiscosTag,	&_Medios[i], _Medios[i].DiscoTag);
 	}
 
-	if (_hWnd != NULL) SendMessage(_hWnd, WM_TOM_INICIADO2, static_cast<WPARAM>(_Generos.size() + _GruposTag.size() + _DiscosTag.size()), 0);
-	SendMessage(_VentanaPlayer, WM_TOM_INICIADO2, static_cast<WPARAM>(_Generos.size() + _GruposTag.size() + _DiscosTag.size()), 0);
+	if (_hWnd != NULL) PostMessage(_hWnd, WM_TOM_INICIADO2, static_cast<WPARAM>(_Generos.size() + _GruposTag.size() + _DiscosTag.size()), 0);
+	PostMessage(_VentanaPlayer, WM_TOM_INICIADO2, static_cast<WPARAM>(_Generos.size() + _GruposTag.size() + _DiscosTag.size()), 0);
 
 	// FASE 2 : Creo las listas de anomalias por Genero, GrupoPath, GrupoTag, DiscoPath, DiscoTag. Y las resuelvo con la anómalia que tiene mas medios
 	// Creo la lista de anomalias para los generos
@@ -232,7 +232,7 @@ void ThreadAnalisis::_RevisarMedios(void) {
 	
 
 	// FASE 5 : Una vez actualizadas las anomalias, creo una lista de etiquetas, de los generos, grupos, y discos (tanto del tag como del path)
-	if (_hWnd != NULL) SendMessage(_hWnd, WM_TOM_INICIADO3, static_cast<WPARAM>(_Medios.size()), 0);
+	if (_hWnd != NULL) PostMessage(_hWnd, WM_TOM_INICIADO3, static_cast<WPARAM>(_Medios.size()), 0);
 
 	// TRUNCATE TABLE no se puede ejecutar dentro de una transacción.
 	// TRUNCATE TABLE no funciona... hay que utilizar un DELETE sin clausula WHERE
@@ -246,8 +246,8 @@ void ThreadAnalisis::_RevisarMedios(void) {
 		_AgregarEtiqueta(_Medios[i].GrupoTag,	TIPO_GRUPOTAG,  _Medios[i].Nota, _Medios[i].Tiempo);
 		_AgregarEtiqueta(_Medios[i].DiscoPath,	TIPO_DISCOPATH, _Medios[i].Nota, _Medios[i].Tiempo);
 		_AgregarEtiqueta(_Medios[i].DiscoTag,	TIPO_DISCOTAG,  _Medios[i].Nota, _Medios[i].Tiempo);
-		if (_hWnd != NULL) SendMessage(_hWnd, WM_TOM_TOTALMEDIOS3, i, 0);
-		SendMessage(_VentanaPlayer, WM_TOM_TOTALMEDIOS3, i, _Medios.size());
+		if (_hWnd != NULL) PostMessage(_hWnd, WM_TOM_TOTALMEDIOS3, i, 0);
+		PostMessage(_VentanaPlayer, WM_TOM_TOTALMEDIOS3, i, _Medios.size());
 		if (Cancelar() == TRUE) return;
 	}
 
@@ -275,8 +275,8 @@ void ThreadAnalisis::_CrearListaAnomalias(std::vector<CoincidenciasTexto *> &Coi
 	size_t i = 0, i2 = 0, i3 = 0;
 	// Creo la lista de anomalias para los discos del tag
 	for (i = 0; i < Coincidencias.size(); i++) {
-		if (_hWnd != NULL) SendMessage(_hWnd, WM_TOM_TOTALMEDIOS2, 0, 0);
-		SendMessage(_VentanaPlayer, WM_TOM_TOTALMEDIOS2, 0, 0);
+		if (_hWnd != NULL) PostMessage(_hWnd, WM_TOM_TOTALMEDIOS2, 0, 0);
+		PostMessage(_VentanaPlayer, WM_TOM_TOTALMEDIOS2, 0, 0);
 
 		if (Cancelar() == TRUE) return;
 		for (i2 = 0; i2 < Coincidencias.size(); i2++) {

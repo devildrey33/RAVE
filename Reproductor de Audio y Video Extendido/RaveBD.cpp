@@ -1096,12 +1096,17 @@ const BOOL RaveBD::AsignarTiempoMedio(const libvlc_time_t nTiempo, const sqlite3
 /* NOTA es mejor tener 2 selects para las opciones, uno para el tamaño y posición de la ventana, y otro para el resto de valores (shufle, repeat, volumen, etc...)
 Y no viene de 15 milisegundos mas a la hora de cerrar el reproductor */
 const BOOL RaveBD::Opciones_GuardarOpciones(void) {
+	// Compruebo si el repeat no es apagar windows o apagar el reproductor
+	Tipo_Repeat Repeat = Tipo_Repeat_NADA;
+	if (_Opciones_Repeat != Tipo_Repeat_ApagarReproductor && _Opciones_Repeat != Tipo_Repeat_ApagarOrdenador /*&& nRepeat != Tipo_Repeat_HibernarOrdenador*/) {
+		Repeat = _Opciones_Repeat;
+	}
 	Opciones_GuardarPosTamVentana();
 	std::wstring Q = L"UPDATE Opciones SET"
 		L" Volumen=" + std::to_wstring(_Opciones_Volumen) +
 		//						L", Volumen=" + std::to_wstring(_Volumen) +
 		L", Shufle=" + std::to_wstring(_Opciones_Shufle) +
-		L", Repeat=" + std::to_wstring(_Opciones_Repeat) +
+		L", Repeat=" + std::to_wstring(Repeat) +
 		L" WHERE Id=0";
 	int SqlRet = Consulta(Q);
 

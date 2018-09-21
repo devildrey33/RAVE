@@ -16,26 +16,43 @@ HWND VerVideo::Crear(DhWnd *Padre, const int cX, const int cY, const int cAncho,
 	return DControlEx::CrearControlEx(Padre, L"VerVideo", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, CS_DBLCLKS /*| CS_VREDRAW | CS_HREDRAW */);
 }
 
+
 void VerVideo::Evento_MenuEx_Click(const UINT cID) {
-/*	switch (cID) {
-		case ID_MENUVIDEO_AUDIO:
-			break;
-		case ID_MENUVIDEO_VIDEO:
-			break;
-		case ID_MENUVIDEO_SUBTITULOS:
-			break;
-	}*/
-	// Des-marco todas las pistas de audio
+	// Pistas de audio
 	if (cID >= ID_MENUVIDEO_AUDIO_PISTAS_AUDIO && cID < ID_MENUVIDEO_AUDIO_PISTAS_AUDIO_FIN) {
+		// Des-marco todas las pistas de audio
 		for (size_t i = 0; i < App.MenuPistasDeAudio->TotalMenus(); i++) {
 			App.MenuPistasDeAudio->Menu(i)->Icono(0);
 		}
-	}
-	// Marco la pista de audio actual (si existe, ... que debería)
-	DMenuEx *MenuClick = App.MenuPistasDeAudio->BuscarMenu(cID);
-	if (MenuClick != NULL) MenuClick->Icono(IDI_CHECK2);
+		// Marco la pista de audio actual (si existe, ... que debería)
+		DMenuEx *MenuClick = App.MenuPistasDeAudio->BuscarMenu(cID);
+		if (MenuClick != NULL) MenuClick->Icono(IDI_CHECK2);
 
-	App.VLC.AsignarPistaAudio(cID - ID_MENUVIDEO_AUDIO_PISTAS_AUDIO);
+		App.VLC.AsignarPistaAudio(cID - ID_MENUVIDEO_AUDIO_PISTAS_AUDIO);
+		return;
+	}
+
+
+	// Proporción
+	if (cID >= ID_MENUVIDEO_PROPORCION_PREDETERMINADO && cID < ID_MENUVIDEO_PROPORCION_5A4 + 1) {
+		// Des-marco todas las porporciones
+		for (size_t i = 0; i < App.MenuProporcion->TotalMenus(); i++) {
+			App.MenuProporcion->Menu(i)->Icono(0);
+		}
+		switch (cID) {
+			case ID_MENUVIDEO_PROPORCION_PREDETERMINADO:		App.VLC.AsignarProporcion(NULL);			break;
+			case ID_MENUVIDEO_PROPORCION_16A9:					App.VLC.AsignarProporcion("16:9");			break;
+			case ID_MENUVIDEO_PROPORCION_4A3:					App.VLC.AsignarProporcion("4:3");			break;
+			case ID_MENUVIDEO_PROPORCION_1A1:					App.VLC.AsignarProporcion("1:!");			break;
+			case ID_MENUVIDEO_PROPORCION_16A10:					App.VLC.AsignarProporcion("16:10");			break;
+			case ID_MENUVIDEO_PROPORCION_2P21A1:				App.VLC.AsignarProporcion("2.21:1");		break;
+			case ID_MENUVIDEO_PROPORCION_2P35A1:				App.VLC.AsignarProporcion("2.35:1");		break;
+			case ID_MENUVIDEO_PROPORCION_2P39A1:				App.VLC.AsignarProporcion("2.39:1");		break;
+			case ID_MENUVIDEO_PROPORCION_5A4:					App.VLC.AsignarProporcion("5:4");			break;
+		}
+
+		App.MenuProporcion->Menu(cID - ID_MENUVIDEO_PROPORCION_PREDETERMINADO)->Icono(IDI_CHECK2);
+	}
 }
 
 LRESULT CALLBACK VerVideo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {

@@ -75,7 +75,7 @@ unsigned long ThreadActualizarArbol::_ThreadActualizar(void *pThis) {
 	This->_BD.Consulta(L"COMMIT TRANSACTION");
 	This->_BD.Terminar();
 
-	SendMessage(This->_VentanaPlayer, WM_TBA_TERMINADO, 0, static_cast<LPARAM>(TotalArchivos));
+	PostMessage(This->_VentanaPlayer, WM_TBA_TERMINADO, 0, static_cast<LPARAM>(TotalArchivos));
 
 	return 0;
 }
@@ -108,14 +108,14 @@ const UINT ThreadActualizarArbol::_EscanearDirectorio(std::wstring &nPath, BDRai
 	if (Raiz->Path == nPath) {
 		StringDirectorio = new std::wstring(nPath);
 		// Informo al hilo principal que se ha agregado una raíz
-		SendMessage(_VentanaPlayer, WM_TBA_AGREGARRAIZ, 0, reinterpret_cast<LPARAM>(StringDirectorio));
+		PostMessage(_VentanaPlayer, WM_TBA_AGREGARRAIZ, 0, reinterpret_cast<LPARAM>(StringDirectorio));
 	}
 	else {
 		// SOLO Si es un directorio hijo de la raiz (evito el resto de subdirectorios)
 		if ((Strings::ContarCaracter(Raiz->Path, L'\\') + 1) == Strings::ContarCaracter(Path, L'\\')) { 
 			StringDirectorio = new std::wstring(nPath);
 			// Informo al hilo principal que se ha agregado un directorio
-			SendMessage(_VentanaPlayer, WM_TBA_AGREGARDIR, 0, reinterpret_cast<LPARAM>(StringDirectorio));
+			PostMessage(_VentanaPlayer, WM_TBA_AGREGARDIR, 0, reinterpret_cast<LPARAM>(StringDirectorio));
 		}
 	}
 

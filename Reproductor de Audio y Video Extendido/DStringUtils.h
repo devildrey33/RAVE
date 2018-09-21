@@ -59,11 +59,18 @@
 			}
 
 
-			static const BOOL AnsiToWide(char *IN_Ansi, std::wstring &OUT_Wide) {
+			static const int AnsiToWide(const char *IN_Ansi, std::wstring &OUT_Wide) {
 				wchar_t TmpWTxt[4096];
 				int Ret = MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, IN_Ansi, -1, TmpWTxt, 4096);
-
 				OUT_Wide = TmpWTxt;
+				return (Ret > 0) ? TRUE : FALSE;
+			}
+
+
+			static const int WideToAnsi(const wchar_t *IN_Wide, std::string &OUT_Ansi) {
+				char TmpTxt[4096];
+				int	Ret = WideCharToMultiByte(CP_UTF8, NULL, IN_Wide, -1, TmpTxt, 4096, NULL, NULL);
+				OUT_Ansi = TmpTxt;
 				return (Ret > 0) ? TRUE : FALSE;
 			}
 

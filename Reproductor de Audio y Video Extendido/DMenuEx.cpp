@@ -62,7 +62,10 @@ namespace DWL {
 		POINT Tam = CalcularEspacio();
 
 		_hWndDest = nPadre->hWnd();
-
+/*		_hWndPadre = _hWndDest;
+		while (GetParent(_hWndPadre)) {
+			_hWndPadre = GetParent(_hWndPadre);
+		} */
 		if (_hWnd == NULL) {
 			CrearVentana(nPadre, L"DMenuEx", L"", PosX, PosY, Tam.x, Tam.y, WS_POPUP | WS_CAPTION);
 
@@ -80,10 +83,10 @@ namespace DWL {
 				Debug_Escribir_Varg(L"DMenuEx::Mostrar SetCapture : %d\n", _hWnd);
 			#endif	
 			SetCapture(_hWnd);
-			SetFocus(_hWnd);
+//			SetFocus(_hWnd);
 
 			// Envio el mensaje WM_NCACTIVATE a la ventana principal para que no se vea como pierde el foco, y parezca que el desplegable es un hijo de la ventana principal
-			SendMessage(nPadre->hWnd(), WM_NCACTIVATE, TRUE, 0);
+//			SendMessage(_hWndPadre, WM_NCACTIVATE, TRUE, 0);
 		}
 	}
 
@@ -92,9 +95,6 @@ namespace DWL {
 	//  Si OcultarTodos es FALSE, se ocultaran todos los menus hijos de este menú, y este menú.
 	void DMenuEx::Ocultar(const BOOL OcultarTodos) {
 //		AnimateWindow(_hWnd, 100, AW_HOR_NEGATIVE | AW_VER_NEGATIVE | AW_HIDE);
-		DestroyWindow(_hWnd);
-		_hWnd			= NULL;
-		_MenuResaltado	= NULL;
 
 		// Oculto todos los menús hijos de este
 		_OcultarRecursivo(this);
@@ -106,14 +106,23 @@ namespace DWL {
 				pPadre->Ocultar(FALSE);
 				pPadre = pPadre->_Padre;
 			}
+			ReleaseCapture();
 		}
 		// Si no hay que ocultar todos los menus (si lo hacemos en el menú raíz, es como si ocultaramos todo, por lo que hay que comprobar si tiene padre)
-		else {
+/*		else {
 			// Miro si tiene padre, y en caso afirmativo, asigno el foco al padre.
 			if (_Padre != NULL) {
 				SetFocus(_Padre->_hWnd);
+				SendMessage(_hWndPadre, WM_NCACTIVATE, TRUE, 0);
 			}
 		}
+		*/
+		
+		// Destruyo la ventana del menú
+		DestroyWindow(_hWnd);
+		_hWnd = NULL;
+		_MenuResaltado = NULL;
+
 	}
 
 	// Oculta todos los menus hijos recursivamente
@@ -438,10 +447,13 @@ namespace DWL {
 		SetWindowPos(_hWnd, HWND_TOPMOST, -4 + WR.left + Punto.x, -1 + WR.top + Punto.y, Tam.x, Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 
 		// Asigno el foco a este menú
-		if (AsignarFoco == TRUE) SetFocus(_hWnd);
+/*		if (AsignarFoco == TRUE) {
+			SetFocus(_hWnd);
+//			SendMessage(_hWndDest, WM_NCACTIVATE, TRUE, 0);
+		}
 
 		// Envio el mensaje WM_NCACTIVATE a la ventana principal para que no se vea como pierde el foco, y parezca que el desplegable es un hijo de la ventana principal
-		SendMessage(hWndDestMsg, WM_NCACTIVATE, TRUE, 0);
+		SendMessage(_hWndPadre, WM_NCACTIVATE, TRUE, 0);*/
 
 	}
 
@@ -483,7 +495,8 @@ namespace DWL {
 							_MenuDesplegado = NULL;
 						}
 
-						SetFocus(_hWnd);
+//						SetFocus(_hWnd);
+//						SendMessage(_hWndPadre, WM_NCACTIVATE, TRUE, 0);
 						// Asigno el nuevo menú resaltado
 						_MenuResaltado = _Menus[i];
 
@@ -550,7 +563,7 @@ namespace DWL {
 				case 1: PostMessage(WFP, WM_RBUTTONDOWN, wParam, MAKELPARAM(Pt.x, Pt.y)); break;
 				case 2: PostMessage(WFP, WM_MBUTTONDOWN, wParam, MAKELPARAM(Pt.x, Pt.y)); break;
 			}
-			SetFocus(WFP);
+//			SetFocus(WFP);
 			Ocultar(TRUE);
 			return;
 		}
@@ -567,6 +580,11 @@ namespace DWL {
 		}
 	}
 
+
+	const BOOL DMenuEx::Visible(void) { 
+		if (_hWnd != NULL) return IsWindowVisible(_hWnd);
+		return FALSE;
+	}
 
 	void DMenuEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
 		ReleaseCapture();
@@ -589,10 +607,12 @@ namespace DWL {
 				case 1: PostMessage(WFP, WM_RBUTTONUP, wParam, MAKELPARAM(Pt.x, Pt.y)); break;
 				case 2: PostMessage(WFP, WM_MBUTTONUP, wParam, MAKELPARAM(Pt.x, Pt.y)); break;
 			}
-			SetFocus(WFP);
+//			SetFocus(WFP);
 		}
 
 		Ocultar(TRUE);
+//		SetFocus(_hWndPadre);
+//		SendMessage(_hWndPadre, WM_NCACTIVATE, TRUE, 0);
 
 		if (_ResultadoModal != NULL) PostMessage(_hWndDest, WM_COMMAND, _ResultadoModal->ID(), 0);
 	}
@@ -668,9 +688,10 @@ namespace DWL {
 			case VK_LEFT :
 				if (_Padre != NULL) {
 					_MenuResaltado = NULL;
-					SetFocus(_Padre->_hWnd);
+//					SetFocus(_Padre->_hWnd);
+//					SendMessage(_hWndPadre, WM_NCACTIVATE, TRUE, 0);
 					Repintar();
-					SetCapture(_Padre->_hWnd);
+//					SetCapture(_Padre->_hWnd);
 				}
 				#if DMENUEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada VK_LEFT\n");
@@ -680,7 +701,8 @@ namespace DWL {
 				if (_MenuResaltado != NULL) {
 					if (_MenuResaltado->_Menus.size() > 0) {
 						_MenuResaltado->_MenuResaltado = _MenuResaltado->_Menus[0];
-						SetFocus(_MenuResaltado->_hWnd);
+//						SetFocus(_MenuResaltado->_hWnd);
+//						SendMessage(_hWndPadre, WM_NCACTIVATE, TRUE, 0);
 						_MenuResaltado->Repintar();
 						SetCapture(_MenuResaltado->_hWnd);
 					}
@@ -712,6 +734,7 @@ namespace DWL {
 		RECT RC;
 		GetClientRect(_hWnd, &RC);
 		SetFocus(_hWnd);
+//		SendMessage(_hWndPadre, WM_NCACTIVATE, TRUE, 0);
 
 		if (_MenuResaltado != NULL) {
 			// Si tiene Sub-menus
@@ -750,9 +773,9 @@ namespace DWL {
 				#endif
 				Ocultar(TRUE);
 			}
-			else {
+/*			else {
 				SetFocus(VentanaDebajoMouse);
-			}
+			}*/
 		}
 	}
 

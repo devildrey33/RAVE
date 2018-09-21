@@ -118,6 +118,9 @@ class RaveVLC {
 
 	UINT64                                  TiempoTotal;
 
+	std::wstring                           &ObtenerProporcion(void);
+	void                                    AsignarProporcion(const char *Prop);
+
 //	void									RepintarVLC(void);
 	void									AsignarPistaAudio(int nPista);
 

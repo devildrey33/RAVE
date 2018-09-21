@@ -73,17 +73,18 @@ const Extension_Medio ExtensionesValidas::ObtenerExtension(const wchar_t *Extens
 	return Extension_NOSOPORTADA;
 }
 
+// Obtiene el tipo de medio esperado... (despues puede ser otra cosa...)
 const Tipo_Medio ExtensionesValidas::ObtenerTipoMedio(const Extension_Medio Extension) {
 	switch (Extension) {
 		case Extension_ASF:		case Extension_AMV:		case Extension_AVI:		case Extension_DIVX:	case Extension_DV:		case Extension_FLV:		case Extension_GXF:		case Extension_IT:	
 		case Extension_MKV:		case Extension_MOV:		case Extension_MPEG:	case Extension_MPG:		case Extension_MPV:		case Extension_MPEG1:	case Extension_MPEG2:	case Extension_MPEG4:
 		case Extension_MPE:		case Extension_MP4:		case Extension_MP4V:	case Extension_MTS:		case Extension_MXF:		case Extension_M1V:		case Extension_M2T:		case Extension_M2TS:
-		case Extension_M2V:		case Extension_M4V:		case Extension_MOD:		case Extension_NSV:		case Extension_NUV:		case Extension_OGG:		case Extension_OGM:		case Extension_OGV:
+		case Extension_M2V:		case Extension_M4V:		case Extension_MOD:		case Extension_NSV:		case Extension_NUV:		case Extension_OGM:		case Extension_OGV:
 		case Extension_OGX:		case Extension_PS:		case Extension_RM:		case Extension_RMVB:	case Extension_SDP:		case Extension_TOD:		case Extension_TS:		case Extension_VOB:
 		case Extension_VRO:		case Extension_WMV:		case Extension_CRODOWNLOAD:						case Extension_OPDOWNLOAD:
 			return Tipo_Medio_Video;
 		case Extension_FLAC:	case Extension_MID:		case Extension_MP2:		case Extension_MP3:		case Extension_S3M:		case Extension_WAV:		case Extension_WEBM:	case Extension_WMA:	
-		case Extension_XM:
+		case Extension_XM:		case Extension_OGG:
 			return Tipo_Medio_Audio;
 		case Extension_CDA:
 			return Tipo_Medio_CDAudio;

@@ -27,7 +27,7 @@ namespace DWL {
 
 	#define DMENUEX_TAMICONO				16 // Tamaño del icono
 
-	#define WM_ESMENUEX						WM_USER + 400
+	#define WM_ESMENUEX						WM_USER + 500
 
 	class DMenuEx : protected DWL::DVentana {
   	  public:
@@ -85,7 +85,7 @@ namespace DWL {
 		// Función para calcular el tamaño de los menus.
 		const POINT			    CalcularEspacio(void);
 
-		inline const BOOL       Visible(void) { return (_hWnd != NULL); }
+		const BOOL				Visible(void);
 
 	  protected:
 								// Constructor menú tipo texto (interno AgregarMenu)
@@ -128,7 +128,8 @@ namespace DWL {
 
 		BOOL                   _Activado;
 		DMenuEx_Tipo           _Tipo;
-		static HWND            _hWndDest;
+		static HWND            _hWndDest;  // Destino para los mensajes
+//		HWND                   _hWndPadre; // Ventana padre que contiene el hWndDest;
 
 		BOOL				   _AnularMouseMove;
 								// Menu resultado para la función MostrarModal

@@ -68,6 +68,15 @@
 			V  Aixo vol dir que s'ha de modificar la funció agregar raiz de forma que cada cop que n'agregui una, comprovi si n'hi ha una o mes per fusionar.
 
 		-  Crear un nou correu pels dumps... que pugui fer servir per enviar...
+		V  Hi ha un deadlock chunguisim... al reproduir un video, si fas un stop a traves d'un DMenuEx el libvlc_stop es queda pillat...
+			V  GdiPlus eliminat i la cosa segueix igual....
+			X  Probar de fer que els menus deixin la finestra creada i nomes la mostrin / ocultin (de moment queda anulat)
+			V  El problema sembla que es el SetFocus, si la finestra del reproductor no te el foco es quan peta... (sembla que s'ha solucionat posant el focus a la finestra del reproductor UFF...)
+				V ES un problema del DMenuEx a l'hora de controlar el focus amb el submenus...
+					V s'ha de revisar _hWndDest i _hWndPadre exactament per que serveixen i com tractarles... (_hWndPadre FORA)
+			V  DMenuEx re-adaptat sense SetFocus
+
+		
 
 		-  Mostrar les opcions en una finestra nova
 			-  Afegir opcions : 
@@ -125,7 +134,8 @@
 
 		
 
-	RAVE 0.65
+	RAVE 0.6
+		- Posar icones en el thumbnail de la barra d'inici..
 		- Finestra de propietats per un medi o una etiqueta
 		- Mostrar la llista de medis al reproduir un medi de forma "diferent", per exemple una liista translucida reduida (pensa que aixó nomes pasara si el reproductor no está maximitzat i está reproduint video)
 		- Si la llista / BD (autio/video) está buida mostrar un icona que inciti a arrosegar un arxiu / directori

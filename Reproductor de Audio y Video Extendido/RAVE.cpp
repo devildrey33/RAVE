@@ -86,7 +86,8 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 
 
 	// Inicializo la librería COM (para el TaskBarList)
-	CoInitializeEx(0, COINIT_MULTITHREADED);
+	CoInitializeEx(0, COINIT_MULTITHREADED | COINIT_SPEED_OVER_MEMORY);
+//	CoInitializeEx(0, COINIT_APARTMENTTHREADED | COINIT_SPEED_OVER_MEMORY);
 
 	BOOL MemRet = FALSE;
 	// Si este hilo pertenece al reproductor inicial, creo la memória compartida.
@@ -113,11 +114,11 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 		}
 	#endif
 
-	Gdiplus::GdiplusStartupInput	gdiplusStartupInput;
+//	Gdiplus::GdiplusStartupInput	gdiplusStartupInput;
 	
 
 	// Initialize GDI+.
-	Gdiplus::GdiplusStartup(&_gdiplusToken, &gdiplusStartupInput, NULL);
+//	Gdiplus::GdiplusStartup(&_gdiplusToken, &gdiplusStartupInput, NULL);
 
 	switch (LC) {
 		// Ejecución normal sin parámetros
@@ -128,7 +129,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 			if (PlayerInicial == FALSE) {				
 				if (Paths.size() > 0) {
 					MemCompartida.Escribir(Paths[Paths.size() - 1]);					
-					SendMessage(hWndPlayer, (Paths[0] == L"-r") ? WM_REPRODUCIRMEDIO : WM_AGREGARMEDIO, 0, 0);
+					PostMessage(hWndPlayer, (Paths[0] == L"-r") ? WM_REPRODUCIRMEDIO : WM_AGREGARMEDIO, 0, 0);
 				}
 				Ret = FALSE;
 				break;
@@ -248,11 +249,22 @@ void RAVE::IniciarUI(int nCmdShow) {
 //		case Tipo_Repeat_ApagarOrdenador	:		Menu_Repetir.Menu(4)->Icono(IDI_CHECK);		break;
 	}
 
-	DMenuEx *MAudio = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_AUDIO		, L"Audio");
-	MenuPistasDeAudio = MAudio->AgregarMenu(ID_MENUVIDEO_AUDIO_PISTA_AUDIO			, L"Pistas de audio");
+//	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_AUDIO									, L"Audio");
+	MenuPistasDeAudio = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_PISTA_AUDIO			, L"Pistas de audio");
 																						// ID_MENUVIDEO_AUDIO_PISTAS_AUDIO <-> ID_MENUVIDEO_AUDIO_PISTAS_AUDIO_FIN (Espacio para 20 pistas de audio para no hacer corto...)
-	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_VIDEO						, L"Video");
-	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_SUBTITULOS					, L"Subtitulos");
+	MenuProporcion = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_PROPORCION				, L"Proporción");
+		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_PREDETERMINADO						, L"Predeterminado");
+		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_16A9								, L"16:9");
+		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_4A3									, L"4:3");
+		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_1A1									, L"1:1");
+		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_16A10								, L"16:10");
+		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_2P21A1								, L"2.21:1");
+		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_2P35A1								, L"2.35:1");
+		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_2P39A1								, L"2.39:1");
+		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_5A4									, L"5:4");
+	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_SUBTITULOS								, L"Subtitulos");
+
+	
 
 
 	// Ventana principal
@@ -274,7 +286,7 @@ void RAVE::Terminar(void) {
 	
 	CoUninitialize();
 
-	Gdiplus::GdiplusShutdown(_gdiplusToken);
+//	Gdiplus::GdiplusShutdown(_gdiplusToken);
 
 	DhWnd::EliminarFuentesEstaticas();
 

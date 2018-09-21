@@ -73,14 +73,14 @@ unsigned long ThreadAgregarArchivosLista::_ThreadAgregarArchivosLista(void *pThi
 				This->_BD.AnalizarMedio(This->_Paths[i], *Medio);
 			}
 			TotalArchivos++;
-			SendMessage(This->_VentanaPlayer, WM_TAAL_AGREGARMEDIO, reinterpret_cast<LPARAM>(Medio), 0);
+			PostMessage(This->_VentanaPlayer, WM_TAAL_AGREGARMEDIO, reinterpret_cast<LPARAM>(Medio), 0);
 		}
 	}
 
 	This->_BD.Consulta(L"COMMIT TRANSACTION");
 	This->_BD.Terminar();
 
-	SendMessage(This->_VentanaPlayer, WM_TAAL_TERMINADO, static_cast<WPARAM>(TotalArchivos), 0);
+	PostMessage(This->_VentanaPlayer, WM_TAAL_TERMINADO, static_cast<WPARAM>(TotalArchivos), 0);
 
 	return 0;
 }
@@ -154,11 +154,11 @@ const UINT ThreadAgregarArchivosLista::_EscanearDirectorio(std::wstring &nPath) 
 				Medio = new BDMedio;
 				if (_BD.ObtenerMedio(Path, *Medio) == FALSE) {
 					if (_BD.AnalizarMedio(Path, *Medio, FindInfoPoint.nFileSizeLow) != FALSE) {
-						SendMessage(_VentanaPlayer, WM_TAAL_AGREGARMEDIO, reinterpret_cast<WPARAM>(Medio), 0);
+						PostMessage(_VentanaPlayer, WM_TAAL_AGREGARMEDIO, reinterpret_cast<WPARAM>(Medio), 0);
 					}
 				}
 				else {
-					SendMessage(_VentanaPlayer, WM_TAAL_AGREGARMEDIO, reinterpret_cast<WPARAM>(Medio), 0);
+					PostMessage(_VentanaPlayer, WM_TAAL_AGREGARMEDIO, reinterpret_cast<WPARAM>(Medio), 0);
 				}
 			}
 		}

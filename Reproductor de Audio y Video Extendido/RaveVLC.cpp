@@ -55,7 +55,10 @@ const BOOL RaveVLC::Iniciar(void) {
 	/*_Log = libvlc_log_open(_Instancia); // PARTE DEL LOG PARA EL VLC
 	libvlc_set_log_verbosity(_Instancia, 2);*/
 
-	Debug_Escribir_Varg(L"RaveVLC::Iniciar Cargado en %d MS, Instancia = '%x' \n", GetTickCount() - t, _Instancia);
+	const char *Version = libvlc_get_version();
+	std::wstring StrVersion;
+	DWL::Strings::AnsiToWide(Version, StrVersion);
+	Debug_Escribir_Varg(L"RaveVLC::Iniciar Cargado en %d MS, Version = '%s' \n", GetTickCount() - t, StrVersion.c_str());
 
 	Precarga.Destruir();
 	return TRUE;
@@ -110,14 +113,20 @@ const BOOL RaveVLC::AbrirMedio(BDMedio &Medio) {
 		return FALSE;
 	}
 
+	std::string AnsiStr;
 	// Hay que convertir el path a UTF8 para que funcione en el VLC...
-	char	Destino[MAX_PATH];
+	if (DWL::Strings::WideToAnsi(MedioActual.Path.c_str(), AnsiStr) == 0) {
+		Debug_MostrarUltimoError();
+		return FALSE;
+	}
+
+/*	char	Destino[MAX_PATH];
 	size_t  TamnTexto	= wcslen(MedioActual.Path.c_str()) + 1;
 	int		TamRes		= WideCharToMultiByte(CP_UTF8, NULL, MedioActual.Path.c_str(), static_cast<int>(TamnTexto), Destino, MAX_PATH, NULL, NULL);
-	Destino[TamRes] = 0;	// finalizo el string porque en la versión RELEASE de WideCharToMultiByte no se pone el terminador de cadenas, en la debug si.... (NO TESTEADO DESDE VS2008)
+	Destino[TamRes] = 0;	// finalizo el string porque en la versión RELEASE de WideCharToMultiByte no se pone el terminador de cadenas, en la debug si.... (NO TESTEADO DESDE VS2008)*/
 
 	libvlc_media_t *_Media = NULL;
-	_Media = libvlc_media_new_path(_Instancia, Destino);
+	_Media = libvlc_media_new_path(_Instancia, AnsiStr.c_str());
 	_MediaPlayer = libvlc_media_player_new_from_media(_Media);
 	libvlc_media_release(_Media);
 	
@@ -224,13 +233,19 @@ const BOOL RaveVLC::Stop(void) {
 		App.ControlesPC.SliderTiempo.ToolTip(DBarraDesplazamientoEx_ToolTip_SinToolTip);
 
 //		Sistema.App.MediaPlayer.HackVLCWNDPROC(false);
-		Debug_Escribir(L"RaveVLC::Stop\n");
-//		App.Eventos_Mirar();		
+		Debug_Escribir_Varg(L"RaveVLC::Stop %d\n", _MediaPlayer);
+//		App.Eventos_Mirar();
 //		Sleep(1000);
-//		libvlc_media_player_set_hwnd(_MediaPlayer, App.VentanaRave.Video.hWnd());
-
+		//		libvlc_media_player_set_hwnd(_MediaPlayer, App.VentanaRave.Video.hWnd());
+//		App.VentanaRave.Video.Visible(FALSE);
+//		App.Eventos_Mirar();
+		// Para evitar un deadlock si se está reproduciendo un video y el foco está en otra parte
+		HWND Foco = SetFocus(App.VentanaRave.hWnd());
 		// Deadlock just despres de mostrar un MenuEx en un video i utilitzar el stop....
 		libvlc_media_player_stop(_MediaPlayer);
+		SetFocus(Foco);
+
+		App.VentanaRave.Video.Visible(TRUE);
 		hWndVLC = NULL;
 
 		SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, TRUE, NULL, TRUE); // Activo protector de pantalla
@@ -270,10 +285,13 @@ const BOOL RaveVLC::Play(void) {
 	return FALSE;	
 }
 
+// Obtiene los datos del medio una vez parseado
 void RaveVLC::ObtenerDatosParsing(void) {
 	if (_MediaPlayer == NULL) return;
 	libvlc_state_t nEstado = libvlc_media_player_get_state(_MediaPlayer);
+	// Si no se ha parseado
 	if (_Parseado == FALSE && nEstado == libvlc_Playing) {
+		// Enumero las pistas de audio
 		int TotalPîstas = libvlc_audio_get_track_count(_MediaPlayer);
 		libvlc_track_description_t *Desc = libvlc_audio_get_track_description(_MediaPlayer);
 		
@@ -291,8 +309,34 @@ void RaveVLC::ObtenerDatosParsing(void) {
 		if (MenuPistaActual != NULL) MenuPistaActual->Icono(IDI_CHECK2);
 		libvlc_track_description_list_release(Desc);
 		_Parseado = TRUE;
+
+
+		// Obtengo el ratio de aspecto
+		std::wstring Proporcion = ObtenerProporcion();
+		for (size_t i = 0; i < App.MenuProporcion->TotalMenus(); i++) {
+			if (App.MenuProporcion->Menu(i)->Texto() == Proporcion) App.MenuProporcion->Menu(i)->Icono(IDI_CHECK2);
+			else	                                                App.MenuProporcion->Menu(i)->Icono(0);
+		}
+
+		// Modifico el tiempo
+//		App.VentanaRave.Lista.BuscarHash(MedioActual.Hash);
 	}
 }
+
+std::wstring &RaveVLC::ObtenerProporcion(void) {
+	static std::wstring Ret = L"Predeterminado";
+	char *Tmp = libvlc_video_get_aspect_ratio(_MediaPlayer);
+	if (Tmp != NULL) {
+		DWL::Strings::AnsiToWide(Tmp, Ret);
+		libvlc_free(Tmp);
+	}
+	return Ret;
+}
+
+void RaveVLC::AsignarProporcion(const char *Prop) {
+	libvlc_video_set_aspect_ratio(_MediaPlayer, Prop);
+}
+
 
 void RaveVLC::AsignarPistaAudio(const int nPista) {
 	libvlc_audio_set_track(_MediaPlayer, nPista);
