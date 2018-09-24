@@ -5,6 +5,7 @@
 #include "ListaRaices.h"
 #include "DEtiquetaEx.h"
 #include "DMarcaEx.h"
+#include "AsignarTeclaRapida.h"
 
 class VentanaOpcionesRAVE : public DWL::DVentana {
   public:
@@ -42,5 +43,10 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	DWL::DBotonEx		BotonAgregarRaiz;
 	DWL::DMarcaEx		MarcaMostrarAnalisis;
 	DWL::DMarcaEx		MarcaAnalizarMediosPendientes;
+
+						// General
+	AsignarTeclaRapida  TeclasRapidas[6];
+	DWL::DEtiquetaEx    EtiquetasTeclas[6];
+	const int          _NumTeclasRapidas = 6;
 };
 

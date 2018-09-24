@@ -364,6 +364,9 @@
     <ClInclude Include="DEventoMouseRueda.h">
       <Filter>DWL\Ventanas\Base\Eventos</Filter>
     </ClInclude>
+    <ClInclude Include="AsignarTeclaRapida.h">
+      <Filter>Ventanas\Controles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -542,6 +545,9 @@
     </ClCompile>
     <ClCompile Include="DEtiquetaEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\EtiquetaEx</Filter>
+    </ClCompile>
+    <ClCompile Include="AsignarTeclaRapida.cpp">
+      <Filter>Ventanas\Controles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

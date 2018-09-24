@@ -73,6 +73,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 
 	// Aseguro que el directorio actual sea el del player
 	SetCurrentDirectory(AppPath.c_str());
+
 	Debug_Escribir_Varg(L"Path del ejecutable : %s\n", AppPath.c_str());
 
 	// Simulo que el path del reproductor está en C:\ProgramFiles\Rave
@@ -113,6 +114,16 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 			SEC[0] = 2;
 		}
 	#endif
+
+
+
+	// Teclas rapidas por defecto
+	TeclasRapidas.push_back(TeclaRapida(VK_SPACE, FALSE, FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_END, FALSE, FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_ADD, FALSE, FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_SUBTRACT, FALSE, FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_RIGHT, TRUE, FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_LEFT, TRUE, FALSE, FALSE));
 
 //	Gdiplus::GdiplusStartupInput	gdiplusStartupInput;
 	
@@ -189,7 +200,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 		case LineaComando_DesasociarArchivos:
 			// Si esta aplicación no tiene privilegios de administración, ejecuto una nueva instancia que pedirá privilegios de administración
 			if (IsUserAnAdmin() == FALSE)	{	ShellExecute(NULL, TEXT("RunAs"), AppExe.c_str(), TEXT("-DesasociarArchivos"), AppPath.c_str(), SW_SHOWNORMAL);	}
-			else							{	AsociarMedios.DesRegistrarApp();																					}
+			else							{	AsociarMedios.DesRegistrarApp();																				}
 			Ret = FALSE;
 			break;
 
@@ -251,6 +262,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 
 //	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_AUDIO									, L"Audio");
 	MenuPistasDeAudio = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_PISTA_AUDIO			, L"Pistas de audio");
+	MenuPistasDeAudio->Activado(FALSE);
 																						// ID_MENUVIDEO_AUDIO_PISTAS_AUDIO <-> ID_MENUVIDEO_AUDIO_PISTAS_AUDIO_FIN (Espacio para 20 pistas de audio para no hacer corto...)
 	MenuProporcion = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_PROPORCION				, L"Proporción");
 		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_PREDETERMINADO						, L"Predeterminado");
@@ -262,9 +274,9 @@ void RAVE::IniciarUI(int nCmdShow) {
 		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_2P35A1								, L"2.35:1");
 		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_2P39A1								, L"2.39:1");
 		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_5A4									, L"5:4");
+	MenuProporcion->Activado(FALSE);
 	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_SUBTITULOS								, L"Subtitulos");
 
-	
 
 
 	// Ventana principal
@@ -464,7 +476,47 @@ void RAVE::MostrarToolTipOpciones(DhWnd &Padre, std::wstring &Texto) {
 }
 
 
+// TECLADO GENERAL PARA DOAS LAS VENTANAS DE ESTE HILO EXCEPTO LA DEL VIDEO DEL VLC
+void RAVE::Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado) {
+	DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = true;
+	Debug_Escribir_Varg(L"RAVE::Evento_TeclaPresionada Tecla : %d, Id : %d\n", DatosTeclado.TeclaVirtual(), DatosTeclado.ID);
+}
 
+// TECLADO GENERAL PARA DOAS LAS VENTANAS DE ESTE HILO EXCEPTO LA DEL VIDEO DEL VLC
+void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
+	DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = false;
+	
+	size_t Pos = 0;
+	for (Pos = 0; Pos < TeclasRapidas.size(); Pos++) {
+		if (TeclasRapidas[Pos].Tecla == DatosTeclado.TeclaVirtual()) {
+			switch (Pos) {
+				case 0: // play / pausa
+					App.VentanaRave.Lista_Play();
+					break;
+				case 1: // Stop
+					App.VentanaRave.Lista_Stop();
+					break;
+				case 2: // Subir volumen
+					if (App.VLC.Volumen() + 20 > 200) App.VLC.Volumen(200);
+					else                              App.VLC.Volumen(App.VLC.Volumen() + 20);
+					break;
+				case 3: // Bajar volumen
+					if (App.VLC.Volumen() - 20 < 0) App.VLC.Volumen(0);
+					else                            App.VLC.Volumen(App.VLC.Volumen() - 20);
+					break;
+				case 4: // Avanzar
+					App.VentanaRave.Lista_Siguiente();
+					break;
+				case 5: // Retroceder
+					App.VentanaRave.Lista_Anterior();
+					break;
+			}
+		}
+	}
+
+
+	Debug_Escribir_Varg(L"RAVE::Evento_TeclaSoltada Tecla : %d, Id : %d\n", DatosTeclado.TeclaVirtual(), DatosTeclado.ID);
+}
 
 
 /*

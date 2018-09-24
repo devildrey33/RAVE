@@ -339,7 +339,7 @@ namespace DWL {
 			case WM_MBUTTONDBLCLK:	_Evento_MouseDobleClick(2, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;*/
 
 		}
-		return DefWindowProc(hWnd(), uMsg, wParam, lParam);
+		return DControlEx::GestorMensajes(uMsg, wParam, lParam);
 	}
 
 }

@@ -159,6 +159,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ArbolBD.h" />
+    <ClInclude Include="AsignarTeclaRapida.h" />
     <ClInclude Include="AsociarReproductor.h" />
     <ClInclude Include="BarraTiempo.h" />
     <ClInclude Include="BarraVolumen.h" />
@@ -235,6 +236,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ArbolBD.cpp" />
+    <ClCompile Include="AsignarTeclaRapida.cpp" />
     <ClCompile Include="AsociarReproductor.cpp" />
     <ClCompile Include="BarraTiempo.cpp" />
     <ClCompile Include="BarraVolumen.cpp" />

@@ -112,6 +112,7 @@ namespace DWL {
 		void                   _Evento_TeclaSoltada(WPARAM wParam, LPARAM lParam);
 		void				   _Evento_Tecla(WPARAM wParam, LPARAM lParam);*/
 		void                   _Evento_FocoPerdido(HWND UltimoFoco);
+		void				   _Evento_MouseDobleClick(const int Boton, WPARAM wParam, LPARAM lParam);
 
 		RECT                   _Recta;
 

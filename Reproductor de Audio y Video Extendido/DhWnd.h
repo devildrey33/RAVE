@@ -43,7 +43,7 @@ namespace DWL {
 		inline const BOOL			Visible(const BOOL nMostrar)    { return ShowWindow(_hWnd, (nMostrar != TRUE) ? SW_HIDE : SW_SHOW); };
 		inline const BOOL			Visible(void)                   { return IsWindowVisible(_hWnd); };
 
-		inline void					BorrarBufferTeclado(void)		{ for (size_t i = 0; i < 256; i++) _Teclado[i] = false; }
+		inline void					BorrarBufferTeclado(void)		{ for (size_t i = 0; i < 256; i++) Teclado[i] = false; }
 		ATOM						RegistrarClase(const TCHAR *nNombre, WNDPROC WindowProcedureInicial, UINT Estilos = 0, const int nIconoRecursos = 0 ,HBRUSH nColorFondo = NULL, HINSTANCE hInstance = NULL);
 		void						IniciarMiembrosEstaticos(void);
 									// Repinta la ventana
@@ -57,11 +57,13 @@ namespace DWL {
 		static DhWnd_Fuente         Fuente21Normal;
 		static DhWnd_Fuente         Fuente21Negrita;
 		static DhWnd_Fuente         FuenteTest;
+
+		static bool                 Teclado[256];
+
 	  protected:
 		HWND                       _hWnd;
 
 
-		static bool                _Teclado[256];
 		//		static HFONT       _FuenteB;
 
 		/*friend class DVentana;

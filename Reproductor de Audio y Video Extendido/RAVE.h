@@ -12,6 +12,7 @@
 #include "VentanaAsociarReproductor.h"
 #include "VentanaOpcionesRAVE.h"
 #include "DToolTipEx.h"
+#include "AsignarTeclaRapida.h"
 #include <stdlib.h>
 #include <random>
 
@@ -60,6 +61,11 @@ class RAVE {
 	void							Eventos_Mirar();
 
 	void							ObtenerSO();
+
+									// Evento Tecla soltada general de todas las ventanas excepto el video del VLC
+	void                            Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado);
+									// Evento Tecla soltada general de todas las ventanas excepto el video del VLC
+	void                            Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado);
 
 	void							CerrarSistema(const SOCerrarSistema Forma = SOCerrarSistema_Apagar, const BOOL Forzar = FALSE);
 
@@ -111,6 +117,8 @@ class RAVE {
 									// ID_MENUVIDEO_AUDIO_PISTA_AUDIO
 	DMenuEx                        *MenuPistasDeAudio;
 	DMenuEx                        *MenuProporcion;
+
+	std::vector<TeclaRapida>       TeclasRapidas;
   protected:
 
 	DToolTipEx                     _ToolTip;

@@ -1,0 +1,1 @@
+Arxius bat per copiar una build del RAVE al seu directori Archivos de programa

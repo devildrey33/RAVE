@@ -11,8 +11,7 @@ namespace DWL {
 	}
 
 	HWND DEtiquetaEx::CrearEtiquetaEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const BOOL nCentrado, const long Estilos) {
-//		if (hWnd()) { Debug_Escribir(L"DLabelEx::CreadLabelEx() Error : ya se ha creado el label\n"); return hWnd(); }
-		_hWnd = CrearControlEx(nPadre, L"DLabelEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
+		_hWnd = CrearControlEx(nPadre, L"DEtiquetaEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
 
 		_Formato = (nCentrado == TRUE) ? DT_CENTER : DT_LEFT;
 		Fuente = Fuente18Normal;
@@ -71,6 +70,6 @@ namespace DWL {
 				break;
 		}
 
-		return DefWindowProc(hWnd(), uMsg, wParam, lParam);
+		return DControlEx::GestorMensajes(uMsg, wParam, lParam);
 	}
 }

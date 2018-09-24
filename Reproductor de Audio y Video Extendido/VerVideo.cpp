@@ -99,7 +99,7 @@ LRESULT CALLBACK VerVideo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lPara
 			return 0;*/
 
 	}
-	return DefWindowProc(hWnd(), uMsg, wParam, lParam);
+	return DControlEx::GestorMensajes(uMsg, wParam, lParam);	
 }
 
 

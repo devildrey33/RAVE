@@ -190,7 +190,7 @@ namespace DWL {
 				_Evento_MouseSoltado(2, wParam, lParam);
 				break;
 		}
-		return DefWindowProc(hWnd(), uMsg, wParam, lParam);
+		return DControlEx::GestorMensajes(uMsg, wParam, lParam);
 	}
 
 }

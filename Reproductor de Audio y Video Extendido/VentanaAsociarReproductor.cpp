@@ -105,7 +105,7 @@ LRESULT CALLBACK VentanaAsociarReproductor::GestorMensajes(UINT uMsg, WPARAM wPa
 			if (wParam == VK_ESCAPE) { 
 				Evento_BotonEx_Mouse_Click(DWL::DEventoMouse(0, 0, ID_BOTONCANCELAR)); 
 			}	
-			return 0;
+			break; // Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general
 		case WM_CLOSE :
 			Evento_BotonEx_Mouse_Click(DWL::DEventoMouse(0, 0, ID_BOTONCANCELAR));
 			return 0;
@@ -114,5 +114,5 @@ LRESULT CALLBACK VentanaAsociarReproductor::GestorMensajes(UINT uMsg, WPARAM wPa
 			return 0;
 
 	}
-	return DefWindowProc(_hWnd, uMsg, wParam, lParam);
+	return DVentana::GestorMensajes(uMsg, wParam, lParam);
 }

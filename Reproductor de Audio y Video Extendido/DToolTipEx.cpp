@@ -184,6 +184,6 @@ namespace DWL {
 			// Evita que al obtener el foco cambie la parte del caption
 			case WM_NCACTIVATE:																																					return FALSE;
 		}
-		return DefWindowProc(hWnd(), uMsg, wParam, lParam);
+		return DVentana::GestorMensajes(uMsg, wParam, lParam);
 	}
 }

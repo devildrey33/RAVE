@@ -19,6 +19,9 @@
 #define ID_MARCA_MOSTRARANALISIS		1011
 #define ID_MARCA_ANALIZARPENDIENTES		1012
 
+#define ID_ETIQUETAS_TECLADO            3000
+#define ID_ASINGAR_TECLA                3100
+
 VentanaOpcionesRAVE::VentanaOpcionesRAVE(void) {
 }
 
@@ -79,10 +82,21 @@ void VentanaOpcionesRAVE::Crear(void) {
 	MarcaAnalizarMediosPendientes.CrearMarcaEx(&MarcoBaseDeDatos, L"Analizar medios pendientes al actualizar la base de datos.", 70, 284, RC.right - 40, 20, ID_MARCA_ANALIZARPENDIENTES, IDI_CHECK2);
 	MarcaAnalizarMediosPendientes.Marcado(App.BD.Opciones_AnalizarMediosPendientes());
 
-
+	const wchar_t *Textos[6] = {
+		L"Play / Pausa",
+		L"Stop",
+		L"Subir volumen",
+		L"Bajar volumen",
+		L"Reproducir siguiente",
+		L"Reporducir anterior"
+	};
 	////////////////////////////////////////////////
 	// Creo los controles dentro del marco General
-
+	for (int i = 0; i < _NumTeclasRapidas; i++) {
+		EtiquetasTeclas[i].CrearEtiquetaEx(&MarcoGeneral, Textos[i], 10, 10 + (i * 25), 130, 20, ID_ETIQUETAS_TECLADO + i);
+		EtiquetasTeclas[i].Fuente = Fuente18Normal;
+		TeclasRapidas[i].Crear(&MarcoGeneral, 150, 10 + (i * 25), RC.right - 170, 20, ID_ASINGAR_TECLA, &App.TeclasRapidas[i]);
+	}
 
 
 
@@ -234,7 +248,6 @@ LRESULT CALLBACK VentanaOpcionesRAVE::GestorMensajes(UINT uMsg, WPARAM wParam, L
 		case WM_MOVING :
 			App.OcultarToolTipOpciones();
 			return 0;
-
 	}
-	return DefWindowProc(_hWnd, uMsg, wParam, lParam);
+	return DVentana::GestorMensajes(uMsg, wParam, lParam);
 }

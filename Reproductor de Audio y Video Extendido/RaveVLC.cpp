@@ -230,12 +230,12 @@ const BOOL RaveVLC::Stop(void) {
 		App.VentanaRave.SliderTiempo.ToolTip(DBarraDesplazamientoEx_ToolTip_SinToolTip);
 		App.ControlesPC.SliderTiempo.ToolTip(DBarraDesplazamientoEx_ToolTip_SinToolTip);
 
+		// TODO : hacer el SetFocus SOLO si es un video
 		// Para evitar un deadlock si se está reproduciendo un video y el foco está en otra parte
 		HWND Foco = SetFocus(App.VentanaRave.hWnd());
 		// Deadlock just despres de mostrar un DMenuEx en un video i utilitzar el stop.... SOLUCIONAT, pero s'ha d'anar amb cuidado al utilitzar SetFocus...
 		libvlc_media_player_stop(_MediaPlayer);
 
-		App.VentanaRave.Video.Visible(TRUE);
 		hWndVLC = NULL;
 
 		SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, TRUE, NULL, TRUE); // Activo protector de pantalla
@@ -284,30 +284,37 @@ const BOOL RaveVLC::Play(void) {
 	return FALSE;	
 }
 
-// Obtiene los datos del medio una vez parseado
+// Obtiene los datos del medio una vez parseado (despues del play)
 void RaveVLC::ObtenerDatosParsing(void) {
 	if (_MediaPlayer == NULL) return;
 	libvlc_state_t nEstado = libvlc_media_player_get_state(_MediaPlayer);
 	// Si no se ha parseado
 	if (_Parseado == FALSE && nEstado == libvlc_Playing) {
+		_Parseado = TRUE;
 		// Enumero las pistas de audio
 		int TotalPîstas = libvlc_audio_get_track_count(_MediaPlayer);
-		libvlc_track_description_t *Desc = libvlc_audio_get_track_description(_MediaPlayer);
-		
-		std::wstring Texto;
-		App.MenuPistasDeAudio->EliminarTodosLosMenus();
-		for (int i = 0; i < TotalPîstas; i++) {
-			if (i != 0) {
-				DWL::Strings::AnsiToWide(Desc->psz_name, Texto);
-				App.MenuPistasDeAudio->AgregarMenu(ID_MENUVIDEO_AUDIO_PISTAS_AUDIO + i, Texto);
-			}			
-			Desc = Desc->p_next;
+		if (TotalPîstas > 2) { // si hay mas de una pista, las enumero
+			App.MenuPistasDeAudio->Activado(TRUE);
+
+			libvlc_track_description_t *Desc = libvlc_audio_get_track_description(_MediaPlayer);
+
+			std::wstring Texto;
+			App.MenuPistasDeAudio->EliminarTodosLosMenus();
+			for (int i = 0; i < TotalPîstas; i++) {
+				if (i != 0) {
+					DWL::Strings::AnsiToWide(Desc->psz_name, Texto);
+					App.MenuPistasDeAudio->AgregarMenu(ID_MENUVIDEO_AUDIO_PISTAS_AUDIO + i, Texto);
+				}
+				Desc = Desc->p_next;
+			}
+			int PistaActual = libvlc_audio_get_track(_MediaPlayer);
+			DMenuEx *MenuPistaActual = App.MenuPistasDeAudio->BuscarMenu(ID_MENUVIDEO_AUDIO_PISTAS_AUDIO + PistaActual);
+			if (MenuPistaActual != NULL) MenuPistaActual->Icono(IDI_CHECK2);
+			libvlc_track_description_list_release(Desc);
 		}
-		int PistaActual = libvlc_audio_get_track(_MediaPlayer);
-		DMenuEx *MenuPistaActual = App.MenuPistasDeAudio->BuscarMenu(ID_MENUVIDEO_AUDIO_PISTAS_AUDIO + PistaActual);
-		if (MenuPistaActual != NULL) MenuPistaActual->Icono(IDI_CHECK2);
-		libvlc_track_description_list_release(Desc);
-		_Parseado = TRUE;
+		else {	// Si solo hay una pista de audio desactivo el menú
+			App.MenuPistasDeAudio->Activado(FALSE);
+		}
 
 
 		// Obtengo el ratio de aspecto

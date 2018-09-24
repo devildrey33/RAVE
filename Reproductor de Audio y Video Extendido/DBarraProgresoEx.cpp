@@ -106,6 +106,6 @@ namespace DWL {
 				EndPaint(hWnd(), &PS);
 				return 0;
 		}
-		return DefWindowProc(hWnd(), uMsg, wParam, lParam);
+		return DControlEx::GestorMensajes(uMsg, wParam, lParam);
 	}
 }

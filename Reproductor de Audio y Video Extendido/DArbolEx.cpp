@@ -225,6 +225,16 @@ namespace DWL {
 		return Tmp;
 	}
 
+	void DArbolEx::Repintar(void) {
+		_Repintar = TRUE;
+		if (IsWindowVisible(_hWnd) == FALSE) return;
+		RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT); 
+		#if DARBOLEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DArbolEx::Repintar\n", _Repintar);
+		#endif
+	};
+
+
 
 	void DArbolEx::Pintar(HDC hDC) {
 		// Compruebo si hay que recalcular los valores del arbol antes de pintar
@@ -946,11 +956,11 @@ namespace DWL {
 				_NodoPresionado			= _NodoMarcado;
 			}
 		}
-		if (MultiSeleccion == TRUE && (DhWnd::_Teclado[VK_CONTROL] == true || DhWnd::_Teclado[VK_SHIFT] == true)) {
-			if (DhWnd::_Teclado[VK_CONTROL] == true) {
+		if (MultiSeleccion == TRUE && (DhWnd::Teclado[VK_CONTROL] == true || DhWnd::Teclado[VK_SHIFT] == true)) {
+			if (DhWnd::Teclado[VK_CONTROL] == true) {
 				if (_NodoPresionado != NULL) SeleccionarNodo(_NodoPresionado, !_NodoPresionado->Seleccionado);
 			}
-			else if (DhWnd::_Teclado[VK_SHIFT] == true) {
+			else if (DhWnd::Teclado[VK_SHIFT] == true) {
 				if (_NodoPresionado != NULL && _NodoShift != NULL) {
 					// Determino el orden (Shift, Pres) o (Pres, Shift)
 					bool ShiftPrimero = false;
@@ -1144,7 +1154,7 @@ namespace DWL {
 		if (nTmp != NULL) _NodoMarcado = nTmp;
 		else              return;
 
-		if (DhWnd::_Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
+		if (DhWnd::Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
 			_AplicarShift(_PosShift + 1);
 		}
 		else {
@@ -1173,7 +1183,7 @@ namespace DWL {
 		if (nTmp != NULL) _NodoMarcado = nTmp;
 		else              return;
 
-		if (DhWnd::_Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
+		if (DhWnd::Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
 			_AplicarShift(_PosShift - 1);
 		}
 		else {
@@ -1192,7 +1202,7 @@ namespace DWL {
 		// Si no hay nodos, salgo de la función
 		if (_Raiz._Hijos.size() == 0) return;
 
-		if (DhWnd::_Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
+		if (DhWnd::Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
 /*			DArbolEx_Nodo *Tmp = _NodoShift;
 			LONG nPosShift = 0;
 			while (Tmp != NULL) {
@@ -1214,7 +1224,7 @@ namespace DWL {
 		// Si no hay nodos, salgo de la función
 		if (_Raiz._Hijos.size() == 0) return;
 
-		if (DhWnd::_Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
+		if (DhWnd::Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
 /*			DArbolEx_Nodo *Tmp = _NodoShift;
 			LONG nPosShift = 0;
 			while (Tmp != NULL) {
@@ -1248,14 +1258,14 @@ namespace DWL {
 			if (Tmp != NULL) {
 				UTmp = Tmp;
 				PixelesContados += Tmp->_Fuente->Alto() + (DARBOLEX_PADDING * 2);
-				if (DhWnd::_Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
+				if (DhWnd::Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
 					SeleccionarNodo(Tmp, !Tmp->Seleccionado);
 				}
 				Tmp = BuscarNodoSiguiente(Tmp, TRUE);
 			}
 		}
 
-		if (DhWnd::_Teclado[VK_SHIFT] == false || MultiSeleccion == FALSE) DesSeleccionarTodo();
+		if (DhWnd::Teclado[VK_SHIFT] == false || MultiSeleccion == FALSE) DesSeleccionarTodo();
 		_NodoMarcado = (Tmp == NULL) ? UTmp : Tmp;
 		SeleccionarNodo(_NodoMarcado, TRUE);
 		if (_NodoShift != NULL) SeleccionarNodo(_NodoShift, TRUE);
@@ -1279,14 +1289,14 @@ namespace DWL {
 			if (Tmp != NULL) {
 				UTmp = Tmp;
 				PixelesContados += Tmp->_Fuente->Alto() + (DARBOLEX_PADDING * 2);
-				if (DhWnd::_Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
+				if (DhWnd::Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
 					SeleccionarNodo(Tmp, !Tmp->Seleccionado);					
 				}
 				Tmp = BuscarNodoAnterior(Tmp, TRUE);
 			}
 		}
 
-		if (DhWnd::_Teclado[VK_SHIFT] == false || MultiSeleccion == FALSE) DesSeleccionarTodo();
+		if (DhWnd::Teclado[VK_SHIFT] == false || MultiSeleccion == FALSE) DesSeleccionarTodo();
 		_NodoMarcado = (Tmp == NULL) ? UTmp : Tmp;
 		SeleccionarNodo(_NodoMarcado, TRUE);
 		if (_NodoShift != NULL) 		SeleccionarNodo(_NodoShift, TRUE);
@@ -1297,7 +1307,7 @@ namespace DWL {
 		DEventoTeclado DatosTeclado(wParam, lParam, ID());
 		UINT Tecla = DatosTeclado.TeclaVirtual();
 		// Marco la tecla como presionada
-		DhWnd::_Teclado[Tecla] = true;
+//		DhWnd::Teclado[Tecla] = true;
 
 		// Si no hay nodos, salgo de la función
 		if (_Raiz._Hijos.size() == 0) {
@@ -1332,7 +1342,7 @@ namespace DWL {
 		DEventoTeclado DatosTeclado(wParam, lParam, ID());
 		UINT Tecla = DatosTeclado.TeclaVirtual();
 		// Marco la tecla como no presionada
-		DhWnd::_Teclado[Tecla] = false;
+		// DhWnd::Teclado[Tecla] = false;
 
 		// Si no hay nodos, salgo de la función
 		if (_Raiz._Hijos.size() == 0) {
@@ -1399,9 +1409,9 @@ namespace DWL {
 			case WM_SETFOCUS:		_Evento_FocoObtenido((HWND)wParam);																											return 0;
 			case WM_KILLFOCUS:		_Evento_FocoPerdido((HWND)wParam);																											return 0;
 
-			case WM_KEYDOWN:		_Evento_TeclaPresionada(wParam, lParam);																									return 0;
-			case WM_KEYUP:			_Evento_TeclaSoltada(wParam, lParam);																										return 0;		
-			case WM_CHAR:           _Evento_Tecla(wParam, lParam);																												return 0;
+			case WM_KEYDOWN:		_Evento_TeclaPresionada(wParam, lParam);																									break;
+			case WM_KEYUP:			_Evento_TeclaSoltada(wParam, lParam);																										break;		
+			case WM_CHAR:           _Evento_Tecla(wParam, lParam);																												break;
 
 			case WM_SIZE:			_CalcularScrolls();		Repintar();																											return 0;
 
@@ -1427,7 +1437,7 @@ namespace DWL {
 			case WM_MBUTTONDBLCLK:	_Evento_MouseDobleClick(2, wParam, lParam);																									return 0;
 
 		}
-		return DefWindowProc(hWnd(), uMsg, wParam, lParam);
+		return DControlEx::GestorMensajes(uMsg, wParam, lParam);
 	};
 
 }

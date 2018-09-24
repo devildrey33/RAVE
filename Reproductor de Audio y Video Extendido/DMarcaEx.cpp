@@ -180,7 +180,7 @@ namespace DWL {
 			case WM_MBUTTONUP:		_Evento_MouseSoltado(2, wParam, lParam);																									return 0;
 
 		}
-		return DefWindowProc(_hWnd, uMsg, wParam, lParam);
+		return DControlEx::GestorMensajes(uMsg, wParam, lParam);
 	}
 
 };

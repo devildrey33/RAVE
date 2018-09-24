@@ -89,5 +89,5 @@ LRESULT CALLBACK VentanaPrecarga::GestorMensajes(UINT uMsg, WPARAM wParam, LPARA
 		case WM_NCACTIVATE:																					
 			return 0;
 	}
-	return DefWindowProc(_hWnd, uMsg, wParam, lParam);
+	return DVentana::GestorMensajes(uMsg, wParam, lParam);
 }

@@ -194,6 +194,8 @@ class RaveBD {
 								// Devuelve el puntero de la base de datos sqlite 3
 	inline sqlite3			   *operator()(void) { return _BD; }
 
+	const BOOL                  ObtenerTeclasRapidas(void);
+	const BOOL                  GuardarTeclasRapidas(void);
 
 	const BOOL                  ObtenerUltimaLista(void);
 	const BOOL                  GuardarUltimaLista(void);

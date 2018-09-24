@@ -304,7 +304,7 @@ namespace DWL {
 //			case WM_MOUSELEAVE:		_Evento_MouseSaliendo();																													return 0;
 
 		}
-		return DefWindowProc(_hWnd, uMsg, wParam, lParam);
+		return DControlEx::GestorMensajes(uMsg, wParam, lParam);
 	}
 
 

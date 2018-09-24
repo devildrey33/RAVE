@@ -601,10 +601,10 @@ LRESULT CALLBACK ThreadAnalisis::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM
 		case WM_CLOSE			 :   Cancelar(TRUE);																					return 0;
 		case DWL_BOTONEX_CLICK   :   Evento_BotonEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));										return 0;
 		case DWL_MARCAEX_CLICK   :   App.BD.Opciones_MostrarObtenerMetadatos(!_MarcaNoMostrarMas.Marcado());							return 0;
-		case WM_KEYUP			 :	if (wParam == VK_ESCAPE) { Evento_BotonEx_Mouse_Click(DWL::DEventoMouse(0, 0, ID_BOTONOCULTAR)); }	return 0;
+		case WM_KEYUP			 :	if (wParam == VK_ESCAPE) { Evento_BotonEx_Mouse_Click(DWL::DEventoMouse(0, 0, ID_BOTONOCULTAR)); }	break;
 		case WM_EXITSIZEMOVE     :  App.BD.Opciones_GuardarPosVentanaAsociar();															return 0;
 	}
-	return DefWindowProc(_hWnd, uMsg, wParam, lParam);
+	return DVentana::GestorMensajes(uMsg, wParam, lParam);
 }
 
 

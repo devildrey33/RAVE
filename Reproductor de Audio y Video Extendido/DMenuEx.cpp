@@ -67,7 +67,7 @@ namespace DWL {
 			_hWndPadre = GetParent(_hWndPadre);
 		} */
 		if (_hWnd == NULL) {
-			CrearVentana(nPadre, L"DMenuEx", L"", PosX, PosY, Tam.x, Tam.y, WS_POPUP | WS_CAPTION);
+			CrearVentana(nPadre, L"DMenuEx", L"", PosX, PosY, Tam.x, Tam.y, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST, CS_DBLCLKS);
 
 			DMouse::CambiarCursor();
 			Opacidad(230);
@@ -76,7 +76,7 @@ namespace DWL {
 			//AnimateWindow(_hWnd, 100, AW_HOR_POSITIVE | AW_VER_POSITIVE);
 
 			// Asigno la posición del menú y lo hago siempre visible
-			SetWindowPos(_hWnd, HWND_TOP, PosX, PosY, Tam.x, Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+			SetWindowPos(_hWnd, HWND_TOPMOST, PosX, PosY, Tam.x, Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 
 			// Asigno la captura del mouse a este menú
 			#if DMENUEX_MOSTRARDEBUG == TRUE
@@ -549,6 +549,9 @@ namespace DWL {
 	}
 
 	void DMenuEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {
+		#if DMENUEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir(L"DMenuEx::_Evento_MousePresionado\n");
+		#endif
 
 		POINT Pt;
 		DWL::DMouse::ObtenerPosicion(&Pt);
@@ -590,7 +593,7 @@ namespace DWL {
 		_ResultadoModal = _MenuPresionado;
 		_MenuPresionado = NULL;
 		#if DMENUEX_MOSTRARDEBUG == TRUE
-			Debug_Escribir(L"DMenuEx::_Evento_MouseSoltado Ocultar menu\n");
+			Debug_Escribir(L"DMenuEx::_Evento_MouseSoltado\n");
 		#endif
 
 		POINT Pt;
@@ -613,6 +616,28 @@ namespace DWL {
 //		SetFocus(_hWndPadre);
 //		SendMessage(_hWndPadre, WM_NCACTIVATE, TRUE, 0);
 
+		if (_ResultadoModal != NULL) PostMessage(_hWndDest, WM_COMMAND, _ResultadoModal->ID(), 0);
+	}
+
+	void DMenuEx::_Evento_MouseDobleClick(const int Boton, WPARAM wParam, LPARAM lParam) {
+		ReleaseCapture();
+		_ResultadoModal = _MenuPresionado;
+		_MenuPresionado = NULL;
+		#if DMENUEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir(L"DMenuEx::_Evento_MouseDobleClickn");
+		#endif
+		POINT Pt;
+		DWL::DMouse::ObtenerPosicion(&Pt);
+		HWND WFP = WindowFromPoint(Pt);
+		ScreenToClient(WFP, &Pt);
+		if (SendMessage(WFP, WM_ESMENUEX, 0, 0) != WM_ESMENUEX) {
+			switch (Boton) {
+				case 0: PostMessage(WFP, WM_LBUTTONDBLCLK, wParam, MAKELPARAM(Pt.x, Pt.y)); break;
+				case 1: PostMessage(WFP, WM_RBUTTONDBLCLK, wParam, MAKELPARAM(Pt.x, Pt.y)); break;
+				case 2: PostMessage(WFP, WM_MBUTTONDBLCLK, wParam, MAKELPARAM(Pt.x, Pt.y)); break;
+			}
+		}
+		Ocultar(TRUE);
 		if (_ResultadoModal != NULL) PostMessage(_hWndDest, WM_COMMAND, _ResultadoModal->ID(), 0);
 	}
 
@@ -814,7 +839,17 @@ namespace DWL {
 /*			case WM_KEYDOWN:		_Evento_TeclaPresionada(wParam, lParam);																									return 0;
 			case WM_KEYUP:			_Evento_TeclaSoltada(wParam, lParam);																										return 0;
 			case WM_CHAR:           _Evento_Tecla(wParam, lParam);																												return 0;*/
-			
+			// Mouse doble click
+			case WM_LBUTTONDBLCLK:
+				_Evento_MouseDobleClick(0, wParam, lParam);					
+				return 0;
+			case WM_RBUTTONDBLCLK:
+				_Evento_MouseDobleClick(1, wParam, lParam);					
+				return 0;
+			case WM_MBUTTONDBLCLK:
+				_Evento_MouseDobleClick(2, wParam, lParam);					
+				return 0;
+
 			// Print y Print Client (para AnimateWindow)
 			case WM_PRINT:			Pintar(reinterpret_cast<HDC>(wParam));																										return 0;
 			case WM_PRINTCLIENT:    Pintar(reinterpret_cast<HDC>(wParam));																										return 0;
@@ -836,7 +871,7 @@ namespace DWL {
 			// Evita que al obtener el foco cambie la parte del caption
 			case WM_NCACTIVATE:																																					return FALSE;
 		}
-		return DefWindowProc(_hWnd, uMsg, wParam, lParam);
+		return DVentana::GestorMensajes(uMsg, wParam, lParam);
 	}
 
 }

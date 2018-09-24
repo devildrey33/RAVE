@@ -390,7 +390,7 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		case ID_MENUBOTONLISTA_GENERAR_50MEDIOS	:	GenerarListaAleatoria(TLA_50Medios);	break;
 		case ID_MENUBOTONLISTA_BORRAR			:	
 			Lista.BorrarListaReproduccion();	
-			if (Lista.Visible() == TRUE) Lista.Repintar();
+				
 			App.MostrarToolTipPlayer(*this, L"Lista de reproducción borrada.");
 			break;
 	}
@@ -520,7 +520,7 @@ void VentanaPrincipal::Repetir_Click(void) {
 	if (_PantallaCompleta == TRUE) {	
 		GetWindowRect(App.ControlesPC.BotonRepetir.hWnd(), &RW);
 		POINT Espacio = Menu_Repetir.CalcularEspacio();
-		Ret = Menu_Repetir.MostrarModal(this, RW.left, RW.top - Espacio.y);
+		Ret = Menu_Repetir.MostrarModal(&App.ControlesPC, RW.left, RW.top - Espacio.y);
 	}
 	else {
 		GetWindowRect(BotonRepetir.hWnd(), &RW);         
@@ -842,16 +842,11 @@ void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
 }
 
 void VentanaPrincipal::Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado) {
-	DhWnd::_Teclado[DatosTeclado.TeclaVirtual()] = true;
+	
 }
 
 void VentanaPrincipal::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
-	DhWnd::_Teclado[DatosTeclado.TeclaVirtual()] = false;
-	switch (DatosTeclado.TeclaVirtual()) {
-		case VK_SPACE :
-			Lista_Play();
-			break;
-	}
+	//DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = false;
 }
 
 void VentanaPrincipal::Evento_Tecla(DWL::DEventoTeclado &DatosTeclado) {
@@ -969,13 +964,13 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 		// Teclado
 		case WM_KEYDOWN:		
 			Evento_TeclaPresionada(DWL::DEventoTeclado(wParam, lParam, ID()));															
-			return 0;
+			break;	// Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general
 		case WM_KEYUP:
 			Evento_TeclaSoltada(DWL::DEventoTeclado(wParam, lParam, ID()));
-			return 0;
+			break;	// Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general
 		case WM_CHAR:
 			Evento_Tecla(DWL::DEventoTeclado(wParam, lParam, ID()));
-			return 0;
+			break;	// Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general
 
 
 
@@ -1136,5 +1131,5 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 //			}
 	}
 //	return FALSE;
-	return DefWindowProc(hWnd(), uMsg, wParam, lParam);
+	return DVentana::GestorMensajes(uMsg, wParam, lParam);
 }

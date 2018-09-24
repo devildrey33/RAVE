@@ -67,6 +67,15 @@ namespace DWL {
 		_Repintar = TRUE;
 	}
 
+	void DListaEx::Repintar(void) { 
+		_Repintar = TRUE;
+		if (IsWindowVisible(_hWnd) == FALSE) return;
+		RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT); 
+		#if DLISTAEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DListaEx::Repintar\n", _Repintar);
+		#endif
+	};
+
 	void DListaEx::EliminarTodasLasColumnas(void) {
 		for (size_t i = 0; i < _Columnas.size(); i++) {
 			delete _Columnas[i];
@@ -79,8 +88,7 @@ namespace DWL {
 		#if DLISTAEX_MOSTRARDEBUG == TRUE
 			Debug_Escribir_Varg(L"DListaEx::Pintar -> _Repintar = %d\n", _Repintar);
 		#endif
-		if (_Repintar == TRUE) {
-			_Repintar = FALSE;
+		if (_Repintar == TRUE) {			
 			_CalcularScrolls();
 		}
 
@@ -512,6 +520,8 @@ namespace DWL {
 
 	// Calcula si hay que mostrar los scrolls V y H, sus tamaños de página y posiciones relativas, y además crea el buffer para pintar un item una vez determinados los tamaños de scroll
 	void DListaEx::_CalcularScrolls(void) {
+		_Repintar = FALSE;
+
 		RECT RC;
 		GetClientRect(hWnd(), &RC);
 		_CalcularTotalEspacioVisible(RC);
@@ -689,7 +699,7 @@ namespace DWL {
 	void DListaEx::_Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam) {
 		DEventoTeclado DatosTeclado(wParam, lParam, ID());
 		// Marco la tecla como presionada
-		DhWnd::_Teclado[DatosTeclado.TeclaVirtual()] = true;
+		DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = true;
 
 		// Si hay nodos ...
 		if (_Items.size() > 0) {
@@ -843,11 +853,11 @@ namespace DWL {
 			// Mouse rueda
 			case WM_MOUSEWHEEL:		_Evento_MouseRueda(wParam, lParam);																											return 0;
 			// Teclado
-			case WM_KEYDOWN:		_Evento_TeclaPresionada(wParam, lParam);																									return 0;
-			case WM_KEYUP:			_Evento_TeclaSoltada(wParam, lParam);																										return 0;
-			case WM_CHAR:           _Evento_Tecla(wParam, lParam);																												return 0;
+			case WM_KEYDOWN:		_Evento_TeclaPresionada(wParam, lParam);																									break;
+			case WM_KEYUP:			_Evento_TeclaSoltada(wParam, lParam);																										break;
+			case WM_CHAR:           _Evento_Tecla(wParam, lParam);																												break;
 		}	
-		return DefWindowProc(hWnd(), uMsg, wParam, lParam);
+		return DControlEx::GestorMensajes(uMsg, wParam, lParam);
 	}
 
 }

@@ -31,6 +31,8 @@ void ListaMedios::BorrarListaReproduccion(void) {
 
 	EliminarTodosLosItems();
 	MedioActual = 0;
+
+	Repintar();
 }
 
 ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {

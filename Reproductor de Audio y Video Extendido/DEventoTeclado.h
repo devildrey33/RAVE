@@ -31,7 +31,7 @@ namespace DWL {
 										// Caracter (solo para Evento_Tecla)
 		inline const wchar_t            Caracter(void)			{ return static_cast<wchar_t>(wParam); };
 										// Caracter (solo para Evento_TeclaPresionada, y Evento_TeclaSoltada)
-		inline const UINT	            TeclaVirtual(void)		{ return static_cast<UINT>(wParam); };
+		inline const int 	            TeclaVirtual(void)		{ return static_cast<int>(wParam); };
 										// wParam que devuelven los mensajes del mouse
 		WPARAM                          wParam;
 										// wParam que devuelven los mensajes del mouse

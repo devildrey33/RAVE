@@ -225,6 +225,6 @@ namespace DWL {
 			case WM_RBUTTONUP	:				_Evento_MouseSoltado(wParam, lParam, 1);				return 0;
 			case WM_MBUTTONUP	:				_Evento_MouseSoltado(wParam, lParam, 2);				return 0;
 		}
-		return DefWindowProc(hWnd(), uMsg, wParam, lParam);
+		return DControlEx::GestorMensajes(uMsg, wParam, lParam);
 	}
 }

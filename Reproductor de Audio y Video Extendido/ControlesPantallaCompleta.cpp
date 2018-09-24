@@ -6,7 +6,7 @@
 #include "resource.h"
 
 void ControlesPantallaCompleta::Crear(void) {	
-	DVentana::CrearVentana(NULL, L"ControlesPantallaCompleta", L"", 0, 0, 500, 80, WS_POPUP, WS_EX_TOOLWINDOW | WS_EX_TOPMOST, NULL, NULL, NULL, NULL);
+	DVentana::CrearVentana(NULL, L"ControlesPantallaCompleta", L"", 0, 0, 500, 80, WS_POPUP, WS_EX_TOOLWINDOW, NULL, NULL, NULL, NULL);
 	
 	//AnimateWindow(_hWnd, 100, AW_HOR_POSITIVE | AW_VER_POSITIVE);
 
@@ -56,16 +56,17 @@ void ControlesPantallaCompleta::Mostrar(void) {
 	LONG X = (RC.right - 1000) / 2;
 
 	int Ancho = 1000;
-	MoveWindow(hWnd(), X, RC.bottom - 80, Ancho, 80, TRUE);
+//	MoveWindow(hWnd(), X, RC.bottom - 80, Ancho, 80, TRUE);
 
 	MoveWindow(SliderTiempo.hWnd(),				10, 45, Ancho - 20, 24, TRUE);
 	MoveWindow(SliderVolumen.hWnd(),			Ancho - 145, 13, 90, 16, TRUE);
 	MoveWindow(LabelVolumen.hWnd(),				Ancho - 50, 12, 40, 20, TRUE);
-	MoveWindow(LabelTiempoActual.hWnd(),		Ancho - 265, 12, 55, 20, TRUE);
-	MoveWindow(LabelTiempoSeparador.hWnd(),		Ancho - 210, 12, 10, 20, TRUE);
-	MoveWindow(LabelTiempoTotal.hWnd(),			Ancho - 200, 12, 55, 20, TRUE);
+	MoveWindow(LabelTiempoActual.hWnd(),		Ancho - 285, 12, 55, 20, TRUE);
+	MoveWindow(LabelTiempoSeparador.hWnd(),		Ancho - 230, 12, 10, 20, TRUE);
+	MoveWindow(LabelTiempoTotal.hWnd(),			Ancho - 220, 12, 55, 20, TRUE);
 
-	ShowWindow(_hWnd, SW_SHOWNOACTIVATE);
+	SetWindowPos(_hWnd, HWND_TOP, X, RC.bottom - 80, Ancho, 80, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+	//	ShowWindow(_hWnd, SW_SHOWNOACTIVATE);
 
 	DMouse::ObtenerPosicion(&App.VentanaRave.MousePos);
 	DMouse::Visible(TRUE);
