@@ -241,11 +241,11 @@ void ThreadAnalisis::_RevisarMedios(void) {
 	_BD.Consulta(L"BEGIN TRANSACTION");
 
 	for (i = 0; i < _Medios.size(); i++) {
-		_AgregarEtiqueta(_Medios[i].Genero,		TIPO_GENERO,	_Medios[i].Nota, _Medios[i].Tiempo);
-		_AgregarEtiqueta(_Medios[i].GrupoPath,	TIPO_GRUPOPATH, _Medios[i].Nota, _Medios[i].Tiempo);
-		_AgregarEtiqueta(_Medios[i].GrupoTag,	TIPO_GRUPOTAG,  _Medios[i].Nota, _Medios[i].Tiempo);
-		_AgregarEtiqueta(_Medios[i].DiscoPath,	TIPO_DISCOPATH, _Medios[i].Nota, _Medios[i].Tiempo);
-		_AgregarEtiqueta(_Medios[i].DiscoTag,	TIPO_DISCOTAG,  _Medios[i].Nota, _Medios[i].Tiempo);
+		_AgregarEtiqueta(_Medios[i].Genero,		TIPO_GENERO,	_Medios[i].Nota, _Medios[i].Tiempo, _Medios[i].Longitud);
+		_AgregarEtiqueta(_Medios[i].GrupoPath,	TIPO_GRUPOPATH, _Medios[i].Nota, _Medios[i].Tiempo, _Medios[i].Longitud);
+		_AgregarEtiqueta(_Medios[i].GrupoTag,	TIPO_GRUPOTAG,  _Medios[i].Nota, _Medios[i].Tiempo, _Medios[i].Longitud);
+		_AgregarEtiqueta(_Medios[i].DiscoPath,	TIPO_DISCOPATH, _Medios[i].Nota, _Medios[i].Tiempo, _Medios[i].Longitud);
+		_AgregarEtiqueta(_Medios[i].DiscoTag,	TIPO_DISCOTAG,  _Medios[i].Nota, _Medios[i].Tiempo, _Medios[i].Longitud);
 		if (_hWnd != NULL) PostMessage(_hWnd, WM_TOM_TOTALMEDIOS3, i, 0);
 		PostMessage(_VentanaPlayer, WM_TOM_TOTALMEDIOS3, i, _Medios.size());
 		if (Cancelar() == TRUE) return;
@@ -253,12 +253,13 @@ void ThreadAnalisis::_RevisarMedios(void) {
 
 
 	for (i = 0; i < _Etiquetas.size(); i++) {
-		std::wstring Q = L"INSERT INTO Etiquetas (Texto, Tipo, Medios, Nota, Tiempo) "
+		std::wstring Q = L"INSERT INTO Etiquetas (Texto, Tipo, Medios, Nota, Tiempo, Longitud) "
 							L"VALUES(\"" +	_Etiquetas[i].Texto							+ L"\", " + 
 											std::to_wstring(_Etiquetas[i].Tipo)			+ L", " + 
 											std::to_wstring(_Etiquetas[i].Medios)		+ L", " +
 											DWL::Strings::ToStrF(_Etiquetas[i].Nota, 2)	+ L", " + 
-											std::to_wstring(_Etiquetas[i].Tiempo)		+ L")";
+											std::to_wstring(_Etiquetas[i].Tiempo)		+ L", " + 
+											std::to_wstring(_Etiquetas[i].Longitud)		+ L")";
 
 //		_BD.ConsultaVarg(L"INSERT INTO Etiquetas (Texto, Tipo, Medios, Nota, Tiempo) VALUES(\"%s\", %d, %d, %f, %d)", _Etiquetas[i].Texto.c_str(), _Etiquetas[i].Tipo, _Etiquetas[i].Medios, _Etiquetas[i].Nota, _Etiquetas[i].Tiempo );
 		_BD.Consulta(Q);
@@ -411,18 +412,19 @@ void ThreadAnalisis::_AgregarMedio(std::vector<CoincidenciasTexto *> &ListaMedio
 	ListaMedios.push_back(new CoincidenciasTexto(Medio, Texto));
 }
 
-void ThreadAnalisis::_AgregarEtiqueta(std::wstring &nTexto, const DWORD nTipo, const float nNota, const libvlc_time_t nTiempo) {
+void ThreadAnalisis::_AgregarEtiqueta(std::wstring &nTexto, const DWORD nTipo, const float nNota, const libvlc_time_t nTiempo, const ULONGLONG uLongitud) {
 	if (nTexto.size() == 0) return;
 	for (size_t i = 0; i < _Etiquetas.size(); i++) {
 		if (nTexto == _Etiquetas[i].Texto) {
 			_Etiquetas[i].AgregarTipo(nTipo);
-			_Etiquetas[i].Medios++;
-			_Etiquetas[i].Nota += nNota;
-			_Etiquetas[i].Tiempo += nTiempo;
+			_Etiquetas[i].Medios	++;
+			_Etiquetas[i].Nota		+= nNota;
+			_Etiquetas[i].Tiempo	+= nTiempo;
+			_Etiquetas[i].Longitud	+= uLongitud;
 			return;
 		}
 	}
-	_Etiquetas.push_back(EtiquetaBD(nTexto, nTipo, nNota, nTiempo));
+	_Etiquetas.push_back(EtiquetaBD(nTexto, nTipo, nNota, nTiempo, uLongitud));
 }
 
 // Función que obtiene un metadato desde la LibVLC

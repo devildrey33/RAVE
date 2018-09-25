@@ -77,11 +77,11 @@
 
 
 			/* Devuelve un string con el numero de bytes en formato legible (Bytes, KiloBytes, MegaBytes, GigaBytes, TeraBytes) */
-			static std::wstring &FormatoBytes(const long long nBytes, std::wstring &OUT_StrBytes) {
-				const wchar_t  *Medidas[5] = { L"B", L"KB", L"MB", L"GB", L"TB" };
-				int				PosMedidas = 0;
-				long double		Resultado = static_cast<long double>(nBytes);
-				long long       Bytes = nBytes;
+			static std::wstring &FormatoBytes(const unsigned long long nBytes, std::wstring &OUT_StrBytes) {
+				const wchar_t      *Medidas[5]	= { L"B", L"KB", L"MB", L"GB", L"TB" };
+				int					PosMedidas	= 0;
+				long double			Resultado	= static_cast<long double>(nBytes);
+				unsigned long long  Bytes = nBytes;
 				for (PosMedidas = 0; PosMedidas < 5 && Bytes >= 1024; PosMedidas++, Bytes /= 1024) {
 					Resultado = static_cast<long double>(Bytes) / 1024.0f;
 				}

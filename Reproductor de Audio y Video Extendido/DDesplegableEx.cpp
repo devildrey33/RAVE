@@ -293,7 +293,7 @@ namespace DWL {
 	}
 
 	void DDesplegableEx::_Evento_MouseRueda(WPARAM wParam, LPARAM lParam) {
-		DEventoMouseRueda DatosMouse(wParam, lParam, ID());
+		DEventoMouseRueda DatosMouse(wParam, lParam, ID(), _hWnd);
 		Evento_MouseRueda(DatosMouse);
 	}
 

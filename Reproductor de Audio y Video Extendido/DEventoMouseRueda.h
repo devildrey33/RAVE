@@ -1,6 +1,7 @@
 #ifndef DEVENTOMOUSERUEDA_H
 #define DEVENTOMOUSERUEDA_H
 
+#include "DMouse.h"
 
 //! Espacio de nombres DWL
 namespace DWL {
@@ -21,26 +22,46 @@ namespace DWL {
 											\param[in]	cID		: ID del Control.
 											\return		No devuelve nada.
 										*/
-										DEventoMouseRueda(WPARAM nwParam, LPARAM nlParam, const INT_PTR cID) : wParam(nwParam), lParam(nlParam), ID(cID) {
+										DEventoMouseRueda(WPARAM nwParam, LPARAM nlParam, const INT_PTR cID, HWND hWnd) : wParam(nwParam), lParam(nlParam), ID(cID) {
+											DWL::DMouse::ObtenerPosicion(&MousePosCliente);
+											ScreenToClient(hWnd, &MousePosCliente);
 										};
 
 		                               ~DEventoMouseRueda() { };
 
-										//! Función que devuelve la coordenada X de este evento.
-										/*! Función que devuelve la coordenada X de este evento.
+										//! Función que devuelve la coordenada X de este evento relativa al área del cliente.
+										/*! Función que devuelve la coordenada X de este evento relativa al área del cliente.
 											\fn			inline const int X(void);
 											\return		devuelve la coordenada X.
 										*/
 		inline const int                X(void) {
-											return GET_X_LPARAM(lParam);
+											return MousePosCliente.x;
 										};
 
-										//! Función que devuelve la coordenada Y de este evento.
-										/*! Función que devuelve la coordenada Y de este evento. 
+										//! Función que devuelve la coordenada X de este evento relativa a la pantalla.
+										/*! Función que devuelve la coordenada X de este evento relativa a la pantalla.
+											\fn			inline const int XPantalla(void);
+											\return		devuelve la coordenada X.
+										*/
+		inline const int                XPantalla(void) {
+											return GET_X_LPARAM(lParam); // Devuelve las coordenadas del mouse relativas a la pantalla....!!!!
+										};
+
+										//! Función que devuelve la coordenada Y de este evento relativa al área del cliente.
+										/*! Función que devuelve la coordenada Y de este evento relativa al área del cliente.
 											\fn			inline const int Y(void);
 											\return		devuelve la coordenada Y.
 										*/
 		inline const int                Y(void) {
+											return MousePosCliente.y;
+										};
+
+										//! Función que devuelve la coordenada Y de este evento relativa al área del cliente.
+										/*! Función que devuelve la coordenada Y de este evento relativa al área del cliente.
+											\fn			inline const int YPantalla(void);
+											\return		devuelve la coordenada Y.
+										*/
+		inline const int                YPantalla(void) {
 											return GET_Y_LPARAM(lParam);
 										};
 
@@ -70,6 +91,7 @@ namespace DWL {
 		WPARAM							wParam;
 		LPARAM							lParam;
 		UINT_PTR                        ID;
+		POINT                           MousePosCliente;
 	};
 };
 #endif

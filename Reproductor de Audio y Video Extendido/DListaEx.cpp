@@ -666,10 +666,10 @@ namespace DWL {
 	}
 
 	void DListaEx::_Evento_MouseRueda(WPARAM wParam, LPARAM lParam) {
-		DEventoMouseRueda DatosMouse(wParam, lParam, ID());
+		DEventoMouseRueda DatosMouse(wParam, lParam, ID(), _hWnd);
 
-		RECT RW;
-		GetWindowRect(hWnd(), &RW);
+//		RECT RW;
+//		GetWindowRect(hWnd(), &RW);
 
 		#if DLISTAEX_MOSTRARDEBUG == TRUE
 			Debug_Escribir_Varg(L"DListaEx::_Evento_MouseRueda cX:%d cY:%d mX:%d mY:%d\n", RW.left - DatosMouse.X() , RW.top - DatosMouse.Y());
@@ -687,9 +687,9 @@ namespace DWL {
 
 		_CalcularScrolls();
 		// Las coordenadas X e Y son relativas a la pantalla...
-		LONG ncX = RW.left - DatosMouse.X();
-		LONG ncY = RW.top - DatosMouse.Y();
-		_ItemResaltado = HitTest(ncX, ncY);
+//		LONG ncX = RW.left - DatosMouse.X();
+//		LONG ncY = RW.top - DatosMouse.Y();
+		_ItemResaltado = HitTest(DatosMouse.X(), DatosMouse.Y());
 		_ItemUResaltado = _ItemResaltado;
 
 		Evento_MouseRueda(DatosMouse);

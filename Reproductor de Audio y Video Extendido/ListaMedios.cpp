@@ -81,7 +81,7 @@ ItemMedio *ListaMedios::BuscarHash(sqlite3_int64 bHash) {
 void ListaMedios::Evento_MouseDobleClick(DWL::DEventoMouse &EventoMouse) {
 	if (EventoMouse.Boton == 0) {
 		if (_ItemResaltado != -1) {
-			MedioActual = _ItemResaltado;
+			MedioActual = static_cast<long>(_ItemResaltado);
 			ItemMedio *Itm = Medio(MedioActual);
 			
 			BDMedio NCan;

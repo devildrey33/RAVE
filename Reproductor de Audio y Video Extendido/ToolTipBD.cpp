@@ -77,13 +77,15 @@ const POINT ToolTipBD::_CalcularEtiqueta(EtiquetaBD &nEtiqueta) {
 	_Col2.resize(0);
 
 	// Construyo las columnas con sus datos
-	const size_t	NumFilas = 3;
-	const wchar_t  *Col1[NumFilas] = { L"Medios", L"Nota", L"Tiempo" };
+	const size_t	NumFilas = 4;
+	const wchar_t  *Col1[NumFilas] = { L"Medios", L"Nota", L"Tiempo", L"Longitud" };
 	std::wstring    Col2[NumFilas];
 
 	Col2[0] = std::to_wstring(nEtiqueta.Medios);
 	Col2[1] = DWL::Strings::ToStrF(static_cast<float>(nEtiqueta.Nota / static_cast<float>(nEtiqueta.Medios)), 2);
 	RaveVLC::TiempoStr(nEtiqueta.Tiempo, Col2[2]);
+	DWL::Strings::FormatoBytes(nEtiqueta.Longitud, Col2[3]);
+	
 
 	// Miro el ancho del titulo
 	SIZE Tam = { 0, 0 };

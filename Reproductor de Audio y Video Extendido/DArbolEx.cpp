@@ -921,7 +921,9 @@ namespace DWL {
 		DEventoMouse DatosMouse(wParam, lParam, ID());
 		int cX		= DatosMouse.X(),
 			cY		= DatosMouse.Y();
-
+		#if DARBOLEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DArbolEx::_Evento_MouseMovimiento X : %d, Y : %d\n", DatosMouse.X(), DatosMouse.Y());
+		#endif
 
 		if (Scrolls_MouseMovimiento(DatosMouse) == TRUE) { return; } // las coordenadas pertenecen al scroll (salgo del evento)
 		_NodoResaltado = HitTest(cX, cY, _NodoResaltadoParte);
@@ -1050,10 +1052,11 @@ namespace DWL {
 	}
 
 	void DArbolEx::_Evento_MouseRueda(WPARAM wParam, LPARAM lParam) {		
-		DEventoMouseRueda DatosMouse(wParam, lParam, ID());
+		DEventoMouseRueda DatosMouse(wParam, lParam, ID(), _hWnd);
 
-		RECT RW;
-		GetWindowRect(hWnd(), &RW);
+		#if DARBOLEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DArbolEx::_Evento_MouseRueda X : %d, Y : %d\n", DatosMouse.X(), DatosMouse.Y());
+		#endif
 
 		if (DatosMouse.Delta() > 0) { // hacia arriba
 			_ScrollV_Posicion -= _ScrollV_Pagina / 10.0f;
@@ -1069,11 +1072,8 @@ namespace DWL {
 		ObtenerRectaCliente(&RC, &RCC);		
 		_CalcularNodosPagina(RCC.bottom);
 
-		// Las coordenadas X e Y son relativas a la pantalla...
-		LONG ncX = RW.left - DatosMouse.X();
-		LONG ncY = RW.top - DatosMouse.Y();
-		_NodoResaltado	 = HitTest(ncX, ncY, _NodoResaltadoParte);
-		_NodoUResaltado	 = _NodoResaltado;
+		_NodoUResaltado = _NodoResaltado;
+		_NodoResaltado	 = HitTest(DatosMouse.X(), DatosMouse.Y(), _NodoResaltadoParte);
 
 		Evento_MouseRueda(DatosMouse);
 		Repintar();

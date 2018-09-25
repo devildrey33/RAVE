@@ -301,14 +301,16 @@ const BOOL RaveBD::ObtenerEtiquetas(void) {
 				L"Tipo"				L" INTEGER,"
 				L"Medios"			L" INTEGER,"
 				L"Nota"				L" DOUBLE,"
-				L"Tiempo"			L" BIGINT"
+				L"Tiempo"			L" BIGINT,"
+				L"Longitud"			L" BIGINT"
 			")";*/
-			std::wstring	Texto	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 1));
-			UINT			Tipo	= static_cast<UINT>(sqlite3_column_int(SqlQuery, 2));
-			UINT			Medios	= static_cast<UINT>(sqlite3_column_int(SqlQuery, 3));
-			float			Nota	= static_cast<float>(sqlite3_column_double(SqlQuery, 4));
-			libvlc_time_t	Tiempo  = static_cast<libvlc_time_t>(sqlite3_column_int64(SqlQuery, 5));
-			_Etiquetas.push_back(EtiquetaBD(Texto, Tipo, Nota, Tiempo, Medios));
+			std::wstring	Texto	 = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 1));
+			UINT			Tipo	 = static_cast<UINT>(sqlite3_column_int(SqlQuery, 2));
+			UINT			Medios	 = static_cast<UINT>(sqlite3_column_int(SqlQuery, 3));
+			float			Nota	 = static_cast<float>(sqlite3_column_double(SqlQuery, 4));
+			libvlc_time_t	Tiempo   = static_cast<libvlc_time_t>(sqlite3_column_int64(SqlQuery, 5));
+			ULONGLONG		Longitud = static_cast<ULONGLONG>(sqlite3_column_int64(SqlQuery, 6));
+			_Etiquetas.push_back(EtiquetaBD(Texto, Tipo, Nota, Tiempo, Longitud, Medios));
 		}
 		if (SqlRet == SQLITE_BUSY) {
 			VecesBusy++;
@@ -510,7 +512,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 
 const BOOL RaveBD::_CrearTablas(void) {
 
-	// Creo la tabla para las teclas rápidas
+	// Creo la tabla para las teclas rápidas ///////////////////////////////////////////////////
 	std::wstring CrearTablaTeclasRapidas =	L"CREATE TABLE TeclasRapidas ("
 												L"Tecla"	L" INTEGER,"
 												L"Control"	L" TINYINT(1),"
@@ -525,14 +527,16 @@ const BOOL RaveBD::_CrearTablas(void) {
 			L"VALUES(" + std::to_wstring(App.TeclasRapidas[i].Tecla) + L"," + std::to_wstring(App.TeclasRapidas[i].Control) + L"," + std::to_wstring(App.TeclasRapidas[i].Alt) + L","+ std::to_wstring(App.TeclasRapidas[i].Shift) + L")";
 		if (Consulta(Q.c_str()) == SQLITE_ERROR) return FALSE;
 	}
+	///////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	// Creo la tabla para guardar la ultima lista reproducida
+	// Creo la tabla para guardar la ultima lista reproducida ////////////////////////
 	std::wstring CrearTablaUltimaLista = L"CREATE TABLE UltimaLista (Hash BIGINT)";
 	if (Consulta(CrearTablaUltimaLista.c_str()) == SQLITE_ERROR) return FALSE;
+	//////////////////////////////////////////////////////////////////////////////////
 
 
-	// Creo la tabla para las opciones
+	// Creo la tabla para las opciones /////////////////////////////////////////////////////////////
 	std::wstring CrearTablaOpciones = L"CREATE TABLE Opciones ("
 											L"Id" 						L" INTEGER PRIMARY KEY," 
 											L"Volumen"					L" INTEGER,"             
@@ -557,12 +561,14 @@ const BOOL RaveBD::_CrearTablas(void) {
 											L"VentanaAnalizar_PosY"		L" INTEGER" 
 									  L")";
 	if (Consulta(CrearTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
+	//////////////////////////////////////////////////////////////////////////////////////////////////
 
-	// Añado los datos por defecto de las opciones
+
+	// Añado los datos por defecto de las opciones ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes, VentanaOpciones_PosX, VentanaOpciones_PosY, VentanaAsociar_PosX, VentanaAsociar_PosY, VentanaAnalizar_PosX, VentanaAnalizar_PosY) "
 										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1, 1, 400, 300, 500, 400, 300, 200)";
 	if (Consulta(ValoresTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
-
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	// Creo la tabla para las raices
@@ -635,7 +641,8 @@ const BOOL RaveBD::_CrearTablas(void) {
 											L"Tipo"				L" INTEGER,"
 											L"Medios"			L" INTEGER,"
 											L"Nota"				L" DOUBLE,"				
-											L"Tiempo"			L" BIGINT"				
+											L"Tiempo"			L" BIGINT,"				
+											L"Longitud"			L" BIGINT"				
 									   L")";
 
 	if (Consulta(CrearTablaEtiquetas.c_str()) == SQLITE_ERROR) return FALSE;
@@ -1272,7 +1279,7 @@ const BOOL RaveBD::Opciones_GuardarPosVentanaAnalizar(void) {
 
 
 const BOOL RaveBD::ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios) {
-	const wchar_t  *Q = L"SELECT Id, NombrePath, Genero, GrupoPath, DiscoPath, NombreTag, GrupoTag, DiscoTag, Path, PistaTag, PistaPath, Nota, Tiempo FROM Medios WHERE TipoMedio=1"; // Tipo_Medio_Audio
+	const wchar_t  *Q = L"SELECT Id, NombrePath, Genero, GrupoPath, DiscoPath, NombreTag, GrupoTag, DiscoTag, Path, PistaTag, PistaPath, Nota, Tiempo, Longitud FROM Medios WHERE TipoMedio=1"; // Tipo_Medio_Audio
 	
 	wchar_t		   *SqlError = NULL;
 	int				SqlRet = 0;
@@ -1308,7 +1315,8 @@ const BOOL RaveBD::ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios) {
 			TmpMedio.PistaTag			= static_cast<UINT>(sqlite3_column_int(SqlQuery, 9));
 			TmpMedio.PistaPath			= static_cast<UINT>(sqlite3_column_int(SqlQuery, 10));
 			TmpMedio.Nota				= static_cast<float>(sqlite3_column_double(SqlQuery, 11));
-			TmpMedio.Tiempo				= static_cast<libvlc_time_t>(sqlite3_column_int(SqlQuery, 12));
+			TmpMedio.Tiempo				= static_cast<libvlc_time_t>(sqlite3_column_int64(SqlQuery, 12));
+			TmpMedio.Longitud			= static_cast<ULONG>(sqlite3_column_int64(SqlQuery, 13));
 			Medios.push_back(TmpMedio);
 		}
 		if (SqlRet == SQLITE_BUSY) {
