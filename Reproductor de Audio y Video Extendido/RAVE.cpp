@@ -119,7 +119,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 
 	// Teclas rapidas por defecto
 	TeclasRapidas.push_back(TeclaRapida(VK_SPACE, FALSE, FALSE, FALSE));
-	TeclasRapidas.push_back(TeclaRapida(VK_END, FALSE, FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_INSERT, FALSE, FALSE, FALSE));
 	TeclasRapidas.push_back(TeclaRapida(VK_ADD, FALSE, FALSE, FALSE));
 	TeclasRapidas.push_back(TeclaRapida(VK_SUBTRACT, FALSE, FALSE, FALSE));
 	TeclasRapidas.push_back(TeclaRapida(VK_RIGHT, TRUE, FALSE, FALSE));
@@ -276,7 +276,6 @@ void RAVE::IniciarUI(int nCmdShow) {
 		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_5A4									, L"5:4");
 	MenuProporcion->Activado(FALSE);
 	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_SUBTITULOS								, L"Subtitulos");
-
 
 
 	// Ventana principal
@@ -485,24 +484,49 @@ void RAVE::Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado) {
 // TECLADO GENERAL PARA DOAS LAS VENTANAS DE ESTE HILO EXCEPTO LA DEL VIDEO DEL VLC
 void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 	DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = false;
+
+	// Teclas extendidas para teclados con teclas para Play / Pausa, Stop, Next, Prev
+	switch (DatosTeclado.TeclaVirtual()) {
+		case VK_MEDIA_PLAY_PAUSE:
+			App.VentanaRave.Lista_Play();
+			return;
+		case VK_MEDIA_STOP:
+			App.VentanaRave.Lista_Stop();
+			return;
+		case VK_MEDIA_NEXT_TRACK:
+			App.VentanaRave.Lista_Siguiente();
+			return;
+		case VK_MEDIA_PREV_TRACK:
+			App.VentanaRave.Lista_Anterior();
+			return;
+	}
 	
+	BOOL Control	= ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0);
+	BOOL Alt		= ((GetAsyncKeyState(VK_MENU) & 0x8000) != 0);
+	BOOL Shift		= ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0);
+
+	// Compruebo si es una tecla rápida
 	size_t Pos = 0;
 	for (Pos = 0; Pos < TeclasRapidas.size(); Pos++) {
-		if (TeclasRapidas[Pos].Tecla == DatosTeclado.TeclaVirtual()) {
-			switch (Pos) {
+		if (TeclasRapidas[Pos].Tecla == DatosTeclado.TeclaVirtual() && TeclasRapidas[Pos].Control == Control && TeclasRapidas[Pos].Alt == Alt && TeclasRapidas[Pos].Shift == Shift) {
+			switch (Pos) { // La posición de la tecla dentro del vector, indica su acción
 				case 0: // play / pausa
 					App.VentanaRave.Lista_Play();
 					break;
-				case 1: // Stop
-					App.VentanaRave.Lista_Stop();
+				case 1: // generar lista
+					App.VentanaRave.GenerarListaAleatoria();
 					break;
 				case 2: // Subir volumen
-					if (App.VLC.Volumen() + 20 > 200) App.VLC.Volumen(200);
-					else                              App.VLC.Volumen(App.VLC.Volumen() + 20);
+					if (App.VLC.MediaPlayer() != NULL) {
+						if (App.VLC.Volumen() + 20 > 200) App.VLC.Volumen(200);
+						else                              App.VLC.Volumen(App.VLC.Volumen() + 20);
+					}
 					break;
 				case 3: // Bajar volumen
-					if (App.VLC.Volumen() - 20 < 0) App.VLC.Volumen(0);
-					else                            App.VLC.Volumen(App.VLC.Volumen() - 20);
+					if (App.VLC.MediaPlayer() != NULL) {
+						if (App.VLC.Volumen() - 20 < 0) App.VLC.Volumen(0);
+						else                            App.VLC.Volumen(App.VLC.Volumen() - 20);
+					}
 					break;
 				case 4: // Avanzar
 					App.VentanaRave.Lista_Siguiente();

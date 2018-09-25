@@ -24,6 +24,8 @@ class VentanaPrincipal : public DWL::DVentana {
 					           ~VentanaPrincipal(void) { };
 	HWND						Crear(int nCmdShow);
 
+	void						CrearBotonesThumb(void);
+
 /*	void						AgregarRaiz(void);
 	void						EliminarRaiz(std::wstring &Path);*/
 

@@ -24,7 +24,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 	int ancho = (App.BD.Opciones_Ancho() > RAVE_MIN_ANCHO) ? App.BD.Opciones_Ancho() : RAVE_MIN_ANCHO;
 	HWND rhWnd = DVentana::CrearVentana(NULL, L"RAVE_VentanaPrincipal", RAVE_TITULO, App.BD.Opciones_PosX(), App.BD.Opciones_PosY(), ancho, App.BD.Opciones_Alto(), WS_OVERLAPPEDWINDOW, WS_EX_APPWINDOW, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
-
+	
 	RECT RC; // , RW;
 	GetClientRect(hWnd(), &RC);
 
@@ -50,8 +50,10 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	BotonAdelante.CrearBotonEx(&MarcoSI, IDI_NEXT32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 120, 0, 30, 30, ID_BOTON_SIGUIENTE);
 
 	BotonMezclar.CrearBotonEx(&MarcoSI, L"Mezclar", 210, 0, 80, 30, ID_BOTON_MEZCLAR);
+	BotonMezclar.Fuente = Fuente18Negrita;
 	if (App.BD.Opciones_Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
 	BotonRepetir.CrearBotonEx(&MarcoSI, L"Repetir", 300, 0, 80, 30, ID_BOTON_REPETIR);
+	BotonRepetir.Fuente = Fuente18Negrita;
 	if (App.BD.Opciones_Repeat() > 0) BotonRepetir.Marcado(TRUE);
 	//////////////////////////////////////////
 
@@ -95,6 +97,16 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	return rhWnd;
 }
 
+
+void VentanaPrincipal::CrearBotonesThumb(void) {
+	// Creo los botones del Thumb de la taskbar
+	std::vector<DBarraTareas_Boton> Botones;
+	Botones.push_back(DBarraTareas_Boton(IDI_PREV32, L"Medio Anterior", ID_BOTON_ANTERIOR));
+	Botones.push_back(DBarraTareas_Boton(IDI_PLAY32, L"Play / Pausa", ID_BOTON_PLAY));
+	Botones.push_back(DBarraTareas_Boton(IDI_STOP32, L"Stop", ID_BOTON_STOP));
+	Botones.push_back(DBarraTareas_Boton(IDI_NEXT32, L"Medio Siguiente", ID_BOTON_SIGUIENTE));
+	BarraTareas.AgregarBotones(Botones);
+}
 
 
 
@@ -285,6 +297,8 @@ void VentanaPrincipal::Timer_ObtenerTiempoTotal(void) {
 void VentanaPrincipal::Lista_Pausa(void) {
 	BotonPlay.Icono(IDI_PLAY32, 32);
 	App.ControlesPC.BotonPlay.Icono(IDI_PLAY32, 32);
+	BarraTareas.Boton_Icono(ID_BOTON_PLAY, IDI_PLAY32);
+
 	App.VLC.Pausa();
 }
 
@@ -303,6 +317,7 @@ void VentanaPrincipal::Lista_Play(void) {
 				if (App.VLC.Play() == TRUE) {
 					BotonPlay.Icono(IDI_PAUSA32, 32);
 					App.ControlesPC.BotonPlay.Icono(IDI_PAUSA32, 32);
+					BarraTareas.Boton_Icono(ID_BOTON_PLAY, IDI_PAUSA32);
 				}
 			}
 			break;
@@ -322,6 +337,7 @@ void VentanaPrincipal::Lista_Play(void) {
 			if (App.VLC.Play() == TRUE) {
 				BotonPlay.Icono(IDI_PAUSA32, 32);
 				App.ControlesPC.BotonPlay.Icono(IDI_PAUSA32, 32);
+				BarraTareas.Boton_Icono(ID_BOTON_PLAY, IDI_PAUSA32);
 			}			
 			break;
 		case EnPlay: 
@@ -356,12 +372,12 @@ void VentanaPrincipal::Lista_Siguiente(void) {
 void VentanaPrincipal::Lista_Anterior(void) {
 	if (Lista.TotalItems() == 0) return;
 
-	int TotalItems = static_cast<int>(Lista.TotalItems()) - 1;
+	long TotalItems = static_cast<long>(Lista.TotalItems()) - 1;
 	if (TotalItems == -1) TotalItems = 0;
 	Lista.MedioActual--;
 	if (Lista.MedioActual < 0) Lista.MedioActual = TotalItems;
 
-	if (Lista.MedioActual >= 0 && static_cast<int>(Lista.MedioActual) <= TotalItems) {
+	if (Lista.MedioActual >= 0 && Lista.MedioActual <= TotalItems) {
 		BDMedio NCan;
 		App.BD.ObtenerMedio(Lista.Medio(Lista.MedioActual)->Hash, NCan);
 //		TablaMedios_Medio NCan(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
@@ -389,10 +405,14 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		case ID_MENUBOTONLISTA_GENERAR_DISCO	:	GenerarListaAleatoria(TLA_Disco);		break;
 		case ID_MENUBOTONLISTA_GENERAR_50MEDIOS	:	GenerarListaAleatoria(TLA_50Medios);	break;
 		case ID_MENUBOTONLISTA_BORRAR			:	
-			Lista.BorrarListaReproduccion();	
-				
+			Lista.BorrarListaReproduccion();					
 			App.MostrarToolTipPlayer(*this, L"Lista de reproducción borrada.");
 			break;
+		// Id's de los botones de la barra de tareas
+		case ID_BOTON_PLAY						:	Lista_Play();							break;
+		case ID_BOTON_STOP						:	Lista_Stop();							break;
+		case ID_BOTON_SIGUIENTE					:	Lista_Siguiente();						break;
+		case ID_BOTON_ANTERIOR					:	Lista_Anterior();						break;
 	}
 }
 
@@ -674,6 +694,7 @@ void VentanaPrincipal::Evento_BorraFondo(HDC DC) {
 }
 
 void VentanaPrincipal::Evento_Cerrar(void) {
+	App.VLC.Stop();
 	Visible(FALSE);
 	App.BD.Consulta(L"BEGIN TRANSACTION");
 	App.BD.GuardarUltimaLista();
@@ -833,7 +854,7 @@ void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
 		ItemMedio *Item = Lista.BuscarHash(Medio.Hash);
 		for (size_t i = 0; i < Lista.TotalItems(); i++) {
 			if (Item == Lista.Medio(i)) {
-				Lista.MedioActual = i;
+				Lista.MedioActual = static_cast<long>(i);
 				break;
 			}
 		}		
@@ -887,7 +908,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 		case WM_TAAL_TERMINADO:
 			ThreadArchivosLista.Terminar();
 			BarraTareas.Estado_SinProgreso();
-			BarraTareas.Resaltar();
+//			BarraTareas.Resaltar();
 			// Ejecuto el shufle si es necesario
 			if (App.BD.Opciones_Shufle() == TRUE) {
 				App.VentanaRave.Lista.Mezclar(TRUE);
@@ -1022,6 +1043,14 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 		case DWL_BOTONEX_MOUSEDOWN :
 			Evento_BotonEx_Mouse_Down(*reinterpret_cast<DWL::DEventoMouse *>(wParam));
 			return 0;
+		
+
+		default :
+			if (uMsg == BarraTareas.WM_TASK_BUTTON_CREATED()) {
+				CrearBotonesThumb();
+				return 0;
+			}
+			break;
 
 /*		case DWL_ARBOLEX_CLICK :
 			this->Evento_ArbolEx_Click(reinterpret_cast<DArbolEx_DatosClick *>(wParam), static_cast<UINT>(lParam));

@@ -170,6 +170,8 @@ void RaveVLC::CerrarMedio(void) {
 		Debug_Escribir(L"RaveVLC::CerrarMedio\n");
 		libvlc_media_player_release(_MediaPlayer);
 		_MediaPlayer = NULL;
+
+		BOOL R = App.VentanaRave.BarraTareas.Clip(NULL);
 	}
 }
 
@@ -230,10 +232,11 @@ const BOOL RaveVLC::Stop(void) {
 		App.VentanaRave.SliderTiempo.ToolTip(DBarraDesplazamientoEx_ToolTip_SinToolTip);
 		App.ControlesPC.SliderTiempo.ToolTip(DBarraDesplazamientoEx_ToolTip_SinToolTip);
 
-		// TODO : hacer el SetFocus SOLO si es un video
-		// Para evitar un deadlock si se está reproduciendo un video y el foco está en otra parte
-		HWND Foco = SetFocus(App.VentanaRave.hWnd());
+		
 		// Deadlock just despres de mostrar un DMenuEx en un video i utilitzar el stop.... SOLUCIONAT, pero s'ha d'anar amb cuidado al utilitzar SetFocus...
+		if (libvlc_media_player_has_vout(_MediaPlayer) > 0)
+			// Para evitar un deadlock si se está reproduciendo un video y el foco está en otra parte
+			HWND Foco = SetFocus(App.VentanaRave.hWnd());
 		libvlc_media_player_stop(_MediaPlayer);
 
 		hWndVLC = NULL;

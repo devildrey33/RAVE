@@ -97,7 +97,7 @@ namespace DWL {
 		void											BorrarTodo(void);
 
 		void											Pintar(HDC hDC);
-		virtual void									Repintar(void);
+		virtual void									Repintar(const BOOL nForzar = FALSE);
 
 														// Pintar Nodo
 		void											PintarNodo(HDC hDC, RECT *Espacio, DArbolEx_Nodo *nNodo, const int PosH);

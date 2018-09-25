@@ -39,8 +39,8 @@ class ListaMedios : public DWL::DListaEx {
 	void						Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse);
 	void						Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse);
 
-	size_t						MedioActual;
-	size_t						MedioActualOrdenado;
+	long						MedioActual;
+	long						MedioActualOrdenado;
 
 	int							Errores;
 

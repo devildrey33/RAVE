@@ -45,6 +45,7 @@ namespace DWL {
 		
 		_hWnd = CrearControlEx(nPadre, L"DArbolEx", L"", cID, cX, cY, cAncho, cAlto, nEstilos, NULL, CS_DBLCLKS);  // CS_DBLCLKS (el control recibe notificaciones de doble click)
 		Fuente = Fuente18Normal;
+		_Repintar = TRUE;
 		return hWnd();
 	}
 
@@ -225,8 +226,8 @@ namespace DWL {
 		return Tmp;
 	}
 
-	void DArbolEx::Repintar(void) {
-		_Repintar = TRUE;
+	void DArbolEx::Repintar(const BOOL nForzar) {
+		if (_Repintar == FALSE) _Repintar = nForzar;
 		if (IsWindowVisible(_hWnd) == FALSE) return;
 		RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT); 
 		#if DARBOLEX_MOSTRARDEBUG == TRUE
@@ -913,11 +914,11 @@ namespace DWL {
 		}
 	}
 
-	void DArbolEx::_Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam) {
 
+	void DArbolEx::_Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam) {
 		BOOL bME = _MouseEntrando();
 
-		DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)));
+		DEventoMouse DatosMouse(wParam, lParam, ID());
 		int cX		= DatosMouse.X(),
 			cY		= DatosMouse.Y();
 
@@ -927,7 +928,7 @@ namespace DWL {
 
 		// Eventos virtuales
 		Evento_MouseMovimiento(DatosMouse);
-		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_MOUSEPRESIONADO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
+		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_MOUSEMOVIMIENTO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
 		if (bME == TRUE)	Evento_MouseEntrando();
 
 		// Comprueba si el nodo resaltado es el mismo que la ultima vez, y si no lo és repinta el control
@@ -942,7 +943,7 @@ namespace DWL {
 
 	void DArbolEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {
 		
-		DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
 		int cX		= DatosMouse.X(),
 			cY		= DatosMouse.Y();
 
@@ -1012,12 +1013,12 @@ namespace DWL {
 		// Envio el evento mousedown a la ventana padre
 		
 //		DEventoMouse ParamMouse(cX, cY, GetWindowLongPtr(_hWnd, GWL_ID), Boton);
-		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_MOUSEPRESIONADO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
+		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_MOUSEPRESIONADO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
 
 	}
 
 	void DArbolEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
-		DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
 		int cX		= DatosMouse.X(),
 			cY		= DatosMouse.Y();
 
@@ -1040,7 +1041,7 @@ namespace DWL {
 		// Llamo al evento virtual
 		Evento_MouseSoltado(DatosMouse);
 		// Envio el evento mouseup a la ventana padre
-		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_MOUSESOLTADO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
+		SendMessage(GetParent(hWnd()), DWL_ARBOLEX_MOUSESOLTADO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
 		// reasigno el estado presionado y Repinto
 		_NodoPresionadoParte = DArbolEx_ParteNodo_Nada;
 		_NodoPresionado = NULL;

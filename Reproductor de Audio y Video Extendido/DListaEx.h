@@ -86,7 +86,7 @@ namespace DWL {
 		void											ItemMarcado(DListaEx_Item *NuevoItemMarcado, const BOOL nRepintar = FALSE);
 														// Devuelve la posición del DListaEx_Item que está dentro de esta lista
 		const size_t                                    ItemPos(DListaEx_Item *pItem);		
-		virtual void									Repintar(void);
+		virtual void									Repintar(const BOOL nForzar = FALSE);
 		void											DesSeleccionarTodo(void);
 		void											MostrarItem(const size_t iPos);
 		void											MostrarItem(DListaEx_Item *eItem);

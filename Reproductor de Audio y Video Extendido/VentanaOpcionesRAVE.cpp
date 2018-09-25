@@ -84,7 +84,7 @@ void VentanaOpcionesRAVE::Crear(void) {
 
 	const wchar_t *Textos[6] = {
 		L"Play / Pausa",
-		L"Stop",
+		L"Generar lista aleatória",
 		L"Subir volumen",
 		L"Bajar volumen",
 		L"Reproducir siguiente",
@@ -93,12 +93,10 @@ void VentanaOpcionesRAVE::Crear(void) {
 	////////////////////////////////////////////////
 	// Creo los controles dentro del marco General
 	for (int i = 0; i < _NumTeclasRapidas; i++) {
-		EtiquetasTeclas[i].CrearEtiquetaEx(&MarcoGeneral, Textos[i], 10, 10 + (i * 25), 130, 20, ID_ETIQUETAS_TECLADO + i);
+		EtiquetasTeclas[i].CrearEtiquetaEx(&MarcoGeneral, Textos[i], 10, 10 + (i * 25), 160, 20, ID_ETIQUETAS_TECLADO + i);
 		EtiquetasTeclas[i].Fuente = Fuente18Normal;
-		TeclasRapidas[i].Crear(&MarcoGeneral, 150, 10 + (i * 25), RC.right - 170, 20, ID_ASINGAR_TECLA, &App.TeclasRapidas[i]);
+		TeclasRapidas[i].Crear(&MarcoGeneral, 180, 10 + (i * 25), RC.right - 200, 20, ID_ASINGAR_TECLA, &App.TeclasRapidas[i]);
 	}
-
-
 
 	// Muestro la ventana de las opciones
 	Visible(TRUE);

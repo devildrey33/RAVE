@@ -67,7 +67,7 @@
 		V  Al arrosegar arxius / directoris, s'ha d'afegir les seves arrels.
 			V  Aixo vol dir que s'ha de modificar la funció agregar raiz de forma que cada cop que n'agregui una, comprovi si n'hi ha una o mes per fusionar.
 
-		V  Hi ha un deadlock chunguisim... al reproduir un video, si fas un stop a traves d'un DMenuEx el libvlc_stop es queda pillat...
+		V  Hi ha un deadlock chunguisim... al reproduir un video, si fas un stop a traves d'un DMenuEx el libvlc_media_player_stop es queda pillat...
 			V  GdiPlus eliminat i la cosa segueix igual....
 			X  Probar de fer que els menus deixin la finestra creada i nomes la mostrin / ocultin (de moment queda anulat)
 			V  El problema sembla que es el SetFocus, si la finestra del reproductor no te el foco es quan peta... (sembla que s'ha solucionat posant el focus a la finestra del reproductor UFF...)
@@ -77,7 +77,8 @@
 		-  DMenuEx te que detectar el dobleclick i pasarlo a les finestres que no siguin un DMenuEx
 
 		-  Crear un nou correu pels dumps... que pugui fer servir per enviar...
-		-  Substituir DhWnd::Teclado per GetKeyboardState a DListaEx i DArbolEx (no se si hi ha alguna mes)
+
+		V  Hi ha un bug amb els IID_ITaskbarList3 al posar pantalla completa s'asigna una mascara al área de la finestra del video, pero quan surt de pantalla completa la mascara segueix....
 
 		-  Mostrar les opcions en una finestra nova
 			-  Afegir opcions : 
@@ -119,7 +120,7 @@
 			- Propiedades
 
 		-  Crear Icona Buscar en l'arbre de la BD adal a la dreta
-	   +o- Solucionar glitch amb la llista i l'arbre, per exemple busca Symphony X sense tenir "Pelis i Series" afegit com arrel, y expandeix-lo
+	    V  Solucionar glitch amb la llista i l'arbre, per exemple busca Symphony X sense tenir "Pelis i Series" afegit com arrel, y expandeix-lo
 			V  Arbre solucionat, i a la llista no m'ha tornat a pasar res raro...
 		-  Solucionar problema amb el buto PREV, que pot deixar al MedioActual a -1, per lo que calen dos NEXT per pasar al segon medi.
 		-  Buscar noves actualitzacións

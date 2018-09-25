@@ -161,7 +161,7 @@ const BOOL ListaMedios::Mezclar(const BOOL nMezclar) {
 		// Busco la posición del medio actual en la lista mezclada
 		for (i = 0; i < _Items.size(); i++) {
 			if (_Items[i] == _MediosOrdenados[MedioActual]) {
-				MedioActual = i;
+				MedioActual = static_cast<long>(i);
 				MostrarItem(i);
 				break;
 			}
@@ -173,7 +173,7 @@ const BOOL ListaMedios::Mezclar(const BOOL nMezclar) {
 		// Busco la posición del medio actual en la lista original
 		for (i = 0; i < _Items.size(); i++) {
 			if (_Items[MedioActual] == _MediosOrdenados[i]) {
-				MedioActual = i;
+				MedioActual = static_cast<long>(i);
 				MostrarItem(i);
 				break;
 			}

@@ -24,8 +24,10 @@ void ControlesPantallaCompleta::Crear(void) {
 
 
 	BotonMezclar.CrearBotonEx(this, L"Mezclar", 220, 10, 80, 30, ID_BOTON_MEZCLAR);
+	BotonMezclar.Fuente = Fuente18Negrita;
 	if (App.BD.Opciones_Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
 	BotonRepetir.CrearBotonEx(this, L"Repetir", 310, 10, 80, 30, ID_BOTON_REPETIR);
+	BotonRepetir.Fuente = Fuente18Negrita;
 	if (App.BD.Opciones_Repeat() > 0) BotonRepetir.Marcado(TRUE);
 
 

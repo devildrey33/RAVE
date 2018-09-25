@@ -20,6 +20,10 @@ namespace DWL {
 
 	void DBarraScrollEx::Scrolls_Pintar(HDC hDC, RECT &RC) {
 		if (_ScrollV_Estado == DBarraScrollEx_Estado_Invisible && _ScrollH_Estado == DBarraScrollEx_Estado_Invisible) return;
+		#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DBarraScrollEx::Scrolls_Pintar  _ScrollV_Estado = %d\n", _ScrollV_Estado);
+		#endif
+
 		BOOL PintarRecuadro = TRUE;
 		RECT RCV, RCH, RCBV, RCBH;
 		ObtenerRectasScroll(RC, RCH, RCV);
@@ -128,13 +132,22 @@ namespace DWL {
 		if (_ScrollV_Estado != DBarraScrollEx_Estado_Invisible) {
 			if (_ScrollV_Estado != DBarraScrollEx_Estado_Presionado) {
 				RetV = PtInRect(&RCV, Pt);
+				// Dentro del scroll vertical
 				if (RetV == TRUE && _ScrollV_Estado != DBarraScrollEx_Estado_Resaltado) {
 					_ScrollV_Estado = DBarraScrollEx_Estado_Resaltado;
+					#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
+						Debug_Escribir(L"DBarraScrollEx::Scrolls_MouseMovimiento  _ScrollV_Estado = 2\n");
+					#endif
+
 					Repintar();
 					return TRUE;
 				}
+				// Fuera del scroll vertical
 				if (RetV == FALSE && _ScrollV_Estado != DBarraScrollEx_Estado_Normal) {
 					_ScrollV_Estado = DBarraScrollEx_Estado_Normal;
+					#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
+						Debug_Escribir(L"DBarraScrollEx::Scrolls_MouseMovimiento  _ScrollV_Estado = 1\n");
+					#endif
 					Repintar();
 					return TRUE;
 				}
@@ -252,6 +265,10 @@ namespace DWL {
 			RetV = PtInRect(&RCV, Pt);
 			if (RetV == TRUE) _ScrollV_Estado = DBarraScrollEx_Estado_Resaltado;
 			else              _ScrollV_Estado = DBarraScrollEx_Estado_Normal;
+			#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
+				Debug_Escribir_Varg(L"DBarraScrollEx::Scrolls_MouseSoltado  _ScrollV_Estado = %d\n", _ScrollV_Estado);
+			#endif
+
 			_ScrollV_Posicion = _CalcularPosScrollV(RCH.bottom, cY);
 			#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
 				Debug_Escribir_Varg(L"Scrolls_MouseSoltado V:%.02f\n", _ScrollV_Posicion);
@@ -335,6 +352,9 @@ namespace DWL {
 	void DBarraScrollEx::ScrollV_Visible(const BOOL nVisible) {
 		if (nVisible == TRUE)	_ScrollV_Estado = DBarraScrollEx_Estado_Normal;
 		else                    _ScrollV_Estado = DBarraScrollEx_Estado_Invisible;
+		#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DBarraScrollEx::ScrollV_Visible  _ScrollV_Estado = %d\n", _ScrollV_Estado);
+		#endif
 
 	}
 
@@ -348,6 +368,9 @@ namespace DWL {
 		BOOL nRepintar = FALSE;
 		if (_ScrollV_Estado != DBarraScrollEx_Estado_Presionado && _ScrollH_Estado != DBarraScrollEx_Estado_Presionado) {
 			if (_ScrollV_Estado != DBarraScrollEx_Estado_Invisible) {
+				#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir(L"DBarraScrollEx::Scrolls_MouseSaliendo  _ScrollV_Estado = 1\n");
+				#endif
 				_ScrollV_Estado = DBarraScrollEx_Estado_Normal;
 				nRepintar = TRUE;
 			}

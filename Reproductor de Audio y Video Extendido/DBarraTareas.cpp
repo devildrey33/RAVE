@@ -5,15 +5,16 @@
 #define DBARRATAREAS_TEMPORIZADOR 10
 
 namespace DWL {
-
-	ITaskbarList4 *DBarraTareas::_BarraTareas = NULL;
+	// Miembros estaticos
+	UINT			DBarraTareas::_WM_TASK_BUTTON_CREATED	= 0;
+	ITaskbarList4  *DBarraTareas::_BarraTareas				= NULL;
 
 	DBarraTareas::DBarraTareas(void) : _hWnd(NULL), _Estado(DBarraTareas_Estado_SinProgreso) /*, _BarraTareas(NULL)*/ {
 	}
 
 	DBarraTareas::~DBarraTareas(void) {
 	}
-
+	/*
 	void DBarraTareas::Resaltar(void) {
 		FlashWindow(_hWnd, TRUE);
 		CrearTemporizador(DBARRATAREAS_TEMPORIZADOR, 1000, TRUE);
@@ -21,7 +22,7 @@ namespace DWL {
 
 	void DBarraTareas::Evento_Temporizador(const UINT cID) {
 		if (cID == DBARRATAREAS_TEMPORIZADOR) FlashWindow(_hWnd, TRUE);
-	}
+	}*/
 
 
 	// No se mostrará ninguna barra de progreso
@@ -85,11 +86,49 @@ namespace DWL {
 	}
 
 
+	const BOOL DBarraTareas::Clip(RECT *Recta) {
+		RECT RC;
+		if (Recta == NULL) GetClientRect(App.VentanaRave.hWnd(), &RC);
+		else               RC = *Recta;
+		HRESULT Ret = _BarraTareas->SetThumbnailClip(_hWnd, &RC);
+		return (Ret == S_OK) ? TRUE : FALSE;
+	}
+
+
+	const BOOL DBarraTareas::AgregarBotones(std::vector<DBarraTareas_Boton> &Botones) {
+		if (_IniciarITaskBar() == TRUE && Botones.size() > 0) {
+//			int o = GetSystemMetrics(SM_CXICON);
+			THUMBBUTTON *nBotones = new THUMBBUTTON[Botones.size()];
+			for (size_t i = 0; i < Botones.size(); i++) {
+				nBotones[i].dwMask	= THB_ICON | THB_TOOLTIP | THB_FLAGS;
+				nBotones[i].iId		= static_cast<UINT>(Botones[i].ID);
+				nBotones[i].hIcon	= DListaIconos::AgregarIconoRecursos(Botones[i].IDIcono, GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON))->Icono();
+				nBotones[i].dwFlags = THBF_ENABLED;
+				wcscpy_s(nBotones[i].szTip, 260, Botones[i].TextoToolTip.c_str());				
+			}
+			HRESULT Ret = _BarraTareas->ThumbBarAddButtons(_hWnd, static_cast<UINT>(Botones.size()), nBotones);
+			delete [] nBotones;
+			return (Ret == S_OK) ? TRUE : FALSE;
+		}
+		return FALSE;
+	}
+
+	void DBarraTareas::Boton_Icono(const INT_PTR nID, const INT_PTR IDIconoRecursos) {
+		if (_BarraTareas != NULL) {
+			THUMBBUTTON Boton;
+			Boton.dwMask	= THB_ICON;
+			Boton.iId		= static_cast<UINT>(nID);
+			Boton.hIcon		= DListaIconos::AgregarIconoRecursos(IDIconoRecursos, GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON))->Icono();
+			HRESULT Ret		= _BarraTareas->ThumbBarUpdateButtons(_hWnd, 1, &Boton);
+		}
+	}
+
 	const BOOL DBarraTareas::_IniciarITaskBar(void) {
 		if (_BarraTareas == NULL) {
 			// Inicio la instancia para controlar la barra de tareas
 			if (CoCreateInstance(CLSID_TaskbarList, NULL, CLSCTX_INPROC_SERVER, IID_ITaskbarList4, (void**)&_BarraTareas) == S_OK) {
 				_BarraTareas->HrInit();
+				_WM_TASK_BUTTON_CREATED = RegisterWindowMessage(L"TaskbarButtonCreated");
 				#if DBARRATAREAS_MOSTRARDEBUG == TRUE
 					Debug_Escribir_Varg(L"DBarraTareas::_IniciarITaskBar Iniciado por primera vez %d\n", _BarraTareas);
 				#endif

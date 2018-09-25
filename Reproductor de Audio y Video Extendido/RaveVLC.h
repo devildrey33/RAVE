@@ -133,6 +133,8 @@ class RaveVLC {
 
 	inline const BOOL                       Parseado(void) { return _Parseado; }
 	void									ObtenerDatosParsing(void);
+
+	inline libvlc_media_player_t		   *MediaPlayer(void) { return _MediaPlayer; }
   protected:
 	BOOL                                   _Parseado;
 	//libvlc_media_t                        *_Media;

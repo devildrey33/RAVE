@@ -26,6 +26,7 @@ namespace DWL {
 //		if (hWnd()) { Debug_Escribir(L"DListaEx::CrearListaEx() Error : ya se ha creado la lista\n"); return hWnd(); }
 		Fuente = Fuente18Normal;
 		_hWnd = CrearControlEx(nPadre, L"DListaEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, CS_DBLCLKS); // CS_DBLCLKS (el control recibe notificaciones de doble click)
+		_Repintar = TRUE;
 		return hWnd();
 	}
 	
@@ -67,8 +68,8 @@ namespace DWL {
 		_Repintar = TRUE;
 	}
 
-	void DListaEx::Repintar(void) { 
-		_Repintar = TRUE;
+	void DListaEx::Repintar(const BOOL nForzar) {
+		if (_Repintar == FALSE)	_Repintar = nForzar;
 		if (IsWindowVisible(_hWnd) == FALSE) return;
 		RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT); 
 		#if DLISTAEX_MOSTRARDEBUG == TRUE
