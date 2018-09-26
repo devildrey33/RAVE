@@ -88,7 +88,7 @@ void AsignarTeclaRapida::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) 
 	if (_Editando == TRUE) {
 		if (DatosTeclado.TeclaVirtual() == VK_ESCAPE) {
 			_Editando = FALSE;
-			App.MostrarToolTipOpciones(App.VentanaOpciones, L"Edición cancelada.");
+			App.MostrarToolTipOpciones(L"Edición cancelada.");
 			return;
 		}
 
@@ -99,7 +99,7 @@ void AsignarTeclaRapida::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) 
 		_Texto = _TeclaRapida->String();
 		_Editando = FALSE;
 		Repintar();
-		App.MostrarToolTipOpciones(App.VentanaOpciones, L"Nueva tecla rápida asignada.");
+		App.MostrarToolTipOpciones(L"Nueva tecla rápida asignada.");
 		App.BD.GuardarTeclasRapidas();
 	}
 }

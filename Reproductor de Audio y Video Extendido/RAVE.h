@@ -15,6 +15,7 @@
 #include "AsignarTeclaRapida.h"
 #include <stdlib.h>
 #include <random>
+#include "ToolTipInfo.h"
 
 using namespace DWL;
 
@@ -69,14 +70,14 @@ class RAVE {
 
 	void							CerrarSistema(const SOCerrarSistema Forma = SOCerrarSistema_Apagar, const BOOL Forzar = FALSE);
 
-	void                            MostrarToolTipPlayer(DhWnd &Padre, const wchar_t *Texto);
-	void                            MostrarToolTipPlayer(DhWnd &Padre, std::wstring &Texto);
+	inline void                     MostrarToolTipPlayer(const wchar_t *Texto)		{ _ToolTipPlayer.MostrarToolTip(Texto); };
+	inline void                     MostrarToolTipPlayer(std::wstring &Texto)		{ _ToolTipPlayer.MostrarToolTip(Texto); };
 
-	void                            MostrarToolTipOpciones(DhWnd &Padre, const wchar_t *Texto);
-	void                            MostrarToolTipOpciones(DhWnd &Padre, std::wstring &Texto);
+	inline void                     MostrarToolTipOpciones(const wchar_t *Texto)	{ _ToolTipOpciones.MostrarToolTip(Texto); };
+	inline void                     MostrarToolTipOpciones(std::wstring &Texto)		{ _ToolTipOpciones.MostrarToolTip(Texto); };
 
-	inline void                     OcultarToolTipPlayer(void) { _ToolTip.Ocultar(); }
-	inline void                     OcultarToolTipOpciones(void) { _ToolTip2.Ocultar(); }
+	inline void                     OcultarToolTipPlayer(void)						{ _ToolTipPlayer.Ocultar(); }
+	inline void                     OcultarToolTipOpciones(void)					{ _ToolTipOpciones.Ocultar(); }
 	//	int							Rand()
 
 	void							Terminar(void);
@@ -121,8 +122,10 @@ class RAVE {
 	std::vector<TeclaRapida>       TeclasRapidas;
   protected:
 
-	DToolTipEx                     _ToolTip;
-	DToolTipEx                     _ToolTip2;
+	ToolTipsInfo                  _ToolTipPlayer;
+	ToolTipsInfo                  _ToolTipOpciones;
+//	DToolTipEx                     _ToolTip;
+	//DToolTipEx                     _ToolTip2;
 
 	std::random_device			   _rd;
 	// Token para el GDI+

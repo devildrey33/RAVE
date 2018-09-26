@@ -283,8 +283,11 @@ void RAVE::IniciarUI(int nCmdShow) {
 	// Controles pantalla completa
 	ControlesPC.Crear();
 
-	_ToolTip.CrearToolTipEx(DWL::DhWnd::Fuente18Normal, &VentanaRave);
-	_ToolTip2.CrearToolTipEx(DWL::DhWnd::Fuente18Normal, &VentanaOpciones);
+//	_ToolTip.CrearToolTipEx(DWL::DhWnd::Fuente18Normal, &VentanaRave);
+//	_ToolTip2.CrearToolTipEx(DWL::DhWnd::Fuente18Normal, &VentanaOpciones);
+	
+	_ToolTipPlayer.Iniciar(&VentanaRave);
+	_ToolTipOpciones.Iniciar(&VentanaOpciones);
 
 }
 
@@ -416,65 +419,6 @@ void RAVE::CerrarSistema(const SOCerrarSistema Forma, const BOOL Forzar) {
 };
 
 
-void RAVE::MostrarToolTipPlayer(DhWnd &Padre, const wchar_t *Texto) {
-	std::wstring nTexto = Texto;
-	MostrarToolTipPlayer(Padre, nTexto);
-}
-
-void RAVE::MostrarToolTipPlayer(DhWnd &Padre, std::wstring &Texto) {
-	_ToolTip.Ocultar();
-	HWND Foco = GetFocus();
-	while (GetParent(Foco) != NULL) {
-		Foco = GetParent(Foco);
-	}
-	_ToolTip.Padre = Padre.hWnd();
-	// Si el foco no pertenece a la ventana padre o a uno de sus 
-	if (Padre.hWnd() != Foco && Foco != VentanaAsociar.hWnd() && Foco != VentanaOpciones.hWnd() && Foco != VentanaRave.hWnd()) {
-		return;
-	}
-	RECT RV;
-	GetWindowRect(Padre.hWnd(), &RV);
-	SIZE Tam = _ToolTip.CalcularTam(Texto);
-	if (RV.right - RV.left > Tam.cx) {
-		_ToolTip.Mostrar(RV.right - (Tam.cx + 20), RV.bottom - (Tam.cy + 20), Texto, Tam.cx, Tam.cy);
-	}
-	else {
-		int x = (Tam.cx - (RV.right - RV.left)) / 2;
-		_ToolTip.Mostrar(RV.left - x, RV.bottom - (Tam.cy + 20), Texto, Tam.cx, Tam.cy);
-	}
-}
-
-
-void RAVE::MostrarToolTipOpciones(DhWnd &Padre, const wchar_t *Texto) {
-	std::wstring nTexto = Texto;
-	MostrarToolTipOpciones(Padre, nTexto);
-}
-
-void RAVE::MostrarToolTipOpciones(DhWnd &Padre, std::wstring &Texto) {
-	_ToolTip2.Ocultar();
-	HWND Foco = GetFocus();
-	while (GetParent(Foco) != NULL) {
-		Foco = GetParent(Foco);
-	}
-	_ToolTip2.Padre = Padre.hWnd();
-	// Si el foco no pertenece a la ventana padre o a uno de sus 
-	if (Padre.hWnd() != Foco && Foco != VentanaAsociar.hWnd() && Foco != VentanaOpciones.hWnd() && Foco != VentanaRave.hWnd()) {
-		return;
-	}
-	RECT RV;
-	GetWindowRect(Padre.hWnd(), &RV);
-	SIZE Tam = _ToolTip2.CalcularTam(Texto);
-
-	if (RV.right - RV.left > Tam.cx) {
-		_ToolTip2.Mostrar(RV.right - (Tam.cx + 20), RV.bottom - (Tam.cy + 20), Texto, Tam.cx, Tam.cy);
-	}
-	else {
-		int x = (Tam.cx - (RV.right - RV.left)) / 2;
-		_ToolTip2.Mostrar(RV.left - x, RV.bottom - (Tam.cy + 20), Texto, Tam.cx, Tam.cy);
-	}
-}
-
-
 // TECLADO GENERAL PARA DOAS LAS VENTANAS DE ESTE HILO EXCEPTO LA DEL VIDEO DEL VLC
 void RAVE::Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado) {
 	DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = true;
@@ -507,6 +451,7 @@ void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 
 	// Compruebo si es una tecla rápida
 	size_t Pos = 0;
+	int Volumen = 0;
 	for (Pos = 0; Pos < TeclasRapidas.size(); Pos++) {
 		if (TeclasRapidas[Pos].Tecla == DatosTeclado.TeclaVirtual() && TeclasRapidas[Pos].Control == Control && TeclasRapidas[Pos].Alt == Alt && TeclasRapidas[Pos].Shift == Shift) {
 			switch (Pos) { // La posición de la tecla dentro del vector, indica su acción
@@ -517,16 +462,16 @@ void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 					App.VentanaRave.GenerarListaAleatoria();
 					break;
 				case 2: // Subir volumen
-					if (App.VLC.MediaPlayer() != NULL) {
-						if (App.VLC.Volumen() + 20 > 200) App.VLC.Volumen(200);
-						else                              App.VLC.Volumen(App.VLC.Volumen() + 20);
-					}
+					if (App.BD.Opciones_Volumen() + 20 > 200)	Volumen = 200;
+					else										Volumen = App.BD.Opciones_Volumen() + 20;
+					App.VLC.Volumen(Volumen);
+					App.BD.Opciones_Volumen(Volumen);
 					break;
 				case 3: // Bajar volumen
-					if (App.VLC.MediaPlayer() != NULL) {
-						if (App.VLC.Volumen() - 20 < 0) App.VLC.Volumen(0);
-						else                            App.VLC.Volumen(App.VLC.Volumen() - 20);
-					}
+					if (App.BD.Opciones_Volumen() - 20 < 0)		Volumen = 0;
+					else										Volumen = App.BD.Opciones_Volumen() - 20;
+					App.VLC.Volumen(Volumen);
+					App.BD.Opciones_Volumen(Volumen);
 					break;
 				case 4: // Avanzar
 					App.VentanaRave.Lista_Siguiente();

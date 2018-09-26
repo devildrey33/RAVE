@@ -230,9 +230,9 @@ namespace DWL {
 		if (_Repintar == FALSE) _Repintar = nForzar;
 		if (IsWindowVisible(_hWnd) == FALSE) return;
 		RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT); 
-		#if DARBOLEX_MOSTRARDEBUG == TRUE
+/*		#if DARBOLEX_MOSTRARDEBUG == TRUE
 			Debug_Escribir_Varg(L"DArbolEx::Repintar\n", _Repintar);
-		#endif
+		#endif*/
 	};
 
 

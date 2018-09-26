@@ -117,7 +117,7 @@ namespace DWL {
 		RECT RC;
 		GetClientRect(hWnd(), &RC);
 		RECT RCF = { RC.left + 1, RC.top + 1, RC.right - 1, RC.bottom - 1 };
-		RECT RCT = { RC.left + DTOOLTIPEX_PADDING, RC.top + DTOOLTIPEX_PADDING, RC.right + (DTOOLTIPEX_PADDING * 2), RC.bottom + (DTOOLTIPEX_PADDING * 2) };
+		RECT RCT = { RC.left, RC.top + DTOOLTIPEX_PADDING, RC.right, RC.bottom + (DTOOLTIPEX_PADDING * 2) };
 		
 		// Creo un buffer en memória para pintar el control
 		HDC		Buffer = CreateCompatibleDC(NULL);
@@ -137,7 +137,7 @@ namespace DWL {
 		SetTextColor(Buffer, COLOR_TOOLTIP_TEXTO);
 		HFONT vFuente = static_cast<HFONT>(SelectObject(Buffer, _Fuente()));
 		
-		DrawText(Buffer, _Str.c_str(), static_cast<int>(_Str.size()), &RCT, DT_LEFT);
+		DrawText(Buffer, _Str.c_str(), static_cast<int>(_Str.size()), &RCT, DT_CENTER);
 
 		//TextOut(Buffer, DTOOLTIPEX_PADDING, DTOOLTIPEX_PADDING, _Str.c_str(), static_cast<int>(_Str.size()));
 		SelectObject(Buffer, vFuente);

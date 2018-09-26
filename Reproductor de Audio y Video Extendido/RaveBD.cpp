@@ -424,7 +424,7 @@ const BOOL RaveBD::ActualizarMedioAnalisis(BDMedio *nMedio) {
 const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const TipoListaAleatoria nTipo) {
 	// si no hay etiquetas solo se puede generar listas aleatorias de 50 medios sin ninguna base, si el tipo especificado no se puede gemerar. salgo
 	if (_Etiquetas.size() == 0 && nTipo != TLA_50Medios && nTipo != TLA_LoQueSea) {
-		App.MostrarToolTipPlayer(App.VentanaRave, L"No se pueden generar listas aleatórias hasta que no se analize la base de datos.");
+		App.MostrarToolTipPlayer(L"No se pueden generar listas aleatórias hasta que no se analize la base de datos.");
 		return FALSE;
 	}
 
@@ -475,7 +475,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 			break;
 	}
 
-	App.MostrarToolTipPlayer(App.VentanaRave, ToolTip);
+	App.MostrarToolTipPlayer(ToolTip);
 	
 	int				    SqlRet = 0;
 	sqlite3_stmt       *SqlQuery = NULL;
@@ -1192,18 +1192,17 @@ const BOOL RaveBD::AsignarTiempoMedio(const libvlc_time_t nTiempo, const sqlite3
 
 /* NOTA es mejor tener 2 selects para las opciones, uno para el tamaño y posición de la ventana, y otro para el resto de valores (shufle, repeat, volumen, etc...)
 Y no viene de 15 milisegundos mas a la hora de cerrar el reproductor */
-const BOOL RaveBD::Opciones_GuardarOpciones(void) {
+/*const BOOL RaveBD::Opciones_GuardarOpciones(void) {
 	// Compruebo si el repeat no es apagar windows o apagar el reproductor
 	Tipo_Repeat Repeat = Tipo_Repeat_NADA;
-	if (_Opciones_Repeat != Tipo_Repeat_ApagarReproductor && _Opciones_Repeat != Tipo_Repeat_ApagarOrdenador /*&& nRepeat != Tipo_Repeat_HibernarOrdenador*/) {
+	if (_Opciones_Repeat != Tipo_Repeat_ApagarReproductor && _Opciones_Repeat != Tipo_Repeat_ApagarOrdenador) {
 		Repeat = _Opciones_Repeat;
 	}
 	Opciones_GuardarPosTamVentana();
-	std::wstring Q = L"UPDATE Opciones SET"
-		L" Volumen=" + std::to_wstring(_Opciones_Volumen) +
-		//						L", Volumen=" + std::to_wstring(_Volumen) +
-		L", Shufle=" + std::to_wstring(_Opciones_Shufle) +
-		L", Repeat=" + std::to_wstring(Repeat) +
+	std::wstring Q = L"UPDATE Opciones SET "
+		L"Volumen=" + std::to_wstring(_Opciones_Volumen) + L","
+		L"Shufle=" + std::to_wstring(_Opciones_Shufle) + L","
+		L"Repeat=" + std::to_wstring(Repeat) +
 		L" WHERE Id=0";
 	int SqlRet = Consulta(Q);
 
@@ -1212,7 +1211,7 @@ const BOOL RaveBD::Opciones_GuardarOpciones(void) {
 		return FALSE;
 	}
 	return TRUE;
-}
+}*/
 
 const BOOL RaveBD::Opciones_GuardarPosTamVentana(void) {
 	if (App.VentanaRave.Maximizada() == FALSE) {

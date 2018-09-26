@@ -76,10 +76,10 @@ void VentanaOpcionesRAVE::Crear(void) {
 	BotonAgregarRaiz.CrearBotonEx(&MarcoBaseDeDatos, L"Agregar Raíz", ((RC.right - 120) / 2) - 10, 220, 120, 24, ID_BOTON_AGREGARRAIZ);
 	BotonAgregarRaiz.Fuente = Fuente21Normal;
 	// Marca Mostrar analisis en una ventana
-	MarcaMostrarAnalisis.CrearMarcaEx(&MarcoBaseDeDatos, L"Mostrar ventana con el progreso del análisis de los medios.", 70, 254, RC.right - 40, 20, ID_MARCA_MOSTRARANALISIS, IDI_CHECK2);
+	MarcaMostrarAnalisis.CrearMarcaEx(&MarcoBaseDeDatos, L"Mostrar ventana con el progreso del análisis de los medios.", 70, 254, 405, 20, ID_MARCA_MOSTRARANALISIS, IDI_CHECK2);
 	MarcaMostrarAnalisis.Marcado(App.BD.Opciones_MostrarObtenerMetadatos());
 	// Analizar medios pendientes al actualizar la base de datos
-	MarcaAnalizarMediosPendientes.CrearMarcaEx(&MarcoBaseDeDatos, L"Analizar medios pendientes al actualizar la base de datos.", 70, 284, RC.right - 40, 20, ID_MARCA_ANALIZARPENDIENTES, IDI_CHECK2);
+	MarcaAnalizarMediosPendientes.CrearMarcaEx(&MarcoBaseDeDatos, L"Analizar medios pendientes al actualizar la base de datos.", 70, 284, 395, 20, ID_MARCA_ANALIZARPENDIENTES, IDI_CHECK2);
 	MarcaAnalizarMediosPendientes.Marcado(App.BD.Opciones_AnalizarMediosPendientes());
 
 	const wchar_t *Textos[6] = {
@@ -173,15 +173,15 @@ void VentanaOpcionesRAVE::AgregarRaiz(void) {
 		if (AR == 1) {
 //			ListaRaiz.AgregarRaiz(Path.c_str());
 			Debug_Escribir(L"VentanaOpcionesRAVE::AgregarRaiz Nueva raíz agregada.\n");
-			App.MostrarToolTipOpciones(*this, L"Nueva raiz añadida.");
+			App.MostrarToolTipOpciones(L"Nueva raiz añadida.");
 		}
 		else if (AR == 0) { // La raiz ya existia o es un error
 			Debug_Escribir(L"VentanaOpcionesRAVE::AgregarRaiz La raíz ya existia.\n");
-			App.MostrarToolTipOpciones(*this, L"La raíz especificada ya existe.");
+			App.MostrarToolTipOpciones(L"La raíz especificada ya existe.");
 		}
 		else {
 			Debug_Escribir(L"VentanaOpcionesRAVE::AgregarRaiz La raíz se ha fusionado a una raíz existente.\n");
-			App.MostrarToolTipOpciones(*this, L"Se han fusionado una o mas raices con la nueva raíz.");
+			App.MostrarToolTipOpciones(L"Se han fusionado una o mas raices con la nueva raíz.");
 		}
 		// Espero a que se termine el thread del analisis
 		while (App.VentanaRave.ThreadActualizar.Thread() != NULL) {
@@ -215,16 +215,16 @@ void VentanaOpcionesRAVE::Evento_MarcaEx_Mouse_Click(DWL::DEventoMouse &DatosMou
 	switch (DatosMouse.ID) {
 		case ID_MARCA_MOSTRARANALISIS :
 			App.BD.Opciones_MostrarObtenerMetadatos(MarcaMostrarAnalisis.Marcado());
-			if (MarcaMostrarAnalisis.Marcado() == TRUE)	App.MostrarToolTipOpciones(*this, L"La ventana del análisis no se mostrará más.");
-			else                                        App.MostrarToolTipOpciones(*this, L"La ventana del análisis se mostrará siempre.");
+			if (MarcaMostrarAnalisis.Marcado() == TRUE)	App.MostrarToolTipOpciones(L"La ventana del análisis no se mostrará más.");
+			else                                        App.MostrarToolTipOpciones(L"La ventana del análisis se mostrará siempre.");
 			break;
 		case ID_MARCA_ANALIZARPENDIENTES :
 			App.BD.Opciones_AnalizarMediosPendientes(MarcaAnalizarMediosPendientes.Marcado());
 			if (MarcaAnalizarMediosPendientes.Marcado() == TRUE)
-				App.MostrarToolTipOpciones(*this,	L"Los medios pendientes se analizarán automáticamente.");
+				App.MostrarToolTipOpciones(L"Los medios pendientes se analizarán automáticamente.");
 			else
-				App.MostrarToolTipOpciones(*this,	L"Los medios pendientes no se analizarán automaticamente.\n"
-													L"Para analizar los medios pendientes, haz click derecho encima de la base de datos, y pulsa Analizar.");
+				App.MostrarToolTipOpciones(L"Los medios pendientes no se analizarán automaticamente.\n"
+										   L"Para analizar los medios pendientes, haz click derecho encima de la base de datos, y pulsa Analizar.");
 			break;
 	}
 }

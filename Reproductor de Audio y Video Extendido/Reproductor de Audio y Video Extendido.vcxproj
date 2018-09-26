@@ -226,6 +226,7 @@
     <ClInclude Include="ThreadAnalisis.h" />
     <ClInclude Include="RAVE_TODO.h" />
     <ClInclude Include="ToolTipBD.h" />
+    <ClInclude Include="ToolTipInfo.h" />
     <ClInclude Include="VentanaAsociarReproductor.h" />
     <ClInclude Include="VentanaErrorCritico.h" />
     <ClInclude Include="VentanaOpcionesRAVE.h" />
@@ -299,6 +300,7 @@
     <ClCompile Include="ThreadAgregarArchivosLista.cpp" />
     <ClCompile Include="ThreadAnalisis.cpp" />
     <ClCompile Include="ToolTipBD.cpp" />
+    <ClCompile Include="ToolTipInfo.cpp" />
     <ClCompile Include="VentanaAsociarReproductor.cpp" />
     <ClCompile Include="VentanaErrorCritico.cpp" />
     <ClCompile Include="VentanaOpcionesRAVE.cpp" />

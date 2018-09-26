@@ -205,7 +205,7 @@ class RaveBD {
 								// NOTA Esta función no guarda la posición en la BD
 	inline void					Opciones_AsignarPosVentana(const int nX, const int nY) { _Opciones_PosX = nX; _Opciones_PosY = nY; };
 								// Opciones que se guardan en la BD
-	const BOOL					Opciones_GuardarOpciones(void);
+//	const BOOL					Opciones_GuardarOpciones(void);
 	const BOOL					Opciones_GuardarPosTamVentana(void);
 	const BOOL					Opciones_GuardarPosVentanaOpciones(void);
 	const BOOL					Opciones_GuardarPosVentanaAsociar(void);

@@ -393,6 +393,10 @@ void VentanaPrincipal::GenerarListaAleatoria(const TipoListaAleatoria nTipo) {
 	for (size_t i = 0; i < Medios.size(); i++) {
 		Lista.AgregarMedio(&Medios[i]);
 	}
+	if (BotonMezclar.Marcado() == TRUE) {
+		Lista.Mezclar(TRUE);
+		Lista.MedioActual = 0;
+	}
 	Lista.Repintar();
 	App.VentanaRave.Lista_Play();
 }
@@ -406,7 +410,7 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		case ID_MENUBOTONLISTA_GENERAR_50MEDIOS	:	GenerarListaAleatoria(TLA_50Medios);	break;
 		case ID_MENUBOTONLISTA_BORRAR			:	
 			Lista.BorrarListaReproduccion();					
-			App.MostrarToolTipPlayer(*this, L"Lista de reproducción borrada.");
+			App.MostrarToolTipPlayer(L"Lista de reproducción borrada.");
 			break;
 		// Id's de los botones de la barra de tareas
 		case ID_BOTON_PLAY						:	Lista_Play();							break;
@@ -486,9 +490,8 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse)
 		RECT RV;		
 		switch (DatosMouse.ID) {
 			case ID_BOTON_BD:
-//				GetWindowRect(BotonBD.hWnd(), &RV);
-//				Menu_BotonArbolBD.Mostrar(this, RV.left, RV.bottom);
-				App.VLC.Stop();
+				GetWindowRect(BotonBD.hWnd(), &RV);
+				Menu_BotonArbolBD.Mostrar(this, RV.left, RV.bottom);
 				break;
 			case ID_BOTON_LISTA:
 				GetWindowRect(BotonLista.hWnd(), &RV);
@@ -696,10 +699,10 @@ void VentanaPrincipal::Evento_BorraFondo(HDC DC) {
 void VentanaPrincipal::Evento_Cerrar(void) {
 	App.VLC.Stop();
 	Visible(FALSE);
-	App.BD.Consulta(L"BEGIN TRANSACTION");
+//	App.BD.Consulta(L"BEGIN TRANSACTION");
 	App.BD.GuardarUltimaLista();
-	App.BD.Opciones_GuardarOpciones();
-	App.BD.Consulta(L"COMMIT TRANSACTION");
+//	App.BD.Opciones_GuardarOpciones();
+//	App.BD.Consulta(L"COMMIT TRANSACTION");
 
 	ThreadActualizar.Cancelar(TRUE);
 	ThreadArchivosLista.Cancelar(TRUE);
@@ -711,7 +714,7 @@ void VentanaPrincipal::Evento_Cerrar(void) {
 void VentanaPrincipal::Evento_SoltarArchivos(WPARAM wParam) {
 	TCHAR        Archivo[1024];
 	unsigned int TotalSoltados = DragQueryFile((HDROP)wParam, static_cast<unsigned int>(-1), 0, 0);
-	App.MostrarToolTipPlayer(App.VentanaRave, L"Añadiendo archivos desde el explorador.");
+	App.MostrarToolTipPlayer(L"Añadiendo archivos desde el explorador.");
 	
 	ThreadActualizar.Cancelar(TRUE);
 	ThreadAnalizar.Cancelar(TRUE);
@@ -949,7 +952,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			BarraTareas.Estado_SinProgreso();
 //			BarraTareas.Resaltar();
 			Menu_ArbolBD.Menu(3)->Activado(TRUE);
-			App.MostrarToolTipPlayer(App.VentanaRave, L"Análisis cancelado, se han analizado " + std::to_wstring(lParam) + L" medios.");
+			App.MostrarToolTipPlayer(L"Análisis cancelado, se han analizado " + std::to_wstring(lParam) + L" medios.");
 			return 0;
 
 		case WM_TOM_TERMINADO:
@@ -959,7 +962,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 //			BarraTareas.Resaltar();
 			App.BD.ObtenerEtiquetas();
 			Menu_ArbolBD.Menu(3)->Activado(TRUE);
-			App.MostrarToolTipPlayer(App.VentanaRave, L"Análisis terminado, se han analizado " + std::to_wstring(lParam) + L" medios.");			
+			App.MostrarToolTipPlayer(L"Análisis terminado, se han analizado " + std::to_wstring(lParam) + L" medios.");			
 			return 0;
 			//		case WM_TBA_AGREGARAUDIO:
 //			Arbol_AgregarCancion(static_cast<size_t>(lParam));
@@ -970,7 +973,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			BarraTareas.Estado_SinProgreso();
 //			BarraTareas.Resaltar();
 			Debug_Escribir_Varg(L"ThreadActualizarArbol::Terminado %d archivos encontrados.\n", lParam);
-			App.MostrarToolTipPlayer(App.VentanaRave, L"Arbol actualizado.");
+			App.MostrarToolTipPlayer(L"Arbol actualizado.");
 			// Si la opción de analizar medios pendientes está activa
 			if (App.BD.Opciones_AnalizarMediosPendientes() == TRUE) AnalizarBD();
 			return 0;

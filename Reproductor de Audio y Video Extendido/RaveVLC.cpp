@@ -281,6 +281,17 @@ const BOOL RaveVLC::Play(void) {
 			std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" - " + MedioActual.Nombre();
 			App.VentanaRave.Titulo(nTitulo);
 
+			// Muestro el tooltip con los datos
+			std::wstring TT = DWL::Strings::ToStr(MedioActual.Pista(), 2) + L" " + MedioActual.Nombre();
+
+			if (MedioActual.Disco().size() > 0)
+				TT += L"\n" + MedioActual.Disco(); 
+			if (MedioActual.Grupo().size() > 0) 
+				TT += L"\n" + MedioActual.Grupo();
+			if (MedioActual.Genero.size() > 0)
+				TT += L"\n" + MedioActual.Genero;
+			
+			App.MostrarToolTipPlayer(TT);
 			return TRUE;
 		}
 	}

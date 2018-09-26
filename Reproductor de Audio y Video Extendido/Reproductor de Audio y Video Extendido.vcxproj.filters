@@ -367,6 +367,9 @@
     <ClInclude Include="AsignarTeclaRapida.h">
       <Filter>Ventanas\Controles</Filter>
     </ClInclude>
+    <ClInclude Include="ToolTipInfo.h">
+      <Filter>Ventanas</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -548,6 +551,9 @@
     </ClCompile>
     <ClCompile Include="AsignarTeclaRapida.cpp">
       <Filter>Ventanas\Controles</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolTipInfo.cpp">
+      <Filter>Ventanas</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

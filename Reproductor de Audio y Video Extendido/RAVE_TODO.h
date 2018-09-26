@@ -74,6 +74,12 @@
 				V ES un problema del DMenuEx a l'hora de controlar el focus amb el submenus...
 					V s'ha de revisar _hWndDest i _hWndPadre exactament per que serveixen i com tractarles... (_hWndPadre FORA)
 			V  DMenuEx re-adaptat sense SetFocus
+
+		V  Afegit Longitud a les EtiquetaBD per sapiguer el tamany en bytes d'una etiqueta
+			V  Afegit a la talua BD
+			V  Afegit a les funcions obtenir / guardar
+			V  Afegit en el ThreadAnalizar per sumar cada longitud
+
 		-  DMenuEx te que detectar el dobleclick i pasarlo a les finestres que no siguin un DMenuEx
 
 		-  Crear un nou correu pels dumps... que pugui fer servir per enviar...
