@@ -17,7 +17,7 @@ namespace DWL {
 
 
 	HWND DToolTipEx::CrearToolTipEx(DhWnd_Fuente Fuente, DhWnd *nPadre) {
-		_hWnd = DVentana::CrearVentana(nPadre, L"DToolTipEx", L"", 0, 0, 0, 0, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
+		_hWnd = DVentana::CrearVentana(NULL, L"DToolTipEx", L"", 0, 0, 0, 0, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
 		Padre = nPadre->hWnd();
 		while (GetParent(Padre) != NULL) {
 			Padre = GetParent(Padre);
@@ -64,14 +64,14 @@ namespace DWL {
 		//if (Before == NULL) Before = HWND_TOP;
 		SetWindowPos(_hWnd, HWND_TOP, cX - static_cast<int>(Ret.cx / 2), cY, Ret.cx, Ret.cy, SWP_SHOWWINDOW | SWP_NOACTIVATE);
 
-		RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT);
+		RedrawWindow(_hWnd, NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT);
 
 	}
 
 	void DToolTipEx::Mostrar(const int cX, const int cY, std::wstring &Str, const int cAncho, const int cAlto) {
 		_Str = Str;
 //		MoveWindow(hWnd(), cX, cY, cAncho, cAlto, FALSE);
-		HWND Before = GetWindow(Padre, GW_HWNDPREV);
+		/*HWND Before = GetWindow(Padre, GW_HWNDPREV);
 		if (Before == NULL) {
 			Before = HWND_TOP;
 		}
@@ -84,7 +84,7 @@ namespace DWL {
 					break;
 				}
 			}
-		}
+		}*/
 		
 /*		HWND After = GetWindow(Padre, GW_HWNDNEXT);
 		wchar_t Txt[128], Txt2[128];
@@ -95,7 +95,7 @@ namespace DWL {
 		GetClassName(After, Txt4, 128);
 		Debug_Escribir_Varg(L"%s | %s ||,|| %s | %s\n", Txt, Txt2, Txt3, Txt4);*/
 //		if (Before == NULL) Before = HWND_TOP;
-		SetWindowPos(_hWnd, Before, cX, cY, cAncho, cAlto, SWP_SHOWWINDOW | SWP_NOACTIVATE);
+		SetWindowPos(_hWnd, HWND_TOP, cX, cY, cAncho, cAlto, SWP_SHOWWINDOW | SWP_NOACTIVATE);
 		
 //		ShowWindow(hWnd(), SW_SHOWNOACTIVATE);
 //		AnimateWindow(_hWnd, 100, AW_BLEND);

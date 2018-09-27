@@ -85,6 +85,7 @@
 		-  Crear un nou correu pels dumps... que pugui fer servir per enviar...
 
 		V  Hi ha un bug amb els IID_ITaskbarList3 al posar pantalla completa s'asigna una mascara al área de la finestra del video, pero quan surt de pantalla completa la mascara segueix....
+		V  Crear clase per fer animacións, es una mica rotllo TWEEN amb una lambda expresion per el callback
 
 		-  Mostrar les opcions en una finestra nova
 			-  Afegir opcions : 

@@ -313,8 +313,8 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 				case ID_MENUBD_AGREGARANUEVALISTA:
 					App.VentanaRave.Lista.BorrarListaReproduccion();
 					AgregarNodoALista(_NodoMarcado);
-					App.VentanaRave.Lista_Play();
 					App.MostrarToolTipPlayer(L"\"" + _NodoMarcado->Texto + L"\" añadido a una nueva lista.");
+					App.VentanaRave.Lista_Play();
 					break;
 				case ID_MENUBD_AGREGARALISTA:
 					AgregarNodoALista(_NodoMarcado);

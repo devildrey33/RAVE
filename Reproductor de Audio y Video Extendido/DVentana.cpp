@@ -27,23 +27,23 @@ namespace DWL {
 		SetWindowText(hWnd(), nTitulo.c_str());
 	}
 
-	LRESULT CALLBACK  DVentana::_GestorMensajes(HWND nhWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+	LRESULT CALLBACK DVentana::_GestorMensajes(HWND nhWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
-		case WM_CREATE: {
-			DVentana *PreVentana = reinterpret_cast<DVentana *>(((CREATESTRUCT *)lParam)->lpCreateParams);
-			if (PreVentana == NULL) return FALSE;
-			PreVentana->_hWnd = nhWnd;
-			SetWindowLongPtr(nhWnd, GWLP_USERDATA, (LONG_PTR)PreVentana);
-			PreVentana->GestorMensajes(uMsg, wParam, lParam);
-			return TRUE;
-		}
-		default: {
-			DVentana *Ventana = reinterpret_cast<DVentana *>(::GetWindowLongPtr(nhWnd, GWLP_USERDATA));
-			if (Ventana != NULL) {
-				return Ventana->GestorMensajes(uMsg, wParam, lParam);
-				//					if (Ret != DWL_USAR_GESTOR_POR_DEFECTO) return 0;
+			case WM_CREATE: {
+				DVentana *PreVentana = reinterpret_cast<DVentana *>(((CREATESTRUCT *)lParam)->lpCreateParams);
+				if (PreVentana == NULL) return FALSE;
+				PreVentana->_hWnd = nhWnd;
+				SetWindowLongPtr(nhWnd, GWLP_USERDATA, (LONG_PTR)PreVentana);
+				PreVentana->GestorMensajes(uMsg, wParam, lParam);
+				return TRUE;
 			}
-		}
+			default: {
+				DVentana *Ventana = reinterpret_cast<DVentana *>(::GetWindowLongPtr(nhWnd, GWLP_USERDATA));
+				if (Ventana != NULL) {
+					return Ventana->GestorMensajes(uMsg, wParam, lParam);
+					//					if (Ret != DWL_USAR_GESTOR_POR_DEFECTO) return 0;
+				}
+			}
 		}
 		return DefWindowProc(nhWnd, uMsg, wParam, lParam);
 	}

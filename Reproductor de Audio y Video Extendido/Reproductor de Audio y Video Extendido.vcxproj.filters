@@ -140,6 +140,9 @@
     <Filter Include="DWL\Ventanas\Base\Eventos">
       <UniqueIdentifier>{89375de0-fa16-44d6-8c74-09d2f8fbd387}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DWL\Sistema\Animacion">
+      <UniqueIdentifier>{238d5ecf-9ba0-4368-84d5-22e752379aa1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -370,6 +373,9 @@
     <ClInclude Include="ToolTipInfo.h">
       <Filter>Ventanas</Filter>
     </ClInclude>
+    <ClInclude Include="DAnimacion.h">
+      <Filter>DWL\Sistema\Animacion</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -554,6 +560,9 @@
     </ClCompile>
     <ClCompile Include="ToolTipInfo.cpp">
       <Filter>Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="DAnimacion.cpp">
+      <Filter>DWL\Sistema\Animacion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

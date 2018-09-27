@@ -2,9 +2,12 @@
 #include "ToolTipInfo.h"
 #include <dwmapi.h>
 
-#define TOOLTIPINFO_PADDING			4
-#define ID_TEMPORIZADOR_OCULTAR	 1000
+#define TOOLTIPINFO_PADDING			   4
+#define ID_TEMPORIZADOR_OCULTAR		1000
+#define ID_TEMPORIZADOR_ANIMACION	1001
+#define ID_ANIMACION_TTI            1002
 
+#define TIEMPO_ANIMACION             400
 
 /*
   _______          _ _______ _      _____        __      
@@ -14,23 +17,30 @@
     | | (_) | (_) | |  | |  | | |_) || |_| | | | || (_) |
     |_|\___/ \___/|_|  |_|  |_| .__/_____|_| |_|_| \___/ 
                               | |                        
-                              |_|                        */
+                              |_|							 */
 
-void ToolTipInfo::Mostrar(const int cX, const int cY, const int cAncho, const int cAlto, std::wstring &Str, ToolTipsInfo *nPadre) {
-	_Str	= Str;
-	_Padre	= nPadre;
+void ToolTipInfo::Mostrar(const int cX, const int cY, const int cAncho, const int cAlto, std::wstring &Str, ToolTipsInfo *nPadre, std::function<void(void)> CallbackOcultarTerminado) {
+	_Str						= Str;
+	_Padre						= nPadre;
+	_CallbackOcultarTerminado	= CallbackOcultarTerminado;
 
 	if (_hWnd == NULL) {
-		_hWnd = DVentana::CrearVentana(&App.VentanaRave, L"RAVE_ToolTipInfo", L"", cX, cY, cAncho, cAlto, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
+		_hWnd = DVentana::CrearVentana(NULL, L"RAVE_ToolTipInfo", L"", cX, cY, cAncho, cAlto, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
 		MARGINS Margen = { 0, 0, 0, 1 };
 		DwmExtendFrameIntoClientArea(_hWnd, &Margen);
 	}
+	Opacidad(0);
 	// Asigno la posición del menú y lo hago siempre visible
 	SetWindowPos(_hWnd, _Padre->Padre(), cX, cY, cAncho, cAlto, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 	// Situo el padre justo detras de este tooltip
 	SetWindowPos(_Padre->Padre(), _hWnd, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 
 	SetTimer(_hWnd, ID_TEMPORIZADOR_OCULTAR, 5000, NULL);
+
+	Ani.Iniciar(0, 255, TIEMPO_ANIMACION, [=](std::vector<float> &Valores, const BOOL Terminado) {
+		Opacidad(static_cast<BYTE>(Valores[0]));
+	});
+//	SetTimer(_hWnd, ID_TEMPORIZADOR_ANIMACION, 16, NULL); // 16 ms para llegar a 60fps (1000 / 16 = 62.5)
 }
 
 
@@ -55,17 +65,32 @@ SIZE ToolTipInfo::CalcularTam(std::wstring &Str) {
 	return Ret;
 }
 
+
 void ToolTipInfo::Ocultar(const BOOL Rapido) {
-	if (Rapido == FALSE)	AnimateWindow(_hWnd, 100, AW_HIDE | AW_BLEND);
-	else                    ShowWindow(hWnd(), SW_HIDE);
-	Destruir();	
+	if (_Ocultando == TRUE && Rapido == FALSE) return;
+	_Ocultando = TRUE;
+
+	KillTimer(_hWnd, ID_TEMPORIZADOR_OCULTAR);
+//	KillTimer(_hWnd, ID_TEMPORIZADOR_ANIMACION);
+	if (Rapido == FALSE) {
+		//AnimateWindow(_hWnd, 100, AW_HIDE | AW_BLEND);
+		Ani.Terminar();
+		Ani.Iniciar(255, 0, TIEMPO_ANIMACION, [=](std::vector<float> &Valores, const BOOL Terminado) {
+			Opacidad(static_cast<BYTE>(Valores[0]));
+			if (Terminado == TRUE) {
+				ShowWindow(hWnd(), SW_HIDE);
+				PostMessage(hWnd(), WM_CLOSE, 0, 0);
+				_CallbackOcultarTerminado();
+			}
+		});
+	}
+	else {
+		Ani.Terminar();
+		ShowWindow(hWnd(), SW_HIDE);
+		Destruir();
+	}
 }
 
-/*const BOOL ToolTipInfo::Destruir(void) {
-	BOOL R = DhWnd::Destruir();
-	_Padre->EliminarToolTip(this);
-	return R;
-}*/
 
 void ToolTipInfo::Pintar(HDC DC) {
 	RECT RC;
@@ -110,14 +135,22 @@ void ToolTipInfo::_Evento_Pintar(void) {
 	PAINTSTRUCT PS;
 	HDC DC = BeginPaint(hWnd(), &PS);
 	Pintar(DC);
-	EndPaint(hWnd(), &PS);
+	EndPaint(hWnd(), &PS);	
 }
 
+void ToolTipInfo::_Evento_Temporizador(INT_PTR tID) {
+	switch (tID) {
+		case ID_TEMPORIZADOR_OCULTAR :
+			Ocultar();
+			break;
+	}
+}
 
 LRESULT CALLBACK ToolTipInfo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
 		case WM_TIMER :
-			if (wParam == ID_TEMPORIZADOR_OCULTAR) Ocultar();
+			_Evento_Temporizador(static_cast<INT_PTR>(wParam));
+//			if (wParam == ID_TEMPORIZADOR_OCULTAR) Ocultar();
 			return 0;
 
 		case WM_PAINT		:	_Evento_Pintar();																															return 0;
@@ -127,7 +160,7 @@ LRESULT CALLBACK ToolTipInfo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lP
 		case WM_MOUSEMOVE:		
 		case WM_LBUTTONDOWN:	case WM_RBUTTONDOWN:	case WM_MBUTTONDOWN:// Mouse presionado
 		case WM_LBUTTONUP:		case WM_RBUTTONUP:		case WM_MBUTTONUP:	// Mouse soltado
-			Destruir();
+			Ocultar();
 			return 0;
 			// Sombra de la ventana
 		// https://stackoverflow.com/questions/43818022/borderless-window-with-drop-shadow
@@ -198,6 +231,7 @@ void ToolTipsInfo::MostrarToolTip(std::wstring &Texto) {
 	// Elimino tooltips que ya se han ocultado
 	for (long t = static_cast<long>(_ToolTips.size()) - 1; t > -1; t--) {
 		if (_ToolTips[t]->hWnd() == NULL) {
+			_ToolTips[t]->Ani.Terminar();
 			delete _ToolTips[t];
 			_ToolTips.erase(_ToolTips.begin() + t);
 		}
@@ -207,8 +241,9 @@ void ToolTipsInfo::MostrarToolTip(std::wstring &Texto) {
 	RECT Tmp;
 	for (size_t i = 0; i < _ToolTips.size(); i++) {
 		GetWindowRect(_ToolTips[i]->hWnd(), &Tmp);
+		// Si el tooltip sobresale por encima de la parte superior de la ventana padre, lo oculto
 		if (RV.top > Tmp.top - (Tam.cy + TOOLTIPINFO_PADDING)) {
-			_ToolTips[i]->Ocultar();
+			_ToolTips[i]->Ocultar(TRUE);
 		}
 		else {
 			SetWindowPos(_ToolTips[i]->hWnd(), NULL, Tmp.left, Tmp.top - (Tam.cy + TOOLTIPINFO_PADDING), 0, 0, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOSIZE);
@@ -217,21 +252,37 @@ void ToolTipsInfo::MostrarToolTip(std::wstring &Texto) {
 
 	// Muestro el nuevo tooltip alineado a la parte inferior izquierda
 	if (RV.right - RV.left > Tam.cx) {
-		TT->Mostrar(RV.right - (Tam.cx + 20), RV.bottom - (Tam.cy + 20), Tam.cx, Tam.cy, Texto, this);
+		TT->Mostrar(RV.right - (Tam.cx + 20), RV.bottom - (Tam.cy + 20), Tam.cx, Tam.cy, Texto, this, [=]{ RecolocarToolTips();	});
 	}
 	// Muestro el nuevo tooltip centrado en la parte inferior
 	else {
 		int x = (Tam.cx - (RV.right - RV.left)) / 2;
-		TT->Mostrar(RV.left - x, RV.bottom - (Tam.cy + 20), Tam.cx, Tam.cy, Texto, this);
+		TT->Mostrar(RV.left - x, RV.bottom - (Tam.cy + 20), Tam.cx, Tam.cy, Texto, this, [=] { RecolocarToolTips(); });
 	}
 
 	_ToolTips.push_back(TT);
 }
 
 
+void ToolTipsInfo::RecolocarToolTips(void) {
+	RECT RT, RV;
+	GetWindowRect(_Padre->hWnd(), &RV);
+	long Y = RV.bottom - 16;
+	for (long i = static_cast<long>(_ToolTips.size()) - 1; i > -1; i--) {
+		if (_ToolTips[i]->hWnd() != NULL) {
+			if (_ToolTips[i]->Visible() == TRUE) {
+				GetWindowRect(_ToolTips[i]->hWnd(), &RT);
+				Y -= (RT.bottom - RT.top) + TOOLTIPINFO_PADDING;
+				SetWindowPos(_ToolTips[i]->hWnd(), NULL, RT.left, Y, 0, 0, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOSIZE);
+			}
+		}
+	}
+}
+
+
 void ToolTipsInfo::Ocultar(void) {
 	for (size_t i = 0; i < _ToolTips.size(); i++) {
-		_ToolTips[i]->Ocultar(TRUE);
+		_ToolTips[i]->Ocultar(TRUE);		
 		delete _ToolTips[i];
 	}
 	_ToolTips.resize(0);

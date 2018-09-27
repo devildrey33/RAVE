@@ -439,13 +439,18 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 	std::vector<EtiquetaBD *> Etiquetas;
 	std::wstring Q;
 	std::wstring ToolTip;
+	int Intentos = 0;
 	size_t Rand;
 	switch (Tipo) {
 		case TLA_Genero:
 			for (size_t i = 0; i < _Etiquetas.size(); i++) {
 				if (_Etiquetas[i].EsGenero() == TRUE) Etiquetas.push_back(&_Etiquetas[i]);
 			}
-			Rand = App.Rand<size_t>(Etiquetas.size());
+			// Si la etiqueta tiene menos de 5 medios vuelvo a obtener una etiqueta aleatória			
+			do {
+				Rand = App.Rand<size_t>(Etiquetas.size());
+			} while (Etiquetas[Rand]->Medios < 5 && Intentos++ < 5);
+
 			Q = L"SELECT * FROM Medios WHERE Genero=\"" + Etiquetas[Rand]->Texto + L"\"";
 			ToolTip = L"Lista aleatória por Genero :\"" + Etiquetas[Rand]->Texto + L"\" generada.";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Genero (%s)\n", Etiquetas[Rand]->Texto.c_str());
@@ -454,7 +459,11 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 			for (size_t i = 0; i < _Etiquetas.size(); i++) {
 				if (_Etiquetas[i].EsGrupoPath() == TRUE || _Etiquetas[i].EsGrupoTag() == TRUE) Etiquetas.push_back(&_Etiquetas[i]);
 			}
-			Rand = App.Rand<size_t>(Etiquetas.size());
+			// Si la etiqueta tiene menos de 5 medios vuelvo a obtener una etiqueta aleatória			
+			do {
+				Rand = App.Rand<size_t>(Etiquetas.size());
+			} while (Etiquetas[Rand]->Medios < 5 && Intentos++ < 5);
+
 			Q = L"SELECT * FROM Medios WHERE (GrupoPath=\"" + Etiquetas[Rand]->Texto + L"\") OR (GrupoTag=\"" + Etiquetas[Rand]->Texto + L"\")";
 			ToolTip = L"Lista aleatória por Grupo :\"" + Etiquetas[Rand]->Texto + L"\" generada.";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Grupo (%s)\n", Etiquetas[Rand]->Texto.c_str());
@@ -463,7 +472,11 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 			for (size_t i = 0; i < _Etiquetas.size(); i++) {
 				if (_Etiquetas[i].EsDiscoPath() == TRUE || _Etiquetas[i].EsDiscoTag() == TRUE) Etiquetas.push_back(&_Etiquetas[i]);
 			}
-			Rand = App.Rand<size_t>(Etiquetas.size());
+			// Si la etiqueta tiene menos de 5 medios vuelvo a obtener una etiqueta aleatória			
+			do {
+				Rand = App.Rand<size_t>(Etiquetas.size());
+			} while (Etiquetas[Rand]->Medios < 5 && Intentos++ < 5);
+
 			Q = L"SELECT * FROM Medios WHERE (DiscoPath=\"" + Etiquetas[Rand]->Texto + L"\") OR (DiscoTag=\"" + Etiquetas[Rand]->Texto + L"\")";
 			ToolTip = L"Lista aleatória por Disco :\"" + Etiquetas[Rand]->Texto + L"\" generada.";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Disco (%s)\n", Etiquetas[Rand]->Texto.c_str());

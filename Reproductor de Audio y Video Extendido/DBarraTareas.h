@@ -2,7 +2,8 @@
 	#define DBARRATAREAS_H
 
 	#include <Shobjidl.h>
-	#include "DTemporizador.h"
+	#include <vector>
+//	#include "DTemporizador.h"
 
 	namespace DWL {
 		class DVentana;
@@ -29,7 +30,7 @@
 		};
 
 
-		class DBarraTareas : protected DTemporizador {
+		class DBarraTareas {
 		  public:
 												DBarraTareas(void);
 								               ~DBarraTareas(void);
@@ -73,4 +74,5 @@
 			friend class DVentana;
 		};
 	};
+
 #endif
