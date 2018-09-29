@@ -11,12 +11,12 @@ namespace DWL {
 	}
 
 	void DAnimacion::Iniciar(const float Desde, const float Hasta, const DWORD Milisegundos, std::function<void(std::vector<float> &, const BOOL)> LambdaCallback) {
-		std::vector<DAnimacion_Valores> Valores;
-		Valores.push_back(DAnimacion_Valores(Desde, Hasta));
-		Iniciar(Valores, Milisegundos, LambdaCallback);
+		std::vector<Valores> vValores;
+		vValores.push_back(Valores(Desde, Hasta));
+		Iniciar(vValores, Milisegundos, LambdaCallback);
 	}
 
-	void DAnimacion::Iniciar(std::vector<DAnimacion_Valores> &Datos, const DWORD Milisegundos, std::function<void(std::vector<float> &, const BOOL)> LambdaCallback) {
+	void DAnimacion::Iniciar(std::vector<Valores> &Datos, const DWORD Milisegundos, std::function<void(std::vector<float> &, const BOOL)> LambdaCallback) {
 		_Valores.resize(Datos.size());
 		_Datos			= Datos;
 		_Callback		= LambdaCallback;

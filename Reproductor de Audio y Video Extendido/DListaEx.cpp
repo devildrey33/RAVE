@@ -595,7 +595,7 @@ namespace DWL {
 	}
 
 	void DListaEx::_Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam) {
-		DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)));
+		DEventoMouse DatosMouse(wParam, lParam, this);
 //		_mX = cX; _mY = cY;
 		// Utilizo la función _MouseEntrando() para poder recibir los mensajes WM_MOUSELEAVE
 		BOOL bME = _MouseEntrando();
@@ -621,7 +621,7 @@ namespace DWL {
 	}
 
 	void DListaEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {
-		DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		SetFocus(_hWnd);
 		if (Scrolls_MousePresionado(DatosMouse) == TRUE) { return; }
 
@@ -645,7 +645,7 @@ namespace DWL {
 	}
 
 	void DListaEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
-		DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 
 		if (Scrolls_MouseSoltado(DatosMouse) == TRUE) { return; }
 
@@ -666,7 +666,7 @@ namespace DWL {
 	}
 
 	void DListaEx::_Evento_MouseRueda(WPARAM wParam, LPARAM lParam) {
-		DEventoMouseRueda DatosMouse(wParam, lParam, ID(), _hWnd);
+		DEventoMouseRueda DatosMouse(wParam, lParam, this);
 
 //		RECT RW;
 //		GetWindowRect(hWnd(), &RW);
@@ -698,7 +698,7 @@ namespace DWL {
 
 
 	void DListaEx::_Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam) {
-		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		DEventoTeclado DatosTeclado(wParam, lParam, this);
 		// Marco la tecla como presionada
 		DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = true;
 
@@ -726,12 +726,12 @@ namespace DWL {
 	}
 
 	void DListaEx::_Evento_TeclaSoltada(WPARAM wParam, LPARAM lParam) {
-		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		DEventoTeclado DatosTeclado(wParam, lParam, this);
 		Evento_TeclaSoltada(DatosTeclado);
 	}
 
 	void DListaEx::_Evento_Tecla(WPARAM wParam, LPARAM lParam) {
-		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		DEventoTeclado DatosTeclado(wParam, lParam, this);
 		Evento_Tecla(DatosTeclado);
 	}
 
@@ -808,7 +808,7 @@ namespace DWL {
 	}
 
 	void DListaEx::_Evento_MouseDobleClick(const int Boton, WPARAM wParam, LPARAM lParam) {
-		DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		Evento_MouseDobleClick(DatosMouse);
 
 //		Evento_MouseDobleClick(Boton, cX, cY, Param);

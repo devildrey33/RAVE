@@ -9,7 +9,7 @@
 #include "MemoriaCompartida.h"
 #include "RaveBD.h"
 #include "AsociarReproductor.h"
-#include "VentanaAsociarReproductor.h"
+//#include "VentanaAsociarReproductor.h"
 #include "VentanaOpcionesRAVE.h"
 #include "DToolTipEx.h"
 #include "AsignarTeclaRapida.h"
@@ -87,7 +87,7 @@ class RAVE {
 									// Ventana para mostrar errores criticos
 	VentanaErrorCritico				VentanaErrorCrit;
 									// Ventana que muestra el mensaje para las asociaciones de archivo
-	VentanaAsociarReproductor		VentanaAsociar;
+//	VentanaAsociarReproductor		VentanaAsociar;
 									// Ventana para mostrar las opciones
 	VentanaOpcionesRAVE             VentanaOpciones;
 									// Ventana que muestra una consola al estilo MS-DOS para depuración

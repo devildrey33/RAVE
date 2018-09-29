@@ -22,6 +22,7 @@ void ControlesPantallaCompleta::Crear(void) {
 	BotonStop.CrearBotonEx(this,	 IDI_STOP32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  90, 10, 30, 30, ID_BOTON_STOP);
 	BotonAdelante.CrearBotonEx(this, IDI_NEXT32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 130, 10, 30, 30, ID_BOTON_SIGUIENTE);
 
+	LabelRatio.CrearEtiquetaEx(this, L"x1.0", 170, 16, 40, 30, ID_LABEL_RATIO, TRUE);
 
 	BotonMezclar.CrearBotonEx(this, L"Mezclar", 220, 10, 80, 30, ID_BOTON_MEZCLAR);
 	BotonMezclar.Fuente = Fuente18Negrita;
@@ -35,12 +36,12 @@ void ControlesPantallaCompleta::Crear(void) {
 //	SliderTiempo.Crear(hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO, WS_CHILD | TBS_NOTICKS | WS_VISIBLE, 0, 30000, 0);
 //	SliderTiempo.TamPagina(30000 / 50);
 
-	SliderVolumen.CrearBarraDesplazamientoEx(this, RC.right - 145, 13, 90, 16, ID_SLIDER_VOLUMEN, 0, 200, 100);
-	LabelVolumen.CrearEtiquetaEx(this, L"100%", RC.right - 40, 12, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
+	SliderVolumen.CrearBarraDesplazamientoEx(this, RC.right - 145, 17, 90, 16, ID_SLIDER_VOLUMEN, 0, 200, 100);
+	LabelVolumen.CrearEtiquetaEx(this, L"100%", RC.right - 40, 16, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
 
-	LabelTiempoActual.CrearEtiquetaEx(this, L"00:00", RC.right - 265, 12, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
-	LabelTiempoSeparador.CrearEtiquetaEx(this, L"/", RC.right - 210, 12, 10, 20, ID_LABEL_TIEMPOSEPARADOR, TRUE, WS_CHILD | WS_VISIBLE);
-	LabelTiempoTotal.CrearEtiquetaEx(this, L"00:00", RC.right - 200, 12, 55, 20, ID_LABEL_TIEMPOTOTAL, TRUE, WS_CHILD | WS_VISIBLE);
+	LabelTiempoActual.CrearEtiquetaEx(this, L"00:00", RC.right - 265, 16, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
+	LabelTiempoSeparador.CrearEtiquetaEx(this, L"/", RC.right - 210, 16, 10, 20, ID_LABEL_TIEMPOSEPARADOR, TRUE, WS_CHILD | WS_VISIBLE);
+	LabelTiempoTotal.CrearEtiquetaEx(this, L"00:00", RC.right - 200, 16, 55, 20, ID_LABEL_TIEMPOTOTAL, TRUE, WS_CHILD | WS_VISIBLE);
 
 	Opacidad(240);
 }
@@ -55,7 +56,8 @@ void ControlesPantallaCompleta::Mostrar(void) {
 //	_Visible = TRUE;
 	RECT RC;
 	GetWindowRect(App.VentanaRave.hWnd(), &RC);
-	LONG X = (RC.right - 1000) / 2;
+	int AnchoTotal = (RC.right - RC.left);
+	LONG X = (AnchoTotal - 1000) / 2;
 
 	int Ancho = 1000;
 //	MoveWindow(hWnd(), X, RC.bottom - 80, Ancho, 80, TRUE);
@@ -67,12 +69,12 @@ void ControlesPantallaCompleta::Mostrar(void) {
 	MoveWindow(LabelTiempoSeparador.hWnd(),		Ancho - 230, 12, 10, 20, TRUE);
 	MoveWindow(LabelTiempoTotal.hWnd(),			Ancho - 220, 12, 55, 20, TRUE);
 
-	SetWindowPos(_hWnd, HWND_TOP, X, RC.bottom - 80, Ancho, 80, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+	SetWindowPos(_hWnd, HWND_TOP, RC.left + X, RC.bottom - 80, Ancho, 80, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 	//	ShowWindow(_hWnd, SW_SHOWNOACTIVATE);
 
 	DMouse::ObtenerPosicion(&App.VentanaRave.MousePos);
 	DMouse::Visible(TRUE);
-	Debug_Escribir(L"ControlesPantallaCompleta::Mostrar\n");
+//	Debug_Escribir(L"ControlesPantallaCompleta::Mostrar\n");
 //	DMouse::Visible(TRUE);
 }
 
@@ -164,15 +166,15 @@ void ControlesPantallaCompleta::Evento_Pintar(void) {
 
 
 void ControlesPantallaCompleta::Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse) {
-	switch (DatosMouse.ID) {
-	case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambio();					break;
+	switch (DatosMouse.ID()) {
+		case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambio();					break;
 	}
 }
 
 void ControlesPantallaCompleta::Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse) {
-	switch (DatosMouse.ID) {
-	case ID_SLIDER_TIEMPO:						Evento_SliderTiempo_Cambiado();					break;
-	case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambiado();				break;
+	switch (DatosMouse.ID()) {
+		case ID_SLIDER_TIEMPO:						Evento_SliderTiempo_Cambiado();					break;
+		case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambiado();				break;
 	}
 }
 
@@ -206,7 +208,10 @@ LRESULT CALLBACK ControlesPantallaCompleta::GestorMensajes(UINT uMsg, WPARAM wPa
 			App.VentanaRave.Evento_BotonEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
 		case DWL_BOTONEX_MOUSEDOWN:
-			App.VentanaRave.Evento_BotonEx_Mouse_Down(WPARAM_TO_DEVENTOMOUSE(wParam));
+			App.VentanaRave.Evento_BotonEx_Mouse_Presionado(WPARAM_TO_DEVENTOMOUSE(wParam));
+			return 0;
+		case DWL_BOTONEX_MOUSEUP:
+			App.VentanaRave.Evento_BotonEx_Mouse_Soltado(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
 
 			// Barra de desplazamiento (barra de tiempo y volumen)

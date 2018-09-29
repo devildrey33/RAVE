@@ -123,13 +123,13 @@ LRESULT CALLBACK AsignarTeclaRapida::GestorMensajes(UINT uMsg, WPARAM wParam, LP
 			return 0;
 			// Teclado
 		case WM_KEYDOWN:
-			Evento_TeclaPresionada(DWL::DEventoTeclado(wParam, lParam, ID()));
+			Evento_TeclaPresionada(DWL::DEventoTeclado(wParam, lParam, this));
 			break;	// Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general
 		case WM_KEYUP:
-			Evento_TeclaSoltada(DWL::DEventoTeclado(wParam, lParam, ID()));
+			Evento_TeclaSoltada(DWL::DEventoTeclado(wParam, lParam, this));
 			break;	// Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general
 		case WM_CHAR:
-			Evento_Tecla(DWL::DEventoTeclado(wParam, lParam, ID()));
+			Evento_Tecla(DWL::DEventoTeclado(wParam, lParam, this));
 			break;	// Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general
 
 	}

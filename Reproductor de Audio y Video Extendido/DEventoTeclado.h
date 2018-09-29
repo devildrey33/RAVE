@@ -4,12 +4,13 @@
 #define WPARAM_TO_DEVENTOTECLADO(WP) *reinterpret_cast<DWL::DEventoTeclado *>(WP)
 #define DEVENTOTECLADO_TO_WPARAM(DE) reinterpret_cast<WPARAM>(&DE)
 
+#include "DhWnd.h"
 
 namespace DWL {
 	class DEventoTeclado {
 	  public:
-										DEventoTeclado(void) : wParam(0), lParam(0) { };
-										DEventoTeclado(WPARAM nwParam, LPARAM nlParam, const INT_PTR nID) : wParam(nwParam), lParam(nlParam), ID(nID) { };
+										DEventoTeclado(void) : wParam(0), lParam(0), Wnd(NULL) { };
+										DEventoTeclado(WPARAM nwParam, LPARAM nlParam, DhWnd *Control) : wParam(nwParam), lParam(nlParam), Wnd(Control) { };
 		                               ~DEventoTeclado(void)	{ };
 									    // Contador de repeticiones para este mensaje. 
 										// MSDN : "The repeat count for the current message. The value is the number of times the keystroke is autorepeated as a result of the user holding down the key. If the keystroke is held long enough, multiple messages are sent. However, the repeat count is not cumulative."
@@ -32,17 +33,27 @@ namespace DWL {
 		inline const wchar_t            Caracter(void)			{ return static_cast<wchar_t>(wParam); };
 										// Caracter (solo para Evento_TeclaPresionada, y Evento_TeclaSoltada)
 		inline const int 	            TeclaVirtual(void)		{ return static_cast<int>(wParam); };
-										// wParam que devuelven los mensajes del mouse
+										//! Función que devuelve la ID del control de donde proviene este evento.
+										/*! Función que devuelve la ID del control de donde proviene este evento.
+											\fn			inline const INT_PTR ID(void);
+											\return		devuelve la id del control.
+										*/
+		inline const INT_PTR            ID(void) { if (Wnd != NULL) { return Wnd->ID(); } return NULL; }
+										//! Función que devuelve el hWnd de la ventana / control de donde proviene este evento.
+										/*! Función que devuelve el hWnd de la ventana / control de donde proviene este evento.
+											\fn			inline const INT_PTR ID(void);
+											\return		devuelve la id del control.
+										*/
+		inline const HWND               hWnd(void) { if (Wnd != NULL) { return Wnd->hWnd(); } return NULL; }
 		WPARAM                          wParam;
 										// wParam que devuelven los mensajes del mouse
 		LPARAM                          lParam;
-										// ID del control
-		INT_PTR                         ID;
-
+										// DhWnd base del Control, si necesitas un tipo de control concreto hay que hacer un reinterpret_cast.
+		DhWnd                          *Wnd;
 	  private: /////////////////////////// Miembros privados
 
 										//! Constructor copia des-habilitado
-										DEventoTeclado(const DEventoTeclado &) : wParam(0), lParam(0), ID(0) { };
+										DEventoTeclado(const DEventoTeclado &) : wParam(0), lParam(0), Wnd(NULL) { };
 										//! Operador = des-habilitado
 		inline DEventoTeclado		   &operator=(const DEventoTeclado &) { return *this; };
 

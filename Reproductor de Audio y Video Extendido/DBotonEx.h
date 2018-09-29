@@ -31,6 +31,7 @@ namespace DWL {
 		virtual void			Evento_MouseMovimiento(DEventoMouse &DatosMouse)	{ };
 		virtual void			Evento_MousePresionado(DEventoMouse &DatosMouse)	{ };
 		virtual void			Evento_MouseSoltado(DEventoMouse &DatosMouse)		{ };
+		virtual void			Evento_MouseClick(DEventoMouse &DatosMouse) { };
 
 		LRESULT CALLBACK		GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 

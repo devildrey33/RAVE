@@ -11,9 +11,9 @@
 #include "Rave_Skin.h"
 #include "DhWnd_Fuente.h"
 #include "DBarraTareas.h"
-#include "DEventoMouse.h"
+/*#include "DEventoMouse.h"
 #include "DEventoMouseRueda.h"
-#include "DEventoTeclado.h"
+#include "DEventoTeclado.h"*/
 #include "DMensajesWnd.h"
 
 namespace DWL {

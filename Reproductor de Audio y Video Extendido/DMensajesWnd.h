@@ -6,8 +6,8 @@
 
 	// BotonEx
 	#define DWL_BOTONEX_MOUSEDOWN							WM_USER + 3
-	#define DWL_BOTONEX_MOUSEUP								WM_USER + 4
-	#define DWL_BOTONEX_CLICK								WM_USER + 4
+	#define DWL_BOTONEX_MOUSEUP								WM_USER + 4	// Se lanza incluso fuera del control
+	#define DWL_BOTONEX_CLICK								WM_USER + 5	// Solo se lanza si el mouse está dentro del control al soltar el boton
 
 	// EditBox /////////////////////////////////////////////////////////////
 	#define DWL_EDITBOX_CLICK_IZQUIERDO						WM_USER + 12
@@ -24,7 +24,7 @@
 
 	// ListView ////////////////////////////////////////////////////////////
 //	#define DWL_LISTVIEW_RESALTAR_ITEM     					WM_USER + 39
-    #define DWL_LISTVIEW_TERMINAR_CAPTURA                   WM_USER + 39
+/*    #define DWL_LISTVIEW_TERMINAR_CAPTURA                   WM_USER + 39
 	#define DWL_LISTVIEW_TECLADO_INTRO						WM_USER + 40
     #define DWL_LISTVIEW_CLICK                              WM_USER + 41
     #define DWL_LISTVIEW_DOBLECLICK                         WM_USER + 42
@@ -56,7 +56,7 @@
 
 	#define DWL_TREEVIEW_TERMINAR_CAPTURA					WM_USER + 70
 	#define DWL_TREEVIEW_CLICK								WM_USER + 71
-	#define DWL_TREEVIEW_DOBLECLICK							WM_USER + 72
+	#define DWL_TREEVIEW_DOBLECLICK							WM_USER + 72*/
 
 
 

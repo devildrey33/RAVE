@@ -27,7 +27,6 @@ RAVE::~RAVE(void) {
 
 // Devuelve TRUE para continuar con el bucle de mensajes, FALSE para salir de la aplicación
 const BOOL RAVE::Iniciar(int nCmdShow) {
-
 	// Obtengo/Creo un mutex para evitar que 2 o mas reproductores se inicien a la vez.
 	// De esta forma cuando se inicia el reproductor, este espera a que el anterior termine completamente de cargarse.
 	MutexPlayer = OpenMutex(NULL, FALSE, MUTEX_RAVE);
@@ -155,9 +154,9 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 			IniciarUI(nCmdShow);
 
 			// Compruebo las aosiciaciones de archivo y muestro la ventana si es necesario
-			if (AsociarMedios.ComprobarAsociaciones() == FALSE) {
+/*			if (AsociarMedios.ComprobarAsociaciones() == FALSE) {
 				VentanaAsociar.Mostrar();
-			}
+			}*/
 
 			// Hay uno o mas paths por agregar a la lista
 			if (Paths.size() > 0) {
@@ -422,7 +421,7 @@ void RAVE::CerrarSistema(const SOCerrarSistema Forma, const BOOL Forzar) {
 // TECLADO GENERAL PARA DOAS LAS VENTANAS DE ESTE HILO EXCEPTO LA DEL VIDEO DEL VLC
 void RAVE::Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado) {
 	DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = true;
-	Debug_Escribir_Varg(L"RAVE::Evento_TeclaPresionada Tecla : %d, Id : %d\n", DatosTeclado.TeclaVirtual(), DatosTeclado.ID);
+	Debug_Escribir_Varg(L"RAVE::Evento_TeclaPresionada Tecla : %d, Id : %d\n", DatosTeclado.TeclaVirtual(), DatosTeclado.ID());
 }
 
 // TECLADO GENERAL PARA DOAS LAS VENTANAS DE ESTE HILO EXCEPTO LA DEL VIDEO DEL VLC
@@ -484,7 +483,7 @@ void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 	}
 
 
-	Debug_Escribir_Varg(L"RAVE::Evento_TeclaSoltada Tecla : %d, Id : %d\n", DatosTeclado.TeclaVirtual(), DatosTeclado.ID);
+	Debug_Escribir_Varg(L"RAVE::Evento_TeclaSoltada Tecla : %d, Id : %d\n", DatosTeclado.TeclaVirtual(), DatosTeclado.ID());
 }
 
 

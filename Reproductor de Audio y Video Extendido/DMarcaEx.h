@@ -25,6 +25,8 @@ namespace DWL {
 		LRESULT CALLBACK		GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 		inline const BOOL       Marcado(void) { return _Marcado; }
 		void                    Marcado(const BOOL nMarcar);
+		virtual void			Activado(const BOOL nActivar);
+		inline const BOOL       Activado(void) { return DhWnd::Activado(); }
 		void                    Pintar(HDC DC);
 	  protected:
 		void			       _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);

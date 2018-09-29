@@ -21,7 +21,7 @@ void VentanaAsociarReproductor::Mostrar(void) {
 	if (App.BD.Opciones_MostrarAsociarArchivos() == FALSE) return;
 
 	// Creo la ventana que mostrará el progreso
-	CrearVentana(&App.VentanaRave, L"RAVE_AsociarReproductor", L"Asociar Reproductor", App.BD.Opciones_VentanaAsociar_PosX(), App.BD.Opciones_VentanaAsociar_PosY(), 510, 155, WS_CAPTION | WS_SYSMENU | WS_VISIBLE, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+	CrearVentana(NULL, L"RAVE_AsociarReproductor", L"Asociar Reproductor", App.BD.Opciones_VentanaAsociar_PosX(), App.BD.Opciones_VentanaAsociar_PosY(), 510, 155, WS_CAPTION | WS_SYSMENU | WS_VISIBLE, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 	RECT RC;
 	GetClientRect(_hWnd, &RC);
 
@@ -73,18 +73,23 @@ void VentanaAsociarReproductor::_Evento_Pintar(void) {
 
 
 void VentanaAsociarReproductor::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse) {
+	Boton_Click(DatosMouse.ID());
+}
+
+void VentanaAsociarReproductor::Boton_Click(const INT_PTR IdBoton) {
 	std::wstring PathExe = App.AppPath + L"RAVE.exe";
 
-	if (DatosMouse.ID == ID_BOTONACEPTAR) {
+	if (IdBoton == ID_BOTONACEPTAR) {
 		ShellExecute(NULL, TEXT("RunAs"), PathExe.c_str(), TEXT("-AsociarArchivos"), App.AppPath.c_str(), SW_SHOWNORMAL);
 	}
-	
+
 	Visible(FALSE);
 	_BotonAceptar.Destruir();
 	_BotonCancelar.Destruir();
 	_MarcaNoMostrarMas.Destruir();
-	SetFocus(App.VentanaRave.hWnd());
+//	SetFocus(App.VentanaRave.hWnd());
 	Destruir();
+
 }
 
 LRESULT CALLBACK VentanaAsociarReproductor::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
@@ -103,14 +108,14 @@ LRESULT CALLBACK VentanaAsociarReproductor::GestorMensajes(UINT uMsg, WPARAM wPa
 			return 0;
 		case WM_KEYUP			:	
 			if (wParam == VK_ESCAPE) { 
-				Evento_BotonEx_Mouse_Click(DWL::DEventoMouse(0, 0, ID_BOTONCANCELAR)); 
+				Boton_Click(ID_BOTONCANCELAR);
 			}	
 			break; // Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general
 		case WM_CLOSE :
-			Evento_BotonEx_Mouse_Click(DWL::DEventoMouse(0, 0, ID_BOTONCANCELAR));
+			Boton_Click(ID_BOTONCANCELAR);
 			return 0;
 		case WM_EXITSIZEMOVE:
-			App.BD.Opciones_GuardarPosVentanaAsociar();
+//			App.BD.Opciones_GuardarPosVentanaAsociar();
 			return 0;
 
 	}

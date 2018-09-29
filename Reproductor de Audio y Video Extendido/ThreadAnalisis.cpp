@@ -584,7 +584,7 @@ void ThreadAnalisis::_PintarTexto(HDC DC, const wchar_t *pTexto, const int PosX,
 }*/
 
 void ThreadAnalisis::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse) {
-	switch (DatosMouse.ID) {
+	switch (DatosMouse.ID()) {
 		case ID_BOTONCANCELAR	:	Cancelar(TRUE);						break;
 		case ID_BOTONOCULTAR	:	ShowWindow(_hWnd, SW_MINIMIZE);		break;
 	}
@@ -603,8 +603,8 @@ LRESULT CALLBACK ThreadAnalisis::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM
 		case WM_CLOSE			 :   Cancelar(TRUE);																					return 0;
 		case DWL_BOTONEX_CLICK   :   Evento_BotonEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));										return 0;
 		case DWL_MARCAEX_CLICK   :   App.BD.Opciones_MostrarObtenerMetadatos(!_MarcaNoMostrarMas.Marcado());							return 0;
-		case WM_KEYUP			 :	if (wParam == VK_ESCAPE) { Evento_BotonEx_Mouse_Click(DWL::DEventoMouse(0, 0, ID_BOTONOCULTAR)); }	break;
-		case WM_EXITSIZEMOVE     :  App.BD.Opciones_GuardarPosVentanaAsociar();															return 0;
+		case WM_KEYUP			 :	if (wParam == VK_ESCAPE) { Cancelar(TRUE); }														break;		// Los eventos de teclado tienen un break para que puedan llegar al hook global de teclado para la aplicación
+		case WM_EXITSIZEMOVE     :  App.BD.Opciones_GuardarPosVentanaAnalizar();														return 0;
 	}
 	return DVentana::GestorMensajes(uMsg, wParam, lParam);
 }

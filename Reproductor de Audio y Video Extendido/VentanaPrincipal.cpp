@@ -49,6 +49,8 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	BotonStop.CrearBotonEx(&MarcoSI,	 IDI_STOP32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  80, 0, 30, 30, ID_BOTON_STOP);
 	BotonAdelante.CrearBotonEx(&MarcoSI, IDI_NEXT32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 120, 0, 30, 30, ID_BOTON_SIGUIENTE);
 
+	LabelRatio.CrearEtiquetaEx(&MarcoSI, L"x1.0", 160, 6, 40, 30, ID_LABEL_RATIO, TRUE);
+
 	BotonMezclar.CrearBotonEx(&MarcoSI, L"Mezclar", 210, 0, 80, 30, ID_BOTON_MEZCLAR);
 	BotonMezclar.Fuente = Fuente18Negrita;
 	if (App.BD.Opciones_Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
@@ -62,7 +64,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 //	SliderTiempo.TamPagina(30000 / 50);
 
 	// Marco superior derecho
-	MarcoSD.Crear(this, RC.right - 260, 14, 250, 24, ID_MARCOSD);
+	MarcoSD.Crear(this, RC.right - 260, 16, 250, 24, ID_MARCOSD);
 
 	SliderVolumen.CrearBarraDesplazamientoEx(&MarcoSD, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.BD.Opciones_Volumen()));
 	std::wstring TxtVolumen = std::to_wstring(App.BD.Opciones_Volumen()) + L"%";
@@ -230,6 +232,7 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 
 			// Un medio de la lista ha terminado
 			if (Estado == Terminada) {				
+				App.BD.MedioReproducido(&App.VLC.MedioActual);
 				App.VLC.Stop();
 				if (Lista.MedioActual == Lista.TotalItems() - 1) {
 					Repeat();
@@ -421,9 +424,9 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 }
 
 
-void VentanaPrincipal::Evento_BotonEx_Mouse_Down(DWL::DEventoMouse &DatosMouse) {
+void VentanaPrincipal::Evento_BotonEx_Mouse_Presionado(DWL::DEventoMouse &DatosMouse) {
 	_BotonExMouseDownTick = GetTickCount();
-	switch (DatosMouse.ID) {
+	switch (DatosMouse.ID()) {
 		case ID_BOTON_ANTERIOR:	
 			App.VLC.Ratio(0.5f);
 			break;
@@ -432,6 +435,13 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Down(DWL::DEventoMouse &DatosMouse) 
 			break;
 	}
 }
+
+void VentanaPrincipal::Evento_BotonEx_Mouse_Soltado(DWL::DEventoMouse &DatosMouse) {
+	if (DatosMouse.ID() == ID_BOTON_ANTERIOR || DatosMouse.ID() == ID_BOTON_SIGUIENTE) {
+		App.VLC.Ratio(1.0f);
+	}
+}
+
 
 void VentanaPrincipal::_MostrarMarco(const INT_PTR ID) {
 	BotonBD.Marcado((ID == ID_BOTON_BD) ? TRUE: FALSE);
@@ -444,7 +454,7 @@ void VentanaPrincipal::_MostrarMarco(const INT_PTR ID) {
 
 void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse) {
 	if (DatosMouse.Boton == 0) {
-		switch (DatosMouse.ID) {
+		switch (DatosMouse.ID()) {
 			case ID_BOTON_OPCIONES:
 				if (App.VentanaOpciones.hWnd() == NULL)		App.VentanaOpciones.Crear();
 				else                                        SetFocus(App.VentanaOpciones.hWnd());
@@ -452,7 +462,7 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse)
 			case ID_BOTON_BD:
 			case ID_BOTON_LISTA:
 			case ID_BOTON_VIDEO:
-				_MostrarMarco(DatosMouse.ID);
+				_MostrarMarco(DatosMouse.ID());
 				break;
 /*			case ID_BOTON_AGREGARRAIZ:
 				AgregarRaiz();
@@ -464,14 +474,14 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse)
 				Repetir_Click();
 				break;
 			case ID_BOTON_ANTERIOR:
-				App.VLC.Ratio(1.0f);
-				if (GetTickCount() < _BotonExMouseDownTick + 200) {
+				// El boton no lleva mucho tiempo presionado
+				if (GetTickCount() < _BotonExMouseDownTick + 100) {
 					Lista_Anterior();
 				}
 				break;
 			case ID_BOTON_SIGUIENTE:
-				App.VLC.Ratio(1.0f);
-				if (GetTickCount() < _BotonExMouseDownTick + 200) {
+				// El boton no lleva mucho tiempo presionado
+				if (GetTickCount() < _BotonExMouseDownTick + 100) {
 					Lista_Siguiente();
 				}
 				break;
@@ -488,7 +498,7 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse)
 	}
 	else if (DatosMouse.Boton == 1) {
 		RECT RV;		
-		switch (DatosMouse.ID) {
+		switch (DatosMouse.ID()) {
 			case ID_BOTON_BD:
 				GetWindowRect(BotonBD.hWnd(), &RV);
 				Menu_BotonArbolBD.Mostrar(this, RV.left, RV.bottom);
@@ -699,7 +709,10 @@ void VentanaPrincipal::Evento_BorraFondo(HDC DC) {
 void VentanaPrincipal::Evento_Cerrar(void) {
 	App.VLC.Stop();
 	Visible(FALSE);
-//	App.BD.Consulta(L"BEGIN TRANSACTION");
+	App.OcultarToolTipPlayer();
+	App.OcultarToolTipOpciones();
+	App.VentanaOpciones.Destruir();
+	//	App.BD.Consulta(L"BEGIN TRANSACTION");
 	App.BD.GuardarUltimaLista();
 //	App.BD.Opciones_GuardarOpciones();
 //	App.BD.Consulta(L"COMMIT TRANSACTION");
@@ -878,13 +891,13 @@ void VentanaPrincipal::Evento_Tecla(DWL::DEventoTeclado &DatosTeclado) {
 }
 
 void VentanaPrincipal::Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse) {
-	switch (DatosMouse.ID) {
+	switch (DatosMouse.ID()) {
 		case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambio();					break;
 	}
 }
 
 void VentanaPrincipal::Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse) {
-	switch (DatosMouse.ID) {
+	switch (DatosMouse.ID()) {
 		case ID_SLIDER_TIEMPO:						Evento_SliderTiempo_Cambiado();					break;
 		case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambiado();				break;
 	}
@@ -987,13 +1000,13 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 
 		// Teclado
 		case WM_KEYDOWN:		
-			Evento_TeclaPresionada(DWL::DEventoTeclado(wParam, lParam, ID()));															
+			Evento_TeclaPresionada(DWL::DEventoTeclado(wParam, lParam, this));															
 			break;	// Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general
 		case WM_KEYUP:
-			Evento_TeclaSoltada(DWL::DEventoTeclado(wParam, lParam, ID()));
+			Evento_TeclaSoltada(DWL::DEventoTeclado(wParam, lParam, this));
 			break;	// Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general
 		case WM_CHAR:
-			Evento_Tecla(DWL::DEventoTeclado(wParam, lParam, ID()));
+			Evento_Tecla(DWL::DEventoTeclado(wParam, lParam, this));
 			break;	// Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general
 
 
@@ -1043,8 +1056,11 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 		case DWL_BOTONEX_CLICK :
 			Evento_BotonEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
+		case DWL_BOTONEX_MOUSEUP:
+			Evento_BotonEx_Mouse_Soltado(WPARAM_TO_DEVENTOMOUSE(wParam));
+			return 0;
 		case DWL_BOTONEX_MOUSEDOWN :
-			Evento_BotonEx_Mouse_Down(*reinterpret_cast<DWL::DEventoMouse *>(wParam));
+			Evento_BotonEx_Mouse_Presionado(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
 		
 

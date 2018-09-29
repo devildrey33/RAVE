@@ -51,22 +51,22 @@
 #define ID_BOTON_STOP							2004
 #define ID_BOTON_SIGUIENTE						2005
 #define ID_BOTON_ANTERIOR						2006
+#define ID_LABEL_RATIO                          2007
+#define ID_BOTON_MEZCLAR						2008
+#define ID_BOTON_REPETIR						2009
 
-#define ID_BOTON_MEZCLAR						2007
-#define ID_BOTON_REPETIR						2008
+#define ID_BOTON_OPCIONES						2010
+#define ID_BOTON_LISTA							2011
+#define ID_BOTON_BD								2012
+#define ID_BOTON_VIDEO							2013
 
-#define ID_BOTON_OPCIONES						2009
-#define ID_BOTON_LISTA							2010
-#define ID_BOTON_BD								2011
-#define ID_BOTON_VIDEO							2012
+#define ID_SLIDER_TIEMPO						2014
+#define ID_SLIDER_VOLUMEN						2015
 
-#define ID_SLIDER_TIEMPO						2013
-#define ID_SLIDER_VOLUMEN						2014
-
-#define ID_LABEL_TIEMPOACTUAL					2015
-#define ID_LABEL_TIEMPOSEPARADOR				2016
-#define ID_LABEL_TIEMPOTOTAL					2017
-#define ID_LABEL_VOLUMEN						2018
+#define ID_LABEL_TIEMPOACTUAL					2016
+#define ID_LABEL_TIEMPOSEPARADOR				2017
+#define ID_LABEL_TIEMPOTOTAL					2018
+#define ID_LABEL_VOLUMEN						2019
 
 #define ID_MARCOSD								2020
 #define ID_MARCOSI								2021

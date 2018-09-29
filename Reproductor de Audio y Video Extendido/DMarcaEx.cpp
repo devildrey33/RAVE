@@ -42,7 +42,7 @@ namespace DWL {
 		DeleteObject(ColorFondo);
 
 		// Determino que colores hay que utilizar según el estado
-		COLORREF ColTexto, ColMarcoBorde;
+		COLORREF ColTexto, ColMarcoBorde, ColFondo = COLOR_FONDO_CLARO;
 		int bPresionado = 0;
 		switch (_Estado) {
 			case DMarcaEx_Estado_Normal		:	ColTexto = COLOR_TEXTO;					ColMarcoBorde =	COLOR_BORDE;						break;
@@ -50,13 +50,17 @@ namespace DWL {
 			case DMarcaEx_Estado_Presionado :	ColTexto = COLOR_TEXTO_PRESIONADO;		ColMarcoBorde = COLOR_BORDE;	bPresionado = 1;	break;
 		}
 
-
+		BOOL nActivado = Activado();
+		if (nActivado == FALSE) {
+			ColTexto = COLOR_TEXTO_DESACTIVADO;
+			ColFondo = COLOR_FONDO_CLARO_DESACTIVADO;
+		}
 
 		// Pinto el marco para el check
 		int  YMarco = (RC.bottom - (DMARCAEX_TAMICONO + 2)) / 2;
 		RECT Marco  = { 0, YMarco, DMARCAEX_TAMICONO + 2, (DMARCAEX_TAMICONO + 2) + YMarco };
 		
-		HBRUSH	ColorFondoMarco = CreateSolidBrush(COLOR_FONDO_CLARO);
+		HBRUSH	ColorFondoMarco = CreateSolidBrush(ColFondo);
 		HPEN	ColorBordeMarco = CreatePen(PS_SOLID, 1, ColMarcoBorde);
 		HBRUSH  BrochaViejo		= static_cast<HBRUSH>(SelectObject(Buffer, ColorFondoMarco));
 		HPEN    PlumaViejo		= static_cast<HPEN>(SelectObject(Buffer, ColorBordeMarco));
@@ -107,7 +111,7 @@ namespace DWL {
 
 	void DMarcaEx::_Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam) {
 		BOOL nRepintar = FALSE;
-		DEventoMouse DatosMouse(wParam, lParam, ID(), -1);
+		DEventoMouse DatosMouse(wParam, lParam, this, -1);
 		if (_MouseEntrando() == TRUE) {
 			// Mouse enter
 			if (_Estado != DMarcaEx_Estado_Presionado) {
@@ -121,7 +125,7 @@ namespace DWL {
 	}
 
 	void DMarcaEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {
-		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		SetCapture(hWnd());
 		_Estado = DMarcaEx_Estado_Presionado;
 		Evento_MousePresionado(DatosMouse);
@@ -129,7 +133,7 @@ namespace DWL {
 	}
 
 	void DMarcaEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
-		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		BOOL nRepintar = FALSE;
 		if (_Estado == DMarcaEx_Estado_Presionado) {
 			ReleaseCapture();
@@ -161,6 +165,12 @@ namespace DWL {
 		}
 		Evento_MouseSaliendo();
 		if (nRepintar == TRUE)	Repintar();
+	}
+
+	void DMarcaEx::Activado(const BOOL nActivar) {
+		BOOL Ret = FALSE;
+		Ret = EnableWindow(_hWnd, nActivar);
+		Repintar();
 	}
 
 	LRESULT CALLBACK DMarcaEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {

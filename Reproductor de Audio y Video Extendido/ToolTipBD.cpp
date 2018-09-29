@@ -132,8 +132,8 @@ const POINT ToolTipBD::_CalcularMedio(BDMedio &nMedio) {
 	_Col2.resize(0);
 
 	// Construyo las columnas con sus datos
-	const size_t	NumFilas = 7;
-	const wchar_t  *Col1[NumFilas] = { L"Pista", L"Genero", L"Grupo", L"Disco", L"Tiempo", L"Tamaño", L"Nota" };
+	const size_t	NumFilas = 8;
+	const wchar_t  *Col1[NumFilas] = { L"Pista", L"Genero", L"Grupo", L"Disco", L"Tiempo", L"Tamaño", L"Nota", L"Reproducido" };
 	std::wstring    Col2[NumFilas];
 
 	nMedio.PistaStr(Col2[0]);	//	Col2[0] = std::to_wstring(nMedio.Pista());
@@ -143,7 +143,7 @@ const POINT ToolTipBD::_CalcularMedio(BDMedio &nMedio) {
 	RaveVLC::TiempoStr(nMedio.Tiempo, Col2[4]);
 	Strings::FormatoBytes(nMedio.Longitud, Col2[5]);
 	Col2[6] = DWL::Strings::ToStrF(nMedio.Nota, 2);
-
+	Col2[7] = std::to_wstring(nMedio.Reproducido);
 
 	// Miro el ancho del titulo
 	SIZE Tam = { 0, 0 };

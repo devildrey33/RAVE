@@ -35,6 +35,8 @@ class ControlesPantallaCompleta :public DVentana {
 	DWL::DBotonEx			BotonAdelante;
 	DWL::DBotonEx			BotonAtras;
 
+	DWL::DEtiquetaEx		LabelRatio;
+
 	DWL::DBotonEx			BotonMezclar;
 	DWL::DBotonEx			BotonRepetir;
 

@@ -241,17 +241,17 @@ namespace DWL {
 	}
 
 	void DEdicionTextoEx::_Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam) {
-		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		DEventoTeclado DatosTeclado(wParam, lParam, this);
 		if (EdicionTexto_Evento_TeclaPresionada(DatosTeclado) == TRUE) Repintar();
 	}
 
 	void DEdicionTextoEx::_Evento_TeclaSoltada(WPARAM wParam, LPARAM lParam) {
-		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		DEventoTeclado DatosTeclado(wParam, lParam, this);
 		if (EdicionTexto_Evento_TeclaSoltada(DatosTeclado) == TRUE) Repintar();
 	}
 
 	void DEdicionTextoEx::_Evento_Tecla(WPARAM wParam, LPARAM lParam) {
-		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		DEventoTeclado DatosTeclado(wParam, lParam, this);
 		if (EdicionTexto_Evento_Tecla(DatosTeclado) == TRUE) Repintar();
 	}
 

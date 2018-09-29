@@ -553,7 +553,7 @@ const BOOL RaveBD::_CrearTablas(void) {
 	std::wstring CrearTablaOpciones = L"CREATE TABLE Opciones ("
 											L"Id" 						L" INTEGER PRIMARY KEY," 
 											L"Volumen"					L" INTEGER,"             
-											L"PathAbrir"				L" VARCHAR(260),"	 	  
+											L"PathAbrir"				L" VARCHAR(260),"			// NO SE USA	  
 											L"PosX"						L" INTEGER,"             
 											L"PosY"						L" INTEGER,"             
 											L"Ancho"					L" INTEGER,"             
@@ -564,22 +564,23 @@ const BOOL RaveBD::_CrearTablas(void) {
 											L"OcultarMouseEnVideo"		L" INTEGER,"             
 											L"Version"					L" DOUBLE,"				  
 											L"MostrarObtenerMetadatos"	L" INTEGER,"
-											L"MostrarAsociarArchivos"	L" INTEGER,"
+											L"MostrarAsociarArchivos"	L" INTEGER,"				// NO SE USA
 											L"AnalizarMediosPendientes" L" INTEGER,"
 											L"VentanaOpciones_PosX"		L" INTEGER,"             
 											L"VentanaOpciones_PosY"		L" INTEGER,"             
-											L"VentanaAsociar_PosX"		L" INTEGER,"             
-											L"VentanaAsociar_PosY"		L" INTEGER," 
+											L"VentanaAsociar_PosX"		L" INTEGER,"				// NO SE USA 
+											L"VentanaAsociar_PosY"		L" INTEGER,"				// NO SE USA
 											L"VentanaAnalizar_PosX"		L" INTEGER,"             
-											L"VentanaAnalizar_PosY"		L" INTEGER" 
+											L"VentanaAnalizar_PosY"		L" INTEGER," 
+											L"BuscarActualizacion"		L" INTEGER" 
 									  L")";
 	if (Consulta(CrearTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	// Añado los datos por defecto de las opciones ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes, VentanaOpciones_PosX, VentanaOpciones_PosY, VentanaAsociar_PosX, VentanaAsociar_PosY, VentanaAnalizar_PosX, VentanaAnalizar_PosY) "
-										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1, 1, 400, 300, 500, 400, 300, 200)";
+	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes, VentanaOpciones_PosX, VentanaOpciones_PosY, VentanaAsociar_PosX, VentanaAsociar_PosY, VentanaAnalizar_PosX, VentanaAnalizar_PosY, BuscarActualizacion) "
+										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1, 1, 400, 300, 500, 400, 300, 200, 1)";
 	if (Consulta(ValoresTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1019,7 +1020,7 @@ const BOOL RaveBD::AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre,
 
 
 const BOOL RaveBD::_EsNumero(const wchar_t Caracter) {
-	if (Caracter >= TEXT('0') && Caracter <= TEXT('9'))	return TRUE;
+	if (Caracter >= L'0' && Caracter <= L'9')	return TRUE;
 	return FALSE;
 }
 
@@ -1033,22 +1034,16 @@ void RaveBD::FiltroNombre(std::wstring &In, std::wstring &Out) {
 		switch (In[i]) {
 			case 65279: // caracter invisible inutil del unicode
 				break;
-			case TEXT(':'): case TEXT('_'): case TEXT(','): case TEXT('.'): case 96  /*'*/: case TEXT('('): case TEXT(')'):
-			case TEXT('!'): case TEXT('?'): case TEXT('¿'): case TEXT('^'): case TEXT('"'): case TEXT('#'): case TEXT('$'):
-			case TEXT('%'): case TEXT('/'): case TEXT('\\'): case TEXT('-'): case TEXT('['): case TEXT(']'): case TEXT('~'):
-			case ' ':
-				Espacio = false;
-				if (Out.size() != 0) {
-					if (In[Out.size() - 1] != L' ') {
-						Espacio = true;
+			// Espacio o caracteres por filtrar
+			case L':': case L'_': case L',':  case L'.': case L'(': case L')': case L'~': case L'`':
+			case L'!': case L'?': case L'¿':  case L'^': case L'"': case L'#': case L'$': case L'´':
+			case L'%': case L'/': case L'\\': case L'-': case L'[': case L']': case L'*': case L' ':
+				// Solo añado un espacio si no estamos al principio, o el ultimo caracter NO es un espacio
+				if (Out.size() > 0) {
+					if (Out[Out.size() - 1] != L' ') {
+						Out += L' ';
 					}
 				}
-				else {
-					Espacio = true;
-				}
-
-				// Si el caracter anterior no es un espacio y no es el primer caracter, pongo un espacio. 
-				if (Espacio == true && Out.size() != 0) Out += TEXT(' ');
 				break;
 			default:
 				Out += static_cast<TCHAR>(tolower(In[i]));
@@ -1056,16 +1051,11 @@ void RaveBD::FiltroNombre(std::wstring &In, std::wstring &Out) {
 		}
 	}
 
-	// Quito los espacios del principio
-	while (Out[0] == L' ') {
-		Out = Out.substr(1);
-	}
-	// Quito los espacios del final
+	// Quito el ultimo espacio si existe
 	if (Out.size() > 0) {
-		while (Out[Out.size() - 1] == L' ') {
+		if (Out[Out.size() - 1] == L' ') {
 			Out.resize(Out.size() - 1);
-			if (Out.size() == 0) break;
-		}
+		}			
 	}
 
 	// Primer caracter en mayusculas
@@ -1141,6 +1131,13 @@ void RaveBD::Opciones_AnalizarMediosPendientes(const BOOL nAnalizarMediosPendien
 	Ret = Ret;
 }
 
+void RaveBD::Opciones_BuscarActualizacion(const BOOL nBuscarActualizacion) {
+	_Opciones_BuscarActualizacion = nBuscarActualizacion;
+	std::wstring Q = L"Update Opciones SET BuscarActualizacion=" + std::to_wstring(nBuscarActualizacion) + L" WHERE Id=0";
+	int Ret = Consulta(Q.c_str());
+	Ret = Ret;
+}
+
 const BOOL RaveBD::ObtenerOpciones(void) {
 
 	const wchar_t  *SqlStr = L"SELECT * FROM Opciones";
@@ -1177,6 +1174,7 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 			_Opciones_VentanaAsociar_PosY		= static_cast<int>(sqlite3_column_int(SqlQuery, 18));
 			_Opciones_VentanaAnalizar_PosX		= static_cast<int>(sqlite3_column_int(SqlQuery, 19));
 			_Opciones_VentanaAnalizar_PosY		= static_cast<int>(sqlite3_column_int(SqlQuery, 20));
+			_Opciones_BuscarActualizacion       = static_cast<BOOL>(sqlite3_column_int(SqlQuery, 21));
 		}
 		if (SqlRet == SQLITE_BUSY) {
 			VecesBusy++;
@@ -1260,7 +1258,7 @@ const BOOL RaveBD::Opciones_GuardarPosVentanaOpciones(void) {
 	return TRUE;
 }
 
-const BOOL RaveBD::Opciones_GuardarPosVentanaAsociar(void) {
+/*const BOOL RaveBD::Opciones_GuardarPosVentanaAsociar(void) {
 	RECT RV;
 	GetWindowRect(App.VentanaAsociar.hWnd(), &RV);
 	_Opciones_VentanaAsociar_PosX = RV.left;
@@ -1272,7 +1270,7 @@ const BOOL RaveBD::Opciones_GuardarPosVentanaAsociar(void) {
 		return FALSE;
 	}
 	return TRUE;
-}
+}*/
 
 const BOOL RaveBD::Opciones_GuardarPosVentanaAnalizar(void) {
 	RECT RV;
@@ -1288,7 +1286,16 @@ const BOOL RaveBD::Opciones_GuardarPosVentanaAnalizar(void) {
 	return TRUE;
 }
 
-
+const BOOL RaveBD::MedioReproducido(BDMedio *rMedio) {
+	if (rMedio == NULL) return FALSE;
+	std::wstring Q = L"UPDATE Medios SET Reproducido=" + std::to_wstring(rMedio->Reproducido + 1) + L" WHERE Id=" + std::to_wstring(rMedio->Id);
+	int SqlRet = Consulta(Q);
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+	return TRUE;
+}
 
 const BOOL RaveBD::ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios) {
 	const wchar_t  *Q = L"SELECT Id, NombrePath, Genero, GrupoPath, DiscoPath, NombreTag, GrupoTag, DiscoTag, Path, PistaTag, PistaPath, Nota, Tiempo, Longitud FROM Medios WHERE TipoMedio=1"; // Tipo_Medio_Audio

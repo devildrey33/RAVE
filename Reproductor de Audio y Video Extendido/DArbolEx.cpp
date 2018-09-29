@@ -918,7 +918,7 @@ namespace DWL {
 	void DArbolEx::_Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam) {
 		BOOL bME = _MouseEntrando();
 
-		DEventoMouse DatosMouse(wParam, lParam, ID());
+		DEventoMouse DatosMouse(wParam, lParam, this);
 		int cX		= DatosMouse.X(),
 			cY		= DatosMouse.Y();
 		#if DARBOLEX_MOSTRARDEBUG == TRUE
@@ -945,7 +945,7 @@ namespace DWL {
 
 	void DArbolEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {
 		
-		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		int cX		= DatosMouse.X(),
 			cY		= DatosMouse.Y();
 
@@ -1020,7 +1020,7 @@ namespace DWL {
 	}
 
 	void DArbolEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
-		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		int cX		= DatosMouse.X(),
 			cY		= DatosMouse.Y();
 
@@ -1052,7 +1052,7 @@ namespace DWL {
 	}
 
 	void DArbolEx::_Evento_MouseRueda(WPARAM wParam, LPARAM lParam) {		
-		DEventoMouseRueda DatosMouse(wParam, lParam, ID(), _hWnd);
+		DEventoMouseRueda DatosMouse(wParam, lParam, this);
 
 		#if DARBOLEX_MOSTRARDEBUG == TRUE
 			Debug_Escribir_Varg(L"DArbolEx::_Evento_MouseRueda X : %d, Y : %d\n", DatosMouse.X(), DatosMouse.Y());
@@ -1305,7 +1305,7 @@ namespace DWL {
 	}
 
 	void DArbolEx::_Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam) {
-		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		DEventoTeclado DatosTeclado(wParam, lParam, this);
 		UINT Tecla = DatosTeclado.TeclaVirtual();
 		// Marco la tecla como presionada
 //		DhWnd::Teclado[Tecla] = true;
@@ -1340,7 +1340,7 @@ namespace DWL {
 	}
 
 	void DArbolEx::_Evento_TeclaSoltada(WPARAM wParam, LPARAM lParam) {
-		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		DEventoTeclado DatosTeclado(wParam, lParam, this);
 		UINT Tecla = DatosTeclado.TeclaVirtual();
 		// Marco la tecla como no presionada
 		// DhWnd::Teclado[Tecla] = false;
@@ -1361,7 +1361,7 @@ namespace DWL {
 
 	/* TODO */
 	void DArbolEx::_Evento_Tecla(WPARAM wParam, LPARAM lParam) {
-		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		DEventoTeclado DatosTeclado(wParam, lParam, this);
 		UINT Tecla = DatosTeclado.TeclaVirtual();
 		if (Tecla >= 0x30 && Tecla <= 0x5A) {
 
@@ -1391,7 +1391,7 @@ namespace DWL {
 			Expandir(_NodoMarcado, !_NodoMarcado->Expandido);
 			SeleccionarNodo(_NodoMarcado, TRUE);
 		}
-		DEventoMouse DatosMouse(wParam, lParam, static_cast<int>(GetWindowLongPtr(_hWnd, GWL_ID)), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		Evento_MouseDobleClick(DatosMouse);
 	}
 

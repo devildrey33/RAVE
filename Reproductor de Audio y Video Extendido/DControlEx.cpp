@@ -62,10 +62,10 @@ namespace DWL {
 	LRESULT CALLBACK DControlEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
 			case WM_KEYDOWN: 
-				App.Evento_TeclaPresionada(DWL::DEventoTeclado(wParam, lParam, ID()));
+				App.Evento_TeclaPresionada(DWL::DEventoTeclado(wParam, lParam, this));
 				return 0;
 			case WM_KEYUP:
-				App.Evento_TeclaSoltada(DWL::DEventoTeclado(wParam, lParam, ID()));
+				App.Evento_TeclaSoltada(DWL::DEventoTeclado(wParam, lParam, this));
 				return 0;
 		}
 		return DefWindowProc(hWnd(), uMsg, wParam, lParam);

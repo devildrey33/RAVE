@@ -1,6 +1,7 @@
 #ifndef DEVENTOMOUSE_H
 #define DEVENTOMOUSE_H
 
+#include "DhWnd.h"
 
 //! Espacio de nombres DWL
 namespace DWL {
@@ -17,7 +18,7 @@ namespace DWL {
 											\fn			DEventoMouse(void);
 											\return		No devuelve nada.
 										*/
-										DEventoMouse(void) : wParam(0), lParam(0), ID(0), Boton(-1) {
+										DEventoMouse(void) : wParam(0), lParam(0), Wnd(NULL), Boton(-1) {
 										};
 
 										//! Constructor que define todos los valores
@@ -26,11 +27,12 @@ namespace DWL {
 											\param[in]	wParam	: WPARAM del evento.
 											\param[in]	lParam  : LPARAM del evento.
 											\param[in]	cID		: ID del Control.
+											\param[in]	hWnd    : HWND del Control.
 											\param[in]	cBoton	: Botón del mouse pulsado (si es -1 es que no se ha pulsado ningún botón).
 											\return		No devuelve nada.
 										*/
-										DEventoMouse(WPARAM nwParam, LPARAM nlParam, const INT_PTR cID, const int cBoton = -1) :
-											wParam(nwParam), lParam(nlParam), ID(cID), Boton(cBoton) {
+										DEventoMouse(WPARAM nwParam, LPARAM nlParam, DhWnd *Control, const int cBoton = -1) :
+											wParam(nwParam), lParam(nlParam), Wnd(Control), Boton(cBoton) {
 										};
 
 										//! Destructor.
@@ -92,19 +94,32 @@ namespace DWL {
 											return (wParam & MK_SHIFT);
 										};
 										
+										//! Función que devuelve la ID del control de donde proviene este evento.
+										/*! Función que devuelve la ID del control de donde proviene este evento.
+											\fn			inline const INT_PTR ID(void);
+											\return		devuelve la id del control.
+										*/
+		inline const INT_PTR            ID(void) { if (Wnd != NULL) { return Wnd->ID(); } return NULL; }
+
+										//! Función que devuelve el hWnd de la ventana / control de donde proviene este evento.
+										/*! Función que devuelve el hWnd de la ventana / control de donde proviene este evento.
+											\fn			inline const INT_PTR ID(void);
+											\return		devuelve la id del control.
+										*/
+		inline const HWND               hWnd(void) { if (Wnd != NULL) { return Wnd->hWnd(); } return NULL; }
 										// wParam que devuelven los mensajes del mouse
 		WPARAM                          wParam;
 										// wParam que devuelven los mensajes del mouse
 		LPARAM                          lParam;
-										// ID del control
-		INT_PTR                         ID;
+										// DhWnd base del Control, si necesitas un tipo de control concreto hay que hacer un reinterpret_cast.
+		DhWnd                          *Wnd;
 										// Botón presionado (puede ser -1)
 		int                             Boton;
 
 	  private: /////////////////////////// Miembros privados
 
 										//! Constructor copia des-habilitado
-										DEventoMouse(const DEventoMouse &) : wParam(0), lParam(0), ID(0), Boton(-1) { };
+										DEventoMouse(const DEventoMouse &) : wParam(0), lParam(0), Wnd(NULL), Boton(-1) { };
 										//! Operador = des-habilitado
 		inline DEventoMouse			    &operator=(const DEventoMouse &) { return *this; };
 

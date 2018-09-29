@@ -75,7 +75,7 @@ namespace DWL {
 	}
 
 	void DDlgDirectorios::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse) {
-		switch (DatosMouse.ID) {
+		switch (DatosMouse.ID()) {
 			case ID_BOTONACEPTAR :
 				_Terminado = 1;
 				break;

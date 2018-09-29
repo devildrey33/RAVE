@@ -75,7 +75,7 @@ namespace DWL {
 
 
 	void DBarraDesplazamientoEx::_Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam) {
-		DEventoMouse DatosMouse(wParam, lParam, ID());
+		DEventoMouse DatosMouse(wParam, lParam, this);
 		RECT  RC = { 0, 0, 0, 0 };
 		GetClientRect(hWnd(), &RC);
 		int cX = DatosMouse.X(); //  , cY = DatosMouse.Y();
@@ -108,7 +108,7 @@ namespace DWL {
 	}
 
 	void DBarraDesplazamientoEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {
-		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		POINT Pt = { DatosMouse.X(), DatosMouse.Y() };
 		RECT  RC = { 0, 0, 0, 0 };
 		GetClientRect(hWnd(), &RC);
@@ -124,7 +124,7 @@ namespace DWL {
 	}
 
 	void DBarraDesplazamientoEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
-		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		POINT Pt = { DatosMouse.X(), DatosMouse.Y() };
 		RECT  RC = { 0, 0, 0, 0 };
 		GetClientRect(hWnd(), &RC);

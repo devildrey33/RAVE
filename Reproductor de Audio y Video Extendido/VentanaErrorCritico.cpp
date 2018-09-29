@@ -78,7 +78,7 @@ void VentanaErrorCritico::Enviar(void) {
 }
 
 void VentanaErrorCritico::Evento_BotonEx_Mouse_Click(DEventoMouse &DatosTeclado) {
-	switch (DatosTeclado.ID) {
+	switch (DatosTeclado.ID()) {
 		case ID_VEC_ENVIAR:
 			Enviar();
 			break;

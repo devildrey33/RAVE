@@ -8,19 +8,21 @@
 #define ID_BOTON_ASOCIACIONESARCHIVOS	1002
 #define ID_BOTON_LISTAS					1003
 //#define ID_BOTON_VIDEO					1004
-
+// Botones del tab superior
 #define ID_MARCO_BASEDATOS				1005
 #define ID_MARCO_GENERAL				1006
 #define ID_MARCO_ASOCIACIONESARCHIVOS	1007
 #define ID_MARCO_LISTAS					1008
 #define ID_MARCO_VIDEO					1009
-
+// Base de datos
 #define ID_ETIQUETA_BASEDEDATOS			1010
 #define ID_MARCA_MOSTRARANALISIS		1011
 #define ID_MARCA_ANALIZARPENDIENTES		1012
-
-#define ID_ETIQUETAS_TECLADO            3000
-#define ID_ASINGAR_TECLA                3100
+// General
+#define ID_ETIQUETAS_TECLADO            1020
+#define ID_ASINGAR_TECLA                1040
+#define ID_ETIQUETA_TECLASRAPIDAS		1060
+#define ID_MARCA_BUSCARACTUALIZACIONES  1061
 
 VentanaOpcionesRAVE::VentanaOpcionesRAVE(void) {
 }
@@ -82,6 +84,11 @@ void VentanaOpcionesRAVE::Crear(void) {
 	MarcaAnalizarMediosPendientes.CrearMarcaEx(&MarcoBaseDeDatos, L"Analizar medios pendientes al actualizar la base de datos.", 70, 284, 395, 20, ID_MARCA_ANALIZARPENDIENTES, IDI_CHECK2);
 	MarcaAnalizarMediosPendientes.Marcado(App.BD.Opciones_AnalizarMediosPendientes());
 
+	////////////////////////////////////////////////
+	// Creo los controles dentro del marco General
+	EtiquetaTeclasRapidas.CrearEtiquetaEx(&MarcoGeneral, L"Las teclas rápidas solo se pueden utilizar cuando el reproductor tiene el foco.\n"
+														 L"Es muy recomendable configurar las teclas rápidas con una combinación de teclas\n"
+														 L"Por ejemplo : Control + tecla, Alt + Shift + Tecla, Control + Alt + tecla, etc..", 10, 10, RC.right - 40, 60, ID_ETIQUETA_TECLASRAPIDAS);
 	const wchar_t *Textos[6] = {
 		L"Play / Pausa",
 		L"Generar lista aleatória",
@@ -90,14 +97,15 @@ void VentanaOpcionesRAVE::Crear(void) {
 		L"Reproducir siguiente",
 		L"Reporducir anterior"
 	};
-	////////////////////////////////////////////////
-	// Creo los controles dentro del marco General
-	for (int i = 0; i < _NumTeclasRapidas; i++) {
-		EtiquetasTeclas[i].CrearEtiquetaEx(&MarcoGeneral, Textos[i], 10, 10 + (i * 25), 160, 20, ID_ETIQUETAS_TECLADO + i);
+	for (int i = 0; i < App.TeclasRapidas.size(); i++) {
+		EtiquetasTeclas[i].CrearEtiquetaEx(&MarcoGeneral, Textos[i], 10, 80 + (i * 25), 160, 20, ID_ETIQUETAS_TECLADO + i);
 		EtiquetasTeclas[i].Fuente = Fuente18Normal;
-		TeclasRapidas[i].Crear(&MarcoGeneral, 180, 10 + (i * 25), RC.right - 200, 20, ID_ASINGAR_TECLA, &App.TeclasRapidas[i]);
+		TeclasRapidas[i].Crear(&MarcoGeneral, 180, 80 + (i * 25), RC.right - 200, 20, ID_ASINGAR_TECLA, &App.TeclasRapidas[i]);
 	}
 
+	MarcaBuscarActualizaciones.CrearMarcaEx(&MarcoGeneral, L"Buscar actualizaciones al iniciar el reproductor", 110, 250, 330, 20, ID_MARCA_BUSCARACTUALIZACIONES, IDI_CHECK2);
+	MarcaBuscarActualizaciones.Marcado(App.BD.Opciones_BuscarActualizacion());
+	MarcaBuscarActualizaciones.Activado(FALSE);
 	// Muestro la ventana de las opciones
 	Visible(TRUE);
 	Repintar();
@@ -141,7 +149,7 @@ void VentanaOpcionesRAVE::AsignarMarco(const INT_PTR Id) {
 
 
 void VentanaOpcionesRAVE::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse) {
-	switch (DatosMouse.ID) {
+	switch (DatosMouse.ID()) {
 		case ID_BOTON_AGREGARRAIZ:
 			AgregarRaiz();
 			break;
@@ -150,7 +158,7 @@ void VentanaOpcionesRAVE::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMou
 		case ID_BOTON_ASOCIACIONESARCHIVOS:
 		case ID_BOTON_LISTAS:
 		case ID_BOTON_VIDEO:
-			AsignarMarco(DatosMouse.ID);
+			AsignarMarco(DatosMouse.ID());
 			break;
 	}
 }
@@ -212,7 +220,7 @@ void VentanaOpcionesRAVE::Evento_Cerrar(void) {
 }
 
 void VentanaOpcionesRAVE::Evento_MarcaEx_Mouse_Click(DWL::DEventoMouse &DatosMouse) {
-	switch (DatosMouse.ID) {
+	switch (DatosMouse.ID()) {
 		case ID_MARCA_MOSTRARANALISIS :
 			App.BD.Opciones_MostrarObtenerMetadatos(MarcaMostrarAnalisis.Marcado());
 			if (MarcaMostrarAnalisis.Marcado() == TRUE)	App.MostrarToolTipOpciones(L"La ventana del análisis no se mostrará más.");
@@ -225,6 +233,13 @@ void VentanaOpcionesRAVE::Evento_MarcaEx_Mouse_Click(DWL::DEventoMouse &DatosMou
 			else
 				App.MostrarToolTipOpciones(L"Los medios pendientes no se analizarán automaticamente.\n"
 										   L"Para analizar los medios pendientes, haz click derecho encima de la base de datos, y pulsa Analizar.");
+			break;
+		case ID_MARCA_BUSCARACTUALIZACIONES :
+			App.BD.Opciones_BuscarActualizacion(MarcaBuscarActualizaciones.Marcado());
+			if (MarcaBuscarActualizaciones.Marcado() == TRUE)
+				App.MostrarToolTipOpciones(L"Se buscarán actualizaciones automáticamente.");
+			else 
+				App.MostrarToolTipOpciones(L"No se buscarán actualizaciones automáticamente.");
 			break;
 	}
 }

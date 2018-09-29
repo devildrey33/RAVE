@@ -145,7 +145,7 @@ const BOOL RaveVLC::AbrirMedio(BDMedio &Medio) {
 	if (Medio.TipoMedio == Tipo_Medio_Video) {
 		libvlc_media_player_set_hwnd(_MediaPlayer, App.VentanaRave.Video.hWnd());
 		// Pulso el botón para mostrar el video
-		App.VentanaRave.Evento_BotonEx_Mouse_Click(DEventoMouse(0, 0, ID_BOTON_VIDEO, 0));
+		App.VentanaRave.Evento_BotonEx_Mouse_Click(DEventoMouse(0, 0, &App.VentanaRave.BotonVideo));
 	}
 
 	// Escondo los tooltip de las barras de tiempo
@@ -234,9 +234,10 @@ const BOOL RaveVLC::Stop(void) {
 
 		
 		// Deadlock just despres de mostrar un DMenuEx en un video i utilitzar el stop.... SOLUCIONAT, pero s'ha d'anar amb cuidado al utilitzar SetFocus...
-		if (libvlc_media_player_has_vout(_MediaPlayer) > 0)
+		if (libvlc_media_player_has_vout(_MediaPlayer) > 0) {
 			// Para evitar un deadlock si se está reproduciendo un video y el foco está en otra parte
 			HWND Foco = SetFocus(App.VentanaRave.hWnd());
+		}
 		libvlc_media_player_stop(_MediaPlayer);
 
 		hWndVLC = NULL;
@@ -485,7 +486,10 @@ void RaveVLC::Ratio(const float R) {
 	int r;
 	if (_MediaPlayer != NULL) {
 		r = libvlc_media_player_set_rate(_MediaPlayer, R);
-	}
+	}	
+	std::wstring Tmp = L"x" + DWL::Strings::ToStrF(R, 1);
+	App.VentanaRave.LabelRatio.Texto(Tmp);
+	App.ControlesPC.LabelRatio.Texto(Tmp);
 }
 
 /*

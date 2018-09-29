@@ -163,6 +163,9 @@ class RaveBD {
 								// Obtiene una lista de paths que pertenecen a medios por parsear (extraer metadatos, id3, etc...)
 	const BOOL                  ObtenerMediosPorParsear(std::vector<std::wstring> &Paths);
 	const BOOL                  ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios);
+
+								// Suma 1 a las veces que se ha reproducido el medio
+	const BOOL                  MedioReproducido(BDMedio *rMedio);
 								
 								// Obtiene la etiqueta con el texto especificado
 	EtiquetaBD                 *ObtenerEtiqueta(std::wstring &eTexto);
@@ -208,7 +211,7 @@ class RaveBD {
 //	const BOOL					Opciones_GuardarOpciones(void);
 	const BOOL					Opciones_GuardarPosTamVentana(void);
 	const BOOL					Opciones_GuardarPosVentanaOpciones(void);
-	const BOOL					Opciones_GuardarPosVentanaAsociar(void);
+//	const BOOL					Opciones_GuardarPosVentanaAsociar(void);
 	const BOOL					Opciones_GuardarPosVentanaAnalizar(void);
 
 	inline const int			Opciones_Volumen(void) { return _Opciones_Volumen; }
@@ -246,6 +249,10 @@ class RaveBD {
 
 	inline const BOOL			Opciones_AnalizarMediosPendientes(void) { return _Opciones_AnalizarMediosPendientes; }
 	void						Opciones_AnalizarMediosPendientes(const BOOL nAnalizarMediosPendientes);
+
+	inline const BOOL			Opciones_BuscarActualizacion(void) { return _Opciones_BuscarActualizacion; }
+	void						Opciones_BuscarActualizacion(const BOOL nOpciones_BuscarActualizacion);
+	
 
 	DWL::DUnidadesDisco			Unidades;
 
@@ -296,6 +303,7 @@ protected:
 	BOOL                       _Opciones_MostrarObtenerMetadatos;	// Mostrar la ventana del thread obtener metadatos
 	BOOL                       _Opciones_MostrarAsociarArchivos;	// Mostrar la ventana para asociar este reproductor con todas las extensiones de medios conocidas.
 	BOOL					   _Opciones_AnalizarMediosPendientes;	// Analizar medios pendientes al actualizar el arbol de la base de datos
+	BOOL					   _Opciones_BuscarActualizacion;		// Buscar actualizaciones del reproductor al iniciar
 	friend class ThreadAnalisis;
 };
 

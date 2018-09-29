@@ -4,7 +4,8 @@
 #include "DBarraScrollEx.h"
 #include "DArbolEx_Nodo.h"
 #include "DListaIconos.h"
-
+#include "DEventoMouseRueda.h"
+#include "DEventoTeclado.h"
 
 namespace DWL {
 

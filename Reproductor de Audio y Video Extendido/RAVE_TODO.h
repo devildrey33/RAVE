@@ -80,12 +80,23 @@
 			V  Afegit a les funcions obtenir / guardar
 			V  Afegit en el ThreadAnalizar per sumar cada longitud
 
-		-  DMenuEx te que detectar el dobleclick i pasarlo a les finestres que no siguin un DMenuEx
+	    V  Solucionar glitch amb la llista i l'arbre, per exemple busca Symphony X sense tenir "Pelis i Series" afegit com arrel, y expandeix-lo
+			V  Arbre solucionat, i a la llista no m'ha tornat a pasar res raro...
+		V  Solucionar problema amb el buto PREV, que pot deixar al MedioActual a -1, per lo que calen dos NEXT per pasar al segon medi.		
 
-		-  Crear un nou correu pels dumps... que pugui fer servir per enviar...
+		X  DMenuEx te que detectar el dobleclick i pasarlo a les finestres que no siguin un DMenuEx
+			V  No es posible, pero gracies a aixo he detectat un bug que retornava el menu en MostrarModal fins i tot quan estava desactivat...
 
 		V  Hi ha un bug amb els IID_ITaskbarList3 al posar pantalla completa s'asigna una mascara al área de la finestra del video, pero quan surt de pantalla completa la mascara segueix....
 		V  Crear clase per fer animacións, es una mica rotllo TWEEN amb una lambda expresion per el callback
+		V  Afegir label pel ratio a VentanaRAVE i a ControlesPantallaCompleta
+
+		V  Separar evento MouseUp i Click en el DBotonEx (Mouseup salta sempre, i el click nomes salta si el mouse está a sobre del control)
+		V  Sumar +1 al medi reproduit en la BD.
+			V Mostrar en el TooltipBD
+		V  Retocada funció RaveBD::FiltroNombre, que filtraba FATAL els espais.. (ara no pot haber 2 espais seguits ni un espai al principi o al final.)
+		V  Solucionat bug amb els ControlesPantallaCompleta que no es mostraven correctament a pantalles amb la x negativa
+		V  Alineats tots els controls de ControlesPantallaCompleta (principalment labels)
 
 		-  Mostrar les opcions en una finestra nova
 			-  Afegir opcions : 
@@ -95,15 +106,19 @@
 					V Analitzar metadades pendents automaticament al actualitzar la base de dades.
 					V Mostrar finestra del analisis
 				- General
-					- Reproductor sempre devant
-					- Buscar actualitzacions (amb la calma... perque haure de mirar si en el github ho puc fer...)
-					- Valor del ratio per MouseDown en butons |< >|
-					- Teclat amb el focus en el reproductor (play / pausa, stop, volum +, volum -, següent medi, anterior medi, accelerar x2.0, frenar a x0.5)
-						- De teclat global (hook) si que haig de mirar la tecla play / pausa , pero el tema del volum amb tecles exteses el porta el sistema operatiu, suposo que tambe interesa el següent i l'anterior medi...
-				- Assosiacions d'arxiu
-					- Asociacions individuals per cada extensio
-					- Mostrar finestra per preguntar pel reproductor predeterminat
-						- No se si es en win10 o que.. pero si desde l'explorador esculleixes un reproductor, per molt que fagi les asociacions, aquell tipus sembla que no funciona...
+					X Reproductor sempre devant
+					V Buscar actualitzacions (amb la calma... perque haure de mirar si en el github ho puc fer...)
+						V Fer la MarcaEx i enllaçar a les opcions de la BD, i el sistema per buscar actualitzacións el deixo per la versió 0.5
+							V Deixar el MarcaEx desactivat un cop provi les opcions de la BD
+					X Valor del ratio per MouseDown en butons |< >|
+					V Teclat amb el focus en el reproductor (play / pausa, stop, volum +, volum -, següent medi, anterior medi, accelerar x2.0, frenar a x0.5)
+						X De teclat global (hook) si que haig de mirar la tecla play / pausa , pero el tema del volum amb tecles exteses el porta el sistema operatiu, suposo que tambe interesa el següent i l'anterior medi...
+					- Buto per associar els arxius d'audio i video al reproductor a saco, i liquido la pestanya asociaciones.
+						- No m'acaba de molar.. aixo ho ha de fer el instalador.
+				X Assosiacions d'arxiu
+					X Asociacions individuals per cada extensio
+					X Mostrar finestra per preguntar pel reproductor predeterminat
+						X No se si es en win10 o que.. pero si desde l'explorador esculleixes un reproductor, per molt que fagi les asociacions, aquell tipus sembla que no funciona...
 				- Llistes
 					- llista d'inici
 						- res
@@ -113,10 +128,17 @@
 						- etiqeuta grup aleatoria
 						- etiqeuta disc aleatoria
 					- Afegir cançons amb menys de 2.5 de nota a llistes aleatories.
+					- No generar llistes amb menys de 3 medis
 				- Video
 					- Tiempo de inactividad para ocultar los controles
-					- Mostrar nombre del video al abrir					
-					? Fuente por defecto en subtitulos externos
+					X Mostrar nombre del video al abrir					
+					- Alineación controles pantalla completa
+						- Inferior (por defecto)
+						- Izquierda
+						- Superiorm 
+						- Derecha
+						- Donde pase el mouse (puff ja t'ho imagines amb el mousemove... xd buscar una solucio smart)
+					? Fuente por defecto en subtitulos externos ???? molta matuja.. pero es posible que existeixi algo...
 
 
 		-  Menu per la llista (val tant per audio com per video)
@@ -125,24 +147,26 @@
 			- Nota
 			- Eliminar
 			- Propiedades
-
-		-  Crear Icona Buscar en l'arbre de la BD adal a la dreta
-	    V  Solucionar glitch amb la llista i l'arbre, per exemple busca Symphony X sense tenir "Pelis i Series" afegit com arrel, y expandeix-lo
-			V  Arbre solucionat, i a la llista no m'ha tornat a pasar res raro...
-		-  Solucionar problema amb el buto PREV, que pot deixar al MedioActual a -1, per lo que calen dos NEXT per pasar al segon medi.
-		-  Buscar noves actualitzacións
-		-  Test básic en win 7
+		- 
+		-  Crear un nou correu pels dumps... que pugui fer servir per enviar... (de moment encara tinc web .. xd, no corre molta presa)
 		-  Crear instalador (amb lo que tingui el visual studio)
 		-  Teclat per la DListaEx (suprimir, shift, control)
 		-  Drag & drop intern a la DListaEx per moure items (multiselecció incosa)
-
-		- La idea es tenir les opcions suficients per posarles en un arbre (OJU que aixo es un canvi drástic i que a l'hora podria ordenar molt mes tot el projecte, inclus podria suposar crear una taula d'audio u una video separades i no com ara que els dos son un medio)
+		
+		-  Anular VentanaAsociarReproductor SENSE ELIMINAR, simplement que no surti sempre, i ja veurem si la liquido del tot en un futur..
+			
+		-  Test básic en win 7 (nova bd, afegir arrels, buscar, analitzar, generar llista aleatoria, i jugar amb la AimatedToolTipParty
+		
+	RAVE 0.5
+		-  Fer una taula Audio i una Video, i eliminar la taula Medios.... (ANALITZAR)
+			- La idea es tenir les opcions suficients per posarles en un arbre (OJU que aixo es un canvi drástic i que a l'hora podria ordenar molt mes tot el projecte, inclus podria suposar crear una taula d'audio u una video separades i no com ara que els dos son un medio)
 				- o inclus crear una taula medios global amb un tipo (audio / video / lista / cdaudio), i despres crear una taula per cada un d'ells amb una id
 			-  Dividir Base de Datos en : Mi música , i Mis Videos, en 2 butons i en 2 arbres diferents
 			-  Afegir buto mis listas
 
-		
 
+		- Buscar actualitzacións
+		-  Crear Icona Buscar en l'arbre de la BD adal a la dreta
 	RAVE 0.6
 		- Posar icones en el thumbnail de la barra d'inici..
 		- Finestra de propietats per un medi o una etiqueta

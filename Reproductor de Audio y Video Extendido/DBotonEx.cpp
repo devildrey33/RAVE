@@ -149,13 +149,13 @@ namespace DWL {
 	
 
 	void DBotonEx::_Evento_MouseMovimiento(const WPARAM wParam, const LPARAM lParam) {
-		DEventoMouse DatosMouse(wParam, lParam, ID());
+		DEventoMouse DatosMouse(wParam, lParam, this);
 		Evento_MouseMovimiento(DatosMouse);
 	}
 
 
 	void DBotonEx::_Evento_MousePresionado(const WPARAM wParam, const LPARAM lParam, const int Boton) {
-		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		SetCapture(hWnd());
 		_Estado = DBotonEx_Estado_Presionado;
 		SendMessage(GetParent(hWnd()), DWL_BOTONEX_MOUSEDOWN, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
@@ -165,16 +165,19 @@ namespace DWL {
 
 	void DBotonEx::_Evento_MouseSoltado(const WPARAM wParam, const LPARAM lParam, const int Boton) {		
 		if (_Estado == DBotonEx_Estado_Presionado) {
-			DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
+			DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 			ReleaseCapture();
 
 			RECT RC;
 			GetClientRect(hWnd(), &RC);
 
+			Evento_MouseSoltado(DatosMouse);
+			SendMessage(GetParent(hWnd()), DWL_BOTONEX_MOUSEUP, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
+
 			POINT Pt = { DatosMouse.X(), DatosMouse.Y() };
 			if (PtInRect(&RC, Pt) != 0) {
 				_Estado = DBotonEx_Estado_Resaltado;
-				Evento_MouseSoltado(DatosMouse);
+				Evento_MouseClick(DatosMouse);
 				SendMessage(GetParent(hWnd()), DWL_BOTONEX_CLICK, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
 			}
 			else {

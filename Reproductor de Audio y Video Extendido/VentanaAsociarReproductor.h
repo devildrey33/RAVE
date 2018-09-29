@@ -11,6 +11,7 @@ class VentanaAsociarReproductor : public DWL::DVentana {
 	void                        Mostrar(void);
 	void						Pintar(HDC DC);
 	void						Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse);
+	void                        Boton_Click(const INT_PTR IdBoton);
 	LRESULT CALLBACK			GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
   protected:
 	void					   _Evento_Pintar(void);

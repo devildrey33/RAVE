@@ -31,7 +31,9 @@ class VentanaPrincipal : public DWL::DVentana {
 
 	void						Evento_MenuEx_Click(const UINT cID);
 	void						Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse);
-	void                        Evento_BotonEx_Mouse_Down(DWL::DEventoMouse &DatosMouse);
+	void                        Evento_BotonEx_Mouse_Presionado(DWL::DEventoMouse &DatosMouse);
+	void                        Evento_BotonEx_Mouse_Soltado(DWL::DEventoMouse &DatosMouse);
+	//	void                        Evento_BotonEx_Mouse_Up(DWL::DEventoMouse &DatosMouse);
 	void						Evento_Temporizador(const UINT cID);
 	void						Evento_CambiandoTam(const UINT Lado, RECT *Rectangulo);
 	void						Evento_SliderTiempo_Cambiado(void);
@@ -91,7 +93,6 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						Lista_Pausa(void);
 	void						Lista_Stop(void);
 
-
 	void						ExploradorAgregarMedio(const BOOL Reproducir);
 
 	DWL::DBotonEx				BotonPlay;
@@ -99,6 +100,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	DWL::DBotonEx				BotonStop;
 	DWL::DBotonEx				BotonAdelante;
 	DWL::DBotonEx				BotonAtras;
+
+	DWL::DEtiquetaEx			LabelRatio;
 
 	DWL::DBotonEx				BotonMezclar;
 	DWL::DBotonEx				BotonRepetir;

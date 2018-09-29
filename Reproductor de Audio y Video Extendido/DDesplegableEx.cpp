@@ -175,7 +175,7 @@ namespace DWL {
 
 	void DDesplegableEx::_Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam) {
 		BOOL nRepintar = FALSE;
-		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		DEventoTeclado DatosTeclado(wParam, lParam, this);
 		nRepintar = EdicionTexto_Evento_TeclaPresionada(DatosTeclado);
 		Evento_TeclaPresionada(DatosTeclado);
 		if (nRepintar == TRUE) Repintar();
@@ -183,7 +183,7 @@ namespace DWL {
 
 	void DDesplegableEx::_Evento_TeclaSoltada(WPARAM wParam, LPARAM lParam) {
 		BOOL nRepintar = FALSE;
-		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		DEventoTeclado DatosTeclado(wParam, lParam, this);
 		nRepintar = EdicionTexto_Evento_TeclaSoltada(DatosTeclado);
 		Evento_TeclaSoltada(DatosTeclado);
 		if (nRepintar == TRUE) Repintar();
@@ -191,14 +191,14 @@ namespace DWL {
 
 	void DDesplegableEx::_Evento_Tecla(WPARAM wParam, LPARAM lParam) {
 		BOOL nRepintar = FALSE;
-		DEventoTeclado DatosTeclado(wParam, lParam, ID());
+		DEventoTeclado DatosTeclado(wParam, lParam, this);
 		nRepintar = EdicionTexto_Evento_Tecla(DatosTeclado);
 		Evento_Tecla(DatosTeclado);
 		if (nRepintar == TRUE) Repintar();
 	}
 
 	void DDesplegableEx::_Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam) {
-		DEventoMouse DatosMouse(wParam, lParam, ID());
+		DEventoMouse DatosMouse(wParam, lParam, this);
 		BOOL bME = _MouseEntrando();
 
 		RECT RC; 
@@ -239,7 +239,7 @@ namespace DWL {
 	}
 
 	void DDesplegableEx::_Evento_MousePresionado(const UINT Boton, WPARAM wParam, LPARAM lParam) {
-		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		SetFocus(_hWnd);
 		RECT RC;
 		GetClientRect(_hWnd, &RC);
@@ -265,7 +265,7 @@ namespace DWL {
 	}
 
 	void DDesplegableEx::_Evento_MouseSoltado(const UINT Boton, WPARAM wParam, LPARAM lParam) {
-		DEventoMouse DatosMouse(wParam, lParam, ID(), Boton);
+		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		ReleaseCapture();
 
 		RECT RC;
@@ -293,7 +293,7 @@ namespace DWL {
 	}
 
 	void DDesplegableEx::_Evento_MouseRueda(WPARAM wParam, LPARAM lParam) {
-		DEventoMouseRueda DatosMouse(wParam, lParam, ID(), _hWnd);
+		DEventoMouseRueda DatosMouse(wParam, lParam, this);
 		Evento_MouseRueda(DatosMouse);
 	}
 

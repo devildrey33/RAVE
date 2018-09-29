@@ -45,8 +45,10 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	DWL::DMarcaEx		MarcaAnalizarMediosPendientes;
 
 						// General
+	DEtiquetaEx			EtiquetaTeclasRapidas;
 	AsignarTeclaRapida  TeclasRapidas[6];
 	DWL::DEtiquetaEx    EtiquetasTeclas[6];
-	const int          _NumTeclasRapidas = 6;
+//	const int          _NumTeclasRapidas = 6;
+	DWL::DMarcaEx		MarcaBuscarActualizaciones;
 };
 

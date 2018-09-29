@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DControlEx.h"
+#include "DEventoMouse.h"
 
 namespace DWL {
 	// Mostrar mensajes de depuración en la consola

@@ -1,6 +1,7 @@
 #ifndef DEVENTOMOUSERUEDA_H
 #define DEVENTOMOUSERUEDA_H
 
+#include "DhWnd.h"
 #include "DMouse.h"
 
 //! Espacio de nombres DWL
@@ -13,18 +14,18 @@ namespace DWL {
 
 	class DEventoMouseRueda	{
 	  public:
-										DEventoMouseRueda() : wParam(0), lParam(0), ID(0) { };
+										DEventoMouseRueda() : wParam(0), lParam(0), Wnd(NULL) { };
 										//! Constructor que define todos los valores
 										/*!	Constructor asignador de datos.
 											\fn			DEventoMouseRueda(const int cX, const int cY, const UINT cID);
 											\param[in]	wParam	: WPARAM del evento.
 											\param[in]	lParam  : LPARAM del evento.
-											\param[in]	cID		: ID del Control.
+											\param[in]	Wnd		: DhWnd base del Control.
 											\return		No devuelve nada.
 										*/
-										DEventoMouseRueda(WPARAM nwParam, LPARAM nlParam, const INT_PTR cID, HWND hWnd) : wParam(nwParam), lParam(nlParam), ID(cID) {
+										DEventoMouseRueda(WPARAM nwParam, LPARAM nlParam, DhWnd *nhWnd) : wParam(nwParam), lParam(nlParam), Wnd(nhWnd) {
 											DWL::DMouse::ObtenerPosicion(&MousePosCliente);
-											ScreenToClient(hWnd, &MousePosCliente);
+											ScreenToClient(Wnd->hWnd(), &MousePosCliente);
 										};
 
 		                               ~DEventoMouseRueda() { };
@@ -87,10 +88,24 @@ namespace DWL {
 		inline const short				Delta(void) {
 											return GET_WHEEL_DELTA_WPARAM(wParam);
 										};
+										//! Función que devuelve la ID del control de donde proviene este evento.
+										/*! Función que devuelve la ID del control de donde proviene este evento.
+											\fn			inline const INT_PTR ID(void);
+											\return		devuelve la id del control.
+										*/
+		inline const INT_PTR            ID(void) { if (Wnd != NULL) { return Wnd->ID(); } return NULL; }
+										//! Función que devuelve el hWnd de la ventana / control de donde proviene este evento.
+										/*! Función que devuelve el hWnd de la ventana / control de donde proviene este evento.
+											\fn			inline const INT_PTR ID(void);
+											\return		devuelve la id del control.
+										*/
+		inline const HWND               hWnd(void) { if (Wnd != NULL) { return Wnd->hWnd(); } return NULL; }
 
 		WPARAM							wParam;
 		LPARAM							lParam;
-		UINT_PTR                        ID;
+										// DhWnd base del Control, si necesitas un tipo de control concreto hay que hacer un reinterpret_cast.
+		DhWnd                          *Wnd;
+//		UINT_PTR                        ID;
 		POINT                           MousePosCliente;
 	};
 };
