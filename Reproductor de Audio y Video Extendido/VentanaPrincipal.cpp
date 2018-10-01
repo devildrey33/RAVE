@@ -905,6 +905,8 @@ void VentanaPrincipal::Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse) {
 }
 
 
+
+
 LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	std::wstring *TmpStr = NULL;
 	BDMedio *Medio = NULL;

@@ -2,6 +2,7 @@
 #define DMARCAEX_H
 
 #include "DControlEx.h"
+#include "DAnimacion.h"
 
 namespace DWL {
 	enum DMarcaEx_Estado {
@@ -28,6 +29,9 @@ namespace DWL {
 		virtual void			Activado(const BOOL nActivar);
 		inline const BOOL       Activado(void) { return DhWnd::Activado(); }
 		void                    Pintar(HDC DC);
+								// Inicia la animación de resaltado
+		void                    Resaltar(const BOOL Resaltado);
+
 	  protected:
 		void			       _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
 		void		           _Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam);
@@ -38,6 +42,11 @@ namespace DWL {
 		BOOL                   _Marcado;
 		DMarcaEx_Estado        _Estado;
 		DListaIconos_Icono    *_Icono;
+		DAnimacionColor        _AniResaltado;
+		COLORREF               _ColorFondoMarca;
+		COLORREF               _ColorFondo;
+		COLORREF               _ColorBorde;
+		COLORREF               _ColorTexto;
 	};
 	
 };

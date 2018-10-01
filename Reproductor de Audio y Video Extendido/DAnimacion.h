@@ -1,7 +1,7 @@
 #ifndef DANIMACION_H
 #define DANIMACION_H
 
-#define DANIMACION_MOSTRARDEBUG	FALSE
+#define DANIMACION_MOSTRARDEBUG	TRUE
 
 #include <functional>
 
@@ -66,6 +66,8 @@ namespace DWL {
 		void														Iniciar(const COLORREF Desde1, const COLORREF Hasta1, const COLORREF Desde2, const COLORREF Hasta2, const DWORD Milisegundos, std::function<void(std::vector<COLORREF> &, const BOOL)> LambdaCallback);
 																	// Iniciar para tres valores (desde - hasta)
 		void														Iniciar(const COLORREF Desde1, const COLORREF Hasta1, const COLORREF Desde2, const COLORREF Hasta2, const COLORREF Desde3, const COLORREF Hasta3, const DWORD Milisegundos, std::function<void(std::vector<COLORREF> &, const BOOL)> LambdaCallback);
+																	// Iniciar para cuatro valores (desde - hasta)
+		void														Iniciar(const COLORREF Desde1, const COLORREF Hasta1, const COLORREF Desde2, const COLORREF Hasta2, const COLORREF Desde3, const COLORREF Hasta3, const COLORREF Desde4, const COLORREF Hasta4, const DWORD Milisegundos, std::function<void(std::vector<COLORREF> &, const BOOL)> LambdaCallback);
 																	// Iniciar para un vector de valores (cada valor tiene un desde y un hasta)
 		void														Iniciar(std::vector<Colores> &Valores, const DWORD Milisegundos, std::function<void(std::vector<COLORREF> &, const BOOL)> LambdaCallback);
 																	// Invierte la animación (mientras se este ejecutando)

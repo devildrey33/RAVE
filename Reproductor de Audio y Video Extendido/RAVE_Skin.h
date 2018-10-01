@@ -14,6 +14,8 @@
 
 // Colores básicos para las ventanas y los controles
 #define COLOR_FONDO									RGB( 31,  29,  34)
+#define COLOR_FONDO_RESALTADO						RGB( 46,  44,  49)
+#define COLOR_FONDO_PRESIONADO						RGB( 11,   9,  14)
 #define COLOR_FONDO_CLARO							RGB(240, 240, 240)
 #define COLOR_FONDO_CLARO_RESALTADO					RGB(255, 255, 255)
 #define COLOR_FONDO_CLARO_PRESIONADO				RGB(220, 220, 220)

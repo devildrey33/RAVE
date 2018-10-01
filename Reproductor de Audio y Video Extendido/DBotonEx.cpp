@@ -178,6 +178,14 @@ namespace DWL {
 			_ColorFondo = Valores[0];
 			_ColorBorde = Valores[1];
 			_ColorTexto = Valores[2];
+			// Hay posibilidad de saltar de un boton a otro, y que al desmarcarse la animación invertida siga teniendo el rojo marcado
+			// Al terminar la animación si no está marcado y el color del fondo es el rojo marcado, lo substituimos por el color del fondo normal
+			if (Terminado == TRUE && _Marcado == FALSE && _ColorFondo == COLOR_ROJO_MARCADO) {
+				_ColorFondo = COLOR_BOTON;
+			}
+			else if (Terminado == TRUE && _Marcado == TRUE && _ColorFondo == COLOR_BOTON) {
+				_ColorFondo = COLOR_ROJO_MARCADO;
+			}
 			Repintar();
 		});
 

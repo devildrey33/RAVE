@@ -28,7 +28,7 @@ namespace DWL {
 	void DAnimacion::Iniciar(std::vector<Valores> &Datos, const DWORD Milisegundos, std::function<void(std::vector<float> &, const BOOL)> LambdaCallback) {
 		if (_Timer != NULL) {
 			#if DANIMACION_MOSTRARDEBUG == TRUE
-				Debug_Escribir(L"DAnimacion::Iniciar -> ERROR la animación ya se está ejecutando!");
+				Debug_Escribir(L"DAnimacion::Iniciar -> ERROR la animación ya se está ejecutando!\n");
 			#endif
 			return;
 		}
@@ -38,9 +38,17 @@ namespace DWL {
 		_Duracion		= Milisegundos;
 		_TiempoActual	= 0;
 		BOOL Ret = CreateTimerQueueTimer(&_Timer, NULL, reinterpret_cast<WAITORTIMERCALLBACK>(_TimerProc), this, 16, 16, WT_EXECUTEINTIMERTHREAD);
+		#if DANIMACION_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DAnimacion::Iniciar %d milisegundos.\n", Milisegundos);
+		#endif
+
 	}
 
 	void DAnimacion::Invertir(void) {
+		#if DANIMACION_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DAnimacion::Invertir %d milisegundos.\n", _TiempoActual);
+		#endif
+
 		_Duracion = _TiempoActual;
 		_TiempoActual = 0;
 		// El Desde pasa a ser el Hasta, y el valor actual se convierte en el Desde
@@ -51,6 +59,9 @@ namespace DWL {
 	}
 
 	void DAnimacion::Terminar(void) {
+		#if DANIMACION_MOSTRARDEBUG == TRUE
+			Debug_Escribir(L"DAnimacion::Terminar\n");
+		#endif
 		if (_Timer != NULL) {
 			DeleteTimerQueueTimer(NULL, _Timer, NULL);
 		}
@@ -102,12 +113,14 @@ namespace DWL {
 		Terminar();
 	}
 
+	// Función para un color
 	void DAnimacionColor::Iniciar(const COLORREF Desde, const COLORREF Hasta, const DWORD Milisegundos, std::function<void(std::vector<COLORREF> &, const BOOL)> LambdaCallback) {
 		std::vector<Colores> vValores;
 		vValores.push_back(Colores(Desde, Hasta));
 		Iniciar(vValores, Milisegundos, LambdaCallback);
 	}
 
+	// Función para dos colores
 	void DAnimacionColor::Iniciar(const COLORREF Desde1, const COLORREF Hasta1, const COLORREF Desde2, const COLORREF Hasta2, const DWORD Milisegundos, std::function<void(std::vector<COLORREF> &, const BOOL)> LambdaCallback) {
 		std::vector<Colores> vValores;
 		vValores.push_back(Colores(Desde1, Hasta1));
@@ -115,6 +128,7 @@ namespace DWL {
 		Iniciar(vValores, Milisegundos, LambdaCallback);
 	}
 
+	// Función para tres colores
 	void DAnimacionColor::Iniciar(const COLORREF Desde1, const COLORREF Hasta1, const COLORREF Desde2, const COLORREF Hasta2, const COLORREF Desde3, const COLORREF Hasta3, const DWORD Milisegundos, std::function<void(std::vector<COLORREF> &, const BOOL)> LambdaCallback) {
 		std::vector<Colores> vValores;
 		vValores.push_back(Colores(Desde1, Hasta1));
@@ -123,11 +137,21 @@ namespace DWL {
 		Iniciar(vValores, Milisegundos, LambdaCallback);
 	}
 
+	// Función para cuatro colores
+	void DAnimacionColor::Iniciar(const COLORREF Desde1, const COLORREF Hasta1, const COLORREF Desde2, const COLORREF Hasta2, const COLORREF Desde3, const COLORREF Hasta3, const COLORREF Desde4, const COLORREF Hasta4, const DWORD Milisegundos, std::function<void(std::vector<COLORREF> &, const BOOL)> LambdaCallback) {
+		std::vector<Colores> vValores;
+		vValores.push_back(Colores(Desde1, Hasta1));
+		vValores.push_back(Colores(Desde2, Hasta2));
+		vValores.push_back(Colores(Desde3, Hasta3));
+		vValores.push_back(Colores(Desde4, Hasta4));
+		Iniciar(vValores, Milisegundos, LambdaCallback);
+	}
+
 
 	void DAnimacionColor::Iniciar(std::vector<Colores> &Datos, const DWORD Milisegundos, std::function<void(std::vector<COLORREF> &, const BOOL)> LambdaCallback) {
 		if (_Timer != NULL) {
 			#if DANIMACION_MOSTRARDEBUG == TRUE
-				Debug_Escribir(L"DAnimacion::Iniciar -> ERROR la animación ya se está ejecutando!");
+				Debug_Escribir(L"DAnimacionColor::Iniciar -> ERROR la animación ya se está ejecutando!\n");
 			#endif
 			return;
 		}
@@ -137,9 +161,16 @@ namespace DWL {
 		_Duracion		= Milisegundos;
 		_TiempoActual	= 0;
 		BOOL Ret = CreateTimerQueueTimer(&_Timer, NULL, reinterpret_cast<WAITORTIMERCALLBACK>(_TimerProc), this, 16, 16, WT_EXECUTEINTIMERTHREAD);
+
+		#if DANIMACION_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DAnimacionColor::Iniciar %d milisegundos.\n", Milisegundos);
+		#endif
 	}
 
 	void DAnimacionColor::Invertir(void) {
+		#if DANIMACION_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DAnimacionColor::Invertir %d milisegundos.\n", _TiempoActual);
+		#endif
 		_Duracion = _TiempoActual;
 		_TiempoActual = 0;
 		// El Desde pasa a ser el Hasta, y el valor actual se convierte en el Desde
@@ -150,6 +181,9 @@ namespace DWL {
 	}
 
 	void DAnimacionColor::Terminar(void) {
+		#if DANIMACION_MOSTRARDEBUG == TRUE
+			Debug_Escribir(L"DAnimacionColor::Terminar\n");
+		#endif
 		if (_Timer != NULL) {
 			DeleteTimerQueueTimer(NULL, _Timer, NULL);
 		}
@@ -183,7 +217,7 @@ namespace DWL {
 
 			This->_Valores[i] = RGB(ValorR, ValorG, ValorB);
 			#if DANIMACION_MOSTRARDEBUG == TRUE
-				Debug_Escribir_Varg(L"DAnimacion::_TimerProc Desde : %.02f, Hasta : %.02f, Parte : %0.2f, Valor : %.02f, T : %d\n", This->_Datos[i].Desde, This->_Datos[i].Hasta, Parte, Valor, This->_TiempoActual);
+				Debug_Escribir_Varg(L"DAnimacion::_TimerProc Desde : %.02f, Hasta : %.02f, Valor : %d, T : %d\n", This->_Datos[i].Desde, This->_Datos[i].Hasta, This->_Valores[i], This->_TiempoActual);
 			#endif
 		}
 		BOOL Terminado = (This->_TiempoActual > This->_Duracion);
