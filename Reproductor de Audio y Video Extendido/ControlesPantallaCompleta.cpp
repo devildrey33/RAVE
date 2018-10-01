@@ -36,7 +36,7 @@ void ControlesPantallaCompleta::Crear(void) {
 //	SliderTiempo.Crear(hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO, WS_CHILD | TBS_NOTICKS | WS_VISIBLE, 0, 30000, 0);
 //	SliderTiempo.TamPagina(30000 / 50);
 
-	SliderVolumen.CrearBarraDesplazamientoEx(this, RC.right - 145, 17, 90, 16, ID_SLIDER_VOLUMEN, 0, 200, 100);
+	SliderVolumen.CrearBarraVolumen(this, RC.right - 145, 17, 90, 16, ID_SLIDER_VOLUMEN, 0, 200, 100);
 	LabelVolumen.CrearEtiquetaEx(this, L"100%", RC.right - 40, 16, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
 
 	LabelTiempoActual.CrearEtiquetaEx(this, L"00:00", RC.right - 265, 16, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);

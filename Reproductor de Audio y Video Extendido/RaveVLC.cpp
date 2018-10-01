@@ -145,7 +145,7 @@ const BOOL RaveVLC::AbrirMedio(BDMedio &Medio) {
 	if (Medio.TipoMedio == Tipo_Medio_Video) {
 		libvlc_media_player_set_hwnd(_MediaPlayer, App.VentanaRave.Video.hWnd());
 		// Pulso el botón para mostrar el video
-		App.VentanaRave.Evento_BotonEx_Mouse_Click(DEventoMouse(0, 0, &App.VentanaRave.BotonVideo));
+		App.VentanaRave.Evento_BotonEx_Mouse_Click(DEventoMouse(0, 0, &App.VentanaRave.BotonVideo, 0));
 	}
 
 	// Escondo los tooltip de las barras de tiempo

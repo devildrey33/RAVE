@@ -5,7 +5,7 @@
 
 namespace DWL {
 
-	DBotonEx::DBotonEx(void) :	_Marcado(FALSE), _PosIconoX(-1), _PosIconoY(-1), _Icono(NULL) {
+	DBotonEx::DBotonEx(void) : _Marcado(FALSE), _PosIconoX(-1), _PosIconoY(-1), _Icono(NULL), _ColorFondo(COLOR_BOTON), _ColorBorde(COLOR_BORDE), _ColorTexto(COLOR_TEXTO) {
 	}
 
 
@@ -44,6 +44,9 @@ namespace DWL {
 	}
 
 	HWND DBotonEx::_CrearBotonEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const long Estilos) {
+		_ColorFondo = COLOR_BOTON;
+		_ColorBorde = COLOR_BORDE;
+		_ColorTexto = COLOR_TEXTO;
 //		if (hWnd()) { Debug_Escribir(L"DBotonEx::CrearBotonEx() Error : ya se ha creado el botón\n"); return hWnd(); }
 		_hWnd = CrearControlEx(nPadre, L"DBotonEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
 		Fuente = Fuente21Negrita;
@@ -70,14 +73,10 @@ namespace DWL {
 		int bPresionado = 0;
 		switch (_Estado) {
 			case DBotonEx_Estado_Normal:
-				nColorFondo = (_Marcado == TRUE) ? COLOR_ROJO_MARCADO : COLOR_BOTON;
-				nColorBorde = COLOR_BORDE;
-				nColorTexto = COLOR_TEXTO;
-				break;
 			case DBotonEx_Estado_Resaltado:
-				nColorFondo = COLOR_BOTON_RESALTADO;
-				nColorBorde = COLOR_BORDE_RESALTADO;
-				nColorTexto = COLOR_TEXTO_RESALTADO;
+				nColorFondo = _ColorFondo;
+				nColorBorde = _ColorBorde;
+				nColorTexto = _ColorTexto;
 				break;
 			case DBotonEx_Estado_Presionado:
 				nColorFondo = COLOR_BOTON_PRESIONADO;
@@ -92,10 +91,6 @@ namespace DWL {
 			nColorTexto = COLOR_TEXTO_DESACTIVADO;
 		}
 
-/*		if (_Marcado == TRUE) {
-			nColorBorde = COLOR_ROJO_MARCADO;
-		}*/
-
 		// Pinto el borde
 		HBRUSH BrochaBorde = CreateSolidBrush(nColorBorde);
 		FrameRect(Buffer, &RC, BrochaBorde);
@@ -106,15 +101,7 @@ namespace DWL {
 		FillRect(Buffer, &RCF, BrochaFondo);
 		DeleteObject(BrochaFondo);
 
-		// Si está marcado, pinto un borde rojo oscuro a la derecha
-/*		if (_Marcado == TRUE) {
-			HBRUSH BrochaMarcado = CreateSolidBrush(COLOR_ROJO_MARCADO);
-			RECT RM = { RC.right - 5, 0, RC.right, RC.bottom };
-			FillRect(Buffer, &RM, BrochaMarcado);
-			DeleteObject(BrochaMarcado);			
-		}*/
-
-
+		
 		if (_Texto.size() > 0) {
 			SetBkMode(Buffer, TRANSPARENT);
 			// Pinto la sombra del texto
@@ -150,9 +137,51 @@ namespace DWL {
 
 	void DBotonEx::_Evento_MouseMovimiento(const WPARAM wParam, const LPARAM lParam) {
 		DEventoMouse DatosMouse(wParam, lParam, this);
+		if (_MouseEntrando() == TRUE) {
+			// Mouse enter
+			if (_Estado != DBotonEx_Estado_Presionado) {
+//				_Estado = DBotonEx_Estado_Resaltado;
+//				Repintar();
+				Resaltar(TRUE);
+			}
+		}
+
 		Evento_MouseMovimiento(DatosMouse);
 	}
 
+	void DBotonEx::Resaltar(const BOOL Resaltado) {
+		if (_AniResaltado.Animando() == TRUE) {
+			_AniResaltado.Invertir();
+			return;
+		}
+
+		COLORREF BordeDesde, BordeHasta, FondoDesde, FondoHasta, TextoDesde, TextoHasta;
+		if (Resaltado == TRUE) {
+			BordeDesde = COLOR_BORDE;
+			BordeHasta = COLOR_BORDE_RESALTADO;
+			FondoDesde = (_Marcado == TRUE) ? COLOR_ROJO_MARCADO : COLOR_BOTON;
+			FondoHasta = COLOR_BOTON_RESALTADO;
+			TextoDesde = COLOR_TEXTO;
+			TextoHasta = COLOR_TEXTO_RESALTADO;
+			_Estado = DBotonEx_Estado_Resaltado;
+		}
+		else {
+			BordeDesde = COLOR_BORDE_RESALTADO;
+			BordeHasta = COLOR_BORDE;
+			FondoDesde = COLOR_BOTON_RESALTADO;;
+			FondoHasta = (_Marcado == TRUE) ? COLOR_ROJO_MARCADO : COLOR_BOTON;
+			TextoDesde = COLOR_TEXTO_RESALTADO;
+			TextoHasta = COLOR_TEXTO;
+			_Estado = DBotonEx_Estado_Normal;
+		}
+		_AniResaltado.Iniciar(FondoDesde, FondoHasta, BordeDesde, BordeHasta, TextoDesde, TextoHasta, 400, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
+			_ColorFondo = Valores[0];
+			_ColorBorde = Valores[1];
+			_ColorTexto = Valores[2];
+			Repintar();
+		});
+
+	}
 
 	void DBotonEx::_Evento_MousePresionado(const WPARAM wParam, const LPARAM lParam, const int Boton) {
 		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
@@ -189,6 +218,19 @@ namespace DWL {
 
 	void DBotonEx::Marcado(const BOOL nMarcar) {
 		_Marcado = nMarcar;
+		POINT P;
+		DWL::DMouse::ObtenerPosicion(&P);
+		ScreenToClient(_hWnd, &P);
+		RECT RC;
+		GetClientRect(_hWnd, &RC);
+		// Miro si el mouse está encima del control, y asigno el color rojo resaltado
+		if (PtInRect(&RC, P) == TRUE) {
+			_ColorFondo = COLOR_BOTON_RESALTADO;
+		}
+		else { // Si no está encima del control asigno el color según si está marcado o no
+			_ColorFondo = (nMarcar == TRUE) ? COLOR_ROJO_MARCADO : COLOR_BOTON;
+		}	
+		
 		Repintar();
 	}
 
@@ -200,33 +242,24 @@ namespace DWL {
 		EndPaint(hWnd(), &PS);
 	}
 
+	void DBotonEx::_Evento_MouseSaliendo(void) {
+		_MouseDentro = FALSE;
+		if (_Estado != DBotonEx_Estado_Presionado) {
+			Resaltar(FALSE);
+		}
+	}
 
 	LRESULT CALLBACK DBotonEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
-			case WM_PAINT		:		_Evento_Pintar();				return 0;
-			case WM_MOUSEMOVE	:
-				if (_MouseEntrando() == TRUE) {
-					// Mouse enter
-					if (_Estado != DBotonEx_Estado_Presionado) {
-						_Estado = DBotonEx_Estado_Resaltado;
-						Repintar();
-					}
-				}				
-				_Evento_MouseMovimiento(wParam, lParam);
-				break;
-			case WM_MOUSELEAVE	:
-				_MouseDentro = FALSE;
-				if (_Estado != DBotonEx_Estado_Presionado) {
-					_Estado = DBotonEx_Estado_Normal;
-					Repintar();
-				}
-				return 0;
-			case WM_LBUTTONDOWN	:				_Evento_MousePresionado(wParam, lParam, 0);				return 0;
-			case WM_RBUTTONDOWN	:				_Evento_MousePresionado(wParam, lParam, 1);				return 0;
-			case WM_MBUTTONDOWN	:				_Evento_MousePresionado(wParam, lParam, 2);				return 0;
-			case WM_LBUTTONUP	:				_Evento_MouseSoltado(wParam, lParam, 0);				return 0;
-			case WM_RBUTTONUP	:				_Evento_MouseSoltado(wParam, lParam, 1);				return 0;
-			case WM_MBUTTONUP	:				_Evento_MouseSoltado(wParam, lParam, 2);				return 0;
+			case WM_PAINT		:		_Evento_Pintar();									return 0;
+			case WM_MOUSEMOVE	:		_Evento_MouseMovimiento(wParam, lParam);			return 0;
+			case WM_MOUSELEAVE	:		_Evento_MouseSaliendo();							return 0;
+			case WM_LBUTTONDOWN	:		_Evento_MousePresionado(wParam, lParam, 0);			return 0;
+			case WM_RBUTTONDOWN	:		_Evento_MousePresionado(wParam, lParam, 1);			return 0;
+			case WM_MBUTTONDOWN	:		_Evento_MousePresionado(wParam, lParam, 2);			return 0;
+			case WM_LBUTTONUP	:		_Evento_MouseSoltado(wParam, lParam, 0);			return 0;
+			case WM_RBUTTONUP	:		_Evento_MouseSoltado(wParam, lParam, 1);			return 0;
+			case WM_MBUTTONUP	:		_Evento_MouseSoltado(wParam, lParam, 2);			return 0;
 		}
 		return DControlEx::GestorMensajes(uMsg, wParam, lParam);
 	}

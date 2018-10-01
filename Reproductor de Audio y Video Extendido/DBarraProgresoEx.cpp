@@ -5,7 +5,7 @@
 
 namespace DWL {
 
-	DBarraProgresoEx::DBarraProgresoEx(void) : _Minimo(0), _Maximo(0), _Valor(0) {
+	DBarraProgresoEx::DBarraProgresoEx(void) : _Minimo(0), _Maximo(0), _Valor(0), _Estado(DBarraEx_Estado_Normal), _ColorBarra(COLOR_BARRA), _ColorFondo(COLOR_BARRA_FONDO), _ColorBorde(COLOR_BORDE) {
 	}
 
 
@@ -16,11 +16,14 @@ namespace DWL {
 	HWND DBarraProgresoEx::CrearBarraProgresoEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const float nMinimo, const float nMaximo, const float nValor) {
 //		if (hWnd()) { Debug_Escribir(L"DBarraProgresoEx::CrearBarraProgresoEx() Error : ya se ha creado la barra\n"); return hWnd(); }
 		_hWnd = CrearControlEx(nPadre, L"DBarraProgresoEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD | WS_VISIBLE, NULL, CS_HREDRAW | CS_VREDRAW);
-		ColorFondo = COLOR_BARRA_FONDO;
-		ColorBarra = COLOR_BARRA;
+//		ColorFondo = COLOR_BARRA_FONDO;
+//		ColorBarra = COLOR_BARRA;
 		_Minimo = nMinimo;
 		_Maximo = nMaximo;
 		_Valor = nValor;
+		_ColorBarra = COLOR_BARRA;
+		_ColorFondo = COLOR_BARRA_FONDO;
+		_ColorBorde = COLOR_BORDE;
 		return hWnd();
 	}
 
@@ -76,21 +79,76 @@ namespace DWL {
 
 
 	void DBarraProgresoEx::Evento_PintarBarra(HDC DC, RECT &RBarra) {
-		HBRUSH BrochaBarra = CreateSolidBrush(ColorBarra);
+		HBRUSH BrochaBarra = CreateSolidBrush(_ColorBarra);
 		FillRect(DC, &RBarra, BrochaBarra);
 		DeleteObject(BrochaBarra);
 	}
 
 	void DBarraProgresoEx::Evento_PintarFondo(HDC DC, RECT &RFondo) {
-		HBRUSH BrochaFondo = CreateSolidBrush(ColorFondo);
+		HBRUSH BrochaFondo = CreateSolidBrush(_ColorFondo);
 		FillRect(DC, &RFondo, BrochaFondo);
 		DeleteObject(BrochaFondo);
 	}
 
 	void DBarraProgresoEx::Evento_PintarBorde(HDC DC, RECT &RBorde) {
-		HBRUSH BrochaBorde = CreateSolidBrush(ColorBorde);
+		HBRUSH BrochaBorde = CreateSolidBrush(_ColorBorde);
 		FrameRect(DC, &RBorde, BrochaBorde);
 		DeleteObject(BrochaBorde);
+	}
+
+
+	void DBarraProgresoEx::_Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam) {
+		if (_MouseEntrando() == TRUE) {
+			// Mouse enter
+			if (_Estado != DBarraEx_Estado_Presionado) {
+				//_Estado = DBarraDesplazamientoEx_Estado_Resaltado;
+				//Repintar();
+				Resaltar(TRUE);
+			}
+		}
+	}
+	void DBarraProgresoEx::_Evento_MouseSaliendo(void) {
+		_MouseDentro = FALSE;
+		if (_Estado != DBarraEx_Estado_Presionado) {
+			//_Estado = DBarraDesplazamientoEx_Estado_Normal;
+			//Repintar();
+			Resaltar(FALSE);
+		}
+	}
+
+
+	void DBarraProgresoEx::Resaltar(const BOOL Resaltado) {
+		if (_AniResaltado.Animando() == TRUE) {
+			_AniResaltado.Invertir();
+			return;
+		}
+
+		COLORREF BordeDesde, BordeHasta, FondoDesde, FondoHasta, BarraDesde, BarraHasta;
+		if (Resaltado == TRUE) {
+			BordeDesde = COLOR_BORDE;
+			BordeHasta = COLOR_BORDE_RESALTADO;
+			FondoDesde = COLOR_BARRA_FONDO;
+			FondoHasta = COLOR_BARRA_FONDO_RESALTADO;
+			BarraDesde = COLOR_BARRA;
+			BarraHasta = COLOR_BARRA_RESALTADO;
+			_Estado = DBarraEx_Estado_Resaltado;
+		}
+		else {
+			BordeDesde = COLOR_BORDE_RESALTADO;
+			BordeHasta = COLOR_BORDE;
+			FondoDesde = COLOR_BARRA_FONDO_RESALTADO;
+			FondoHasta = COLOR_BARRA_FONDO;
+			BarraDesde = COLOR_BARRA_RESALTADO;
+			BarraHasta = COLOR_BARRA;
+			_Estado = DBarraEx_Estado_Normal;
+		}
+		_AniResaltado.Iniciar(FondoDesde, FondoHasta, BordeDesde, BordeHasta, BarraDesde, BarraHasta, 400, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
+			_ColorFondo = Valores[0];
+			_ColorBorde = Valores[1];
+			_ColorBarra = Valores[2];
+			Repintar();
+		});
+
 	}
 
 	LRESULT CALLBACK DBarraProgresoEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
@@ -105,6 +163,13 @@ namespace DWL {
 				PintarBarraEx(DC);
 				EndPaint(hWnd(), &PS);
 				return 0;
+			case WM_MOUSEMOVE:
+				_Evento_MouseMovimiento(wParam, lParam);
+				return 0;
+			case WM_MOUSELEAVE:
+				_Evento_MouseSaliendo();
+				return 0;
+
 		}
 		return DControlEx::GestorMensajes(uMsg, wParam, lParam);
 	}

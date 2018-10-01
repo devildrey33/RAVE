@@ -98,14 +98,14 @@
 		V  Solucionat bug amb els ControlesPantallaCompleta que no es mostraven correctament a pantalles amb la x negativa
 		V  Alineats tots els controls de ControlesPantallaCompleta (principalment labels)
 
-		-  Mostrar les opcions en una finestra nova
+		V  Mostrar les opcions en una finestra nova
 			-  Afegir opcions : 
 				V BD
 					V explicar el tema de les arrels, i posar controls per afegir arrels.
 						- Falta refinar el dialeg per seleccionar directoris...
 					V Analitzar metadades pendents automaticament al actualitzar la base de dades.
 					V Mostrar finestra del analisis
-				- General
+				V General
 					X Reproductor sempre devant
 					V Buscar actualitzacions (amb la calma... perque haure de mirar si en el github ho puc fer...)
 						V Fer la MarcaEx i enllaçar a les opcions de la BD, i el sistema per buscar actualitzacións el deixo per la versió 0.5
@@ -113,7 +113,7 @@
 					X Valor del ratio per MouseDown en butons |< >|
 					V Teclat amb el focus en el reproductor (play / pausa, stop, volum +, volum -, següent medi, anterior medi, accelerar x2.0, frenar a x0.5)
 						X De teclat global (hook) si que haig de mirar la tecla play / pausa , pero el tema del volum amb tecles exteses el porta el sistema operatiu, suposo que tambe interesa el següent i l'anterior medi...
-					- Buto per associar els arxius d'audio i video al reproductor a saco, i liquido la pestanya asociaciones.
+					X Buto per associar els arxius d'audio i video al reproductor a saco, i liquido la pestanya asociaciones.
 						- No m'acaba de molar.. aixo ho ha de fer el instalador.
 				X Assosiacions d'arxiu
 					X Asociacions individuals per cada extensio

@@ -66,7 +66,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	// Marco superior derecho
 	MarcoSD.Crear(this, RC.right - 260, 16, 250, 24, ID_MARCOSD);
 
-	SliderVolumen.CrearBarraDesplazamientoEx(&MarcoSD, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.BD.Opciones_Volumen()));
+	SliderVolumen.CrearBarraVolumen(&MarcoSD, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.BD.Opciones_Volumen()));
 	std::wstring TxtVolumen = std::to_wstring(App.BD.Opciones_Volumen()) + L"%";
 	LabelVolumen.CrearEtiquetaEx(&MarcoSD, TxtVolumen.c_str(), 215, 2, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
 
@@ -185,7 +185,7 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 			if (!Minimizado()) {
 				if (Estado == EnPlay || Estado == EnPausa) { // EnPlay y EnPausa
 					// Si el slider del tiempo tiene la captura, es porque se esta modificando el tiempo, por lo que no hay que actualizar la posición en ese momento.
-					if (SliderTiempo.Estado() != DBarraDesplazamientoEx_Estado_Presionado && App.ControlesPC.SliderTiempo.Estado() != DBarraDesplazamientoEx_Estado_Presionado) {
+					if (SliderTiempo.Estado() != DBarraEx_Estado_Presionado && App.ControlesPC.SliderTiempo.Estado() != DBarraEx_Estado_Presionado) {
 						SliderTiempo.Valor(App.VLC.TiempoActual());
 						//					SliderTiempo.Posicion(static_cast<UINT64>(App.VLC.TiempoActual() * 30000));
 						App.ControlesPC.SliderTiempo.Valor(App.VLC.TiempoActual());
@@ -431,7 +431,8 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Presionado(DWL::DEventoMouse &DatosM
 			App.VLC.Ratio(0.5f);
 			break;
 		case ID_BOTON_SIGUIENTE:
-			App.VLC.Ratio(2.0f);
+			if (DatosMouse.Boton == 0)	App.VLC.Ratio(2.0f);
+			else                        App.VLC.Ratio(4.0f);
 			break;
 	}
 }
@@ -474,14 +475,14 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse)
 				Repetir_Click();
 				break;
 			case ID_BOTON_ANTERIOR:
-				// El boton no lleva mucho tiempo presionado
-				if (GetTickCount() < _BotonExMouseDownTick + 100) {
+				// El boton lleva menos de 200 milisegundos presionado
+				if (GetTickCount() < _BotonExMouseDownTick + 200) {
 					Lista_Anterior();
 				}
 				break;
 			case ID_BOTON_SIGUIENTE:
-				// El boton no lleva mucho tiempo presionado
-				if (GetTickCount() < _BotonExMouseDownTick + 100) {
+				// El boton lleva menos de 200 milisegundos presionado
+				if (GetTickCount() < _BotonExMouseDownTick + 200) {
 					Lista_Siguiente();
 				}
 				break;

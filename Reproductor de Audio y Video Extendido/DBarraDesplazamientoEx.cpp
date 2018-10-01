@@ -5,14 +5,7 @@
 
 namespace DWL {
 
-	DBarraDesplazamientoEx::DBarraDesplazamientoEx(void) :	DBarraProgresoEx(), _Estado(DBarraDesplazamientoEx_Estado_Normal), _MostrarToolTip(DBarraDesplazamientoEx_ToolTip_SinToolTip),
-															ColorBarraResaltado(COLOR_BARRA_RESALTADO), ColorBarraPresionado(COLOR_BARRA_PRESIONADO),
-															ColorBordeResaltado(COLOR_ROJO), ColorBordePresionado(COLOR_ROJO_PRESIONADO) {
-		ColorBarra				= COLOR_BARRA;
-		ColorBorde				= COLOR_BORDE;
-		ColorFondo				= COLOR_BARRA_FONDO;
-		ColorFondoResaltado		= COLOR_BARRA_FONDO_RESALTADO;
-		ColorFondoPresionado	= COLOR_BARRA_FONDO_PRESIONADO;
+	DBarraDesplazamientoEx::DBarraDesplazamientoEx(void) :	DBarraProgresoEx(), _MostrarToolTip(DBarraDesplazamientoEx_ToolTip_SinToolTip) {
 	}
 
 	DBarraDesplazamientoEx::~DBarraDesplazamientoEx(void) {
@@ -25,6 +18,10 @@ namespace DWL {
 		_Minimo = nMinimo;
 		_Maximo = nMaximo;
 		_Valor = nValor;
+		_ColorBarra = COLOR_BARRA;
+		_ColorFondo = COLOR_BARRA_FONDO;
+		_ColorBorde = COLOR_BORDE;
+
 		_ToolTip.CrearToolTipEx(Fuente18Normal, nPadre);
 		return hWnd();
 	}
@@ -38,36 +35,36 @@ namespace DWL {
 	}
 
 	void DBarraDesplazamientoEx::Evento_PintarBarra(HDC DC, RECT &RBarra) {
-		COLORREF Color = 0;
-		switch (_Estado) {
-			case DBarraDesplazamientoEx_Estado_Normal		: Color = ColorBarra;				break;
-			case DBarraDesplazamientoEx_Estado_Resaltado	: Color = ColorBarraResaltado;		break;
-			case DBarraDesplazamientoEx_Estado_Presionado	: Color = ColorBarraPresionado;		break;
-		}
+		COLORREF Color = (_Estado == DBarraEx_Estado_Presionado) ? COLOR_BARRA_PRESIONADO : _ColorBarra;
+//		switch (_Estado) {
+//			case DBarraDesplazamientoEx_Estado_Normal		: Color = COLOR_BARRA;				break;
+//			case DBarraDesplazamientoEx_Estado_Resaltado	: Color = COLOR_BARRA_RESALTADO;	break;
+//			case DBarraDesplazamientoEx_Estado_Presionado	: Color = COLOR_BARRA_PRESIONADO;	break;
+//		}
 		HBRUSH BrochaBarra = CreateSolidBrush(Color);
 		FillRect(DC, &RBarra, BrochaBarra);
 		DeleteObject(BrochaBarra);
 	}
 
 	void DBarraDesplazamientoEx::Evento_PintarFondo(HDC DC, RECT &RFondo) {
-		COLORREF Color = 0;
-		switch (_Estado) {
-			case DBarraDesplazamientoEx_Estado_Normal		: Color = ColorFondo;				break;
-			case DBarraDesplazamientoEx_Estado_Resaltado	: Color = ColorFondoResaltado;		break;
-			case DBarraDesplazamientoEx_Estado_Presionado	: Color = ColorFondoPresionado;		break;
-		}
+		COLORREF Color = (_Estado == DBarraEx_Estado_Presionado) ? COLOR_BARRA_FONDO_PRESIONADO : _ColorFondo;
+//		switch (_Estado) {
+//			case DBarraDesplazamientoEx_Estado_Normal		: Color = COLOR_BARRA_FONDO;				break;
+//			case DBarraDesplazamientoEx_Estado_Resaltado	: Color = COLOR_BARRA_FONDO_RESALTADO;		break;
+//			case DBarraDesplazamientoEx_Estado_Presionado	: Color = COLOR_BARRA_FONDO_PRESIONADO;		break;
+//		}
 		HBRUSH BrochaFondo = CreateSolidBrush(Color);
 		FillRect(DC, &RFondo, BrochaFondo);
 		DeleteObject(BrochaFondo);
 	}
 
 	void DBarraDesplazamientoEx::Evento_PintarBorde(HDC DC, RECT &RBorde) {
-		COLORREF Color = 0;
-		switch (_Estado) {
-			case DBarraDesplazamientoEx_Estado_Normal		: Color = ColorBorde;				break;
-			case DBarraDesplazamientoEx_Estado_Resaltado	: Color = ColorBordeResaltado;		break;
-			case DBarraDesplazamientoEx_Estado_Presionado	: Color = ColorBordePresionado;		break;
-		}
+		COLORREF Color = (_Estado == DBarraEx_Estado_Presionado) ? COLOR_ROJO_PRESIONADO : _ColorBorde;
+//		switch (_Estado) {
+//			case DBarraDesplazamientoEx_Estado_Normal		: Color = COLOR_BORDE;				break;
+//			case DBarraDesplazamientoEx_Estado_Resaltado	: Color = COLOR_ROJO;				break;
+//			case DBarraDesplazamientoEx_Estado_Presionado	: Color = COLOR_ROJO_PRESIONADO;	break;
+//		}
 		HBRUSH BrochaBorde = CreateSolidBrush(Color);
 		FrameRect(DC, &RBorde, BrochaBorde);
 		DeleteObject(BrochaBorde);
@@ -75,6 +72,16 @@ namespace DWL {
 
 
 	void DBarraDesplazamientoEx::_Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam) {
+
+		if (_MouseEntrando() == TRUE) {
+			// Mouse enter
+			if (_Estado != DBarraEx_Estado_Presionado) {
+				//_Estado = DBarraDesplazamientoEx_Estado_Resaltado;
+				//Repintar();
+				Resaltar(TRUE);
+			}
+		}
+
 		DEventoMouse DatosMouse(wParam, lParam, this);
 		RECT  RC = { 0, 0, 0, 0 };
 		GetClientRect(hWnd(), &RC);
@@ -92,7 +99,7 @@ namespace DWL {
 			case DBarraDesplazamientoEx_ToolTip_Superior:		_ToolTip.Mostrar(RW.left + cX, RW.top - 35, TextoToolTip);		break;
 			case DBarraDesplazamientoEx_ToolTip_Inferior:		_ToolTip.Mostrar(RW.left + cX, RW.bottom + 10, TextoToolTip);	break;
 		}
-		if (_Estado == DBarraDesplazamientoEx_Estado_Presionado) {
+		if (_Estado == DBarraEx_Estado_Presionado) {
 			float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
 			_Valor = (static_cast<float>(cX - RC.left) * Parte) - _Minimo;
 			if (_Valor > _Maximo) { _Valor = _Maximo; }
@@ -114,7 +121,7 @@ namespace DWL {
 		GetClientRect(hWnd(), &RC);
 		if (PtInRect(&RC, Pt) == TRUE) {
 			SetCapture(hWnd());
-			_Estado = DBarraDesplazamientoEx_Estado_Presionado;
+			_Estado = DBarraEx_Estado_Presionado;
 			float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
 			_Valor = (static_cast<float>(Pt.x - RC.left) * Parte) - _Minimo;
 			Repintar();
@@ -129,8 +136,8 @@ namespace DWL {
 		RECT  RC = { 0, 0, 0, 0 };
 		GetClientRect(hWnd(), &RC);
 		ReleaseCapture();
-		if (PtInRect(&RC, Pt) == TRUE) { _Estado = DBarraDesplazamientoEx_Estado_Resaltado; }
-		else { _Estado = DBarraDesplazamientoEx_Estado_Normal; }
+		if (PtInRect(&RC, Pt) == TRUE) { _Estado = DBarraEx_Estado_Resaltado; }
+		else                           { _Estado = DBarraEx_Estado_Normal; }
 
 		float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
 		_Valor = (static_cast<float>(Pt.x - RC.left) * Parte) - _Minimo;
@@ -140,6 +147,50 @@ namespace DWL {
 		Repintar();
 	}
 
+	void DBarraDesplazamientoEx::_Evento_MouseSaliendo(void) {
+		_ToolTip.Ocultar();
+		_MouseDentro = FALSE;
+		if (_Estado != DBarraEx_Estado_Presionado) {
+			//_Estado = DBarraDesplazamientoEx_Estado_Normal;
+			//Repintar();
+			Resaltar(FALSE);
+		}
+	}
+
+
+	void DBarraDesplazamientoEx::Resaltar(const BOOL Resaltado) {
+		if (_AniResaltado.Animando() == TRUE) {
+			_AniResaltado.Invertir();
+			return;
+		}
+
+		COLORREF BordeDesde, BordeHasta, FondoDesde, FondoHasta, BarraDesde, BarraHasta;
+		if (Resaltado == TRUE) {
+			BordeDesde = COLOR_BORDE;
+			BordeHasta = COLOR_BORDE_RESALTADO;
+			FondoDesde = COLOR_BARRA_FONDO;
+			FondoHasta = COLOR_BARRA_FONDO_RESALTADO;
+			BarraDesde = COLOR_BARRA;
+			BarraHasta = COLOR_BARRA_RESALTADO;
+			_Estado = DBarraEx_Estado_Resaltado;
+		}
+		else {
+			BordeDesde = COLOR_BORDE_RESALTADO;
+			BordeHasta = COLOR_BORDE;
+			FondoDesde = COLOR_BARRA_FONDO_RESALTADO;
+			FondoHasta = COLOR_BARRA_FONDO;
+			BarraDesde = COLOR_BARRA_RESALTADO;
+			BarraHasta = COLOR_BARRA;
+			_Estado = DBarraEx_Estado_Normal;
+		}
+		_AniResaltado.Iniciar(FondoDesde, FondoHasta, BordeDesde, BordeHasta, BarraDesde, BarraHasta, 400, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
+			_ColorFondo = Valores[0];
+			_ColorBorde = Valores[1];
+			_ColorBarra = Valores[2];
+			Repintar();
+		});
+
+	}
 
 	LRESULT CALLBACK DBarraDesplazamientoEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
@@ -154,41 +205,29 @@ namespace DWL {
 				EndPaint(hWnd(), &PS);
 				return 0;
 			case WM_MOUSEMOVE:
-				if (_MouseEntrando() == TRUE) {
-					// Mouse enter
-					if (_Estado != DBarraDesplazamientoEx_Estado_Presionado) {
-						_Estado = DBarraDesplazamientoEx_Estado_Resaltado;
-						Repintar();
-					}
-				}
 				_Evento_MouseMovimiento(wParam, lParam);
-				break;
+				return 0;
 			case WM_MOUSELEAVE:
-				_ToolTip.Ocultar();
-				_MouseDentro = FALSE;
-				if (_Estado != DBarraDesplazamientoEx_Estado_Presionado) {
-					_Estado = DBarraDesplazamientoEx_Estado_Normal;
-					Repintar();
-				}
-				break;
+				_Evento_MouseSaliendo();
+				return 0;
 			case WM_LBUTTONDOWN:
 				_Evento_MousePresionado(0, wParam, lParam);
-				break;
+				return 0;
 			case WM_RBUTTONDOWN:
 				_Evento_MousePresionado(1, wParam, lParam);
-				break;
+				return 0;
 			case WM_MBUTTONDOWN:
 				_Evento_MousePresionado(2, wParam, lParam);
-				break;
+				return 0;
 			case WM_LBUTTONUP:
 				_Evento_MouseSoltado(0, wParam, lParam);
-				break;
+				return 0;
 			case WM_RBUTTONUP:
 				_Evento_MouseSoltado(1, wParam, lParam);
-				break;
+				return 0;
 			case WM_MBUTTONUP:
 				_Evento_MouseSoltado(2, wParam, lParam);
-				break;
+				return 0;
 		}
 		return DControlEx::GestorMensajes(uMsg, wParam, lParam);
 	}

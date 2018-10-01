@@ -2,6 +2,7 @@
 #define DBOTONEX_H
 
 #include "DControlEx.h"
+#include "DAnimacion.h"
 
 namespace DWL {
 	enum DBotonEx_Estado {
@@ -47,10 +48,13 @@ namespace DWL {
 								// Funciones para asignar texto a un boton
 		inline void             Texto(std::wstring &nTexto)  { _Texto = nTexto; Repintar(); };
 		inline void             Texto(const wchar_t *nTexto) { _Texto = nTexto; Repintar(); };
-	protected:
+								// Inicia la animación de resaltado
+		void                    Resaltar(const BOOL Resaltado);
+	  protected:
 		void				   _Evento_MouseMovimiento(const WPARAM wParam, const LPARAM lParam);
 		void				   _Evento_MousePresionado(const WPARAM wParam, const LPARAM lParam, const int Boton);
 		void				   _Evento_MouseSoltado(const WPARAM wParam, const LPARAM lParam, const int Boton);
+		void                   _Evento_MouseSaliendo(void);
 
 		void                   _Evento_Pintar(void);
 		HWND				   _CrearBotonEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const long Estilos);
@@ -60,6 +64,10 @@ namespace DWL {
 		DListaIconos_Icono    *_Icono;
 		int                    _PosIconoX;
 		int                    _PosIconoY;
+		DAnimacionColor        _AniResaltado;
+		COLORREF               _ColorBorde;
+		COLORREF               _ColorFondo;
+		COLORREF               _ColorTexto;
 	};
 
 }
