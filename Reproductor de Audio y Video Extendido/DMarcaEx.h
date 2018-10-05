@@ -11,6 +11,13 @@ namespace DWL {
 		DMarcaEx_Estado_Presionado
 	};
 
+	enum DMarcaEx_Transicion {
+		DMarcaEx_Transicion_Normal,
+		DMarcaEx_Transicion_Resaltado,
+		DMarcaEx_Transicion_Presionado,
+		DMarcaEx_Transicion_Desactivado
+	};
+
 	class DMarcaEx : public DControlEx	{
 	  public:
 								DMarcaEx(void);
@@ -29,9 +36,8 @@ namespace DWL {
 		virtual void			Activado(const BOOL nActivar);
 		inline const BOOL       Activado(void) { return DhWnd::Activado(); }
 		void                    Pintar(HDC DC);
-								// Inicia la animación de resaltado
-		void                    Resaltar(const BOOL Resaltado);
-
+								// Inicia una transición desde el estado actual al estado especificado
+		void                    Transicion(const DMarcaEx_Transicion nTransicion);
 	  protected:
 		void			       _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
 		void		           _Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam);
@@ -42,7 +48,7 @@ namespace DWL {
 		BOOL                   _Marcado;
 		DMarcaEx_Estado        _Estado;
 		DListaIconos_Icono    *_Icono;
-		DAnimacionColor        _AniResaltado;
+		DAnimacionColor        _AniTransicion;
 		COLORREF               _ColorFondoMarca;
 		COLORREF               _ColorFondo;
 		COLORREF               _ColorBorde;

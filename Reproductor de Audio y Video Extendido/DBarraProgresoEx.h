@@ -12,6 +12,12 @@ namespace DWL {
 		DBarraEx_Estado_Presionado
 	};
 
+	enum DBarraEx_Transicion {
+		DBarraEx_Transicion_Normal,
+		DBarraEx_Transicion_Resaltado,
+		DBarraEx_Transicion_Presionado,
+		DBarraEx_Transicion_Desactivado
+	};
 
 	class DBarraProgresoEx : public DControlEx {
 	  public:
@@ -33,12 +39,12 @@ namespace DWL {
 		virtual void				Evento_PintarBarra(HDC DC, RECT &RBarra);
 		virtual void				Evento_PintarFondo(HDC DC, RECT &RFondo);
 
-		virtual void                Resaltar(const BOOL Resaltado);
-
+//		virtual void                Resaltar(const BOOL Resaltado);
+		virtual void                Transicion(const DBarraEx_Transicion nTransicion);
 		LRESULT CALLBACK			GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	  protected:
 		void					   _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
-		void                       _Evento_MouseSaliendo(void);
+		void		               _Evento_MouseSaliendo(void);
 
 		COLORREF				   _ColorBarra;
 		COLORREF		           _ColorBorde;
@@ -47,7 +53,7 @@ namespace DWL {
 		float					   _Maximo;
 		float					   _Valor;
 		DBarraEx_Estado			   _Estado;
-		DAnimacionColor            _AniResaltado;
+		DAnimacionColor            _AniTransicion;
 
 	};	
 }

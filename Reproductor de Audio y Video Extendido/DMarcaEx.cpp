@@ -45,33 +45,18 @@ namespace DWL {
 		FillRect(Buffer, &RC, ColorFondo);
 		DeleteObject(ColorFondo);
 
-		// Determino que colores hay que utilizar según el estado
-		COLORREF ColTexto = _ColorTexto, ColMarcoBorde = _ColorBorde, ColFondo = _ColorFondoMarca;
+		// Si está presionado
 		int bPresionado = 0;
 		if (_Estado == DMarcaEx_Estado_Presionado) {
-			ColTexto	  = COLOR_TEXTO_PRESIONADO;	
-			ColMarcoBorde = COLOR_BORDE;
 			bPresionado   = 1;
-		}
-
-//		switch (_Estado) {
-//			case DMarcaEx_Estado_Normal		:	ColTexto = COLOR_TEXTO;					ColMarcoBorde =	COLOR_BORDE;						break;
-//			case DMarcaEx_Estado_Resaltado	:	ColTexto = COLOR_TEXTO_RESALTADO;		ColMarcoBorde = COLOR_ROJO;							break;
-//			case DMarcaEx_Estado_Presionado :	ColTexto = COLOR_TEXTO_PRESIONADO;		ColMarcoBorde = COLOR_BORDE;	bPresionado = 1;	break;
-//		}
-
-		BOOL nActivado = Activado();
-		if (nActivado == FALSE) {
-			ColTexto = COLOR_TEXTO_DESACTIVADO;
-			ColFondo = COLOR_FONDO_CLARO_DESACTIVADO;
 		}
 
 		// Pinto el marco para el check
 		int  YMarco = (RC.bottom - (DMARCAEX_TAMICONO + 2)) / 2;
 		RECT Marco  = { 0, YMarco, DMARCAEX_TAMICONO + 2, (DMARCAEX_TAMICONO + 2) + YMarco };
 		
-		HBRUSH	ColorFondoMarco = CreateSolidBrush(ColFondo);
-		HPEN	ColorBordeMarco = CreatePen(PS_SOLID, 1, ColMarcoBorde);
+		HBRUSH	ColorFondoMarco = CreateSolidBrush(_ColorFondoMarca);
+		HPEN	ColorBordeMarco = CreatePen(PS_SOLID, 1, _ColorBorde);
 		HBRUSH  BrochaViejo		= static_cast<HBRUSH>(SelectObject(Buffer, ColorFondoMarco));
 		HPEN    PlumaViejo		= static_cast<HPEN>(SelectObject(Buffer, ColorBordeMarco));
 		Rectangle(Buffer, Marco.left, Marco.top, Marco.right, Marco.bottom);
@@ -89,9 +74,9 @@ namespace DWL {
 		// Pinto el texto
 		SetBkMode(Buffer, TRANSPARENT);
 		SetTextColor(Buffer, COLOR_TEXTO_SOMBRA);
-		TextOut(Buffer, DMARCAEX_TAMICONO + 7, YMarco + 1, _Texto.c_str(), static_cast<int>(_Texto.size()));
-		SetTextColor(Buffer, ColTexto);
-		TextOut(Buffer, DMARCAEX_TAMICONO + 6, YMarco, _Texto.c_str(), static_cast<int>(_Texto.size()));
+		TextOut(Buffer, DMARCAEX_TAMICONO + 7, bPresionado + YMarco + 1, _Texto.c_str(), static_cast<int>(_Texto.size()));
+		SetTextColor(Buffer, _ColorTexto);
+		TextOut(Buffer, DMARCAEX_TAMICONO + 6, bPresionado + YMarco, _Texto.c_str(), static_cast<int>(_Texto.size()));
 
 
 		// Copio el buffer al DC
@@ -104,46 +89,50 @@ namespace DWL {
 		DeleteDC(Buffer);
 	}
 
-
-
-	void DMarcaEx::Resaltar(const BOOL Resaltado) {
-		if (_AniResaltado.Animando() == TRUE) {
-			_AniResaltado.Invertir();
-			return;
+	void DMarcaEx::Transicion(const DMarcaEx_Transicion nTransicion) {
+		DWORD Duracion = 400;
+		if (_AniTransicion.Animando() == TRUE) {
+			Duracion = _AniTransicion.TiempoActual();
+			_AniTransicion.Terminar();
 		}
 
-		COLORREF BordeDesde, BordeHasta, FondoDesde, FondoHasta, TextoDesde, TextoHasta, FondoMarcaDesde, FondoMarcaHasta;
-		if (Resaltado == TRUE) {
-			BordeDesde		= COLOR_BORDE;
-			BordeHasta		= COLOR_BORDE_RESALTADO;
-			FondoDesde		= COLOR_FONDO;
-			FondoHasta		= COLOR_FONDO_RESALTADO;
-			FondoMarcaDesde = COLOR_FONDO_CLARO;
-			FondoMarcaHasta = COLOR_FONDO_CLARO_RESALTADO;
-			TextoDesde		= COLOR_TEXTO;
-			TextoHasta		= COLOR_TEXTO_RESALTADO;
-			_Estado			= DMarcaEx_Estado_Resaltado;
+		COLORREF FondoHasta, BordeHasta, TextoHasta, FondoMarcaHasta;
+		switch (nTransicion) {
+			case DMarcaEx_Transicion_Normal:
+				FondoHasta		= COLOR_FONDO;
+				FondoMarcaHasta = COLOR_FONDO_CLARO;
+				BordeHasta		= COLOR_BORDE;
+				TextoHasta		= COLOR_TEXTO;
+				break;
+			case DMarcaEx_Transicion_Resaltado:
+				FondoHasta		= COLOR_FONDO_RESALTADO;
+				FondoMarcaHasta = COLOR_FONDO_CLARO_RESALTADO;
+				BordeHasta		= COLOR_BORDE_RESALTADO;
+				TextoHasta		= COLOR_TEXTO_RESALTADO;
+				break;
+			case DMarcaEx_Transicion_Presionado:
+				FondoHasta		= COLOR_FONDO_PRESIONADO;
+				FondoMarcaHasta = COLOR_FONDO_CLARO_PRESIONADO;
+				BordeHasta		= COLOR_BORDE_PRESIONADO;
+				TextoHasta		= COLOR_TEXTO_PRESIONADO;
+				break;
+			case DMarcaEx_Transicion_Desactivado:
+				FondoHasta		= COLOR_BOTON;
+				FondoMarcaHasta = COLOR_FONDO_CLARO_DESACTIVADO;
+				BordeHasta		= COLOR_BORDE;
+				TextoHasta		= COLOR_TEXTO_DESACTIVADO;
+				break;
 		}
-		else {
-			BordeDesde		= COLOR_BORDE_RESALTADO;
-			BordeHasta		= COLOR_BORDE;
-			FondoDesde		= COLOR_FONDO_RESALTADO;
-			FondoHasta		= COLOR_FONDO;
-			FondoMarcaDesde = COLOR_FONDO_CLARO_RESALTADO;
-			FondoMarcaHasta = COLOR_FONDO_CLARO;
-			TextoDesde		= COLOR_TEXTO_RESALTADO;
-			TextoHasta		= COLOR_TEXTO;
-			_Estado			= DMarcaEx_Estado_Normal;
-		}
-		_AniResaltado.Iniciar(FondoDesde, FondoHasta, FondoMarcaDesde, FondoMarcaHasta, BordeDesde, BordeHasta, TextoDesde, TextoHasta, 400, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
+
+		_AniTransicion.Iniciar(_ColorFondo, FondoHasta, _ColorFondoMarca, FondoMarcaHasta, _ColorBorde, BordeHasta, _ColorTexto, TextoHasta, Duracion, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
 			_ColorFondo		 = Valores[0];
 			_ColorFondoMarca = Valores[1];
 			_ColorBorde		 = Valores[2];
 			_ColorTexto		 = Valores[3];
 			Repintar();
 		});
-
 	}
+
 
 	void DMarcaEx::_Evento_Pintar(void) {
 		HDC         DC;
@@ -156,7 +145,7 @@ namespace DWL {
 
 	void DMarcaEx::Marcado(const BOOL nMarcado) {
 		_Marcado = nMarcado;
-		Repintar();
+		Repintar();		
 	}
 
 	void DMarcaEx::_Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam) {
@@ -165,9 +154,9 @@ namespace DWL {
 		if (_MouseEntrando() == TRUE) {
 			// Mouse enter
 			if (_Estado != DMarcaEx_Estado_Presionado) {
-//				_Estado = DMarcaEx_Estado_Resaltado;
-//				nRepintar = TRUE;
-				Resaltar(TRUE);
+				_Estado = DMarcaEx_Estado_Resaltado;
+				Transicion(DMarcaEx_Transicion_Resaltado);
+//				Resaltar(TRUE);
 			}
 		}
 		Evento_MouseMovimiento(DatosMouse);
@@ -180,14 +169,15 @@ namespace DWL {
 		SetCapture(hWnd());
 		_Estado = DMarcaEx_Estado_Presionado;
 		Evento_MousePresionado(DatosMouse);
-		Repintar();
+		//Repintar();
+		Transicion(DMarcaEx_Transicion_Presionado);
 	}
 
 	void DMarcaEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
 		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
-		BOOL nRepintar = FALSE;
+//		BOOL nRepintar = FALSE;
+		ReleaseCapture();
 		if (_Estado == DMarcaEx_Estado_Presionado) {
-			ReleaseCapture();
 
 			RECT RC;
 			GetClientRect(hWnd(), &RC);
@@ -195,25 +185,28 @@ namespace DWL {
 			POINT Pt = { DatosMouse.X(), DatosMouse.Y() };
 			if (PtInRect(&RC, Pt) != 0) {
 				_Estado = DMarcaEx_Estado_Resaltado;
+				Transicion(DMarcaEx_Transicion_Resaltado);
 				_Marcado = !_Marcado;
 				SendMessage(GetParent(hWnd()), DWL_MARCAEX_CLICK, reinterpret_cast<WPARAM>(&DatosMouse), 0);
 			}
 			else {
+//				Transicion(DMarcaEx_Transicion_Normal);		No hace falta (salta el mouseleave)
 				_Estado = DMarcaEx_Estado_Normal;
 			}
-			nRepintar = TRUE;
+//			nRepintar = TRUE;
 		}
 		Evento_MouseSoltado(DatosMouse);
-		if (nRepintar == TRUE)	Repintar();
+//		if (nRepintar == TRUE)	Repintar();
 	}
 
 	void DMarcaEx::_Evento_MouseSaliendo(void) {
 		_MouseDentro = FALSE;
 //		BOOL nRepintar = FALSE;
 		if (_Estado != DMarcaEx_Estado_Presionado) {
-//			_Estado = DMarcaEx_Estado_Normal;
+			_Estado = DMarcaEx_Estado_Normal;
 //			nRepintar = TRUE;
-			Resaltar(FALSE);
+//			Resaltar(FALSE);
+			Transicion(DMarcaEx_Transicion_Normal);
 		}
 		Evento_MouseSaliendo();
 //		if (nRepintar == TRUE)	Repintar();
@@ -222,7 +215,8 @@ namespace DWL {
 	void DMarcaEx::Activado(const BOOL nActivar) {
 		BOOL Ret = FALSE;
 		Ret = EnableWindow(_hWnd, nActivar);
-		Repintar();
+		Transicion((nActivar == TRUE) ? DMarcaEx_Transicion_Normal : DMarcaEx_Transicion_Desactivado);
+		//Repintar();
 	}
 
 	LRESULT CALLBACK DMarcaEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {

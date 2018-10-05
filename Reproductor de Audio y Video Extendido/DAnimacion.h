@@ -1,12 +1,11 @@
 #ifndef DANIMACION_H
 #define DANIMACION_H
 
-#define DANIMACION_MOSTRARDEBUG	TRUE
+#define DANIMACION_MOSTRARDEBUG	FALSE
 
 #include <functional>
 
 namespace DWL {
-
 
 	class DAnimacion {
 	   public:
@@ -28,6 +27,7 @@ namespace DWL {
 		void                                                    Invertir(void);
 		void													Terminar(void);
 		inline const BOOL                                       Animando(void) { return (_Timer != NULL); }
+		inline const DWORD                                      TiempoActual(void) { return _TiempoActual; }
 	   protected:
 		static void CALLBACK                                   _TimerProc(PVOID lpParameter, BOOLEAN TimerOrWaitFired);
 		std::function<void(std::vector<float> &, const BOOL)>  _Callback;
@@ -74,6 +74,7 @@ namespace DWL {
 		void                                                        Invertir(void);
 		void														Terminar(void);
 		inline const BOOL                                           Animando(void) { return (_Timer != NULL);  }
+		inline const DWORD                                          TiempoActual(void) { return _TiempoActual;  }
 	protected:
 		static void CALLBACK									   _TimerProc(PVOID lpParameter, BOOLEAN TimerOrWaitFired);
 		std::function<void(std::vector<COLORREF> &, const BOOL)>   _Callback;

@@ -36,11 +36,6 @@ namespace DWL {
 
 	void DBarraDesplazamientoEx::Evento_PintarBarra(HDC DC, RECT &RBarra) {
 		COLORREF Color = (_Estado == DBarraEx_Estado_Presionado) ? COLOR_BARRA_PRESIONADO : _ColorBarra;
-//		switch (_Estado) {
-//			case DBarraDesplazamientoEx_Estado_Normal		: Color = COLOR_BARRA;				break;
-//			case DBarraDesplazamientoEx_Estado_Resaltado	: Color = COLOR_BARRA_RESALTADO;	break;
-//			case DBarraDesplazamientoEx_Estado_Presionado	: Color = COLOR_BARRA_PRESIONADO;	break;
-//		}
 		HBRUSH BrochaBarra = CreateSolidBrush(Color);
 		FillRect(DC, &RBarra, BrochaBarra);
 		DeleteObject(BrochaBarra);
@@ -48,11 +43,6 @@ namespace DWL {
 
 	void DBarraDesplazamientoEx::Evento_PintarFondo(HDC DC, RECT &RFondo) {
 		COLORREF Color = (_Estado == DBarraEx_Estado_Presionado) ? COLOR_BARRA_FONDO_PRESIONADO : _ColorFondo;
-//		switch (_Estado) {
-//			case DBarraDesplazamientoEx_Estado_Normal		: Color = COLOR_BARRA_FONDO;				break;
-//			case DBarraDesplazamientoEx_Estado_Resaltado	: Color = COLOR_BARRA_FONDO_RESALTADO;		break;
-//			case DBarraDesplazamientoEx_Estado_Presionado	: Color = COLOR_BARRA_FONDO_PRESIONADO;		break;
-//		}
 		HBRUSH BrochaFondo = CreateSolidBrush(Color);
 		FillRect(DC, &RFondo, BrochaFondo);
 		DeleteObject(BrochaFondo);
@@ -60,11 +50,6 @@ namespace DWL {
 
 	void DBarraDesplazamientoEx::Evento_PintarBorde(HDC DC, RECT &RBorde) {
 		COLORREF Color = (_Estado == DBarraEx_Estado_Presionado) ? COLOR_ROJO_PRESIONADO : _ColorBorde;
-//		switch (_Estado) {
-//			case DBarraDesplazamientoEx_Estado_Normal		: Color = COLOR_BORDE;				break;
-//			case DBarraDesplazamientoEx_Estado_Resaltado	: Color = COLOR_ROJO;				break;
-//			case DBarraDesplazamientoEx_Estado_Presionado	: Color = COLOR_ROJO_PRESIONADO;	break;
-//		}
 		HBRUSH BrochaBorde = CreateSolidBrush(Color);
 		FrameRect(DC, &RBorde, BrochaBorde);
 		DeleteObject(BrochaBorde);
@@ -76,9 +61,10 @@ namespace DWL {
 		if (_MouseEntrando() == TRUE) {
 			// Mouse enter
 			if (_Estado != DBarraEx_Estado_Presionado) {
-				//_Estado = DBarraDesplazamientoEx_Estado_Resaltado;
+				_Estado = DBarraEx_Estado_Resaltado;
 				//Repintar();
-				Resaltar(TRUE);
+				//Resaltar(TRUE);
+				Transicion(DBarraEx_Transicion_Resaltado);
 			}
 		}
 
@@ -99,6 +85,7 @@ namespace DWL {
 			case DBarraDesplazamientoEx_ToolTip_Superior:		_ToolTip.Mostrar(RW.left + cX, RW.top - 35, TextoToolTip);		break;
 			case DBarraDesplazamientoEx_ToolTip_Inferior:		_ToolTip.Mostrar(RW.left + cX, RW.bottom + 10, TextoToolTip);	break;
 		}
+
 		if (_Estado == DBarraEx_Estado_Presionado) {
 			float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
 			_Valor = (static_cast<float>(cX - RC.left) * Parte) - _Minimo;
@@ -124,9 +111,10 @@ namespace DWL {
 			_Estado = DBarraEx_Estado_Presionado;
 			float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
 			_Valor = (static_cast<float>(Pt.x - RC.left) * Parte) - _Minimo;
-			Repintar();
+			//Repintar();
 			SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
 			Evento_MousePresionado(DatosMouse);
+			Transicion(DBarraEx_Transicion_Presionado);
 		}
 	}
 
@@ -136,31 +124,37 @@ namespace DWL {
 		RECT  RC = { 0, 0, 0, 0 };
 		GetClientRect(hWnd(), &RC);
 		ReleaseCapture();
-		if (PtInRect(&RC, Pt) == TRUE) { _Estado = DBarraEx_Estado_Resaltado; }
-		else                           { _Estado = DBarraEx_Estado_Normal; }
+		if (PtInRect(&RC, Pt) == TRUE) { 
+			_Estado = DBarraEx_Estado_Resaltado; 
+			Transicion(DBarraEx_Transicion_Resaltado);
+		}
+		else {
+			// No hace falta transición (saltara la del mousesaliendo)
+			_Estado = DBarraEx_Estado_Normal; 
+		}
 
 		float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
 		_Valor = (static_cast<float>(Pt.x - RC.left) * Parte) - _Minimo;
 		if (_Valor > _Maximo) { _Valor = _Maximo; }
 		if (_Valor < _Minimo) { _Valor = _Minimo; }
 		SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIADO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
-		Repintar();
+//		Repintar();
 	}
 
 	void DBarraDesplazamientoEx::_Evento_MouseSaliendo(void) {
 		_ToolTip.Ocultar();
 		_MouseDentro = FALSE;
 		if (_Estado != DBarraEx_Estado_Presionado) {
-			//_Estado = DBarraDesplazamientoEx_Estado_Normal;
+			_Estado = DBarraEx_Estado_Normal;
 			//Repintar();
-			Resaltar(FALSE);
+			Transicion(DBarraEx_Transicion_Normal);
 		}
 	}
 
 
 	void DBarraDesplazamientoEx::Resaltar(const BOOL Resaltado) {
-		if (_AniResaltado.Animando() == TRUE) {
-			_AniResaltado.Invertir();
+		if (_AniTransicion.Animando() == TRUE) {
+			_AniTransicion.Invertir();
 			return;
 		}
 
@@ -183,7 +177,7 @@ namespace DWL {
 			BarraHasta = COLOR_BARRA;
 			_Estado = DBarraEx_Estado_Normal;
 		}
-		_AniResaltado.Iniciar(FondoDesde, FondoHasta, BordeDesde, BordeHasta, BarraDesde, BarraHasta, 400, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
+		_AniTransicion.Iniciar(FondoDesde, FondoHasta, BordeDesde, BordeHasta, BarraDesde, BarraHasta, 400, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
 			_ColorFondo = Valores[0];
 			_ColorBorde = Valores[1];
 			_ColorBarra = Valores[2];

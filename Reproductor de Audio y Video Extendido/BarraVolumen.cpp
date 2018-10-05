@@ -32,7 +32,8 @@ void BarraVolumen::Evento_PintarBarra(HDC DC, RECT &RBarra) {
 	#endif
 
 
-	HBRUSH BrochaBarra = CreateSolidBrush((_Estado == DBarraEx_Estado_Presionado) ? RGB(static_cast<int>(_Valor), 200 - static_cast<int>(_Valor), 0) : _ColorBarra);
+	HBRUSH BrochaBarra = CreateSolidBrush(_ColorBarra);
+//	HBRUSH BrochaBarra = CreateSolidBrush((_Estado == DBarraEx_Estado_Presionado) ? RGB(static_cast<int>(_Valor), 200 - static_cast<int>(_Valor), 0) : _ColorBarra);
 	FillRect(DC, &RBarra, BrochaBarra);
 	DeleteObject(BrochaBarra);
 
@@ -41,11 +42,60 @@ void BarraVolumen::Evento_PintarBarra(HDC DC, RECT &RBarra) {
 
 void BarraVolumen::Valor(const float nValor) {
 	_Valor = nValor;
+/*	if (_Estado = DBarraEx_Estado_Normal)		Transicion(DBarraEx_Transicion_Normal);
+	if (_Estado = DBarraEx_Estado_Resaltado)	Transicion(DBarraEx_Transicion_Resaltado);
+	if (_Estado = DBarraEx_Estado_Presionado)	Transicion(DBarraEx_Transicion_Presionado);*/
+	if (_Estado = DBarraEx_Estado_Presionado) _AniTransicion.Terminar();
 	_ColorBarra = RGB(20 + static_cast<int>(_Valor), 220 - static_cast<int>(_Valor), 0);
 	Repintar();
 }
 
 
+void BarraVolumen::Transicion(const DBarraEx_Transicion nTransicion) {
+	DWORD Duracion = 400;
+	if (_AniTransicion.Animando() == TRUE) {
+		Duracion = _AniTransicion.TiempoActual();
+		_AniTransicion.Terminar();
+	}
+
+	COLORREF ColorBase			= RGB(20 + static_cast<int>(_Valor), 220 - static_cast<int>(_Valor), 0);
+	COLORREF ColorBaseResaltado = RGB(40 + static_cast<int>(_Valor), 240 - static_cast<int>(_Valor), 0);
+
+	COLORREF FondoHasta, BordeHasta, BarraHasta;
+	switch (nTransicion) {
+		case DBarraEx_Transicion_Normal:
+			FondoHasta = COLOR_BARRA_FONDO;
+			BarraHasta = RGB(20 + static_cast<int>(_Valor), 220 - static_cast<int>(_Valor), 0);;
+			BordeHasta = COLOR_BORDE;
+			break;
+		case DBarraEx_Transicion_Resaltado:
+			FondoHasta = COLOR_BARRA_FONDO_RESALTADO;
+			BarraHasta = RGB(40 + static_cast<int>(_Valor), 240 - static_cast<int>(_Valor), 0);
+			BordeHasta = COLOR_BORDE_RESALTADO;
+			break;
+		case DBarraEx_Transicion_Presionado:
+			FondoHasta = COLOR_BARRA_FONDO_PRESIONADO;
+			BarraHasta = RGB(static_cast<int>(_Valor), 200 - static_cast<int>(_Valor), 0);
+			BordeHasta = COLOR_BORDE_PRESIONADO;
+			break;
+		case DBarraEx_Transicion_Desactivado:
+			FondoHasta = COLOR_BARRA_FONDO_DESACTIVADO;
+			BarraHasta = RGB(static_cast<int>(_Valor), 200 - static_cast<int>(_Valor), 0);
+			BordeHasta = COLOR_BORDE;
+			break;
+	}
+
+	_AniTransicion.Iniciar(_ColorFondo, FondoHasta, _ColorBorde, BordeHasta, _ColorBarra, BarraHasta, Duracion, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
+		_ColorFondo = Valores[0];
+		_ColorBorde = Valores[1];
+		_ColorBarra = Valores[2];
+		Repintar();
+	});
+
+}
+
+
+/*
 void BarraVolumen::Resaltar(const BOOL Resaltado) {
 	if (_AniResaltado.Animando() == TRUE) {
 		_AniResaltado.Invertir();
@@ -82,3 +132,4 @@ void BarraVolumen::Resaltar(const BOOL Resaltado) {
 	});
 
 }
+*/

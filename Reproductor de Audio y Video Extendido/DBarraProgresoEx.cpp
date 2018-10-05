@@ -101,25 +101,66 @@ namespace DWL {
 		if (_MouseEntrando() == TRUE) {
 			// Mouse enter
 			if (_Estado != DBarraEx_Estado_Presionado) {
-				//_Estado = DBarraDesplazamientoEx_Estado_Resaltado;
+				_Estado = DBarraEx_Estado_Resaltado;
 				//Repintar();
-				Resaltar(TRUE);
+//				Resaltar(TRUE);
+				Transicion(DBarraEx_Transicion_Resaltado);
 			}
 		}
 	}
 	void DBarraProgresoEx::_Evento_MouseSaliendo(void) {
 		_MouseDentro = FALSE;
 		if (_Estado != DBarraEx_Estado_Presionado) {
-			//_Estado = DBarraDesplazamientoEx_Estado_Normal;
+			_Estado = DBarraEx_Estado_Normal;
 			//Repintar();
-			Resaltar(FALSE);
+			//Resaltar(FALSE);
+			Transicion(DBarraEx_Transicion_Normal);
 		}
 	}
 
+	void DBarraProgresoEx::Transicion(const DBarraEx_Transicion nTransicion) {
+		DWORD Duracion = 400;
+		if (_AniTransicion.Animando() == TRUE) {
+			Duracion = _AniTransicion.TiempoActual();
+			_AniTransicion.Terminar();
+		}
 
+		COLORREF FondoHasta, BordeHasta, BarraHasta;
+		switch (nTransicion) {
+			case DBarraEx_Transicion_Normal:
+				FondoHasta = COLOR_BARRA_FONDO;
+				BarraHasta = COLOR_BARRA;
+				BordeHasta = COLOR_BORDE;
+				break;
+			case DBarraEx_Transicion_Resaltado:
+				FondoHasta = COLOR_BARRA_FONDO_RESALTADO;
+				BarraHasta = COLOR_BARRA_RESALTADO;
+				BordeHasta = COLOR_BORDE_RESALTADO;
+				break;
+			case DBarraEx_Transicion_Presionado:
+				FondoHasta = COLOR_BARRA_FONDO_PRESIONADO;
+				BarraHasta = COLOR_BARRA_PRESIONADO;
+				BordeHasta = COLOR_BORDE_PRESIONADO;
+				break;
+			case DBarraEx_Transicion_Desactivado:
+				FondoHasta = COLOR_BARRA_FONDO_DESACTIVADO;
+				BarraHasta = COLOR_BARRA;
+				BordeHasta = COLOR_BORDE;
+				break;
+		}
+
+		_AniTransicion.Iniciar(_ColorFondo, FondoHasta, _ColorBorde, BordeHasta, _ColorBarra, BarraHasta, Duracion, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
+			_ColorFondo = Valores[0];
+			_ColorBorde = Valores[1];
+			_ColorBarra = Valores[2];
+			Repintar();
+		});
+
+	}
+	/*
 	void DBarraProgresoEx::Resaltar(const BOOL Resaltado) {
-		if (_AniResaltado.Animando() == TRUE) {
-			_AniResaltado.Invertir();
+		if (_AniTransicion.Animando() == TRUE) {
+			_AniTransicion.Invertir();
 			return;
 		}
 
@@ -142,14 +183,14 @@ namespace DWL {
 			BarraHasta = COLOR_BARRA;
 			_Estado = DBarraEx_Estado_Normal;
 		}
-		_AniResaltado.Iniciar(FondoDesde, FondoHasta, BordeDesde, BordeHasta, BarraDesde, BarraHasta, 400, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
+		_AniTransicion.Iniciar(FondoDesde, FondoHasta, BordeDesde, BordeHasta, BarraDesde, BarraHasta, 400, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
 			_ColorFondo = Valores[0];
 			_ColorBorde = Valores[1];
 			_ColorBarra = Valores[2];
 			Repintar();
 		});
 
-	}
+	}*/
 
 	LRESULT CALLBACK DBarraProgresoEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {

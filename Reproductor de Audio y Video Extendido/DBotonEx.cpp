@@ -69,35 +69,21 @@ namespace DWL {
 		HBITMAP BmpViejo = static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
 		HFONT   vFuente = static_cast<HFONT>(SelectObject(Buffer, Fuente()));
 
-		COLORREF nColorBorde = 0, nColorTexto = 0, nColorFondo = 0; 
 		int bPresionado = 0;
-		switch (_Estado) {
-			case DBotonEx_Estado_Normal:
-			case DBotonEx_Estado_Resaltado:
-				nColorFondo = _ColorFondo;
-				nColorBorde = _ColorBorde;
-				nColorTexto = _ColorTexto;
-				break;
-			case DBotonEx_Estado_Presionado:
-				nColorFondo = COLOR_BOTON_PRESIONADO;
-				nColorBorde = COLOR_BORDE_PRESIONADO;
-				nColorTexto = COLOR_TEXTO_PRESIONADO;
-				RCT.top += 2;
-				RCS.top += 2;
-				break;
-		}
-		// Si el control no está activado modifico el color final del texto
-		if (Activado() == FALSE) {
-			nColorTexto = COLOR_TEXTO_DESACTIVADO;
+		// Si el control está presionado retoco las posiciones del texto i los iconos
+		if (_Estado == DBotonEx_Estado_Presionado) {
+			RCT.top += 2;		// Recta texto
+			RCS.top += 2;		// Recta sombra
+			bPresionado = 1;	// x e y iniciales para el icono
 		}
 
 		// Pinto el borde
-		HBRUSH BrochaBorde = CreateSolidBrush(nColorBorde);
+		HBRUSH BrochaBorde = CreateSolidBrush(_ColorBorde);
 		FrameRect(Buffer, &RC, BrochaBorde);
 		DeleteObject(BrochaBorde);
 
 		// Pinto el fondo
-		HBRUSH BrochaFondo = CreateSolidBrush(nColorFondo);
+		HBRUSH BrochaFondo = CreateSolidBrush(_ColorFondo);
 		FillRect(Buffer, &RCF, BrochaFondo);
 		DeleteObject(BrochaFondo);
 
@@ -109,7 +95,7 @@ namespace DWL {
 			DrawText(Buffer, _Texto.c_str(), static_cast<int>(_Texto.size()), &RCS, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
 			// Pinto el texto
-			SetTextColor(Buffer, nColorTexto);
+			SetTextColor(Buffer, _ColorTexto);
 			DrawText(Buffer, _Texto.c_str(), static_cast<int>(_Texto.size()), &RCT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 		}
 
@@ -130,7 +116,8 @@ namespace DWL {
 	void DBotonEx::Activado(const BOOL nActivar) {
 		BOOL Ret = FALSE;
 		Ret = EnableWindow(_hWnd, nActivar);
-		Repintar();
+		Transicion((nActivar == TRUE) ? DBotonEx_Transicion_Normal : DBotonEx_Transicion_Desactivado);
+		//Repintar();
 	}
 
 	
@@ -140,70 +127,81 @@ namespace DWL {
 		if (_MouseEntrando() == TRUE) {
 			// Mouse enter
 			if (_Estado != DBotonEx_Estado_Presionado) {
-//				_Estado = DBotonEx_Estado_Resaltado;
-//				Repintar();
-				Resaltar(TRUE);
+				_Estado = DBotonEx_Estado_Resaltado;
+				Transicion(DBotonEx_Transicion_Resaltado);
 			}
 		}
 
 		Evento_MouseMovimiento(DatosMouse);
 	}
 
-	void DBotonEx::Resaltar(const BOOL Resaltado) {
-		if (_AniResaltado.Animando() == TRUE) {
-			_AniResaltado.Invertir();
-			return;
+
+	void DBotonEx::Transicion(const DBotonEx_Transicion nTransicion) {
+		DWORD Duracion = 400;
+		if (_AniTransicion.Animando() == TRUE) {
+			Duracion = _AniTransicion.TiempoActual();
+			_AniTransicion.Terminar();
 		}
 
-		COLORREF BordeDesde, BordeHasta, FondoDesde, FondoHasta, TextoDesde, TextoHasta;
-		if (Resaltado == TRUE) {
-			BordeDesde = COLOR_BORDE;
-			BordeHasta = COLOR_BORDE_RESALTADO;
-			FondoDesde = (_Marcado == TRUE) ? COLOR_ROJO_MARCADO : COLOR_BOTON;
-			FondoHasta = COLOR_BOTON_RESALTADO;
-			TextoDesde = COLOR_TEXTO;
-			TextoHasta = COLOR_TEXTO_RESALTADO;
-			_Estado = DBotonEx_Estado_Resaltado;
+		COLORREF FondoHasta, BordeHasta, TextoHasta;
+		switch (nTransicion) {
+			case DBotonEx_Transicion_Normal:
+				FondoHasta = COLOR_BOTON;
+				BordeHasta = COLOR_BORDE;
+				TextoHasta = COLOR_TEXTO;
+				break;
+			case DBotonEx_Transicion_Resaltado:
+				FondoHasta = COLOR_BOTON_RESALTADO;
+				BordeHasta = COLOR_BORDE_RESALTADO;
+				TextoHasta = COLOR_TEXTO_RESALTADO;
+				break;
+			case DBotonEx_Transicion_Presionado:
+				FondoHasta = COLOR_BOTON_PRESIONADO;
+				BordeHasta = COLOR_BORDE_PRESIONADO;
+				TextoHasta = COLOR_TEXTO_PRESIONADO;
+				break;
+			case DBotonEx_Transicion_Marcado:
+				FondoHasta = COLOR_ROJO_MARCADO;
+				BordeHasta = COLOR_BORDE;
+				TextoHasta = COLOR_TEXTO;
+				break;
+			case DBotonEx_Transicion_Desactivado:
+				FondoHasta = COLOR_BOTON;
+				BordeHasta = COLOR_BORDE;
+				TextoHasta = COLOR_TEXTO_DESACTIVADO;
+				break;
 		}
-		else {
-			BordeDesde = COLOR_BORDE_RESALTADO;
-			BordeHasta = COLOR_BORDE;
-			FondoDesde = COLOR_BOTON_RESALTADO;;
-			FondoHasta = (_Marcado == TRUE) ? COLOR_ROJO_MARCADO : COLOR_BOTON;
-			TextoDesde = COLOR_TEXTO_RESALTADO;
-			TextoHasta = COLOR_TEXTO;
-			_Estado = DBotonEx_Estado_Normal;
-		}
-		_AniResaltado.Iniciar(FondoDesde, FondoHasta, BordeDesde, BordeHasta, TextoDesde, TextoHasta, 400, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
+		_AniTransicion.Iniciar(_ColorFondo, FondoHasta, _ColorBorde, BordeHasta, _ColorTexto, TextoHasta, Duracion, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
 			_ColorFondo = Valores[0];
 			_ColorBorde = Valores[1];
 			_ColorTexto = Valores[2];
-			// Hay posibilidad de saltar de un boton a otro, y que al desmarcarse la animación invertida siga teniendo el rojo marcado
-			// Al terminar la animación si no está marcado y el color del fondo es el rojo marcado, lo substituimos por el color del fondo normal
-			if (Terminado == TRUE && _Marcado == FALSE && _ColorFondo == COLOR_ROJO_MARCADO) {
-				_ColorFondo = COLOR_BOTON;
-			}
-			else if (Terminado == TRUE && _Marcado == TRUE && _ColorFondo == COLOR_BOTON) {
-				_ColorFondo = COLOR_ROJO_MARCADO;
-			}
 			Repintar();
 		});
-
 	}
 
 	void DBotonEx::_Evento_MousePresionado(const WPARAM wParam, const LPARAM lParam, const int Boton) {
+		#if DBOTONEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir(L"DBotonEx::_Evento_MousePresionado\n");
+		#endif	
 		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		SetCapture(hWnd());
-		_Estado = DBotonEx_Estado_Presionado;
+		//_Estado = DBotonEx_Estado_Presionado;
 		SendMessage(GetParent(hWnd()), DWL_BOTONEX_MOUSEDOWN, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
 		Evento_MousePresionado(DatosMouse);
-		Repintar();
+		//Repintar();
+		Transicion(DBotonEx_Transicion_Presionado);
+		_Estado = DBotonEx_Estado_Presionado;
 	}
 
 	void DBotonEx::_Evento_MouseSoltado(const WPARAM wParam, const LPARAM lParam, const int Boton) {		
+		#if DBOTONEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir(L"DBotonEx::_Evento_MouseSoltado\n");
+		#endif	
+		ReleaseCapture();
+
 		if (_Estado == DBotonEx_Estado_Presionado) {
 			DEventoMouse DatosMouse(wParam, lParam, this, Boton);
-			ReleaseCapture();
+			
 
 			RECT RC;
 			GetClientRect(hWnd(), &RC);
@@ -214,13 +212,15 @@ namespace DWL {
 			POINT Pt = { DatosMouse.X(), DatosMouse.Y() };
 			if (PtInRect(&RC, Pt) != 0) {
 				_Estado = DBotonEx_Estado_Resaltado;
+				Transicion(DBotonEx_Transicion_Resaltado);
 				Evento_MouseClick(DatosMouse);
 				SendMessage(GetParent(hWnd()), DWL_BOTONEX_CLICK, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
 			}
 			else {
 				_Estado = DBotonEx_Estado_Normal;
+//				Transicion(DBotonEx_Transicion_Normal); (no hace falta salta el mouse leave)
 			}
-			Repintar();
+//			Repintar();
 		}
 	}
 
@@ -234,12 +234,14 @@ namespace DWL {
 		// Miro si el mouse está encima del control, y asigno el color rojo resaltado
 		if (PtInRect(&RC, P) == TRUE) {
 			_ColorFondo = COLOR_BOTON_RESALTADO;
+//			Transicion(DBotonEx_Transicion_Resaltado); // no se necesita una transición porque el mouse está encima y sigue siendo resaltado
+			_Estado = DBotonEx_Estado_Resaltado;
 		}
 		else { // Si no está encima del control asigno el color según si está marcado o no
-			_ColorFondo = (nMarcar == TRUE) ? COLOR_ROJO_MARCADO : COLOR_BOTON;
+			_Estado = DBotonEx_Estado_Normal;
+			Transicion((nMarcar == TRUE) ? DBotonEx_Transicion_Marcado : DBotonEx_Transicion_Normal);
+			
 		}	
-		
-		Repintar();
 	}
 
 	void DBotonEx::_Evento_Pintar(void) {
@@ -251,9 +253,13 @@ namespace DWL {
 	}
 
 	void DBotonEx::_Evento_MouseSaliendo(void) {
+		#if DBOTONEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir(L"DBotonEx::_Evento_MouseSaliendo\n");
+		#endif	
 		_MouseDentro = FALSE;
 		if (_Estado != DBotonEx_Estado_Presionado) {
-			Resaltar(FALSE);
+			Transicion((_Marcado == FALSE) ? DBotonEx_Transicion_Normal : DBotonEx_Transicion_Marcado);
+			_Estado = DBotonEx_Estado_Normal;
 		}
 	}
 

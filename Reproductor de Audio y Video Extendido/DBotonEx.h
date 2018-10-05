@@ -11,6 +11,15 @@ namespace DWL {
 		DBotonEx_Estado_Presionado
 	};
 
+	enum DBotonEx_Transicion {
+		DBotonEx_Transicion_Normal,
+		DBotonEx_Transicion_Resaltado,
+		DBotonEx_Transicion_Presionado,
+		DBotonEx_Transicion_Marcado,
+		DBotonEx_Transicion_Desactivado
+	};
+
+	#define DBOTONEX_MOSTRARDEBUG	TRUE
 	#define DBOTONEX_CENTRADO -1
 
 	class DBotonEx : public DControlEx {
@@ -48,8 +57,8 @@ namespace DWL {
 								// Funciones para asignar texto a un boton
 		inline void             Texto(std::wstring &nTexto)  { _Texto = nTexto; Repintar(); };
 		inline void             Texto(const wchar_t *nTexto) { _Texto = nTexto; Repintar(); };
-								// Inicia la animación de resaltado
-		void                    Resaltar(const BOOL Resaltado);
+								// Función que realiza una transición del estado actual al estado especificado
+		void                    Transicion(const DBotonEx_Transicion nTransicion);
 	  protected:
 		void				   _Evento_MouseMovimiento(const WPARAM wParam, const LPARAM lParam);
 		void				   _Evento_MousePresionado(const WPARAM wParam, const LPARAM lParam, const int Boton);
@@ -64,7 +73,7 @@ namespace DWL {
 		DListaIconos_Icono    *_Icono;
 		int                    _PosIconoX;
 		int                    _PosIconoY;
-		DAnimacionColor        _AniResaltado;
+		DAnimacionColor        _AniTransicion;
 		COLORREF               _ColorBorde;
 		COLORREF               _ColorFondo;
 		COLORREF               _ColorTexto;

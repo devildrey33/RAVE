@@ -101,7 +101,11 @@
 		V  Solucionat Bug de la rodeta del mouse en pantalla completa que sempre posava el volum a 10%
 		V  Solucionat bug al afegir arxius desde l'explorador que a vegades es liaba a l'hora de reproduir, i feia un pausa quan habia de tancar el medi i posar un de nou a reporduir
 		V  Eliminats events de teclat innecesari (VentanaPrincipal, ArbolBD, ListaMedios) que vaig fer abans de fer el hook global del teclat
-		-  DAnimacion Al fer un mouseDown ha d'acabar l'animació a tots els controlEx que tinguin _AniResaltado
+		
+		V  DAnimacion
+			X Al fer un mouseDown ha d'acabar l'animació a tots els controlEx que tinguin _AniResaltado
+			V O unaltre opció es animar tots els estats (marcat, desmarcat, mousedown, mouseup, resaltat, normal, desactivat)
+
 
 		V  Mostrar les opcions en una finestra nova
 			-  Afegir opcions : 
