@@ -431,8 +431,9 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Presionado(DWL::DEventoMouse &DatosM
 			App.VLC.Ratio(0.5f);
 			break;
 		case ID_BOTON_SIGUIENTE:
-			if (DatosMouse.Boton == 0)	App.VLC.Ratio(2.0f);
-			else                        App.VLC.Ratio(4.0f);
+			if		(DatosMouse.Boton == 0)		App.VLC.Ratio(2.0f);
+			else if (DatosMouse.Boton == 1)     App.VLC.Ratio(4.0f);
+			else                                App.VLC.Ratio(8.0f);
 			break;
 	}
 }
@@ -634,6 +635,7 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 		Video.Visible(TRUE);
 		App.ControlesPC.Mostrar();
 		DWL::DMouse::Visible(TRUE);
+//		Video.AsignarFoco();
 
 //		RedrawWindow(App.VLC.hWndVLC, NULL, NULL, RDW_ERASE | RDW_INVALIDATE | RDW_ALLCHILDREN);
 
@@ -670,6 +672,7 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 		App.ControlesPC.Ocultar();
 		DWL::DMouse::Visible(TRUE);
 		KillTimer(hWnd(), TIMER_CPC_INACTIVIDAD);
+//		AsignarFoco();
 	}
 
 	InvalidateRect(App.VLC.hWndVLC, NULL, TRUE);
@@ -875,10 +878,12 @@ void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
 				break;
 			}
 		}		
+		//Lista_Stop();
+		App.VLC.CerrarMedio();
 		Lista_Play();
 	}
 }
-
+/*
 void VentanaPrincipal::Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado) {
 	
 }
@@ -889,7 +894,7 @@ void VentanaPrincipal::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 
 void VentanaPrincipal::Evento_Tecla(DWL::DEventoTeclado &DatosTeclado) {
 
-}
+}*/
 
 void VentanaPrincipal::Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse) {
 	switch (DatosMouse.ID()) {
@@ -905,11 +910,102 @@ void VentanaPrincipal::Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse) {
 }
 
 
+void VentanaPrincipal::ThreadAgregarArchivosLista_Terminado(void) {
+	ThreadArchivosLista.Terminar();
+	BarraTareas.Estado_SinProgreso();
+	//			BarraTareas.Resaltar();
+	// Ejecuto el shufle si es necesario
+	if (App.BD.Opciones_Shufle() == TRUE) {
+		App.VentanaRave.Lista.Mezclar(TRUE);
+		App.VentanaRave.Lista.MedioActual = 0;
+	}
+	Lista.Repintar();
+	if (App.VLC.ComprobarEstado() != EnPlay)	Lista_Play();
+	//			Lista_Stop();
+	//			Lista_Play();			
+	if (App.BD.Opciones_AnalizarMediosPendientes() == TRUE) AnalizarBD();
+}
+
+void VentanaPrincipal::ThreadAgregarArchivosLista_AgregarMedio(WPARAM wParam) {
+	BDMedio *Medio = reinterpret_cast<BDMedio *>(wParam);
+	Lista.AgregarMedio(Medio);
+	delete Medio;
+}
+
+
+void VentanaPrincipal::ThreadABuscarArchivos_AgregarRaiz(LPARAM lParam) {
+	std::wstring *TmpStr = reinterpret_cast<std::wstring *>(lParam);
+	Arbol_AgregarRaiz(TmpStr);
+	delete TmpStr; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
+}
+
+void VentanaPrincipal::ThreadABuscarArchivos_AgregarDirectorio(LPARAM lParam) {
+	std::wstring *TmpStr = reinterpret_cast<std::wstring *>(lParam);
+	Arbol_AgregarDir(TmpStr, TRUE);
+	delete TmpStr; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
+}
+
+void VentanaPrincipal::ThreadABuscarArchivos_Terminado(const BOOL Cancelado, LPARAM lParam) {
+	ThreadActualizar.Terminar();
+	Menu_ArbolBD.Menu(2)->Activado(TRUE);
+	BarraTareas.Estado_SinProgreso();
+	//			BarraTareas.Resaltar();
+	if (Cancelado == FALSE) {
+		Debug_Escribir_Varg(L"ThreadActualizarArbol::Terminado %d archivos encontrados.\n", lParam);
+		App.MostrarToolTipPlayer(L"Arbol actualizado.");
+		// Si la opción de analizar medios pendientes está activa
+		if (App.BD.Opciones_AnalizarMediosPendientes() == TRUE) AnalizarBD();
+	}
+	else {
+		Debug_Escribir_Varg(L"ThreadActualizarArbol::Cancelado %d archivos encontrados.\n", lParam);
+		App.MostrarToolTipPlayer(L"Actualización del arbol Cancelada.");
+	}
+}
+
+
+void VentanaPrincipal::ThreadAnalizar_Terminado(const BOOL Cancelado, LPARAM lParam) {
+
+	ThreadAnalizar.Terminar();
+	BarraTareas.Estado_SinProgreso();
+	Menu_ArbolBD.Menu(3)->Activado(TRUE);
+
+
+	ThreadAnalizar.Terminar();
+	BarraTareas.Estado_SinProgreso();
+	Menu_ArbolBD.Menu(3)->Activado(TRUE);
+
+	if (Cancelado == FALSE) {
+		App.BD.ObtenerEtiquetas();
+		Debug_Escribir_Varg(L"ThreadAnalisis::Terminado %d archivos examinados.\n", lParam);
+		App.MostrarToolTipPlayer(L"Análisis terminado, se han analizado " + std::to_wstring(lParam) + L" medios.");
+	}
+	else {
+		Debug_Escribir_Varg(L"ThreadAnalisis::Cancelado %d archivos examinados.\n", lParam);
+		App.MostrarToolTipPlayer(L"Análisis cancelado, se han analizado " + std::to_wstring(lParam) + L" medios.");
+	}
+}
+
+void VentanaPrincipal::ThreadAnalizar_MostrarVentana(void) {
+	ShowWindow(ThreadAnalizar.hWnd(), SW_SHOW);
+}
+
+void VentanaPrincipal::ThreadAnalizar_Iniciado2(WPARAM wParam) {
+	_MaximoTotalMedios2 = static_cast<UINT>(wParam);
+	_ValorMedios2 = 0;
+}
+
+void VentanaPrincipal::ThreadAnalizar_TotalMedios(WPARAM wParam, LPARAM lParam) {
+	BarraTareas.Valor(static_cast<UINT>(wParam), static_cast<UINT>(lParam));
+}
+
+void VentanaPrincipal::ThreadAnalizar_TotalMedios2(void) {
+	BarraTareas.Valor(++_ValorMedios2, _MaximoTotalMedios2);
+}
 
 
 LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	std::wstring *TmpStr = NULL;
-	BDMedio *Medio = NULL;
+//	std::wstring *TmpStr = NULL;
+//	BDMedio *Medio = NULL;
 	switch (uMsg) {
 		case WM_AGREGARMEDIO :
 			ExploradorAgregarMedio(FALSE);
@@ -919,90 +1015,30 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			break;
 
 		// Para el Thread AgregarArchivosLista, al agregar/obtener el archivo en la BD, ya se puede agregar a la lista.
-		case WM_TAAL_AGREGARMEDIO :
-			Medio = reinterpret_cast<BDMedio *>(wParam);
-			Lista.AgregarMedio(Medio);
-			delete Medio;
-			return 0;
-		case WM_TAAL_TERMINADO:
-			ThreadArchivosLista.Terminar();
-			BarraTareas.Estado_SinProgreso();
-//			BarraTareas.Resaltar();
-			// Ejecuto el shufle si es necesario
-			if (App.BD.Opciones_Shufle() == TRUE) {
-				App.VentanaRave.Lista.Mezclar(TRUE);
-				App.VentanaRave.Lista.MedioActual = 0;
-			}
-			Lista.Repintar();
-			if (App.VLC.ComprobarEstado() != EnPlay)	Lista_Play();
-//			Lista_Stop();
-//			Lista_Play();			
-			if (App.BD.Opciones_AnalizarMediosPendientes() == TRUE) AnalizarBD();
-			return 0;
-		case WM_TBA_AGREGARRAIZ:
-			TmpStr = reinterpret_cast<std::wstring *>(lParam);
-			Arbol_AgregarRaiz(TmpStr);
-			delete TmpStr; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
-			return 0;
-		case WM_TBA_AGREGARDIR:
-			TmpStr = reinterpret_cast<std::wstring *>(lParam);
-			Arbol_AgregarDir(TmpStr, TRUE);
-			delete TmpStr; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
-			return 0;
-		case WM_TOM_INICIADO2 :
-			_MaximoTotalMedios2 = static_cast<UINT>(wParam);
-			_ValorMedios2 = 0;
-			return 0;
-		case WM_TOM_TOTALMEDIOS1:
-			BarraTareas.Valor(static_cast<UINT>(wParam), static_cast<UINT>(lParam));
-			return 0;
-		case WM_TOM_TOTALMEDIOS2:
-			BarraTareas.Valor(++_ValorMedios2, _MaximoTotalMedios2);
-			return 0;
-		case WM_TOM_TOTALMEDIOS3:
-			BarraTareas.Valor(static_cast<UINT>(wParam), static_cast<UINT>(lParam));
-			return 0;
-		case WM_TOM_CANCELADO:
-			ThreadAnalizar.Terminar();
-			Debug_Escribir_Varg(L"ThreadAnalisis::Cancelado %d archivos examinados.\n", lParam);
-			BarraTareas.Estado_SinProgreso();
-//			BarraTareas.Resaltar();
-			Menu_ArbolBD.Menu(3)->Activado(TRUE);
-			App.MostrarToolTipPlayer(L"Análisis cancelado, se han analizado " + std::to_wstring(lParam) + L" medios.");
-			return 0;
+		case WM_TAAL_AGREGARMEDIO	:			ThreadAgregarArchivosLista_AgregarMedio(wParam);			return 0;
+		case WM_TAAL_TERMINADO		:			ThreadAgregarArchivosLista_Terminado();						return 0;
 
-		case WM_TOM_TERMINADO:
-			ThreadAnalizar.Terminar();
-			Debug_Escribir_Varg(L"ThreadAnalisis::Terminado %d archivos examinados.\n", lParam);
-			BarraTareas.Estado_SinProgreso();
-//			BarraTareas.Resaltar();
-			App.BD.ObtenerEtiquetas();
-			Menu_ArbolBD.Menu(3)->Activado(TRUE);
-			App.MostrarToolTipPlayer(L"Análisis terminado, se han analizado " + std::to_wstring(lParam) + L" medios.");			
-			return 0;
-			//		case WM_TBA_AGREGARAUDIO:
-//			Arbol_AgregarCancion(static_cast<size_t>(lParam));
-//			break;
-		case WM_TBA_TERMINADO:
-			ThreadActualizar.Terminar();
-			Menu_ArbolBD.Menu(2)->Activado(TRUE);
-			BarraTareas.Estado_SinProgreso();
-//			BarraTareas.Resaltar();
-			Debug_Escribir_Varg(L"ThreadActualizarArbol::Terminado %d archivos encontrados.\n", lParam);
-			App.MostrarToolTipPlayer(L"Arbol actualizado.");
-			// Si la opción de analizar medios pendientes está activa
-			if (App.BD.Opciones_AnalizarMediosPendientes() == TRUE) AnalizarBD();
-			return 0;
-		case WM_TOM_MOSTRARVENTANA :
-			ShowWindow(ThreadAnalizar.hWnd(), SW_SHOW);
-			return 0;
+		// ThreadBuscarArchivos
+		case WM_TBA_AGREGARRAIZ		:			ThreadABuscarArchivos_AgregarRaiz(lParam);					return 0;
+		case WM_TBA_AGREGARDIR		:			ThreadABuscarArchivos_AgregarDirectorio(lParam);			return 0;
+		case WM_TBA_TERMINADO		:			ThreadABuscarArchivos_Terminado(FALSE, lParam);				return 0;
+		case WM_TBA_CANCELADO		:			ThreadABuscarArchivos_Terminado(TRUE, lParam);				return 0;
+
+		// ThreadAnalizar
+		case WM_TOM_INICIADO2		:			ThreadAnalizar_Iniciado2(wParam);							return 0;
+		case WM_TOM_TOTALMEDIOS1	:			ThreadAnalizar_TotalMedios(wParam, lParam);					return 0;
+		case WM_TOM_TOTALMEDIOS2	:			ThreadAnalizar_TotalMedios2();								return 0;
+		case WM_TOM_TOTALMEDIOS3	:			ThreadAnalizar_TotalMedios(wParam, lParam);					return 0;
+		case WM_TOM_CANCELADO		:			ThreadAnalizar_Terminado(TRUE, lParam);						return 0;
+		case WM_TOM_TERMINADO		:			ThreadAnalizar_Terminado(FALSE, lParam);					return 0;
+		case WM_TOM_MOSTRARVENTANA	:			ThreadAnalizar_MostrarVentana();							return 0;
 
 		case WM_DROPFILES :			
 			Evento_SoltarArchivos(wParam);
 			return 0;
 
 		// Teclado
-		case WM_KEYDOWN:		
+/*		case WM_KEYDOWN:		
 			Evento_TeclaPresionada(DWL::DEventoTeclado(wParam, lParam, this));															
 			break;	// Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general
 		case WM_KEYUP:
@@ -1010,7 +1046,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			break;	// Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general
 		case WM_CHAR:
 			Evento_Tecla(DWL::DEventoTeclado(wParam, lParam, this));
-			break;	// Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general
+			break;	// Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general*/
 
 
 

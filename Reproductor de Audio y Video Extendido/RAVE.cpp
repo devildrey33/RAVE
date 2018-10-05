@@ -160,6 +160,8 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 
 			// Hay uno o mas paths por agregar a la lista
 			if (Paths.size() > 0) {
+				// Si el comando es Reproducir, hay que borrar la lista
+//				if (LC == LineaComando_Reproducir) VentanaRave.Lista.BorrarListaReproduccion();
 				// Agrega los paths a la lista de medios
 				VentanaRave.ThreadArchivosLista.Iniciar(VentanaRave.hWnd(), Paths);
 			}

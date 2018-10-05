@@ -55,6 +55,16 @@ void VerVideo::Evento_MenuEx_Click(const UINT cID) {
 	}
 }
 
+void VerVideo::_Evento_MouseRueda(WPARAM wParam, LPARAM lParam) {
+	DEventoMouseRueda DatosMouse(wParam, lParam, this);
+	if (App.VLC.MediaPlayer() != NULL) {
+		Debug_Escribir_Varg(L"VerVideo::_Evento_MouseRueda()  DatosMouse.Delta(%d)\n", DatosMouse.Delta());
+		int Vol = App.VLC.Volumen();
+		Vol += (DatosMouse.Delta() > 0) ? 10 : -10;
+		App.VLC.Volumen(Vol);
+	}
+}
+
 LRESULT CALLBACK VerVideo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	static POINT nPos = { 0 , 0 };
 	switch (uMsg) {
@@ -83,6 +93,9 @@ LRESULT CALLBACK VerVideo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lPara
 					App.ControlesPC.Mostrar();
 				}
 			}
+			return 0;
+		case WM_MOUSEWHEEL :
+			_Evento_MouseRueda(wParam, lParam);
 			return 0;
 		case WM_LBUTTONDBLCLK :
 		case WM_RBUTTONDBLCLK :

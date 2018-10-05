@@ -51,9 +51,9 @@ class ArbolBD : public DWL::DArbolEx {
 	void				Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse);
 	void				Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse);
 
-	void				Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado);
+/*	void				Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado);
 	void				Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado);
-	void				Evento_Tecla(DWL::DEventoTeclado &DatosTeclado);
+	void				Evento_Tecla(DWL::DEventoTeclado &DatosTeclado);*/
 
   protected:
     void               _AgregarMedio(NodoBD *nPadre, BDMedio *nMedio);

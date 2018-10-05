@@ -32,7 +32,12 @@ namespace DWL {
 			#endif
 			return;
 		}
+		// Copio los valores iniciales en el vector de valores (Si se hace invertir y no ha pasado ni una iteración los valores no existen)
 		_Valores.resize(Datos.size());
+		for (size_t i = 0; i < Datos.size(); i++) {
+			_Valores[i] = Datos[i].Desde;
+		}
+
 		_Datos			= Datos;
 		_Callback		= LambdaCallback;
 		_Duracion		= Milisegundos;
@@ -45,6 +50,7 @@ namespace DWL {
 	}
 
 	void DAnimacion::Invertir(void) {
+		if (_Timer == NULL) return;
 		#if DANIMACION_MOSTRARDEBUG == TRUE
 			Debug_Escribir_Varg(L"DAnimacion::Invertir %d milisegundos.\n", _TiempoActual);
 		#endif
@@ -82,7 +88,7 @@ namespace DWL {
 				Debug_Escribir_Varg(L"DAnimacion::_TimerProc Desde : %.02f, Hasta : %.02f, Parte : %0.2f, Valor : %.02f, T : %d\n", This->_Datos[i].Desde, This->_Datos[i].Hasta, Parte, Valor, This->_TiempoActual);
 			#endif
 		}
-		BOOL Terminado = (This->_TiempoActual > This->_Duracion);
+		BOOL Terminado = (This->_TiempoActual >= This->_Duracion);
 		This->_Callback(This->_Valores, Terminado);
 		if (Terminado == TRUE) {
 			This->Terminar();
@@ -156,6 +162,11 @@ namespace DWL {
 			return;
 		}
 		_Valores.resize(Datos.size());
+		// Copio los valores iniciales en el vector de valores (Si se hace invertir y no ha pasado ni una iteración los valores no existen)
+		for (size_t i = 0; i < Datos.size(); i++) {
+			_Valores[i] = Datos[i].Desde;
+		}
+
 		_Datos			= Datos;
 		_Callback		= LambdaCallback;
 		_Duracion		= Milisegundos;
@@ -163,13 +174,15 @@ namespace DWL {
 		BOOL Ret = CreateTimerQueueTimer(&_Timer, NULL, reinterpret_cast<WAITORTIMERCALLBACK>(_TimerProc), this, 16, 16, WT_EXECUTEINTIMERTHREAD);
 
 		#if DANIMACION_MOSTRARDEBUG == TRUE
-			Debug_Escribir_Varg(L"DAnimacionColor::Iniciar %d milisegundos.\n", Milisegundos);
+			Debug_Escribir_Varg(L"DAnimacionColor::Iniciar %d milisegundos ID : %d\n", Milisegundos, _Timer);
 		#endif
 	}
 
 	void DAnimacionColor::Invertir(void) {
+		if (_Timer == NULL) return;
+
 		#if DANIMACION_MOSTRARDEBUG == TRUE
-			Debug_Escribir_Varg(L"DAnimacionColor::Invertir %d milisegundos.\n", _TiempoActual);
+			Debug_Escribir_Varg(L"DAnimacionColor::Invertir %d milisegundos ID : %d\n", _TiempoActual, _Timer);
 		#endif
 		_Duracion = _TiempoActual;
 		_TiempoActual = 0;
@@ -181,10 +194,10 @@ namespace DWL {
 	}
 
 	void DAnimacionColor::Terminar(void) {
-		#if DANIMACION_MOSTRARDEBUG == TRUE
-			Debug_Escribir(L"DAnimacionColor::Terminar\n");
-		#endif
 		if (_Timer != NULL) {
+			#if DANIMACION_MOSTRARDEBUG == TRUE
+				Debug_Escribir(L"DAnimacionColor::Terminar\n");
+			#endif
 			DeleteTimerQueueTimer(NULL, _Timer, NULL);
 		}
 		_Timer = NULL;
@@ -217,10 +230,10 @@ namespace DWL {
 
 			This->_Valores[i] = RGB(ValorR, ValorG, ValorB);
 			#if DANIMACION_MOSTRARDEBUG == TRUE
-				Debug_Escribir_Varg(L"DAnimacion::_TimerProc Desde : %.02f, Hasta : %.02f, Valor : %d, T : %d\n", This->_Datos[i].Desde, This->_Datos[i].Hasta, This->_Valores[i], This->_TiempoActual);
+				Debug_Escribir_Varg(L"DAnimacionColor::_TimerProc _TimerProc ID : %d,, Desde : %d, Hasta : %d, Valor : %d, T : %d\n", This->_Timer, This->_Datos[i].Desde, This->_Datos[i].Hasta, This->_Valores[i], This->_TiempoActual);
 			#endif
 		}
-		BOOL Terminado = (This->_TiempoActual > This->_Duracion);
+		BOOL Terminado = (This->_TiempoActual >= This->_Duracion);
 		This->_Callback(This->_Valores, Terminado);
 		if (Terminado == TRUE) {
 			This->Terminar();

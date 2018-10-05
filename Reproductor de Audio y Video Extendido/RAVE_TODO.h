@@ -97,6 +97,11 @@
 		V  Retocada funció RaveBD::FiltroNombre, que filtraba FATAL els espais.. (ara no pot haber 2 espais seguits ni un espai al principi o al final.)
 		V  Solucionat bug amb els ControlesPantallaCompleta que no es mostraven correctament a pantalles amb la x negativa
 		V  Alineats tots els controls de ControlesPantallaCompleta (principalment labels)
+		V  Solucionat glitch del DAnimacion al Invertir sense que hagi pasat temps l'animacio (perque el vector de valors no habia estat inicialitzat)
+		V  Solucionat Bug de la rodeta del mouse en pantalla completa que sempre posava el volum a 10%
+		V  Solucionat bug al afegir arxius desde l'explorador que a vegades es liaba a l'hora de reproduir, i feia un pausa quan habia de tancar el medi i posar un de nou a reporduir
+		V  Eliminats events de teclat innecesari (VentanaPrincipal, ArbolBD, ListaMedios) que vaig fer abans de fer el hook global del teclat
+		-  DAnimacion Al fer un mouseDown ha d'acabar l'animació a tots els controlEx que tinguin _AniResaltado
 
 		V  Mostrar les opcions en una finestra nova
 			-  Afegir opcions : 

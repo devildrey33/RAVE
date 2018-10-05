@@ -403,6 +403,10 @@ Estados_Medio RaveVLC::ComprobarEstado(void) {
 
 // 0 - 200
 void RaveVLC::Volumen(int nVolumen) {
+	// Topes
+	if (nVolumen > 200) nVolumen = 200;
+	if (nVolumen < 0)	nVolumen = 0;
+
 	App.VentanaRave.SliderVolumen.Valor(static_cast<float>(nVolumen));
 	App.ControlesPC.SliderVolumen.Valor(static_cast<float>(nVolumen));
 	std::wstring StrVol = std::to_wstring(nVolumen) + L"%";

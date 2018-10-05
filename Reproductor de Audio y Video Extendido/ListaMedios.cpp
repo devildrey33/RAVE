@@ -10,7 +10,7 @@ ListaMedios::ListaMedios() : MedioActual(0), Errores(0) {
 ListaMedios::~ListaMedios() {
 }
 
-
+/*
 void ListaMedios::Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado) {
 	App.VentanaRave.Evento_TeclaPresionada(DatosTeclado);
 }
@@ -21,7 +21,7 @@ void ListaMedios::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 
 void ListaMedios::Evento_Tecla(DWL::DEventoTeclado &DatosTeclado) {
 	App.VentanaRave.Evento_Tecla(DatosTeclado);
-}
+}*/
 
 
 

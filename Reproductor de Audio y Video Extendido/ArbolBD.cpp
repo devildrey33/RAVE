@@ -10,7 +10,7 @@ ArbolBD::ArbolBD(void) {
 ArbolBD::~ArbolBD(void) {
 }
 
-
+/*
 void ArbolBD::Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado) {
 	App.VentanaRave.Evento_TeclaPresionada(DatosTeclado);
 }
@@ -21,7 +21,7 @@ void ArbolBD::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 
 void ArbolBD::Evento_Tecla(DWL::DEventoTeclado &DatosTeclado) {
 	App.VentanaRave.Evento_Tecla(DatosTeclado);
-}
+}*/
 
 NodoBD *ArbolBD::BuscarHash(sqlite3_int64 bHash) {
 	if (_Raiz.TotalHijos() == 0) return NULL;

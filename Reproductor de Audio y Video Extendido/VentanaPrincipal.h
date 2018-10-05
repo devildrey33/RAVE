@@ -42,13 +42,26 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						Evento_SoltarArchivos(WPARAM wParam);
 	void						Evento_BorraFondo(HDC DC);
 	void						Evento_Cerrar(void);
-	void                        Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado);
+/*	void                        Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado);
 	void                        Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado);
-	void						Evento_Tecla(DWL::DEventoTeclado &DatosTeclado);
+	void						Evento_Tecla(DWL::DEventoTeclado &DatosTeclado);*/
 	void						Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse);
 	void						Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse);
 
 
+
+	void						ThreadAgregarArchivosLista_Terminado(void);
+	void						ThreadAgregarArchivosLista_AgregarMedio(WPARAM wParam);
+
+	void						ThreadABuscarArchivos_AgregarRaiz(LPARAM lParam);
+	void						ThreadABuscarArchivos_AgregarDirectorio(LPARAM lParam);
+	void						ThreadABuscarArchivos_Terminado(const BOOL Cancelado, LPARAM lParam);
+	
+	void						ThreadAnalizar_Terminado(const BOOL Cancelado, LPARAM lParam);
+	void						ThreadAnalizar_MostrarVentana(void);
+	void                        ThreadAnalizar_Iniciado2(WPARAM wParam);
+	void						ThreadAnalizar_TotalMedios(WPARAM wParam, LPARAM lParam);
+	void						ThreadAnalizar_TotalMedios2(void);
 
 	void						AjustarControles(RECT &RC);
 

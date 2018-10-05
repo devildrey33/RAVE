@@ -75,7 +75,9 @@ unsigned long ThreadActualizarArbol::_ThreadActualizar(void *pThis) {
 	This->_BD.Consulta(L"COMMIT TRANSACTION");
 	This->_BD.Terminar();
 
-	PostMessage(This->_VentanaPlayer, WM_TBA_TERMINADO, 0, static_cast<LPARAM>(TotalArchivos));
+	if (This->Cancelar() == TRUE)	PostMessage(This->_VentanaPlayer, WM_TBA_CANCELADO, 0, static_cast<LPARAM>(TotalArchivos));
+	else							PostMessage(This->_VentanaPlayer, WM_TBA_TERMINADO, 0, static_cast<LPARAM>(TotalArchivos));
+	
 
 	return 0;
 }
