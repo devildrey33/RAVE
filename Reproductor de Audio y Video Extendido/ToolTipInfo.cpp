@@ -7,7 +7,7 @@
 #define ID_TEMPORIZADOR_ANIMACION	1001
 #define ID_ANIMACION_TTI            1002
 
-#define TIEMPO_ANIMACION             400
+//#define TIEMPO_ANIMACION             400
 
 /*
   _______          _ _______ _      _____        __      
@@ -37,7 +37,7 @@ void ToolTipInfo::Mostrar(const int cX, const int cY, const int cAncho, const in
 
 	SetTimer(_hWnd, ID_TEMPORIZADOR_OCULTAR, 5000, NULL);
 
-	Ani.Iniciar(0, 255, TIEMPO_ANIMACION, [=](std::vector<float> &Valores, const BOOL Terminado) {
+	Ani.Iniciar(0, 255, App.BD.Opciones_TiempoAnimaciones(), [=](std::vector<float> &Valores, const BOOL Terminado) {
 		Opacidad(static_cast<BYTE>(Valores[0]));
 	});
 //	SetTimer(_hWnd, ID_TEMPORIZADOR_ANIMACION, 16, NULL); // 16 ms para llegar a 60fps (1000 / 16 = 62.5)
@@ -75,7 +75,7 @@ void ToolTipInfo::Ocultar(const BOOL Rapido) {
 	if (Rapido == FALSE) {
 		//AnimateWindow(_hWnd, 100, AW_HIDE | AW_BLEND);
 		Ani.Terminar();
-		Ani.Iniciar(255, 0, TIEMPO_ANIMACION, [=](std::vector<float> &Valores, const BOOL Terminado) {
+		Ani.Iniciar(255, 0, App.BD.Opciones_TiempoAnimaciones(), [=](std::vector<float> &Valores, const BOOL Terminado) {
 			Opacidad(static_cast<BYTE>(Valores[0]));
 			if (Terminado == TRUE) {
 				ShowWindow(hWnd(), SW_HIDE);

@@ -376,6 +376,9 @@
     <ClInclude Include="DAnimacion.h">
       <Filter>DWL\Sistema\Animación</Filter>
     </ClInclude>
+    <ClInclude Include="ControlSeparador.h">
+      <Filter>Ventanas\Controles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -563,6 +566,9 @@
     </ClCompile>
     <ClCompile Include="DAnimacion.cpp">
       <Filter>DWL\Sistema\Animación</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlSeparador.cpp">
+      <Filter>Ventanas\Controles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

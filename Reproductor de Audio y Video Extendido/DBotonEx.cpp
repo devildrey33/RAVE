@@ -137,7 +137,7 @@ namespace DWL {
 
 
 	void DBotonEx::Transicion(const DBotonEx_Transicion nTransicion) {
-		DWORD Duracion = 400;
+		DWORD Duracion = DhWnd::TiempoAnimaciones;
 		if (_AniTransicion.Animando() == TRUE) {
 			Duracion = _AniTransicion.TiempoActual();
 			_AniTransicion.Terminar();

@@ -90,7 +90,7 @@ namespace DWL {
 	}
 
 	void DMarcaEx::Transicion(const DMarcaEx_Transicion nTransicion) {
-		DWORD Duracion = 400;
+		DWORD Duracion = DhWnd::TiempoAnimaciones;
 		if (_AniTransicion.Animando() == TRUE) {
 			Duracion = _AniTransicion.TiempoActual();
 			_AniTransicion.Terminar();
@@ -117,7 +117,7 @@ namespace DWL {
 				TextoHasta		= COLOR_TEXTO_PRESIONADO;
 				break;
 			case DMarcaEx_Transicion_Desactivado:
-				FondoHasta		= COLOR_BOTON;
+				FondoHasta		= COLOR_FONDO;
 				FondoMarcaHasta = COLOR_FONDO_CLARO_DESACTIVADO;
 				BordeHasta		= COLOR_BORDE;
 				TextoHasta		= COLOR_TEXTO_DESACTIVADO;
@@ -221,9 +221,7 @@ namespace DWL {
 
 	LRESULT CALLBACK DMarcaEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
-			case WM_PAINT	: 
-				_Evento_Pintar();			
-				break;
+			case WM_PAINT:			_Evento_Pintar();																															return 0;
 			case WM_MOUSEMOVE:		_Evento_MouseMovimiento(wParam, lParam);																									return 0;
 			case WM_MOUSELEAVE:		_Evento_MouseSaliendo();																													return 0;
 				// Mouse presionado

@@ -35,21 +35,21 @@ namespace DWL {
 	}
 
 	void DBarraDesplazamientoEx::Evento_PintarBarra(HDC DC, RECT &RBarra) {
-		COLORREF Color = (_Estado == DBarraEx_Estado_Presionado) ? COLOR_BARRA_PRESIONADO : _ColorBarra;
+		COLORREF Color = _ColorBarra;
 		HBRUSH BrochaBarra = CreateSolidBrush(Color);
 		FillRect(DC, &RBarra, BrochaBarra);
 		DeleteObject(BrochaBarra);
 	}
 
 	void DBarraDesplazamientoEx::Evento_PintarFondo(HDC DC, RECT &RFondo) {
-		COLORREF Color = (_Estado == DBarraEx_Estado_Presionado) ? COLOR_BARRA_FONDO_PRESIONADO : _ColorFondo;
+		COLORREF Color = _ColorFondo;
 		HBRUSH BrochaFondo = CreateSolidBrush(Color);
 		FillRect(DC, &RFondo, BrochaFondo);
 		DeleteObject(BrochaFondo);
 	}
 
 	void DBarraDesplazamientoEx::Evento_PintarBorde(HDC DC, RECT &RBorde) {
-		COLORREF Color = (_Estado == DBarraEx_Estado_Presionado) ? COLOR_ROJO_PRESIONADO : _ColorBorde;
+		COLORREF Color = _ColorBorde;
 		HBRUSH BrochaBorde = CreateSolidBrush(Color);
 		FrameRect(DC, &RBorde, BrochaBorde);
 		DeleteObject(BrochaBorde);
@@ -87,10 +87,14 @@ namespace DWL {
 		}
 
 		if (_Estado == DBarraEx_Estado_Presionado) {
-			float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
-			_Valor = (static_cast<float>(cX - RC.left) * Parte) - _Minimo;
+			#if DBARRAEX_DEBUG == TRUE
+				Debug_Escribir_Varg(L"DBarraDesplazamientoEx::_Evento_MouseMovimiento Min : %02f, Max : %02f, Valor : %02f\n", _Minimo, _Maximo, _Valor);
+			#endif
+/*			float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
+			_Valor = _Minimo + (static_cast<float>(cX - RC.left) * Parte);
 			if (_Valor > _Maximo) { _Valor = _Maximo; }
-			if (_Valor < _Minimo) { _Valor = _Minimo; }
+			if (_Valor < _Minimo) { _Valor = _Minimo; }*/
+			_Valor = _ValorMouse(RC, cX);
 			Repintar();
 			SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
 			Evento_MouseMovimiento(DatosMouse);
@@ -109,8 +113,11 @@ namespace DWL {
 		if (PtInRect(&RC, Pt) == TRUE) {
 			SetCapture(hWnd());
 			_Estado = DBarraEx_Estado_Presionado;
-			float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
-			_Valor = (static_cast<float>(Pt.x - RC.left) * Parte) - _Minimo;
+			_Valor = _ValorMouse(RC, Pt.x);
+			/*float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
+			_Valor = _Minimo + (static_cast<float>(Pt.x - RC.left) * Parte);
+			if (_Valor > _Maximo) { _Valor = _Maximo; }
+			if (_Valor < _Minimo) { _Valor = _Minimo; }*/
 			//Repintar();
 			SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
 			Evento_MousePresionado(DatosMouse);
@@ -132,11 +139,11 @@ namespace DWL {
 			// No hace falta transición (saltara la del mousesaliendo)
 			_Estado = DBarraEx_Estado_Normal; 
 		}
-
-		float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
-		_Valor = (static_cast<float>(Pt.x - RC.left) * Parte) - _Minimo;
+		_Valor = _ValorMouse(RC, Pt.x);
+/*		float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
+		_Valor = _Minimo + (static_cast<float>(Pt.x - RC.left) * Parte);
 		if (_Valor > _Maximo) { _Valor = _Maximo; }
-		if (_Valor < _Minimo) { _Valor = _Minimo; }
+		if (_Valor < _Minimo) { _Valor = _Minimo; }*/
 		SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIADO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
 //		Repintar();
 	}
@@ -151,7 +158,7 @@ namespace DWL {
 		}
 	}
 
-
+	/*
 	void DBarraDesplazamientoEx::Resaltar(const BOOL Resaltado) {
 		if (_AniTransicion.Animando() == TRUE) {
 			_AniTransicion.Invertir();
@@ -184,7 +191,7 @@ namespace DWL {
 			Repintar();
 		});
 
-	}
+	}*/
 
 	LRESULT CALLBACK DBarraDesplazamientoEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {

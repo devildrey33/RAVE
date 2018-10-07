@@ -10,10 +10,15 @@ namespace DWL {
 	DEtiquetaEx::~DEtiquetaEx(void) {
 	}
 
-	HWND DEtiquetaEx::CrearEtiquetaEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const BOOL nCentrado, const long Estilos) {
+	HWND DEtiquetaEx::CrearEtiquetaEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const DEtiquetaEx_Alineacion nAlineacion, const long Estilos) {
 		_hWnd = CrearControlEx(nPadre, L"DEtiquetaEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
 
-		_Formato = (nCentrado == TRUE) ? DT_CENTER : DT_LEFT;
+		switch (nAlineacion) {
+			case DEtiquetaEx_Alineacion_Izquierda	: _Formato = DT_LEFT;		break;
+			case DEtiquetaEx_Alineacion_Centrado	: _Formato = DT_CENTER;		break;
+			case DEtiquetaEx_Alineacion_Derecha		: _Formato = DT_RIGHT;		break;
+		}
+//		_Formato = (nCentrado == TRUE) ? DT_CENTER : DT_LEFT;
 		Fuente = Fuente18Normal;
 		_Texto = nTxt;
 		return hWnd();
@@ -23,18 +28,21 @@ namespace DWL {
 	void DEtiquetaEx::Pintar(HDC DC) {
 		RECT RC;
 		GetClientRect(hWnd(), &RC);
-		RECT RC2 = RC;
-		RC2.left++; RC2.top++; RC2.right++; RC2.bottom++;
 
 		// BackBuffer 
-		HDC     TmphDC = CreateCompatibleDC(NULL);
-		HBITMAP TmphDCBmp = CreateCompatibleBitmap(DC, RC.right, RC.bottom);
-		HBITMAP VTmphDCBmp = static_cast<HBITMAP>(SelectObject(TmphDC, TmphDCBmp));
-		HFONT	VFont = static_cast<HFONT>(SelectObject(TmphDC, Fuente()));
+		HDC     TmphDC		= CreateCompatibleDC(NULL);
+		HBITMAP TmphDCBmp	= CreateCompatibleBitmap(DC, RC.right, RC.bottom);
+		HBITMAP VTmphDCBmp	= static_cast<HBITMAP>(SelectObject(TmphDC, TmphDCBmp));
+		HFONT	VFont		= static_cast<HFONT>(SelectObject(TmphDC, Fuente()));
 
 		HBRUSH BrochaFondo = CreateSolidBrush(ColorFondo);
 		FillRect(TmphDC, &RC, BrochaFondo);
 		DeleteObject(BrochaFondo);
+
+		RC.right--; // (resto uno para dejar espacio a la sombra) 
+
+		RECT RC2 = RC;
+		RC2.left++; RC2.top++; RC2.right++; RC2.bottom++;
 
 		SetBkMode(TmphDC, TRANSPARENT);
 		// Pinto la sombra del texto
@@ -43,6 +51,8 @@ namespace DWL {
 		// Pinto el texto
 		SetTextColor(TmphDC, ColorTexto);
 		DrawText(TmphDC, _Texto.c_str(), static_cast<int>(_Texto.size()), &RC, _Formato);
+
+		RC.right++;	// (vuelvo a poner el right como estaba para el bitblt)
 
 		BitBlt(DC, RC.left, RC.top, RC.right, RC.bottom, TmphDC, 0, 0, SRCCOPY);
 //		EndPaint(hWnd(), &PS);

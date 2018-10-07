@@ -49,7 +49,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	BotonStop.CrearBotonEx(&MarcoSI,	 IDI_STOP32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  80, 0, 30, 30, ID_BOTON_STOP);
 	BotonAdelante.CrearBotonEx(&MarcoSI, IDI_NEXT32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 120, 0, 30, 30, ID_BOTON_SIGUIENTE);
 
-	LabelRatio.CrearEtiquetaEx(&MarcoSI, L"x1.0", 160, 6, 40, 30, ID_LABEL_RATIO, TRUE);
+	LabelRatio.CrearEtiquetaEx(&MarcoSI, L"x1.0", 160, 6, 40, 30, ID_LABEL_RATIO, DEtiquetaEx_Alineacion_Centrado);
 
 	BotonMezclar.CrearBotonEx(&MarcoSI, L"Mezclar", 210, 0, 80, 30, ID_BOTON_MEZCLAR);
 	BotonMezclar.Fuente = Fuente18Negrita;
@@ -68,11 +68,11 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 	SliderVolumen.CrearBarraVolumen(&MarcoSD, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.BD.Opciones_Volumen()));
 	std::wstring TxtVolumen = std::to_wstring(App.BD.Opciones_Volumen()) + L"%";
-	LabelVolumen.CrearEtiquetaEx(&MarcoSD, TxtVolumen.c_str(), 215, 2, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
+	LabelVolumen.CrearEtiquetaEx(&MarcoSD, TxtVolumen.c_str(), 215, 2, 40, 20, ID_LABEL_VOLUMEN, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
 
-	LabelTiempoActual.CrearEtiquetaEx(&MarcoSD, L"00:00", 0, 2, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
-	LabelTiempoSeparador.CrearEtiquetaEx(&MarcoSD, L"/", 55, 2, 10, 20, ID_LABEL_TIEMPOSEPARADOR,TRUE,  WS_CHILD | WS_VISIBLE);
-	LabelTiempoTotal.CrearEtiquetaEx(&MarcoSD, L"00:00", 65, 2, 55, 20, ID_LABEL_TIEMPOTOTAL, WS_CHILD | WS_VISIBLE);
+	LabelTiempoActual.CrearEtiquetaEx(&MarcoSD, L"00:00", 0, 2, 55, 20, ID_LABEL_TIEMPOACTUAL, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
+	LabelTiempoSeparador.CrearEtiquetaEx(&MarcoSD, L"/", 55, 2, 10, 20, ID_LABEL_TIEMPOSEPARADOR, DEtiquetaEx_Alineacion_Centrado,  WS_CHILD | WS_VISIBLE);
+	LabelTiempoTotal.CrearEtiquetaEx(&MarcoSD, L"00:00", 65, 2, 55, 20, ID_LABEL_TIEMPOTOTAL, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
 
 	// Marco inferior izquierdo /////////////
 	MarcoII.Crear(this, 10, 80, RAVE_BOTONES_LATERALES_ANCHO, 160, ID_MARCOSI);
@@ -980,8 +980,8 @@ void VentanaPrincipal::ThreadAnalizar_Terminado(const BOOL Cancelado, LPARAM lPa
 		App.MostrarToolTipPlayer(L"Análisis terminado, se han analizado " + std::to_wstring(lParam) + L" medios.");
 	}
 	else {
-		Debug_Escribir_Varg(L"ThreadAnalisis::Cancelado %d archivos examinados.\n", lParam);
-		App.MostrarToolTipPlayer(L"Análisis cancelado, se han analizado " + std::to_wstring(lParam) + L" medios.");
+		Debug_Escribir_Varg(L"ThreadAnalisis::Cancelado %d total archivos a examinar.\n", lParam);
+		App.MostrarToolTipPlayer(L"Análisis cancelado.");
 	}
 }
 

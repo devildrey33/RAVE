@@ -19,7 +19,7 @@ namespace DWL {
 		DBotonEx_Transicion_Desactivado
 	};
 
-	#define DBOTONEX_MOSTRARDEBUG	TRUE
+	#define DBOTONEX_MOSTRARDEBUG	FALSE
 	#define DBOTONEX_CENTRADO -1
 
 	class DBotonEx : public DControlEx {

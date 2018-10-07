@@ -106,8 +106,11 @@
 			X Al fer un mouseDown ha d'acabar l'animació a tots els controlEx que tinguin _AniResaltado
 			V O unaltre opció es animar tots els estats (marcat, desmarcat, mousedown, mouseup, resaltat, normal, desactivat)
 
+		V  En la DBarraProgresoEx si el minim no es 0, no es calcula be la posició de la barra en el mouse down.
+		V  S'ha de implementar alineacions per el control DEtiquetaEx (fins ara nomes hi ha esquerra i centrat, falta la cap a la dreta)
 
 		V  Mostrar les opcions en una finestra nova
+			V  Crear control separador (MOLT SIMPLE) com si fos un </ br>
 			-  Afegir opcions : 
 				V BD
 					V explicar el tema de les arrels, i posar controls per afegir arrels.
@@ -124,6 +127,8 @@
 						X De teclat global (hook) si que haig de mirar la tecla play / pausa , pero el tema del volum amb tecles exteses el porta el sistema operatiu, suposo que tambe interesa el següent i l'anterior medi...
 					X Buto per associar els arxius d'audio i video al reproductor a saco, i liquido la pestanya asociaciones.
 						- No m'acaba de molar.. aixo ho ha de fer el instalador.
+					V Velocitat de les animacions
+						V Barra o editbox? si es editbox l'haig de fer desde 0 o desde 0.5 aprofitan un TEXTBOX, també tinc un DEdicionTextoEx però está molt verd... (AMB BARRA)
 				X Assosiacions d'arxiu
 					X Asociacions individuals per cada extensio
 					X Mostrar finestra per preguntar pel reproductor predeterminat

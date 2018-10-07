@@ -96,6 +96,13 @@ namespace DWL {
 		DeleteObject(BrochaBorde);
 	}
 
+	const float DBarraProgresoEx::_ValorMouse(RECT &RC, const int cX) {
+		float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
+		float nValor = _Minimo + (static_cast<float>(cX - RC.left) * Parte);
+		if (nValor > _Maximo) { nValor = _Maximo; }
+		if (nValor < _Minimo) { nValor = _Minimo; }
+		return nValor;
+	}
 
 	void DBarraProgresoEx::_Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam) {
 		if (_MouseEntrando() == TRUE) {
@@ -119,7 +126,7 @@ namespace DWL {
 	}
 
 	void DBarraProgresoEx::Transicion(const DBarraEx_Transicion nTransicion) {
-		DWORD Duracion = 400;
+		DWORD Duracion = DhWnd::TiempoAnimaciones;
 		if (_AniTransicion.Animando() == TRUE) {
 			Duracion = _AniTransicion.TiempoActual();
 			_AniTransicion.Terminar();

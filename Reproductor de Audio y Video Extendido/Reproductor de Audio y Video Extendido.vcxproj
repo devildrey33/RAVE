@@ -163,6 +163,7 @@
     <ClInclude Include="AsociarReproductor.h" />
     <ClInclude Include="BarraTiempo.h" />
     <ClInclude Include="BarraVolumen.h" />
+    <ClInclude Include="ControlSeparador.h" />
     <ClInclude Include="DAnimacion.h" />
     <ClInclude Include="DArbolEx.h" />
     <ClInclude Include="DArbolEx_Nodo.h" />
@@ -243,6 +244,7 @@
     <ClCompile Include="BarraTiempo.cpp" />
     <ClCompile Include="BarraVolumen.cpp" />
     <ClCompile Include="ControlesPantallaCompleta.cpp" />
+    <ClCompile Include="ControlSeparador.cpp" />
     <ClCompile Include="DAnimacion.cpp" />
     <ClCompile Include="DArbolEx.cpp" />
     <ClCompile Include="DArbolEx_Nodo.cpp" />

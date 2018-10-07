@@ -4,11 +4,18 @@
 
 namespace DWL {
 
+	enum DEtiquetaEx_Alineacion {
+		DEtiquetaEx_Alineacion_Izquierda,
+		DEtiquetaEx_Alineacion_Centrado,
+		DEtiquetaEx_Alineacion_Derecha
+	};
+
 	class DEtiquetaEx : public DControlEx {
 	  public:
+
 								DEtiquetaEx(void);
 				               ~DEtiquetaEx(void);
-		HWND					CrearEtiquetaEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const BOOL nCentrado = FALSE, const long Estilos = WS_CHILD | WS_VISIBLE);
+		HWND					CrearEtiquetaEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const DEtiquetaEx_Alineacion nAlineacion = DEtiquetaEx_Alineacion_Izquierda, const long Estilos = WS_CHILD | WS_VISIBLE);
 		void					Pintar(HDC DC);
 		void					Texto(std::wstring &nTexto);
 		LRESULT CALLBACK		GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);

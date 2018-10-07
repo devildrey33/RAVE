@@ -59,6 +59,8 @@ namespace DWL {
 		static DhWnd_Fuente         FuenteTest;
 
 		static bool                 Teclado[256];
+									// Tiempo para animaciones / transiciones
+		static DWORD                TiempoAnimaciones;
 
 	  protected:
 		HWND                       _hWnd;

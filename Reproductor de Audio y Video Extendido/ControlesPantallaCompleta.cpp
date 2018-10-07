@@ -22,7 +22,7 @@ void ControlesPantallaCompleta::Crear(void) {
 	BotonStop.CrearBotonEx(this,	 IDI_STOP32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  90, 10, 30, 30, ID_BOTON_STOP);
 	BotonAdelante.CrearBotonEx(this, IDI_NEXT32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 130, 10, 30, 30, ID_BOTON_SIGUIENTE);
 
-	LabelRatio.CrearEtiquetaEx(this, L"x1.0", 170, 16, 40, 30, ID_LABEL_RATIO, TRUE);
+	LabelRatio.CrearEtiquetaEx(this, L"x1.0", 170, 16, 40, 30, ID_LABEL_RATIO, DEtiquetaEx_Alineacion_Centrado);
 
 	BotonMezclar.CrearBotonEx(this, L"Mezclar", 220, 10, 80, 30, ID_BOTON_MEZCLAR);
 	BotonMezclar.Fuente = Fuente18Negrita;
@@ -37,11 +37,11 @@ void ControlesPantallaCompleta::Crear(void) {
 //	SliderTiempo.TamPagina(30000 / 50);
 
 	SliderVolumen.CrearBarraVolumen(this, RC.right - 145, 17, 90, 16, ID_SLIDER_VOLUMEN, 0, 200, 100);
-	LabelVolumen.CrearEtiquetaEx(this, L"100%", RC.right - 40, 16, 40, 20, ID_LABEL_VOLUMEN, WS_CHILD | WS_VISIBLE);
+	LabelVolumen.CrearEtiquetaEx(this, L"100%", RC.right - 40, 16, 40, 20, ID_LABEL_VOLUMEN, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
 
-	LabelTiempoActual.CrearEtiquetaEx(this, L"00:00", RC.right - 265, 16, 55, 20, ID_LABEL_TIEMPOACTUAL, TRUE, WS_CHILD | WS_VISIBLE);
-	LabelTiempoSeparador.CrearEtiquetaEx(this, L"/", RC.right - 210, 16, 10, 20, ID_LABEL_TIEMPOSEPARADOR, TRUE, WS_CHILD | WS_VISIBLE);
-	LabelTiempoTotal.CrearEtiquetaEx(this, L"00:00", RC.right - 200, 16, 55, 20, ID_LABEL_TIEMPOTOTAL, TRUE, WS_CHILD | WS_VISIBLE);
+	LabelTiempoActual.CrearEtiquetaEx(this, L"00:00", RC.right - 265, 16, 55, 20, ID_LABEL_TIEMPOACTUAL, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
+	LabelTiempoSeparador.CrearEtiquetaEx(this, L"/", RC.right - 210, 16, 10, 20, ID_LABEL_TIEMPOSEPARADOR, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
+	LabelTiempoTotal.CrearEtiquetaEx(this, L"00:00", RC.right - 200, 16, 55, 20, ID_LABEL_TIEMPOTOTAL, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
 
 	Opacidad(240);
 }

@@ -37,7 +37,7 @@ namespace DWL {
 
 	   virtual void								Evento_MostrarToolTip(float nValor, std::wstring &Texto);
 
-	   virtual void                             Resaltar(const BOOL Resaltado);
+//	   virtual void                             Resaltar(const BOOL Resaltado);
 
 	   LRESULT CALLBACK							GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	  protected:

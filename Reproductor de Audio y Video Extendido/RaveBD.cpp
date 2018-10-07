@@ -572,15 +572,16 @@ const BOOL RaveBD::_CrearTablas(void) {
 											L"VentanaAsociar_PosY"		L" INTEGER,"				// NO SE USA
 											L"VentanaAnalizar_PosX"		L" INTEGER,"             
 											L"VentanaAnalizar_PosY"		L" INTEGER," 
-											L"BuscarActualizacion"		L" INTEGER" 
+											L"BuscarActualizacion"		L" INTEGER," 
+											L"TiempoAnimaciones"		L" INTEGER" 
 									  L")";
 	if (Consulta(CrearTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	// Añado los datos por defecto de las opciones ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes, VentanaOpciones_PosX, VentanaOpciones_PosY, VentanaAsociar_PosX, VentanaAsociar_PosY, VentanaAnalizar_PosX, VentanaAnalizar_PosY, BuscarActualizacion) "
-										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1, 1, 400, 300, 500, 400, 300, 200, 1)";
+	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes, VentanaOpciones_PosX, VentanaOpciones_PosY, VentanaAsociar_PosX, VentanaAsociar_PosY, VentanaAnalizar_PosX, VentanaAnalizar_PosY, BuscarActualizacion, TiempoAnimaciones) "
+										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1, 1, 400, 300, 500, 400, 300, 200, 1, 400)";
 	if (Consulta(ValoresTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1138,6 +1139,13 @@ void RaveBD::Opciones_BuscarActualizacion(const BOOL nBuscarActualizacion) {
 	Ret = Ret;
 }
 
+void RaveBD::Opciones_TiempoAnimaciones(const UINT nTiempoAnimaciones) {
+	_Opciones_TiempoAnimaciones = nTiempoAnimaciones;
+	std::wstring Q = L"Update Opciones SET TiempoAnimaciones=" + std::to_wstring(nTiempoAnimaciones) + L" WHERE Id=0";
+	int Ret = Consulta(Q.c_str());
+	Ret = Ret;
+}
+
 const BOOL RaveBD::ObtenerOpciones(void) {
 
 	const wchar_t  *SqlStr = L"SELECT * FROM Opciones";
@@ -1175,6 +1183,8 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 			_Opciones_VentanaAnalizar_PosX		= static_cast<int>(sqlite3_column_int(SqlQuery, 19));
 			_Opciones_VentanaAnalizar_PosY		= static_cast<int>(sqlite3_column_int(SqlQuery, 20));
 			_Opciones_BuscarActualizacion       = static_cast<BOOL>(sqlite3_column_int(SqlQuery, 21));
+			_Opciones_TiempoAnimaciones         = static_cast<UINT>(sqlite3_column_int(SqlQuery, 22));
+			DhWnd::TiempoAnimaciones = _Opciones_TiempoAnimaciones;
 		}
 		if (SqlRet == SQLITE_BUSY) {
 			VecesBusy++;

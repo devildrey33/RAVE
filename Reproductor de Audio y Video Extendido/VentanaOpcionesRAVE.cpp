@@ -2,7 +2,9 @@
 #include "VentanaOpcionesRAVE.h"
 #include "resource.h"
 #include "DDlgDirectorios.h"
+#include "DStringUtils.h"
 
+#define ID_BOTON_CERRAR                  999
 #define ID_BOTON_BASEDATOS				1000
 #define ID_BOTON_GENERAL				1001
 #define ID_BOTON_ASOCIACIONESARCHIVOS	1002
@@ -23,6 +25,8 @@
 #define ID_ASINGAR_TECLA                1040
 #define ID_ETIQUETA_TECLASRAPIDAS		1060
 #define ID_MARCA_BUSCARACTUALIZACIONES  1061
+#define ID_ETIQUETA_TIEMPOANIMACIONES   1062
+#define ID_BARRA_TIEMPOANIMACION        1063
 
 VentanaOpcionesRAVE::VentanaOpcionesRAVE(void) {
 }
@@ -31,7 +35,7 @@ VentanaOpcionesRAVE::~VentanaOpcionesRAVE(void) {
 }
 
 void VentanaOpcionesRAVE::Crear(void) {
-	DVentana::CrearVentana(NULL, L"RAVE_VentanaOpciones", L"Opciones", App.BD.Opciones_VentanaOpciones_PosX(), App.BD.Opciones_VentanaOpciones_PosY(), 590, 450, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+	DVentana::CrearVentana(NULL, L"RAVE_VentanaOpciones", L"Opciones", App.BD.Opciones_VentanaOpciones_PosX(), App.BD.Opciones_VentanaOpciones_PosY(), 590, 500, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 
 	RECT RC;
 	GetClientRect(_hWnd, &RC);
@@ -50,15 +54,17 @@ void VentanaOpcionesRAVE::Crear(void) {
 	BotonListas.Fuente					= DhWnd::Fuente18Negrita;
 	BotonVideo.Fuente					= DhWnd::Fuente18Negrita;
 	// Creo los marcos para los grupos de opciones
-	MarcoBaseDeDatos.Crear(this, 10, 40, RC.right - 20, RC.bottom - 50, ID_MARCO_BASEDATOS);
-	MarcoGeneral.Crear(this, 10, 40, RC.right - 20, RC.bottom - 50, ID_MARCO_GENERAL);
+	MarcoBaseDeDatos.Crear(this, 10, 40, RC.right - 20, RC.bottom - 100, ID_MARCO_BASEDATOS);
+	MarcoGeneral.Crear(this, 10, 40, RC.right - 20, RC.bottom - 100, ID_MARCO_GENERAL);
 	MarcoGeneral.Visible(FALSE);
-	MarcoAsociacionesArchivos.Crear(this, 10, 40, RC.right - 20, RC.bottom - 50, ID_MARCO_ASOCIACIONESARCHIVOS);
+	MarcoAsociacionesArchivos.Crear(this, 10, 40, RC.right - 20, RC.bottom - 100, ID_MARCO_ASOCIACIONESARCHIVOS);
 	MarcoAsociacionesArchivos.Visible(FALSE);
-	MarcoListas.Crear(this, 10, 40, RC.right - 20, RC.bottom - 50, ID_MARCO_LISTAS);
+	MarcoListas.Crear(this, 10, 40, RC.right - 20, RC.bottom - 100, ID_MARCO_LISTAS);
 	MarcoListas.Visible(FALSE);
-	MarcoVideo.Crear(this, 10, 40, RC.right - 20, RC.bottom - 50, ID_MARCO_VIDEO);
+	MarcoVideo.Crear(this, 10, 40, RC.right - 20, RC.bottom - 100, ID_MARCO_VIDEO);
 	MarcoVideo.Visible(FALSE);
+
+	BotonCerrar.CrearBotonEx(this, L"Cerrar", (RC.right - 70) / 2, RC.bottom - 40, 70, 30, ID_BOTON_CERRAR);
 
 	//////////////////////////////////////////////////////
 	// Creo los controles dentro del marco Base de datos
@@ -77,11 +83,13 @@ void VentanaOpcionesRAVE::Crear(void) {
 	// Boton agregar raíz
 	BotonAgregarRaiz.CrearBotonEx(&MarcoBaseDeDatos, L"Agregar Raíz", ((RC.right - 120) / 2) - 10, 220, 120, 24, ID_BOTON_AGREGARRAIZ);
 	BotonAgregarRaiz.Fuente = Fuente21Normal;
+	// Separador
+	SeparadorBD.Crear(&MarcoBaseDeDatos, 0, 254, RC.right - 20);
 	// Marca Mostrar analisis en una ventana
-	MarcaMostrarAnalisis.CrearMarcaEx(&MarcoBaseDeDatos, L"Mostrar ventana con el progreso del análisis de los medios.", 70, 254, 405, 20, ID_MARCA_MOSTRARANALISIS, IDI_CHECK2);
+	MarcaMostrarAnalisis.CrearMarcaEx(&MarcoBaseDeDatos, L"Mostrar ventana con el progreso del análisis de los medios.", 70, 269, 405, 20, ID_MARCA_MOSTRARANALISIS, IDI_CHECK2);
 	MarcaMostrarAnalisis.Marcado(App.BD.Opciones_MostrarObtenerMetadatos());
 	// Analizar medios pendientes al actualizar la base de datos
-	MarcaAnalizarMediosPendientes.CrearMarcaEx(&MarcoBaseDeDatos, L"Analizar medios pendientes al actualizar la base de datos.", 70, 284, 395, 20, ID_MARCA_ANALIZARPENDIENTES, IDI_CHECK2);
+	MarcaAnalizarMediosPendientes.CrearMarcaEx(&MarcoBaseDeDatos, L"Analizar medios pendientes al actualizar la base de datos.", 70, 299, 395, 20, ID_MARCA_ANALIZARPENDIENTES, IDI_CHECK2);
 	MarcaAnalizarMediosPendientes.Marcado(App.BD.Opciones_AnalizarMediosPendientes());
 
 	////////////////////////////////////////////////
@@ -100,12 +108,23 @@ void VentanaOpcionesRAVE::Crear(void) {
 	for (int i = 0; i < App.TeclasRapidas.size(); i++) {
 		EtiquetasTeclas[i].CrearEtiquetaEx(&MarcoGeneral, Textos[i], 10, 80 + (i * 25), 160, 20, ID_ETIQUETAS_TECLADO + i);
 		EtiquetasTeclas[i].Fuente = Fuente18Normal;
-		TeclasRapidas[i].Crear(&MarcoGeneral, 180, 80 + (i * 25), RC.right - 200, 20, ID_ASINGAR_TECLA, &App.TeclasRapidas[i]);
+		TeclasRapidas[i].Crear(&MarcoGeneral, 180, 80 + (i * 25), RC.right - 210, 20, ID_ASINGAR_TECLA, &App.TeclasRapidas[i]);
 	}
 
-	MarcaBuscarActualizaciones.CrearMarcaEx(&MarcoGeneral, L"Buscar actualizaciones al iniciar el reproductor", 110, 250, 330, 20, ID_MARCA_BUSCARACTUALIZACIONES, IDI_CHECK2);
+	// Separador
+	SeparadorGeneral.Crear(&MarcoGeneral, 0, 240, RC.right - 20);
+	// Marca buscar actualizaciones
+	MarcaBuscarActualizaciones.CrearMarcaEx(&MarcoGeneral, L"Buscar nuevas actualizaciones al iniciar el reproductor", 10, 255, 380, 20, ID_MARCA_BUSCARACTUALIZACIONES, IDI_CHECK2);
 	MarcaBuscarActualizaciones.Marcado(App.BD.Opciones_BuscarActualizacion());
 	MarcaBuscarActualizaciones.Activado(FALSE);
+	// Etiqueta Tiempo de la animación
+	EtiquetaTiempoAnimaciones.CrearEtiquetaEx(&MarcoGeneral, L"Duración de las animaciones de los controles", 10, 285, 300, 20, ID_ETIQUETA_TIEMPOANIMACIONES);
+	// Barra para asignar el tiempo de las animaciones
+	BarraTiempoAnimaciones.CrearBarraDesplazamientoEx(&MarcoGeneral, 310, 285, RC.right - 410, 20, ID_BARRA_TIEMPOANIMACION, 100, 1000, static_cast<float>(App.BD.Opciones_TiempoAnimaciones()));
+	std::wstring TmpStr = std::to_wstring(App.BD.Opciones_TiempoAnimaciones()) + L" ms";
+	EtiquetaTiempoAnimacionesTA.CrearEtiquetaEx(&MarcoGeneral, TmpStr.c_str(), RC.right - 90, 285, 60, 20, ID_ETIQUETA_TIEMPOANIMACIONES, DEtiquetaEx_Alineacion_Derecha);
+
+
 	// Muestro la ventana de las opciones
 	Visible(TRUE);
 	Repintar();
@@ -159,6 +178,9 @@ void VentanaOpcionesRAVE::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMou
 		case ID_BOTON_LISTAS:
 		case ID_BOTON_VIDEO:
 			AsignarMarco(DatosMouse.ID());
+			break;
+		case ID_BOTON_CERRAR :
+			Destruir();
 			break;
 	}
 }
@@ -244,6 +266,26 @@ void VentanaOpcionesRAVE::Evento_MarcaEx_Mouse_Click(DWL::DEventoMouse &DatosMou
 	}
 }
 
+
+void VentanaOpcionesRAVE::Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse) {
+	switch (DatosMouse.ID()) {
+		case ID_BARRA_TIEMPOANIMACION :
+			EtiquetaTiempoAnimacionesTA.Texto(DWL::Strings::ToStrF(BarraTiempoAnimaciones.Valor(), 0) + L" ms");
+			break;
+	}
+}
+
+void VentanaOpcionesRAVE::Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse) {
+	switch (DatosMouse.ID()) {
+		case ID_BARRA_TIEMPOANIMACION :
+			EtiquetaTiempoAnimacionesTA.Texto(DWL::Strings::ToStrF(BarraTiempoAnimaciones.Valor(), 0) + L" ms");
+			App.BD.Opciones_TiempoAnimaciones(static_cast<UINT>(BarraTiempoAnimaciones.Valor()));
+			DhWnd::TiempoAnimaciones = static_cast<DWORD>(BarraTiempoAnimaciones.Valor());			
+			App.MostrarToolTipOpciones(L"La duración de las animaciones se ha ajustado a " + DWL::Strings::ToStrF(BarraTiempoAnimaciones.Valor(), 0) + L" Milisegundos");
+			break;
+	}
+}
+
 LRESULT CALLBACK VentanaOpcionesRAVE::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
 		case WM_CLOSE :
@@ -261,6 +303,14 @@ LRESULT CALLBACK VentanaOpcionesRAVE::GestorMensajes(UINT uMsg, WPARAM wParam, L
 		case WM_MOVING :
 			App.OcultarToolTipOpciones();
 			return 0;
+			// Barra de desplazamiento (barra de tiempo y volumen)
+		case DWL_BARRAEX_CAMBIO:	// Se está modificando (mouse down)
+			Evento_BarraEx_Cambio(WPARAM_TO_DEVENTOMOUSE(wParam));
+			return 0;
+		case DWL_BARRAEX_CAMBIADO:  // Se ha modificado	(mouse up)
+			Evento_BarraEx_Cambiado(WPARAM_TO_DEVENTOMOUSE(wParam));
+			return 0;
+
 	}
 	return DVentana::GestorMensajes(uMsg, wParam, lParam);
 }

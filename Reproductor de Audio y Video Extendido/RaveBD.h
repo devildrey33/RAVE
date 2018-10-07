@@ -253,7 +253,10 @@ class RaveBD {
 
 	inline const BOOL			Opciones_BuscarActualizacion(void) { return _Opciones_BuscarActualizacion; }
 	void						Opciones_BuscarActualizacion(const BOOL nOpciones_BuscarActualizacion);
-	
+
+	inline const UINT			Opciones_TiempoAnimaciones(void) { return _Opciones_TiempoAnimaciones; }
+	void						Opciones_TiempoAnimaciones(const UINT nOpciones_TiempoAnimaciones);
+
 
 	DWL::DUnidadesDisco			Unidades;
 
@@ -305,6 +308,7 @@ protected:
 	BOOL                       _Opciones_MostrarAsociarArchivos;	// Mostrar la ventana para asociar este reproductor con todas las extensiones de medios conocidas.
 	BOOL					   _Opciones_AnalizarMediosPendientes;	// Analizar medios pendientes al actualizar el arbol de la base de datos
 	BOOL					   _Opciones_BuscarActualizacion;		// Buscar actualizaciones del reproductor al iniciar
+	UINT                       _Opciones_TiempoAnimaciones;			// Duración de las animaciones
 	friend class ThreadAnalisis;
 };
 

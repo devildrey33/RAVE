@@ -6,6 +6,8 @@
 
 namespace DWL {
 
+	#define DBARRAEX_DEBUG FALSE
+
 	enum DBarraEx_Estado {
 		DBarraEx_Estado_Normal,
 		DBarraEx_Estado_Resaltado,
@@ -43,6 +45,7 @@ namespace DWL {
 		virtual void                Transicion(const DBarraEx_Transicion nTransicion);
 		LRESULT CALLBACK			GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	  protected:
+		const float                _ValorMouse(RECT &RC, const int cX);
 		void					   _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
 		void		               _Evento_MouseSaliendo(void);
 

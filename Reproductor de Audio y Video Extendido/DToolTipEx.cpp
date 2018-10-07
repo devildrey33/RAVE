@@ -120,10 +120,10 @@ namespace DWL {
 		RECT RCT = { RC.left, RC.top + DTOOLTIPEX_PADDING, RC.right, RC.bottom + (DTOOLTIPEX_PADDING * 2) };
 		
 		// Creo un buffer en memória para pintar el control
-		HDC		Buffer = CreateCompatibleDC(NULL);
+		HDC		Buffer		= CreateCompatibleDC(NULL);
 		// Creo un DC compatible para el buffer
-		HBITMAP Bmp = CreateCompatibleBitmap(DC, RC.right, RC.bottom);
-		HBITMAP BmpViejo = static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
+		HBITMAP Bmp			= CreateCompatibleBitmap(DC, RC.right, RC.bottom);
+		HBITMAP BmpViejo	= static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
 
 		HBRUSH BrochaBorde = CreateSolidBrush(COLOR_TOOLTIP_BORDE);
 		FrameRect(Buffer, &RC, BrochaBorde);

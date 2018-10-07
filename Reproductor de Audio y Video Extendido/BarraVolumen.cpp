@@ -15,51 +15,20 @@ void BarraVolumen::CrearBarraVolumen(DhWnd *nPadre, const int cX, const int cY, 
 }
 
 
-void BarraVolumen::Evento_PintarBarra(HDC DC, RECT &RBarra) {
-/*	int Base = 0;
-	switch (_Estado) {
-		case DBarraDesplazamientoEx_Estado_Normal:		Base = 20;			break;
-		case DBarraDesplazamientoEx_Estado_Resaltado:	Base = 40;			break;
-		case DBarraDesplazamientoEx_Estado_Presionado:	Base = 0;			break;
-	}
-	int R = Base + static_cast<int>(_Valor);
-	int G = (Base + 200) - static_cast<int>(_Valor);
-/*	if (R < 0) R = 0;
-	if (G < 0) G = 0;*/
-
-	#if BARRAVOLUMEN_MOSTRARDEBUG == TRUE
-		Debug_Escribir_Varg(L"BarraVolumen::Evento_PintarBarra R:%d G:%d\n", R, G);
-	#endif
-
-
-	HBRUSH BrochaBarra = CreateSolidBrush(_ColorBarra);
-//	HBRUSH BrochaBarra = CreateSolidBrush((_Estado == DBarraEx_Estado_Presionado) ? RGB(static_cast<int>(_Valor), 200 - static_cast<int>(_Valor), 0) : _ColorBarra);
-	FillRect(DC, &RBarra, BrochaBarra);
-	DeleteObject(BrochaBarra);
-
-}
-
-
 void BarraVolumen::Valor(const float nValor) {
 	_Valor = nValor;
-/*	if (_Estado = DBarraEx_Estado_Normal)		Transicion(DBarraEx_Transicion_Normal);
-	if (_Estado = DBarraEx_Estado_Resaltado)	Transicion(DBarraEx_Transicion_Resaltado);
-	if (_Estado = DBarraEx_Estado_Presionado)	Transicion(DBarraEx_Transicion_Presionado);*/
-	if (_Estado = DBarraEx_Estado_Presionado) _AniTransicion.Terminar();
+	if (_Estado == DBarraEx_Estado_Presionado) _AniTransicion.Terminar();
 	_ColorBarra = RGB(20 + static_cast<int>(_Valor), 220 - static_cast<int>(_Valor), 0);
 	Repintar();
 }
 
 
 void BarraVolumen::Transicion(const DBarraEx_Transicion nTransicion) {
-	DWORD Duracion = 400;
+	DWORD Duracion = DhWnd::TiempoAnimaciones;
 	if (_AniTransicion.Animando() == TRUE) {
 		Duracion = _AniTransicion.TiempoActual();
 		_AniTransicion.Terminar();
 	}
-
-	COLORREF ColorBase			= RGB(20 + static_cast<int>(_Valor), 220 - static_cast<int>(_Valor), 0);
-	COLORREF ColorBaseResaltado = RGB(40 + static_cast<int>(_Valor), 240 - static_cast<int>(_Valor), 0);
 
 	COLORREF FondoHasta, BordeHasta, BarraHasta;
 	switch (nTransicion) {
