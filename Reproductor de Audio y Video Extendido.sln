@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Reproductor de Audio y Video Extendido", "Reproductor de Audio y Video Extendido\Reproductor de Audio y Video Extendido.vcxproj", "{786A9BEF-4D80-4511-98AD-E6C9A61B2824}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Instalador x64", "Instalador x64.vdproj", "{3199620B-6B10-4393-946E-7B1B147198D6}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Instalador x86", "Instalador x86.vdproj", "{268C30C8-A440-4FAD-9C60-DB1FACA6942C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +25,27 @@ Global
 		{786A9BEF-4D80-4511-98AD-E6C9A61B2824}.Release|Win32.Build.0 = Release|Win32
 		{786A9BEF-4D80-4511-98AD-E6C9A61B2824}.Release|x64.ActiveCfg = Release|x64
 		{786A9BEF-4D80-4511-98AD-E6C9A61B2824}.Release|x64.Build.0 = Release|x64
+		{3199620B-6B10-4393-946E-7B1B147198D6}.Debug|Win32.ActiveCfg = Debug
+		{3199620B-6B10-4393-946E-7B1B147198D6}.Debug|Win32.Build.0 = Debug
+		{3199620B-6B10-4393-946E-7B1B147198D6}.Debug|x64.ActiveCfg = Debug
+		{3199620B-6B10-4393-946E-7B1B147198D6}.Debug|x64.Build.0 = Debug
+		{3199620B-6B10-4393-946E-7B1B147198D6}.Release|Win32.ActiveCfg = Release
+		{3199620B-6B10-4393-946E-7B1B147198D6}.Release|Win32.Build.0 = Release
+		{3199620B-6B10-4393-946E-7B1B147198D6}.Release|x64.ActiveCfg = Release
+		{3199620B-6B10-4393-946E-7B1B147198D6}.Release|x64.Build.0 = Release
+		{268C30C8-A440-4FAD-9C60-DB1FACA6942C}.Debug|Win32.ActiveCfg = Debug
+		{268C30C8-A440-4FAD-9C60-DB1FACA6942C}.Debug|Win32.Build.0 = Debug
+		{268C30C8-A440-4FAD-9C60-DB1FACA6942C}.Debug|x64.ActiveCfg = Debug
+		{268C30C8-A440-4FAD-9C60-DB1FACA6942C}.Debug|x64.Build.0 = Debug
+		{268C30C8-A440-4FAD-9C60-DB1FACA6942C}.Release|Win32.ActiveCfg = Release
+		{268C30C8-A440-4FAD-9C60-DB1FACA6942C}.Release|Win32.Build.0 = Release
+		{268C30C8-A440-4FAD-9C60-DB1FACA6942C}.Release|x64.ActiveCfg = Release
+		{268C30C8-A440-4FAD-9C60-DB1FACA6942C}.Release|x64.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {39FF4E94-6B29-46C1-B4B0-B0C33C1B59A5}
 	EndGlobalSection
 EndGlobal

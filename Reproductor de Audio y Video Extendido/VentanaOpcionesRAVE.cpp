@@ -26,7 +26,14 @@
 #define ID_ETIQUETA_TECLASRAPIDAS		1060
 #define ID_MARCA_BUSCARACTUALIZACIONES  1061
 #define ID_ETIQUETA_TIEMPOANIMACIONES   1062
-#define ID_BARRA_TIEMPOANIMACION        1063
+#define ID_ETIQUETA_TIEMPOANIMACIONES2  1063
+#define ID_BARRA_TIEMPOANIMACION        1064
+#define ID_ETIQUETA_TIEMPOTOOLTIP       1065
+#define ID_ETIQUETA_TIEMPOTOOLTIP2      1066
+#define ID_BARRA_TIEMPOTOOLTIP          1067
+// Lista
+#define ID_DESPLEGABLE_LISTAINICIO		1068
+
 
 VentanaOpcionesRAVE::VentanaOpcionesRAVE(void) {
 }
@@ -41,27 +48,27 @@ void VentanaOpcionesRAVE::Crear(void) {
 	GetClientRect(_hWnd, &RC);
 
 	// Creo los botones de cada pestaña
-	BotonBaseDeDatos.CrearBotonEx(this, L"Base de datos", 20, 20, 115, 20, ID_BOTON_BASEDATOS);
+	BotonBaseDeDatos.CrearBotonEx(this, L"Base de datos", 20, 20, 135, 30, ID_BOTON_BASEDATOS);
 	BotonBaseDeDatos.Marcado(TRUE);
-	BotonGeneral.CrearBotonEx(this, L"General", 145, 20, 70, 20, ID_BOTON_GENERAL);
-	BotonAsociacionesArchivos.CrearBotonEx(this, L"Asociaciones de archivos", 225, 20, 200, 20, ID_BOTON_ASOCIACIONESARCHIVOS);
-	BotonListas.CrearBotonEx(this, L"Listas", 435, 20, 60, 20, ID_BOTON_LISTAS);
-	BotonVideo.CrearBotonEx(this, L"Video", 505, 20, 50, 20, ID_BOTON_VIDEO);
+	BotonGeneral.CrearBotonEx(this, L"General", 155, 20, 90, 30, ID_BOTON_GENERAL);
+//	BotonAsociacionesArchivos.CrearBotonEx(this, L"Asociaciones de archivos", 225, 20, 200, 20, ID_BOTON_ASOCIACIONESARCHIVOS);
+	BotonListas.CrearBotonEx(this, L"Listas", 245, 20, 80, 30, ID_BOTON_LISTAS);
+	BotonVideo.CrearBotonEx(this, L"Video", 325, 20, 70, 30, ID_BOTON_VIDEO);
 	// Asigno la fuente de los botones
-	BotonBaseDeDatos.Fuente				= DhWnd::Fuente18Negrita;
+/*	BotonBaseDeDatos.Fuente				= DhWnd::Fuente18Negrita;
 	BotonGeneral.Fuente					= DhWnd::Fuente18Negrita;
-	BotonAsociacionesArchivos.Fuente	= DhWnd::Fuente18Negrita;
+//	BotonAsociacionesArchivos.Fuente	= DhWnd::Fuente18Negrita;
 	BotonListas.Fuente					= DhWnd::Fuente18Negrita;
-	BotonVideo.Fuente					= DhWnd::Fuente18Negrita;
+	BotonVideo.Fuente					= DhWnd::Fuente18Negrita;*/
 	// Creo los marcos para los grupos de opciones
-	MarcoBaseDeDatos.Crear(this, 10, 40, RC.right - 20, RC.bottom - 100, ID_MARCO_BASEDATOS);
-	MarcoGeneral.Crear(this, 10, 40, RC.right - 20, RC.bottom - 100, ID_MARCO_GENERAL);
+	MarcoBaseDeDatos.Crear(this, 10, 50, RC.right - 20, RC.bottom - 100, ID_MARCO_BASEDATOS);
+	MarcoGeneral.Crear(this, 10, 50, RC.right - 20, RC.bottom - 100, ID_MARCO_GENERAL);
 	MarcoGeneral.Visible(FALSE);
 	MarcoAsociacionesArchivos.Crear(this, 10, 40, RC.right - 20, RC.bottom - 100, ID_MARCO_ASOCIACIONESARCHIVOS);
 	MarcoAsociacionesArchivos.Visible(FALSE);
-	MarcoListas.Crear(this, 10, 40, RC.right - 20, RC.bottom - 100, ID_MARCO_LISTAS);
+	MarcoListas.Crear(this, 10, 50, RC.right - 20, RC.bottom - 100, ID_MARCO_LISTAS);
 	MarcoListas.Visible(FALSE);
-	MarcoVideo.Crear(this, 10, 40, RC.right - 20, RC.bottom - 100, ID_MARCO_VIDEO);
+	MarcoVideo.Crear(this, 10, 50, RC.right - 20, RC.bottom - 100, ID_MARCO_VIDEO);
 	MarcoVideo.Visible(FALSE);
 
 	BotonCerrar.CrearBotonEx(this, L"Cerrar", (RC.right - 70) / 2, RC.bottom - 40, 70, 30, ID_BOTON_CERRAR);
@@ -71,8 +78,8 @@ void VentanaOpcionesRAVE::Crear(void) {
 	const wchar_t *E1 = L"Para usuarios con una colección superior a 100 canciones, es muy recomendable\n"
 						L"agregar uno o mas directorios que contengan dichas canciones para que puedan\n"
 						L"ser analizadas y añadidas a la base de datos.\n\n"
-						L"Con esto el reproductor de generar listas aleatórias por : Genero, Grupo, Disco.\n"
-						L"Además tambien permitirá busquedas avanzadas.";
+						L"Una vez analizadas se podrá generar listas aleatórias por : genero, grupo y disco.\n"
+						L"Además tambien permitirá busquedas avanzadas por etiqueta.";
 	EtiquetaBaseDeDatos1.CrearEtiquetaEx(&MarcoBaseDeDatos, E1, 10, 10, RC.right - 40, 120, ID_ETIQUETA_BASEDEDATOS);
 	// Lista con las raices
 	ListaRaiz.CrearListaRaiz(&MarcoBaseDeDatos, 10, 130, RC.right - 40, 80, ID_LISTARAIZ);
@@ -117,12 +124,23 @@ void VentanaOpcionesRAVE::Crear(void) {
 	MarcaBuscarActualizaciones.CrearMarcaEx(&MarcoGeneral, L"Buscar nuevas actualizaciones al iniciar el reproductor", 10, 255, 380, 20, ID_MARCA_BUSCARACTUALIZACIONES, IDI_CHECK2);
 	MarcaBuscarActualizaciones.Marcado(App.BD.Opciones_BuscarActualizacion());
 	MarcaBuscarActualizaciones.Activado(FALSE);
-	// Etiqueta Tiempo de la animación
+	// Etiquetas Tiempo de la animación
 	EtiquetaTiempoAnimaciones.CrearEtiquetaEx(&MarcoGeneral, L"Duración de las animaciones de los controles", 10, 285, 300, 20, ID_ETIQUETA_TIEMPOANIMACIONES);
-	// Barra para asignar el tiempo de las animaciones
-	BarraTiempoAnimaciones.CrearBarraDesplazamientoEx(&MarcoGeneral, 310, 285, RC.right - 410, 20, ID_BARRA_TIEMPOANIMACION, 100, 1000, static_cast<float>(App.BD.Opciones_TiempoAnimaciones()));
 	std::wstring TmpStr = std::to_wstring(App.BD.Opciones_TiempoAnimaciones()) + L" ms";
-	EtiquetaTiempoAnimacionesTA.CrearEtiquetaEx(&MarcoGeneral, TmpStr.c_str(), RC.right - 90, 285, 60, 20, ID_ETIQUETA_TIEMPOANIMACIONES, DEtiquetaEx_Alineacion_Derecha);
+	EtiquetaTiempoAnimacionesTA.CrearEtiquetaEx(&MarcoGeneral, TmpStr.c_str(), RC.right - 90, 285, 60, 20, ID_ETIQUETA_TIEMPOANIMACIONES2, DEtiquetaEx_Alineacion_Derecha);
+	// Barra para asignar el tiempo de las animaciones
+	BarraTiempoAnimaciones.CrearBarraDesplazamientoEx(&MarcoGeneral, 350, 285, RC.right - 450, 20, ID_BARRA_TIEMPOANIMACION, 100, 1000, static_cast<float>(App.BD.Opciones_TiempoAnimaciones()));
+	// Etiquetas de tiempo para ocultar el tooltip
+	EtiquetaTiempoOcultarToolTips.CrearEtiquetaEx(&MarcoGeneral, L"Duración de los tooltips de la parte inferior derecha", 10, 315, 330, 20, ID_ETIQUETA_TIEMPOTOOLTIP);
+	TmpStr = std::to_wstring(App.BD.Opciones_TiempoToolTips()) + L" ms";
+	EtiquetaTiempoOcultarToolTipsTA.CrearEtiquetaEx(&MarcoGeneral, TmpStr.c_str(), RC.right - 100, 315, 70, 20, ID_ETIQUETA_TIEMPOTOOLTIP2, DEtiquetaEx_Alineacion_Derecha);
+	// Barra para asignar el tiempo de ocultación de los tooltips
+	BarraTiempoToolTips.CrearBarraDesplazamientoEx(&MarcoGeneral, 350, 315, RC.right - 450, 20, ID_BARRA_TIEMPOTOOLTIP, 1000, 10000, static_cast<float>(App.BD.Opciones_TiempoToolTips()));
+
+	///////////////////////////////////////
+	// Creo los controles del marco Listas
+	DesplegableListaInicio.CrearDesplegable(&MarcoListas, 10, 10, 200, 30, ID_DESPLEGABLE_LISTAINICIO, DWL::DDesplegableEx_TipoEdicion_SinEdicion, DWL::DDesplegableEx_TipoDesplegable_Lista);
+	DesplegableListaInicio.Texto(L"Nada");
 
 
 	// Muestro la ventana de las opciones
@@ -139,7 +157,7 @@ void VentanaOpcionesRAVE::AsignarMarco(const INT_PTR Id) {
 	MarcoVideo.Visible(FALSE);
 	BotonBaseDeDatos.Marcado(FALSE);
 	BotonGeneral.Marcado(FALSE);
-	BotonAsociacionesArchivos.Marcado(FALSE);
+//	BotonAsociacionesArchivos.Marcado(FALSE);
 	BotonListas.Marcado(FALSE);
 	BotonVideo.Marcado(FALSE);
 	switch (Id) {
@@ -151,10 +169,10 @@ void VentanaOpcionesRAVE::AsignarMarco(const INT_PTR Id) {
 			MarcoGeneral.Visible(TRUE);
 			BotonGeneral.Marcado(TRUE);
 			break;
-		case ID_BOTON_ASOCIACIONESARCHIVOS:
+/*		case ID_BOTON_ASOCIACIONESARCHIVOS:
 			MarcoAsociacionesArchivos.Visible(TRUE);
 			BotonAsociacionesArchivos.Marcado(TRUE);
-			break;
+			break;*/
 		case ID_BOTON_LISTAS:
 			MarcoListas.Visible(TRUE);
 			BotonListas.Marcado(TRUE);
@@ -272,6 +290,9 @@ void VentanaOpcionesRAVE::Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse) {
 		case ID_BARRA_TIEMPOANIMACION :
 			EtiquetaTiempoAnimacionesTA.Texto(DWL::Strings::ToStrF(BarraTiempoAnimaciones.Valor(), 0) + L" ms");
 			break;
+		case ID_BARRA_TIEMPOTOOLTIP :
+			EtiquetaTiempoOcultarToolTipsTA.Texto(DWL::Strings::ToStrF(BarraTiempoToolTips.Valor(), 0) + L" ms");
+			break;
 	}
 }
 
@@ -281,7 +302,12 @@ void VentanaOpcionesRAVE::Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse)
 			EtiquetaTiempoAnimacionesTA.Texto(DWL::Strings::ToStrF(BarraTiempoAnimaciones.Valor(), 0) + L" ms");
 			App.BD.Opciones_TiempoAnimaciones(static_cast<UINT>(BarraTiempoAnimaciones.Valor()));
 			DhWnd::TiempoAnimaciones = static_cast<DWORD>(BarraTiempoAnimaciones.Valor());			
-			App.MostrarToolTipOpciones(L"La duración de las animaciones se ha ajustado a " + DWL::Strings::ToStrF(BarraTiempoAnimaciones.Valor(), 0) + L" Milisegundos");
+			App.MostrarToolTipOpciones(L"La duración de las animaciones se ha ajustado a " + DWL::Strings::ToStrF(BarraTiempoAnimaciones.Valor(), 0) + L" milisegundos");
+			break;
+		case ID_BARRA_TIEMPOTOOLTIP:
+			EtiquetaTiempoOcultarToolTipsTA.Texto(DWL::Strings::ToStrF(BarraTiempoToolTips.Valor(), 0) + L" ms");
+			App.BD.Opciones_TiempoToolTips(static_cast<UINT>(BarraTiempoToolTips.Valor()));
+			App.MostrarToolTipOpciones(L"La duración de los tooltips se han ajustado a " + DWL::Strings::ToStrF(BarraTiempoToolTips.Valor(), 0) + L" milisegundos");
 			break;
 	}
 }

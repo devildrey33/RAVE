@@ -331,7 +331,8 @@ void RaveVLC::ObtenerDatosParsing(void) {
 			App.MenuPistasDeAudio->Activado(FALSE);
 		}
 
-
+		// Activo / desactivo el menú de la proporción según el tipo de medio (audio / video)
+		App.MenuProporcion->Activado((MedioActual.TipoMedio == Tipo_Medio_Video) ? TRUE : FALSE);
 		// Obtengo el ratio de aspecto
 		std::wstring Proporcion = ObtenerProporcion();
 		for (size_t i = 0; i < App.MenuProporcion->TotalMenus(); i++) {

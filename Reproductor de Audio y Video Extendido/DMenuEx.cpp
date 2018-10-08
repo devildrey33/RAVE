@@ -350,8 +350,8 @@ namespace DWL {
 		SetTextColor(DC, ColTexto);
 		TextOut(DC, bPresionado + DMENUEX_MARGEN_X + DMENUEX_TAMICONO + DMENUEX_MARGEN_X, pMenu->_Recta.top + DMENUEX_MARGEN_Y, pMenu->_Texto.c_str(), static_cast<int>(pMenu->_Texto.size()));
 		
-		// Si el menú tiene submenus
-		if (pMenu->_Menus.size() > 0) {
+		// Si el menú tiene submenus y está activado
+		if (pMenu->_Menus.size() > 0 && pMenu->_Activado == TRUE) {
 			// Pinto el expansor
 			_PintarExpansor(DC, pMenu->_Recta.right - (DMENUEX_TAMICONO + DMENUEX_MARGEN_X), pMenu->_Recta.top + YIcono);
 		}
@@ -426,6 +426,8 @@ namespace DWL {
 
 
 	void DMenuEx::_MostrarSubMenu(HWND hWndDestMsg, DMenuEx *nPadre, const int cX, const int cY, const BOOL AsignarFoco) {
+
+		if (_Activado == FALSE) return;
 
 		if (_hWnd != NULL) return;
 		#if DMENUEX_MOSTRARDEBUG == TRUE

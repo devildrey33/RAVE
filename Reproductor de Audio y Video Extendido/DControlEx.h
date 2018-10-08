@@ -5,15 +5,6 @@
 
 namespace DWL {
 
-	// TODO POR IMPLEMENTAR EN TODOS LOS CONTROLES EXTENDIDOS POSIBLES (DBotonEx y DMarcaEx FIJO)
-	enum DControlEx_Estado {
-		DControlEx_Estado_Normal		= 0,
-		DControlEx_Estado_Resaltado		= 1,
-		DControlEx_Estado_Presionado	= 2,
-		DControlEx_Estado_Desactivado   = 3
-	};
-
-
 	/* Controles de usuario fabricados desde 0 */
 	class DControlEx : public DhWnd {
 	  public:

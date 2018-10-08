@@ -257,6 +257,9 @@ class RaveBD {
 	inline const UINT			Opciones_TiempoAnimaciones(void) { return _Opciones_TiempoAnimaciones; }
 	void						Opciones_TiempoAnimaciones(const UINT nOpciones_TiempoAnimaciones);
 
+	inline const UINT			Opciones_TiempoToolTips(void) { return _Opciones_TiempoToolTips; }
+	void						Opciones_TiempoToolTips(const UINT nOpciones_TiempoToolTips);
+
 
 	DWL::DUnidadesDisco			Unidades;
 
@@ -309,6 +312,7 @@ protected:
 	BOOL					   _Opciones_AnalizarMediosPendientes;	// Analizar medios pendientes al actualizar el arbol de la base de datos
 	BOOL					   _Opciones_BuscarActualizacion;		// Buscar actualizaciones del reproductor al iniciar
 	UINT                       _Opciones_TiempoAnimaciones;			// Duración de las animaciones
+	UINT                       _Opciones_TiempoToolTips;			// Duración de los tooltips informativos de la parte inferior derecha
 	friend class ThreadAnalisis;
 };
 

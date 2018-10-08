@@ -8,6 +8,7 @@
 #include "AsignarTeclaRapida.h"
 #include "ControlSeparador.h"
 #include "DBarraDesplazamientoEx.h"
+#include "DDesplegableEx.h"
 
 class VentanaOpcionesRAVE : public DWL::DVentana {
   public:
@@ -33,7 +34,7 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	DWL::DBotonEx			BotonCerrar;
 
 	DWL::DBotonEx			BotonBaseDeDatos;
-	DWL::DBotonEx			BotonAsociacionesArchivos;
+//	DWL::DBotonEx			BotonAsociacionesArchivos;
 	DWL::DBotonEx			BotonListas;
 	DWL::DBotonEx			BotonGeneral;
 	DWL::DBotonEx			BotonVideo;
@@ -57,9 +58,15 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	AsignarTeclaRapida		TeclasRapidas[6];
 	DWL::DEtiquetaEx		EtiquetasTeclas[6];
 	ControlSeparador	    SeparadorGeneral;
+	DWL::DMarcaEx			MarcaBuscarActualizaciones;
 	DEtiquetaEx			    EtiquetaTiempoAnimaciones;
 	DEtiquetaEx             EtiquetaTiempoAnimacionesTA;
 	DBarraDesplazamientoEx	BarraTiempoAnimaciones;
-	DWL::DMarcaEx			MarcaBuscarActualizaciones;
+	DEtiquetaEx			    EtiquetaTiempoOcultarToolTips;
+	DBarraDesplazamientoEx	BarraTiempoToolTips;
+	DEtiquetaEx			    EtiquetaTiempoOcultarToolTipsTA;
+
+							// Lista
+	DDesplegableEx          DesplegableListaInicio;
 };
 

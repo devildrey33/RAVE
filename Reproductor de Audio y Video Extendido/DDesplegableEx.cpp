@@ -16,8 +16,8 @@ namespace DWL {
 
 
 	HWND DDesplegableEx::CrearDesplegable(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const DDesplegableEx_TipoEdicion nTipoEdicion, const DDesplegableEx_TipoDesplegable nTipoDesplegable) {
-		if (hWnd()) { Debug_Escribir(L"DDesplegableEx::CrearDesplegable() Error : ya se ha creado el control desplegable\n"); return hWnd(); }
-		_hWnd = CrearControlEx(nPadre, L"DDesplegableEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, NULL);  // CS_DBLCLKS (el control recibe notificaciones de doble click)
+//		if (hWnd()) { Debug_Escribir(L"DDesplegableEx::CrearDesplegable() Error : ya se ha creado el control desplegable\n"); return hWnd(); }
+		_hWnd = CrearControlEx(nPadre, L"DDesplegableEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD | WS_VISIBLE, NULL, NULL);  // CS_DBLCLKS (el control recibe notificaciones de doble click)
 		_TipoEdicion		= nTipoEdicion;
 		_TipoDesplegable	= nTipoDesplegable;
 		Fuente				= Fuente18Normal;

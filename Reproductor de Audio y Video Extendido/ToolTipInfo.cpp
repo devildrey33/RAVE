@@ -35,7 +35,7 @@ void ToolTipInfo::Mostrar(const int cX, const int cY, const int cAncho, const in
 	// Situo el padre justo detras de este tooltip
 	SetWindowPos(_Padre->Padre(), _hWnd, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 
-	SetTimer(_hWnd, ID_TEMPORIZADOR_OCULTAR, 5000, NULL);
+	SetTimer(_hWnd, ID_TEMPORIZADOR_OCULTAR, App.BD.Opciones_TiempoToolTips(), NULL);
 
 	Ani.Iniciar(0, 255, App.BD.Opciones_TiempoAnimaciones(), [=](std::vector<float> &Valores, const BOOL Terminado) {
 		Opacidad(static_cast<BYTE>(Valores[0]));

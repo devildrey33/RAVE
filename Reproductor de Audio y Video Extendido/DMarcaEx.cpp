@@ -21,7 +21,7 @@ namespace DWL {
 		_hWnd = CrearControlEx(nPadre, L"DMarcaEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
 		_Texto = nTxt;
 		_Icono = DListaIconos::AgregarIconoRecursos(IDIconoMarca, DMARCAEX_TAMICONO, DMARCAEX_TAMICONO);
-		_MouseDentro = FALSE;
+		_MouseDentro	 = FALSE;
 		_ColorFondo		 = COLOR_FONDO;
 		_ColorTexto		 = COLOR_TEXTO;
 		_ColorFondoMarca = COLOR_FONDO_CLARO;

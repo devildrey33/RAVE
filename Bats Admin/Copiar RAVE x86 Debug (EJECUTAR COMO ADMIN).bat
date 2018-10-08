@@ -1,2 +1,3 @@
-copy "F:\devildrey33\C++\RAVE\Build\x86\Debug\Rave.exe" "c:\Archivos de Programa (x86)\Rave\Rave.exe"
+copy "F:\devildrey33\C++\RAVE\Build\x86\Debug\Rave.exe" "C:\Program Files (x86)\Rave\Rave.exe"
+copy "F:\devildrey33\C++\RAVE\Build\x86\Debug\Rave.exe" "F:\devildrey33\C++\RAVE\VLCx86\Rave.exe"
 pause

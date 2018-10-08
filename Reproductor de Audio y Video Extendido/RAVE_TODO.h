@@ -100,14 +100,14 @@
 		V  Solucionat glitch del DAnimacion al Invertir sense que hagi pasat temps l'animacio (perque el vector de valors no habia estat inicialitzat)
 		V  Solucionat Bug de la rodeta del mouse en pantalla completa que sempre posava el volum a 10%
 		V  Solucionat bug al afegir arxius desde l'explorador que a vegades es liaba a l'hora de reproduir, i feia un pausa quan habia de tancar el medi i posar un de nou a reporduir
-		V  Eliminats events de teclat innecesari (VentanaPrincipal, ArbolBD, ListaMedios) que vaig fer abans de fer el hook global del teclat
-		
+		V  Eliminats events de teclat innecesari (VentanaPrincipal, ArbolBD, ListaMedios) que vaig fer abans de fer el hook global del teclat		
 		V  DAnimacion
 			X Al fer un mouseDown ha d'acabar l'animació a tots els controlEx que tinguin _AniResaltado
 			V O unaltre opció es animar tots els estats (marcat, desmarcat, mousedown, mouseup, resaltat, normal, desactivat)
-
 		V  En la DBarraProgresoEx si el minim no es 0, no es calcula be la posició de la barra en el mouse down.
 		V  S'ha de implementar alineacions per el control DEtiquetaEx (fins ara nomes hi ha esquerra i centrat, falta la cap a la dreta)
+		V  Solucionat bug al DMenuEx que mostrava els menus si el pare estava desactivat
+		V  Ara el menu "Proporción" del video s'activa / desactiva segons si el medi actual es video / audio
 
 		V  Mostrar les opcions en una finestra nova
 			V  Crear control separador (MOLT SIMPLE) com si fos un </ br>
@@ -129,27 +129,30 @@
 						- No m'acaba de molar.. aixo ho ha de fer el instalador.
 					V Velocitat de les animacions
 						V Barra o editbox? si es editbox l'haig de fer desde 0 o desde 0.5 aprofitan un TEXTBOX, també tinc un DEdicionTextoEx però está molt verd... (AMB BARRA)
+					V Duració del tooltip inferior dreta
 				X Assosiacions d'arxiu
 					X Asociacions individuals per cada extensio
 					X Mostrar finestra per preguntar pel reproductor predeterminat
 						X No se si es en win10 o que.. pero si desde l'explorador esculleixes un reproductor, per molt que fagi les asociacions, aquell tipus sembla que no funciona...
 				- Llistes
-					- llista d'inici
+					- llista d'inici 
 						- res
 						- l'ultima llista
 						- etiqueta aleatoria
 						- etiqeuta estil aleatoria
 						- etiqeuta grup aleatoria
 						- etiqeuta disc aleatoria
+						- major nota
 					- Afegir cançons amb menys de 2.5 de nota a llistes aleatories.
 					- No generar llistes amb menys de 3 medis
+					- Sumar 0.1 a la nota dels medis reproduits completament
 				- Video
 					- Tiempo de inactividad para ocultar los controles
 					X Mostrar nombre del video al abrir					
 					- Alineación controles pantalla completa
 						- Inferior (por defecto)
 						- Izquierda
-						- Superiorm 
+						- Superior
 						- Derecha
 						- Donde pase el mouse (puff ja t'ho imagines amb el mousemove... xd buscar una solucio smart)
 					? Fuente por defecto en subtitulos externos ???? molta matuja.. pero es posible que existeixi algo...
@@ -160,19 +163,23 @@
 			- Mostrar directorio
 			- Nota
 			- Eliminar
-			- Propiedades
-		- 
+			- Propiedades (les de l'explorador de moment...)
+		-  Proporción del menu del video ha de tenir una opcio a la BD i que al obrir un medi s'asigni la proporcio seleccionada.
+		-  Sumar 0.1 a la nota un cop reproduit el medi
+		-  Repat lista aleatória
 		-  Crear un nou correu pels dumps... que pugui fer servir per enviar... (de moment encara tinc web .. xd, no corre molta presa)
 		-  Crear instalador (amb lo que tingui el visual studio)
 		-  Teclat per la DListaEx (suprimir, shift, control)
-		-  Drag & drop intern a la DListaEx per moure items (multiselecció incosa)
+		-  Drag & drop intern a la DListaEx per moure items (multiselecció inclosa)
 		
-		-  Anular VentanaAsociarReproductor SENSE ELIMINAR, simplement que no surti sempre, i ja veurem si la liquido del tot en un futur..
+		V  Anular VentanaAsociarReproductor SENSE ELIMINAR, simplement que no surti sempre, i ja veurem si la liquido del tot en un futur..
+			- Amb l'instalador puc posar entrades al registre, aixi que en principi es pot eliminar la VentanaAsociarReproductor i el AsociaciarReproductor (UN COP FACI EL REGISTRE AL INSTALADOR, OFCOURSE...)
 			
 		-  Test básic en win 7 (nova bd, afegir arrels, buscar, analitzar, generar llista aleatoria, i jugar amb la AimatedToolTipParty
+			- Instalar amb els instaladors (x86, x64)
 		
-	RAVE 0.5
-		-  Fer una taula Audio i una Video, i eliminar la taula Medios.... (ANALITZAR)
+	RAVE 0.6
+		-  Fer una taula Audio i una Video, i eliminar la taula Medios.... (ANALITZAR IDEA..)
 			- La idea es tenir les opcions suficients per posarles en un arbre (OJU que aixo es un canvi drástic i que a l'hora podria ordenar molt mes tot el projecte, inclus podria suposar crear una taula d'audio u una video separades i no com ara que els dos son un medio)
 				- o inclus crear una taula medios global amb un tipo (audio / video / lista / cdaudio), i despres crear una taula per cada un d'ells amb una id
 			-  Dividir Base de Datos en : Mi música , i Mis Videos, en 2 butons i en 2 arbres diferents
@@ -180,9 +187,8 @@
 
 
 		- Buscar actualitzacións
-		-  Crear Icona Buscar en l'arbre de la BD adal a la dreta
-	RAVE 0.6
-		- Posar icones en el thumbnail de la barra d'inici..
+		- Crear Icona Buscar en l'arbre de la BD adal a la dreta
+		V Posar icones en el thumbnail de la barra d'inici..
 		- Finestra de propietats per un medi o una etiqueta
 		- Mostrar la llista de medis al reproduir un medi de forma "diferent", per exemple una liista translucida reduida (pensa que aixó nomes pasara si el reproductor no está maximitzat i está reproduint video)
 		- Si la llista / BD (autio/video) está buida mostrar un icona que inciti a arrosegar un arxiu / directori
