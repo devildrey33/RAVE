@@ -12,7 +12,7 @@ namespace DWL {
 	public:
 									DVentana(void) : DhWnd() { }
 		                           ~DVentana(void) { }
-									// Función para crear una ventana																																																	  /* NO SE UTILIZA */								
+									// Función para crear una ventana																																																	  							
 		HWND						CrearVentana(DhWnd *nPadre, const TCHAR *nNombre, const TCHAR *nTexto, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos = NULL, UINT nEstilosClase = NULL, HMENU nMenu = NULL, HBRUSH nColorFondo = NULL, const int nIconoRecursos = 32512);
 
 		void						Titulo(std::wstring &nTitulo);

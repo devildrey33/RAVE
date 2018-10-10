@@ -2,10 +2,11 @@
 #define DMENUEX_H
 
 #include "DVentana.h"
+#include "DBarraDesplazamientoEx.h"
 
 namespace DWL {
 
-	#define DMENUEX_MOSTRARDEBUG	FALSE
+	#define DMENUEX_MOSTRARDEBUG	TRUE
 
 	#define DMENUEX_TAMICONO  16	// Tamaño de los iconos
 	#define DMENUEX_MARGEN_X   6	// Margen horizontal para el texto
@@ -15,7 +16,8 @@ namespace DWL {
 	enum DMenuEx_Tipo {
 		DMenuEx_Tipo_Raiz      = 0,
 		DMenuEx_Tipo_Texto     = 1,
-		DMenuEx_Tipo_Separador = 2
+		DMenuEx_Tipo_Barra     = 2,
+		DMenuEx_Tipo_Separador = 3
 	};
 
 	enum DMenuEx_Estado {
@@ -26,7 +28,7 @@ namespace DWL {
 	};
 
 	#define DMENUEX_TAMICONO				16 // Tamaño del icono
-
+	#define DMENUEX_ANCHOBARRA             100 // Ancho de las barras
 	#define WM_ESMENUEX						WM_USER + 500
 
 	class DMenuEx : protected DWL::DVentana {
@@ -37,6 +39,7 @@ namespace DWL {
 		DMenuEx                *AgregarMenu(const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos = NULL, const int Posicion = -1, const BOOL nActivado = TRUE);
 		inline DMenuEx         *AgregarMenu(const INT_PTR nID, std::wstring &nTexto, const INT_PTR nIconoRecursos = NULL, const int Posicion = -1, const BOOL nActivado = TRUE) { return AgregarMenu(nID, nTexto.c_str(), nIconoRecursos, Posicion, nActivado); };
 		DMenuEx				   *AgregarSeparador(const INT_PTR uID = 0, const int Posicion = -1);
+		DMenuEx                *AgregarBarra(const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos = NULL, const float nMinimo = 0.0f, const float nMaximo = 1.0f, const float nValor = 0.0f, const int Posicion = -1, const BOOL nActivado = TRUE);
 
 								// Función que muestra el Menú en el bucle principal de la aplicación y espera su respuesta en un WM_COMMAND (NO DEVUELVE EL MENÚ PRESIONADO)
 		void					Mostrar(DhWnd *nPadre, const int PosX, const int PosY);
@@ -82,12 +85,14 @@ namespace DWL {
 		void                    Pintar(HDC hDC);		
 
 		void					Terminar(void);
-		// Función para calcular el tamaño de los menus.
+								// Función para calcular el tamaño de los menus.
 		const POINT			    CalcularEspacio(void);
 
 		const BOOL				Visible(void);
 
 	  protected:
+								// Constructor menú tipo texto (interno AgregarBarra)
+								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado, const float nMinimo, const float nMaximo, const float nValor);
 								// Constructor menú tipo texto (interno AgregarMenu)
 								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos = 0, const BOOL nActivado = TRUE);
 								// Constructor menú tipo separador (interno AgregarSeparador)
@@ -104,15 +109,18 @@ namespace DWL {
 		void                   _PintarExpansor(HDC DC, const int eX, const int eY);
 								// Eventos internos
 		void                   _Evento_Pintar(void);
-		void                   _Evento_PintarNC(HRGN Region);
+//		void                   _Evento_PintarNC(HRGN Region);
 		void				   _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
 		void				   _Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam);
 		void				   _Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam);
-/*		void                   _Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam);
+		void				   _Evento_MouseSaliendo(void);
+		void                   _Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam);
 		void                   _Evento_TeclaSoltada(WPARAM wParam, LPARAM lParam);
-		void				   _Evento_Tecla(WPARAM wParam, LPARAM lParam);*/
+		void				   _Evento_Tecla(WPARAM wParam, LPARAM lParam);
 		void                   _Evento_FocoPerdido(HWND UltimoFoco);
-		void				   _Evento_MouseDobleClick(const int Boton, WPARAM wParam, LPARAM lParam);
+		void                   _Evento_FocoObtenido(HWND UltimoFoco);
+		void				   _Evento_BarraEx_Cambio(DEventoMouse &DatosMouse);
+		void				   _Evento_BarraEx_Cambiado(DEventoMouse &DatosMouse);
 
 		RECT                   _Recta;
 
@@ -132,7 +140,10 @@ namespace DWL {
 		static HWND            _hWndDest;  // Destino para los mensajes
 //		HWND                   _hWndPadre; // Ventana padre que contiene el hWndDest;
 
-		BOOL				   _AnularMouseMove;
+		DBarraDesplazamientoEx _Barra;
+		int                    _BarraPosX;
+
+//		BOOL				   _AnularMouseMove;
 								// Menu resultado para la función MostrarModal
 		static DMenuEx        *_ResultadoModal;
 	};

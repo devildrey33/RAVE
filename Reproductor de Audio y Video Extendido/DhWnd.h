@@ -23,8 +23,8 @@ namespace DWL {
 	// - Está costruida de forma que solo se puede asignar el miembro _hWmd internamente.
 	class DhWnd {
 	  public:
-									DhWnd(void) : _hWnd(0)			{ IniciarMiembrosEstaticos(); };
-									DhWnd(HWND hWnd) : _hWnd(hWnd)	{ };
+									DhWnd(void)		 : _hWnd(0)		, _MouseDentro(FALSE) { IniciarMiembrosEstaticos(); };
+									DhWnd(HWND hWnd) : _hWnd(hWnd)	, _MouseDentro(FALSE) { };
                                    ~DhWnd(void)						{ Destruir(); };
 		inline HWND					hWnd(void)						{ return _hWnd; };
 		inline virtual void			Activado(const BOOL nActivar)   { EnableWindow(_hWnd, nActivar); };
@@ -40,11 +40,11 @@ namespace DWL {
 		inline const BOOL			Visible(void)                   { return IsWindowVisible(_hWnd); };
 
 		inline void					BorrarBufferTeclado(void)		{ for (size_t i = 0; i < 256; i++) Teclado[i] = false; }
-		ATOM						RegistrarClase(const TCHAR *nNombre, WNDPROC WindowProcedureInicial, UINT Estilos = 0, const int nIconoRecursos = 0 ,HBRUSH nColorFondo = NULL, HINSTANCE hInstance = NULL);
 		void						IniciarMiembrosEstaticos(void);
 									// Repinta la ventana
 		inline virtual void			Repintar(void)					{ RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT); };
 
+		ATOM						RegistrarClase(const TCHAR *nNombre, WNDPROC WindowProcedureInicial, UINT Estilos = 0, const int nIconoRecursos = 0, HBRUSH nColorFondo = NULL, HINSTANCE hInstance = NULL);
 									// Debe utilizarse una sola vez al terminar la apliación
 		static void                 EliminarFuentesEstaticas();
 
@@ -59,8 +59,9 @@ namespace DWL {
 		static DWORD                TiempoAnimaciones;
 
 	  protected:
+		const BOOL                 _MouseEntrando(void);
 		HWND                       _hWnd;
-
+		BOOL                       _MouseDentro;
 
 		//		static HFONT       _FuenteB;
 

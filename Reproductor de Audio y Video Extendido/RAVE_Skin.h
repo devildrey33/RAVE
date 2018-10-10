@@ -14,7 +14,7 @@
 
 // Colores básicos para las ventanas y los controles
 #define COLOR_FONDO									RGB( 31,  29,  34)
-#define COLOR_FONDO_RESALTADO						RGB( 46,  44,  49)
+#define COLOR_FONDO_RESALTADO						RGB( 86,  84,  89)
 #define COLOR_FONDO_PRESIONADO						RGB( 11,   9,  14)
 #define COLOR_FONDO_CLARO							RGB(240, 240, 240)
 #define COLOR_FONDO_CLARO_RESALTADO					RGB(255, 255, 255)
@@ -31,7 +31,7 @@
 #define COLOR_TEXTO_DESACTIVADO						RGB(100, 100, 100) //RGB(255, 255, 255)
 
 
-#define COLOR_BORDE_POPUP                           RGB(255, 255, 255)
+#define COLOR_BORDE_POPUP                           RGB(150, 150, 150)
 
  
 /*
@@ -201,10 +201,10 @@ ______    _ _      _          _______        _        ______
 */                                      
 
 #define COLOR_MENU_BORDE                            COLOR_BORDE_POPUP
-#define COLOR_MENU_SEPARADOR                        RGB(150, 150, 150)
+#define COLOR_MENU_SEPARADOR                        COLOR_BORDE_POPUP
 #define COLOR_MENU_FONDO							COLOR_FONDO
-#define COLOR_MENU_FONDO_RESALTADO					COLOR_ROJO_RESALTADO
-#define COLOR_MENU_FONDO_PRESIONADO					COLOR_ROJO_PRESIONADO
+#define COLOR_MENU_FONDO_RESALTADO					COLOR_FONDO_RESALTADO
+#define COLOR_MENU_FONDO_PRESIONADO					COLOR_FONDO_PRESIONADO
 #define COLOR_MENU_TEXTO							COLOR_TEXTO
 #define COLOR_MENU_TEXTO_SOMBRA						COLOR_TEXTO_SOMBRA
 #define COLOR_MENU_TEXTO_RESALTADO					COLOR_TEXTO_RESALTADO

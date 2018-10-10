@@ -61,6 +61,16 @@ const BOOL RaveVLC::Iniciar(void) {
 	Debug_Escribir_Varg(L"RaveVLC::Iniciar Cargado en %d MS, Version = '%s' \n", GetTickCount() - t, StrVersion.c_str());
 
 	Precarga.Destruir();
+
+
+
+	libvlc_module_description_t *LA = libvlc_audio_filter_list_get(_Instancia);
+	libvlc_module_description_t *LV = libvlc_video_filter_list_get(_Instancia);
+	
+	libvlc_module_description_list_release(LA);
+	libvlc_module_description_list_release(LV);
+
+
 	return TRUE;
 }
 
@@ -73,6 +83,7 @@ void RaveVLC::audio_postrendercb(void* data, unsigned char* buffer, unsigned int
 
 
 void RaveVLC::Terminar(void) {
+	Debug_Escribir(L"RaveVLC::Terminar\n");
 	if (_Log != NULL) {
 		libvlc_log_close(_Log);
 		_Log = NULL;
@@ -87,7 +98,7 @@ void RaveVLC::Terminar(void) {
 		_Instancia = NULL;
 	}
 	hWndVLC = NULL;
-	Debug_Escribir(L"RaveVLC::Terminar\n");
+	Debug_Escribir(L"RaveVLC::Terminar TERMINADO\n");
 }
 
 /*
@@ -139,6 +150,8 @@ const BOOL RaveVLC::AbrirMedio(BDMedio &Medio) {
 	// Desactiva los eventos del mouse y del teclado dentro de la ventana del vlc 
 	libvlc_video_set_mouse_input(_MediaPlayer, false);
 	libvlc_video_set_key_input(_MediaPlayer, false);
+
+//	libvlc_add_option();
 
 	Volumen(static_cast<int>(App.VentanaRave.SliderVolumen.Valor()));
 
@@ -516,4 +529,38 @@ BOOL CALLBACK RaveVLC::EnumeracionVLC(HWND hWndWnd, LPARAM lParam) {
 	App.VLC.hWndVLC = hWndWnd;
 //	EnableWindow(hWndWnd, FALSE);
 	return FALSE;
+}
+
+
+	 
+void RaveVLC::Brillo(const float nBrillo) {
+	if (_MediaPlayer == NULL) return;
+
+	Debug_Escribir_Varg(L"RaveVLC::Brillo %02f\n", nBrillo);
+	libvlc_video_set_adjust_int(_MediaPlayer, libvlc_adjust_Enable, 1);
+	libvlc_video_set_adjust_float(_MediaPlayer, libvlc_adjust_Brightness, nBrillo);
+}
+
+void RaveVLC::Contraste(const float nContraste) {
+	if (_MediaPlayer == NULL) return;
+	libvlc_video_set_adjust_int(_MediaPlayer, libvlc_adjust_Enable, 1);
+	libvlc_video_set_adjust_float(_MediaPlayer, libvlc_adjust_Contrast, nContraste);
+}
+
+void RaveVLC::Gamma(const float nGamma) {
+	if (_MediaPlayer == NULL) return;
+	libvlc_video_set_adjust_int(_MediaPlayer, libvlc_adjust_Enable, 1);
+	libvlc_video_set_adjust_float(_MediaPlayer, libvlc_adjust_Gamma, nGamma);
+}
+
+void RaveVLC::Hue(const int nHue) {
+	if (_MediaPlayer == NULL) return;
+	libvlc_video_set_adjust_int(_MediaPlayer, libvlc_adjust_Enable, 1);
+	libvlc_video_set_adjust_int(_MediaPlayer, libvlc_adjust_Hue, nHue);
+}
+
+void RaveVLC::Saturacion(const float nSaturacion) {
+	if (_MediaPlayer == NULL) return;
+	libvlc_video_set_adjust_int(_MediaPlayer, libvlc_adjust_Enable, 1);
+	libvlc_video_set_adjust_float(_MediaPlayer, libvlc_adjust_Saturation, nSaturacion);
 }

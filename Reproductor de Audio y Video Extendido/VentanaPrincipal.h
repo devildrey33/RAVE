@@ -3,6 +3,7 @@
 #include "ArbolBD.h"
 #include "ListaMedios.h"
 #include "DMenuEx.h"
+//#include "DMenuEx2.h"
 #include "VerVideo.h"
 #include "MarcoControles.h"
 //#include "MarcoOpciones.h"
@@ -29,7 +30,7 @@ class VentanaPrincipal : public DWL::DVentana {
 /*	void						AgregarRaiz(void);
 	void						EliminarRaiz(std::wstring &Path);*/
 
-	void						Evento_MenuEx_Click(const UINT cID);
+	void						Evento_MenuEx_Click(const UINT cID, const float ValorBarra);
 	void						Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse);
 	void                        Evento_BotonEx_Mouse_Presionado(DWL::DEventoMouse &DatosMouse);
 	void                        Evento_BotonEx_Mouse_Soltado(DWL::DEventoMouse &DatosMouse);

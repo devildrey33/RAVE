@@ -109,6 +109,10 @@
 		V  Solucionat bug al DMenuEx que mostrava els menus si el pare estava desactivat
 		V  Ara el menu "Proporción" del video s'activa / desactiva segons si el medi actual es video / audio
 
+		V  Crear un DMenuEx amb una barra de desplaçament per la nota i el brillo.
+			V He tingut que tornar al model SetFocus, però sense el SetCapture, (nomes es fa el SetCapture al presionar el buto del mouse)
+				V No sembla que faci el deadlock com abans, igual es per que ara retorno TRUE en el WM_NCACTIVATE
+
 		V  Mostrar les opcions en una finestra nova
 			V  Crear control separador (MOLT SIMPLE) com si fos un </ br>
 			-  Afegir opcions : 

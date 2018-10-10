@@ -50,6 +50,7 @@ const BOOL RaveBD::Iniciar(void) {
 
 // Cierra la Base de datos
 void RaveBD::Terminar(void) {
+	Debug_Escribir(L"RaveBD::Terminar\n");
 	sqlite3_close_v2(_BD);
 	_BD = NULL;
 }

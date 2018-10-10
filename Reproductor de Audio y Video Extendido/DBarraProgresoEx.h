@@ -8,6 +8,9 @@ namespace DWL {
 
 	#define DBARRAEX_DEBUG FALSE
 
+	class DMenuEx;
+	class DMenuEx2;
+
 	enum DBarraEx_Estado {
 		DBarraEx_Estado_Normal,
 		DBarraEx_Estado_Resaltado,
@@ -25,7 +28,7 @@ namespace DWL {
 	  public:
 									DBarraProgresoEx();
 							       ~DBarraProgresoEx();
-		HWND						CrearBarraProgresoEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const float nMinimo = 0.0f, const float nMaximo = 1.0f, const float nValor = 0.0);
+		HWND						CrearBarraProgresoEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID, const float nMinimo = 0.0f, const float nMaximo = 1.0f, const float nValor = 0.0);
 
 		void						Minimo(const float nMinimo);
 		inline const float			Minimo(void)					{ return _Minimo; }
@@ -58,6 +61,10 @@ namespace DWL {
 		DBarraEx_Estado			   _Estado;
 		DAnimacionColor            _AniTransicion;
 
+		friend class DMenuEx;
+		friend class DMenuEx2;
 	};	
+
+
 }
 #endif

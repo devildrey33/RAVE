@@ -8,7 +8,7 @@ namespace DWL {
 	/* Controles de usuario fabricados desde 0 */
 	class DControlEx : public DhWnd {
 	  public:
-									DControlEx(void) : _MouseDentro(FALSE), DhWnd() { }
+									DControlEx(void) : DhWnd() { }
 		                           ~DControlEx(void) { }
 
 		HWND						CrearControlEx(DhWnd *nPadre, const TCHAR *nNombre, const TCHAR *nTexto, const INT_PTR cID, const int cX, const int cY, const int cAncho, const int cAlto, DWORD nEstilos, DWORD nEstilosExtendidos, UINT nEstilosClase = NULL, HBRUSH nColorFondo = NULL);
@@ -22,9 +22,9 @@ namespace DWL {
 		void					   _ConectarControl(const UINT nID, DhWnd *nPadre);
 		static LRESULT CALLBACK    _GestorMensajes(HWND HandleVentana, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-		const BOOL                 _MouseEntrando(void);
+//		const BOOL                 _MouseEntrando(void);
 		//! Valor que determina si el mouse esta dentro del control
-		BOOL                       _MouseDentro;
+//		BOOL                       _MouseDentro;
 //		DControlEx_Estado          _Estado;
 
 	};

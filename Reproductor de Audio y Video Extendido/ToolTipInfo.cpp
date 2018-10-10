@@ -172,7 +172,7 @@ LRESULT CALLBACK ToolTipInfo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lP
 			}
 			return 0;
 			// Evita que al obtener el foco cambie la parte del caption
-		case WM_NCACTIVATE	:																																				return FALSE;
+		case WM_NCACTIVATE	:																																				return TRUE;
 	}
 	return DVentana::GestorMensajes(uMsg, wParam, lParam);
 }

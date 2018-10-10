@@ -87,7 +87,7 @@ LRESULT CALLBACK VentanaPrecarga::GestorMensajes(UINT uMsg, WPARAM wParam, LPARA
 			return 0;
 		// Evita que al obtener el foco cambie la parte del caption
 		case WM_NCACTIVATE:																					
-			return 0;
+			return TRUE;
 	}
 	return DVentana::GestorMensajes(uMsg, wParam, lParam);
 }

@@ -47,7 +47,7 @@ namespace DWL {
 
 	/* Devuleve TRUE si el mouse acaba de entrar en el área del control, FALSE si está fuera o ya estaba dentro del área del control */
 	/* De esta forma se simula el mensaje WM_MOUSEENTER */
-	const BOOL DControlEx::_MouseEntrando(void) {
+/*	const BOOL DControlEx::_MouseEntrando(void) {
 		if (_MouseDentro == FALSE) {
 			TRACKMOUSEEVENT Trk;
 			Trk.cbSize = sizeof(TRACKMOUSEEVENT);
@@ -58,7 +58,7 @@ namespace DWL {
 			return TRUE;
 		}
 		return FALSE;
-	};
+	};*/
 
 	LRESULT CALLBACK DControlEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {

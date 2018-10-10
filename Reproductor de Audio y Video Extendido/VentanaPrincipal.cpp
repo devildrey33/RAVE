@@ -404,22 +404,64 @@ void VentanaPrincipal::GenerarListaAleatoria(const TipoListaAleatoria nTipo) {
 	App.VentanaRave.Lista_Play();
 }
 
-void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
+void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID, const float ValorBarra) {
 	switch (cID) {
-		case ID_MENUBOTONLISTA_GENERAR			:	GenerarListaAleatoria();				break;
-		case ID_MENUBOTONLISTA_GENERAR_GENERO	:	GenerarListaAleatoria(TLA_Genero);		break;
-		case ID_MENUBOTONLISTA_GENERAR_GRUPO	:	GenerarListaAleatoria(TLA_Grupo);		break;
-		case ID_MENUBOTONLISTA_GENERAR_DISCO	:	GenerarListaAleatoria(TLA_Disco);		break;
-		case ID_MENUBOTONLISTA_GENERAR_50MEDIOS	:	GenerarListaAleatoria(TLA_50Medios);	break;
+		case ID_MENUBOTONLISTA_GENERAR			:	GenerarListaAleatoria();				return;
+		case ID_MENUBOTONLISTA_GENERAR_GENERO	:	GenerarListaAleatoria(TLA_Genero);		return;
+		case ID_MENUBOTONLISTA_GENERAR_GRUPO	:	GenerarListaAleatoria(TLA_Grupo);		return;
+		case ID_MENUBOTONLISTA_GENERAR_DISCO	:	GenerarListaAleatoria(TLA_Disco);		return;
+		case ID_MENUBOTONLISTA_GENERAR_50MEDIOS	:	GenerarListaAleatoria(TLA_50Medios);	return;
 		case ID_MENUBOTONLISTA_BORRAR			:	
 			Lista.BorrarListaReproduccion();					
 			App.MostrarToolTipPlayer(L"Lista de reproducción borrada.");
-			break;
+			return;
 		// Id's de los botones de la barra de tareas
-		case ID_BOTON_PLAY						:	Lista_Play();							break;
-		case ID_BOTON_STOP						:	Lista_Stop();							break;
-		case ID_BOTON_SIGUIENTE					:	Lista_Siguiente();						break;
-		case ID_BOTON_ANTERIOR					:	Lista_Anterior();						break;
+		case ID_BOTON_PLAY						:	Lista_Play();							return;
+		case ID_BOTON_STOP						:	Lista_Stop();							return;
+		case ID_BOTON_SIGUIENTE					:	Lista_Siguiente();						return;
+		case ID_BOTON_ANTERIOR					:	Lista_Anterior();						return;
+	}
+
+
+	// Pistas de audio
+	if (cID >= ID_MENUVIDEO_AUDIO_PISTAS_AUDIO && cID < ID_MENUVIDEO_AUDIO_PISTAS_AUDIO_FIN) {
+		// Des-marco todas las pistas de audio
+		for (size_t i = 0; i < App.MenuPistasDeAudio->TotalMenus(); i++) {
+			App.MenuPistasDeAudio->Menu(i)->Icono(0);
+		}
+		// Marco la pista de audio actual (si existe, ... que debería)
+		DMenuEx *MenuClick = App.MenuPistasDeAudio->BuscarMenu(cID);
+		if (MenuClick != NULL) MenuClick->Icono(IDI_CHECK2);
+
+		App.VLC.AsignarPistaAudio(cID - ID_MENUVIDEO_AUDIO_PISTAS_AUDIO);
+		return;
+	}
+
+
+	// Proporción
+	if (cID >= ID_MENUVIDEO_PROPORCION_PREDETERMINADO && cID < ID_MENUVIDEO_PROPORCION_5A4 + 1) {
+		// Des-marco todas las porporciones
+		for (size_t i = 0; i < App.MenuProporcion->TotalMenus(); i++) {
+			App.MenuProporcion->Menu(i)->Icono(0);
+		}
+		switch (cID) {
+			case ID_MENUVIDEO_PROPORCION_PREDETERMINADO	: App.VLC.AsignarProporcion(NULL);			break;
+			case ID_MENUVIDEO_PROPORCION_16A9			: App.VLC.AsignarProporcion("16:9");		break;
+			case ID_MENUVIDEO_PROPORCION_4A3			: App.VLC.AsignarProporcion("4:3");			break;
+			case ID_MENUVIDEO_PROPORCION_1A1			: App.VLC.AsignarProporcion("1:!");			break;
+			case ID_MENUVIDEO_PROPORCION_16A10			: App.VLC.AsignarProporcion("16:10");		break;
+			case ID_MENUVIDEO_PROPORCION_2P21A1			: App.VLC.AsignarProporcion("2.21:1");		break;
+			case ID_MENUVIDEO_PROPORCION_2P35A1			: App.VLC.AsignarProporcion("2.35:1");		break;
+			case ID_MENUVIDEO_PROPORCION_2P39A1			: App.VLC.AsignarProporcion("2.39:1");		break;
+			case ID_MENUVIDEO_PROPORCION_5A4			: App.VLC.AsignarProporcion("5:4");			break;
+		}
+
+		App.MenuProporcion->Menu(cID - ID_MENUVIDEO_PROPORCION_PREDETERMINADO)->Icono(IDI_CHECK2);
+		return;
+	}
+
+	if (cID == ID_MENUVIDEO_BRILLO) {
+		App.VLC.Brillo(ValorBarra);
 	}
 }
 
@@ -1058,7 +1100,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			return 0;
 		case WM_COMMAND :
 			Debug_Escribir_Varg(L"WM_COMMAND %d, %d\n", HIWORD(wParam), LOWORD(wParam));
-			Evento_MenuEx_Click(LOWORD(wParam));
+			Evento_MenuEx_Click(LOWORD(wParam), static_cast<float>(lParam) / 100.0f);
 			return 0;
 		case WM_EXITSIZEMOVE  :
 			if (App.VentanaRave.Maximizada() == FALSE) {

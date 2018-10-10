@@ -277,7 +277,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_5A4									, L"5:4");
 	MenuProporcion->Activado(FALSE);
 	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_SUBTITULOS								, L"Subtitulos");
-
+	VentanaRave.Menu_Video.AgregarBarra(ID_MENUVIDEO_BRILLO									, L"Brillo", NULL, 0.0f, 2.0f, 1.0f);
 
 	// Ventana principal
 	VentanaRave.Crear(nCmdShow);
@@ -294,6 +294,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 
 void RAVE::Terminar(void) {
 	BD.Terminar();
+	VLC.Terminar();
 
 	if (PlayerInicial == TRUE) {
 		SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, TRUE, NULL, TRUE); // activo el protector de pantalla
@@ -304,7 +305,7 @@ void RAVE::Terminar(void) {
 //	Gdiplus::GdiplusShutdown(_gdiplusToken);
 
 	DhWnd::EliminarFuentesEstaticas();
-
+	Debug_Escribir(L"Rave::Terminar\n");
 }
 
 

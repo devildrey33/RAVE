@@ -312,9 +312,9 @@ namespace DWL {
 			case WM_SETFOCUS:		BorrarBufferTeclado();																														return 0;
 			case WM_KILLFOCUS:		BorrarBufferTeclado();																														return 0;
 
-			case WM_KEYDOWN:		_Evento_TeclaPresionada(wParam, lParam);																									return 0;
-			case WM_KEYUP:			_Evento_TeclaSoltada(wParam, lParam);																										return 0;
-			case WM_CHAR: 			_Evento_Tecla(wParam, lParam);																												return 0;
+			case WM_KEYDOWN:		_Evento_TeclaPresionada(wParam, lParam);																									break;
+			case WM_KEYUP:			_Evento_TeclaSoltada(wParam, lParam);																										break;
+			case WM_CHAR: 			_Evento_Tecla(wParam, lParam);																												break;
 							
 			case WM_SIZE:			Repintar();																																	return 0;
 

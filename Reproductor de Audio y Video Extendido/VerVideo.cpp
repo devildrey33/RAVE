@@ -16,7 +16,7 @@ HWND VerVideo::Crear(DhWnd *Padre, const int cX, const int cY, const int cAncho,
 	return DControlEx::CrearControlEx(Padre, L"VerVideo", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, CS_DBLCLKS /*| CS_VREDRAW | CS_HREDRAW */);
 }
 
-
+/*
 void VerVideo::Evento_MenuEx_Click(const UINT cID) {
 	// Pistas de audio
 	if (cID >= ID_MENUVIDEO_AUDIO_PISTAS_AUDIO && cID < ID_MENUVIDEO_AUDIO_PISTAS_AUDIO_FIN) {
@@ -53,7 +53,13 @@ void VerVideo::Evento_MenuEx_Click(const UINT cID) {
 
 		App.MenuProporcion->Menu(cID - ID_MENUVIDEO_PROPORCION_PREDETERMINADO)->Icono(IDI_CHECK2);
 	}
-}
+
+	if (cID == ID_MENUVIDEO_BRILLO) {
+//		App.VLC.Hue(200);
+//		App.VLC.Saturacion(1.0);
+//		App.VLC.Saturacion(1.0);
+	}
+}*/
 
 void VerVideo::_Evento_MouseRueda(WPARAM wParam, LPARAM lParam) {
 	DEventoMouseRueda DatosMouse(wParam, lParam, this);
@@ -68,9 +74,9 @@ void VerVideo::_Evento_MouseRueda(WPARAM wParam, LPARAM lParam) {
 LRESULT CALLBACK VerVideo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	static POINT nPos = { 0 , 0 };
 	switch (uMsg) {
-		case WM_COMMAND:
+/*		case WM_COMMAND:
 			Evento_MenuEx_Click(LOWORD(wParam));
-			return 0;
+			return 0;*/
 
 /*		case WM_ERASEBKGND :
 			return 1;*/
@@ -103,7 +109,7 @@ LRESULT CALLBACK VerVideo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lPara
 			App.VentanaRave.PantallaCompleta(!App.VentanaRave.PantallaCompleta());
 			return 0;
 		case WM_RBUTTONUP:
-			App.VentanaRave.Menu_Video.Mostrar(this);
+			App.VentanaRave.Menu_Video.Mostrar(&App.VentanaRave);
 			return 0;
 /*		case WM_KEYUP:
 			if (wParam == VK_ESCAPE) {
