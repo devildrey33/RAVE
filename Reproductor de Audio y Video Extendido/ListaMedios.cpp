@@ -134,6 +134,10 @@ void ListaMedios::Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse) {
 }
 
 
+void ListaMedios::Evento_MouseSaliendo(void) {
+	_ToolTip.Destruir();
+}
+
 // 	Función que mezcla las canciones de la lista (TRUE), o restaura el orden original en que se añadieron (FALSE)
 const BOOL ListaMedios::Mezclar(const BOOL nMezclar) {
 	size_t	i	= 0;

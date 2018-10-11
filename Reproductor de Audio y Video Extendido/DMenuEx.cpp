@@ -7,7 +7,7 @@
 namespace DWL {
 
 	DMenuEx *DMenuEx::_ResultadoModal	= NULL;
-	HWND	 DMenuEx::_hWndDest			= NULL;
+	DhWnd	*DMenuEx::_hWndDest			= NULL;
 
 
 	DMenuEx::DMenuEx(void) : DWL::DVentana(), _Padre(NULL), _Tipo(DMenuEx_Tipo_Raiz), _ID(0), _Activado(TRUE), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL) /*, _AnularMouseMove(NULL)*/ {
@@ -15,18 +15,18 @@ namespace DWL {
 	}
 
 	// Constructor menú tipo separador (interno AgregarSeparador)
-	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const INT_PTR nID) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Separador), _ID(nID), _MenuResaltado(NULL), _MenuPresionado(NULL), _Activado(TRUE), _MenuDesplegado(NULL)/*, _AnularMouseMove(NULL) */ {
+	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Separador), _ID(nID), _MenuResaltado(NULL), _MenuPresionado(NULL), _Activado(TRUE), _MenuDesplegado(NULL)/*, _AnularMouseMove(NULL) */ {
 		_Recta = { 0, 0, 0, 0 };
 	}
 
 	// Constructor menú tipo texto (interno AgregarMenu)
-	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Texto), _ID(nID), _Texto(nTexto), _Activado(nActivado), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL)/* , _AnularMouseMove(NULL) */ {
+	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Texto), _ID(nID), _Texto(nTexto), _Activado(nActivado), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL)/* , _AnularMouseMove(NULL) */ {
 		_Recta = { 0, 0, 0, 0 };
 		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DMENUEX_TAMICONO, DMENUEX_TAMICONO);
 	}
 
 	// Constructor menú tipo texto (interno AgregarBarra)
-	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado, const float nMinimo, const float nMaximo, const float nValor) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Barra), _ID(nID), _Texto(nTexto), _Activado(nActivado), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL)/* , _AnularMouseMove(NULL) */ {
+	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado, const float nMinimo, const float nMaximo, const float nValor) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Barra), _ID(nID), _Texto(nTexto), _Activado(nActivado), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL)/* , _AnularMouseMove(NULL) */ {
 		_Recta = { 0, 0, 0, 0 };
 		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DMENUEX_TAMICONO, DMENUEX_TAMICONO);
 		_Barra._Minimo = nMinimo;
@@ -82,9 +82,9 @@ namespace DWL {
 		// Calculo el tamaño que necesitará el menú
 		POINT Tam = CalcularEspacio();
 		// Guardo el hWnd de la ventana que ha llamado al menú
-		_hWndDest = nPadre->hWnd();
+		_hWndDest = nPadre;
 		if (_hWnd == NULL) {
-			CrearVentana(nPadre, L"DMenuEx", L"", PosX, PosY, Tam.x, Tam.y, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST, CS_DBLCLKS);
+			CrearVentana(_hWndDest, L"DMenuEx", L"", PosX, PosY, Tam.x, Tam.y, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST, CS_DBLCLKS);
 
 			DMouse::CambiarCursor();
 			Opacidad(230);
@@ -97,7 +97,8 @@ namespace DWL {
 			// Creo las barras (si ahy alguna)
 			for (size_t i = 0; i < _Menus.size(); i++) {
 				if (_Menus[i]->_Tipo == DMenuEx_Tipo_Barra) {
-					_Menus[i]->_Barra.CrearBarraDesplazamientoEx(this, _BarraPosX, _Menus[i]->_Recta.top + DMENUEX_MARGEN_Y, DMENUEX_ANCHOBARRA, (_Menus[i]->_Recta.bottom - _Menus[i]->_Recta.top) - (DMENUEX_MARGEN_Y * 2), _Menus[i]->_ID, _Menus[i]->_Barra._Minimo, _Menus[i]->_Barra._Maximo, _Menus[i]->_Barra._Valor);
+					_Menus[i]->_Barra.CrearBarraDesplazamientoEx(this, _BarraPosX, _Menus[i]->_Recta.top + DMENUEX_MARGEN_Y, DMENUEX_ANCHOBARRA + DMENUEX_MARGEN_X + DMENUEX_TAMICONO, (_Menus[i]->_Recta.bottom - _Menus[i]->_Recta.top) - (DMENUEX_MARGEN_Y * 2), _Menus[i]->_ID, _Menus[i]->_Barra._Minimo, _Menus[i]->_Barra._Maximo, _Menus[i]->_Barra._Valor);
+					_Menus[i]->_Barra.Activado(_Menus[i]->_Activado);
 				}
 			}
 
@@ -105,7 +106,7 @@ namespace DWL {
 		// Asigno el foco al menú
 		SetFocus(_hWnd);
 		// Envio el mensaje WM_NCACTIVATE a la ventana principal para que no se vea como pierde el foco, y parezca que el desplegable es un hijo de la ventana principal
-		SendMessage(_hWndDest, WM_NCACTIVATE, TRUE, 0);
+		SendMessage(_hWndDest->hWnd(), WM_NCACTIVATE, TRUE, 0);
 	}
 
 	// Función que oculta este menú 
@@ -114,6 +115,9 @@ namespace DWL {
 	void DMenuEx::Ocultar(const BOOL OcultarTodos) {
 		// Oculto todos los menús hijos de este
 		_OcultarRecursivo(this);
+		for (size_t i = 0; i < _Menus.size(); i++) {
+			_Menus[i]->_Barra.Destruir();
+		}
 
 		if (OcultarTodos == TRUE) {
 			// Oculto los menus ancestros
@@ -122,7 +126,7 @@ namespace DWL {
 				pPadre->Ocultar(FALSE);
 				pPadre = pPadre->_Padre;
 			}
-			SetFocus(_hWndDest);
+			SetFocus(_hWndDest->hWnd());
 		}
 		// Destruyo la ventana del menú
 		DestroyWindow(_hWnd);
@@ -159,13 +163,14 @@ namespace DWL {
 	}
 
 	// Función que agrega un sub-menú con una barra a este menú
-	DMenuEx *DMenuEx::AgregarBarra(const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const float nMinimo, const float nMaximo, const float nValor, const int nPosicion, const BOOL nActivado) {
+	DMenuEx *DMenuEx::AgregarBarra(const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const float nMinimo, const float nMaximo, const float nValor, const DBarraEx_MostrarValor nMostrarValor, const int nPosicion, const BOOL nActivado) {
 		int Pos = nPosicion;
 		if (nPosicion == -1) {
 			Pos = static_cast<int>(_Menus.size());
 		}
-
+		
 		DMenuEx *TmpMenu = new DMenuEx(this, DMenuEx_Tipo_Barra, _hWndDest, nID, nTexto, nIconoRecursos, nActivado, nMinimo, nMaximo, nValor);
+		TmpMenu->_Barra.MostrarValor(nMostrarValor);
 		_Menus.insert(_Menus.begin() + Pos, TmpMenu);
 		return TmpMenu;		
 	}
@@ -185,6 +190,7 @@ namespace DWL {
 	// Función para activar / desactivar el menú
 	void DMenuEx::Activado(const BOOL nActivar) {
 		_Activado = nActivar;
+		_Barra.Activado(nActivar);
 		if (_Padre != NULL) {
 			if (_Padre->_hWnd != NULL) {
 				_Padre->Repintar();
@@ -377,6 +383,11 @@ namespace DWL {
 			// Pinto el expansor
 			_PintarExpansor(DC, pMenu->_Recta.right - (DMENUEX_TAMICONO + DMENUEX_MARGEN_X), pMenu->_Recta.top + YIcono);
 		}
+
+		// Si el menu tiene barra la pinto
+		if (pMenu->_Tipo == DMenuEx_Tipo_Barra) {
+			pMenu->_Barra.PintarBarraEx(DC, _BarraPosX, pMenu->_Recta.top + DMENUEX_MARGEN_Y);
+		}
 	}
 
 	// Función que pinta el expansor (para mostrar que este sub-menu tiene uno o mas sub-menus hijos)
@@ -473,7 +484,7 @@ namespace DWL {
 
 
 	// Función que muestra un Sub-menu con mas sub-menus 
-	void DMenuEx::_MostrarSubMenu(HWND hWndDestMsg, DMenuEx *nPadre, const int cX, const int cY, const BOOL AsignarFoco) {
+	void DMenuEx::_MostrarSubMenu(DMenuEx *nPadre, const int cX, const int cY, const BOOL AsignarFoco) {
 		if (_Activado == FALSE) return;
 
 		if (_hWnd == NULL) {
@@ -484,10 +495,14 @@ namespace DWL {
 			RECT WR;
 			GetWindowRect(nPadre->hWnd(), &WR);
 
+			_MenuResaltado = NULL;
+			_MenuPresionado = NULL;
+			_MenuDesplegado = NULL;
+
 			// Calculo el tamaño que necesitará el menú
 			POINT Tam = CalcularEspacio();
 
-			CrearVentana(NULL, L"DMenuEx", L"", -4 + WR.left + Punto.x, -1 + WR.top + Punto.y, Tam.x, Tam.y, WS_POPUP | WS_CAPTION, NULL, CS_DBLCLKS);
+			CrearVentana(_hWndDest, L"DMenuEx", L"", -4 + WR.left + Punto.x, -1 + WR.top + Punto.y, Tam.x, Tam.y, WS_POPUP | WS_CAPTION, NULL, CS_DBLCLKS);
 
 			DMouse::CambiarCursor();
 			Opacidad(230);
@@ -501,14 +516,15 @@ namespace DWL {
 			// Creo las barras (si ahy alguna)
 			for (size_t i = 0; i < _Menus.size(); i++) {
 				if (_Menus[i]->_Tipo == DMenuEx_Tipo_Barra) {
-					_Menus[i]->_Barra.CrearBarraDesplazamientoEx(this, _BarraPosX, _Menus[i]->_Recta.top + DMENUEX_MARGEN_Y, DMENUEX_ANCHOBARRA, (_Menus[i]->_Recta.bottom - _Menus[i]->_Recta.top) - (DMENUEX_MARGEN_Y * 2), _Menus[i]->_ID, _Menus[i]->_Barra._Minimo, _Menus[i]->_Barra._Maximo, _Menus[i]->_Barra._Valor);
+					_Menus[i]->_Barra.CrearBarraDesplazamientoEx(this, _BarraPosX, _Menus[i]->_Recta.top + DMENUEX_MARGEN_Y, DMENUEX_ANCHOBARRA + DMENUEX_MARGEN_X + DMENUEX_TAMICONO, (_Menus[i]->_Recta.bottom - _Menus[i]->_Recta.top) - (DMENUEX_MARGEN_Y * 2), _Menus[i]->_ID, _Menus[i]->_Barra._Minimo, _Menus[i]->_Barra._Maximo, _Menus[i]->_Barra._Valor);
+					_Menus[i]->_Barra.Activado(_Menus[i]->_Activado);
 				}
 			}
 		}
 
 		SetFocus(_hWnd);
 		// Envio el mensaje WM_NCACTIVATE a la ventana principal para que no se vea como pierde el foco, y parezca que el desplegable es un hijo de la ventana principal
-		SendMessage(_hWndDest, WM_NCACTIVATE, TRUE, 0);
+		SendMessage(_hWndDest->hWnd(), WM_NCACTIVATE, TRUE, 0);
 	}
 
 	// Función que recibe el mensaje WM_PAINT
@@ -551,14 +567,14 @@ namespace DWL {
 							_MenuDesplegado->Ocultar();
 							_MenuDesplegado = NULL;
 							SetFocus(_hWnd);
-							SendMessage(_hWndDest, WM_NCACTIVATE, TRUE, 0);
+							SendMessage(_hWndDest->hWnd(), WM_NCACTIVATE, TRUE, 0);
 						}
 						// Asigno el nuevo menú resaltado
 						_MenuResaltado = _Menus[i];
 
 						// Si tiene Sub-menus
 						if (_MenuResaltado->TotalMenus() > 0) {
-							_MenuResaltado->_MostrarSubMenu(_hWndDest, this, RC.right, _MenuResaltado->_Recta.top);
+							_MenuResaltado->_MostrarSubMenu(this, RC.right, _MenuResaltado->_Recta.top);
 							_MenuDesplegado = _MenuResaltado;
 						}
 						Repintar();
@@ -627,7 +643,7 @@ namespace DWL {
 				if (_ResultadoModal != NULL) {
 					if (_ResultadoModal->Activado() == TRUE) {
 						if (_ResultadoModal->_Tipo == DMenuEx_Tipo_Texto) {
-							SendMessage(_hWndDest, WM_COMMAND, _ResultadoModal->ID(), 0);
+							SendMessage(_hWndDest->hWnd(), WM_COMMAND, _ResultadoModal->ID(), 0);
 						}
 					}
 				}
@@ -659,6 +675,9 @@ namespace DWL {
 	
 	void DMenuEx::_Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam) {
 		DEventoTeclado DatosTeclado(wParam, lParam, this);
+		RECT RC;
+		GetClientRect(_hWnd, &RC);
+
 //		DhWnd::_Teclado[DatosTeclado.TeclaVirtual()] = true;
 		
 		// Obtengo la posición del menu resaltado dentro del vector
@@ -728,8 +747,9 @@ namespace DWL {
 			case VK_LEFT :
 				if (_Padre != NULL) {
 					_MenuResaltado = NULL;
+					Ocultar(FALSE);
 					SetFocus(_Padre->_hWnd);
-					SendMessage(_hWndDest, WM_NCACTIVATE, TRUE, 0);
+					SendMessage(_hWndDest->hWnd(), WM_NCACTIVATE, TRUE, 0);
 					Repintar();
 				}
 				#if DMENUEX_MOSTRARDEBUG == TRUE
@@ -739,10 +759,13 @@ namespace DWL {
 			case VK_RIGHT :
 				if (_MenuResaltado != NULL) {
 					if (_MenuResaltado->_Menus.size() > 0) {
+						//SetFocus(_MenuResaltado->_hWnd);
+						//SendMessage(_hWndDest->hWnd(), WM_NCACTIVATE, TRUE, 0);
+						//_MenuResaltado->Repintar();
+						_MenuResaltado->_MostrarSubMenu(this, RC.right, _MenuResaltado->_Recta.top, FALSE);
+						_MenuDesplegado = _MenuResaltado;
 						_MenuResaltado->_MenuResaltado = _MenuResaltado->_Menus[0];
-						SetFocus(_MenuResaltado->_hWnd);
-						SendMessage(_hWndDest, WM_NCACTIVATE, TRUE, 0);						
-						_MenuResaltado->Repintar();
+
 					}
 				}
 				#if DMENUEX_MOSTRARDEBUG == TRUE
@@ -769,22 +792,20 @@ namespace DWL {
 			}
 		}
 
-		RECT RC;
-		GetClientRect(_hWnd, &RC);
 //		SetFocus(_hWnd);
 //		SendMessage(_hWndPadre, WM_NCACTIVATE, TRUE, 0);
 
 		// Miro si hay que desplegar un sub-menú
-		if (_MenuResaltado != NULL) {
+/*		if (_MenuResaltado != NULL) {
 			// Si tiene Sub-menus
 			if (_MenuResaltado->TotalMenus() > 0) {
 				#if DMENUEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir(L"DMenuEx::_Evento_TeclaPresionada MostrarSubmenu sin foco\n");
 				#endif
-				_MenuResaltado->_MostrarSubMenu(_hWndDest, this, RC.right, _MenuResaltado->_Recta.top, FALSE);
+				_MenuResaltado->_MostrarSubMenu(this, RC.right, _MenuResaltado->_Recta.top, FALSE);
 				_MenuDesplegado = _MenuResaltado;				
 			}
-		}
+		}*/
 		Repintar();
 
 	}
@@ -834,18 +855,20 @@ namespace DWL {
 		if (MenuBarra != NULL) {
 			if (MenuBarra->Activado() == TRUE) {
 				//_ResultadoModal = MenuBarra;
-				SendMessage(_hWndDest, WM_COMMAND, MenuBarra->ID(), static_cast<LPARAM>(MenuBarra->_Barra.Valor() * 100));
+				SendMessage(_hWndDest->hWnd(), WM_COMMAND, MenuBarra->ID(), static_cast<LPARAM>(MenuBarra->_Barra.Valor() * 100));
 			}
 		}
 	}
 
 	void DMenuEx::_Evento_BarraEx_Cambiado(DEventoMouse &DatosMouse) {
-		Ocultar(TRUE);
+		//Ocultar(TRUE);
+		SetFocus(_hWnd);
+		SendMessage(_hWndDest->hWnd(), WM_NCACTIVATE, TRUE, 0);
 		DMenuEx *MenuBarra = BuscarMenu(DatosMouse.ID());		
 		if (MenuBarra != NULL) {
 			if (MenuBarra->Activado() == TRUE) {
 				_ResultadoModal = MenuBarra;
-				SendMessage(_hWndDest, WM_COMMAND, MenuBarra->ID(), static_cast<LPARAM>(MenuBarra->_Barra.Valor() * 100));
+				SendMessage(_hWndDest->hWnd(), WM_COMMAND, MenuBarra->ID(), static_cast<LPARAM>(MenuBarra->_Barra.Valor() * 100));
 			}
 		}
 	}

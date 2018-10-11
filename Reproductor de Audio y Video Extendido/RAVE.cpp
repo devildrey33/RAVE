@@ -16,7 +16,7 @@ void RAVE_Iniciar(void) {
 
 RAVE *_APLICACION = NULL;
 
-RAVE::RAVE(void) : PlayerInicial(FALSE), MutexPlayer(NULL), MenuPistasDeAudio(NULL) {
+RAVE::RAVE(void) : PlayerInicial(FALSE), MutexPlayer(NULL) {
 	// Inicio la semilla para generar números aleatórios
 //	srand(GetTickCount());
 }
@@ -102,10 +102,19 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 	// Obtengo la linea de comandos y ejecuto el reproductor según los argumentos
 	LineaComando LC = ObtenerLineaComando(Paths);
 
+	// Simula los argumentos para reproducir un video nada mas iniciar
+	#ifdef RAVE_SIMULAR_REPRODUCIR_VIDEO
+		LC = LineaComando_Reproducir;
+		Paths.resize(0);
+		Paths.push_back(L"G:\\Pelis i Series\\StarTrek\\Discovery\\T1\\star trek discovery 1x01.mp4");
+	#endif
+
+	// Muestra la ventana para alertar de un error crítico
 	#ifdef RAVE_MOSTRAR_ERRORCRITICO
 		LC = LineaComando_ErrorCritico;
 	#endif
 
+	// Simula un error crítico y luego invoca una nueva instancia que muestra el error crítico
 	#ifdef RAVE_SIMULAR_ERRORCRITICO
 		// Hay que comprobar que no se vaya a mostrar la ventana de error crítico, o el windows entrará en un bucle infinito abriendo el Rave xd
 		if (LC != LineaComando_ErrorCritico) {
@@ -262,22 +271,28 @@ void RAVE::IniciarUI(int nCmdShow) {
 	}
 
 //	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_AUDIO									, L"Audio");
-	MenuPistasDeAudio = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_PISTA_AUDIO			, L"Pistas de audio");
-	MenuPistasDeAudio->Activado(FALSE);
+	MenuVideoPistasDeAudio = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_PISTA_AUDIO			, L"Pistas de audio", NULL, -1, FALSE);
+//	MenuPistasDeAudio->Activado(FALSE);
 																						// ID_MENUVIDEO_AUDIO_PISTAS_AUDIO <-> ID_MENUVIDEO_AUDIO_PISTAS_AUDIO_FIN (Espacio para 20 pistas de audio para no hacer corto...)
-	MenuProporcion = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_PROPORCION				, L"Proporción");
-		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_PREDETERMINADO						, L"Predeterminado");
-		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_16A9								, L"16:9");
-		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_4A3									, L"4:3");
-		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_1A1									, L"1:1");
-		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_16A10								, L"16:10");
-		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_2P21A1								, L"2.21:1");
-		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_2P35A1								, L"2.35:1");
-		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_2P39A1								, L"2.39:1");
-		MenuProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_5A4									, L"5:4");
-	MenuProporcion->Activado(FALSE);
-	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_SUBTITULOS								, L"Subtitulos");
-	VentanaRave.Menu_Video.AgregarBarra(ID_MENUVIDEO_BRILLO									, L"Brillo", NULL, 0.0f, 2.0f, 1.0f);
+	MenuVideoProporcion = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_PROPORCION		, L"Proporción"	, NULL, -1, FALSE);
+		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_PREDETERMINADO					, L"Predeterminado");
+		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_16A9							, L"16:9");
+		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_4A3							, L"4:3");
+		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_1A1							, L"1:1");
+		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_16A10							, L"16:10");
+		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_2P21A1							, L"2.21:1");
+		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_2P35A1							, L"2.35:1");
+		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_2P39A1							, L"2.39:1");
+		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_5A4							, L"5:4");
+//	MenuProporcion->Activado(FALSE);
+	MenuVideoFiltros = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_FILTROS				, L"Filtros"	, NULL, -1, FALSE);
+	MenuVideoFiltros->AgregarBarra(ID_MENUVIDEO_BRILLO											, L"Brillo"			, NULL, 0.0f, 2.0f, 1.0f, DBarraEx_MostrarValor_Valor2Decimales);
+	MenuVideoFiltros->AgregarBarra(ID_MENUVIDEO_CONTRASTE										, L"Contraste"		, NULL, 0.0f, 2.0f, 1.0f, DBarraEx_MostrarValor_Valor2Decimales);
+	MenuVideoFiltros->AgregarBarra(ID_MENUVIDEO_SATURACION										, L"Saturación"		, NULL, 0.0f, 2.0f, 1.0f, DBarraEx_MostrarValor_Valor2Decimales);
+	MenuVideoFiltros->AgregarSeparador();
+	MenuVideoFiltros->AgregarMenu(ID_MENUVIDEO_PORDEFECTO										, L"Restaurar valores iniciales");
+	MenuVideoSubtitulos = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_SUBTITULOS		, L"Subtitulos"	, NULL, -1, FALSE);
+
 
 	// Ventana principal
 	VentanaRave.Crear(nCmdShow);

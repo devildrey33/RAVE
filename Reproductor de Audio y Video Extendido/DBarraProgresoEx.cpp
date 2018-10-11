@@ -2,10 +2,11 @@
 #include "DBarraProgresoEx.h"
 #include "Rave_Skin.h"
 #include "DMensajesWnd.h"
+#include "DStringUtils.h"
 
 namespace DWL {
 
-	DBarraProgresoEx::DBarraProgresoEx(void) : _Minimo(0), _Maximo(0), _Valor(0), _Estado(DBarraEx_Estado_Normal), _ColorBarra(COLOR_BARRA), _ColorFondo(COLOR_BARRA_FONDO), _ColorBorde(COLOR_BORDE) {
+	DBarraProgresoEx::DBarraProgresoEx(void) : _Minimo(0), _Maximo(0), _Valor(0), _Estado(DBarraEx_Estado_Normal), _ColorBarra(COLOR_BARRA), _ColorFondo(COLOR_BARRA_FONDO), _ColorBorde(COLOR_BORDE), _MostrarValor(DBarraEx_MostrarValor_Nada), _Activado(TRUE) {
 	}
 
 
@@ -21,9 +22,17 @@ namespace DWL {
 		_Minimo = nMinimo;
 		_Maximo = nMaximo;
 		_Valor = nValor;
-		_ColorBarra = COLOR_BARRA;
-		_ColorFondo = COLOR_BARRA_FONDO;
-		_ColorBorde = COLOR_BORDE;
+		if (_Activado == TRUE) {
+			_ColorBarra = COLOR_BARRA;
+			_ColorFondo = COLOR_BARRA_FONDO;
+			_ColorBorde = COLOR_BORDE;
+		}
+		else {
+			_ColorBarra = COLOR_BARRA_DESACTIVADO;
+			_ColorFondo = COLOR_BARRA_FONDO_DESACTIVADO;
+			_ColorBorde = COLOR_BORDE;
+			EnableWindow(_hWnd, FALSE);
+		}
 		return hWnd();
 	}
 
@@ -42,7 +51,7 @@ namespace DWL {
 		Repintar();
 	}
 
-	void DBarraProgresoEx::PintarBarraEx(HDC DC) {
+	void DBarraProgresoEx::PintarBarraEx(HDC DC, const int nX, const int nY) {
 		RECT    RC, RBarra, RFondo;
 		GetClientRect(hWnd(), &RC);
 		// Creo un buffer en memória para pintar el control
@@ -57,6 +66,8 @@ namespace DWL {
 		RFondo.top++; RFondo.bottom--; RFondo.right--; // Evito los bordes
 		float Parte = static_cast<float>((RC.right - RC.left) - 2) / (_Maximo - _Minimo);
 		RBarra.right = 1 + static_cast<int>(Parte * (_Valor - _Minimo));
+		// Aseguro el valor máximo (a veces con los decimales redondeados no se ve la barra llena)
+		if (_Valor >= _Maximo) RBarra.right = RC.right - 1;
 		RFondo.left = RBarra.right;
 
 		// Pinto el borde
@@ -68,8 +79,11 @@ namespace DWL {
 		// Pinto el fondo
 		Evento_PintarFondo(Buffer, RFondo);
 
+		// Pinto el valor (si es necesario)
+		Evento_PintarValor(Buffer, RC);
+
 		// Copio el buffer al DC
-		BitBlt(DC, RC.left, RC.top, RC.right, RC.bottom, Buffer, 0, 0, SRCCOPY);
+		BitBlt(DC, nX + RC.left, nY + RC.top, RC.right, RC.bottom, Buffer, 0, 0, SRCCOPY);
 
 		// Elimino el buffer de la memória
 		SelectObject(Buffer, BmpViejo);
@@ -94,6 +108,24 @@ namespace DWL {
 		HBRUSH BrochaBorde = CreateSolidBrush(_ColorBorde);
 		FrameRect(DC, &RBorde, BrochaBorde);
 		DeleteObject(BrochaBorde);
+	}
+
+	void DBarraProgresoEx::Evento_PintarValor(HDC DC, RECT &RC) {
+		if (_MostrarValor != DBarraEx_MostrarValor_Nada) {
+			HFONT VFuente = static_cast<HFONT>(SelectObject(DC, Fuente16Normal()));
+			std::wstring TxtValor;
+			switch (_MostrarValor) {
+				case DBarraEx_MostrarValor_Valor2Decimales :			TxtValor = DWL::Strings::ToStrF(_Valor, 2);													break;
+				case DBarraEx_MostrarValor_ValorInt:					TxtValor = DWL::Strings::ToStrF(_Valor, 0);													break;
+				case DBarraEx_MostrarValor_ValorMaximo2Decimales:		TxtValor = DWL::Strings::ToStrF(_Valor, 2) + L" / " + DWL::Strings::ToStrF(_Maximo, 2);		break;
+				case DBarraEx_MostrarValor_ValorMaximoInt:				TxtValor = DWL::Strings::ToStrF(_Valor, 0) + L" / " + DWL::Strings::ToStrF(_Maximo, 0);		break;
+			}
+			Evento_FormatearValor(TxtValor);
+			SetTextColor(DC, COLOR_BARRA_TEXTO);
+			SetBkMode(DC, TRANSPARENT);
+			DrawText(DC, TxtValor.c_str(), static_cast<int>(TxtValor.size()), &RC, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+			SelectObject(DC, VFuente);
+		}
 	}
 
 	const float DBarraProgresoEx::_ValorMouse(RECT &RC, const int cX) {
@@ -125,6 +157,29 @@ namespace DWL {
 		}
 	}
 
+	void DBarraProgresoEx::Activado(const BOOL nActivar) {
+		BOOL Ret = FALSE;
+		_Activado = nActivar;
+		Ret = EnableWindow(_hWnd, nActivar);
+//		if (_hWnd != NULL) {
+			Transicion((nActivar == TRUE) ? DBarraEx_Transicion_Normal : DBarraEx_Transicion_Desactivado);
+/*		}
+		else {
+			if (_Activado == TRUE) {
+				_ColorBarra = COLOR_BARRA;
+				_ColorFondo = COLOR_BARRA_FONDO;
+				_ColorBorde = COLOR_BORDE;
+			}
+			else {
+				_ColorBarra = COLOR_BARRA_DESACTIVADO;
+				_ColorFondo = COLOR_BARRA_FONDO_DESACTIVADO;
+				_ColorBorde = COLOR_BORDE;
+			}
+		}*/
+		//Repintar();
+	}
+
+
 	void DBarraProgresoEx::Transicion(const DBarraEx_Transicion nTransicion) {
 		DWORD Duracion = DhWnd::TiempoAnimaciones;
 		if (_AniTransicion.Animando() == TRUE) {
@@ -151,7 +206,7 @@ namespace DWL {
 				break;
 			case DBarraEx_Transicion_Desactivado:
 				FondoHasta = COLOR_BARRA_FONDO_DESACTIVADO;
-				BarraHasta = COLOR_BARRA;
+				BarraHasta = COLOR_BARRA_DESACTIVADO;
 				BordeHasta = COLOR_BORDE;
 				break;
 		}

@@ -180,6 +180,7 @@
     <ClInclude Include="DExplorarDirectoriosEx.h" />
     <ClInclude Include="DGDI.h" />
     <ClInclude Include="DhWnd_Fuente.h" />
+    <ClInclude Include="DListaDesplegable.h" />
     <ClInclude Include="DListaEx.h" />
     <ClInclude Include="DListaEx_Columna.h" />
     <ClInclude Include="DListaEx_Item.h" />
@@ -263,6 +264,7 @@
     <ClCompile Include="DGDI.cpp" />
     <ClCompile Include="DhWnd.cpp" />
     <ClCompile Include="DEtiquetaEx.cpp" />
+    <ClCompile Include="DListaDesplegable.cpp" />
     <ClCompile Include="DListaEx.cpp" />
     <ClCompile Include="DListaEx_Columna.cpp" />
     <ClCompile Include="DListaEx_Item.cpp" />

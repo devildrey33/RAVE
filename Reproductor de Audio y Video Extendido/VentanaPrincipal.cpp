@@ -210,6 +210,12 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 					LabelTiempoTotal.Texto(Tiempo);
 					App.ControlesPC.LabelTiempoActual.Texto(Tiempo);
 					App.ControlesPC.LabelTiempoTotal.Texto(Tiempo);
+					// Si se ha terminado el medio asigno las barras del tiempo al máximo
+					if (Estado == Terminada) {
+						// Asigno el valor de las barras del tiempo a su máximo
+						SliderTiempo.Valor(SliderTiempo.Maximo());
+						App.ControlesPC.SliderTiempo.Valor(SliderTiempo.Maximo());
+					}
 				}
 
 			}
@@ -404,6 +410,15 @@ void VentanaPrincipal::GenerarListaAleatoria(const TipoListaAleatoria nTipo) {
 	App.VentanaRave.Lista_Play();
 }
 
+void VentanaPrincipal::FiltrosVideoPorDefecto(void) {
+	App.VLC.Brillo(1.0f);
+	App.VLC.Contraste(1.0f);
+	App.VLC.Saturacion(1.0f);
+	App.MenuVideoFiltros->Menu(0)->BarraValor(1.0f);
+	App.MenuVideoFiltros->Menu(1)->BarraValor(1.0f);
+	App.MenuVideoFiltros->Menu(2)->BarraValor(1.0f);
+}
+
 void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID, const float ValorBarra) {
 	switch (cID) {
 		case ID_MENUBOTONLISTA_GENERAR			:	GenerarListaAleatoria();				return;
@@ -420,17 +435,22 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID, const float ValorBarr
 		case ID_BOTON_STOP						:	Lista_Stop();							return;
 		case ID_BOTON_SIGUIENTE					:	Lista_Siguiente();						return;
 		case ID_BOTON_ANTERIOR					:	Lista_Anterior();						return;
+		// Barras del menu del video
+		case ID_MENUVIDEO_BRILLO				:	App.VLC.Brillo(ValorBarra);				return;
+		case ID_MENUVIDEO_CONTRASTE				:	App.VLC.Contraste(ValorBarra);			return;
+		case ID_MENUVIDEO_SATURACION			:	App.VLC.Saturacion(ValorBarra);			return;
+		case ID_MENUVIDEO_PORDEFECTO			:	FiltrosVideoPorDefecto();				return;
 	}
 
 
 	// Pistas de audio
 	if (cID >= ID_MENUVIDEO_AUDIO_PISTAS_AUDIO && cID < ID_MENUVIDEO_AUDIO_PISTAS_AUDIO_FIN) {
 		// Des-marco todas las pistas de audio
-		for (size_t i = 0; i < App.MenuPistasDeAudio->TotalMenus(); i++) {
-			App.MenuPistasDeAudio->Menu(i)->Icono(0);
+		for (size_t i = 0; i < App.MenuVideoPistasDeAudio->TotalMenus(); i++) {
+			App.MenuVideoPistasDeAudio->Menu(i)->Icono(0);
 		}
 		// Marco la pista de audio actual (si existe, ... que debería)
-		DMenuEx *MenuClick = App.MenuPistasDeAudio->BuscarMenu(cID);
+		DMenuEx *MenuClick = App.MenuVideoPistasDeAudio->BuscarMenu(cID);
 		if (MenuClick != NULL) MenuClick->Icono(IDI_CHECK2);
 
 		App.VLC.AsignarPistaAudio(cID - ID_MENUVIDEO_AUDIO_PISTAS_AUDIO);
@@ -441,8 +461,8 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID, const float ValorBarr
 	// Proporción
 	if (cID >= ID_MENUVIDEO_PROPORCION_PREDETERMINADO && cID < ID_MENUVIDEO_PROPORCION_5A4 + 1) {
 		// Des-marco todas las porporciones
-		for (size_t i = 0; i < App.MenuProporcion->TotalMenus(); i++) {
-			App.MenuProporcion->Menu(i)->Icono(0);
+		for (size_t i = 0; i < App.MenuVideoProporcion->TotalMenus(); i++) {
+			App.MenuVideoProporcion->Menu(i)->Icono(0);
 		}
 		switch (cID) {
 			case ID_MENUVIDEO_PROPORCION_PREDETERMINADO	: App.VLC.AsignarProporcion(NULL);			break;
@@ -456,13 +476,10 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID, const float ValorBarr
 			case ID_MENUVIDEO_PROPORCION_5A4			: App.VLC.AsignarProporcion("5:4");			break;
 		}
 
-		App.MenuProporcion->Menu(cID - ID_MENUVIDEO_PROPORCION_PREDETERMINADO)->Icono(IDI_CHECK2);
+		App.MenuVideoProporcion->Menu(cID - ID_MENUVIDEO_PROPORCION_PREDETERMINADO)->Icono(IDI_CHECK2);
 		return;
 	}
 
-	if (cID == ID_MENUVIDEO_BRILLO) {
-		App.VLC.Brillo(ValorBarra);
-	}
 }
 
 
@@ -725,7 +742,8 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 //	PostMessage(Video.hWnd(), WM_PAINT, 0, 0);
 }
 
-void VentanaPrincipal::Evento_SliderTiempo_Cambiado() {
+void VentanaPrincipal::Evento_SliderTiempo_Cambiado(void) {
+	if (App.VLC.ComprobarEstado() != Estados_Medio::EnPlay && App.VLC.ComprobarEstado() != Estados_Medio::EnPausa) return;
 	std::wstring TiempoStr;
 //	Debug_Escribir_Varg(L"Evento_SliderTiempo_Cambiado %d, %.02f\n", App.VLC.TiempoTotalMs(), SliderTiempo.Valor());
 	App.VLC.TiempoStr(static_cast<UINT64>(static_cast<float>(App.VLC.TiempoTotalMs()) * SliderTiempo.Valor()), TiempoStr);
@@ -734,13 +752,13 @@ void VentanaPrincipal::Evento_SliderTiempo_Cambiado() {
 	App.VLC.TiempoActual(SliderTiempo.Valor());
 }
 
-void VentanaPrincipal::Evento_SliderVolumen_Cambio() {
+void VentanaPrincipal::Evento_SliderVolumen_Cambio(void) {
 	int Volumen = static_cast<int>(SliderVolumen.Valor());	
 	App.VLC.Volumen(Volumen);
 }
 
 // Guardo el volumen en las opciones (al soltar el slider del volumen)
-void VentanaPrincipal::Evento_SliderVolumen_Cambiado() {
+void VentanaPrincipal::Evento_SliderVolumen_Cambiado(void) {
 	App.BD.Opciones_Volumen(static_cast<int>(SliderVolumen.Valor()));
 }
 
@@ -1099,7 +1117,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			Evento_Cerrar();
 			return 0;
 		case WM_COMMAND :
-			Debug_Escribir_Varg(L"WM_COMMAND %d, %d\n", HIWORD(wParam), LOWORD(wParam));
+//			Debug_Escribir_Varg(L"WM_COMMAND %d, %d\n", HIWORD(wParam), LOWORD(wParam));
 			Evento_MenuEx_Click(LOWORD(wParam), static_cast<float>(lParam) / 100.0f);
 			return 0;
 		case WM_EXITSIZEMOVE  :

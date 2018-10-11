@@ -40,7 +40,7 @@ void VentanaPrecarga::Pintar(HDC hDC) {
 	DeleteObject(BrochaFondo);
 
 	// Pinto el borde
-	HBRUSH BrochaBorde = CreateSolidBrush(COLOR_MENU_BORDE);
+	HBRUSH BrochaBorde = CreateSolidBrush(COLOR_BORDE_POPUP);
 	FrameRect(DC, &RC, BrochaBorde);
 	DeleteObject(BrochaBorde);
 

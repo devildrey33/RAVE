@@ -136,10 +136,10 @@ class RaveVLC {
 
 	inline libvlc_media_player_t		   *MediaPlayer(void) { return _MediaPlayer; }
 	void                                    Brillo(const float nBrillo);
-	void                                    Contraste(const float nBrillo);
-	void                                    Gamma(const float nBrillo);
+	void                                    Contraste(const float nContraste);
+	void                                    Gamma(const float nGamma);
 	void                                    Hue(const int nHue);
-	void                                    Saturacion(const float nBrillo);
+	void                                    Saturacion(const float nSaturacion);
   protected:
 	BOOL                                   _Parseado;
 	//libvlc_media_t                        *_Media;

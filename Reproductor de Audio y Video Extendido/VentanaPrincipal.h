@@ -68,6 +68,7 @@ class VentanaPrincipal : public DWL::DVentana {
 
 	void                        GenerarListaAleatoria(const TipoListaAleatoria nTipo = TLA_LoQueSea);
 
+	void						FiltrosVideoPorDefecto(void);
 
 	void						PantallaCompleta(const BOOL nActivar);
 	inline const BOOL			PantallaCompleta(void) { return _PantallaCompleta;  }

@@ -7,6 +7,7 @@
 
 namespace DWL {
 
+	DhWnd_Fuente DhWnd::Fuente16Normal;
 	DhWnd_Fuente DhWnd::Fuente18Normal;
 	DhWnd_Fuente DhWnd::Fuente18Negrita;
 	DhWnd_Fuente DhWnd::Fuente21Normal;
@@ -20,6 +21,7 @@ namespace DWL {
 		// Creamos las fuentes si no existen, y limpiamos el buffer para el teclado
 		if (Fuente18Normal.Fuente() == NULL) {
 			BorrarBufferTeclado();
+			Fuente16Normal	= CreateFont(16, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
 			Fuente18Normal	= CreateFont(FUENTE_PEQUE_TAM, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
 			Fuente18Negrita	= CreateFont(FUENTE_PEQUE_TAM, 0, 0, 0, FW_BOLD, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
 			Fuente21Normal	= CreateFont(FUENTE_NORMAL_TAM, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);

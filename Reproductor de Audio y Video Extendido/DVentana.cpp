@@ -8,7 +8,10 @@ namespace DWL {
 		// La ventana ya no existe pero tenemos el hWnd, por lo que elimino toda la memória
 		if (_hWnd != NULL && IsWindow(_hWnd) == 0) { Destruir(); }
 
-		if (hWnd()) { Debug_Escribir(L"DVentana::Crear() Error : ya se ha creado la ventana\n"); return hWnd(); }
+		if (_hWnd) {
+//			Debug_Escribir(L"DVentana::Crear() Error : ya se ha creado la ventana\n"); 
+			return hWnd(); 
+		}
 		// hWnd del padre
 		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : HWND_DESKTOP;
 

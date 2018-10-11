@@ -33,8 +33,13 @@ const BOOL ThreadAnalisis::Iniciar(HWND nhWndDest) {
 		RECT RC;
 		GetClientRect(_hWnd, &RC);
 		_BarraProgreso1.CrearBarraProgresoEx(this, 30, 105, RC.right - 60, 20, ID_BARRAPROGRESO1);
+		_BarraProgreso1.MostrarValor(DBarraEx_MostrarValor_ValorMaximoInt);
 		_BarraProgreso2.CrearBarraProgresoEx(this, 30, 205, RC.right - 60, 20, ID_BARRAPROGRESO2);
+		_BarraProgreso2.MostrarValor(DBarraEx_MostrarValor_ValorMaximoInt);
+		_BarraProgreso2.Activado(FALSE);
 		_BarraProgreso3.CrearBarraProgresoEx(this, 30, 305, RC.right - 60, 20, ID_BARRAPROGRESO3);
+		_BarraProgreso3.MostrarValor(DBarraEx_MostrarValor_ValorMaximoInt);
+		_BarraProgreso3.Activado(FALSE);
 		_BotonOcultar.CrearBotonEx(this, L"Ocultar", 300, 340, 100, 30, ID_BOTONOCULTAR);
 		_BotonCancelar.CrearBotonEx(this, L"Cancelar", 410, 340, 100, 30, ID_BOTONCANCELAR);
 		_MarcaNoMostrarMas.CrearMarcaEx(this, L"No volver a mostrar esta ventana.", 10, 346, 250, 20, ID_MARCANOMOSTRARMAS, IDI_CHECK2);
@@ -597,9 +602,23 @@ LRESULT CALLBACK ThreadAnalisis::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM
 		case WM_TOM_TOTALMEDIOS1 :	_BarraProgreso1.Valor(static_cast<float>(wParam));													return 0;
 		case WM_TOM_INICIADO1    :  _BarraProgreso1.Maximo(static_cast<float>(wParam));	 _FASE = 1;  Repintar();						return 0;
 		case WM_TOM_TOTALMEDIOS2 :	_BarraProgreso2.Valor(_BarraProgreso2.Valor() + 1);													return 0;
-		case WM_TOM_INICIADO2    :  _BarraProgreso2.Maximo(static_cast<float>(wParam));	 _FASE = 2;	 Repintar();						return 0;
+		case WM_TOM_INICIADO2    :  
+			_BarraProgreso1.Activado(FALSE);
+			_BarraProgreso2.Activado(TRUE);
+			_BarraProgreso3.Activado(FALSE);
+			_BarraProgreso2.Maximo(static_cast<float>(wParam));
+			_FASE = 2;	 
+			Repintar();					
+			return 0;
 		case WM_TOM_TOTALMEDIOS3 :	_BarraProgreso3.Valor(static_cast<float>(wParam));													return 0;
-		case WM_TOM_INICIADO3    :  _BarraProgreso3.Maximo(static_cast<float>(wParam));	 _FASE = 3;  Repintar();						return 0;
+		case WM_TOM_INICIADO3    :
+			_BarraProgreso1.Activado(FALSE);
+			_BarraProgreso2.Activado(FALSE);
+			_BarraProgreso3.Activado(TRUE);
+			_BarraProgreso3.Maximo(static_cast<float>(wParam));
+			_FASE = 3; 
+			Repintar();		
+			return 0;
 		case WM_CLOSE			 :   Cancelar(TRUE);																					return 0;
 		case DWL_BOTONEX_CLICK   :   Evento_BotonEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));										return 0;
 		case DWL_MARCAEX_CLICK   :   App.BD.Opciones_MostrarObtenerMetadatos(!_MarcaNoMostrarMas.Marcado());							return 0;

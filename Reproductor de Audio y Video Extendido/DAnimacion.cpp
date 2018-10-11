@@ -26,6 +26,17 @@ namespace DWL {
 	}
 
 	void DAnimacion::Iniciar(std::vector<Valores> &Datos, const DWORD Milisegundos, std::function<void(std::vector<float> &, const BOOL)> LambdaCallback) {
+		// Compruebo que los valores Desde sean distintos a los valores Hasta
+		BOOL Iguales = TRUE;
+		for (size_t i = 0; i < Datos.size(); i++) {
+			if (Datos[i].Desde != Datos[i].Hasta) {
+				Iguales = FALSE;
+				break;
+			}
+		}
+		// No es necesario crear la animación, todos los valores Desde son iguales a sus valores Hasta
+		if (Iguales == TRUE) return;
+
 		if (_Timer != NULL) {
 			#if DANIMACION_MOSTRARDEBUG == TRUE
 				Debug_Escribir(L"DAnimacion::Iniciar -> ERROR la animación ya se está ejecutando!\n");
@@ -155,6 +166,17 @@ namespace DWL {
 
 
 	void DAnimacionColor::Iniciar(std::vector<Colores> &Datos, const DWORD Milisegundos, std::function<void(std::vector<COLORREF> &, const BOOL)> LambdaCallback) {
+		// Compruebo que los valores Desde sean distintos a los valores Hasta
+		BOOL Iguales = TRUE;
+		for (size_t i = 0; i < Datos.size(); i++) {
+			if (Datos[i].Desde != Datos[i].Hasta) {
+				Iguales = FALSE;
+				break;
+			}
+		}
+		// No es necesario crear la animación, todos los valores Desde son iguales a sus valores Hasta
+		if (Iguales == TRUE) return;
+		
 		if (_Timer != NULL) {
 			#if DANIMACION_MOSTRARDEBUG == TRUE
 				Debug_Escribir(L"DAnimacionColor::Iniciar -> ERROR la animación ya se está ejecutando!\n");

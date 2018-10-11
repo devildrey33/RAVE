@@ -48,7 +48,6 @@ namespace DWL {
 
 	    DBarraDesplazamientoEx_ToolTip		   _MostrarToolTip;
 	    DToolTipEx							   _ToolTip;
-
 	};
 }
 

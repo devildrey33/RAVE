@@ -6,7 +6,7 @@
 
 namespace DWL {
 
-	#define DMENUEX_MOSTRARDEBUG	TRUE
+	#define DMENUEX_MOSTRARDEBUG	FALSE
 
 	#define DMENUEX_TAMICONO  16	// Tamaño de los iconos
 	#define DMENUEX_MARGEN_X   6	// Margen horizontal para el texto
@@ -29,7 +29,7 @@ namespace DWL {
 
 	#define DMENUEX_TAMICONO				16 // Tamaño del icono
 	#define DMENUEX_ANCHOBARRA             100 // Ancho de las barras
-	#define WM_ESMENUEX						WM_USER + 500
+	#define WM_ESMENUEX			 WM_USER + 500
 
 	class DMenuEx : protected DWL::DVentana {
   	  public:
@@ -39,7 +39,7 @@ namespace DWL {
 		DMenuEx                *AgregarMenu(const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos = NULL, const int Posicion = -1, const BOOL nActivado = TRUE);
 		inline DMenuEx         *AgregarMenu(const INT_PTR nID, std::wstring &nTexto, const INT_PTR nIconoRecursos = NULL, const int Posicion = -1, const BOOL nActivado = TRUE) { return AgregarMenu(nID, nTexto.c_str(), nIconoRecursos, Posicion, nActivado); };
 		DMenuEx				   *AgregarSeparador(const INT_PTR uID = 0, const int Posicion = -1);
-		DMenuEx                *AgregarBarra(const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos = NULL, const float nMinimo = 0.0f, const float nMaximo = 1.0f, const float nValor = 0.0f, const int Posicion = -1, const BOOL nActivado = TRUE);
+		DMenuEx                *AgregarBarra(const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos = NULL, const float nMinimo = 0.0f, const float nMaximo = 1.0f, const float nValor = 0.0f, const DBarraEx_MostrarValor nMostrarValor = DBarraEx_MostrarValor_Nada, const int Posicion = -1, const BOOL nActivado = TRUE);
 
 								// Función que muestra el Menú en el bucle principal de la aplicación y espera su respuesta en un WM_COMMAND (NO DEVUELVE EL MENÚ PRESIONADO)
 		void					Mostrar(DhWnd *nPadre, const int PosX, const int PosY);
@@ -90,17 +90,19 @@ namespace DWL {
 
 		const BOOL				Visible(void);
 
+		inline void				BarraValor(const float nValor) { _Barra.Valor(nValor); };
+		inline const float		BarraValor(void) { return _Barra.Valor(); };
 	  protected:
 								// Constructor menú tipo texto (interno AgregarBarra)
-								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado, const float nMinimo, const float nMaximo, const float nValor);
+								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado, const float nMinimo, const float nMaximo, const float nValor);
 								// Constructor menú tipo texto (interno AgregarMenu)
-								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos = 0, const BOOL nActivado = TRUE);
+								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos = 0, const BOOL nActivado = TRUE);
 								// Constructor menú tipo separador (interno AgregarSeparador)
-								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, HWND nhWndPadre, const INT_PTR nID);
+								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID);
 
 		void				   _OcultarRecursivo(DMenuEx *oMenu);
 								// Función que muestra este menú como un submenú
-		void                   _MostrarSubMenu(HWND hWndDestMsg, DMenuEx *nPadre, const int cX, const int cY, const BOOL AsignarFoco = TRUE);
+		void                   _MostrarSubMenu(DMenuEx *nPadre, const int cX, const int cY, const BOOL AsignarFoco = TRUE);
 								// Función que pinta una fila del menú (devuelve la altura de lo pintado)
 		void                   _PintarMenu(HDC DC, DMenuEx *pMenu);
 								// Función que pinta el separador
@@ -137,7 +139,7 @@ namespace DWL {
 
 		BOOL                   _Activado;
 		DMenuEx_Tipo           _Tipo;
-		static HWND            _hWndDest;  // Destino para los mensajes
+		static DhWnd          *_hWndDest;  // Destino para los mensajes
 //		HWND                   _hWndPadre; // Ventana padre que contiene el hWndDest;
 
 		DBarraDesplazamientoEx _Barra;

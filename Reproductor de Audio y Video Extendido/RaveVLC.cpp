@@ -119,6 +119,11 @@ const BOOL RaveVLC::AbrirMedio(BDMedio &Medio) {
 	MedioActual = Medio;
 	_Parseado = FALSE;
 
+	App.MenuVideoFiltros->Menu(0)->BarraValor(1.0f);	// Brillo
+	App.MenuVideoFiltros->Menu(1)->BarraValor(1.0f);	// Contraste
+	App.MenuVideoFiltros->Menu(2)->BarraValor(1.0f);	// Saturación
+	
+
 	if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(MedioActual.Path.c_str())) {
 		Debug_Escribir_Varg(L"RaveVLC::AbrirMedio  El archivo '%s' NO EXISTE!\n", MedioActual.Path.c_str());
 		return FALSE;
@@ -322,35 +327,40 @@ void RaveVLC::ObtenerDatosParsing(void) {
 		// Enumero las pistas de audio
 		int TotalPîstas = libvlc_audio_get_track_count(_MediaPlayer);
 		if (TotalPîstas > 2) { // si hay mas de una pista, las enumero
-			App.MenuPistasDeAudio->Activado(TRUE);
+			App.MenuVideoPistasDeAudio->Activado(TRUE);
 
 			libvlc_track_description_t *Desc = libvlc_audio_get_track_description(_MediaPlayer);
 
 			std::wstring Texto;
-			App.MenuPistasDeAudio->EliminarTodosLosMenus();
+			App.MenuVideoPistasDeAudio->EliminarTodosLosMenus();
 			for (int i = 0; i < TotalPîstas; i++) {
 				if (i != 0) {
 					DWL::Strings::AnsiToWide(Desc->psz_name, Texto);
-					App.MenuPistasDeAudio->AgregarMenu(ID_MENUVIDEO_AUDIO_PISTAS_AUDIO + i, Texto);
+					App.MenuVideoPistasDeAudio->AgregarMenu(ID_MENUVIDEO_AUDIO_PISTAS_AUDIO + i, Texto);
 				}
 				Desc = Desc->p_next;
 			}
 			int PistaActual = libvlc_audio_get_track(_MediaPlayer);
-			DMenuEx *MenuPistaActual = App.MenuPistasDeAudio->BuscarMenu(ID_MENUVIDEO_AUDIO_PISTAS_AUDIO + PistaActual);
+			DMenuEx *MenuPistaActual = App.MenuVideoPistasDeAudio->BuscarMenu(ID_MENUVIDEO_AUDIO_PISTAS_AUDIO + PistaActual);
 			if (MenuPistaActual != NULL) MenuPistaActual->Icono(IDI_CHECK2);
 			libvlc_track_description_list_release(Desc);
 		}
 		else {	// Si solo hay una pista de audio desactivo el menú
-			App.MenuPistasDeAudio->Activado(FALSE);
+			App.MenuVideoPistasDeAudio->Activado(FALSE);
 		}
 
+		BOOL EsVideo = (MedioActual.TipoMedio == Tipo_Medio_Video);
+
 		// Activo / desactivo el menú de la proporción según el tipo de medio (audio / video)
-		App.MenuProporcion->Activado((MedioActual.TipoMedio == Tipo_Medio_Video) ? TRUE : FALSE);
+		App.MenuVideoProporcion->Activado(EsVideo);
+		App.MenuVideoFiltros->Activado(EsVideo);
+		App.MenuVideoSubtitulos->Activado(EsVideo);
+
 		// Obtengo el ratio de aspecto
 		std::wstring Proporcion = ObtenerProporcion();
-		for (size_t i = 0; i < App.MenuProporcion->TotalMenus(); i++) {
-			if (App.MenuProporcion->Menu(i)->Texto() == Proporcion) App.MenuProporcion->Menu(i)->Icono(IDI_CHECK2);
-			else	                                                App.MenuProporcion->Menu(i)->Icono(0);
+		for (size_t i = 0; i < App.MenuVideoProporcion->TotalMenus(); i++) {
+			if (App.MenuVideoProporcion->Menu(i)->Texto() == Proporcion)	App.MenuVideoProporcion->Menu(i)->Icono(IDI_CHECK2);
+			else															App.MenuVideoProporcion->Menu(i)->Icono(0);
 		}
 
 		// Modifico el tiempo
@@ -535,8 +545,7 @@ BOOL CALLBACK RaveVLC::EnumeracionVLC(HWND hWndWnd, LPARAM lParam) {
 	 
 void RaveVLC::Brillo(const float nBrillo) {
 	if (_MediaPlayer == NULL) return;
-
-	Debug_Escribir_Varg(L"RaveVLC::Brillo %02f\n", nBrillo);
+//	Debug_Escribir_Varg(L"RaveVLC::Brillo %02f\n", nBrillo);
 	libvlc_video_set_adjust_int(_MediaPlayer, libvlc_adjust_Enable, 1);
 	libvlc_video_set_adjust_float(_MediaPlayer, libvlc_adjust_Brightness, nBrillo);
 }

@@ -130,12 +130,14 @@ void VentanaOpcionesRAVE::Crear(void) {
 	EtiquetaTiempoAnimacionesTA.CrearEtiquetaEx(&MarcoGeneral, TmpStr.c_str(), RC.right - 90, 285, 60, 20, ID_ETIQUETA_TIEMPOANIMACIONES2, DEtiquetaEx_Alineacion_Derecha);
 	// Barra para asignar el tiempo de las animaciones
 	BarraTiempoAnimaciones.CrearBarraDesplazamientoEx(&MarcoGeneral, 350, 285, RC.right - 450, 20, ID_BARRA_TIEMPOANIMACION, 100, 1000, static_cast<float>(App.BD.Opciones_TiempoAnimaciones()));
+//	BarraTiempoAnimaciones.MostrarValor(DBarraEx_MostrarValor_ValorInt);
 	// Etiquetas de tiempo para ocultar el tooltip
 	EtiquetaTiempoOcultarToolTips.CrearEtiquetaEx(&MarcoGeneral, L"Duración de los tooltips de la parte inferior derecha", 10, 315, 330, 20, ID_ETIQUETA_TIEMPOTOOLTIP);
 	TmpStr = std::to_wstring(App.BD.Opciones_TiempoToolTips()) + L" ms";
 	EtiquetaTiempoOcultarToolTipsTA.CrearEtiquetaEx(&MarcoGeneral, TmpStr.c_str(), RC.right - 100, 315, 70, 20, ID_ETIQUETA_TIEMPOTOOLTIP2, DEtiquetaEx_Alineacion_Derecha);
 	// Barra para asignar el tiempo de ocultación de los tooltips
 	BarraTiempoToolTips.CrearBarraDesplazamientoEx(&MarcoGeneral, 350, 315, RC.right - 450, 20, ID_BARRA_TIEMPOTOOLTIP, 1000, 10000, static_cast<float>(App.BD.Opciones_TiempoToolTips()));
+//	BarraTiempoToolTips.MostrarValor(DBarraEx_MostrarValor_ValorInt);
 
 	///////////////////////////////////////
 	// Creo los controles del marco Listas

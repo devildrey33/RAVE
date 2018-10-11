@@ -18,9 +18,17 @@ namespace DWL {
 		_Minimo = nMinimo;
 		_Maximo = nMaximo;
 		_Valor = nValor;
-		_ColorBarra = COLOR_BARRA;
-		_ColorFondo = COLOR_BARRA_FONDO;
-		_ColorBorde = COLOR_BORDE;
+		if (_Activado == TRUE) {
+			_ColorBarra = COLOR_BARRA;
+			_ColorFondo = COLOR_BARRA_FONDO;
+			_ColorBorde = COLOR_BORDE;
+		}
+		else {
+			_ColorBarra = COLOR_BARRA_DESACTIVADO;
+			_ColorFondo = COLOR_BARRA_FONDO_DESACTIVADO;
+			_ColorBorde = COLOR_BORDE;
+			EnableWindow(_hWnd, FALSE);
+		}
 
 		_ToolTip.CrearToolTipEx(Fuente18Normal, nPadre);
 		return hWnd();

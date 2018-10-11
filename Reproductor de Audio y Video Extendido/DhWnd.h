@@ -48,6 +48,7 @@ namespace DWL {
 									// Debe utilizarse una sola vez al terminar la apliación
 		static void                 EliminarFuentesEstaticas();
 
+		static DhWnd_Fuente         Fuente16Normal;
 		static DhWnd_Fuente         Fuente18Normal;
 		static DhWnd_Fuente         Fuente18Negrita;
 		static DhWnd_Fuente         Fuente21Normal;

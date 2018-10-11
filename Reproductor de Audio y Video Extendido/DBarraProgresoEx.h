@@ -24,42 +24,62 @@ namespace DWL {
 		DBarraEx_Transicion_Desactivado
 	};
 
+	enum DBarraEx_MostrarValor {
+		DBarraEx_MostrarValor_Nada,
+		DBarraEx_MostrarValor_Valor2Decimales,
+		DBarraEx_MostrarValor_ValorInt,
+		DBarraEx_MostrarValor_ValorMaximo2Decimales,
+		DBarraEx_MostrarValor_ValorMaximoInt,
+	};
+
 	class DBarraProgresoEx : public DControlEx {
 	  public:
-									DBarraProgresoEx();
-							       ~DBarraProgresoEx();
-		HWND						CrearBarraProgresoEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID, const float nMinimo = 0.0f, const float nMaximo = 1.0f, const float nValor = 0.0);
+											DBarraProgresoEx();
+							               ~DBarraProgresoEx();
+		HWND								CrearBarraProgresoEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID, const float nMinimo = 0.0f, const float nMaximo = 1.0f, const float nValor = 0.0);
 
-		void						Minimo(const float nMinimo);
-		inline const float			Minimo(void)					{ return _Minimo; }
-		void						Maximo(const float nMaximo);
-		inline const float			Maximo(void)					{ return _Maximo; }
-		virtual void				Valor(const float nValor);
-		virtual inline const float	Valor(void)						{ return _Valor; }
+		virtual void						Activado(const BOOL nActivar);
+		inline const BOOL					Activado(void) { return DhWnd::Activado(); }
 
-		void						PintarBarraEx(HDC DC);
+
+											// Mínimo, Máximo, Valor
+		void								Minimo(const float nMinimo);
+		virtual void						Valor(const float nValor);
+		void								Maximo(const float nMaximo);
+		inline const float					Minimo(void)											{ return _Minimo;					}
+		inline const float					Maximo(void)											{ return _Maximo;					}
+		virtual inline const float			Valor(void)												{ return _Valor;					}
+
+		void								PintarBarraEx(HDC DC, const int nX = 0, const int nY = 0);
 
 		// virtuales
-		virtual void				Evento_PintarBorde(HDC DC, RECT &RBorde);
-		virtual void				Evento_PintarBarra(HDC DC, RECT &RBarra);
-		virtual void				Evento_PintarFondo(HDC DC, RECT &RFondo);
+		virtual void						Evento_PintarBorde(HDC DC, RECT &RBorde);
+		virtual void						Evento_PintarBarra(HDC DC, RECT &RBarra);
+		virtual void						Evento_PintarFondo(HDC DC, RECT &RFondo);
+		virtual void						Evento_PintarValor(HDC DC, RECT &RFondo);
+											// Permite modificar el valor formateado antes de pintarlo en el Evento_PintarValor
+		virtual void						Evento_FormatearValor(std::wstring &ValorFormateado)	{ };
 
-//		virtual void                Resaltar(const BOOL Resaltado);
-		virtual void                Transicion(const DBarraEx_Transicion nTransicion);
-		LRESULT CALLBACK			GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
+		virtual void						Transicion(const DBarraEx_Transicion nTransicion);
+		LRESULT CALLBACK					GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+		inline void							MostrarValor(const DBarraEx_MostrarValor nMostrarValor)	{ _MostrarValor = nMostrarValor;	}
+		inline const DBarraEx_MostrarValor  MostrarValor(void)										{ return _MostrarValor;				}
 	  protected:
-		const float                _ValorMouse(RECT &RC, const int cX);
-		void					   _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
-		void		               _Evento_MouseSaliendo(void);
+		const float                        _ValorMouse(RECT &RC, const int cX);
+		void				               _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
+		void		                       _Evento_MouseSaliendo(void);
 
-		COLORREF				   _ColorBarra;
-		COLORREF		           _ColorBorde;
-		COLORREF		           _ColorFondo;
-		float					   _Minimo;
-		float					   _Maximo;
-		float					   _Valor;
-		DBarraEx_Estado			   _Estado;
-		DAnimacionColor            _AniTransicion;
+		COLORREF				           _ColorBarra;
+		COLORREF		                   _ColorBorde;
+		COLORREF		                   _ColorFondo;
+		float			         		   _Minimo;
+		float					           _Maximo;
+		float		         			   _Valor;
+		DBarraEx_Estado		         	   _Estado;
+		DAnimacionColor                    _AniTransicion;
+		DBarraEx_MostrarValor              _MostrarValor;
+		BOOL                               _Activado;
 
 		friend class DMenuEx;
 		friend class DMenuEx2;

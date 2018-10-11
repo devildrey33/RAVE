@@ -116,8 +116,13 @@ class RAVE {
 									// Objeto para asociar este reproductor en el registro de windows
 	AsociarReproductor				AsociarMedios;
 									// ID_MENUVIDEO_AUDIO_PISTA_AUDIO
-	DMenuEx                        *MenuPistasDeAudio;
-	DMenuEx                        *MenuProporcion;
+	DMenuEx                        *MenuVideoPistasDeAudio;
+	DMenuEx                        *MenuVideoProporcion;
+	DMenuEx                        *MenuVideoFiltros;
+	DMenuEx                        *MenuVideoSubtitulos;
+/*	DMenuEx                        *MenuVideoBrillo;
+	DMenuEx                        *MenuVideoContraste;
+	DMenuEx                        *MenuVideoSaturacion;*/
 
 	std::vector<TeclaRapida>       TeclasRapidas;
   protected:

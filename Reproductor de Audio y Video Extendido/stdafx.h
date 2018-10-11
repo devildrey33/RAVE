@@ -126,6 +126,10 @@
 #define ID_MENUVIDEO_PROPORCION_2P39A1			2189
 #define ID_MENUVIDEO_PROPORCION_5A4				2190
 #define ID_MENUVIDEO_BRILLO                     2191
+#define ID_MENUVIDEO_CONTRASTE                  2192
+#define ID_MENUVIDEO_PORDEFECTO                 2193
+#define ID_MENUVIDEO_SATURACION                 2194
+#define ID_MENUVIDEO_FILTROS                    2195
 
 
 #define TIMER_LISTA								2200
