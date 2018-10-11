@@ -8,7 +8,7 @@
 #include "AsignarTeclaRapida.h"
 #include "ControlSeparador.h"
 #include "DBarraDesplazamientoEx.h"
-#include "DDesplegableEx.h"
+#include "DControlDesplegableEx.h"
 
 class VentanaOpcionesRAVE : public DWL::DVentana {
   public:
@@ -67,6 +67,6 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	DEtiquetaEx			    EtiquetaTiempoOcultarToolTipsTA;
 
 							// Lista
-	DDesplegableEx          DesplegableListaInicio;
+	DControlDesplegableEx   DesplegableListaInicio;
 };
 

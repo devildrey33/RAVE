@@ -316,9 +316,6 @@
     <ClInclude Include="ThreadAgregarArchivosLista.h">
       <Filter>Base de datos\Threads\AgregarArchivosLista</Filter>
     </ClInclude>
-    <ClInclude Include="DMenuEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\MenuEx</Filter>
-    </ClInclude>
     <ClInclude Include="DEventoMouse.h">
       <Filter>DWL\Ventanas\Base\Eventos</Filter>
     </ClInclude>
@@ -381,6 +378,12 @@
     </ClInclude>
     <ClInclude Include="DListaDesplegable.h">
       <Filter>DWL\Ventanas\ControlesEx\DesplegableEx %28DEPRECATED%29</Filter>
+    </ClInclude>
+    <ClInclude Include="DControlDesplegableEx.h">
+      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx %28DEPRECATED%29</Filter>
+    </ClInclude>
+    <ClInclude Include="DMenuEx.h">
+      <Filter>DWL\Ventanas\ControlesEx\ToolTipEx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -574,6 +577,9 @@
       <Filter>Ventanas\Controles</Filter>
     </ClCompile>
     <ClCompile Include="DListaDesplegable.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx %28DEPRECATED%29</Filter>
+    </ClCompile>
+    <ClCompile Include="DControlDesplegableEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\DesplegableEx %28DEPRECATED%29</Filter>
     </ClCompile>
   </ItemGroup>

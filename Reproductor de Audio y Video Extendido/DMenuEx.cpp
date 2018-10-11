@@ -10,23 +10,23 @@ namespace DWL {
 	DhWnd	*DMenuEx::_hWndDest			= NULL;
 
 
-	DMenuEx::DMenuEx(void) : DWL::DVentana(), _Padre(NULL), _Tipo(DMenuEx_Tipo_Raiz), _ID(0), _Activado(TRUE), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL) /*, _AnularMouseMove(NULL)*/ {
+	DMenuEx::DMenuEx(void) : DWL::DVentana(), _Padre(NULL), _Tipo(DMenuEx_Tipo_Raiz), _ID(0), _Activado(TRUE), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL), _ColorFondo(COLOR_MENU_FONDO), _ColorTexto(COLOR_MENU_TEXTO) /*, _AnularMouseMove(NULL)*/ {
 		_Recta = { 0, 0, 0, 0 };
 	}
 
 	// Constructor menú tipo separador (interno AgregarSeparador)
-	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Separador), _ID(nID), _MenuResaltado(NULL), _MenuPresionado(NULL), _Activado(TRUE), _MenuDesplegado(NULL)/*, _AnularMouseMove(NULL) */ {
+	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Separador), _ID(nID), _MenuResaltado(NULL), _MenuPresionado(NULL), _Activado(TRUE), _MenuDesplegado(NULL), _ColorFondo(COLOR_MENU_FONDO), _ColorTexto(COLOR_MENU_TEXTO)/*, _AnularMouseMove(NULL) */ {
 		_Recta = { 0, 0, 0, 0 };
 	}
 
 	// Constructor menú tipo texto (interno AgregarMenu)
-	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Texto), _ID(nID), _Texto(nTexto), _Activado(nActivado), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL)/* , _AnularMouseMove(NULL) */ {
+	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Texto), _ID(nID), _Texto(nTexto), _Activado(nActivado), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL), _ColorFondo(COLOR_MENU_FONDO), _ColorTexto(COLOR_MENU_TEXTO)/* , _AnularMouseMove(NULL) */ {
 		_Recta = { 0, 0, 0, 0 };
 		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DMENUEX_TAMICONO, DMENUEX_TAMICONO);
 	}
 
 	// Constructor menú tipo texto (interno AgregarBarra)
-	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado, const float nMinimo, const float nMaximo, const float nValor) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Barra), _ID(nID), _Texto(nTexto), _Activado(nActivado), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL)/* , _AnularMouseMove(NULL) */ {
+	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado, const float nMinimo, const float nMaximo, const float nValor) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Barra), _ID(nID), _Texto(nTexto), _Activado(nActivado), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL), _ColorFondo(COLOR_MENU_FONDO), _ColorTexto(COLOR_MENU_TEXTO)/* , _AnularMouseMove(NULL) */ {
 		_Recta = { 0, 0, 0, 0 };
 		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DMENUEX_TAMICONO, DMENUEX_TAMICONO);
 		_Barra._Minimo = nMinimo;
@@ -94,8 +94,11 @@ namespace DWL {
 			// Asigno la posición del menú y lo hago siempre visible
 			SetWindowPos(_hWnd, HWND_TOPMOST, PosX, PosY, Tam.x, Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 
-			// Creo las barras (si ahy alguna)
+			// Creo las barras (si ahy alguna), y asigno los colores por defecto
 			for (size_t i = 0; i < _Menus.size(); i++) {
+				_Menus[i]->_ColorFondo = COLOR_MENU_FONDO;
+				_Menus[i]->_ColorTexto = COLOR_MENU_TEXTO;
+
 				if (_Menus[i]->_Tipo == DMenuEx_Tipo_Barra) {
 					_Menus[i]->_Barra.CrearBarraDesplazamientoEx(this, _BarraPosX, _Menus[i]->_Recta.top + DMENUEX_MARGEN_Y, DMENUEX_ANCHOBARRA + DMENUEX_MARGEN_X + DMENUEX_TAMICONO, (_Menus[i]->_Recta.bottom - _Menus[i]->_Recta.top) - (DMENUEX_MARGEN_Y * 2), _Menus[i]->_ID, _Menus[i]->_Barra._Minimo, _Menus[i]->_Barra._Maximo, _Menus[i]->_Barra._Valor);
 					_Menus[i]->_Barra.Activado(_Menus[i]->_Activado);
@@ -115,6 +118,7 @@ namespace DWL {
 	void DMenuEx::Ocultar(const BOOL OcultarTodos) {
 		// Oculto todos los menús hijos de este
 		_OcultarRecursivo(this);
+		// Elimino las barras
 		for (size_t i = 0; i < _Menus.size(); i++) {
 			_Menus[i]->_Barra.Destruir();
 		}
@@ -190,6 +194,7 @@ namespace DWL {
 	// Función para activar / desactivar el menú
 	void DMenuEx::Activado(const BOOL nActivar) {
 		_Activado = nActivar;
+		Transicion((nActivar == TRUE) ? DMenuEx_Transicion_Normal : DMenuEx_Transicion_Desactivado);
 		_Barra.Activado(nActivar);
 		if (_Padre != NULL) {
 			if (_Padre->_hWnd != NULL) {
@@ -330,7 +335,7 @@ namespace DWL {
 		int bPresionado = 0;
 		
 		// Obtengo el estado del menú
-		DMenuEx_Estado Estado = DMenuEx_Estado_Normal;
+		/*DMenuEx_Estado Estado = DMenuEx_Estado_Normal;
 		if (pMenu == _MenuResaltado) Estado = DMenuEx_Estado_Resaltado;
 		// Si está presionado
 		if (pMenu == _MenuPresionado) {
@@ -338,12 +343,12 @@ namespace DWL {
 			Estado = DMenuEx_Estado_Presionado;
 		}
 		// Si no está activado
-		if (pMenu->_Activado == FALSE) Estado = DMenuEx_Estado_Desactivado;
+		if (pMenu->_Activado == FALSE) Estado = DMenuEx_Estado_Desactivado;*/
 
 		// Elijo los colores del menú según su estado
-		COLORREF ColFondo;
-		COLORREF ColTexto;
-		switch (Estado) {
+		COLORREF ColFondo = pMenu->_ColorFondo;
+		COLORREF ColTexto = pMenu->_ColorTexto;
+		/*switch (Estado) {
 			case DMenuEx_Estado_Normal:
 				ColFondo = COLOR_MENU_FONDO;
 				ColTexto = COLOR_MENU_TEXTO;
@@ -360,7 +365,7 @@ namespace DWL {
 				ColFondo = COLOR_MENU_FONDO;
 				ColTexto = COLOR_MENU_TEXTO_DESACTIVADO;
 				break;
-		}
+		}*/
 
 		// Pinto el fondo
 		HBRUSH BrochaFondo = CreateSolidBrush(ColFondo);
@@ -513,8 +518,10 @@ namespace DWL {
 			// Asigno la posición del menú y lo hago siempre visible
 			SetWindowPos(_hWnd, HWND_TOPMOST, -4 + WR.left + Punto.x, -1 + WR.top + Punto.y, Tam.x, Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 
-			// Creo las barras (si ahy alguna)
+			// Creo las barras (si ahy alguna), y asigno los colores por defecto
 			for (size_t i = 0; i < _Menus.size(); i++) {
+				_Menus[i]->_ColorFondo = COLOR_MENU_FONDO;
+				_Menus[i]->_ColorTexto = COLOR_MENU_TEXTO;
 				if (_Menus[i]->_Tipo == DMenuEx_Tipo_Barra) {
 					_Menus[i]->_Barra.CrearBarraDesplazamientoEx(this, _BarraPosX, _Menus[i]->_Recta.top + DMENUEX_MARGEN_Y, DMENUEX_ANCHOBARRA + DMENUEX_MARGEN_X + DMENUEX_TAMICONO, (_Menus[i]->_Recta.bottom - _Menus[i]->_Recta.top) - (DMENUEX_MARGEN_Y * 2), _Menus[i]->_ID, _Menus[i]->_Barra._Minimo, _Menus[i]->_Barra._Maximo, _Menus[i]->_Barra._Valor);
 					_Menus[i]->_Barra.Activado(_Menus[i]->_Activado);
@@ -569,8 +576,13 @@ namespace DWL {
 							SetFocus(_hWnd);
 							SendMessage(_hWndDest->hWnd(), WM_NCACTIVATE, TRUE, 0);
 						}
+						// Vuelvo a dejar el menu resaltado anterior al estado normal
+						if (_MenuResaltado != NULL) _MenuResaltado->Transicion(DMenuEx_Transicion_Normal);
 						// Asigno el nuevo menú resaltado
 						_MenuResaltado = _Menus[i];
+						// Estado para el menu resaltado a resaltado
+						_MenuResaltado->Transicion(DMenuEx_Transicion_Resaltado);
+
 
 						// Si tiene Sub-menus
 						if (_MenuResaltado->TotalMenus() > 0) {
@@ -612,6 +624,7 @@ namespace DWL {
 		for (size_t i = 0; i < _Menus.size(); i++) {
 			if (PtInRect(&_Menus[i]->_Recta, Pt) != FALSE) {
 				_MenuPresionado = _Menus[i];
+				_MenuPresionado->Transicion(DMenuEx_Transicion_Presionado);
 				Repintar();
 				return;
 			}
@@ -624,6 +637,39 @@ namespace DWL {
 		return FALSE;
 	}
 
+
+	void DMenuEx::Transicion(const DMenuEx_Transicion nTransicion) {
+		DWORD Duracion = DhWnd::TiempoAnimaciones;
+		if (_AniTransicion.Animando() == TRUE) {
+			Duracion = _AniTransicion.TiempoActual();
+			_AniTransicion.Terminar();
+		}
+
+		COLORREF FondoHasta, TextoHasta;
+		switch (nTransicion) {
+			case DMenuEx_Transicion_Normal:
+				FondoHasta = COLOR_MENU_FONDO;
+				TextoHasta = COLOR_MENU_TEXTO;
+				break;
+			case DMenuEx_Transicion_Resaltado:
+				FondoHasta = COLOR_MENU_FONDO_RESALTADO;
+				TextoHasta = COLOR_MENU_TEXTO_RESALTADO;
+				break;
+			case DMenuEx_Transicion_Presionado:
+				FondoHasta = COLOR_MENU_FONDO_PRESIONADO;
+				TextoHasta = COLOR_MENU_TEXTO_PRESIONADO;
+				break;
+			case DMenuEx_Transicion_Desactivado:
+				FondoHasta = COLOR_MENU_FONDO;
+				TextoHasta = COLOR_MENU_TEXTO_DESACTIVADO;
+				break;
+		}
+		_AniTransicion.Iniciar(_ColorFondo, FondoHasta, _ColorTexto, TextoHasta, Duracion, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
+			_ColorFondo = Valores[0];
+			_ColorTexto = Valores[1];
+			_Padre->Repintar();
+		});
+	}
 	
 	void DMenuEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
 		ReleaseCapture();

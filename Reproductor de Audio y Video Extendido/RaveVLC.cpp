@@ -178,9 +178,8 @@ const BOOL RaveVLC::AbrirMedio(BDMedio &Medio) {
 
 void RaveVLC::CerrarMedio(void) {
 	hWndVLC = NULL;
-	if (_MediaPlayer != NULL) {
+	if (_MediaPlayer != NULL) {		
 		Stop();
-
 /*		libvlc_event_detach(_Eventos, libvlc_MediaStateChanged,		EventosVLC, this);
 		libvlc_event_detach(_Eventos, libvlc_MediaDurationChanged,	EventosVLC, this);
 		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEndReached,			EventosVLC, this);
@@ -256,6 +255,8 @@ const BOOL RaveVLC::Stop(void) {
 			// Para evitar un deadlock si se está reproduciendo un video y el foco está en otra parte
 			HWND Foco = SetFocus(App.VentanaRave.hWnd());
 		}
+		// Desactivo los filtros que pueda haber activados para evitar un crash en la versión x86
+		libvlc_video_set_adjust_int(_MediaPlayer, libvlc_adjust_Enable, 0);
 		libvlc_media_player_stop(_MediaPlayer);
 
 		hWndVLC = NULL;

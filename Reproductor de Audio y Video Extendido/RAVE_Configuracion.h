@@ -25,4 +25,4 @@
 #endif
 
 // Simula los argumentos para reproducir un video nada mas iniciar
-//#define RAVE_SIMULAR_REPRODUCIR_VIDEO
+#define RAVE_SIMULAR_REPRODUCIR_VIDEO

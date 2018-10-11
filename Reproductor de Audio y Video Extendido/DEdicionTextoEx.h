@@ -62,7 +62,7 @@ namespace DWL {
 		inline const wchar_t       *Texto(void) { return _Texto.c_str(); };
 		virtual void				Texto(std::wstring &nTexto, const BOOL nRepintar = TRUE);
 		virtual void				Texto(const wchar_t * nTexto, const BOOL nRepintar = TRUE);
-	protected:
+	  protected:
 		void					   _Evento_Pintar(void);
 		void                       _Evento_Size(void);
 		void                       _Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam);

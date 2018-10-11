@@ -141,9 +141,9 @@ void VentanaOpcionesRAVE::Crear(void) {
 
 	///////////////////////////////////////
 	// Creo los controles del marco Listas
-	DesplegableListaInicio.CrearDesplegable(&MarcoListas, 10, 10, 200, 30, ID_DESPLEGABLE_LISTAINICIO, DWL::DDesplegableEx_TipoEdicion_SinEdicion, DWL::DDesplegableEx_TipoDesplegable_Lista);
-	DesplegableListaInicio.Texto(L"Nada");
-
+//	DesplegableListaInicio.CrearDesplegable(&MarcoListas, 10, 10, 200, 30, ID_DESPLEGABLE_LISTAINICIO, DWL::DDesplegableEx_TipoEdicion_SinEdicion, DWL::DDesplegableEx_TipoDesplegable_Lista);
+//	DesplegableListaInicio.Texto(L"Nada");
+	DesplegableListaInicio.CrearControlDesplegable(&MarcoListas, L"nada", ID_DESPLEGABLE_LISTAINICIO, 0, 10, 10, 200, 30);
 
 	// Muestro la ventana de las opciones
 	Visible(TRUE);

@@ -27,6 +27,14 @@ namespace DWL {
 		DMenuEx_Estado_Desactivado  = 3
 	};
 
+	enum DMenuEx_Transicion {
+		DMenuEx_Transicion_Normal,
+		DMenuEx_Transicion_Resaltado,
+		DMenuEx_Transicion_Presionado,
+		DMenuEx_Transicion_Desactivado
+	};
+
+
 	#define DMENUEX_TAMICONO				16 // Tamaño del icono
 	#define DMENUEX_ANCHOBARRA             100 // Ancho de las barras
 	#define WM_ESMENUEX			 WM_USER + 500
@@ -92,6 +100,8 @@ namespace DWL {
 
 		inline void				BarraValor(const float nValor) { _Barra.Valor(nValor); };
 		inline const float		BarraValor(void) { return _Barra.Valor(); };
+
+		void                    Transicion(const DMenuEx_Transicion nTransicion);
 	  protected:
 								// Constructor menú tipo texto (interno AgregarBarra)
 								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado, const float nMinimo, const float nMaximo, const float nValor);
@@ -141,9 +151,13 @@ namespace DWL {
 		DMenuEx_Tipo           _Tipo;
 		static DhWnd          *_hWndDest;  // Destino para los mensajes
 //		HWND                   _hWndPadre; // Ventana padre que contiene el hWndDest;
+		DAnimacionColor        _AniTransicion;
 
 		DBarraDesplazamientoEx _Barra;
 		int                    _BarraPosX;
+
+		COLORREF               _ColorFondo;
+		COLORREF               _ColorTexto;
 
 //		BOOL				   _AnularMouseMove;
 								// Menu resultado para la función MostrarModal

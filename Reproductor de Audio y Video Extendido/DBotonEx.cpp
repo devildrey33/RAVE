@@ -5,7 +5,7 @@
 
 namespace DWL {
 
-	DBotonEx::DBotonEx(void) : _Marcado(FALSE), _PosIconoX(-1), _PosIconoY(-1), _Icono(NULL), _ColorFondo(COLOR_BOTON), _ColorBorde(COLOR_BORDE), _ColorTexto(COLOR_TEXTO) {
+	DBotonEx::DBotonEx(void) : DControlEx(), _Marcado(FALSE), _PosIconoX(-1), _PosIconoY(-1), _Icono(NULL), _ColorFondo(COLOR_BOTON), _ColorBorde(COLOR_BORDE), _ColorTexto(COLOR_TEXTO) {
 	}
 
 
@@ -55,7 +55,7 @@ namespace DWL {
 		return hWnd();
 	}
 
-	void DBotonEx::Pintar(HDC DC) {
+	void DBotonEx::Pintar(HDC DC, const int nX, const int nY) {
 		RECT    RC, RCF, RCT, RCS;
 		GetClientRect(hWnd(), &RC);
 		RCF = RC; RCF.left++; RCF.top++; RCF.right--; RCF.bottom--;
@@ -104,7 +104,7 @@ namespace DWL {
 		}
 
 		// Copio el buffer al DC
-		BitBlt(DC, RC.left, RC.top, RC.right, RC.bottom, Buffer, 0, 0, SRCCOPY);
+		BitBlt(DC, nX + RC.left, nY + RC.top, RC.right, RC.bottom, Buffer, 0, 0, SRCCOPY);
 
 		// Elimino el buffer de la memória
 		SelectObject(Buffer, vFuente);

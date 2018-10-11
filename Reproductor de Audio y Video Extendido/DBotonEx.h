@@ -36,7 +36,7 @@ namespace DWL {
 		virtual void			Activado(const BOOL nActivar);
 		inline const BOOL       Activado(void) { return DhWnd::Activado(); }
 		
-		void					Pintar(HDC DC);
+		void					Pintar(HDC DC, const int nX = 0, const int nY = 0);
 
 		virtual void			Evento_MouseMovimiento(DEventoMouse &DatosMouse)	{ };
 		virtual void			Evento_MousePresionado(DEventoMouse &DatosMouse)	{ };

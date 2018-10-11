@@ -24,7 +24,7 @@ namespace DWL {
 	class DhWnd {
 	  public:
 									DhWnd(void)		 : _hWnd(0)		, _MouseDentro(FALSE) { IniciarMiembrosEstaticos(); };
-									DhWnd(HWND hWnd) : _hWnd(hWnd)	, _MouseDentro(FALSE) { };
+//									DhWnd(HWND hWnd) : _hWnd(hWnd)	, _MouseDentro(FALSE) { };
                                    ~DhWnd(void)						{ Destruir(); };
 		inline HWND					hWnd(void)						{ return _hWnd; };
 		inline virtual void			Activado(const BOOL nActivar)   { EnableWindow(_hWnd, nActivar); };

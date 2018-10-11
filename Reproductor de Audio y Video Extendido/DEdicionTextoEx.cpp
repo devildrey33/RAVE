@@ -178,15 +178,15 @@ namespace DWL {
 */
 #define ESPACIO_ICONO 20
 
-	DEdicionTextoEx::DEdicionTextoEx() : DControlEx(), DEdicionTextoEx_Nucleo(), _Icono(NULL) {
+	DEdicionTextoEx::DEdicionTextoEx(void) : DControlEx(), DEdicionTextoEx_Nucleo(), _Icono(NULL) {
 	}
 
 
-	DEdicionTextoEx::~DEdicionTextoEx() {
+	DEdicionTextoEx::~DEdicionTextoEx(void) {
 	}
 
 	HWND DEdicionTextoEx::CrearEdicionTextoEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, DListaIconos_Icono *nIcono, const long Estilos) {
-		if (hWnd()) { Debug_Escribir(L"DEdicionTextoEx::CrearEdicionTextoEx() Error : ya se ha creado el control...\n"); return hWnd(); }
+//		if (hWnd()) { Debug_Escribir(L"DEdicionTextoEx::CrearEdicionTextoEx() Error : ya se ha creado el control...\n"); return hWnd(); }
 		_hWnd = CrearControlEx(nPadre, L"DEdicionTextoEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
 		_Texto = nTxt;
 		Fuente = Fuente18Normal;

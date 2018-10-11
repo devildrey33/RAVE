@@ -3,7 +3,8 @@
 
 namespace DWL {
 
-	DBarraScrollEx::DBarraScrollEx(void) :  ColorFondo(COLOR_FONDO)									, _Scroll_PosPresionado({ 0 ,0 }), _Scroll_PosInicio(0.0f),
+	DBarraScrollEx::DBarraScrollEx(void) :  DControlEx(),
+											ColorFondo(COLOR_FONDO)									, _Scroll_PosPresionado({ 0 ,0 }), _Scroll_PosInicio(0.0f),
 											ColorScroll(COLOR_SCROLL_BARRA)							,  ColorScrollResaltado(COLOR_SCROLL_BARRA_RESALTADO),
 											ColorFondoScroll(COLOR_SCROLL_FONDO)					,  ColorScrollPresionado(COLOR_SCROLL_BARRA_PRESIONADO),
 											ColorFondoScrollResaltado(COLOR_SCROLL_FONDO_RESALTADO)	,  ColorFondoScrollPresionado(COLOR_SCROLL_FONDO_PRESIONADO),

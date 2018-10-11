@@ -170,6 +170,7 @@
     <ClInclude Include="DBarraScrollEx.h" />
     <ClInclude Include="DBarraTareas.h" />
     <ClInclude Include="DControl.h" />
+    <ClInclude Include="DControlDesplegableEx.h" />
     <ClInclude Include="DControlEx.h" />
     <ClInclude Include="DEventoMouse.h" />
     <ClInclude Include="DDesplegableEx.h" />
@@ -256,6 +257,7 @@
     <ClCompile Include="DBotonEx.cpp" />
     <ClCompile Include="DConsola.cpp" />
     <ClCompile Include="DControl.cpp" />
+    <ClCompile Include="DControlDesplegableEx.cpp" />
     <ClCompile Include="DControlEx.cpp" />
     <ClCompile Include="DDesplegableEx.cpp" />
     <ClCompile Include="DDesplegableEx_ExplorarDirectoriosEx.cpp" />
