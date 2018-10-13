@@ -166,6 +166,7 @@ namespace DWL {
 		void										   _CalcularScrolls(void);
 		void                                           _CalcularColumnas(void);
 		void                                           _CalcularItemsPagina(const size_t TamPagina);
+		void                                           _CalcularPintarIconos(void);
 
 		DListaEx_Item                                 *_AgregarItem(DListaEx_Item *nItem, DListaIconos_Icono *nIcono, const INT_PTR PosicionFila, const TCHAR *nTxt, va_list Marker);
 		std::vector<DListaEx_Item *>                   _Items;
@@ -197,6 +198,7 @@ namespace DWL {
 		HBITMAP                                        _BufferItemBmpViejo;
 		HFONT                                          _BufferItemFuenteViejo;
 
+		BOOL                                           _PintarIconos;
 /*		int                                            _MouseX;
 		int                                            _MouseY;*/
 

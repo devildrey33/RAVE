@@ -18,7 +18,7 @@ namespace DWL {
 		_AltoLista = AltoLista;
 		_Lista.Padre = this;
 		_Lista.CrearListaEx(this, RV.left, RV.bottom, cAncho, AltoLista, NULL, WS_POPUP | WS_BORDER, WS_EX_NOACTIVATE | WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
-		_Lista.AgregarColumna(-1, DListaEx_Columna_Alineacion_Derecha);
+		_Lista.AgregarColumna(-1, DListaEx_Columna_Alineacion_Izquierda);
 	}
 
 	void DListaDesplegableEx::AgregarItem(const wchar_t *nTexto, const INT_PTR nIcono) {

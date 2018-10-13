@@ -93,7 +93,7 @@ namespace DWL {
 			Debug_Escribir_Varg(L"DListaEx::Pintar -> _Repintar = %d\n", _Repintar);
 		#endif
 		if (_Repintar == TRUE) {			
-			_CalcularScrolls();
+			_CalcularScrolls();			
 		}
 
 		RECT	RC, RCS;
@@ -107,7 +107,7 @@ namespace DWL {
 		//		LONG PixelInicio = static_cast<LONG>((static_cast<float>(_TotalAltoVisible) / 100.0f) * _ScrollV_Posicion);
 				//LONG PixelFin = PixelInicio + RCS.bottom;
 
-				// Diferencia de pixeles Vertical (puede ser negativo si el primer item es parcialmente visible, o 0 si el primer item está justo al principio del área visible)
+		// Diferencia de pixeles Vertical (puede ser negativo si el primer item es parcialmente visible, o 0 si el primer item está justo al principio del área visible)
 		LONG DifInicioV = _ItemPaginaVDif;
 
 		size_t nItemFin = _ItemPaginaFin;
@@ -197,14 +197,16 @@ namespace DWL {
 		DeleteObject(BrochaFondo);
 
 		// Pinto el icono
-		if (_Items[nPosItem]->_Icono != NULL) {
-			int PosYIco = ((Espacio.bottom - Espacio.top) - DLISTAEX_TAMICONO) / 2;
-			DrawIconEx(_BufferItem, bPresionado + DLISTAEX_PADDING, bPresionado + PosYIco, _Items[nPosItem]->_Icono->Icono(), DLISTAEX_TAMICONO, DLISTAEX_TAMICONO, 0, 0, DI_NORMAL);
+		if (_PintarIconos == TRUE) {
+			if (_Items[nPosItem]->_Icono != NULL) {
+				int PosYIco = ((Espacio.bottom - Espacio.top) - DLISTAEX_TAMICONO) / 2;
+				DrawIconEx(_BufferItem, bPresionado + DLISTAEX_PADDING, bPresionado + PosYIco, _Items[nPosItem]->_Icono->Icono(), DLISTAEX_TAMICONO, DLISTAEX_TAMICONO, 0, 0, DI_NORMAL);
+			}
 		}
 		RECT RCelda;
 //		LONG AnchoPintado = (DLISTAEX_PADDING * 2) + DLISTAEX_TAMICONO;
 		LONG AnchoPintado = 0;
-		//		SetTextColor(_BufferItem, RGB(0, 0 ,0));
+		//	Recorro todos los sub-items
 		for (size_t i = 0; i < _Columnas.size(); i++) {
 			RCelda = {
 				1 + bPresionado + AnchoPintado + DLISTAEX_PADDING, 
@@ -212,7 +214,7 @@ namespace DWL {
 				1 + bPresionado + AnchoPintado + _Columnas[i]->_AnchoCalculado - (DLISTAEX_PADDING * 2),
 				1 + bPresionado + Fuente.Alto() + DLISTAEX_PADDING
 			};
-			if (i == 0) { // La primera columna contiene el icono (que ya se ha pintado)
+			if (i == 0 && _PintarIconos == TRUE) { // La primera columna contiene el icono (que ya se ha pintado)
 				RCelda.left += (DLISTAEX_PADDING * 2) + DLISTAEX_TAMICONO;
 			}
 			// Si hay texto lo pinto
@@ -500,7 +502,7 @@ namespace DWL {
 
 
 	void DListaEx::_CalcularColumnas(void) {
-		INT		nAnchoFijo		= (DLISTAEX_PADDING * 2) + DLISTAEX_TAMICONO;
+		INT		nAnchoFijo		= (_PintarIconos == TRUE) ? (DLISTAEX_PADDING * 2) + DLISTAEX_TAMICONO : DLISTAEX_PADDING;
 		UINT	ColumnasAuto	= 0;
 		size_t  i               = 0;
 		// Cuento el ancho fijo y las columnas con ancho automático
@@ -568,6 +570,7 @@ namespace DWL {
 		}
 		ScrollV_Visible(SV);
 
+		_CalcularPintarIconos();
 		_CalcularColumnas();
 		_CalcularItemsPagina(RC.bottom);
 	}
@@ -828,6 +831,15 @@ namespace DWL {
 		Evento_FocoPerdido(hWndNuevoFoco);
 	}
 
+	void DListaEx::_CalcularPintarIconos(void) {
+		_PintarIconos = FALSE;
+		for (size_t i = 0; i < _Items.size(); i++) {
+			if (_Items[i]->_Icono != NULL) {
+				_PintarIconos = TRUE;
+				return;
+			}
+		}
+	}
 
 	LRESULT CALLBACK DListaEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {

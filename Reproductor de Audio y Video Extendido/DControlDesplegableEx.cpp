@@ -34,7 +34,7 @@ namespace DWL {
 		_Boton.CrearBotonEx(this, L"", cAncho - cAlto, 0, cAlto, cAlto, ID_BOTON);
 		_Icono = DListaIconos::AgregarIconoRecursos(nIDIcono, TAM_ICONO, TAM_ICONO);
 		_Edicion.TextoEditable = TextoEditable;
-		_Edicion.Alineacion = DEdicionTextoEx_Alineacion_Derecha;
+		_Edicion.Alineacion = DEdicionTextoEx_Alineacion_Izquierda;
 		_Edicion.CrearEdicionTextoEx(this, nTexto, 0, 0, cAncho - cAlto, cAlto, ID_EDICION, _Icono);
 	}
 
