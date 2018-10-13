@@ -5,7 +5,7 @@
 
 namespace DWL {
 
-	DListaEx::DListaEx(void) :	_ItemPaginaInicio(0)	, _ItemPaginaFin(0)			, _ItemPaginaVDif(0)		, _ItemPaginaHDif(0),
+	DListaEx::DListaEx(void) :  DBarraScrollEx()		, _ItemPaginaInicio(0)		, _ItemPaginaFin(0)			, _ItemPaginaVDif(0)		, _ItemPaginaHDif(0),
 								_SubItemResaltado(-1)	, _SubItemUResaltado(-1)	, _SubItemPresionado(-1)	, MostrarSeleccion(TRUE),
 								_ItemResaltado(-1)		, _ItemUResaltado(-1)		, _ItemMarcado(0)			,
 								_ItemPresionado(-1)		, _ItemShift(0)				, _Repintar(FALSE)			,
@@ -22,10 +22,10 @@ namespace DWL {
 	}
 
 	
-	HWND DListaEx::CrearListaEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID) {
+	HWND DListaEx::CrearListaEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const DWORD Estilos, const DWORD EstilosExtendidos) {
 //		if (hWnd()) { Debug_Escribir(L"DListaEx::CrearListaEx() Error : ya se ha creado la lista\n"); return hWnd(); }
 		Fuente = Fuente18Normal;
-		_hWnd = CrearControlEx(nPadre, L"DListaEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD, NULL, CS_DBLCLKS); // CS_DBLCLKS (el control recibe notificaciones de doble click)
+		_hWnd = CrearControlEx(nPadre, L"DListaEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, EstilosExtendidos, CS_DBLCLKS); // CS_DBLCLKS (el control recibe notificaciones de doble click)
 		_Repintar = TRUE;
 		return hWnd();
 	}
@@ -37,7 +37,7 @@ namespace DWL {
 		return nColumna;
 	}
 	
-	DListaEx_Item *DListaEx::_AgregarItem(DListaEx_Item *nItem, DListaIconos_Icono *nIcono, const size_t PosicionItem, const TCHAR *nTxt, va_list Marker) {
+	DListaEx_Item *DListaEx::_AgregarItem(DListaEx_Item *nItem, DListaIconos_Icono *nIcono, const INT_PTR PosicionItem, const TCHAR *nTxt, va_list Marker) {
 //		DListaEx_Item		*nItem		= new DListaEx_Item();
 		DListaEx_SubItem	*nSubItem 	= new DListaEx_SubItem(nTxt);
 		nItem->_SubItems.push_back(nSubItem);
@@ -49,7 +49,10 @@ namespace DWL {
 			nSubItem = new DListaEx_SubItem(static_cast<const TCHAR *>(va_arg(Marker, const TCHAR *)));
 			nItem->_SubItems.push_back(nSubItem);
 		}
-		_Items.push_back(nItem);
+		
+		if (PosicionItem == -1)			_Items.push_back(nItem);
+		else if (PosicionItem == -2)	_Items.push_back(nItem);	// TODO (-2 es ordenado)
+		else							_Items.insert(_Items.begin() + PosicionItem, nItem);
 		
 		_Repintar = TRUE;
 //		_CalcularScrolls();
@@ -194,9 +197,10 @@ namespace DWL {
 		DeleteObject(BrochaFondo);
 
 		// Pinto el icono
-		int PosYIco = ((Espacio.bottom - Espacio.top) - DLISTAEX_TAMICONO) / 2;
-		DrawIconEx(_BufferItem, bPresionado + DLISTAEX_PADDING, bPresionado + PosYIco, _Items[nPosItem]->_Icono->Icono(), DLISTAEX_TAMICONO, DLISTAEX_TAMICONO, 0, 0, DI_NORMAL);
-
+		if (_Items[nPosItem]->_Icono != NULL) {
+			int PosYIco = ((Espacio.bottom - Espacio.top) - DLISTAEX_TAMICONO) / 2;
+			DrawIconEx(_BufferItem, bPresionado + DLISTAEX_PADDING, bPresionado + PosYIco, _Items[nPosItem]->_Icono->Icono(), DLISTAEX_TAMICONO, DLISTAEX_TAMICONO, 0, 0, DI_NORMAL);
+		}
 		RECT RCelda;
 //		LONG AnchoPintado = (DLISTAEX_PADDING * 2) + DLISTAEX_TAMICONO;
 		LONG AnchoPintado = 0;

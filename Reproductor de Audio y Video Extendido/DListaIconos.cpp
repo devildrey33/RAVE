@@ -22,6 +22,8 @@ namespace DWL {
 
 
 	DListaIconos_Icono *DListaIconos::AgregarIconoRecursos(const INT_PTR IDRecursos, const int nAncho, const int nAlto) {
+		if (IDRecursos == 0) return NULL;
+
 		for (size_t i = 0; i < _Iconos.size(); i++) {
 			if (_Iconos[i]->_ID == IDRecursos && _Iconos[i]->_Alto == nAlto && _Iconos[i]->_Ancho == nAncho) return _Iconos[i];
 		}

@@ -6,20 +6,28 @@
 #include "DEdicionTextoEx.h"
 
 namespace DWL {
+
+	class DBotonDesplegable : public DBotonEx {
+	  public :
+				DBotonDesplegable(void) : DBotonEx() { };
+		       ~DBotonDesplegable(void) { };
+		void	Evento_Pintar(HDC DC);
+	};
+
 	// Base para los controles desplegables (viene a ser un control con un icono, un texto y un boton)
 	class DControlDesplegableEx : public DControlEx {
 	  public:
-								DControlDesplegableEx();
-		                       ~DControlDesplegableEx();
-		virtual void            Evento_Desplegar(void) { };
-		LRESULT CALLBACK		GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
-//		void                    Pintar(HDC DC);
-		void					CrearControlDesplegable(DhWnd *nPadre, const wchar_t *nTexto, const INT_PTR nID, const INT_PTR nIDIcono, const int cX, const int cY, const int cAncho, const int cAlto);
+									DControlDesplegableEx();
+		                           ~DControlDesplegableEx();
+		virtual void				Evento_Desplegar(void) { };
+		virtual LRESULT CALLBACK	GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
+//		void						Pintar(HDC DC);
+		void						CrearControlDesplegable(DhWnd *nPadre, const wchar_t *nTexto, const INT_PTR nID, const INT_PTR nIDIcono, const int cX, const int cY, const int cAncho, const int cAlto, const BOOL TextoEditable);
+		inline const wchar_t       *Texto(void) { return _Edicion.Texto(); };
 	protected:
-		DBotonEx               _Boton;
-		DEdicionTextoEx        _Edicion;
-		DListaIconos_Icono    *_Icono;
+		DBotonDesplegable          _Boton;
+		DEdicionTextoEx            _Edicion;
+		DListaIconos_Icono        *_Icono;
 	};
-
 };
 #endif

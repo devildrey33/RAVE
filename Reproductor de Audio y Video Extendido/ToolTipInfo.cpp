@@ -25,7 +25,7 @@ void ToolTipInfo::Mostrar(const int cX, const int cY, const int cAncho, const in
 	_CallbackOcultarTerminado	= CallbackOcultarTerminado;
 
 	if (_hWnd == NULL) {
-		_hWnd = DVentana::CrearVentana(NULL, L"RAVE_ToolTipInfo", L"", cX, cY, cAncho, cAlto, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
+		_hWnd = DVentana::CrearVentana(nPadre->DPadre(), L"RAVE_ToolTipInfo", L"", cX, cY, cAncho, cAlto, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
 		MARGINS Margen = { 0, 0, 0, 1 };
 		DwmExtendFrameIntoClientArea(_hWnd, &Margen);
 	}
@@ -246,7 +246,7 @@ void ToolTipsInfo::MostrarToolTip(std::wstring &Texto) {
 			_ToolTips[i]->Ocultar(TRUE);
 		}
 		else {
-			SetWindowPos(_ToolTips[i]->hWnd(), NULL, Tmp.left, Tmp.top - (Tam.cy + TOOLTIPINFO_PADDING), 0, 0, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOSIZE);
+			SetWindowPos(_ToolTips[i]->hWnd(), HWND_TOP, Tmp.left, Tmp.top - (Tam.cy + TOOLTIPINFO_PADDING), 0, 0, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOSIZE);
 		}
 	}
 

@@ -113,7 +113,7 @@
 			V He tingut que tornar al model SetFocus, però sense el SetCapture, (nomes es fa el SetCapture al presionar el buto del mouse)
 				V No sembla que faci el deadlock com abans, igual es per que ara retorno TRUE en el WM_NCACTIVATE
 		V  Mostrar valor en DBarraProgreso / DBarraDesplazamiento (de moment hi ha 4 opcions (int/decimal | valor/maxim i valor)
-
+		
 		-  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
 			- Sempre que pasa surt el thread analizar
 

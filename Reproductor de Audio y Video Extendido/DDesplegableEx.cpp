@@ -3,7 +3,7 @@
 #include "DGDI.h"
 
 namespace DWL {
-
+	/*
 	DDesplegableEx::DDesplegableEx() :	_TipoEdicion(DDesplegableEx_TipoEdicion_SinEdicion), _TipoDesplegable(DDesplegableEx_TipoDesplegable_Lista),
 										_EstadoBoton(DDesplegableEx_Estado_Normal), _EstadoVisor(DDesplegableEx_Estado_Normal),
 										_UEstadoBoton(DDesplegableEx_Estado_Indefinido), _UEstadoVisor(DDesplegableEx_Estado_Indefinido),
@@ -334,12 +334,8 @@ namespace DWL {
 			case WM_RBUTTONUP:		_Evento_MouseSoltado(1, wParam, lParam);																									return 0;
 			case WM_MBUTTONUP:		_Evento_MouseSoltado(2, wParam, lParam);																									return 0;
 
-/*			case WM_LBUTTONDBLCLK:	_Evento_MouseDobleClick(0, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
-			case WM_RBUTTONDBLCLK:	_Evento_MouseDobleClick(1, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;
-			case WM_MBUTTONDBLCLK:	_Evento_MouseDobleClick(2, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), static_cast<UINT>(wParam));											return 0;*/
-
 		}
 		return DControlEx::GestorMensajes(uMsg, wParam, lParam);
 	}
-
+	*/
 }

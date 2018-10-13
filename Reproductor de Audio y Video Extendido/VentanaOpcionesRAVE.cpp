@@ -141,9 +141,20 @@ void VentanaOpcionesRAVE::Crear(void) {
 
 	///////////////////////////////////////
 	// Creo los controles del marco Listas
-//	DesplegableListaInicio.CrearDesplegable(&MarcoListas, 10, 10, 200, 30, ID_DESPLEGABLE_LISTAINICIO, DWL::DDesplegableEx_TipoEdicion_SinEdicion, DWL::DDesplegableEx_TipoDesplegable_Lista);
-//	DesplegableListaInicio.Texto(L"Nada");
-	DesplegableListaInicio.CrearControlDesplegable(&MarcoListas, L"nada", ID_DESPLEGABLE_LISTAINICIO, 0, 10, 10, 200, 30);
+	const wchar_t *Listas[7] = {
+		L"Nada",
+		L"Genero aleatório",
+		L"Grupo aleatório",
+		L"Disco aleatório",
+		L"50 Canciones aleatórias",
+		L"Lo que sea",
+		L"Ultima lista"
+	};
+	DesplegableListaInicio.CrearListaDesplegable(&MarcoListas, Listas[static_cast<int>(App.BD.Opciones_Inicio())], ID_DESPLEGABLE_LISTAINICIO, 0, 10, 10, 200, 30, FALSE, 160);
+
+	for (int i = 0; i < 7; i++) {
+		DesplegableListaInicio.AgregarItem(Listas[i]);
+	}
 
 	// Muestro la ventana de las opciones
 	Visible(TRUE);
@@ -314,6 +325,41 @@ void VentanaOpcionesRAVE::Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse)
 	}
 }
 
+void VentanaOpcionesRAVE::Evento_ListaDesplegable_Cambio(INT_PTR nID) {
+	if (nID == ID_DESPLEGABLE_LISTAINICIO) {
+		std::wstring Opcion = DesplegableListaInicio.Texto();
+		if (Opcion == L"Nada") {
+			App.MostrarToolTipOpciones(L"No se generará ninguna lista al iniciar el reproductor");
+			App.BD.Opciones_Inicio(Tipo_Inicio_NADA);
+		}
+		else if (Opcion == L"Genero aleatório") {
+			App.MostrarToolTipOpciones(L"Al iniciar el reproductor se generará una lista aleatória por genero");
+			App.BD.Opciones_Inicio(Tipo_Inicio_Genero);
+		}
+		else if (Opcion == L"Grupo aleatório") {
+			App.MostrarToolTipOpciones(L"Al iniciar el reproductor se generará una lista aleatória por grupo");
+			App.BD.Opciones_Inicio(Tipo_Inicio_Grupo);
+		}
+		else if (Opcion == L"Disco aleatório") {
+			App.MostrarToolTipOpciones(L"Al iniciar el reproductor se generará una lista aleatória por disco");
+			App.BD.Opciones_Inicio(Tipo_Inicio_Disco);
+		}
+		else if (Opcion == L"50 Canciones aleatórias") {
+			App.MostrarToolTipOpciones(L"Al iniciar el reproductor se generará una lista con 50 canciones aleatórias");
+			App.BD.Opciones_Inicio(Tipo_Inicio_50Medios);
+		}
+		else if (Opcion == L"Lo que sea") {
+			App.MostrarToolTipOpciones(L"Al iniciar el reproductor se generará una lista aleatória");
+			App.BD.Opciones_Inicio(Tipo_Inicio_LoQueSea);
+		}
+		else if (Opcion == L"Ultima lista") {
+			App.MostrarToolTipOpciones(L"Al iniciar el reproductor se cargará la ultima lista");
+			App.BD.Opciones_Inicio(Tipo_Inicio_UltimaLista);
+		}
+		
+	}
+}
+
 LRESULT CALLBACK VentanaOpcionesRAVE::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
 		case WM_CLOSE :
@@ -337,6 +383,9 @@ LRESULT CALLBACK VentanaOpcionesRAVE::GestorMensajes(UINT uMsg, WPARAM wParam, L
 			return 0;
 		case DWL_BARRAEX_CAMBIADO:  // Se ha modificado	(mouse up)
 			Evento_BarraEx_Cambiado(WPARAM_TO_DEVENTOMOUSE(wParam));
+			return 0;
+		case DWL_DESPLEGABLEEX_CAMBIO :
+			Evento_ListaDesplegable_Cambio(static_cast<INT_PTR>(wParam));
 			return 0;
 
 	}

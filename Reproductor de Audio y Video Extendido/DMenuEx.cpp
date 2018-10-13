@@ -97,7 +97,7 @@ namespace DWL {
 			// Creo las barras (si ahy alguna), y asigno los colores por defecto
 			for (size_t i = 0; i < _Menus.size(); i++) {
 				_Menus[i]->_ColorFondo = COLOR_MENU_FONDO;
-				_Menus[i]->_ColorTexto = COLOR_MENU_TEXTO;
+				_Menus[i]->_ColorTexto = (_Menus[i]->_Activado == TRUE) ? COLOR_MENU_TEXTO : COLOR_MENU_TEXTO_DESACTIVADO;
 
 				if (_Menus[i]->_Tipo == DMenuEx_Tipo_Barra) {
 					_Menus[i]->_Barra.CrearBarraDesplazamientoEx(this, _BarraPosX, _Menus[i]->_Recta.top + DMENUEX_MARGEN_Y, DMENUEX_ANCHOBARRA + DMENUEX_MARGEN_X + DMENUEX_TAMICONO, (_Menus[i]->_Recta.bottom - _Menus[i]->_Recta.top) - (DMENUEX_MARGEN_Y * 2), _Menus[i]->_ID, _Menus[i]->_Barra._Minimo, _Menus[i]->_Barra._Maximo, _Menus[i]->_Barra._Valor);
@@ -374,8 +374,9 @@ namespace DWL {
 
 		// Pinto el icono
 		int YIcono = static_cast<int>((static_cast<float>(pMenu->_Recta.bottom - pMenu->_Recta.top) - static_cast<float>(DMENUEX_TAMICONO)) / 2.0f);
-		DrawIconEx(DC, bPresionado + DMENUEX_MARGEN_X, bPresionado + pMenu->_Recta.top + YIcono, pMenu->_Icono->Icono(), DMENUEX_TAMICONO, DMENUEX_TAMICONO, 0, 0, DI_NORMAL);				
-
+		if (pMenu->_Icono != NULL) {
+			DrawIconEx(DC, bPresionado + DMENUEX_MARGEN_X, bPresionado + pMenu->_Recta.top + YIcono, pMenu->_Icono->Icono(), DMENUEX_TAMICONO, DMENUEX_TAMICONO, 0, 0, DI_NORMAL);
+		}
 		// Pinto la sombra del texto
 		SetTextColor(DC, COLOR_MENU_TEXTO_SOMBRA);
 		TextOut(DC, 1 + bPresionado + DMENUEX_MARGEN_X + DMENUEX_TAMICONO + DMENUEX_MARGEN_X, 1 + pMenu->_Recta.top + DMENUEX_MARGEN_Y, pMenu->_Texto.c_str(), static_cast<int>(pMenu->_Texto.size()));
@@ -518,7 +519,7 @@ namespace DWL {
 			// Asigno la posición del menú y lo hago siempre visible
 			SetWindowPos(_hWnd, HWND_TOPMOST, -4 + WR.left + Punto.x, -1 + WR.top + Punto.y, Tam.x, Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 
-			// Creo las barras (si ahy alguna), y asigno los colores por defecto
+			// Creo las barras (si ahy alguna), y asigno los colores por defecto en cada submenu
 			for (size_t i = 0; i < _Menus.size(); i++) {
 				_Menus[i]->_ColorFondo = COLOR_MENU_FONDO;
 				_Menus[i]->_ColorTexto = COLOR_MENU_TEXTO;
@@ -577,12 +578,13 @@ namespace DWL {
 							SendMessage(_hWndDest->hWnd(), WM_NCACTIVATE, TRUE, 0);
 						}
 						// Vuelvo a dejar el menu resaltado anterior al estado normal
-						if (_MenuResaltado != NULL) _MenuResaltado->Transicion(DMenuEx_Transicion_Normal);
-						// Asigno el nuevo menú resaltado
+						if (_MenuResaltado != NULL && _MenuResaltado->_Activado == TRUE) _MenuResaltado->Transicion(DMenuEx_Transicion_Normal);
+						// Asigno el nuevo menú resaltado (aunque este desactivado)
 						_MenuResaltado = _Menus[i];
-						// Estado para el menu resaltado a resaltado
-						_MenuResaltado->Transicion(DMenuEx_Transicion_Resaltado);
-
+						if (_Menus[i]->_Activado == TRUE) {
+							// Estado para el menu resaltado a resaltado
+							_MenuResaltado->Transicion(DMenuEx_Transicion_Resaltado);
+						}
 
 						// Si tiene Sub-menus
 						if (_MenuResaltado->TotalMenus() > 0) {
@@ -602,21 +604,6 @@ namespace DWL {
 			Debug_Escribir(L"DMenuEx::_Evento_MousePresionado\n");
 		#endif
 		SetCapture(_hWnd);
-/*		POINT Pt;
-		DWL::DMouse::ObtenerPosicion(&Pt);
-		HWND WFP = WindowFromPoint(Pt);
-		ScreenToClient(WFP, &Pt);
-		// Si la ventana debajo del mouse no es un MenuEx
-		if (SendMessage(WFP, WM_ESMENUEX, 0, 0) != WM_ESMENUEX && _Activado == TRUE) {
-			switch (Boton) {
-				case 0: PostMessage(WFP, WM_LBUTTONDOWN, wParam, MAKELPARAM(Pt.x, Pt.y)); break;
-				case 1: PostMessage(WFP, WM_RBUTTONDOWN, wParam, MAKELPARAM(Pt.x, Pt.y)); break;
-				case 2: PostMessage(WFP, WM_MBUTTONDOWN, wParam, MAKELPARAM(Pt.x, Pt.y)); break;
-			}
-//			SetFocus(WFP);
-			Ocultar(TRUE);
-			return;
-		}*/
 
 		// Asigno el menú presionado
 		DEventoMouse	DatosMouse(wParam, lParam, this);
@@ -624,7 +611,7 @@ namespace DWL {
 		for (size_t i = 0; i < _Menus.size(); i++) {
 			if (PtInRect(&_Menus[i]->_Recta, Pt) != FALSE) {
 				_MenuPresionado = _Menus[i];
-				_MenuPresionado->Transicion(DMenuEx_Transicion_Presionado);
+				if (_MenuPresionado->_Activado == TRUE)	_MenuPresionado->Transicion(DMenuEx_Transicion_Presionado);
 				Repintar();
 				return;
 			}
@@ -926,7 +913,26 @@ namespace DWL {
 		#endif
 
 		_MouseDentro = FALSE;
-		if (_MenuPresionado == NULL) {
+		if (_MenuResaltado != NULL) {
+			if (_MenuResaltado->_Activado == TRUE && _MenuResaltado->_Menus.size() == 0) {
+				_MenuResaltado->Transicion(DMenuEx_Transicion_Normal);
+			}
+			_MenuResaltado = NULL;
+		}
+/*		if (_MenuDesplegado != NULL) {
+			// Obtengo la ventana debajo del mouse
+			POINT Pt;
+			DWL::DMouse::ObtenerPosicion(&Pt);
+			HWND WFP = WindowFromPoint(Pt);
+			if (SendMessage(WFP, WM_ESMENUEX, 0, 0) != WM_ESMENUEX) {
+				SetFocus(_hWnd);
+				SendMessage(_hWndDest->hWnd(), WM_NCACTIVATE, TRUE, 0);
+				_MenuDesplegado->Ocultar();
+				_MenuDesplegado = NULL;
+			}
+		}*/
+
+/*		if (_MenuPresionado == NULL) {
 			// Obtengo la ventana debajo del mouse
 			POINT Pt;
 			DWL::DMouse::ObtenerPosicion(&Pt);
@@ -934,21 +940,25 @@ namespace DWL {
 			if (_MenuDesplegado != NULL) {
 				// Si la ventana debajo del mouse no es un MenuEx
 				if (SendMessage(WFP, WM_ESMENUEX, 0, 0) != WM_ESMENUEX) {
+					if (_MenuResaltado != NULL)	_MenuResaltado->Transicion((_Activado == TRUE) ? DMenuEx_Transicion_Normal : DMenuEx_Transicion_Desactivado);
 					_MenuResaltado = NULL;
+					// TODO : Tanca TOT el menu al sortir...
+//					if (_MenuDesplegado->_Padre != NULL) {
 					_MenuDesplegado->Ocultar();
 					_MenuDesplegado = NULL;
-					Repintar();
+//					}
+//					Repintar();
 				}
 			}
 			else {
 				// Si la ventana debajo del mouse no es una BarraEx que tiene como padre un MenuEx
 				if (SendMessage(GetParent(WFP), WM_ESMENUEX, 0, 0) != WM_ESMENUEX) {
+					if (_MenuResaltado != NULL)	_MenuResaltado->Transicion((_Activado == TRUE) ? DMenuEx_Transicion_Normal : DMenuEx_Transicion_Desactivado);
 					_MenuResaltado = NULL;
-					Repintar();
+					//Repintar();
 				}
-			}
-			
-		}
+			}			
+		}*/
 	}
 
 	LRESULT CALLBACK DMenuEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {

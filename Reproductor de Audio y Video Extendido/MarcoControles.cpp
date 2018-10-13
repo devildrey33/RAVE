@@ -33,6 +33,7 @@ LRESULT CALLBACK MarcoControles::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM
 		case DWL_BOTONEX_MOUSEDOWN:
 		case DWL_BOTONEX_MOUSEUP:
 		case DWL_MARCAEX_CLICK :
+		case DWL_DESPLEGABLEEX_CAMBIO :
 			return SendMessage(hWndPadre(), uMsg, wParam, lParam);
 			break;
 	}

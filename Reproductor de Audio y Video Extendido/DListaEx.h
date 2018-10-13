@@ -11,8 +11,8 @@ namespace DWL {
 
 	#ifdef _WIN64
 		#define DLISTAEX_POSICION_INICIO	0
-		#define DLISTAEX_POSICION_FIN		_UI64_MAX - 1
-		#define DLISTAEX_POSICION_ORDENADO	_UI64_MAX - 2
+		#define DLISTAEX_POSICION_FIN		-1
+		#define DLISTAEX_POSICION_ORDENADO	-2
 	#else
 		#define DLISTAEX_POSICION_INICIO	0
 		#define DLISTAEX_POSICION_FIN		_UI32_MAX - 1
@@ -33,7 +33,7 @@ namespace DWL {
 														DListaEx(void);
 		                                               ~DListaEx(void);
 														// Crea el control ListaEx
-		HWND											CrearListaEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID);
+		HWND											CrearListaEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const DWORD Estilos = WS_CHILD | WS_VISIBLE, const DWORD EstilosExtendidos = NULL);
 		const BOOL										Destruir(void);
 
 		DListaEx_Columna							   *AgregarColumna(const int nAncho = DLISTAEX_COLUMNA_ANCHO_AUTO, DListaEx_Columna_Alineacion nAlineacion = DListaEx_Columna_Alineacion_Izquierda);
@@ -42,7 +42,7 @@ namespace DWL {
 		void											EliminarTodasLasColumnas(void);
 
 														// Agrega un item personalizado (por defecto es del tipo DListaEx_Item) para iconos de los recursos
-		template <class TItem = DListaEx_Item> TItem   *AgregarItem(const int nIconoRecursos = NULL, const size_t PosicionFila = DLISTAEX_POSICION_FIN, const TCHAR *nTxt = NULL, ...) {
+		template <class TItem = DListaEx_Item> TItem   *AgregarItem(const INT_PTR nIconoRecursos = NULL, const INT_PTR PosicionFila = DLISTAEX_POSICION_FIN, const TCHAR *nTxt = NULL, ...) {
 															TItem  *nItem = new TItem();
 															DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
 															va_list Marker;
@@ -53,7 +53,7 @@ namespace DWL {
 														};
 
 														// Agrega un item personalizado (por defecto es del tipo DListaEx_Item) para iconos del sistema
-		template <class TItem = DListaEx_Item> TItem   *AgregarItem(const GUID nIconoKnownFolder, const size_t PosicionFila = DLISTAEX_POSICION_FIN, const TCHAR *nTxt = NULL, ...) {
+		template <class TItem = DListaEx_Item> TItem   *AgregarItem(const GUID nIconoKnownFolder, const INT_PTR PosicionFila = DLISTAEX_POSICION_FIN, const TCHAR *nTxt = NULL, ...) {
 															TItem  *nItem = new TItem();
 															DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoKnownFolder(nIconoKnownFolder, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
 															va_list Marker;
@@ -64,7 +64,7 @@ namespace DWL {
 														};
 
 														// Agrega un item personalizado (por defecto es del tipo DListaEx_Item) para iconos especificos de un path
-		template <class TItem = DListaEx_Item> TItem   *AgregarItem(const wchar_t *nPathIcono, const int nPosIcono = 0, const size_t PosicionFila = DLISTAEX_POSICION_FIN, const TCHAR *nTxt = NULL, ...) {
+		template <class TItem = DListaEx_Item> TItem   *AgregarItem(const wchar_t *nPathIcono, const int nPosIcono = 0, const INT_PTR PosicionFila = DLISTAEX_POSICION_FIN, const TCHAR *nTxt = NULL, ...) {
 															TItem  *nItem = new TItem();
 															DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoExterno(nPathIcono, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO, nPosIcono);
 															va_list Marker;
@@ -167,7 +167,7 @@ namespace DWL {
 		void                                           _CalcularColumnas(void);
 		void                                           _CalcularItemsPagina(const size_t TamPagina);
 
-		DListaEx_Item                                 *_AgregarItem(DListaEx_Item *nItem, DListaIconos_Icono *nIcono, const size_t PosicionFila, const TCHAR *nTxt, va_list Marker);
+		DListaEx_Item                                 *_AgregarItem(DListaEx_Item *nItem, DListaIconos_Icono *nIcono, const INT_PTR PosicionFila, const TCHAR *nTxt, va_list Marker);
 		std::vector<DListaEx_Item *>                   _Items;
 		std::vector<DListaEx_Columna *>                _Columnas;
 

@@ -87,7 +87,7 @@ namespace DWL {
 		FillRect(Buffer, &RCF, BrochaFondo);
 		DeleteObject(BrochaFondo);
 
-		
+		// Si tiene texto
 		if (_Texto.size() > 0) {
 			SetBkMode(Buffer, TRANSPARENT);
 			// Pinto la sombra del texto
@@ -99,9 +99,13 @@ namespace DWL {
 			DrawText(Buffer, _Texto.c_str(), static_cast<int>(_Texto.size()), &RCT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 		}
 
+		// Si tiene icono
 		if (_Icono != NULL) {
 			DrawIconEx(Buffer, bPresionado + _PosIconoX, bPresionado + _PosIconoY, _Icono->Icono(), _Icono->Ancho(), _Icono->Alto(), 0, 0, DI_NORMAL);
 		}
+
+		// Llamo al evento pintar virtual
+		Evento_Pintar(Buffer);
 
 		// Copio el buffer al DC
 		BitBlt(DC, nX + RC.left, nY + RC.top, RC.right, RC.bottom, Buffer, 0, 0, SRCCOPY);

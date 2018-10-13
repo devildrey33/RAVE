@@ -37,6 +37,7 @@ class ToolTipsInfo {
 	void                            MostrarToolTip(std::wstring &Texto);
 //	void                            EliminarToolTip(ToolTipInfo *ToolTip);
 	HWND                            Padre(void);
+	inline DhWnd                   *DPadre(void) { return _Padre; };
 	void                            Ocultar(void);
 	void                            RecolocarToolTips(void);
   protected:

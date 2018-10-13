@@ -84,4 +84,11 @@
 	
 	// DMarcaEx /////////////////////////////////////////////////////////////
 	#define	DWL_MARCAEX_CLICK								WM_USER + 320
+
+	// DEdicionTextoEx //////////////////////////////////////////////////////
+	#define	DWL_EDICIONTEXTOEX_CLICK						WM_USER + 330
+	#define	DWL_EDICIONTEXTOEX_CAMBIO						WM_USER + 331
+
+	// DControlDesplegable //////////////////////////////////////////////////
+	#define DWL_DESPLEGABLEEX_CAMBIO						WM_USER + 340
 #endif

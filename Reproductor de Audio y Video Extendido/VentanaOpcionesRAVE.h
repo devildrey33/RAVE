@@ -8,7 +8,7 @@
 #include "AsignarTeclaRapida.h"
 #include "ControlSeparador.h"
 #include "DBarraDesplazamientoEx.h"
-#include "DControlDesplegableEx.h"
+#include "DListaDesplegableEx.h"
 
 class VentanaOpcionesRAVE : public DWL::DVentana {
   public:
@@ -27,7 +27,7 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	void					Evento_Cerrar(void);
 	void					Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse);
 	void					Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse);
-
+	void					Evento_ListaDesplegable_Cambio(INT_PTR nID);
 
 	LRESULT CALLBACK		GestorMensajes(UINT uMSg, WPARAM wParam, LPARAM lParam);
 
@@ -67,6 +67,6 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	DEtiquetaEx			    EtiquetaTiempoOcultarToolTipsTA;
 
 							// Lista
-	DControlDesplegableEx   DesplegableListaInicio;
+	DListaDesplegableEx     DesplegableListaInicio;
 };
 

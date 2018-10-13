@@ -3,7 +3,7 @@
 #include "DExplorarDirectoriosEx.h"
 
 namespace DWL {
-
+	/*
 	class DDesplegableEx;
 
 	class DDesplegableEx_ExplorarDirectoriosEx : public DExplorarDirectoriosEx {
@@ -24,6 +24,6 @@ namespace DWL {
 		DDesplegableEx    *_Padre;
 		BOOL               _Mostrando;
 
-	};
+	};*/
 
 }

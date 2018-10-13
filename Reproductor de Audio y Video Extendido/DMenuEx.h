@@ -9,7 +9,7 @@ namespace DWL {
 	#define DMENUEX_MOSTRARDEBUG	FALSE
 
 	#define DMENUEX_TAMICONO  16	// Tamaño de los iconos
-	#define DMENUEX_MARGEN_X   6	// Margen horizontal para el texto
+	#define DMENUEX_MARGEN_X   6	// Margen horizontal para el texto 
 	#define DMENUEX_MARGEN_Y   4	// Margen vertical para el texto
     #define DMENUEX_BORDE      1    // Tamaño del borde
 
@@ -20,12 +20,12 @@ namespace DWL {
 		DMenuEx_Tipo_Separador = 3
 	};
 
-	enum DMenuEx_Estado {
+	/*enum DMenuEx_Estado {
 		DMenuEx_Estado_Normal		= 0,
 		DMenuEx_Estado_Resaltado	= 1,
 		DMenuEx_Estado_Presionado	= 2,
 		DMenuEx_Estado_Desactivado  = 3
-	};
+	};*/
 
 	enum DMenuEx_Transicion {
 		DMenuEx_Transicion_Normal,
@@ -163,6 +163,6 @@ namespace DWL {
 								// Menu resultado para la función MostrarModal
 		static DMenuEx        *_ResultadoModal;
 	};
-}
+};
 
 #endif

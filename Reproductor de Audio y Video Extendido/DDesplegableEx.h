@@ -10,7 +10,7 @@
 /* Añadir facilidades para hacer un modo busqueda directorios o directorios y archivos */
 
 namespace DWL {
-
+	/*
 	#define DDESPLEGABLEEX_EXPLORARDIRECTORIOS	1
 	#define DDESPLEGABLEEX_ARBOLEX				2
 	#define DDESPLEGABLEEX_LISTAEX				3
@@ -41,7 +41,7 @@ namespace DWL {
 		DDesplegableEx_Presionado_Boton
 	};
 
-	/* Control del estilo ComboBox que puede mostrar una DListaEx o un DArbolEx además del editbox / static text iniciales */
+	// Control del estilo ComboBox que puede mostrar una DListaEx o un DArbolEx además del editbox / static text iniciales 
 	class DDesplegableEx : public DControlEx, public DEdicionTextoEx_Nucleo {
   	  public:
 												DDesplegableEx(void);
@@ -96,6 +96,6 @@ namespace DWL {
 		DDesplegableEx_ExplorarDirectoriosEx  *_ExplorarDirectorios;
 
 		DListaIconos_Icono                    *_Icono;
-	};
+	};*/
 }
 #endif

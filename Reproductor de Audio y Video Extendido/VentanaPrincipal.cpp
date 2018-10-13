@@ -28,10 +28,10 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	RECT RC; // , RW;
 	GetClientRect(hWnd(), &RC);
 
-	Arbol.CrearArbolEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_ARBOLBD);
-	Arbol.Visible(TRUE);
+	Arbol.CrearArbolEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_ARBOLBD, WS_CHILD | WS_VISIBLE);
+//	Arbol.Visible(TRUE);
 
-	Lista.CrearListaEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_LISTAMEDIOS);
+	Lista.CrearListaEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_LISTAMEDIOS, WS_CHILD);
 
 	// Columnas
 	Lista.AgregarColumna(50, DListaEx_Columna_Alineacion_Derecha);							// Icono y pista
@@ -713,6 +713,8 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 		}
 
 		ShowWindow(hWnd(), SW_RESTORE);
+//		GetClientRect(hWnd(), &RC);
+//		BOOL R = App.VentanaRave.BarraTareas.Clip(&RC);
 		SetWindowLongPtr(hWnd(), GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
 		SetWindowPos(_hWnd, HWND_TOP, App.BD.Opciones_PosX(), App.BD.Opciones_PosY(), App.BD.Opciones_Ancho(), App.BD.Opciones_Alto(), SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 		//MoveWindow(Video.hWnd(), 120, 71, RC.right - 120, RC.bottom - 70, TRUE);

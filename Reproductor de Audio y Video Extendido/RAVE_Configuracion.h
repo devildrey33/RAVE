@@ -1,9 +1,9 @@
 // Configuración para compilar RAVE
 
 // Versión y titulo
-#define RAVE_VERSION			0, 4, 4, 1
-#define RAVE_VERSIONF			0.441
-#define RAVE_VERSIONSTR			L"0.441"
+#define RAVE_VERSION			0, 4, 4, 2
+#define RAVE_VERSIONF			0.442
+#define RAVE_VERSIONSTR			L"0.442"
 #define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
 #define RAVE_VERSIONBD          L"1.0"
 
@@ -25,4 +25,4 @@
 #endif
 
 // Simula los argumentos para reproducir un video nada mas iniciar
-#define RAVE_SIMULAR_REPRODUCIR_VIDEO
+//#define RAVE_SIMULAR_REPRODUCIR_VIDEO

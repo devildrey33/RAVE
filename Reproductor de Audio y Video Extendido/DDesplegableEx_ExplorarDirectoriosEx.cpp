@@ -4,7 +4,7 @@
 #include "RAVE.h"
 
 namespace DWL {
-
+	/*
 	DDesplegableEx_ExplorarDirectoriosEx::DDesplegableEx_ExplorarDirectoriosEx(DDesplegableEx *nPadre) : DExplorarDirectoriosEx(), _Mostrando(FALSE) {
 		_Padre = nPadre;
 		
@@ -66,5 +66,5 @@ namespace DWL {
 		}
 			
 	};
-
+	*/
 }
