@@ -29,6 +29,8 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	void					Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse);
 	void					Evento_ListaDesplegable_Cambio(INT_PTR nID);
 
+	void					ActualizarListaInicio(void);
+
 	LRESULT CALLBACK		GestorMensajes(UINT uMSg, WPARAM wParam, LPARAM lParam);
 
 	DWL::DBotonEx			BotonCerrar;
@@ -67,6 +69,10 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	DEtiquetaEx			    EtiquetaTiempoOcultarToolTipsTA;
 
 							// Lista
+	DEtiquetaEx             EtiquetaListaInicio;
 	DListaDesplegableEx     DesplegableListaInicio;
+	DWL::DMarcaEx			MarcaCanciones25;
+	DWL::DMarcaEx			MarcaNoGenerarListas3;
+	DWL::DMarcaEx			MarcaSumar001;
 };
 

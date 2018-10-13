@@ -32,8 +32,11 @@
 #define ID_ETIQUETA_TIEMPOTOOLTIP2      1066
 #define ID_BARRA_TIEMPOTOOLTIP          1067
 // Lista
-#define ID_DESPLEGABLE_LISTAINICIO		1068
-
+#define ID_ETIQUETA_LISTAINICIO			1068
+#define ID_DESPLEGABLE_LISTAINICIO		1069
+#define ID_MARCA_CANCIONES25			1070
+#define ID_MARCA_NOGENERARLISTAS3		1071
+#define ID_MARCA_SUMAR001				1072
 
 VentanaOpcionesRAVE::VentanaOpcionesRAVE(void) {
 }
@@ -141,26 +144,46 @@ void VentanaOpcionesRAVE::Crear(void) {
 
 	///////////////////////////////////////
 	// Creo los controles del marco Listas
-	const wchar_t *Listas[7] = {
-		L"Nada",
-		L"Genero aleatório",
-		L"Grupo aleatório",
-		L"Disco aleatório",
-		L"50 Canciones aleatórias",
-		L"Lo que sea",
-		L"Ultima lista"
-	};
-	DesplegableListaInicio.CrearListaDesplegable(&MarcoListas, Listas[static_cast<int>(App.BD.Opciones_Inicio())], ID_DESPLEGABLE_LISTAINICIO, 0, 10, 10, 200, 30, FALSE, 160);
+	EtiquetaListaInicio.CrearEtiquetaEx(&MarcoListas, L"Selecciona que debe hacer el reproductor al iniciarse", 10, 10, 350, 20, ID_ETIQUETA_LISTAINICIO);
+	DesplegableListaInicio.CrearListaDesplegable(&MarcoListas, L"", ID_DESPLEGABLE_LISTAINICIO, 0, 360, 10, 190, 20, FALSE, 160);
+	ActualizarListaInicio();
 
-	for (int i = 0; i < 7; i++) {
-		DesplegableListaInicio.AgregarItem(Listas[i]);
-	}
+	MarcaCanciones25.CrearMarcaEx(&MarcoListas,		 L"No añadir canciones con menos de 2.5 de nota a listas aleatórias", 10, 40, 455, 20, ID_MARCA_CANCIONES25, 0);
+	MarcaNoGenerarListas3.CrearMarcaEx(&MarcoListas, L"No generar listas aleatórias con menos de 3 medios", 10, 70, 365, 20, ID_MARCA_NOGENERARLISTAS3, 0);
+	MarcaSumar001.CrearMarcaEx(&MarcoListas,		 L"Sumar 0.05 a la nota de los medios reproducidos completamente", 10, 100, 455, 20, ID_MARCA_SUMAR001, 0);
+
 
 	// Muestro la ventana de las opciones
 	Visible(TRUE);
 	Repintar();
 }
 
+
+void VentanaOpcionesRAVE::ActualizarListaInicio(void) {
+	const wchar_t *Listas[7] = {
+		L"Nada",					// 0
+		L"Genero aleatório",
+		L"Grupo aleatório",
+		L"Disco aleatório",
+		L"50 Canciones aleatórias",	// 4
+		L"Lo que sea",
+		L"Ultima lista"				// 6
+	};
+	DesplegableListaInicio.Texto(Listas[static_cast<int>(App.BD.Opciones_Inicio())]);
+	DesplegableListaInicio.EliminarTodosLosItems();
+	// Si hay raices añado todas las opciones
+	if (App.BD.TotalRaices() > 0) {
+		for (int i = 0; i < 7; i++) {
+			DesplegableListaInicio.AgregarItem(Listas[i]);
+		}
+	}
+	// Si no hay raices solo valen 3 opciones
+	else {
+		DesplegableListaInicio.AgregarItem(Listas[0]);
+		DesplegableListaInicio.AgregarItem(Listas[4]);
+		DesplegableListaInicio.AgregarItem(Listas[6]);
+	}
+}
 
 void VentanaOpcionesRAVE::AsignarMarco(const INT_PTR Id) {
 	MarcoBaseDeDatos.Visible(FALSE);
@@ -250,6 +273,8 @@ void VentanaOpcionesRAVE::AgregarRaiz(void) {
 		}
 
 		App.VentanaRave.ActualizarArbol();
+
+		ActualizarListaInicio();
 	}
 	else {
 		Debug_Escribir(L"VentanaOpcionesRAVE::AgregarRaiz Cancelado por el usuario.\n");

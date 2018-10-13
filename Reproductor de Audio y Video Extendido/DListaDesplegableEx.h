@@ -30,6 +30,7 @@ namespace DWL {
 		void							Evento_Desplegar(void);
 		void                            AgregarItem(const wchar_t *nTexto, const INT_PTR nIcono = 0);
 		LRESULT CALLBACK				GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
+		inline void                     EliminarTodosLosItems(void) { _Lista.EliminarTodosLosItems(); };
 	  protected:
 		DListaDesplegableEx_Lista      _Lista;
 		UINT                           _AltoLista;

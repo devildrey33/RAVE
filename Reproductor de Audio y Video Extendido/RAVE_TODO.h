@@ -146,14 +146,14 @@
 					X Mostrar finestra per preguntar pel reproductor predeterminat
 						X No se si es en win10 o que.. pero si desde l'explorador esculleixes un reproductor, per molt que fagi les asociacions, aquell tipus sembla que no funciona...
 				- Llistes
-					- llista d'inici 
-						- res
-						- l'ultima llista
-						- etiqueta aleatoria
-						- etiqeuta estil aleatoria
-						- etiqeuta grup aleatoria
-						- etiqeuta disc aleatoria
-						- major nota
+					V llista d'inici 
+						V res
+						V l'ultima llista
+						V etiqueta aleatoria
+						V etiqeuta estil aleatoria
+						V etiqeuta grup aleatoria
+						V etiqeuta disc aleatoria
+						X major nota
 					- Afegir cançons amb menys de 2.5 de nota a llistes aleatories.
 					- No generar llistes amb menys de 3 medis
 					- Sumar 0.1 a la nota dels medis reproduits completament

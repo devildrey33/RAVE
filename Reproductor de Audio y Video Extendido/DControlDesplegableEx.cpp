@@ -83,7 +83,10 @@ namespace DWL {
 	void DBotonDesplegable::Evento_Pintar(HDC DC) {
 		RECT RC;
 		GetClientRect(_hWnd, &RC);
-		DGDI::PintarFlecha(DC, (RC.right - RC.bottom) + 6, 4, 90.0f, 8, 1, _ColorTexto);
+//		int nAncho = (RC.right - RC.bottom);
+		int nAncho = (RC.right - 16) / 2;
+		int nAlto = (RC.bottom - 16) / 2;
+		DGDI::PintarFlecha(DC, nAncho, -nAlto, 90.0f, 8, 1, _ColorTexto);
 	}
 
 }

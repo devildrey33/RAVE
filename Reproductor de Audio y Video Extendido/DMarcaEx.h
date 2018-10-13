@@ -23,7 +23,7 @@ namespace DWL {
 								DMarcaEx(void);
 		                       ~DMarcaEx(void);
 
-		HWND					CrearMarcaEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const int IDIconoMarca, const long Estilos = WS_CHILD | WS_VISIBLE);
+		HWND					CrearMarcaEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID, const INT_PTR IDIconoMarca, const long Estilos = WS_CHILD | WS_VISIBLE);
 		
 		virtual void			Evento_MouseMovimiento(DEventoMouse &DatosMouse) { };
 		virtual void			Evento_MousePresionado(DEventoMouse &DatosMouse) { };

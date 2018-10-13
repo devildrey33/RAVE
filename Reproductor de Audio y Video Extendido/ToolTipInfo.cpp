@@ -78,15 +78,15 @@ void ToolTipInfo::Ocultar(const BOOL Rapido) {
 		Ani.Iniciar(255, 0, App.BD.Opciones_TiempoAnimaciones(), [=](std::vector<float> &Valores, const BOOL Terminado) {
 			Opacidad(static_cast<BYTE>(Valores[0]));
 			if (Terminado == TRUE) {
-				ShowWindow(hWnd(), SW_HIDE);
-				PostMessage(hWnd(), WM_CLOSE, 0, 0);
+				ShowWindow(_hWnd, SW_HIDE);
+				PostMessage(_hWnd, WM_CLOSE, 0, 0);
 				_CallbackOcultarTerminado();
 			}
 		});
 	}
 	else {
 		Ani.Terminar();
-		ShowWindow(hWnd(), SW_HIDE);
+		ShowWindow(_hWnd, SW_HIDE);
 		Destruir();
 	}
 }
