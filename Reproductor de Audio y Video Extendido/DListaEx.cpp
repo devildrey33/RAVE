@@ -831,12 +831,15 @@ namespace DWL {
 		Evento_FocoPerdido(hWndNuevoFoco);
 	}
 
+	// Función que mira si algun item de la lista tiene que pintar un icono.
+	// Si no hay iconos en la lista, no se reservará espacio para mostrar-los
 	void DListaEx::_CalcularPintarIconos(void) {
 		_PintarIconos = FALSE;
 		for (size_t i = 0; i < _Items.size(); i++) {
+			// Hay un item con icono
 			if (_Items[i]->_Icono != NULL) {
 				_PintarIconos = TRUE;
-				return;
+				return;	// Ya no es necesario buscar mas, salgo.
 			}
 		}
 	}

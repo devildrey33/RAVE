@@ -253,7 +253,7 @@ const BOOL RaveVLC::Stop(void) {
 		// Deadlock just despres de mostrar un DMenuEx en un video i utilitzar el stop.... SOLUCIONAT, pero s'ha d'anar amb cuidado al utilitzar SetFocus...
 		if (libvlc_media_player_has_vout(_MediaPlayer) > 0) {
 			// Para evitar un deadlock si se está reproduciendo un video y el foco está en otra parte
-			HWND Foco = SetFocus(App.VentanaRave.hWnd());
+			HWND Foco = SetFocus(App.VentanaRave.hWnd()); // REVISADO
 		}
 		// Desactivo los filtros que pueda haber activados para evitar un crash en la versión x86
 		libvlc_video_set_adjust_int(_MediaPlayer, libvlc_adjust_Enable, 0);

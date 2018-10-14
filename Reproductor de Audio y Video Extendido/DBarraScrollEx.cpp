@@ -32,17 +32,13 @@ namespace DWL {
 		if (_ScrollH_Estado != DBarraScrollEx_Estado_Invisible)	ObtenerRectaBarraScrollH(RCH, RCBH);
 //		Debug_Escribir_Varg(L"_ScrollV_Estado : %d, _ScrollH_Estado : %d, ColorFondoScroll %d\n", _ScrollV_Estado, _ScrollH_Estado, ColorFondoScroll);
 		switch (_ScrollV_Estado) {
-			case DBarraScrollEx_Estado_Normal		:	
-				_PintarBarraScrollEx(hDC, RCV, RCBV, ColorScroll			, ColorFondoScroll);				
-				break;
+			case DBarraScrollEx_Estado_Normal		:	_PintarBarraScrollEx(hDC, RCV, RCBV, ColorScroll			, ColorFondoScroll);				break;
 			case DBarraScrollEx_Estado_Resaltado	:	_PintarBarraScrollEx(hDC, RCV, RCBV, ColorScrollResaltado   , ColorFondoScrollResaltado);		break;
 			case DBarraScrollEx_Estado_Presionado	:	_PintarBarraScrollEx(hDC, RCV, RCBV, ColorScrollPresionado  , ColorFondoScrollPresionado);		break;
 			case DBarraScrollEx_Estado_Invisible	:   PintarRecuadro = FALSE;																			break;
 		}
 		switch (_ScrollH_Estado) {
-			case DBarraScrollEx_Estado_Normal		:	
-				_PintarBarraScrollEx(hDC, RCH, RCBH, ColorScroll			, ColorFondoScroll);				
-				break;
+			case DBarraScrollEx_Estado_Normal		:	_PintarBarraScrollEx(hDC, RCH, RCBH, ColorScroll			, ColorFondoScroll);				break;
 			case DBarraScrollEx_Estado_Resaltado	:	_PintarBarraScrollEx(hDC, RCH, RCBH, ColorScrollResaltado   , ColorFondoScrollResaltado);		break;
 			case DBarraScrollEx_Estado_Presionado	:	_PintarBarraScrollEx(hDC, RCH, RCBH, ColorScrollPresionado  , ColorFondoScrollPresionado);		break;
 			case DBarraScrollEx_Estado_Invisible	:   PintarRecuadro = FALSE;																			break;
@@ -296,16 +292,16 @@ namespace DWL {
 
 	void DBarraScrollEx::_PintarBarraScrollEx(HDC hDC, RECT &RectaScroll, RECT &RectaBarra, const COLORREF pColorBarra, const COLORREF pColorFondo) {
 		// Creo las brochas 
-		HBRUSH ColorFondo = CreateSolidBrush(pColorFondo);
-		HBRUSH ColorBarra = CreateSolidBrush(pColorBarra);
+		HBRUSH BrochaColorFondo = CreateSolidBrush(pColorFondo);
+		HBRUSH BrochaColorBarra = CreateSolidBrush(pColorBarra);
 
 		// Pinto el scrollbar
-		FillRect(hDC, &RectaScroll, ColorFondo);
-		FillRect(hDC, &RectaBarra, ColorBarra);
+		FillRect(hDC, &RectaScroll, BrochaColorFondo);
+		FillRect(hDC, &RectaBarra, BrochaColorBarra);
 
 		// Borro las brochas de la memória
-		DeleteObject(ColorFondo);
-		DeleteObject(ColorBarra);
+		DeleteObject(BrochaColorFondo);
+		DeleteObject(BrochaColorBarra);
 	}
 
 

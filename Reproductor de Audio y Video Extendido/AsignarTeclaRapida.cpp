@@ -73,7 +73,7 @@ void AsignarTeclaRapida::Pintar(HDC DC) {
 }
 
 void AsignarTeclaRapida::EditarTecla(void) {
-	SetFocus(_hWnd);
+	SetFocus(_hWnd); // REVISADO
 	_Editando = TRUE;
 	Repintar();
 }

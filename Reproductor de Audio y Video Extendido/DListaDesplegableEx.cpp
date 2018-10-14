@@ -30,7 +30,7 @@ namespace DWL {
 			RECT RV;
 			GetWindowRect(_hWnd, &RV);
 			SetWindowPos(_Lista.hWnd(), HWND_TOPMOST, RV.left, RV.bottom, RV.right - RV.left, _AltoLista, SWP_SHOWWINDOW);
-			SetFocus(_Lista.hWnd());
+			SetFocus(_Lista.hWnd()); // REVISADO
 		}
 		else {
 			_Lista.Visible(FALSE);

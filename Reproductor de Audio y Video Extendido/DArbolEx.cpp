@@ -948,8 +948,8 @@ namespace DWL {
 		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		int cX		= DatosMouse.X(),
 			cY		= DatosMouse.Y();
-
-		SetFocus(hWnd());
+		 
+		SetFocus(hWnd()); // REVISADO
 		if (Scrolls_MousePresionado(DatosMouse) == TRUE) { return; }
 		
 		_NodoMarcado = HitTest(cX, cY, _NodoResaltadoParte);

@@ -214,7 +214,7 @@ namespace DWL {
 	}
 
 	void DEdicionTextoEx::_Evento_MousePresionado(const WPARAM wParam, const LPARAM lParam, const int Boton) {
-		if (TextoEditable == TRUE) SetFocus(_hWnd);
+		if (TextoEditable == TRUE) SetFocus(_hWnd);	// REVISADO
 		SetCapture(_hWnd);
 		Transicion(DEdicionTextoEx_Transicion_Presionado);
 		_Presionado = TRUE;

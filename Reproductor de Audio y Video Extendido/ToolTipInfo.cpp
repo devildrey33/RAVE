@@ -30,10 +30,12 @@ void ToolTipInfo::Mostrar(const int cX, const int cY, const int cAncho, const in
 		DwmExtendFrameIntoClientArea(_hWnd, &Margen);
 	}
 	Opacidad(0);
-	// Asigno la posición del menú y lo hago siempre visible
+//	HWND Foco = _Padre->Padre();
+//	if (GetFocus() == App.VentanaOpciones.hWnd()) Foco = App.VentanaOpciones.hWnd();
+	// Asigno la posición del tooltip detras de la ventana con el foco
 	SetWindowPos(_hWnd, _Padre->Padre(), cX, cY, cAncho, cAlto, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 	// Situo el padre justo detras de este tooltip
-	SetWindowPos(_Padre->Padre(), _hWnd, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+	SetWindowPos(_Padre->Padre(), _hWnd, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
 
 	SetTimer(_hWnd, ID_TEMPORIZADOR_OCULTAR, App.BD.Opciones_TiempoToolTips(), NULL);
 

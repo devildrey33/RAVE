@@ -107,7 +107,7 @@ namespace DWL {
 
 		}
 		// Asigno el foco al menú
-		SetFocus(_hWnd);
+		SetFocus(_hWnd); // REVISADO
 		// Envio el mensaje WM_NCACTIVATE a la ventana principal para que no se vea como pierde el foco, y parezca que el desplegable es un hijo de la ventana principal
 		SendMessage(_hWndDest->hWnd(), WM_NCACTIVATE, TRUE, 0);
 	}
@@ -130,7 +130,7 @@ namespace DWL {
 				pPadre->Ocultar(FALSE);
 				pPadre = pPadre->_Padre;
 			}
-			SetFocus(_hWndDest->hWnd());
+			SetFocus(_hWndDest->hWnd()); // REVISADO
 		}
 		// Destruyo la ventana del menú
 		DestroyWindow(_hWnd);
@@ -530,7 +530,7 @@ namespace DWL {
 			}
 		}
 
-		SetFocus(_hWnd);
+		SetFocus(_hWnd); // REVISADO
 		// Envio el mensaje WM_NCACTIVATE a la ventana principal para que no se vea como pierde el foco, y parezca que el desplegable es un hijo de la ventana principal
 		SendMessage(_hWndDest->hWnd(), WM_NCACTIVATE, TRUE, 0);
 	}
@@ -574,7 +574,7 @@ namespace DWL {
 							#endif
 							_MenuDesplegado->Ocultar();
 							_MenuDesplegado = NULL;
-							SetFocus(_hWnd);
+							SetFocus(_hWnd); // REVISADO
 							SendMessage(_hWndDest->hWnd(), WM_NCACTIVATE, TRUE, 0);
 						}
 						// Vuelvo a dejar el menu resaltado anterior al estado normal
@@ -781,7 +781,7 @@ namespace DWL {
 				if (_Padre != NULL) {
 					_MenuResaltado = NULL;
 					Ocultar(FALSE);
-					SetFocus(_Padre->_hWnd);
+					SetFocus(_Padre->_hWnd); // REVISADO
 					SendMessage(_hWndDest->hWnd(), WM_NCACTIVATE, TRUE, 0);
 					Repintar();
 				}
@@ -895,7 +895,8 @@ namespace DWL {
 
 	void DMenuEx::_Evento_BarraEx_Cambiado(DEventoMouse &DatosMouse) {
 		//Ocultar(TRUE);
-		SetFocus(_hWnd);
+		// Aunque parezca un poco raro, al pulsar sobre una barra del menú no desaparecerá el menú, por lo que este debe recuperar el foco
+		SetFocus(_hWnd); // REVISADO
 		SendMessage(_hWndDest->hWnd(), WM_NCACTIVATE, TRUE, 0);
 		DMenuEx *MenuBarra = BuscarMenu(DatosMouse.ID());		
 		if (MenuBarra != NULL) {

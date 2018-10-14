@@ -115,10 +115,12 @@
 		V  Mostrar valor en DBarraProgreso / DBarraDesplazamiento (de moment hi ha 4 opcions (int/decimal | valor/maxim i valor)
 		
 		-  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
-			- Sempre que pasa surt el thread analizar
+			- Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)
 
 		-  Sumar 0.05 a la nota per cada reproducció completa (d'aquesta forma amb 50 reproduccións arribara a 5 estrelles)
 		-  Eliminar Nota de la taula Etiquetas, la nota s'ha de calcular al fer el tooltip
+		-  Aplicar transicións al objecte DBarraScrollEx
+			- Començar a mirar com aplicar transicións al DListaEx i al DArbolEx
 
 		V  Mostrar les opcions en una finestra nova
 			V  Crear control separador (MOLT SIMPLE) com si fos un </ br>

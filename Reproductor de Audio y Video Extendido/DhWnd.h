@@ -32,7 +32,7 @@ namespace DWL {
 		inline const BOOL			Minimizar(void)					{ return ShowWindow(_hWnd, SW_MINIMIZE); };
 		inline const BOOL			Minimizado(void)				{ return IsIconic(_hWnd); };
 		const BOOL					Maximizada(void);
-		inline const HWND			AsignarFoco(void)               { return SetFocus(_hWnd); };
+		inline const HWND			AsignarFoco(void)               { return SetFocus(_hWnd); }; 
 		inline virtual const BOOL	Destruir(void)					{ if (_hWnd == NULL) { return TRUE; } BOOL R = DestroyWindow(_hWnd); _hWnd = NULL; return R; };
 		inline INT_PTR				ID(void)						{ return static_cast<INT_PTR>(GetWindowLongPtr(_hWnd, GWL_ID)); };
 		inline HWND					hWndPadre(void)					{ return GetParent(_hWnd); };
