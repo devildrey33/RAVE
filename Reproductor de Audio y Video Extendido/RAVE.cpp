@@ -175,10 +175,11 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 				VentanaRave.ThreadArchivosLista.Iniciar(VentanaRave.hWnd(), Paths);
 			}
 			else {
+			#ifndef  RAVE_IGNORAR_LISTA_INICIO 	// No genera ninguna lista al iniciar (por el debug del VLC que es muy heavy.. y carga mucho al visual studio)
 				// Inicia la acción por defecto al empezar
 				Debug_Escribir_Varg(L"Rave::Iniciar ->  Acción de inicio : %d\n", BD.Opciones_Inicio());
 				switch (BD.Opciones_Inicio()) {
-					case Tipo_Inicio_NADA			:																		break;
+//					case Tipo_Inicio_NADA			:																		break;
 					case Tipo_Inicio_Genero			:	VentanaRave.GenerarListaAleatoria(TLA_Genero);						break;
 					case Tipo_Inicio_Grupo			:	VentanaRave.GenerarListaAleatoria(TLA_Grupo);						break;
 					case Tipo_Inicio_Disco			:	VentanaRave.GenerarListaAleatoria(TLA_Disco);						break;
@@ -186,6 +187,8 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 					case Tipo_Inicio_LoQueSea		:	VentanaRave.GenerarListaAleatoria(TLA_LoQueSea);					break;
 					case Tipo_Inicio_UltimaLista	:	BD.ObtenerUltimaLista();											break;
 				}
+			#endif // !1
+
 			}
 			
 			Ret = TRUE;
@@ -479,14 +482,14 @@ void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 					App.VentanaRave.GenerarListaAleatoria();
 					break;
 				case 2: // Subir volumen
-					if (App.BD.Opciones_Volumen() + 20 > 200)	Volumen = 200;
-					else										Volumen = App.BD.Opciones_Volumen() + 20;
+					if (App.BD.Opciones_Volumen() + 10 > 200)	Volumen = 200;
+					else										Volumen = App.BD.Opciones_Volumen() + 10;
 					App.VLC.Volumen(Volumen);
 					App.BD.Opciones_Volumen(Volumen);
 					break;
 				case 3: // Bajar volumen
-					if (App.BD.Opciones_Volumen() - 20 < 0)		Volumen = 0;
-					else										Volumen = App.BD.Opciones_Volumen() - 20;
+					if (App.BD.Opciones_Volumen() - 10 < 0)		Volumen = 0;
+					else										Volumen = App.BD.Opciones_Volumen() - 10;
 					App.VLC.Volumen(Volumen);
 					App.BD.Opciones_Volumen(Volumen);
 					break;

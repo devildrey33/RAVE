@@ -157,8 +157,8 @@
 						V etiqeuta grup aleatoria
 						V etiqeuta disc aleatoria
 						X major nota
-					V Afegir cançons amb menys de 2.5 de nota a llistes aleatories.
-					V No generar llistes amb menys de 5 medis
+					- Afegir cançons amb menys de 2.5 de nota a llistes aleatories.
+					- No generar llistes amb menys de 3 medis
 					- Sumar 0.1 a la nota dels medis reproduits completament
 				- Video
 					- Tiempo de inactividad para ocultar los controles

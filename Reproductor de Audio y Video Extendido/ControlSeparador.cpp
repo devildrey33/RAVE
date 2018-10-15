@@ -30,7 +30,7 @@ void ControlSeparador::Pintar(HDC DC) {
 	DeleteObject(BrochaFondo);
 
 	// Pinto la barra separadora
-	HPEN PlumaSeparador = CreatePen(PS_SOLID, 1, COLOR_BORDE);
+	HPEN PlumaSeparador = CreatePen(PS_SOLID, 1, COLOR_SEPARADOR);
 	HPEN VPen = static_cast<HPEN>(SelectObject(Buffer, PlumaSeparador));
 	int t = RC.bottom / 2;
 	MoveToEx(Buffer, 10, RC.bottom / 2, NULL);

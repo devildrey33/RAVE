@@ -71,8 +71,14 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 							// Lista
 	DEtiquetaEx             EtiquetaListaInicio;
 	DListaDesplegableEx     DesplegableListaInicio;
+	ControlSeparador	    SeparadorLista1;
+	DEtiquetaEx             EtiquetaCanciones25;
 	DWL::DMarcaEx			MarcaCanciones25;
+	ControlSeparador	    SeparadorLista2;
+	DEtiquetaEx             EtiquetaNoGenerarListas3;
 	DWL::DMarcaEx			MarcaNoGenerarListas3;
-	DWL::DMarcaEx			MarcaSumar001;
+	ControlSeparador	    SeparadorLista3;
+	DEtiquetaEx             EtiquetaSumar005;
+	DWL::DMarcaEx			MarcaSumar005;
 };
 

@@ -34,6 +34,7 @@ const BOOL ThreadAnalisis::Iniciar(HWND nhWndDest) {
 		GetClientRect(_hWnd, &RC);
 		_BarraProgreso1.CrearBarraProgresoEx(this, 30, 105, RC.right - 60, 20, ID_BARRAPROGRESO1);
 		_BarraProgreso1.MostrarValor(DBarraEx_MostrarValor_ValorMaximoInt);
+		_BarraProgreso1.Activado(TRUE);
 		_BarraProgreso2.CrearBarraProgresoEx(this, 30, 205, RC.right - 60, 20, ID_BARRAPROGRESO2);
 		_BarraProgreso2.MostrarValor(DBarraEx_MostrarValor_ValorMaximoInt);
 		_BarraProgreso2.Activado(FALSE);

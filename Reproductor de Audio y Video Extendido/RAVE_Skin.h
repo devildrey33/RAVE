@@ -30,7 +30,7 @@
 #define COLOR_TEXTO_PRESIONADO						RGB(215, 215, 215) //RGB(255, 255, 255)
 #define COLOR_TEXTO_DESACTIVADO						RGB(100, 100, 100) //RGB(255, 255, 255)
 
-
+#define COLOR_SEPARADOR								RGB(128, 128, 128)
 #define COLOR_BORDE_POPUP                           RGB(210, 210, 210)
 
  

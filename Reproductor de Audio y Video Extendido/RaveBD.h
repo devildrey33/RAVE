@@ -260,6 +260,16 @@ class RaveBD {
 	inline const UINT			Opciones_TiempoToolTips(void) { return _Opciones_TiempoToolTips; }
 	void						Opciones_TiempoToolTips(const UINT nOpciones_TiempoToolTips);
 
+	inline const BOOL			Opciones_NoAgregarMedioMenos25(void) { return _Opciones_NoAgregarMedioMenos25; }
+	void						Opciones_NoAgregarMedioMenos25(const BOOL nOpciones_NoAgregarMedioMenos25);
+
+	inline const BOOL			Opciones_NoGenerarListasMenos3(void) { return _Opciones_NoGenerarListasMenos3; }
+	void						Opciones_NoGenerarListasMenos3(const BOOL nOpciones_NoGenerarListasMenos3);
+
+	inline const BOOL			Opciones_Sumar005(void) { return _Opciones_Sumar005; }
+	void						Opciones_Sumar005(const BOOL n_pciones_Sumar005);
+
+
 
 	DWL::DUnidadesDisco			Unidades;
 
@@ -313,6 +323,10 @@ protected:
 	BOOL					   _Opciones_BuscarActualizacion;		// Buscar actualizaciones del reproductor al iniciar
 	UINT                       _Opciones_TiempoAnimaciones;			// Duración de las animaciones
 	UINT                       _Opciones_TiempoToolTips;			// Duración de los tooltips informativos de la parte inferior derecha
+
+	BOOL                       _Opciones_NoAgregarMedioMenos25;		// No Agregar medios con menos de 2.5 de nota a las listas aleatórias
+	BOOL                       _Opciones_NoGenerarListasMenos3;		// No generar listas aleatórias con menos de 3 medios
+	BOOL                       _Opciones_Sumar005;                  // Sumar 0.05 a la nota al reproducir completamente un medio
 	friend class ThreadAnalisis;
 };
 
