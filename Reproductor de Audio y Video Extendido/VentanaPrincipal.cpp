@@ -614,7 +614,12 @@ void VentanaPrincipal::Repetir_Click(void) {
 	if (_PantallaCompleta == TRUE) {	
 		GetWindowRect(App.ControlesPC.BotonRepetir.hWnd(), &RW);
 		POINT Espacio = Menu_Repetir.CalcularEspacio();
-		Ret = Menu_Repetir.MostrarModal(&App.ControlesPC, RW.left, RW.top - Espacio.y);
+		switch (App.ControlesPC.Alineacion) {
+			case Abajo		:	Ret = Menu_Repetir.MostrarModal(&App.ControlesPC, RW.left, RW.top - Espacio.y);		break;
+			case Arriba		:	Ret = Menu_Repetir.MostrarModal(&App.ControlesPC, RW.left, RW.bottom);				break;
+			case Izquierda	:	Ret = Menu_Repetir.MostrarModal(&App.ControlesPC, RW.right, RW.top);				break;
+			case Derecha	:	Ret = Menu_Repetir.MostrarModal(&App.ControlesPC, RW.left - Espacio.x, RW.top);		break;
+		}		
 	}
 	else {
 		GetWindowRect(BotonRepetir.hWnd(), &RW);         

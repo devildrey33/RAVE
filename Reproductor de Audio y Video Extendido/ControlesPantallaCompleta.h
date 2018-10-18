@@ -12,6 +12,13 @@ enum CPC_Alineacion {
 	Derecha
 };
 
+enum CPC_Transicion {
+	CPC_Transicion_Mostrar,
+	CPC_Transicion_Ocultar,
+	CPC_Transicion_Resaltado,
+	CPC_Transicion_Normal
+};
+
 class ControlesPantallaCompleta :public DVentana {
   public:
 							ControlesPantallaCompleta() : DVentana(), Alineacion(Abajo) { };
@@ -34,6 +41,8 @@ class ControlesPantallaCompleta :public DVentana {
 	void					Pintar(HDC DC);
 
 	void                    Alinear(void);
+
+	void                    Transicion(const CPC_Transicion nTransicion);
 
 //	LRESULT					Evento_SliderH(WPARAM wParam, LPARAM lParam);
 
@@ -70,6 +79,8 @@ class ControlesPantallaCompleta :public DVentana {
 
 	LRESULT CALLBACK		GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
   protected :
+	DAnimacion             _AniMostrar;
+
 //	BOOL				   _Visible;
 
 

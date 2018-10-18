@@ -20,6 +20,7 @@ namespace DWL {
 		DBarraTareas                BarraTareas;
 
 		void						Opacidad(const BYTE nNivel);
+		const BYTE                  Opacidad(void);
 
 		inline virtual void			Repintar(void) { RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT | RDW_FRAME); };
 

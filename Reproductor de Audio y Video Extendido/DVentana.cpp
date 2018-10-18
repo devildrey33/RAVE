@@ -57,6 +57,12 @@ namespace DWL {
 		SetLayeredWindowAttributes(_hWnd, 0, nNivel, LWA_ALPHA);
 	};
 
+	const BYTE DVentana::Opacidad(void) {
+		BYTE Ret;
+		DWORD Params = LWA_ALPHA;
+		GetLayeredWindowAttributes(_hWnd, NULL, &Ret, &Params);
+		return Ret;
+	}
 
 	LRESULT CALLBACK DVentana::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {

@@ -194,6 +194,10 @@
 			- Instalar amb els instaladors (x86, x64)
 		
 	RAVE 0.6
+		-  Afegir menu tipo Marca, que serveixi tant com a menú, o com a marca pel seu menú pare.
+			- La idea es que el menu generar llista mostri els seus sub-menus amb una marca, la marca al presionarla no oculta el menú, i despres si presionem en el pare (generar lista) generara una llista del que estigui marcat.
+				- aixó necesitara guardar les marques en la BD, i aixi es "personalitza" el tema de generar llisters aleatories.
+			- I ja que hi som, un nou tipus de llista aleatoria podria estar basat en el jamendo... el VLC pot carregar llistes jamendo... osigui que no hauria de ser un problema imposible.
 		-  Fer una taula Audio i una Video, i eliminar la taula Medios.... (ANALITZAR IDEA..)
 			- La idea es tenir les opcions suficients per posarles en un arbre (OJU que aixo es un canvi drástic i que a l'hora podria ordenar molt mes tot el projecte, inclus podria suposar crear una taula d'audio u una video separades i no com ara que els dos son un medio)
 				- o inclus crear una taula medios global amb un tipo (audio / video / lista / cdaudio), i despres crear una taula per cada un d'ells amb una id

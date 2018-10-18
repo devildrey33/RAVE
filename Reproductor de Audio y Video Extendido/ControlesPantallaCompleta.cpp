@@ -5,6 +5,12 @@
 #include "Rave_Skin.h"
 #include "resource.h"
 
+// Tamaño del ControlesPantallaCompleta máximo horizontal
+#define ANCHO_CPCH	1000
+#define ALTO_CPCH	  80
+// Tamaño del ControlesPantallaCompleta máximo vertical
+#define ANCHO_CPCV	  90
+#define ALTO_CPCV	 900
 
 void ControlesPantallaCompleta::Crear(void) {	
 	DVentana::CrearVentana(NULL, L"ControlesPantallaCompleta", L"", 0, 0, 1000, 80, WS_POPUP, WS_EX_TOOLWINDOW, NULL, NULL, NULL, NULL);
@@ -46,7 +52,7 @@ void ControlesPantallaCompleta::Crear(void) {
 	LabelTiempoSeparador.CrearEtiquetaEx(this, L"/", RC.right - 210, 12, 10, 20, ID_LABEL_TIEMPOSEPARADOR, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
 	LabelTiempoTotal.CrearEtiquetaEx(this, L"00:00", RC.right - 200, 12, 55, 20, ID_LABEL_TIEMPOTOTAL, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
 
-	Opacidad(240);
+	Opacidad(0);
 }
 
 
@@ -97,11 +103,57 @@ void ControlesPantallaCompleta::Mostrar(void) {
 //	DMouse::Visible(TRUE);
 }
 
+void ControlesPantallaCompleta::Transicion(const CPC_Transicion nTransicion) {
+	DWORD Duracion = DhWnd::TiempoAnimaciones;
+	if (_AniMostrar.Animando() == TRUE) {
+//		Duracion = _AniMostrar.TiempoActual();
+		_AniMostrar.Invertir();
+		return;
+	}
+
+	float OpacidadHasta;
+	switch (nTransicion) {
+		case CPC_Transicion_Mostrar:
+			OpacidadHasta = 220.0f;
+			break;
+		case CPC_Transicion_Ocultar:
+			OpacidadHasta = 0.0f;
+			break;
+		case CPC_Transicion_Resaltado:
+			break;
+		case CPC_Transicion_Normal:
+			break;
+	}
+
+	_AniMostrar.Iniciar(static_cast<float>(Opacidad()), OpacidadHasta, Duracion, [=](std::vector<float> &Valores, const BOOL Terminado) {
+		Opacidad(static_cast<BYTE>(Valores[0]));
+//		_ColorBorde = Valores[1];
+//		_ColorTexto = Valores[2];
+		// Ha terminado de ocultarse
+		if (Valores[0] == 0.0f && Terminado == TRUE) {
+			Visible(FALSE);
+		}
+		else {
+//			Repintar();
+		}
+	});
+
+}
+
+
 void ControlesPantallaCompleta::Alinear(void) {	
+	int Ancho, Alto;
+	RECT RC;
+	GetClientRect(App.VentanaRave.hWnd(), &RC);
+
 	// Colocación de los controles (vertical / horizontal)
 	switch (Alineacion) {
 		case Abajo :
 		case Arriba:
+			if (RC.right < ANCHO_CPCH) Ancho = RC.right - 100;
+			else                       Ancho = ANCHO_CPCH;
+			Alto = ALTO_CPCH;
+
 			SetWindowPos(BotonAtras.hWnd()			, HWND_TOP, 10, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(BotonAdelante.hWnd()		, HWND_TOP, 130, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(BotonPlay.hWnd()			, HWND_TOP, 50, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
@@ -110,57 +162,63 @@ void ControlesPantallaCompleta::Alinear(void) {
 			SetWindowPos(BotonMezclar.hWnd()		, HWND_TOP,	220, 10, 80, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
 			SetWindowPos(BotonRepetir.hWnd()		, HWND_TOP,	310, 10, 80, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
 			SetWindowPos(BotonRotar.hWnd()			, HWND_TOP, 400, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(LabelTiempoActual.hWnd()	, HWND_TOP, 715, 12, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(LabelTiempoSeparador.hWnd(), HWND_TOP, 770, 12, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(LabelTiempoTotal.hWnd()	, HWND_TOP,	780, 12, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(SliderVolumen.hWnd()		, HWND_TOP, 855, 13, 90, 16						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
-			SetWindowPos(LabelVolumen.hWnd()		, HWND_TOP,	950, 12, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(SliderTiempo.hWnd()		, HWND_TOP, 10, 45, 980, 24						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(LabelTiempoActual.hWnd()	, HWND_TOP, Ancho - 285, 12, 0, 0				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(LabelTiempoSeparador.hWnd(), HWND_TOP, Ancho - 230, 12, 0, 0				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(LabelTiempoTotal.hWnd()	, HWND_TOP,	Ancho - 220, 12, 0, 0				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(SliderVolumen.hWnd()		, HWND_TOP, Ancho - 145, 13, 90, 16				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(LabelVolumen.hWnd()		, HWND_TOP,	Ancho - 50, 12, 0, 0				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(SliderTiempo.hWnd()		, HWND_TOP, 10, 45, Ancho - 20, 24				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
 			SliderTiempo.Alineacion(IzquierdaDerecha);
 			break;
 		case Izquierda:
 		case Derecha:
-			SetWindowPos(BotonAtras.hWnd()			, HWND_TOP, 5, 10, 0, 0							, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(BotonAdelante.hWnd()		, HWND_TOP, 45, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(BotonPlay.hWnd()			, HWND_TOP, 5, 50, 0, 0							, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(BotonStop.hWnd()			, HWND_TOP, 45, 50, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(LabelRatio.hWnd()			, HWND_TOP, 20, 90, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(BotonMezclar.hWnd()		, HWND_TOP,	5, 120, 70, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
-			SetWindowPos(BotonRepetir.hWnd()		, HWND_TOP,	5, 160, 70, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
-			SetWindowPos(BotonRotar.hWnd()			, HWND_TOP, 5, 200, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(SliderVolumen.hWnd()		, HWND_TOP, 5, 240, 70, 20						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
+			if (RC.bottom < ALTO_CPCV) Alto = RC.bottom - 100;
+			else                       Alto = ALTO_CPCV;
+			Ancho = ANCHO_CPCV;
+
+			SetWindowPos(BotonAtras.hWnd()			, HWND_TOP, 10, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(BotonAdelante.hWnd()		, HWND_TOP, 50, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(BotonPlay.hWnd()			, HWND_TOP, 10, 50, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(BotonStop.hWnd()			, HWND_TOP, 50, 50, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(LabelRatio.hWnd()			, HWND_TOP, 25, 90, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(BotonMezclar.hWnd()		, HWND_TOP,	10, 120, 70, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(BotonRepetir.hWnd()		, HWND_TOP,	10, 160, 70, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(BotonRotar.hWnd()			, HWND_TOP, 10, 200, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(SliderVolumen.hWnd()		, HWND_TOP, 10, 240, 70, 20						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
 //			SetWindowPos(LabelVolumen.hWnd()		, HWND_TOP,	950, 12, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | NO_MOVE);
-			SetWindowPos(SliderTiempo.hWnd()		, HWND_TOP, 25, 270, 30, 660					, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(SliderTiempo.hWnd()		, HWND_TOP, 30, 270, 30, Alto - 350				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
 			SliderTiempo.Alineacion(AbajoArriba);
-			SetWindowPos(LabelTiempoActual.hWnd()	, HWND_TOP, 12, 940, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(LabelTiempoActual.hWnd()	, HWND_TOP, 17, Alto - 60, 0, 0					, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 //			SetWindowPos(LabelTiempoSeparador.hWnd(), HWND_TOP, 770, 12, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(LabelTiempoTotal.hWnd()	, HWND_TOP,	12, 970, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(LabelTiempoTotal.hWnd()	, HWND_TOP,	17, Alto - 30, 0, 0					, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			break;
 	}
 
-	RECT RV;
-	GetWindowRect(App.VentanaRave.hWnd(), &RV);
+//	RECT RV;
+//	GetWindowRect(App.VentanaRave.hWnd(), &RV);
 	// Colocación del control (Arriba, Abajo, Izquierda, Derecha)
 	switch (Alineacion) {
 		case Abajo		:	
-			SetWindowPos(_hWnd, HWND_TOP, (RV.right - 1000) / 2, RV.bottom - 80, 1000, 80	, SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_FRAMECHANGED);	
+			SetWindowPos(_hWnd, HWND_TOPMOST	, (RC.right - Ancho) / 2, RC.bottom - Alto, Ancho, Alto	, SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_FRAMECHANGED);	
 			SliderTiempo.ToolTip(DBarraEx_ToolTip_Arriba);
 			break;
 		case Izquierda	:	
-			SetWindowPos(_hWnd, HWND_TOP, 0, (RV.bottom - 1000) / 2, 80, 1000				, SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_FRAMECHANGED);	
+			SetWindowPos(_hWnd, HWND_TOPMOST	, 0, (RC.bottom - Alto) / 2, Ancho, Alto				, SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_FRAMECHANGED);
 			SliderTiempo.ToolTip(DBarraEx_ToolTip_Derecha);
 			break;
 		case Arriba		:	
-			SetWindowPos(_hWnd, HWND_TOP, (RV.right - 1000) / 2, 0, 1000, 80				, SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_FRAMECHANGED);	
+			SetWindowPos(_hWnd, HWND_TOPMOST	, (RC.right - Ancho) / 2, 0, Ancho, Alto				, SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_FRAMECHANGED);
 			SliderTiempo.ToolTip(DBarraEx_ToolTip_Abajo);
 			break;
 		case Derecha	:	
-			SetWindowPos(_hWnd, HWND_TOP, RV.right - 80, (RV.bottom - 1000) / 2, 80, 1000	, SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_FRAMECHANGED);		
+			SetWindowPos(_hWnd, HWND_TOPMOST	, RC.right - Ancho, (RC.bottom - Alto) / 2, Ancho, Alto	, SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_FRAMECHANGED);
 			SliderTiempo.ToolTip(DBarraEx_ToolTip_Izquierda);
 			break;
 	}
-
+	
 	Repintar();
+
+	Transicion(CPC_Transicion_Mostrar);
 }
 
 void ControlesPantallaCompleta::Ocultar(void) {
@@ -180,7 +238,9 @@ void ControlesPantallaCompleta::Ocultar(void) {
 	Debug_Escribir(L"ControlesPantallaCompleta::Ocultar\n");
 	KillTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD);
 
-	Visible(FALSE);
+//	Visible(FALSE);
+	Transicion(CPC_Transicion_Ocultar);
+
 	DMouse::Visible(FALSE);
 //	_Visible = FALSE;
 }
@@ -285,7 +345,6 @@ void ControlesPantallaCompleta::Evento_BotonEx_Click(DWL::DEventoMouse &DatosMou
 		App.VentanaRave.Evento_BotonEx_Mouse_Click(DatosMouse);
 	}
 }
-
 
 
 LRESULT CALLBACK ControlesPantallaCompleta::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
