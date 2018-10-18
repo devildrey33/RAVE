@@ -3,10 +3,18 @@
 #include "BarraTiempo.h"
 #include "BarraVolumen.h"
 #include "DEtiquetaEx.h"
+#include "DAnimacion.h"
+
+enum CPC_Alineacion {
+	Abajo,
+	Izquierda,
+	Arriba,
+	Derecha
+};
 
 class ControlesPantallaCompleta :public DVentana {
   public:
-							ControlesPantallaCompleta() : DVentana() { };
+							ControlesPantallaCompleta() : DVentana(), Alineacion(Abajo) { };
 	                       ~ControlesPantallaCompleta() { };
 							// Se está modificando (WM_MOUSEDOWN, WM_MOUSEHOVER)
 	void					Evento_SliderTiempo_Cambio(void);
@@ -19,9 +27,13 @@ class ControlesPantallaCompleta :public DVentana {
 	void					Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse);
 	void					Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse);
 
+	void					Evento_BotonEx_Click(DWL::DEventoMouse &DatosMouse);
+
 //	void					Evento_BorraFondo(HDC DC);
 	void                    Evento_Pintar(void);
 	void					Pintar(HDC DC);
+
+	void                    Alinear(void);
 
 //	LRESULT					Evento_SliderH(WPARAM wParam, LPARAM lParam);
 
@@ -40,6 +52,8 @@ class ControlesPantallaCompleta :public DVentana {
 	DWL::DBotonEx			BotonMezclar;
 	DWL::DBotonEx			BotonRepetir;
 
+	DWL::DBotonEx           BotonRotar;
+
 	BarraTiempo				SliderTiempo;
 //	DWL::DTrackBar			SliderTiempo;
 	BarraVolumen			SliderVolumen;
@@ -50,11 +64,14 @@ class ControlesPantallaCompleta :public DVentana {
 	DWL::DEtiquetaEx		LabelTiempoSeparador;
 	DWL::DEtiquetaEx		LabelTiempoTotal;
 
-//	POINT					uPos;
+	CPC_Alineacion		    Alineacion;
 
+	void					RotarControles(void);
 
 	LRESULT CALLBACK		GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
   protected :
 //	BOOL				   _Visible;
+
+
 };
 

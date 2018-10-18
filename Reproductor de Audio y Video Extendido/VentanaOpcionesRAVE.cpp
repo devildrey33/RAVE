@@ -155,8 +155,8 @@ void VentanaOpcionesRAVE::Crear(void) {
 
 	SeparadorLista1.Crear(&MarcoListas, 0, 90, RC.right - 20);
 	EtiquetaNoGenerarListas3.CrearEtiquetaEx(&MarcoListas,	L"Al generar una lista aleatória partiendo de una etiqueta, puede darse el caso que\n"
-															L"esa etiqueta tenga menos de 3 canciones."									, 10, 100, RC.right - 20, 40, ID_ETIQUETA_NOGENERARLISTAS3);
-	MarcaNoGenerarListas3.CrearMarcaEx(&MarcoListas, L"No generar listas aleatórias con menos de 3 medios"								, 10, 150, 361, 20, ID_MARCA_NOGENERARLISTAS3, IDI_CHECK2);
+															L"esa etiqueta tenga menos de 5 canciones."									, 10, 100, RC.right - 20, 40, ID_ETIQUETA_NOGENERARLISTAS3);
+	MarcaNoGenerarListas3.CrearMarcaEx(&MarcoListas, L"No generar listas aleatórias con menos de 5 medios"								, 10, 150, 361, 20, ID_MARCA_NOGENERARLISTAS3, IDI_CHECK2);
 	MarcaNoGenerarListas3.Marcado(App.BD.Opciones_NoGenerarListasMenos3());
 
 	SeparadorLista2.Crear(&MarcoListas, 0, 180, RC.right - 20);

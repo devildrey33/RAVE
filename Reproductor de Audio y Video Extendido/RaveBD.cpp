@@ -1347,7 +1347,9 @@ const BOOL RaveBD::Opciones_GuardarPosVentanaAnalizar(void) {
 
 const BOOL RaveBD::MedioReproducido(BDMedio *rMedio) {
 	if (rMedio == NULL) return FALSE;
-	std::wstring Q = L"UPDATE Medios SET Reproducido=" + std::to_wstring(rMedio->Reproducido + 1) + L" WHERE Id=" + std::to_wstring(rMedio->Id);
+	std::wstring Q;
+	if (Opciones_Sumar005() == TRUE) {	Q = L"UPDATE Medios SET Reproducido=" + std::to_wstring(rMedio->Reproducido + 1) + L", Nota=" + DWL::Strings::ToStrF(rMedio->Nota + 0.05f, 2) + L" WHERE Id=" + std::to_wstring(rMedio->Id);	}
+	else                             {	Q = L"UPDATE Medios SET Reproducido=" + std::to_wstring(rMedio->Reproducido + 1) + L" WHERE Id=" + std::to_wstring(rMedio->Id);																	}
 	int SqlRet = Consulta(Q);
 	if (SqlRet == SQLITE_ERROR) {
 		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));

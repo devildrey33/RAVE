@@ -6,7 +6,7 @@
 
 namespace DWL {
 
-	DBarraProgresoEx::DBarraProgresoEx(void) : _Minimo(0), _Maximo(0), _Valor(0), _Estado(DBarraEx_Estado_Normal), _ColorBarra(COLOR_BARRA), _ColorFondo(COLOR_BARRA_FONDO), _ColorBorde(COLOR_BORDE), _MostrarValor(DBarraEx_MostrarValor_Nada), _Activado(TRUE) {
+	DBarraProgresoEx::DBarraProgresoEx(void) : _Minimo(0), _Maximo(0), _Valor(0), _Estado(DBarraEx_Estado_Normal), _ColorBarra(COLOR_BARRA), _ColorFondo(COLOR_BARRA_FONDO), _ColorBorde(COLOR_BORDE), _MostrarValor(DBarraEx_MostrarValor_Nada), _Activado(TRUE), _Alineacion(IzquierdaDerecha) {
 	}
 
 
@@ -14,11 +14,12 @@ namespace DWL {
 	}
 
 
-	HWND DBarraProgresoEx::CrearBarraProgresoEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID, const float nMinimo, const float nMaximo, const float nValor) {
+	HWND DBarraProgresoEx::CrearBarraProgresoEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID, const float nMinimo, const float nMaximo, const float nValor, const DBarraEx_Alineacion nAlineacion) {
 //		if (hWnd()) { Debug_Escribir(L"DBarraProgresoEx::CrearBarraProgresoEx() Error : ya se ha creado la barra\n"); return hWnd(); }
 		_hWnd = CrearControlEx(nPadre, L"DBarraProgresoEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD | WS_VISIBLE, NULL, CS_HREDRAW | CS_VREDRAW);
 //		ColorFondo = COLOR_BARRA_FONDO;
 //		ColorBarra = COLOR_BARRA;
+		_Alineacion = nAlineacion;
 		_Minimo = nMinimo;
 		_Maximo = nMaximo;
 		_Valor = nValor;
@@ -62,22 +63,54 @@ namespace DWL {
 
 		// Calculo el tamaño de la barra para el valor actual
 		RBarra = RC; RFondo = RC;
-		RBarra.left++; RBarra.top++; RBarra.bottom--;  // Evito los bordes
-		RFondo.top++; RFondo.bottom--; RFondo.right--; // Evito los bordes
-		float Parte = static_cast<float>((RC.right - RC.left) - 2) / (_Maximo - _Minimo);
-		RBarra.right = 1 + static_cast<int>(Parte * (_Valor - _Minimo));
-		// Aseguro el valor máximo (a veces con los decimales redondeados no se ve la barra llena)
-		if (_Valor >= _Maximo) RBarra.right = RC.right - 1;
-		RFondo.left = RBarra.right;
+//		RBarra.left++; RBarra.top++; RBarra.bottom--; RBarra.right--; // Evito los bordes
+//		RFondo.top++; RFondo.bottom--; RFondo.left++; RFondo.right--; // Evito los bordes
+		float Parte = 0.0f;
+		
 
-		// Pinto el borde
-		Evento_PintarBorde(Buffer, RC);
+
+		switch (_Alineacion) {
+			case IzquierdaDerecha:
+				Parte = static_cast<float>(RC.right - RC.left) / (_Maximo - _Minimo);
+				RBarra.right = static_cast<int>(Parte * (_Valor - _Minimo));
+//				if (_Valor >= _Maximo) RBarra.right = RC.right - 1;
+				RFondo.left = RBarra.right;
+				break;
+			case DerechaIzquierda :
+				Parte = static_cast<float>(RC.right - RC.left) / (_Maximo - _Minimo);
+				RBarra.left = RBarra.right - static_cast<int>(Parte * (_Valor - _Minimo));
+//				if (_Valor >= _Maximo) RBarra.left = RC.left - 1;
+				RFondo.right = RBarra.left;
+				break;
+			case ArribaAbajo:
+				Parte = static_cast<float>(RC.bottom - RC.top) / (_Maximo - _Minimo);
+				RBarra.bottom = static_cast<int>(Parte * (_Valor - _Minimo));
+//				if (_Valor >= _Maximo) RBarra.bottom = RC.bottom - 1;
+				RFondo.top = RBarra.bottom;
+				break;
+			case AbajoArriba :
+				Parte = static_cast<float>(RC.bottom - RC.top) / (_Maximo - _Minimo);
+				RBarra.top = RBarra.bottom - static_cast<int>(Parte * (_Valor - _Minimo));
+//				if (_Valor >= _Maximo) RBarra.top = RC.top - 1;
+				RFondo.bottom = RBarra.top;
+				break;
+		}
+
+
+//		RBarra.right = 1 + static_cast<int>(Parte * (_Valor - _Minimo));
+		// Aseguro el valor máximo (a veces con los decimales redondeados no se ve la barra llena)
+//		if (_Valor >= _Maximo) RBarra.right = RC.right - 1;
+// 		RFondo.left = RBarra.right;
+
 
 		// Pinto la barra
 		Evento_PintarBarra(Buffer, RBarra);
 
 		// Pinto el fondo
 		Evento_PintarFondo(Buffer, RFondo);
+
+		// Pinto el borde
+		Evento_PintarBorde(Buffer, RC);
 
 		// Pinto el valor (si es necesario)
 		Evento_PintarValor(Buffer, RC);
@@ -128,9 +161,46 @@ namespace DWL {
 		}
 	}
 
-	const float DBarraProgresoEx::_ValorMouse(RECT &RC, const int cX) {
-		float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
-		float nValor = _Minimo + (static_cast<float>(cX - RC.left) * Parte);
+	const float DBarraProgresoEx::_ValorMouse(RECT &RC, int cX, int cY) {
+		// Las coordenadas no pueden sobresalir de la recta
+		if (cX > RC.right)	cX = RC.right;
+		if (cX < 0)			cX = 0;
+		if (cY > RC.bottom)	cY = RC.bottom;
+		if (cY < 0)			cY = 0;
+
+		float Parte = 0.0f, nValor = 0.0f; // _Minimo + (static_cast<float>(cX - RC.left) * Parte);
+
+		switch (_Alineacion) {
+			case IzquierdaDerecha:
+				Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
+				nValor = _Minimo + (static_cast<float>(cX - RC.left) * Parte);
+				#if DBARRAEX_DEBUG == TRUE
+					Debug_Escribir_Varg(L"DBarraProgresoEx::_ValorMouse X : %d, left : %d, Parte : %f, Valor : %f\n", cX, RC.left, Parte, nValor);
+				#endif
+				break;
+			case DerechaIzquierda :
+				Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
+				nValor = _Minimo + abs(static_cast<float>(cX - RC.right) * Parte);
+				#if DBARRAEX_DEBUG == TRUE
+					Debug_Escribir_Varg(L"DBarraProgresoEx::_ValorMouse X : %d, right : %d, Parte : %f, Valor : %f\n", cX, RC.right, Parte, nValor);
+				#endif
+				break;
+			case ArribaAbajo:
+				Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.bottom - RC.top) - 2));
+				nValor = _Minimo + (static_cast<float>(cY - RC.top) * Parte);
+				#if DBARRAEX_DEBUG == TRUE
+					Debug_Escribir_Varg(L"DBarraProgresoEx::_ValorMouse Y : %d, top : %d, Parte : %f, Valor : %f\n", cY, RC.top, Parte, nValor);
+				#endif
+				break;
+			case AbajoArriba :
+				Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.bottom - RC.top) - 2));
+				nValor = _Minimo + abs(static_cast<float>(cY - RC.bottom) * Parte);
+				#if DBARRAEX_DEBUG == TRUE
+					Debug_Escribir_Varg(L"DBarraProgresoEx::_ValorMouse Y : %d, bottom : %d, Parte : %f, Valor : %f\n", cY, RC.bottom, Parte, nValor);
+				#endif
+				break;
+		}
+
 		if (nValor > _Maximo) { nValor = _Maximo; }
 		if (nValor < _Minimo) { nValor = _Minimo; }
 		return nValor;
@@ -151,8 +221,6 @@ namespace DWL {
 		_MouseDentro = FALSE;
 		if (_Estado != DBarraEx_Estado_Presionado) {
 			_Estado = DBarraEx_Estado_Normal;
-			//Repintar();
-			//Resaltar(FALSE);
 			Transicion(DBarraEx_Transicion_Normal);
 		}
 	}
@@ -161,24 +229,13 @@ namespace DWL {
 		BOOL Ret = FALSE;
 		_Activado = nActivar;
 		Ret = EnableWindow(_hWnd, nActivar);
-//		if (_hWnd != NULL) {
-			Transicion((nActivar == TRUE) ? DBarraEx_Transicion_Normal : DBarraEx_Transicion_Desactivado);
-/*		}
-		else {
-			if (_Activado == TRUE) {
-				_ColorBarra = COLOR_BARRA;
-				_ColorFondo = COLOR_BARRA_FONDO;
-				_ColorBorde = COLOR_BORDE;
-			}
-			else {
-				_ColorBarra = COLOR_BARRA_DESACTIVADO;
-				_ColorFondo = COLOR_BARRA_FONDO_DESACTIVADO;
-				_ColorBorde = COLOR_BORDE;
-			}
-		}*/
-		//Repintar();
+		Transicion((nActivar == TRUE) ? DBarraEx_Transicion_Normal : DBarraEx_Transicion_Desactivado);
 	}
 
+	void DBarraProgresoEx::Alineacion(const DBarraEx_Alineacion nAlineacion) {
+		_Alineacion = nAlineacion;
+		Repintar();
+	}
 
 	void DBarraProgresoEx::Transicion(const DBarraEx_Transicion nTransicion) {
 		DWORD Duracion = DhWnd::TiempoAnimaciones;
@@ -219,40 +276,6 @@ namespace DWL {
 		});
 
 	}
-	/*
-	void DBarraProgresoEx::Resaltar(const BOOL Resaltado) {
-		if (_AniTransicion.Animando() == TRUE) {
-			_AniTransicion.Invertir();
-			return;
-		}
-
-		COLORREF BordeDesde, BordeHasta, FondoDesde, FondoHasta, BarraDesde, BarraHasta;
-		if (Resaltado == TRUE) {
-			BordeDesde = COLOR_BORDE;
-			BordeHasta = COLOR_BORDE_RESALTADO;
-			FondoDesde = COLOR_BARRA_FONDO;
-			FondoHasta = COLOR_BARRA_FONDO_RESALTADO;
-			BarraDesde = COLOR_BARRA;
-			BarraHasta = COLOR_BARRA_RESALTADO;
-			_Estado = DBarraEx_Estado_Resaltado;
-		}
-		else {
-			BordeDesde = COLOR_BORDE_RESALTADO;
-			BordeHasta = COLOR_BORDE;
-			FondoDesde = COLOR_BARRA_FONDO_RESALTADO;
-			FondoHasta = COLOR_BARRA_FONDO;
-			BarraDesde = COLOR_BARRA_RESALTADO;
-			BarraHasta = COLOR_BARRA;
-			_Estado = DBarraEx_Estado_Normal;
-		}
-		_AniTransicion.Iniciar(FondoDesde, FondoHasta, BordeDesde, BordeHasta, BarraDesde, BarraHasta, 400, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
-			_ColorFondo = Valores[0];
-			_ColorBorde = Valores[1];
-			_ColorBarra = Valores[2];
-			Repintar();
-		});
-
-	}*/
 
 	LRESULT CALLBACK DBarraProgresoEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {

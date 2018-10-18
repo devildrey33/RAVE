@@ -25,18 +25,25 @@ namespace DWL {
 	};
 
 	enum DBarraEx_MostrarValor {
-		DBarraEx_MostrarValor_Nada,
-		DBarraEx_MostrarValor_Valor2Decimales,
-		DBarraEx_MostrarValor_ValorInt,
-		DBarraEx_MostrarValor_ValorMaximo2Decimales,
-		DBarraEx_MostrarValor_ValorMaximoInt,
+		DBarraEx_MostrarValor_Nada,							//
+		DBarraEx_MostrarValor_Valor2Decimales,				// 0.00
+		DBarraEx_MostrarValor_ValorInt,						// 0
+		DBarraEx_MostrarValor_ValorMaximo2Decimales,		// 0.00 / 1.00
+		DBarraEx_MostrarValor_ValorMaximoInt,				// 0 / 1
+	};
+
+	enum DBarraEx_Alineacion {
+		IzquierdaDerecha,
+		DerechaIzquierda,
+		ArribaAbajo,
+		AbajoArriba
 	};
 
 	class DBarraProgresoEx : public DControlEx {
 	  public:
-											DBarraProgresoEx();
-							               ~DBarraProgresoEx();
-		HWND								CrearBarraProgresoEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID, const float nMinimo = 0.0f, const float nMaximo = 1.0f, const float nValor = 0.0);
+											DBarraProgresoEx(void);
+							               ~DBarraProgresoEx(void);
+		HWND								CrearBarraProgresoEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID, const float nMinimo = 0.0f, const float nMaximo = 1.0f, const float nValor = 0.0, const DBarraEx_Alineacion nAlineacion = IzquierdaDerecha);
 
 		virtual void						Activado(const BOOL nActivar);
 		inline const BOOL					Activado(void) { return DhWnd::Activado(); }
@@ -65,8 +72,10 @@ namespace DWL {
 
 		inline void							MostrarValor(const DBarraEx_MostrarValor nMostrarValor)	{ _MostrarValor = nMostrarValor;	}
 		inline const DBarraEx_MostrarValor  MostrarValor(void)										{ return _MostrarValor;				}
+
+		void                                Alineacion(const DBarraEx_Alineacion nAlineacion);
 	  protected:
-		const float                        _ValorMouse(RECT &RC, const int cX);
+		const float                        _ValorMouse(RECT &RC, int cX, int cY);
 		void				               _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
 		void		                       _Evento_MouseSaliendo(void);
 
@@ -80,9 +89,9 @@ namespace DWL {
 		DAnimacionColor                    _AniTransicion;
 		DBarraEx_MostrarValor              _MostrarValor;
 		BOOL                               _Activado;
+		DBarraEx_Alineacion                _Alineacion;
 
 		friend class DMenuEx;
-		friend class DMenuEx2;
 	};	
 
 

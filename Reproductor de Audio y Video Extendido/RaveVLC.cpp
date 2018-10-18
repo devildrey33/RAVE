@@ -246,8 +246,8 @@ const BOOL RaveVLC::Stop(void) {
 		App.VentanaRave.SliderTiempo.OcultarToolTip();
 		App.ControlesPC.SliderTiempo.OcultarToolTip();
 		// Evito mostrar el tooltip si se pasa el mouse por encima del slider tiempo
-		App.VentanaRave.SliderTiempo.ToolTip(DBarraDesplazamientoEx_ToolTip_SinToolTip);
-		App.ControlesPC.SliderTiempo.ToolTip(DBarraDesplazamientoEx_ToolTip_SinToolTip);
+		App.VentanaRave.SliderTiempo.ToolTip(DBarraEx_ToolTip_SinToolTip);
+		App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_SinToolTip);
 
 		
 		// Deadlock just despres de mostrar un DMenuEx en un video i utilitzar el stop.... SOLUCIONAT, pero s'ha d'anar amb cuidado al utilitzar SetFocus...
@@ -287,8 +287,16 @@ const BOOL RaveVLC::Pausa(void) {
 const BOOL RaveVLC::Play(void) {
 	if (_MediaPlayer != NULL) {
 		if (libvlc_media_player_play(_MediaPlayer) == 0)	{
-			App.VentanaRave.SliderTiempo.ToolTip(DBarraDesplazamientoEx_ToolTip_Inferior);
-			App.ControlesPC.SliderTiempo.ToolTip(DBarraDesplazamientoEx_ToolTip_Superior);
+			App.VentanaRave.SliderTiempo.ToolTip(DBarraEx_ToolTip_Abajo);
+			// Establezco la norma del tooltip según la alineación de los controles pantalla completa
+			switch (App.ControlesPC.Alineacion) {
+				case Abajo		:	App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_Arriba);		break;
+				case Arriba		:	App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_Abajo);		break;
+				case Izquierda	:	App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_Derecha);		break;
+				case Derecha	:	App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_Izquierda);	break;
+			}
+			
+			
 			hWndVLC = NULL;
 			ActualizarIconos(1);
 			SetTimer(App.VentanaRave.hWnd(), TIMER_OBTENERVLCWND, 100, NULL);

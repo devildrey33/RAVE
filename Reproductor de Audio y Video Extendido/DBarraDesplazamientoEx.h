@@ -8,10 +8,12 @@
 namespace DWL {
 
 
-	enum DBarraDesplazamientoEx_ToolTip {
-		DBarraDesplazamientoEx_ToolTip_SinToolTip,
-		DBarraDesplazamientoEx_ToolTip_Superior,
-		DBarraDesplazamientoEx_ToolTip_Inferior
+	enum DBarraEx_ToolTip {
+		DBarraEx_ToolTip_SinToolTip,
+		DBarraEx_ToolTip_Arriba,
+		DBarraEx_ToolTip_Abajo,
+		DBarraEx_ToolTip_Izquierda,
+		DBarraEx_ToolTip_Derecha
 	};
 
 
@@ -20,10 +22,10 @@ namespace DWL {
 	  public:
 												DBarraDesplazamientoEx();
 		                                       ~DBarraDesplazamientoEx();
-	   HWND										CrearBarraDesplazamientoEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID, const float nMinimo = 0.0f, const float nMaximo = 1.0f, const float nValor = 0.0);
+	   HWND										CrearBarraDesplazamientoEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID, const float nMinimo = 0.0f, const float nMaximo = 1.0f, const float nValor = 0.0, const DBarraEx_Alineacion nAlineacion = IzquierdaDerecha);
 
 	   inline DBarraEx_Estado					Estado(void) { return _Estado; }
-	   void										ToolTip(DBarraDesplazamientoEx_ToolTip nValor);
+	   void										ToolTip(DBarraEx_ToolTip nValor);
 	   void										OcultarToolTip(void);
 
 	   // virtuales
@@ -46,7 +48,7 @@ namespace DWL {
 		void								   _Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam);
 		void                                   _Evento_MouseSaliendo(void);
 
-	    DBarraDesplazamientoEx_ToolTip		   _MostrarToolTip;
+	    DBarraEx_ToolTip		               _MostrarToolTip;
 	    DToolTipEx							   _ToolTip;
 	};
 }

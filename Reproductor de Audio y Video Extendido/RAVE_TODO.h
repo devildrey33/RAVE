@@ -108,16 +108,17 @@
 		V  S'ha de implementar alineacions per el control DEtiquetaEx (fins ara nomes hi ha esquerra i centrat, falta la cap a la dreta)
 		V  Solucionat bug al DMenuEx que mostrava els menus si el pare estava desactivat
 		V  Ara el menu "Proporción" del video s'activa / desactiva segons si el medi actual es video / audio
-
 		V  Crear un DMenuEx amb una barra de desplaçament per la nota i el brillo.
 			V He tingut que tornar al model SetFocus, però sense el SetCapture, (nomes es fa el SetCapture al presionar el buto del mouse)
 				V No sembla que faci el deadlock com abans, igual es per que ara retorno TRUE en el WM_NCACTIVATE
-		V  Mostrar valor en DBarraProgreso / DBarraDesplazamiento (de moment hi ha 4 opcions (int/decimal | valor/maxim i valor)
-		
+		V  Mostrar valor en DBarraProgreso / DBarraDesplazamiento (de moment hi ha 4 opcions (int/decimal | valor/maxim i valor)		
+		V  Sumar 0.05 a la nota per cada reproducció completa (d'aquesta forma amb 50 reproduccións arribara a 5 estrelles)
+		V  Adaptar DBarraProgreso i DBarraDesplazamiento  a varies alineacións : Adal -> Abaix, Abaix -> Adal, Dreta -> Esquerra, Esquerra -> Dreta
+			V Adaptar tooltips interns a les alineacións
+		V  Mostrar el ControlesPantallaCompleta en varies posicións : Abaix, Esquerra, Adal, Dreta
+
 		-  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
 			- Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)
-
-		-  Sumar 0.05 a la nota per cada reproducció completa (d'aquesta forma amb 50 reproduccións arribara a 5 estrelles)
 		-  Eliminar Nota de la taula Etiquetas, la nota s'ha de calcular al fer el tooltip
 		-  Aplicar transicións al objecte DBarraScrollEx
 			- Començar a mirar com aplicar transicións al DListaEx i al DArbolEx
@@ -159,7 +160,7 @@
 						X major nota
 					V Afegir cançons amb menys de 2.5 de nota a llistes aleatories.
 					V No generar llistes amb menys de 5 medis
-					- Sumar 0.1 a la nota dels medis reproduits completament
+					V Sumar 0.05 a la nota dels medis reproduits completament
 				- Video
 					- Tiempo de inactividad para ocultar los controles
 					X Mostrar nombre del video al abrir					

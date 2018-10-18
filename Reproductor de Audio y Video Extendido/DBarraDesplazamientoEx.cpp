@@ -5,19 +5,20 @@
 
 namespace DWL {
 
-	DBarraDesplazamientoEx::DBarraDesplazamientoEx(void) :	DBarraProgresoEx(), _MostrarToolTip(DBarraDesplazamientoEx_ToolTip_SinToolTip) {
+	DBarraDesplazamientoEx::DBarraDesplazamientoEx(void) :	DBarraProgresoEx(), _MostrarToolTip(DBarraEx_ToolTip_SinToolTip) {
 	}
 
 	DBarraDesplazamientoEx::~DBarraDesplazamientoEx(void) {
 	}
 
 
-	HWND DBarraDesplazamientoEx::CrearBarraDesplazamientoEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID, const float nMinimo, const float nMaximo, const float nValor) {
+	HWND DBarraDesplazamientoEx::CrearBarraDesplazamientoEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID, const float nMinimo, const float nMaximo, const float nValor, const DBarraEx_Alineacion nAlineacion) {
 //		if (hWnd()) { Debug_Escribir(L"DBarraDesplazamientoEx::CrearBarraEx() Error : ya se ha creado la barra\n"); return hWnd(); }
 		_hWnd = CrearControlEx(nPadre, L"DBarraDesplazamientoEx", L"", cID, cX, cY, cAncho, cAlto, WS_CHILD | WS_VISIBLE, NULL, CS_HREDRAW | CS_VREDRAW);
-		_Minimo = nMinimo;
-		_Maximo = nMaximo;
-		_Valor = nValor;
+		_Alineacion = nAlineacion;
+		_Minimo		= nMinimo;
+		_Maximo		= nMaximo;
+		_Valor		= nValor;
 		if (_Activado == TRUE) {
 			_ColorBarra = COLOR_BARRA;
 			_ColorFondo = COLOR_BARRA_FONDO;
@@ -34,7 +35,7 @@ namespace DWL {
 		return hWnd();
 	}
 
-	void DBarraDesplazamientoEx::ToolTip(DBarraDesplazamientoEx_ToolTip nValor) {
+	void DBarraDesplazamientoEx::ToolTip(DBarraEx_ToolTip nValor) {
 		_MostrarToolTip = nValor;
 	}
 
@@ -77,32 +78,27 @@ namespace DWL {
 		}
 
 		DEventoMouse DatosMouse(wParam, lParam, this);
-		RECT  RC = { 0, 0, 0, 0 };
-		GetClientRect(hWnd(), &RC);
-		int cX = DatosMouse.X(); //  , cY = DatosMouse.Y();
-		float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
-		float valor = (static_cast<float>(cX - RC.left) * Parte) - _Minimo;
-
-		RECT RW = { 0, 0, 0, 0 };
-		GetWindowRect(hWnd(), &RW);
+		RECT  RC = { 0, 0, 0, 0 }, RW = { 0, 0, 0, 0 };
+		GetClientRect(_hWnd, &RC);
+		GetWindowRect(_hWnd, &RW);
+		int cX = DatosMouse.X(), cY = DatosMouse.Y();
+		float valor = _ValorMouse(RC, cX, cY);		
 
 		std::wstring TextoToolTip;
 		Evento_MostrarToolTip(valor, TextoToolTip);
 
 		switch (_MostrarToolTip) {
-			case DBarraDesplazamientoEx_ToolTip_Superior:		_ToolTip.Mostrar(RW.left + cX, RW.top - 35, TextoToolTip);		break;
-			case DBarraDesplazamientoEx_ToolTip_Inferior:		_ToolTip.Mostrar(RW.left + cX, RW.bottom + 10, TextoToolTip);	break;
+			case DBarraEx_ToolTip_Arriba	:	_ToolTip.Mostrar(RW.left + cX, RW.top - 35, TextoToolTip);		break;
+			case DBarraEx_ToolTip_Abajo		:	_ToolTip.Mostrar(RW.left + cX, RW.bottom + 10, TextoToolTip);	break;
+			case DBarraEx_ToolTip_Izquierda	:	_ToolTip.Mostrar(RW.left -35, RW.top + cY, TextoToolTip);		break;
+			case DBarraEx_ToolTip_Derecha	:	_ToolTip.Mostrar(RW.right + 35, RW.top + cY, TextoToolTip);		break;
 		}
 
 		if (_Estado == DBarraEx_Estado_Presionado) {
 			#if DBARRAEX_DEBUG == TRUE
 				Debug_Escribir_Varg(L"DBarraDesplazamientoEx::_Evento_MouseMovimiento Min : %02f, Max : %02f, Valor : %02f\n", _Minimo, _Maximo, _Valor);
 			#endif
-/*			float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
-			_Valor = _Minimo + (static_cast<float>(cX - RC.left) * Parte);
-			if (_Valor > _Maximo) { _Valor = _Maximo; }
-			if (_Valor < _Minimo) { _Valor = _Minimo; }*/
-			_Valor = _ValorMouse(RC, cX);
+			_Valor = valor;
 			Repintar();
 			SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
 			Evento_MouseMovimiento(DatosMouse);
@@ -121,11 +117,7 @@ namespace DWL {
 		if (PtInRect(&RC, Pt) == TRUE) {
 			SetCapture(hWnd());
 			_Estado = DBarraEx_Estado_Presionado;
-			_Valor = _ValorMouse(RC, Pt.x);
-			/*float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
-			_Valor = _Minimo + (static_cast<float>(Pt.x - RC.left) * Parte);
-			if (_Valor > _Maximo) { _Valor = _Maximo; }
-			if (_Valor < _Minimo) { _Valor = _Minimo; }*/
+			_Valor = _ValorMouse(RC, Pt.x, Pt.y);
 			//Repintar();
 			SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
 			Evento_MousePresionado(DatosMouse);
@@ -147,13 +139,8 @@ namespace DWL {
 			// No hace falta transición (saltara la del mousesaliendo)
 			_Estado = DBarraEx_Estado_Normal; 
 		}
-		_Valor = _ValorMouse(RC, Pt.x);
-/*		float Parte = (_Maximo - _Minimo) / static_cast<float>(((RC.right - RC.left) - 2));
-		_Valor = _Minimo + (static_cast<float>(Pt.x - RC.left) * Parte);
-		if (_Valor > _Maximo) { _Valor = _Maximo; }
-		if (_Valor < _Minimo) { _Valor = _Minimo; }*/
+		_Valor = _ValorMouse(RC, Pt.x, Pt.y);
 		SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIADO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
-//		Repintar();
 	}
 
 	void DBarraDesplazamientoEx::_Evento_MouseSaliendo(void) {
@@ -166,40 +153,6 @@ namespace DWL {
 		}
 	}
 
-	/*
-	void DBarraDesplazamientoEx::Resaltar(const BOOL Resaltado) {
-		if (_AniTransicion.Animando() == TRUE) {
-			_AniTransicion.Invertir();
-			return;
-		}
-
-		COLORREF BordeDesde, BordeHasta, FondoDesde, FondoHasta, BarraDesde, BarraHasta;
-		if (Resaltado == TRUE) {
-			BordeDesde = COLOR_BORDE;
-			BordeHasta = COLOR_BORDE_RESALTADO;
-			FondoDesde = COLOR_BARRA_FONDO;
-			FondoHasta = COLOR_BARRA_FONDO_RESALTADO;
-			BarraDesde = COLOR_BARRA;
-			BarraHasta = COLOR_BARRA_RESALTADO;
-			_Estado = DBarraEx_Estado_Resaltado;
-		}
-		else {
-			BordeDesde = COLOR_BORDE_RESALTADO;
-			BordeHasta = COLOR_BORDE;
-			FondoDesde = COLOR_BARRA_FONDO_RESALTADO;
-			FondoHasta = COLOR_BARRA_FONDO;
-			BarraDesde = COLOR_BARRA_RESALTADO;
-			BarraHasta = COLOR_BARRA;
-			_Estado = DBarraEx_Estado_Normal;
-		}
-		_AniTransicion.Iniciar(FondoDesde, FondoHasta, BordeDesde, BordeHasta, BarraDesde, BarraHasta, 400, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
-			_ColorFondo = Valores[0];
-			_ColorBorde = Valores[1];
-			_ColorBarra = Valores[2];
-			Repintar();
-		});
-
-	}*/
 
 	LRESULT CALLBACK DBarraDesplazamientoEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {

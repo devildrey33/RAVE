@@ -54,6 +54,7 @@
 #define ID_LABEL_RATIO                          2007
 #define ID_BOTON_MEZCLAR						2008
 #define ID_BOTON_REPETIR						2009
+#define ID_BOTON_ROTAR							1997
 
 #define ID_BOTON_OPCIONES						2010
 #define ID_BOTON_LISTA							2011
