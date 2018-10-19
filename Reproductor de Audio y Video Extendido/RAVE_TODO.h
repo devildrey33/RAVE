@@ -119,14 +119,14 @@
 
 		-  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
 			- Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)
-		-  Eliminar Nota de la taula Etiquetas, la nota s'ha de calcular al fer el tooltip
+		V  Eliminar Nota de la taula Etiquetas, la nota s'ha de calcular al fer el tooltip
 		-  Aplicar transicións al objecte DBarraScrollEx
 			- Començar a mirar com aplicar transicións al DListaEx i al DArbolEx
-		-  Fer animació de la Y i la opacitat al ControlesPantallaCompleta al mostrar/ocultar el control
+	   +o- Fer animació de la Y i la opacitat al ControlesPantallaCompleta al mostrar/ocultar el control
 
 		V  Mostrar les opcions en una finestra nova
 			V  Crear control separador (MOLT SIMPLE) com si fos un </ br>
-			-  Afegir opcions : 
+			V  Afegir opcions : 
 				V BD
 					V explicar el tema de les arrels, i posar controls per afegir arrels.
 						- Falta refinar el dialeg per seleccionar directoris...
@@ -161,17 +161,16 @@
 					V Afegir cançons amb menys de 2.5 de nota a llistes aleatories.
 					V No generar llistes amb menys de 5 medis
 					V Sumar 0.05 a la nota dels medis reproduits completament
-				- Video
-					- Tiempo de inactividad para ocultar los controles
-					X Mostrar nombre del video al abrir					
-					- Alineación controles pantalla completa
-						- Inferior (por defecto)
-						- Izquierda
-						- Superior
-						- Derecha
-						- Donde pase el mouse (puff ja t'ho imagines amb el mousemove... xd buscar una solucio smart)
-					? Fuente por defecto en subtitulos externos ???? molta matuja.. pero es posible que existeixi algo...
-
+				V Video
+					V Temps d'inactivitat per ocultar els controls
+					V Opacitat máxima dels controls del video (50-255)
+					X Mostrar nom del video al obrir (ja ho fan els tooltipinfo, tot i que es algo petit..)
+					V Alineació controls pantalla completa
+						V Inferior (per defecte)
+						V Esquerra
+						V Superior
+						V Dreta						
+					? Font per defecte en subtituls externs ???? molta matuja.. pero es posible que existeixi algo...
 
 		-  Menu per la llista (val tant per audio com per video)
 			- Mostrar en la BD
@@ -179,12 +178,12 @@
 			- Nota
 			- Eliminar
 			- Propiedades (les de l'explorador de moment...)
-		-  Proporción del menu del video ha de tenir una opcio a la BD i que al obrir un medi s'asigni la proporcio seleccionada.
-		-  Sumar 0.1 a la nota un cop reproduit el medi
+		-  Proporción del menu del video ha de tenir una opció a la BD i que al obrir un medi s'asigni la proporcio seleccionada.
 		-  Repat lista aleatória
 		-  Crear un nou correu pels dumps... que pugui fer servir per enviar... (de moment encara tinc web .. xd, no corre molta presa)
-		-  Crear instalador (amb lo que tingui el visual studio)
-		-  Teclat per la DListaEx (suprimir, shift, control)
+	   +o- Crear instalador (amb lo que tingui el visual studio)
+			- Falta fer el tema del registre de windows (associar arxius)
+		-  Teclat per la DListaEx i el DArbolEx (suprimir, shift, control, carácters)
 		-  Drag & drop intern a la DListaEx per moure items (multiselecció inclosa)
 		
 		V  Anular VentanaAsociarReproductor SENSE ELIMINAR, simplement que no surti sempre, i ja veurem si la liquido del tot en un futur..

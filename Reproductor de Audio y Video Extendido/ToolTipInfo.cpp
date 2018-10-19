@@ -55,7 +55,7 @@ SIZE ToolTipInfo::CalcularTam(std::wstring &Str) {
 	SIZE		Ret = { 0, 0 };
 
 	RECT Tam = { 0, 0, 0, 0 };
-	int Al = DrawText(hDC, Str.c_str(), static_cast<int>(Str.size()), &Tam, DT_CALCRECT);
+	int Al = DrawText(hDC, Str.c_str(), static_cast<int>(Str.size()), &Tam, DT_CALCRECT | DT_NOPREFIX);
 
 	SelectObject(hDC, vFuente);
 	SelectObject(hDC, Viejo);

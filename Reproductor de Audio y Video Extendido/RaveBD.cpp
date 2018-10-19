@@ -308,10 +308,10 @@ const BOOL RaveBD::ObtenerEtiquetas(void) {
 			std::wstring	Texto	 = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 1));
 			UINT			Tipo	 = static_cast<UINT>(sqlite3_column_int(SqlQuery, 2));
 			UINT			Medios	 = static_cast<UINT>(sqlite3_column_int(SqlQuery, 3));
-			float			Nota	 = static_cast<float>(sqlite3_column_double(SqlQuery, 4));
-			libvlc_time_t	Tiempo   = static_cast<libvlc_time_t>(sqlite3_column_int64(SqlQuery, 5));
-			ULONGLONG		Longitud = static_cast<ULONGLONG>(sqlite3_column_int64(SqlQuery, 6));
-			_Etiquetas.push_back(EtiquetaBD(Texto, Tipo, Nota, Tiempo, Longitud, Medios));
+//			float			Nota	 = static_cast<float>(sqlite3_column_double(SqlQuery, 4));
+			libvlc_time_t	Tiempo   = static_cast<libvlc_time_t>(sqlite3_column_int64(SqlQuery, 4));
+			ULONGLONG		Longitud = static_cast<ULONGLONG>(sqlite3_column_int64(SqlQuery, 5));
+			_Etiquetas.push_back(EtiquetaBD(Texto, Tipo, /*Nota,*/ Tiempo, Longitud, Medios));
 		}
 		if (SqlRet == SQLITE_BUSY) {
 			VecesBusy++;
@@ -590,15 +590,17 @@ const BOOL RaveBD::_CrearTablas(void) {
 											L"TiempoToolTips"			L" INTEGER," 
 											L"NoAgregarMedioMenos25"	L" INTEGER," 
 											L"NoGenerarListasMenos3"	L" INTEGER," 
-											L"Sumar005"					L" INTEGER" 
+											L"Sumar005"					L" INTEGER," 
+											L"AlineacionControlesVideo"	L" INTEGER,"
+											L"OpacidadControlesVideo"	L" INTEGER"			
 									  L")";
 	if (Consulta(CrearTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	// Añado los datos por defecto de las opciones ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes, VentanaOpciones_PosX, VentanaOpciones_PosY, VentanaAsociar_PosX, VentanaAsociar_PosY, VentanaAnalizar_PosX, VentanaAnalizar_PosY, BuscarActualizacion, TiempoAnimaciones, TiempoToolTips, NoAgregarMedioMenos25, NoGenerarListasMenos3, Sumar005) "
-										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1, 1, 400, 300, 500, 400, 300, 200, 1, 400, 5500, 1, 1, 1)";
+	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes, VentanaOpciones_PosX, VentanaOpciones_PosY, VentanaAsociar_PosX, VentanaAsociar_PosY, VentanaAnalizar_PosX, VentanaAnalizar_PosY, BuscarActualizacion, TiempoAnimaciones, TiempoToolTips, NoAgregarMedioMenos25, NoGenerarListasMenos3, Sumar005, AlineacionControlesVideo, OpacidadControlesVideo) "
+										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1, 1, 400, 300, 500, 400, 300, 200, 1, 400, 5500, 1, 1, 1, 0, 200)";
 	if (Consulta(ValoresTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -672,7 +674,7 @@ const BOOL RaveBD::_CrearTablas(void) {
 											L"Texto"			L" VARCHAR(260),"	 	  
 											L"Tipo"				L" INTEGER,"
 											L"Medios"			L" INTEGER,"
-											L"Nota"				L" DOUBLE,"				
+//											L"Nota"				L" DOUBLE,"				
 											L"Tiempo"			L" BIGINT,"				
 											L"Longitud"			L" BIGINT"				
 									   L")";
@@ -1191,6 +1193,21 @@ void RaveBD::Opciones_Sumar005(const BOOL nSumar005) {
 	Ret = Ret;
 }
 
+void RaveBD::Opciones_AlineacionControlesVideo(const int nOpciones_AlineacionControlesVideo) {
+	_Opciones_AlineacionControlesVideo = nOpciones_AlineacionControlesVideo;
+	std::wstring Q = L"Update Opciones SET AlineacionControlesVideo=" + std::to_wstring(nOpciones_AlineacionControlesVideo) + L" WHERE Id=0";
+	int Ret = Consulta(Q.c_str());
+	Ret = Ret;
+}
+
+void RaveBD::Opciones_OpacidadControlesVideo(const int nOpciones_OpacidadControlesVideo) {
+	_Opciones_OpacidadControlesVideo = nOpciones_OpacidadControlesVideo;
+	std::wstring Q = L"Update Opciones SET OpacidadControlesVideo=" + std::to_wstring(nOpciones_OpacidadControlesVideo) + L" WHERE Id=0";
+	int Ret = Consulta(Q.c_str());
+	Ret = Ret;
+}
+
+
 const BOOL RaveBD::ObtenerOpciones(void) {
 
 	const wchar_t  *SqlStr = L"SELECT * FROM Opciones";
@@ -1234,6 +1251,8 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 			_Opciones_NoAgregarMedioMenos25		= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 24));
 			_Opciones_NoGenerarListasMenos3		= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 25));
 			_Opciones_Sumar005					= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 26));
+			_Opciones_AlineacionControlesVideo  = static_cast<int>(sqlite3_column_int(SqlQuery, 27));
+			_Opciones_OpacidadControlesVideo    = static_cast<int>(sqlite3_column_int(SqlQuery, 28));
 		}
 		if (SqlRet == SQLITE_BUSY) {
 			VecesBusy++;

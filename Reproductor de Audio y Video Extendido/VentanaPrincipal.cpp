@@ -1053,7 +1053,7 @@ void VentanaPrincipal::ThreadAnalizar_Terminado(const BOOL Cancelado, LPARAM lPa
 }
 
 void VentanaPrincipal::ThreadAnalizar_MostrarVentana(void) {
-	ShowWindow(ThreadAnalizar.hWnd(), SW_SHOWNOACTIVATE);
+	ShowWindow(ThreadAnalizar.hWnd(), SW_SHOW);
 }
 
 void VentanaPrincipal::ThreadAnalizar_Iniciado2(WPARAM wParam) {

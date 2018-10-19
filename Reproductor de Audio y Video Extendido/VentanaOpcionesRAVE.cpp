@@ -40,6 +40,15 @@
 #define ID_MARCA_NOGENERARLISTAS3		1073
 #define ID_ETIQUETA_SUMAR005			1074
 #define ID_MARCA_SUMAR005				1075
+// Video
+#define ID_ETIQUETA_VIDEOTIEMPO			1076
+#define ID_BARRA_VIDEOTIEMPO			1077
+#define ID_ETIQUETA_VIDEOOPACIDAD		1078
+#define ID_BARRA_VIDEOOPACIDAD          1079
+#define ID_ETIQUETA_VIDEOPOSICION		1080
+#define ID_DESPLEGABLE_VIDEOPOSICION    1081
+#define ID_ETIQUETA_VIDEOTIEMPOTA       1082
+#define ID_ETIQUETA_VIDEOOPACIDADTA		1083
 
 VentanaOpcionesRAVE::VentanaOpcionesRAVE(void) {
 }
@@ -97,7 +106,7 @@ void VentanaOpcionesRAVE::Crear(void) {
 	BotonAgregarRaiz.CrearBotonEx(&MarcoBaseDeDatos, L"Agregar Raíz", ((RC.right - 120) / 2) - 10, 220, 120, 24, ID_BOTON_AGREGARRAIZ);
 	BotonAgregarRaiz.Fuente = Fuente21Normal;
 	// Separador
-	SeparadorBD.Crear(&MarcoBaseDeDatos, 0, 254, RC.right - 20);
+	SeparadorBD.Crear(&MarcoBaseDeDatos, 0, 254, RC.right - 10);
 	// Marca Mostrar analisis en una ventana
 	MarcaMostrarAnalisis.CrearMarcaEx(&MarcoBaseDeDatos, L"Mostrar ventana con el progreso del análisis de los medios.", 70, 269, 405, 20, ID_MARCA_MOSTRARANALISIS, IDI_CHECK2);
 	MarcaMostrarAnalisis.Marcado(App.BD.Opciones_MostrarObtenerMetadatos());
@@ -125,7 +134,7 @@ void VentanaOpcionesRAVE::Crear(void) {
 	}
 
 	// Separador
-	SeparadorGeneral.Crear(&MarcoGeneral, 0, 240, RC.right - 20);
+	SeparadorGeneral.Crear(&MarcoGeneral, 0, 240, RC.right - 10);
 	// Marca buscar actualizaciones
 	MarcaBuscarActualizaciones.CrearMarcaEx(&MarcoGeneral, L"Buscar nuevas actualizaciones al iniciar el reproductor", 10, 255, 380, 20, ID_MARCA_BUSCARACTUALIZACIONES, IDI_CHECK2);
 	MarcaBuscarActualizaciones.Marcado(App.BD.Opciones_BuscarActualizacion());
@@ -147,28 +156,55 @@ void VentanaOpcionesRAVE::Crear(void) {
 
 	///////////////////////////////////////
 	// Creo los controles del marco Listas
-
 	EtiquetaCanciones25.CrearEtiquetaEx(&MarcoListas, L"Por defecto todos los medios tienen una nota de 2.5 sobre 5, si alguna canción\n" 
 													  L"tiene una nota inferior a 2.5, el reproductor considerará el medio como no apto."	, 10, 10, RC.right - 20, 40, ID_ETIQUETA_CANCIONES25);		
 	MarcaCanciones25.CrearMarcaEx(&MarcoListas, L"No añadir canciones con menos de 2.5 de nota a listas aleatórias"							, 10, 60, 448, 20, ID_MARCA_CANCIONES25, IDI_CHECK2);
 	MarcaCanciones25.Marcado(App.BD.Opciones_NoAgregarMedioMenos25());
 
-	SeparadorLista1.Crear(&MarcoListas, 0, 90, RC.right - 20);
+	SeparadorLista1.Crear(&MarcoListas, 0, 90, RC.right - 10);
 	EtiquetaNoGenerarListas3.CrearEtiquetaEx(&MarcoListas,	L"Al generar una lista aleatória partiendo de una etiqueta, puede darse el caso que\n"
 															L"esa etiqueta tenga menos de 5 canciones."									, 10, 100, RC.right - 20, 40, ID_ETIQUETA_NOGENERARLISTAS3);
 	MarcaNoGenerarListas3.CrearMarcaEx(&MarcoListas, L"No generar listas aleatórias con menos de 5 medios"								, 10, 150, 361, 20, ID_MARCA_NOGENERARLISTAS3, IDI_CHECK2);
 	MarcaNoGenerarListas3.Marcado(App.BD.Opciones_NoGenerarListasMenos3());
 
-	SeparadorLista2.Crear(&MarcoListas, 0, 180, RC.right - 20);
+	SeparadorLista2.Crear(&MarcoListas, 0, 180, RC.right - 10);
 	EtiquetaSumar005.CrearEtiquetaEx(&MarcoListas,	L"Una vez el medio llegue al final se sumará 0.05 a su nota, esto quiere decir que\n"
 													L"partiendo de una nota de 2.5, el medio alcanzará las 5 estrellas en 50 veces. "	, 10, 190, RC.right - 20, 40, ID_ETIQUETA_SUMAR005);
 	MarcaSumar005.CrearMarcaEx(&MarcoListas, L"Sumar 0.05 a la nota de los medios reproducidos hasta el final"							, 10, 240, 449, 20, ID_MARCA_SUMAR005, IDI_CHECK2);
 	MarcaSumar005.Marcado(App.BD.Opciones_Sumar005());
 
-	SeparadorLista3.Crear(&MarcoListas, 0, 270, RC.right - 20);
+	SeparadorLista3.Crear(&MarcoListas, 0, 270, RC.right - 10);
 	EtiquetaListaInicio.CrearEtiquetaEx(&MarcoListas, L"Selecciona que lista debe cargar el reproductor al iniciar"	, 10, 280, RC.right - 205, 20, ID_ETIQUETA_LISTAINICIO);
 	DesplegableListaInicio.CrearListaDesplegable(&MarcoListas, L"", ID_DESPLEGABLE_LISTAINICIO, 0					, RC.right - 205, 280, 185, 20, FALSE, 160);
 	ActualizarListaInicio();
+
+
+	///////////////////////////////////////
+	// Creo los controles del marco Video
+	EtiquetaVideoTiempo.CrearEtiquetaEx(&MarcoVideo, L"Tiempo para ocultar los controles (pantalla completa)", 10, 10, 350, 20, ID_ETIQUETA_VIDEOTIEMPO);
+	BarraVideoTiempo.CrearBarraDesplazamientoEx(&MarcoVideo, 385, 10, 100, 20, ID_BARRA_VIDEOTIEMPO, 500, 5000, static_cast<float>(App.BD.Opciones_OcultarMouseEnVideo()));
+	TmpStr = std::to_wstring(App.BD.Opciones_OcultarMouseEnVideo()) + L" ms";
+	EtiquetaVideoTiempoTA.CrearEtiquetaEx(&MarcoVideo, TmpStr.c_str(), 485, 10, 60, 20, ID_ETIQUETA_VIDEOTIEMPOTA, DEtiquetaEx_Alineacion_Derecha);
+	SeparadorVideo1.Crear(&MarcoVideo, 0, 40, RC.right - 10);
+	EtiquetaVideoOpacidad.CrearEtiquetaEx(&MarcoVideo, L"Opacidad máxima para los controles (pantalla completa)", 10, 50, 370, 20, ID_ETIQUETA_VIDEOOPACIDAD);
+	BarraVideoOpacidad.CrearBarraDesplazamientoEx(&MarcoVideo, 385, 50, 100, 20, ID_BARRA_VIDEOOPACIDAD, 50, 255, static_cast<float>(App.BD.Opciones_OpacidadControlesVideo()));
+	TmpStr = std::to_wstring(App.BD.Opciones_OpacidadControlesVideo());
+	EtiquetaVideoOpacidadTA.CrearEtiquetaEx(&MarcoVideo, TmpStr.c_str(), 485, 50, 60, 20, ID_ETIQUETA_VIDEOOPACIDADTA, DEtiquetaEx_Alineacion_Derecha);
+	SeparadorVideo2.Crear(&MarcoVideo, 0, 80, RC.right - 10);
+	EtiquetaVideoPosicion.CrearEtiquetaEx(&MarcoVideo, L"Posición donde se mostrarán los controles (pantalla completa)", 10, 90, 410, 20, ID_ETIQUETA_VIDEOPOSICION);
+	
+	const wchar_t *PosVideo[4] = {
+		L"Abajo",
+		L"Izquierda",
+		L"Arriba",
+		L"Derecha"
+	};
+	DesplegableVideoPosicion.CrearListaDesplegable(&MarcoVideo, PosVideo[App.BD.Opciones_AlineacionControlesVideo()], ID_DESPLEGABLE_VIDEOPOSICION, NULL, 425, 90, 120, 20, FALSE, 100);
+	for (int i = 0; i < 4; i++) {
+		DesplegableVideoPosicion.AgregarItem(PosVideo[i]);
+	}
+	//	SeparadorVideo3;
+
 
 
 	// Muestro la ventana de las opciones
@@ -349,6 +385,12 @@ void VentanaOpcionesRAVE::Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse) {
 		case ID_BARRA_TIEMPOTOOLTIP :
 			EtiquetaTiempoOcultarToolTipsTA.Texto(DWL::Strings::ToStrF(BarraTiempoToolTips.Valor(), 0) + L" ms");
 			break;
+		case ID_BARRA_VIDEOTIEMPO :
+			EtiquetaVideoTiempoTA.Texto(DWL::Strings::ToStrF(BarraVideoTiempo.Valor(), 0) + L" ms");
+			break;
+		case ID_BARRA_VIDEOOPACIDAD :
+			EtiquetaVideoOpacidadTA.Texto(DWL::Strings::ToStrF(BarraVideoOpacidad.Valor(), 0));
+			break;
 	}
 }
 
@@ -364,6 +406,16 @@ void VentanaOpcionesRAVE::Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse)
 			EtiquetaTiempoOcultarToolTipsTA.Texto(DWL::Strings::ToStrF(BarraTiempoToolTips.Valor(), 0) + L" ms");
 			App.BD.Opciones_TiempoToolTips(static_cast<UINT>(BarraTiempoToolTips.Valor()));
 			App.MostrarToolTipOpciones(L"La duración de los tooltips se han ajustado a " + DWL::Strings::ToStrF(BarraTiempoToolTips.Valor(), 0) + L" milisegundos");
+			break;
+		case ID_BARRA_VIDEOTIEMPO:
+			EtiquetaVideoTiempoTA.Texto(DWL::Strings::ToStrF(BarraVideoTiempo.Valor(), 0) + L" ms");
+			App.BD.Opciones_OcultarMouseEnVideo(static_cast<int>(BarraVideoTiempo.Valor()));
+			App.MostrarToolTipOpciones(L"Los controles del video se ocultaran tras " + DWL::Strings::ToStrF(BarraVideoTiempo.Valor(), 0) + L" milisegundos de inactividad");
+			break;
+		case ID_BARRA_VIDEOOPACIDAD:
+			EtiquetaVideoOpacidadTA.Texto(DWL::Strings::ToStrF(BarraVideoOpacidad.Valor(), 0));
+			App.BD.Opciones_OpacidadControlesVideo(static_cast<int>(BarraVideoOpacidad.Valor()));
+			App.MostrarToolTipOpciones(L"La opacidad máxima de los controles del video se ha ajustado a " + DWL::Strings::ToStrF(BarraVideoTiempo.Valor(), 0));
 			break;
 	}
 }
@@ -398,8 +450,27 @@ void VentanaOpcionesRAVE::Evento_ListaDesplegable_Cambio(INT_PTR nID) {
 		else if (Opcion == L"Ultima lista") {
 			App.MostrarToolTipOpciones(L"Al iniciar el reproductor se cargará la ultima lista");
 			App.BD.Opciones_Inicio(Tipo_Inicio_UltimaLista);
+		}		
+	}
+	else if (nID == ID_DESPLEGABLE_VIDEOPOSICION) {
+		std::wstring Opcion = DesplegableVideoPosicion.Texto();
+		if (Opcion == L"Abajo") {
+			App.BD.Opciones_AlineacionControlesVideo(0);
+			App.ControlesPC.Alineacion = Abajo;
 		}
-		
+		else if (Opcion == L"Izquierda") {
+			App.BD.Opciones_AlineacionControlesVideo(1);
+			App.ControlesPC.Alineacion = Izquierda;
+		}
+		else if (Opcion == L"Arriba") {
+			App.BD.Opciones_AlineacionControlesVideo(2);
+			App.ControlesPC.Alineacion = Arriba;
+		}
+		else if (Opcion == L"Derecha") {
+			App.BD.Opciones_AlineacionControlesVideo(3);
+			App.ControlesPC.Alineacion = Derecha;
+		}
+		App.MostrarToolTipOpciones(L"Los controles del video se mostrarán " + Opcion);
 	}
 }
 

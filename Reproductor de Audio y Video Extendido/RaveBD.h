@@ -238,7 +238,7 @@ class RaveBD {
 
 	inline const Tipo_Inicio	Opciones_Inicio(void) { return _Opciones_Inicio; }
 	void						Opciones_Inicio(const Tipo_Inicio nInicio);
-
+								// Tiempo para ocultar los controles pantalla completa
 	inline const int			Opciones_OcultarMouseEnVideo(void) { return _Opciones_OcultarMouseEnVideo; }
 	void						Opciones_OcultarMouseEnVideo(const int nOcultarMouseEnVideo);
 
@@ -269,7 +269,11 @@ class RaveBD {
 	inline const BOOL			Opciones_Sumar005(void) { return _Opciones_Sumar005; }
 	void						Opciones_Sumar005(const BOOL n_pciones_Sumar005);
 
+	inline const int			Opciones_AlineacionControlesVideo(void) { return _Opciones_AlineacionControlesVideo; }
+	void						Opciones_AlineacionControlesVideo(const int nOpciones_AlineacionControlesVideo);
 
+	inline const int			Opciones_OpacidadControlesVideo(void) { return _Opciones_OpacidadControlesVideo; }
+	void						Opciones_OpacidadControlesVideo(const int nOpciones_OpacidadControlesVideo);
 
 	DWL::DUnidadesDisco			Unidades;
 
@@ -327,6 +331,8 @@ protected:
 	BOOL                       _Opciones_NoAgregarMedioMenos25;		// No Agregar medios con menos de 2.5 de nota a las listas aleatórias
 	BOOL                       _Opciones_NoGenerarListasMenos3;		// No generar listas aleatórias con menos de 3 medios
 	BOOL                       _Opciones_Sumar005;                  // Sumar 0.05 a la nota al reproducir completamente un medio
+	int				           _Opciones_AlineacionControlesVideo;	// Alineación para los controles pantalla completa
+	int						   _Opciones_OpacidadControlesVideo;    // Opacidad máxima para los controles pantalla completa
 	friend class ThreadAnalisis;
 };
 

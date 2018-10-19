@@ -15,6 +15,8 @@
 void ControlesPantallaCompleta::Crear(void) {	
 	DVentana::CrearVentana(NULL, L"ControlesPantallaCompleta", L"", 0, 0, 1000, 80, WS_POPUP, WS_EX_TOOLWINDOW, NULL, NULL, NULL, NULL);
 	
+	Alineacion = static_cast<CPC_Alineacion>(App.BD.Opciones_AlineacionControlesVideo());
+
 	//AnimateWindow(_hWnd, 100, AW_HOR_POSITIVE | AW_VER_POSITIVE);
 
 	// Asigno la posición del menú y lo hago siempre visible
@@ -114,7 +116,7 @@ void ControlesPantallaCompleta::Transicion(const CPC_Transicion nTransicion) {
 	float OpacidadHasta;
 	switch (nTransicion) {
 		case CPC_Transicion_Mostrar:
-			OpacidadHasta = 220.0f;
+			OpacidadHasta = static_cast<float>(App.BD.Opciones_OpacidadControlesVideo());
 			break;
 		case CPC_Transicion_Ocultar:
 			OpacidadHasta = 0.0f;

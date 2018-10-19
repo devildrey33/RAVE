@@ -80,5 +80,18 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	ControlSeparador	    SeparadorLista3;
 	DEtiquetaEx             EtiquetaSumar005;
 	DWL::DMarcaEx			MarcaSumar005;
+
+							// Video
+	DEtiquetaEx             EtiquetaVideoTiempo;
+	DBarraDesplazamientoEx	BarraVideoTiempo;
+	DEtiquetaEx             EtiquetaVideoTiempoTA;
+	ControlSeparador	    SeparadorVideo1;
+	DEtiquetaEx             EtiquetaVideoOpacidad;
+	DBarraDesplazamientoEx	BarraVideoOpacidad;
+	DEtiquetaEx             EtiquetaVideoOpacidadTA;
+	ControlSeparador	    SeparadorVideo2;
+	DEtiquetaEx             EtiquetaVideoPosicion;
+	DListaDesplegableEx     DesplegableVideoPosicion;
+	//	ControlSeparador	    SeparadorVideo3;
 };
 
