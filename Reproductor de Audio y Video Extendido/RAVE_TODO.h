@@ -116,14 +116,8 @@
 		V  Adaptar DBarraProgreso i DBarraDesplazamiento  a varies alineacións : Adal -> Abaix, Abaix -> Adal, Dreta -> Esquerra, Esquerra -> Dreta
 			V Adaptar tooltips interns a les alineacións
 		V  Mostrar el ControlesPantallaCompleta en varies posicións : Abaix, Esquerra, Adal, Dreta
-
-		-  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
-			- Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)
 		V  Eliminar Nota de la taula Etiquetas, la nota s'ha de calcular al fer el tooltip
-		-  Aplicar transicións al objecte DBarraScrollEx
-			- Començar a mirar com aplicar transicións al DListaEx i al DArbolEx
 	   +o- Fer animació de la Y i la opacitat al ControlesPantallaCompleta al mostrar/ocultar el control
-
 		V  Mostrar les opcions en una finestra nova
 			V  Crear control separador (MOLT SIMPLE) com si fos un </ br>
 			V  Afegir opcions : 
@@ -172,6 +166,11 @@
 						V Dreta						
 					? Font per defecte en subtituls externs ???? molta matuja.. pero es posible que existeixi algo...
 
+		-  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
+			- Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)
+		-  Aplicar transicións al objecte DBarraScrollEx
+			- Començar a mirar com aplicar transicións al DListaEx i al DArbolEx
+
 		-  Menu per la llista (val tant per audio com per video)
 			- Mostrar en la BD
 			- Mostrar directorio
@@ -181,8 +180,9 @@
 		-  Proporción del menu del video ha de tenir una opció a la BD i que al obrir un medi s'asigni la proporcio seleccionada.
 		-  Repat lista aleatória
 		-  Crear un nou correu pels dumps... que pugui fer servir per enviar... (de moment encara tinc web .. xd, no corre molta presa)
-	   +o- Crear instalador (amb lo que tingui el visual studio)
-			- Falta fer el tema del registre de windows (associar arxius)
+	    V  Crear instalador (amb lo que tingui el visual studio)
+			V  Falta fer el tema del registre de windows (associar arxius)
+			-  Falta porbar en win7 aviam si li he posat els runtimes que toca
 		-  Teclat per la DListaEx i el DArbolEx (suprimir, shift, control, carácters)
 		-  Drag & drop intern a la DListaEx per moure items (multiselecció inclosa)
 		

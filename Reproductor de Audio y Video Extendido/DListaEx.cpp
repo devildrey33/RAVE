@@ -6,7 +6,7 @@
 namespace DWL {
 
 	DListaEx::DListaEx(void) :  DBarraScrollEx()		, _ItemPaginaInicio(0)		, _ItemPaginaFin(0)			, _ItemPaginaVDif(0)		, _ItemPaginaHDif(0),
-								_SubItemResaltado(-1)	, _SubItemUResaltado(-1)	, _SubItemPresionado(-1)	, MostrarSeleccion(TRUE),
+								_SubItemResaltado(-1)	, _SubItemUResaltado(-1)	, _SubItemPresionado(-1)	, MostrarSeleccion(TRUE)	, MultiSeleccion(FALSE),
 								_ItemResaltado(-1)		, _ItemUResaltado(-1)		, _ItemMarcado(0)			,
 								_ItemPresionado(-1)		, _ItemShift(0)				, _Repintar(FALSE)			,
 								_TotalAnchoVisible(0)	, _TotalAltoVisible(0)		, 
@@ -352,7 +352,7 @@ namespace DWL {
 		}
 	}
 
-	void DListaEx::MostrarItem(const size_t iPos) {
+	void DListaEx::MostrarItem(const size_t iPos, const BOOL nRepintar) {
 		if (iPos >= _Items.size() || _Items.size() == 0) return;
 
 		RECT RItem;
@@ -386,7 +386,7 @@ namespace DWL {
 //		_CalcularItemsPagina(RAV.bottom - RAV.top);
 
 		// Repinto el control
-		Repintar();
+		if (nRepintar == TRUE) Repintar();
 	}
 
 	const size_t DListaEx::ItemPos(DListaEx_Item *pItem) {
@@ -425,6 +425,7 @@ namespace DWL {
 		return TRUE;
 	}
 
+	// Calcula los items que se ven actualmente en la pantalla
 	void DListaEx::_CalcularItemsPagina(const size_t TamPagina) {
 		_ItemPaginaInicio = -1;
 		_ItemPaginaFin = -1;
@@ -640,8 +641,9 @@ namespace DWL {
 		#endif
 
 		if (_ItemPresionado != -1) {
-			DesSeleccionarTodo();
-			_Items[_ItemPresionado]->Seleccionado = TRUE;
+			// Si la multiseleccion está des-habilitada o la tecla control no está pulsada
+			if (MultiSeleccion == FALSE || DatosMouse.Control() == FALSE) DesSeleccionarTodo();
+			_Items[_ItemPresionado]->Seleccionado = (MultiSeleccion == FALSE) ? TRUE : !_Items[_ItemPresionado]->Seleccionado;
 		}
 
 		Evento_MousePresionado(DatosMouse);
@@ -656,9 +658,9 @@ namespace DWL {
 
 		if (Scrolls_MouseSoltado(DatosMouse) == TRUE) { return; }
 
-		if (_ItemPresionado != -1) {
+/*		if (_ItemPresionado != -1) {
 			_Items[_ItemPresionado]->Seleccionado = TRUE;
-		}
+		}*/
 
 		// Evento virtual
 		Evento_MouseSoltado(DatosMouse);
@@ -719,13 +721,13 @@ namespace DWL {
 			}
 
 			switch (DatosTeclado.TeclaVirtual()) {
-				case VK_HOME	: _Tecla_Inicio();				break;
-				case VK_END		: _Tecla_Fin();					break;
-				case VK_UP		: _Tecla_CursorArriba();		break;
-				case VK_DOWN	: _Tecla_CursorAbajo();			break;
-				case VK_PRIOR	: _Tecla_RePag();				break; // RePag
-				case VK_NEXT	: _Tecla_AvPag();				break; // AvPag
-				default			: Evento_Tecla(DatosTeclado);	break; // if (Caracter >= 0x30 && Caracter <= 0x5A) // Cualquier tecla valida
+				case VK_HOME	: _Tecla_Inicio(DatosTeclado);				break;
+				case VK_END		: _Tecla_Fin(DatosTeclado);					break;
+				case VK_UP		: _Tecla_CursorArriba(DatosTeclado);		break;
+				case VK_DOWN	: _Tecla_CursorAbajo(DatosTeclado);			break;
+				case VK_PRIOR	: _Tecla_RePag(DatosTeclado);				break; // RePag
+				case VK_NEXT	: _Tecla_AvPag(DatosTeclado);				break; // AvPag
+				default			: Evento_Tecla(DatosTeclado);				break; // if (Caracter >= 0x30 && Caracter <= 0x5A) // Cualquier tecla valida
 			}
 		}
 		Evento_TeclaPresionada(DatosTeclado);
@@ -744,7 +746,7 @@ namespace DWL {
 
 
 	// Teclas especiales
-	void DListaEx::_Tecla_CursorArriba(void) {
+	void DListaEx::_Tecla_CursorArriba(DEventoTeclado &DatosTeclado) {
 		// Si no hay nodos, salgo de la función
 		if (_Items.size() == 0) return;
 
@@ -756,13 +758,13 @@ namespace DWL {
 
 		if (_ItemMarcado - 1 != -1) {
 			_ItemMarcado--;
-			DesSeleccionarTodo();
+			if (MultiSeleccion == FALSE || DatosTeclado.Shift() == FALSE) DesSeleccionarTodo();
 			_Items[_ItemMarcado]->Seleccionado = TRUE;
 			MostrarItem(_ItemMarcado);
 		}
 	}
 
-	void DListaEx::_Tecla_CursorAbajo(void) {
+	void DListaEx::_Tecla_CursorAbajo(DEventoTeclado &DatosTeclado) {
 		// Si no hay nodos, salgo de la función
 		if (_Items.size() == 0) return;
 
@@ -773,13 +775,13 @@ namespace DWL {
 		}
 		if (_ItemMarcado + 1 < _Items.size()) {
 			_ItemMarcado++;
-			DesSeleccionarTodo();
+			if (MultiSeleccion == FALSE || DatosTeclado.Shift() == FALSE) DesSeleccionarTodo();
 			_Items[_ItemMarcado]->Seleccionado = TRUE;
 			MostrarItem(_ItemMarcado);
 		}
 	}
 
-	void DListaEx::_Tecla_Inicio(void) {
+	void DListaEx::_Tecla_Inicio(DEventoTeclado &DatosTeclado) {
 		// Si no hay nodos, salgo de la función
 		if (_Items.size() == 0) return;
 
@@ -789,7 +791,7 @@ namespace DWL {
 		MostrarItem(_ItemMarcado);
 	}
 
-	void DListaEx::_Tecla_Fin(void) {
+	void DListaEx::_Tecla_Fin(DEventoTeclado &DatosTeclado) {
 		// Si no hay nodos, salgo de la función
 		if (_Items.size() == 0) return;
 
@@ -799,10 +801,23 @@ namespace DWL {
 		MostrarItem(_ItemMarcado);
 	}
 
-	void DListaEx::_Tecla_AvPag(void) {
+	void DListaEx::_Tecla_AvPag(DEventoTeclado &DatosTeclado) {
+		if (_ItemMarcado == _ItemPaginaFin) {
+			AvPag();
+		}		
+		MostrarItem(_ItemPaginaFin, FALSE);
+		_ItemMarcado = _ItemPaginaFin;
+		Repintar();
 	}
 
-	void DListaEx::_Tecla_RePag(void) {
+	void DListaEx::_Tecla_RePag(DEventoTeclado &DatosTeclado) {
+		// Al utilitzar MostrarItem el _ItemPaginaInicio cambia i li resta 1 al seu valor, aixo es un parche cutre per que funcioni el RePag...
+		if (_ItemMarcado == _ItemPaginaInicio || _ItemMarcado - 1 == _ItemPaginaInicio) {
+			RePag();
+		}
+		_ItemMarcado = _ItemPaginaInicio;
+		MostrarItem(_ItemMarcado, FALSE);
+		Repintar();
 	}
 
 

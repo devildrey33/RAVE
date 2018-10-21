@@ -60,6 +60,8 @@ namespace DWL {
 		COLORREF				    ColorFondoScrollResaltado;
 		COLORREF				    ColorFondoScrollPresionado;
 
+		virtual void                AvPag(void);
+		virtual void                RePag(void);
 	protected:
 		void					   _PintarBarraScrollEx(HDC hDC, RECT &RectaScroll, RECT &RectaBarra, const COLORREF pColorBarra, const COLORREF pColorFondo);
 		const float				   _CalcularPosScrollH(const UINT nTam, const int nPos);

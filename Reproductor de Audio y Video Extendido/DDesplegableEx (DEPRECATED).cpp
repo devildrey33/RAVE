@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "DDesplegableEx.h"
+#include "DDesplegableEx (DEPRECATED).h"
 #include "DGDI.h"
 
 namespace DWL {

@@ -306,7 +306,7 @@ const BOOL RaveVLC::Play(void) {
 			}
 
 			// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
-			std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" - " + MedioActual.Nombre();
+			std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" [" + std::to_wstring(MedioActual.Pista()) + L" " + MedioActual.Nombre() + L"]";
 			App.VentanaRave.Titulo(nTitulo);
 
 			// Muestro el tooltip con los datos

@@ -202,20 +202,20 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 			break;
 
 		// Crea las asociaciones con todas las extensiones aceptadas, y registra la aplicación RAVE
-		case LineaComando_AsociarArchivos:
+/*		case LineaComando_AsociarArchivos:
 			// Si esta aplicación no tiene privilegios de administración, ejecuto una nueva instancia que pedirá privilegios de administración
 			if (IsUserAnAdmin() == FALSE)	{	ShellExecute(NULL, TEXT("RunAs"), AppExe.c_str(), TEXT("-AsociarArchivos"), AppPath.c_str(), SW_SHOWNORMAL);		}
 			else							{	AsociarMedios.RegistrarApp();																						}
 			Ret = FALSE;
-			break;
+			break;*/
 
 		// Elimina todos los datos del registro referentes a RAVE, y carga las copias de seguridad
-		case LineaComando_DesasociarArchivos:
+/*		case LineaComando_DesasociarArchivos:
 			// Si esta aplicación no tiene privilegios de administración, ejecuto una nueva instancia que pedirá privilegios de administración
 			if (IsUserAnAdmin() == FALSE)	{	ShellExecute(NULL, TEXT("RunAs"), AppExe.c_str(), TEXT("-DesasociarArchivos"), AppPath.c_str(), SW_SHOWNORMAL);	}
 			else							{	AsociarMedios.DesRegistrarApp();																				}
 			Ret = FALSE;
-			break;
+			break;*/
 
 		default :
 			Ret = FALSE;

@@ -88,7 +88,7 @@ namespace DWL {
 		const size_t                                    ItemPos(DListaEx_Item *pItem);		
 		virtual void									Repintar(const BOOL nForzar = FALSE);
 		void											DesSeleccionarTodo(void);
-		void											MostrarItem(const size_t iPos);
+		void											MostrarItem(const size_t iPos, const BOOL nRepintar = TRUE);
 		void											MostrarItem(DListaEx_Item *eItem);
 
 		const BOOL                                      ObtenerRectaItem(const size_t iPos, RECT &rRecta);
@@ -127,10 +127,12 @@ namespace DWL {
 		virtual void                                    Evento_PintarSubItem(HDC hDC, const size_t NumItem, const size_t NumSubItem, RECT *Espacio) { };
 
 		BOOL                                            MostrarSeleccion;
+		BOOL                                            MultiSeleccion;
 
 		LRESULT CALLBACK								GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 		DhWnd_Fuente                                    Fuente;
+
 	  protected:
 														// Eventos internos
 		inline void                                    _Evento_Pintar(void);
@@ -151,12 +153,12 @@ namespace DWL {
 
 
 		// Teclas especiales
-		void										   _Tecla_CursorArriba(void);
-		void										   _Tecla_CursorAbajo(void);
-		void										   _Tecla_Inicio(void);
-		void										   _Tecla_Fin(void);
-		void										   _Tecla_AvPag(void);
-		void										   _Tecla_RePag(void);
+		void										   _Tecla_CursorArriba(DEventoTeclado &DatosTeclado);
+		void										   _Tecla_CursorAbajo(DEventoTeclado &DatosTeclado);
+		void										   _Tecla_Inicio(DEventoTeclado &DatosTeclado);
+		void										   _Tecla_Fin(DEventoTeclado &DatosTeclado);
+		void										   _Tecla_AvPag(DEventoTeclado &DatosTeclado);
+		void										   _Tecla_RePag(DEventoTeclado &DatosTeclado);
 
 														// Valor que determina si hay que recalcular los tamaños antes de pintar
 		BOOL                                           _Repintar; 		

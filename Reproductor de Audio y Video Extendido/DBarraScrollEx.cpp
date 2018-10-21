@@ -101,8 +101,9 @@ namespace DWL {
 						RectaScroll.bottom - 2															};  // bottom
 	}
 
-
+	// S'ha de recalcular de forma que el maxim sigui 100, i li haig de restar al tamany total, el tamany d'una pagina
 	const float DBarraScrollEx::_CalcularPosScrollH(const UINT nTam, const int nPos) {		
+		float Tam = static_cast<float>(nTam) - ((static_cast<float>(nTam) / 100.0f) * _ScrollH_Pagina);
 		float NuevaPos = _Scroll_PosInicio + (100.0f / static_cast<float>(nTam)) * static_cast<float>(nPos - _Scroll_PosPresionado.x);
 		if (NuevaPos > 100.0f - _ScrollH_Pagina)	NuevaPos = (100.0f - _ScrollH_Pagina);
 		if (NuevaPos < 0)							NuevaPos = 0;
@@ -110,6 +111,7 @@ namespace DWL {
 	}
 
 	const float DBarraScrollEx::_CalcularPosScrollV(const UINT nTam, const int nPos) {
+		float Tam = static_cast<float>(nTam) - ((static_cast<float>(nTam) / 100.0f) * _ScrollV_Pagina);
 		float NuevaPos = _Scroll_PosInicio + (100.0f / static_cast<float>(nTam)) * static_cast<float>(nPos - _Scroll_PosPresionado.y);
 		if (NuevaPos > 100.0f - _ScrollV_Pagina)	NuevaPos = (100.0f - _ScrollV_Pagina);
 		if (NuevaPos < 0)							NuevaPos = 0;
@@ -314,6 +316,21 @@ namespace DWL {
 		_ScrollH_Posicion = nPosicion;
 		Repintar();
 	}
+
+	// Función para avanzar una página 
+	void DBarraScrollEx::AvPag(void) {
+		_ScrollV_Posicion += _ScrollV_Pagina;
+		if (_ScrollV_Posicion > 100.0f - _ScrollV_Pagina) _ScrollV_Posicion = 100.0f - _ScrollV_Pagina;
+		Scrolls_EventoCambioPosicion();
+	}
+
+	// Función para retroceder una página 
+	void DBarraScrollEx::RePag(void) {
+		_ScrollV_Posicion -= _ScrollV_Pagina;
+		if (_ScrollV_Posicion < 0.0f) _ScrollV_Posicion = 0.0f;
+		Scrolls_EventoCambioPosicion();
+	}
+
 
 	const float DBarraScrollEx::ScrollH_Pagina(void) {
 		return _ScrollH_Pagina;

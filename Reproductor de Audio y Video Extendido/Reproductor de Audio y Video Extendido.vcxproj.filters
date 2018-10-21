@@ -140,7 +140,7 @@
     <Filter Include="DWL\Sistema\Animación">
       <UniqueIdentifier>{238d5ecf-9ba0-4368-84d5-22e752379aa1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\DesplegableEx %28DEPRECATED%29">
+    <Filter Include="DWL\Ventanas\ControlesEx\DesplegableEx">
       <UniqueIdentifier>{bd307228-6d88-4cd4-929c-4f8eec183789}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -262,14 +262,8 @@
     <ClInclude Include="DExplorarDirectoriosEx.h">
       <Filter>DWL\Ventanas\ControlesEx\ExplorarDirectoriosEx</Filter>
     </ClInclude>
-    <ClInclude Include="DDesplegableEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx %28DEPRECATED%29</Filter>
-    </ClInclude>
     <ClInclude Include="DGDI.h">
       <Filter>DWL\Sistema\Graficos</Filter>
-    </ClInclude>
-    <ClInclude Include="DDesplegableEx_ExplorarDirectoriosEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx %28DEPRECATED%29</Filter>
     </ClInclude>
     <ClInclude Include="ListaRaices.h">
       <Filter>Ventanas\Controles</Filter>
@@ -377,13 +371,19 @@
       <Filter>Ventanas\Controles</Filter>
     </ClInclude>
     <ClInclude Include="DControlDesplegableEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx %28DEPRECATED%29</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
     </ClInclude>
     <ClInclude Include="DMenuEx.h">
       <Filter>DWL\Ventanas\ControlesEx\MenuEx</Filter>
     </ClInclude>
     <ClInclude Include="DListaDesplegableEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx %28DEPRECATED%29</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
+    </ClInclude>
+    <ClInclude Include="DDesplegableEx %28DEPRECATED%29.h">
+      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
+    </ClInclude>
+    <ClInclude Include="DDesplegableEx_ExplorarDirectoriosEx %28DEPRECATED%29.h">
+      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -483,14 +483,8 @@
     <ClCompile Include="DExplorarDirectoriosEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\ExplorarDirectoriosEx</Filter>
     </ClCompile>
-    <ClCompile Include="DDesplegableEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx %28DEPRECATED%29</Filter>
-    </ClCompile>
     <ClCompile Include="DGDI.cpp">
       <Filter>DWL\Sistema\Graficos</Filter>
-    </ClCompile>
-    <ClCompile Include="DDesplegableEx_ExplorarDirectoriosEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx %28DEPRECATED%29</Filter>
     </ClCompile>
     <ClCompile Include="ListaRaices.cpp">
       <Filter>Ventanas\Controles</Filter>
@@ -577,10 +571,16 @@
       <Filter>Ventanas\Controles</Filter>
     </ClCompile>
     <ClCompile Include="DControlDesplegableEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx %28DEPRECATED%29</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
     </ClCompile>
     <ClCompile Include="DListaDesplegableEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx %28DEPRECATED%29</Filter>
+      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
+    </ClCompile>
+    <ClCompile Include="DDesplegableEx %28DEPRECATED%29.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
+    </ClCompile>
+    <ClCompile Include="DDesplegableEx_ExplorarDirectoriosEx %28DEPRECATED%29.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

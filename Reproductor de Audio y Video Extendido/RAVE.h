@@ -8,7 +8,7 @@
 #include "VentanaErrorCritico.h"
 #include "MemoriaCompartida.h"
 #include "RaveBD.h"
-#include "AsociarReproductor.h"
+//#include "AsociarReproductor.h"
 //#include "VentanaAsociarReproductor.h"
 #include "VentanaOpcionesRAVE.h"
 #include "DToolTipEx.h"
@@ -114,7 +114,7 @@ class RAVE {
 	MemoriaCompartida               MemCompartida;
 
 									// Objeto para asociar este reproductor en el registro de windows
-	AsociarReproductor				AsociarMedios;
+//	AsociarReproductor				AsociarMedios;
 									// ID_MENUVIDEO_AUDIO_PISTA_AUDIO
 	DMenuEx                        *MenuVideoPistasDeAudio;
 	DMenuEx                        *MenuVideoProporcion;

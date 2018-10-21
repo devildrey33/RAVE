@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "DDesplegableEx.h"
-#include "DDesplegableEx_ExplorarDirectoriosEx.h"
+#include "DDesplegableEx (DEPRECATED).h"
+#include "DDesplegableEx_ExplorarDirectoriosEx (DEPRECATED).h"
 #include "RAVE.h"
 
 namespace DWL {

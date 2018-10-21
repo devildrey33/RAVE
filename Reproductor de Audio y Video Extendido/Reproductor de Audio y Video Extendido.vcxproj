@@ -173,8 +173,8 @@
     <ClInclude Include="DControlDesplegableEx.h" />
     <ClInclude Include="DControlEx.h" />
     <ClInclude Include="DEventoMouse.h" />
-    <ClInclude Include="DDesplegableEx.h" />
-    <ClInclude Include="DDesplegableEx_ExplorarDirectoriosEx.h" />
+    <ClInclude Include="DDesplegableEx %28DEPRECATED%29.h" />
+    <ClInclude Include="DDesplegableEx_ExplorarDirectoriosEx %28DEPRECATED%29.h" />
     <ClInclude Include="DEdicionTextoEx.h" />
     <ClInclude Include="DEventoMouseRueda.h" />
     <ClInclude Include="DEventoTeclado.h" />
@@ -259,8 +259,8 @@
     <ClCompile Include="DControl.cpp" />
     <ClCompile Include="DControlDesplegableEx.cpp" />
     <ClCompile Include="DControlEx.cpp" />
-    <ClCompile Include="DDesplegableEx.cpp" />
-    <ClCompile Include="DDesplegableEx_ExplorarDirectoriosEx.cpp" />
+    <ClCompile Include="DDesplegableEx %28DEPRECATED%29.cpp" />
+    <ClCompile Include="DDesplegableEx_ExplorarDirectoriosEx %28DEPRECATED%29.cpp" />
     <ClCompile Include="DEdicionTextoEx.cpp" />
     <ClCompile Include="DExplorarDirectoriosEx.cpp" />
     <ClCompile Include="DGDI.cpp" />

@@ -79,12 +79,12 @@ const Tipo_Medio ExtensionesValidas::ObtenerTipoMedio(const Extension_Medio Exte
 		case Extension_ASF:		case Extension_AMV:		case Extension_AVI:		case Extension_DIVX:	case Extension_DV:		case Extension_FLV:		case Extension_GXF:		case Extension_IT:	
 		case Extension_MKV:		case Extension_MOV:		case Extension_MPEG:	case Extension_MPG:		case Extension_MPV:		case Extension_MPEG1:	case Extension_MPEG2:	case Extension_MPEG4:
 		case Extension_MPE:		case Extension_MP4:		case Extension_MP4V:	case Extension_MTS:		case Extension_MXF:		case Extension_M1V:		case Extension_M2T:		case Extension_M2TS:
-		case Extension_M2V:		case Extension_M4V:		case Extension_MOD:		case Extension_NSV:		case Extension_NUV:		case Extension_OGM:		case Extension_OGV:
+		case Extension_M2V:		case Extension_M4V:		case Extension_NSV:		case Extension_NUV:		case Extension_OGM:		case Extension_OGV:
 		case Extension_OGX:		case Extension_PS:		case Extension_RM:		case Extension_RMVB:	case Extension_SDP:		case Extension_TOD:		case Extension_TS:		case Extension_VOB:
 		case Extension_VRO:		case Extension_WMV:		case Extension_CRODOWNLOAD:						case Extension_OPDOWNLOAD:
 			return Tipo_Medio_Video;
 		case Extension_FLAC:	case Extension_MID:		case Extension_MP2:		case Extension_MP3:		case Extension_S3M:		case Extension_WAV:		case Extension_WEBM:	case Extension_WMA:	
-		case Extension_XM:		case Extension_OGG:
+		case Extension_XM:		case Extension_OGG:		case Extension_MOD:
 			return Tipo_Medio_Audio;
 		case Extension_CDA:
 			return Tipo_Medio_CDAudio;
@@ -96,6 +96,7 @@ const Tipo_Medio ExtensionesValidas::ObtenerTipoMedio(const Extension_Medio Exte
 	return Tipo_Medio_INDEFINIDO;
 }
 
+// Actualizar tambien en en instalador HKEY_LOCAL_MACHINE "Software\Clients\Media\RAVE\Capabilities\FileAssociations" -> ".EXTENSION" : "RAVE.Audio/Video/Lista/CDAudio"
 const wchar_t *ExtensionesValidas::ExtensionStr(const Extension_Medio Extension) {
 	switch (Extension) {
 		case Extension_ASF			:	return L"ASF";
@@ -108,8 +109,8 @@ const wchar_t *ExtensionesValidas::ExtensionStr(const Extension_Medio Extension)
 		case Extension_FLV			:	return L"FLV";
 		case Extension_GXF			:	return L"GXF";
 		case Extension_IT			:	return L"IT";
-		case Extension_MKV			:	return L"MKV";
 		case Extension_MID			:	return L"MID";
+		case Extension_MKV			:	return L"MKV";
 		case Extension_MOV			:	return L"MOV";
 		case Extension_MPEG			:	return L"MPEG";
 		case Extension_MPG			:	return L"MPG";

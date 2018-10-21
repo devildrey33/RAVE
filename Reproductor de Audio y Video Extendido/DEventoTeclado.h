@@ -29,6 +29,13 @@ namespace DWL {
 									    // Estado de transición 
 										// MSDN : "The transition state. The value is 1 if the key is being released, or it is 0 if the key is being pressed."
 		inline const BOOL               EstadoTransicion(void)	{ return (lParam >> 31) & 1; };
+										// Llama a GetAsyncKeyState para determinar si la tecla Control está presionada
+		inline const BOOL               Control(void)			{ return ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0); }
+										// Llama a GetAsyncKeyState para determinar si la tecla Alt está presionada
+		inline const BOOL               Alt(void)				{ return ((GetAsyncKeyState(VK_MENU) & 0x8000) != 0); }
+										// Llama a GetAsyncKeyState para determinar si la tecla Shift está presionada
+		inline const BOOL               Shift(void)				{ return ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0); }
+		
 										// Caracter (solo para Evento_Tecla)
 		inline const wchar_t            Caracter(void)			{ return static_cast<wchar_t>(wParam); };
 										// Caracter (solo para Evento_TeclaPresionada, y Evento_TeclaSoltada)

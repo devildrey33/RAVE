@@ -3,7 +3,7 @@
 #define DDESPLEGABLEEX_H
 
 #include "DEdicionTextoEx.h"
-#include "DDesplegableEx_ExplorarDirectoriosEx.h"
+#include "DDesplegableEx_ExplorarDirectoriosEx (DEPRECATED).h"
 //#include "DListaEx.h"
 
 /* ComboBox que puede desplegar un DListaEx o un DArbolEx, y que puede tener el texto editable o no */

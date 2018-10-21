@@ -58,10 +58,11 @@ void AsociarReproductor::RegistrarApp(void) {
 	for (size_t i = Extension_ASF; i < Extension_FINAL; i++) {
 		TmpTxt = L"."; TmpTxt += ExtensionesValidas::ExtensionStr(static_cast<Extension_Medio>(i));
 		switch (ExtensionesValidas::ObtenerTipoMedio(static_cast<Extension_Medio>(i))) {
-			case Tipo_Medio_Audio	: TmpTxt2 = L"RAVE.Audio";		break;
-			case Tipo_Medio_Video	: TmpTxt2 = L"RAVE.Video";		break;
-			case Tipo_Medio_CDAudio	: TmpTxt2 = L"RAVE.CDAudio";	break;
-			case Tipo_Medio_Lista	: TmpTxt2 = L"RAVE.Lista";		break;
+			case Tipo_Medio_Audio		: TmpTxt2 = L"RAVE.Audio";		break;
+			case Tipo_Medio_Video		: TmpTxt2 = L"RAVE.Video";		break;
+			case Tipo_Medio_CDAudio		: TmpTxt2 = L"RAVE.CDAudio";	break;
+			case Tipo_Medio_Lista		: TmpTxt2 = L"RAVE.Lista";		break;
+			case Tipo_Medio_Subtitulos	: TmpTxt2 = L"RAVE.Subtitulos";	break;
 		}
 		DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Clients\\Media\\RAVE\\Capabilities\\FileAssociations", TmpTxt.c_str(), TmpTxt2.c_str());
 	}
@@ -74,7 +75,7 @@ void AsociarReproductor::RegistrarApp(void) {
 	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.Audio", L"", L"Archivo de Audio");
 	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.Audio", L"", L"Archivo de Audio");
 	// - AUDIO Icono 13
-	TmpTxt = App.AppPath + L"RAVE.exe,13";	
+	TmpTxt = App.AppPath + L"RAVE.exe,12";	
 	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.Audio\\DefaultIcon", L"", TmpTxt.c_str());
 	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.Audio\\DefaultIcon", L"", TmpTxt.c_str());
 	// - Shell
@@ -92,12 +93,13 @@ void AsociarReproductor::RegistrarApp(void) {
 	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.Audio\\Shell\\Reproducir\\command", L"", TmpTxt.c_str());
 	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.Audio\\Shell\\Reproducir\\command", L"", TmpTxt.c_str());
 
+
 	// Tipo_Medio_Video
 	// - Descripción
 	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.Video", L"", L"Archivo de Video");
 	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.Video", L"", L"Archivo de Video");
-	// - VIDEO Icono 18
-	TmpTxt = App.AppPath + L"RAVE.exe,18";
+	// - VIDEO Icono 17
+	TmpTxt = App.AppPath + L"RAVE.exe,17";
 	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.Video\\DefaultIcon", L"", TmpTxt.c_str());
 	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.Video\\DefaultIcon", L"", TmpTxt.c_str());
 	// - Shell
@@ -114,13 +116,14 @@ void AsociarReproductor::RegistrarApp(void) {
 	TmpTxt = L"\"" + App.AppPath + L"RAVE.exe\" -r \"%1\"";
 	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.Video\\Shell\\Reproducir\\command", L"", TmpTxt.c_str());
 	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.Video\\Shell\\Reproducir\\command", L"", TmpTxt.c_str());
-	
+
+
 	// Tipo_Medio_Lista
 	// - Descripción
 	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.Lista", L"", L"Lista de medios");
 	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.Lista", L"", L"Lista de medios");
-	// - Icono 41
-	TmpTxt = App.AppPath + L"RAVE.exe,41";
+	// - Icono 0
+	TmpTxt = App.AppPath + L"RAVE.exe,0";
 	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.Lista\\DefaultIcon", L"", TmpTxt.c_str());
 	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.Lista\\DefaultIcon", L"", TmpTxt.c_str());
 	// - Shell
@@ -142,8 +145,8 @@ void AsociarReproductor::RegistrarApp(void) {
 	// - Descripción
 	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.CDAudio", L"", L"Pista de Audio");
 	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.CDAudio", L"", L"Pista de Audio");
-	// - Icono 76
-	TmpTxt = App.AppPath + L"RAVE.exe,76";
+	// - Icono 0
+	TmpTxt = App.AppPath + L"RAVE.exe,0";
 	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.CDAudio\\DefaultIcon", L"", TmpTxt.c_str());
 	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.CDAudio\\DefaultIcon", L"", TmpTxt.c_str());
 	// - Shell
@@ -160,6 +163,31 @@ void AsociarReproductor::RegistrarApp(void) {
 	TmpTxt = L"\"" + App.AppPath + L"RAVE.exe\" -r \"%1\"";
 	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.CDAudio\\Shell\\Reproducir\\command", L"", TmpTxt.c_str());
 	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.CDAudio\\Shell\\Reproducir\\command", L"", TmpTxt.c_str());
+
+	// Tipo_Medio_Subtitulos
+	// - Descripción
+	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.Subtitulos", L"", L"Subtitulos");
+	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.Subtitulos", L"", L"Subtitulos");
+	// - Icono 0
+	TmpTxt = App.AppPath + L"RAVE.exe,0";
+	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.Subtitulos\\DefaultIcon", L"", TmpTxt.c_str());
+	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.Subtitulos\\DefaultIcon", L"", TmpTxt.c_str());
+	// - Shell
+	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.Subtitulos\\Shell", L"", L"Agregar a reproducción");
+	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.Subtitulos\\Shell", L"", L"Agregar a reproducción");
+	// - Shell -> Agregar a reproducción
+	TmpTxt = L"\"" + App.AppPath + L"RAVE.exe\" \"%1\"";
+	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.Subtitulos\\Shell\\Agregar a reproducción\\command", L"", TmpTxt.c_str());
+	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.Subtitulos\\Shell\\Agregar a reproducción\\command", L"", TmpTxt.c_str());
+	// - Shell -> Open
+//	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, "Software\\Classes\\RAVE.Audio\\Shell\\Open\\command"), ""), TmpTxt());
+//	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, "RAVE.Audio\\Shell\\Open\\command"), ""), TmpTxt());
+	// - Shell -> Reproducir
+/*	TmpTxt = L"\"" + App.AppPath + L"RAVE.exe\" -r \"%1\"";
+	DRegistro::AsignarValor_String(HKEY_LOCAL_MACHINE, L"Software\\Classes\\RAVE.Subtitulos\\Shell\\Agregar a reproducción\\command", L"", TmpTxt.c_str());
+	DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, L"RAVE.Subtitulos\\Shell\\Agregar a reproducción\\command", L"", TmpTxt.c_str());*/
+
+
 
 	// Parte que enlaza las extensiones con los tipos de medio (Se guardara un backup para poder desinstalar)
 	for (size_t i = Extension_ASF; i < Extension_FINAL; i++) {
@@ -199,8 +227,13 @@ void AsociarReproductor::RegistrarApp(void) {
 		TmpTxt = L"."; TmpTxt += ExtensionesValidas::ExtensionStr(static_cast<Extension_Medio>(i));
 		DRegistro::AsignarValor_String(HKEY_CLASSES_ROOT, TmpTxt.c_str(), L"", TmpTxt2.c_str());
 
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// UNTILHEREEEEE //////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		// Activo la clase para windows vista / 7
-		TmpTxt = L"Software\\Microsoft\\Windows\\Current version\\Explorer\\FileExts\\."; TmpTxt += ExtensionesValidas::ExtensionStr(static_cast<Extension_Medio>(i)); TmpTxt += L"\\UserChoice";
+		TmpTxt = L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\."; TmpTxt += ExtensionesValidas::ExtensionStr(static_cast<Extension_Medio>(i)); TmpTxt += L"\\UserChoice";
 //		TmpTxt.sprintf("Software\\Microsoft\\Windows\\Current version\\Explorer\\FileExts\\.%s\\UserChoice"), Sistema.App.Tipos.Tipos[i]->Extension());
 		DRegistro::AsignarValor_String(HKEY_CURRENT_USER, TmpTxt.c_str(), L"Progid", TmpTxt2.c_str());
 	}
