@@ -1,9 +1,9 @@
 // Configuración para compilar RAVE
 
 // Versión y titulo
-#define RAVE_VERSION			0, 4, 4, 5
-#define RAVE_VERSIONF			0.445
-#define RAVE_VERSIONSTR			L"0.445"
+#define RAVE_VERSION			0, 4, 4, 6
+#define RAVE_VERSIONF			0.446
+#define RAVE_VERSIONSTR			L"0.446"
 #define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
 #define RAVE_VERSIONBD          L"1.0"
 
@@ -20,7 +20,7 @@
 	// No genera ninguna lista al iniciar (por el debug del VLC que es muy heavy.. y carga mucho al visual studio)
 	#define RAVE_IGNORAR_LISTA_INICIO
 
-	// Muestra la ventana para alertar de un error crítico
+	// Muestra la ventana para alertar de un error crítico (OJO si quieres enviar el dump, requiere tener un dump creado)
 	//#define RAVE_MOSTRAR_ERRORCRITICO
 
 	// Simula un error crítico y luego invoca una nueva instancia que muestra el error crítico

@@ -82,7 +82,7 @@ namespace DWL {
 											\return		devuelve TRUE si la tecla control está presionada.
 										*/
 		inline const BOOL               Control(void) {
-											return (wParam & MK_CONTROL);
+											return ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0); //return (wParam & MK_CONTROL);
 										};
 
 										//! Función que devuelve si se ha presionado la tecla Shift.
@@ -91,7 +91,7 @@ namespace DWL {
 											\return		devuelve TRUE si la tecla shift está presionada.
 										*/
 		inline const BOOL               Shift(void) {
-											return (wParam & MK_SHIFT);
+											return ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0);//return (wParam & MK_SHIFT);	// No acaba de funcionar, tirare de getasynckey
 										};
 										
 										//! Función que devuelve la ID del control de donde proviene este evento.

@@ -117,7 +117,8 @@
 			V Adaptar tooltips interns a les alineacións
 		V  Mostrar el ControlesPantallaCompleta en varies posicións : Abaix, Esquerra, Adal, Dreta
 		V  Eliminar Nota de la taula Etiquetas, la nota s'ha de calcular al fer el tooltip
-	   +o- Fer animació de la Y i la opacitat al ControlesPantallaCompleta al mostrar/ocultar el control
+	    V  Fer animació de la Y i la opacitat al ControlesPantallaCompleta al mostrar/ocultar el control
+			X Y descartada de moment la animació es nomes de opacitat...
 		V  Mostrar les opcions en una finestra nova
 			V  Crear control separador (MOLT SIMPLE) com si fos un </ br>
 			V  Afegir opcions : 
@@ -172,25 +173,30 @@
 			- Començar a mirar com aplicar transicións al DListaEx i al DArbolEx
 
 		-  Menu per la llista (val tant per audio com per video)
-			- Mostrar en la BD
-			- Mostrar directorio
+			- Mostrar en la BD (oju perque hi ha medis que no tenen per que existir a la BD)
+			- Mostrar directorio (explorer.exe /select,"C:\Folder\subfolder\file.txt")
 			- Nota
 			- Eliminar
 			- Propiedades (les de l'explorador de moment...)
 		-  Proporción del menu del video ha de tenir una opció a la BD i que al obrir un medi s'asigni la proporcio seleccionada.
 		-  Repat lista aleatória
 		-  Crear un nou correu pels dumps... que pugui fer servir per enviar... (de moment encara tinc web .. xd, no corre molta presa)
+			- si es un email de gmail, hotmail, yahoo, etc.. necesito fer un client TLS de email... que es chungo...
+				- una opcio podria ser recompilar la CSmtp per que funcioni en x64 (les llibreries del OpenSSL son de 32)
+				- o lo mes facil (ja que no haig de adaaptar codi) seria trobar una conta que no requereixi encriptació
 	    V  Crear instalador (amb lo que tingui el visual studio)
 			V  Falta fer el tema del registre de windows (associar arxius)
-			-  Falta porbar en win7 aviam si li he posat els runtimes que toca
+			V  Falta porbar en win7 aviam si li he posat els runtimes que toca
+				- Els runtimes funcionen, lo que necesito un win7 en condicions... (format al canto... però amb la calma, o igual un virtual box es mes facil)
 		-  Teclat per la DListaEx i el DArbolEx (suprimir, shift, control, carácters)
+			V  DListaEx Shift : Cursors, AvPag, Repag, Inicio, Fin, MouseClick.  Control : MouseClick.
+			-  s'ha de replantejar el DBarraScrollEx per que sigui de 0.0 a 1.0, i se li ha de restar la pàgina abans de calcular la part corresponent, per que el máxim no sigui 1.0 - Pagina
 		-  Drag & drop intern a la DListaEx per moure items (multiselecció inclosa)
 		
 		V  Anular VentanaAsociarReproductor SENSE ELIMINAR, simplement que no surti sempre, i ja veurem si la liquido del tot en un futur..
-			- Amb l'instalador puc posar entrades al registre, aixi que en principi es pot eliminar la VentanaAsociarReproductor i el AsociaciarReproductor (UN COP FACI EL REGISTRE AL INSTALADOR, OFCOURSE...)
-			
+			- Amb l'instalador puc posar entrades al registre, aixi que en principi es pot eliminar la VentanaAsociarReproductor i el AsociaciarReproductor (UN COP FACI EL REGISTRE AL INSTALADOR, OFCOURSE...)			
 		-  Test básic en win 7 (nova bd, afegir arrels, buscar, analitzar, generar llista aleatoria, i jugar amb la AimatedToolTipParty
-			- Instalar amb els instaladors (x86, x64)
+			-o- Instalar amb els instalador (x86) (x64 FUNCIONA)
 		
 	RAVE 0.6
 		-  Afegir menu tipo Marca, que serveixi tant com a menú, o com a marca pel seu menú pare.

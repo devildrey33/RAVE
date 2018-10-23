@@ -1104,20 +1104,7 @@ namespace DWL {
 		
 		DArbolEx_Nodo *nTmp = NULL;
 		LONG Sum = 0;
-		// Des-selecciono los nodos que quedan dentro del shift (antes de presionar el cursor)
-/*		if (_PosShift != 0) {
-			Sum  = (_PosShift > 0) ? -1 : 1;
-			nTmp = _NodoShift;
 
-			while (nTmp != NULL) {
-				nTmp->_Seleccionado = FALSE;
-				if (Sum == -1)
-					nTmp = BuscarNodoSiguiente(nTmp, TRUE);
-				else
-					nTmp = BuscarNodoAnterior(nTmp, TRUE);
-				if (nTmp == _NodoMarcado) break;
-			}
-		}*/
 		DesSeleccionarTodo();
 		
 		_PosShift = nPosShift;

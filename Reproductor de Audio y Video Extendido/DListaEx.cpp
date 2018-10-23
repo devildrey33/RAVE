@@ -8,7 +8,7 @@ namespace DWL {
 	DListaEx::DListaEx(void) :  DBarraScrollEx()		, _ItemPaginaInicio(0)		, _ItemPaginaFin(0)			, _ItemPaginaVDif(0)		, _ItemPaginaHDif(0),
 								_SubItemResaltado(-1)	, _SubItemUResaltado(-1)	, _SubItemPresionado(-1)	, MostrarSeleccion(TRUE)	, MultiSeleccion(FALSE),
 								_ItemResaltado(-1)		, _ItemUResaltado(-1)		, _ItemMarcado(0)			,
-								_ItemPresionado(-1)		, _ItemShift(0)				, _Repintar(FALSE)			,
+								_ItemPresionado(-1)		, _ItemShift(-1)			, _Repintar(FALSE)			,
 								_TotalAnchoVisible(0)	, _TotalAltoVisible(0)		, 
 								_BufferItem(NULL)		, _BufferItemBmp(NULL)		, _BufferItemBmpViejo(NULL)	, _BufferItemFuenteViejo(NULL) {
 
@@ -144,7 +144,7 @@ namespace DWL {
 		DeleteDC(Buffer);
 	}
 
-	void DListaEx::PintarItem(HDC hDC, const size_t nPosItem, RECT &Espacio) {
+	void DListaEx::PintarItem(HDC hDC, const LONGLONG nPosItem, RECT &Espacio) {
 		if (_Items.size() == 0) return;
 
 		BOOL bResaltado		= (nPosItem == _ItemResaltado) ? TRUE : FALSE;
@@ -261,7 +261,7 @@ namespace DWL {
 		[in]  cY			: Coordenada Y
 		[out] nPosSubItem	: Si no es NULL devolverá la posición del SubItem
 	*/
-	const size_t DListaEx::HitTest(const int cX, const int cY, size_t *nPosSubItem) {
+	const LONGLONG DListaEx::HitTest(const int cX, const int cY, LONGLONG *nPosSubItem) {
 		if (_ItemPaginaInicio == -1) {
 			#if DLISTAEX_MOSTRARDEBUG == TRUE
 				Debug_Escribir_Varg(L"DListaEx::HitTest X:%d Y:%d I:-1 SI:-1\n", cX, cY);
@@ -272,11 +272,11 @@ namespace DWL {
 		int PixelesContados		= _ItemPaginaVDif; // Pixeles de altura contados hasta el nodo
 		int AltoItem			= Fuente.Alto() + (DLISTAEX_PADDING * 2);
 		int PixelesContadosH	= _ItemPaginaHDif;
-		size_t PosInicio		= _ItemPaginaInicio;
-		size_t PosFin			= _ItemPaginaFin + 1;
+		LONGLONG PosInicio		= _ItemPaginaInicio;
+		LONGLONG PosFin			= _ItemPaginaFin + 1;
 		
 		if (PosFin == 0) PosFin = _Items.size();
-		for (size_t i = PosInicio; i < PosFin; i++) {
+		for (LONGLONG i = PosInicio; i < PosFin; i++) {
 			// El item está en las coordenadas del mouse
 			if (PixelesContados <= cY && PixelesContados + AltoItem >= cY) {				
 				// Si PosSubItem no es NULL necesitamos determinar la posición del SubItem
@@ -321,8 +321,8 @@ namespace DWL {
 		}
 	}
 
-	void DListaEx::EliminarItem(const size_t ePos) {
-		if (ePos < _Items.size()) {
+	void DListaEx::EliminarItem(const LONGLONG ePos) {
+		if (ePos < static_cast<LONGLONG>(_Items.size())) {
 			delete _Items[ePos];
 			_Items.erase(_Items.begin() + ePos);
 
@@ -338,6 +338,10 @@ namespace DWL {
 	}
 
 	void DListaEx::DesSeleccionarTodo(void) {
+		#if DLISTAEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir(L"DListaEx::DesSeleccionarTodo\n");
+		#endif
+
 		for (size_t i = 0; i < _Items.size(); i++) {
 			_Items[i]->Seleccionado = FALSE;
 		}
@@ -352,8 +356,8 @@ namespace DWL {
 		}
 	}
 
-	void DListaEx::MostrarItem(const size_t iPos, const BOOL nRepintar) {
-		if (iPos >= _Items.size() || _Items.size() == 0) return;
+	void DListaEx::MostrarItem(const LONGLONG iPos, const BOOL nRepintar) {
+		if (iPos >= static_cast<LONGLONG>(_Items.size()) || _Items.size() == 0) return;
 
 		RECT RItem;
 		if (ObtenerRectaItem(iPos, RItem) == FALSE) return;
@@ -389,7 +393,7 @@ namespace DWL {
 		if (nRepintar == TRUE) Repintar();
 	}
 
-	const size_t DListaEx::ItemPos(DListaEx_Item *pItem) {
+	const LONGLONG DListaEx::ItemPos(DListaEx_Item *pItem) {
 		return std::find(_Items.begin(), _Items.end(), pItem) - _Items.begin();
 	}
 
@@ -412,8 +416,8 @@ namespace DWL {
 
 	
 	// Obtiene la recta absoluta del item
-	const BOOL DListaEx::ObtenerRectaItem(const size_t iPos, RECT &rRecta) {
-		if (_Items.size() == 0 || iPos >= _Items.size()) return FALSE;
+	const BOOL DListaEx::ObtenerRectaItem(const LONGLONG iPos, RECT &rRecta) {
+		if (_Items.size() == 0 || iPos >= static_cast<LONGLONG>(_Items.size())) return FALSE;
 		LONG nAncho = 0;
 		for (size_t i = 0; i < _Columnas.size(); i++) nAncho += _Columnas[i]->_AnchoCalculado;		
 
@@ -641,9 +645,21 @@ namespace DWL {
 		#endif
 
 		if (_ItemPresionado != -1) {
-			// Si la multiseleccion está des-habilitada o la tecla control no está pulsada
-			if (MultiSeleccion == FALSE || DatosMouse.Control() == FALSE) DesSeleccionarTodo();
-			_Items[_ItemPresionado]->Seleccionado = (MultiSeleccion == FALSE) ? TRUE : !_Items[_ItemPresionado]->Seleccionado;
+			BOOL tShift   = DatosMouse.Shift();
+			BOOL tControl = DatosMouse.Control();
+			if (tShift == TRUE && _ItemShift != -1) {
+				DesSeleccionarTodo();
+				if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) 	_Items[i]->Seleccionado = TRUE; }
+				else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) 	_Items[i]->Seleccionado = TRUE; }
+			}
+			else if (tControl == TRUE) {
+				_Items[_ItemPresionado]->Seleccionado = !_Items[_ItemPresionado]->Seleccionado;
+			}
+			else {
+				// Si la multiseleccion está des-habilitada o la tecla control no está pulsada
+				if (MultiSeleccion == FALSE || tControl == FALSE || tShift == FALSE) DesSeleccionarTodo();
+				_Items[_ItemPresionado]->Seleccionado = TRUE;
+			}
 		}
 
 		Evento_MousePresionado(DatosMouse);
@@ -681,7 +697,7 @@ namespace DWL {
 //		GetWindowRect(hWnd(), &RW);
 
 		#if DLISTAEX_MOSTRARDEBUG == TRUE
-			Debug_Escribir_Varg(L"DListaEx::_Evento_MouseRueda cX:%d cY:%d mX:%d mY:%d\n", RW.left - DatosMouse.X() , RW.top - DatosMouse.Y());
+			Debug_Escribir_Varg(L"DListaEx::_Evento_MouseRueda X:%d Y:%d Delta:%d\n", DatosMouse.X(), DatosMouse.Y(), DatosMouse.Delta());
 		#endif
 
 
@@ -711,12 +727,12 @@ namespace DWL {
 		// Marco la tecla como presionada
 		DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = true;
 
-		// Si hay nodos ...
+		// Si hay items ...
 		if (_Items.size() > 0) {
 			// Me guardo el item marcado para indicar desde donde empieza el shift
 			if (DatosTeclado.TeclaVirtual() == VK_SHIFT) {
 				if (_ItemShift == -1) {
-					_ItemShift = (_ItemMarcado == NULL) ? _ItemPaginaInicio : _ItemMarcado;
+					_ItemShift = (_ItemMarcado == -1) ? _ItemPaginaInicio : _ItemMarcado;
 				}
 			}
 
@@ -735,7 +751,10 @@ namespace DWL {
 	}
 
 	void DListaEx::_Evento_TeclaSoltada(WPARAM wParam, LPARAM lParam) {
-		DEventoTeclado DatosTeclado(wParam, lParam, this);
+		DEventoTeclado DatosTeclado(wParam, lParam, this); 
+		if (DatosTeclado.TeclaVirtual() == VK_SHIFT) {
+			_ItemShift = -1;
+		}		
 		Evento_TeclaSoltada(DatosTeclado);
 	}
 
@@ -750,16 +769,46 @@ namespace DWL {
 		// Si no hay nodos, salgo de la función
 		if (_Items.size() == 0) return;
 
+		// Si no hay item marcado, marco el primero visible
 		if (_ItemMarcado == -1) {	
 			_ItemMarcado = _ItemPaginaInicio;
 			_Items[_ItemMarcado]->Seleccionado = TRUE;
 			MostrarItem(_ItemMarcado);
 		}
 
+		BOOL tControl = DatosTeclado.Control();
+		BOOL tShift   = DatosTeclado.Shift();
+
+		// Si hay un item anterior al marcado
 		if (_ItemMarcado - 1 != -1) {
+			// Asigno el nuevo item marcado
 			_ItemMarcado--;
-			if (MultiSeleccion == FALSE || DatosTeclado.Shift() == FALSE) DesSeleccionarTodo();
-			_Items[_ItemMarcado]->Seleccionado = TRUE;
+
+			if (tShift == TRUE && MultiSeleccion == TRUE) {
+				DesSeleccionarTodo();
+				if (_ItemShift != -1) {
+					if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) 	_Items[i]->Seleccionado = TRUE; }
+					else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) 	_Items[i]->Seleccionado = TRUE; }
+				}
+				#if DLISTAEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DListaEx::_Tecla_CursorArriba & Shift -> IS : %d, IM : %d\n", _ItemShift, _ItemMarcado);
+				#endif
+			}
+			// Si el control o el shift estan presionados revierto el ultimo estado seleccionado del item marcado, antes de situarme en el nuevo item marcado
+/*			else if (tControl == TRUE) {
+				_Items[_ItemMarcado]->Seleccionado = !_Items[_ItemMarcado]->Seleccionado;
+				#if DLISTAEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir(L"DListaEx::_Tecla_CursorArriba & Control\n");
+				#endif
+			}*/
+			else {
+				if (MultiSeleccion == FALSE || tControl == FALSE || tShift == FALSE) DesSeleccionarTodo();
+				_Items[_ItemMarcado]->Seleccionado = TRUE;
+				#if DLISTAEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir(L"DListaEx::_Tecla_CursorArriba\n");
+				#endif
+
+			}
 			MostrarItem(_ItemMarcado);
 		}
 	}
@@ -768,15 +817,45 @@ namespace DWL {
 		// Si no hay nodos, salgo de la función
 		if (_Items.size() == 0) return;
 
+		// Si no hay item marcado, marco el primero visible
 		if (_ItemMarcado == -1) {
 			_ItemMarcado = _ItemPaginaInicio;
 			_Items[_ItemMarcado]->Seleccionado = TRUE;
 			MostrarItem(_ItemMarcado);
 		}
-		if (_ItemMarcado + 1 < _Items.size()) {
+
+		BOOL tControl = DatosTeclado.Control();
+		BOOL tShift   = DatosTeclado.Shift();
+
+		// Si hay un item siguiente al maracado
+		if (static_cast<size_t>(_ItemMarcado) + 1 < _Items.size()) {
+			// Asigno el nuevo item marcado
 			_ItemMarcado++;
-			if (MultiSeleccion == FALSE || DatosTeclado.Shift() == FALSE) DesSeleccionarTodo();
-			_Items[_ItemMarcado]->Seleccionado = TRUE;
+
+			if (tShift == TRUE && MultiSeleccion == TRUE) {
+				if (_ItemShift != -1) {
+					DesSeleccionarTodo();
+					if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) 	_Items[i]->Seleccionado = TRUE; }
+					else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) 	_Items[i]->Seleccionado = TRUE; }
+				}
+				#if DLISTAEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DListaEx::_Tecla_CursorAbajo & Shift -> IS : %d, IM : %d\n", _ItemShift, _ItemMarcado);
+				#endif
+			}
+
+/*			else if (tControl == TRUE) {
+				_Items[_ItemMarcado]->Seleccionado = !_Items[_ItemMarcado]->Seleccionado;
+				#if DLISTAEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir(L"DListaEx::_Tecla_CursorAbajo & Control\n");
+				#endif
+			}*/
+			else {
+				if (MultiSeleccion == FALSE || tControl == FALSE || tShift == FALSE) DesSeleccionarTodo();
+				_Items[_ItemMarcado]->Seleccionado = TRUE;
+				#if DLISTAEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir(L"DListaEx::_Tecla_CursorAbajo\n");
+				#endif
+			}
 			MostrarItem(_ItemMarcado);
 		}
 	}
@@ -786,6 +865,11 @@ namespace DWL {
 		if (_Items.size() == 0) return;
 
 		DesSeleccionarTodo();
+
+		if (DatosTeclado.Shift() == TRUE && MultiSeleccion == TRUE) {
+			for (LONGLONG i = 0; i <= _ItemShift; i++) _Items[i]->Seleccionado = TRUE;
+		}
+
 		_ItemMarcado = 0;
 		_Items[_ItemMarcado]->Seleccionado = TRUE;
 		MostrarItem(_ItemMarcado);
@@ -797,6 +881,11 @@ namespace DWL {
 
 		DesSeleccionarTodo();
 		_ItemMarcado = _Items.size() - 1;
+
+		if (DatosTeclado.Shift() == TRUE && MultiSeleccion == TRUE) {
+			for (LONGLONG i = _ItemShift; i < _ItemMarcado; i++) _Items[i]->Seleccionado = TRUE;
+		}
+
 		_Items[_ItemMarcado]->Seleccionado = TRUE;
 		MostrarItem(_ItemMarcado);
 	}
@@ -805,8 +894,16 @@ namespace DWL {
 		if (_ItemMarcado == _ItemPaginaFin) {
 			AvPag();
 		}		
+
+		DesSeleccionarTodo();
+		if (DatosTeclado.Shift() == TRUE && MultiSeleccion == TRUE) {
+			if (_ItemShift < _ItemPaginaFin) { for (LONGLONG i = _ItemShift; i <= _ItemPaginaFin; i++) 	_Items[i]->Seleccionado = TRUE; }
+			else                             { for (LONGLONG i = _ItemPaginaFin; i <= _ItemShift; i++) 	_Items[i]->Seleccionado = TRUE; }
+		}
+
 		MostrarItem(_ItemPaginaFin, FALSE);
-		_ItemMarcado = _ItemPaginaFin;
+		_ItemMarcado = _ItemPaginaFin;		// Asigno el itemMarcado DESPRES de MostrarItem (que per alguna rao em cambia el _ItemPagina
+		_Items[_ItemMarcado]->Seleccionado = TRUE;
 		Repintar();
 	}
 
@@ -815,8 +912,16 @@ namespace DWL {
 		if (_ItemMarcado == _ItemPaginaInicio || _ItemMarcado - 1 == _ItemPaginaInicio) {
 			RePag();
 		}
+
+		DesSeleccionarTodo();
+		if (DatosTeclado.Shift() == TRUE && MultiSeleccion == TRUE) {
+			if (_ItemShift < _ItemPaginaInicio) { for (LONGLONG i = _ItemShift; i <= _ItemPaginaInicio; i++) 	_Items[i]->Seleccionado = TRUE; }
+			else								{ for (LONGLONG i = _ItemPaginaInicio; i <= _ItemShift; i++) 	_Items[i]->Seleccionado = TRUE; }
+		}
+
 		_ItemMarcado = _ItemPaginaInicio;
 		MostrarItem(_ItemMarcado, FALSE);
+		_Items[_ItemMarcado]->Seleccionado = TRUE;
 		Repintar();
 	}
 

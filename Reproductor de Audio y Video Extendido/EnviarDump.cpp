@@ -31,7 +31,7 @@ const BOOL EnviarDump::_EnviarNC(const char *eTxt) {
 
 const BOOL EnviarDump::_Enviar(const char *eTxt, const BOOL nRecibir) {
 	std::string		Texto = eTxt; // +std::string("\r\n");
-#ifdef MOSTRAR_CONSOLA
+#ifdef RAVE_MOSTRAR_CONSOLA
 	size_t			out;
 	static wchar_t	WBuffer[4096];
 	ZeroMemory(WBuffer, sizeof(wchar_t) * 4096);
@@ -52,7 +52,7 @@ const BOOL EnviarDump::_Recibir(void) {
 	static char Buffer[4096];
 	ZeroMemory(Buffer, sizeof(char) * 4096);
 	int iStatus = recv(_Server, Buffer, 4096, 0);
-#ifdef MOSTRAR_CONSOLA
+#ifdef RAVE_MOSTRAR_CONSOLA
 	std::string		Texto = Buffer;
 	size_t			out;
 	static wchar_t	WBuffer[4096];
@@ -84,8 +84,6 @@ const BOOL EnviarDump::Enviar(std::wstring &Path, HWND hWnd) {
 	if (_Thread) SetThreadPriority(_Thread, 0);
 	else		 return FALSE;
 	return TRUE;
-
-
 }
 
 unsigned long  EnviarDump::_ThreadEnviar(void *pDatosDump) {
@@ -193,18 +191,30 @@ unsigned long  EnviarDump::_ThreadEnviar(void *pDatosDump) {
 	delete[] ArchivoChar;
 	size_t i = 0;
 
-	SendMessage(DatosDump->hWnd, WM_THREAD_ENVIARVALOR, static_cast<WPARAM>(ArchivoStd.size()), 0);
+	PostMessage(DatosDump->hWnd, WM_THREAD_ENVIARVALOR, static_cast<WPARAM>(ArchivoStd.size()), 0);
 
 	// Receive initial response from SMTP server
 	_Recibir();
+
 	// Send HELO server.com
 	sprintf_s(szMsgLine, 255, "EHLO %s", ServidorSmtp);
 	_Enviar(szMsgLine, TRUE);
 
+//	_Enviar("HELP", TRUE);
+
+	// Inicio la capa de TLS (SSL)
+//	_Enviar("STARTTLS", TRUE);
+
+//	_Enviar("Client hello", TRUE);
+
+	// Send HELO server.com
+//	sprintf_s(szMsgLine, 255, "EHLO %s", ServidorSmtp);
+//	_Enviar(szMsgLine, TRUE);
+
 	// AUTENTIFICAMOS
-	_Enviar("AUTH LOGIN", TRUE);
+/*	_Enviar("AUTH LOGIN", TRUE);
 	_Enviar(CorreoOrigen_Login, TRUE);			// login
-	_Enviar(CorreoOrigen_Password, TRUE);		// pass
+	_Enviar(CorreoOrigen_Password, TRUE);		// pass*/
 
 	// Send MAIL FROM: <sender@mydomain.com>
 	sprintf_s(szMsgLine, 255, "MAIL FROM:<%s>", CorreoOrigen);
@@ -239,7 +249,7 @@ unsigned long  EnviarDump::_ThreadEnviar(void *pDatosDump) {
 		Parte = ArchivoStd.substr(i, 997);
 		_EnviarNC(Parte.c_str());
 
-		SendMessage(DatosDump->hWnd, WM_THREAD_ENVIARVALOR, static_cast<WPARAM>(ArchivoStd.size()), static_cast<LPARAM>(i));
+		PostMessage(DatosDump->hWnd, WM_THREAD_ENVIARVALOR, static_cast<WPARAM>(ArchivoStd.size()), static_cast<LPARAM>(i));
 	}
 
 	_Enviar("--Boundary-=_StOHgENiGNeW");
@@ -253,7 +263,7 @@ unsigned long  EnviarDump::_ThreadEnviar(void *pDatosDump) {
 
 	WSACleanup();
 
-	SendMessage(DatosDump->hWnd, WM_THREAD_TERMINADO, static_cast<WPARAM>(_Error), 0);
+	PostMessage(DatosDump->hWnd, WM_THREAD_TERMINADO, static_cast<WPARAM>(_Error), 0);
 
 /*	if (_Error == TRUE) {
 		Debug_Escribir_Varg(L"EnviarDump::Enviar Error durante la transmisión.\n");

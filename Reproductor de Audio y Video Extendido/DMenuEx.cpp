@@ -100,7 +100,8 @@ namespace DWL {
 				_Menus[i]->_ColorTexto = (_Menus[i]->_Activado == TRUE) ? COLOR_MENU_TEXTO : COLOR_MENU_TEXTO_DESACTIVADO;
 
 				if (_Menus[i]->_Tipo == DMenuEx_Tipo_Barra) {
-					_Menus[i]->_Barra.CrearBarraDesplazamientoEx(this, _BarraPosX, _Menus[i]->_Recta.top + DMENUEX_MARGEN_Y, DMENUEX_ANCHOBARRA + DMENUEX_MARGEN_X + DMENUEX_TAMICONO, (_Menus[i]->_Recta.bottom - _Menus[i]->_Recta.top) - (DMENUEX_MARGEN_Y * 2), _Menus[i]->_ID, _Menus[i]->_Barra._Minimo, _Menus[i]->_Barra._Maximo, _Menus[i]->_Barra._Valor);
+					int nAnchoBarra = _Menus[i]->_Recta.right - (_BarraPosX + DMENUEX_MARGEN_X);
+					_Menus[i]->_Barra.CrearBarraDesplazamientoEx(this, _BarraPosX, _Menus[i]->_Recta.top + DMENUEX_MARGEN_Y, nAnchoBarra, (_Menus[i]->_Recta.bottom - _Menus[i]->_Recta.top) - (DMENUEX_MARGEN_Y * 2), _Menus[i]->_ID, _Menus[i]->_Barra._Minimo, _Menus[i]->_Barra._Maximo, _Menus[i]->_Barra._Valor);
 					_Menus[i]->_Barra.Activado(_Menus[i]->_Activado);
 				}
 			}
@@ -470,6 +471,12 @@ namespace DWL {
 			}
 		}
 
+/*		int nBarraPos = (DMENUEX_ANCHOBARRA + DMENUEX_TAMICONO + (DMENUEX_MARGEN_X * 3));
+		// Reposiciono las barras a la derecha del menú, si hay espacio disponible
+		if (_BarraPosX + nBarraPos > Ret.x - nBarraPos) {
+			_BarraPosX = Ret.x - nBarraPos;
+		}*/
+
 		// Añado el borde
 		Ret.x += (DMENUEX_BORDE * 2);
 		Ret.y += (DMENUEX_BORDE * 2);
@@ -524,7 +531,8 @@ namespace DWL {
 				_Menus[i]->_ColorFondo = COLOR_MENU_FONDO;
 				_Menus[i]->_ColorTexto = COLOR_MENU_TEXTO;
 				if (_Menus[i]->_Tipo == DMenuEx_Tipo_Barra) {
-					_Menus[i]->_Barra.CrearBarraDesplazamientoEx(this, _BarraPosX, _Menus[i]->_Recta.top + DMENUEX_MARGEN_Y, DMENUEX_ANCHOBARRA + DMENUEX_MARGEN_X + DMENUEX_TAMICONO, (_Menus[i]->_Recta.bottom - _Menus[i]->_Recta.top) - (DMENUEX_MARGEN_Y * 2), _Menus[i]->_ID, _Menus[i]->_Barra._Minimo, _Menus[i]->_Barra._Maximo, _Menus[i]->_Barra._Valor);
+					int nAnchoBarra = _Menus[i]->_Recta.right - (_BarraPosX + DMENUEX_MARGEN_X);
+					_Menus[i]->_Barra.CrearBarraDesplazamientoEx(this, _BarraPosX, _Menus[i]->_Recta.top + DMENUEX_MARGEN_Y, nAnchoBarra, (_Menus[i]->_Recta.bottom - _Menus[i]->_Recta.top) - (DMENUEX_MARGEN_Y * 2), _Menus[i]->_ID, _Menus[i]->_Barra._Minimo, _Menus[i]->_Barra._Maximo, _Menus[i]->_Barra._Valor);
 					_Menus[i]->_Barra.Activado(_Menus[i]->_Activado);
 				}
 			}
@@ -915,10 +923,16 @@ namespace DWL {
 
 		_MouseDentro = FALSE;
 		if (_MenuResaltado != NULL) {
-			if (_MenuResaltado->_Activado == TRUE && _MenuResaltado->_Menus.size() == 0) {
-				_MenuResaltado->Transicion(DMenuEx_Transicion_Normal);
+			POINT Pt;
+			DWL::DMouse::ObtenerPosicion(&Pt);
+			ScreenToClient(_hWnd, &Pt);
+			// Si no está dentro del menú
+			if (PtInRect(&_MenuResaltado->_Recta, Pt) == FALSE) {
+				if (_MenuResaltado->_Activado == TRUE && _MenuResaltado->_Menus.size() == 0) {
+					_MenuResaltado->Transicion(DMenuEx_Transicion_Normal);
+				}
+				_MenuResaltado = NULL;
 			}
-			_MenuResaltado = NULL;
 		}
 /*		if (_MenuDesplegado != NULL) {
 			// Obtengo la ventana debajo del mouse

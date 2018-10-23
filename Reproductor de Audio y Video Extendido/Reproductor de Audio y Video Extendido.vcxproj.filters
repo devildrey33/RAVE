@@ -89,9 +89,6 @@
     <Filter Include="DWL\Sistema\Registro Windows">
       <UniqueIdentifier>{827b3b63-5dbc-4db9-b634-bcf2d9c3ae66}</UniqueIdentifier>
     </Filter>
-    <Filter Include="AsociarReproductor">
-      <UniqueIdentifier>{8ad9c686-8c63-4d14-b7ab-03419bb29e17}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DWL\Ventanas\BarraTareas">
       <UniqueIdentifier>{0ca039a6-e0c6-4363-8873-3b85cf246579}</UniqueIdentifier>
     </Filter>
@@ -142,6 +139,9 @@
     </Filter>
     <Filter Include="DWL\Ventanas\ControlesEx\DesplegableEx">
       <UniqueIdentifier>{bd307228-6d88-4cd4-929c-4f8eec183789}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AsociarReproductor %28DEPRECATED%29">
+      <UniqueIdentifier>{8ad9c686-8c63-4d14-b7ab-03419bb29e17}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -278,7 +278,7 @@
       <Filter>DWL\Sistema\Registro Windows</Filter>
     </ClInclude>
     <ClInclude Include="AsociarReproductor.h">
-      <Filter>AsociarReproductor</Filter>
+      <Filter>AsociarReproductor %28DEPRECATED%29</Filter>
     </ClInclude>
     <ClInclude Include="DhWnd.h">
       <Filter>DWL\Ventanas\Base</Filter>
@@ -499,7 +499,7 @@
       <Filter>DWL\Sistema\Registro Windows</Filter>
     </ClCompile>
     <ClCompile Include="AsociarReproductor.cpp">
-      <Filter>AsociarReproductor</Filter>
+      <Filter>AsociarReproductor %28DEPRECATED%29</Filter>
     </ClCompile>
     <ClCompile Include="DhWnd.cpp">
       <Filter>DWL\Ventanas\Base</Filter>

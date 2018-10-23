@@ -36,7 +36,7 @@ namespace DWL {
 
 
 	#define DMENUEX_TAMICONO				16 // Tamaño del icono
-	#define DMENUEX_ANCHOBARRA             100 // Ancho de las barras
+	#define DMENUEX_ANCHOBARRA             100 // Ancho mínimo de las barras
 	#define WM_ESMENUEX			 WM_USER + 500
 
 	class DMenuEx : protected DWL::DVentana {

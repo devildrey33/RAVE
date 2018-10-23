@@ -143,6 +143,10 @@ const BOOL RaveVLC::AbrirMedio(BDMedio &Medio) {
 
 	libvlc_media_t *_Media = NULL;
 	_Media = libvlc_media_new_path(_Instancia, AnsiStr.c_str());
+	if (_Media == NULL) {
+		Debug_Escribir_Varg(L"RaveVLC::AbrirMedio  Error al abrir '%s'\n", MedioActual.Path.c_str());
+		return FALSE;
+	}
 	_MediaPlayer = libvlc_media_player_new_from_media(_Media);
 	libvlc_media_release(_Media);
 	

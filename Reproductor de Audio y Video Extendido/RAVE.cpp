@@ -246,7 +246,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_ABRIRCARPETA		, L"Abrir carpeta en el explorador");
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_ELIMINAR			, L"Eliminar de la lista");
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_MOSTRARBD			, L"Mostrar en la base de datos");
-	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_NOTA				, L"Nota");
+	VentanaRave.Menu_Lista.AgregarBarra(ID_MENULISTA_NOTA				, L"Nota", NULL, 0.0f, 5.0f, 2.5f, DBarraEx_MostrarValor_ValorMaximo2Decimales);
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_PROPIEDADES			, L"Propiedades");
 	// Menu Boton Lista
 	VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_BORRAR					, L"Borrar Lista");
@@ -439,13 +439,13 @@ void RAVE::CerrarSistema(const SOCerrarSistema Forma, const BOOL Forzar) {
 };
 
 
-// TECLADO GENERAL PARA DOAS LAS VENTANAS DE ESTE HILO EXCEPTO LA DEL VIDEO DEL VLC
+// TECLADO GENERAL PARA TODAS LAS VENTANAS DE ESTE HILO EXCEPTO LA DEL VIDEO DEL VLC
 void RAVE::Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado) {
 	DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = true;
-	Debug_Escribir_Varg(L"RAVE::Evento_TeclaPresionada Tecla : %d, Id : %d\n", DatosTeclado.TeclaVirtual(), DatosTeclado.ID());
+//	Debug_Escribir_Varg(L"RAVE::Evento_TeclaPresionada Tecla : %d, Id : %d\n", DatosTeclado.TeclaVirtual(), DatosTeclado.ID());
 }
 
-// TECLADO GENERAL PARA DOAS LAS VENTANAS DE ESTE HILO EXCEPTO LA DEL VIDEO DEL VLC
+// TECLADO GENERAL PARA TODAS LAS VENTANAS DE ESTE HILO EXCEPTO LA DEL VIDEO DEL VLC
 void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 	DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = false;
 
@@ -502,7 +502,6 @@ void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 			}
 		}
 	}
-
 
 	Debug_Escribir_Varg(L"RAVE::Evento_TeclaSoltada Tecla : %d, Id : %d\n", DatosTeclado.TeclaVirtual(), DatosTeclado.ID());
 }

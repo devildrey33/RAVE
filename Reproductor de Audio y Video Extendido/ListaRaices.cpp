@@ -31,7 +31,7 @@ DListaEx_Item *ListaRaices::AgregarRaiz(const wchar_t *nPath, const BOOL nRepint
 }
 
 
-void ListaRaices::Evento_PintarSubItem(HDC hDC, const size_t NumItem, const size_t NumSubItem, RECT *Espacio) {
+void ListaRaices::Evento_PintarSubItem(HDC hDC, const LONGLONG NumItem, const LONGLONG NumSubItem, RECT *Espacio) {
 	if (NumSubItem == 1 && NumItem == _ItemResaltado) {
 		int PosY_Ico = 1 + static_cast<int>(((Espacio->bottom - Espacio->top) - DLISTAEX_TAMICONO) / 2);
 		int b_Presionado = 0;

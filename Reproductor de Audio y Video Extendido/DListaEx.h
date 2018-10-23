@@ -10,7 +10,7 @@ namespace DWL {
 	#define DLISTAEX_MOSTRARDEBUG	FALSE
 
 	#ifdef _WIN64
-		#define DLISTAEX_POSICION_INICIO	0
+		#define DLISTAEX_POSICION_INICIO	 0
 		#define DLISTAEX_POSICION_FIN		-1
 		#define DLISTAEX_POSICION_ORDENADO	-2
 	#else
@@ -74,57 +74,57 @@ namespace DWL {
 															return nItem;
 														};
 
-		void											EliminarItem(const size_t ePosItem);
+		void											EliminarItem(const LONGLONG ePosItem);
 		void											EliminarItem(DListaEx_Item *eItem);
 		const UINT										EliminarItemsSeleccionados(void);
 		void											EliminarTodosLosItems(void);
 														// Acceso a los DListaEx_Item
-		inline DListaEx_Item                           *Item(const size_t iPos) { if (iPos == -1)            { return NULL; }	return _Items[iPos]; }
-		inline DListaEx_Item                           *ItemResaltado(void)		{ if (_ItemResaltado == -1)  { return NULL; }	return _Items[_ItemResaltado]; };
-		inline DListaEx_Item                           *ItemPresionado(void)	{ if (_ItemPresionado == -1) { return NULL; }	return _Items[_ItemPresionado]; };
-		inline DListaEx_Item                           *ItemMarcado(void)		{ if (_ItemMarcado == -1)    { return NULL; }	return _Items[_ItemMarcado]; };
+		inline DListaEx_Item                           *Item(const LONGLONG iPos) { if (iPos == -1)            { return NULL; }	return _Items[iPos]; }
+		inline DListaEx_Item                           *ItemResaltado(void)	  	  { if (_ItemResaltado == -1)  { return NULL; }	return _Items[_ItemResaltado]; };
+		inline DListaEx_Item                           *ItemPresionado(void)	  { if (_ItemPresionado == -1) { return NULL; }	return _Items[_ItemPresionado]; };
+		inline DListaEx_Item                           *ItemMarcado(void)		  { if (_ItemMarcado == -1)    { return NULL; }	return _Items[_ItemMarcado]; };
 		void											ItemMarcado(DListaEx_Item *NuevoItemMarcado, const BOOL nRepintar = FALSE);
 														// Devuelve la posición del DListaEx_Item que está dentro de esta lista
-		const size_t                                    ItemPos(DListaEx_Item *pItem);		
+		const LONGLONG                                  ItemPos(DListaEx_Item *pItem);
 		virtual void									Repintar(const BOOL nForzar = FALSE);
 		void											DesSeleccionarTodo(void);
-		void											MostrarItem(const size_t iPos, const BOOL nRepintar = TRUE);
+		void											MostrarItem(const LONGLONG iPos, const BOOL nRepintar = TRUE);
 		void											MostrarItem(DListaEx_Item *eItem);
 
-		const BOOL                                      ObtenerRectaItem(const size_t iPos, RECT &rRecta);
+		const BOOL                                      ObtenerRectaItem(const LONGLONG iPos, RECT &rRecta);
 		inline const BOOL                               ObtenerRectaItem(DListaEx_Item *eItem, RECT &rRecta) { return ObtenerRectaItem(ItemPos(eItem), rRecta); }
 
 		inline const size_t								TotalItems(void) { return _Items.size(); }
 		void											TotalItemsSeleccionados(void); // poc util...
 
 		inline const size_t                             TotalColumnas(void) { return _Columnas.size();  }
-		inline DListaEx_Columna                        *Columna(const size_t cPos) { return _Columnas[cPos];  }
+		inline DListaEx_Columna                        *Columna(const LONGLONG cPos) { return _Columnas[cPos];  }
 
 		void											Pintar(HDC hDC);
-		void											PintarItem(HDC hDC, const size_t pPosItem, RECT &Espacio);
+		void											PintarItem(HDC hDC, const LONGLONG pPosItem, RECT &Espacio);
 
-		const size_t									HitTest(const int cX, const int cY, size_t *PosSubItem = NULL);
+		const LONGLONG									HitTest(const int cX, const int cY, LONGLONG *PosSubItem = NULL);
 
 		void											Scrolls_EventoCambioPosicion(void);
 
 														// Eventos virtuales
-		virtual void          							Evento_MouseEntrando(void)																	{ };
-		virtual void									Evento_MouseSaliendo(void)																	{ };
-		virtual void									Evento_MouseMovimiento(DEventoMouse &DatosMouse)											{ };
-		virtual void									Evento_MousePresionado(DEventoMouse &DatosMouse)											{ };
-		virtual void									Evento_MouseSoltado(DEventoMouse &DatosMouse)												{ };
-		virtual void                                    Evento_MouseRueda(DEventoMouseRueda &DatosMouse)											{ };
-		virtual void									Evento_MouseDobleClick(DEventoMouse &DatosMouse)											{ };
+		virtual void          							Evento_MouseEntrando(void)																		{ };
+		virtual void									Evento_MouseSaliendo(void)																		{ };
+		virtual void									Evento_MouseMovimiento(DEventoMouse &DatosMouse)												{ };
+		virtual void									Evento_MousePresionado(DEventoMouse &DatosMouse)												{ };
+		virtual void									Evento_MouseSoltado(DEventoMouse &DatosMouse)													{ };
+		virtual void                                    Evento_MouseRueda(DEventoMouseRueda &DatosMouse)												{ };
+		virtual void									Evento_MouseDobleClick(DEventoMouse &DatosMouse)												{ };
 
 
-		virtual void                                    Evento_TeclaPresionada(DEventoTeclado &DatosTeclado)										{ };
-		virtual void                                    Evento_TeclaSoltada(DEventoTeclado &DatosTeclado)											{ };
-		virtual void									Evento_Tecla(DEventoTeclado &DatosTeclado)													{ };
+		virtual void                                    Evento_TeclaPresionada(DEventoTeclado &DatosTeclado)											{ };
+		virtual void                                    Evento_TeclaSoltada(DEventoTeclado &DatosTeclado)												{ };
+		virtual void									Evento_Tecla(DEventoTeclado &DatosTeclado)														{ };
 
-		virtual void								    Evento_FocoObtenido(HWND hWndUltimoFoco)													{ };
-		virtual void								    Evento_FocoPerdido(HWND hWndNuevoFoco)														{ };
+		virtual void								    Evento_FocoObtenido(HWND hWndUltimoFoco)														{ };
+		virtual void								    Evento_FocoPerdido(HWND hWndNuevoFoco)															{ };
 
-		virtual void                                    Evento_PintarSubItem(HDC hDC, const size_t NumItem, const size_t NumSubItem, RECT *Espacio) { };
+		virtual void                                    Evento_PintarSubItem(HDC hDC, const LONGLONG NumItem, const LONGLONG NumSubItem, RECT *Espacio) { };
 
 		BOOL                                            MostrarSeleccion;
 		BOOL                                            MultiSeleccion;
@@ -174,21 +174,21 @@ namespace DWL {
 		std::vector<DListaEx_Item *>                   _Items;
 		std::vector<DListaEx_Columna *>                _Columnas;
 
-		size_t                                         _ItemResaltado;
-		size_t		                                   _ItemUResaltado;
-		size_t                                         _SubItemResaltado; // es en número de columa partiendo de la _FilaRsaltada
-		size_t										   _SubItemUResaltado;
-		size_t				                           _ItemPresionado;
-		size_t				                           _SubItemPresionado;
-		size_t				                           _ItemMarcado;
-		size_t						                   _ItemShift;
+		LONGLONG                                       _ItemResaltado;
+		LONGLONG	                                   _ItemUResaltado;
+		LONGLONG                                       _SubItemResaltado; // es en número de columa partiendo de la _FilaRsaltada
+		LONGLONG									   _SubItemUResaltado;
+		LONGLONG			                           _ItemPresionado;
+		LONGLONG			                           _SubItemPresionado;
+		LONGLONG			                           _ItemMarcado;
+		LONGLONG					                   _ItemShift;
 														// Diferencia de pixeles inicial entre la _FilaInicioPagina y el inicio de la página visible
 		LONG                                           _ItemPaginaVDif;
 														// Diferencia de pixeles entre .... 
 		LONG                                           _ItemPaginaHDif;
 
-		size_t                                         _ItemPaginaInicio;
-		size_t                                         _ItemPaginaFin;
+		LONGLONG                                       _ItemPaginaInicio;
+		LONGLONG                                       _ItemPaginaFin;
 
 		size_t                                         _TotalAnchoVisible;
 		size_t										   _TotalAltoVisible;
