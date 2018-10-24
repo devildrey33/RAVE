@@ -2,6 +2,7 @@
 #include "RaveBD.h"
 #include "DDirectoriosWindows.h"
 #include "DStringUtils.h"
+#include "ListaMedios.h"
 
 RaveBD::RaveBD(void) : _BD(NULL)  {
 }
@@ -1364,11 +1365,23 @@ const BOOL RaveBD::Opciones_GuardarPosVentanaAnalizar(void) {
 	return TRUE;
 }
 
+// Suma 1 a las reproducciones del BDMedio, y Suma 0.05 a la Nota (si la opción está activada)
 const BOOL RaveBD::MedioReproducido(BDMedio *rMedio) {
 	if (rMedio == NULL) return FALSE;
 	std::wstring Q;
 	if (Opciones_Sumar005() == TRUE) {	Q = L"UPDATE Medios SET Reproducido=" + std::to_wstring(rMedio->Reproducido + 1) + L", Nota=" + DWL::Strings::ToStrF(rMedio->Nota + 0.05f, 2) + L" WHERE Id=" + std::to_wstring(rMedio->Id);	}
 	else                             {	Q = L"UPDATE Medios SET Reproducido=" + std::to_wstring(rMedio->Reproducido + 1) + L" WHERE Id=" + std::to_wstring(rMedio->Id);																	}
+	int SqlRet = Consulta(Q);
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+	return TRUE;
+}
+ 
+// Actualiza la nota del ItemMedio especificado
+const BOOL RaveBD::MedioNota(ItemMedio *nMedio, const float nNota) {
+	std::wstring Q = L"UPDATE Medios SET Nota=" + DWL::Strings::ToStrF(nNota, 2) + L" WHERE Id=" + std::to_wstring(nMedio->Id);
 	int SqlRet = Consulta(Q);
 	if (SqlRet == SQLITE_ERROR) {
 		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));

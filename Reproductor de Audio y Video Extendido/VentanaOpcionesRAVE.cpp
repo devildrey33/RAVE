@@ -377,7 +377,7 @@ void VentanaOpcionesRAVE::Evento_MarcaEx_Mouse_Click(DWL::DEventoMouse &DatosMou
 }
 
 
-void VentanaOpcionesRAVE::Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse) {
+void VentanaOpcionesRAVE::Evento_BarraEx_Cambiando(DWL::DEventoMouse &DatosMouse) {
 	switch (DatosMouse.ID()) {
 		case ID_BARRA_TIEMPOANIMACION :
 			EtiquetaTiempoAnimacionesTA.Texto(DWL::Strings::ToStrF(BarraTiempoAnimaciones.Valor(), 0) + L" ms");
@@ -492,8 +492,8 @@ LRESULT CALLBACK VentanaOpcionesRAVE::GestorMensajes(UINT uMsg, WPARAM wParam, L
 			App.OcultarToolTipOpciones();
 			return 0;
 			// Barra de desplazamiento (barra de tiempo y volumen)
-		case DWL_BARRAEX_CAMBIO:	// Se está modificando (mouse down)
-			Evento_BarraEx_Cambio(WPARAM_TO_DEVENTOMOUSE(wParam));
+		case DWL_BARRAEX_CAMBIANDO:	// Se está modificando (mouse down)
+			Evento_BarraEx_Cambiando(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
 		case DWL_BARRAEX_CAMBIADO:  // Se ha modificado	(mouse up)
 			Evento_BarraEx_Cambiado(WPARAM_TO_DEVENTOMOUSE(wParam));

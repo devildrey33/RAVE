@@ -49,7 +49,7 @@ namespace DWL {
 		DMenuEx				   *AgregarSeparador(const INT_PTR uID = 0, const int Posicion = -1);
 		DMenuEx                *AgregarBarra(const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos = NULL, const float nMinimo = 0.0f, const float nMaximo = 1.0f, const float nValor = 0.0f, const DBarraEx_MostrarValor nMostrarValor = DBarraEx_MostrarValor_Nada, const int Posicion = -1, const BOOL nActivado = TRUE);
 
-								// Función que muestra el Menú en el bucle principal de la aplicación y espera su respuesta en un WM_COMMAND (NO DEVUELVE EL MENÚ PRESIONADO)
+								// Función que muestra el Menú en el bucle principal de la aplicación y espera su respuesta en un DWL_MENUEX_CLICK (NO DEVUELVE EL MENÚ PRESIONADO)
 		void					Mostrar(DhWnd *nPadre, const int PosX, const int PosY);
 		void					Mostrar(DhWnd *nPadre);
 								// Función que muestra el Menú y espera a que se elija una opción para devolver-la
@@ -131,7 +131,7 @@ namespace DWL {
 		void				   _Evento_Tecla(WPARAM wParam, LPARAM lParam);
 		void                   _Evento_FocoPerdido(HWND UltimoFoco);
 		void                   _Evento_FocoObtenido(HWND UltimoFoco);
-		void				   _Evento_BarraEx_Cambio(DEventoMouse &DatosMouse);
+		void				   _Evento_BarraEx_Cambiando(DEventoMouse &DatosMouse);
 		void				   _Evento_BarraEx_Cambiado(DEventoMouse &DatosMouse);
 
 		RECT                   _Recta;

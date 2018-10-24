@@ -684,7 +684,7 @@ namespace DWL {
 				if (_ResultadoModal != NULL) {
 					if (_ResultadoModal->Activado() == TRUE) {
 						if (_ResultadoModal->_Tipo == DMenuEx_Tipo_Texto) {
-							SendMessage(_hWndDest->hWnd(), WM_COMMAND, _ResultadoModal->ID(), 0);
+							SendMessage(_hWndDest->hWnd(), DWL_MENUEX_CLICK, _ResultadoModal->ID(), 0);
 						}
 					}
 				}
@@ -891,12 +891,12 @@ namespace DWL {
 	}
 
 
-	void DMenuEx::_Evento_BarraEx_Cambio(DEventoMouse &DatosMouse) {
+	void DMenuEx::_Evento_BarraEx_Cambiando(DEventoMouse &DatosMouse) {
 		DMenuEx *MenuBarra = BuscarMenu(DatosMouse.ID());
 		if (MenuBarra != NULL) {
 			if (MenuBarra->Activado() == TRUE) {
 				//_ResultadoModal = MenuBarra;
-				SendMessage(_hWndDest->hWnd(), WM_COMMAND, MenuBarra->ID(), static_cast<LPARAM>(MenuBarra->_Barra.Valor() * 100));
+				SendMessage(_hWndDest->hWnd(), DWL_MENUEX_BARRA_CAMBIANDO, MenuBarra->ID(), static_cast<LPARAM>(MenuBarra->_Barra.Valor() * 100));
 			}
 		}
 	}
@@ -910,7 +910,7 @@ namespace DWL {
 		if (MenuBarra != NULL) {
 			if (MenuBarra->Activado() == TRUE) {
 				_ResultadoModal = MenuBarra;
-				SendMessage(_hWndDest->hWnd(), WM_COMMAND, MenuBarra->ID(), static_cast<LPARAM>(MenuBarra->_Barra.Valor() * 100));
+				SendMessage(_hWndDest->hWnd(), DWL_MENUEX_BARRA_CAMBIADO, MenuBarra->ID(), static_cast<LPARAM>(MenuBarra->_Barra.Valor() * 100));
 			}
 		}
 	}
@@ -980,8 +980,8 @@ namespace DWL {
 		switch (uMsg) {
 		
 			// Barra de desplazamiento
-			case DWL_BARRAEX_CAMBIO:	// Se está modificando (mouse down)
-				_Evento_BarraEx_Cambio(WPARAM_TO_DEVENTOMOUSE(wParam));
+			case DWL_BARRAEX_CAMBIANDO:	// Se está modificando (mouse down)
+				_Evento_BarraEx_Cambiando(WPARAM_TO_DEVENTOMOUSE(wParam));
 				return 0;
 			case DWL_BARRAEX_CAMBIADO:  // Se ha modificado	(mouse up)
 				_Evento_BarraEx_Cambiado(WPARAM_TO_DEVENTOMOUSE(wParam));

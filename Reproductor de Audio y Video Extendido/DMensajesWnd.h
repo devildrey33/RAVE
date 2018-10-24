@@ -1,8 +1,8 @@
 #ifndef DMENSAJES_H
     #define DMENSAJES_H
 	// BarraEx
-	#define DWL_BARRAEX_CAMBIO								WM_USER + 1
-	#define DWL_BARRAEX_CAMBIADO							WM_USER + 2
+	#define DWL_BARRAEX_CAMBIANDO							WM_USER + 1	// MouseDown y MouseMove
+	#define DWL_BARRAEX_CAMBIADO							WM_USER + 2	// MouseUp
 
 	// BotonEx
 	#define DWL_BOTONEX_MOUSEDOWN							WM_USER + 3
@@ -91,4 +91,9 @@
 
 	// DControlDesplegable //////////////////////////////////////////////////
 	#define DWL_DESPLEGABLEEX_CAMBIO						WM_USER + 340
+
+	// DMenuEx //////////////////////////////////////////////////////////////
+	#define DWL_MENUEX_CLICK								WM_USER + 350
+	#define DWL_MENUEX_BARRA_CAMBIADO						WM_USER + 351
+	#define DWL_MENUEX_BARRA_CAMBIANDO						WM_USER + 352
 #endif

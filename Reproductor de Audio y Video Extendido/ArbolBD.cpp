@@ -307,8 +307,9 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 			App.VentanaRave.Menu_ArbolBD.Menu(1)->Activado(TRUE); // Agregar a nueva lista
 		}
 
-		DMenuEx *Menu = App.VentanaRave.Menu_ArbolBD.MostrarModal(&App.VentanaRave);
-		if (Menu != NULL) {
+//		DMenuEx *Menu = App.VentanaRave.Menu_ArbolBD.MostrarModal(&App.VentanaRave);
+		App.VentanaRave.Menu_ArbolBD.Mostrar(&App.VentanaRave);
+/*		if (Menu != NULL) {
 			switch (Menu->ID()) {
 				case ID_MENUBD_AGREGARANUEVALISTA:
 					App.VentanaRave.Lista.BorrarListaReproduccion();
@@ -328,7 +329,7 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 					App.VentanaRave.AnalizarBD();					
 					break;
 			}
-		}
+		}*/
 	}
 	// Muestro el nodo resaltado con un ToolTip
 	else if (DatosMouse.Boton == 2 && _NodoResaltado != NULL) {

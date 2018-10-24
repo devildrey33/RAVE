@@ -30,7 +30,9 @@ class VentanaPrincipal : public DWL::DVentana {
 /*	void						AgregarRaiz(void);
 	void						EliminarRaiz(std::wstring &Path);*/
 
-	void						Evento_MenuEx_Click(const UINT cID, const float ValorBarra);
+	void						Evento_MenuEx_Click(const UINT cID);
+	void						Evento_MenuEx_Barra_Cambiando(const UINT cID, const float ValorBarra);
+	void						Evento_MenuEx_Barra_Cambiado(const UINT cID, const float ValorBarra);
 	void						Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse);
 	void                        Evento_BotonEx_Mouse_Presionado(DWL::DEventoMouse &DatosMouse);
 	void                        Evento_BotonEx_Mouse_Soltado(DWL::DEventoMouse &DatosMouse);
@@ -46,7 +48,7 @@ class VentanaPrincipal : public DWL::DVentana {
 /*	void                        Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado);
 	void                        Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado);
 	void						Evento_Tecla(DWL::DEventoTeclado &DatosTeclado);*/
-	void						Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse);
+	void						Evento_BarraEx_Cambiando(DWL::DEventoMouse &DatosMouse);
 	void						Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse);
 
 

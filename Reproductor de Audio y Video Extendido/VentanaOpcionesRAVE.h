@@ -25,7 +25,7 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	void					Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse);
 	void					Evento_MarcaEx_Mouse_Click(DWL::DEventoMouse &DatosMouse);
 	void					Evento_Cerrar(void);
-	void					Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse);
+	void					Evento_BarraEx_Cambiando(DWL::DEventoMouse &DatosMouse);
 	void					Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse);
 	void					Evento_ListaDesplegable_Cambio(INT_PTR nID);
 

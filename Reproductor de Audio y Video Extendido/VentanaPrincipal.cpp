@@ -8,6 +8,7 @@
 #include <shellapi.h>
 #include "DStringUtils.h"
 #include <versionhelpers.h>
+#include <Shlobj.h>
 
 #define RAVE_MIN_ANCHO 670
 #define RAVE_MIN_ALTO  280
@@ -237,7 +238,7 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 			}
 
 			// Un medio de la lista ha terminado
-			if (Estado == Terminada) {				
+			if (Estado == Terminada) {			
 				App.BD.MedioReproducido(&App.VLC.MedioActual);
 				App.VLC.Stop();
 				if (Lista.MedioActual == Lista.TotalItems() - 1) {
@@ -419,7 +420,7 @@ void VentanaPrincipal::FiltrosVideoPorDefecto(void) {
 	App.MenuVideoFiltros->Menu(2)->BarraValor(1.0f);
 }
 
-void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID, const float ValorBarra) {
+void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 	switch (cID) {
 		case ID_MENUBOTONLISTA_GENERAR			:	GenerarListaAleatoria();				return;
 		case ID_MENUBOTONLISTA_GENERAR_GENERO	:	GenerarListaAleatoria(TLA_Genero);		return;
@@ -435,11 +436,35 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID, const float ValorBarr
 		case ID_BOTON_STOP						:	Lista_Stop();							return;
 		case ID_BOTON_SIGUIENTE					:	Lista_Siguiente();						return;
 		case ID_BOTON_ANTERIOR					:	Lista_Anterior();						return;
-		// Barras del menu del video
-		case ID_MENUVIDEO_BRILLO				:	App.VLC.Brillo(ValorBarra);				return;
-		case ID_MENUVIDEO_CONTRASTE				:	App.VLC.Contraste(ValorBarra);			return;
-		case ID_MENUVIDEO_SATURACION			:	App.VLC.Saturacion(ValorBarra);			return;
 		case ID_MENUVIDEO_PORDEFECTO			:	FiltrosVideoPorDefecto();				return;
+		// Menu BotonBD, MenuBD
+		case ID_MENUBD_ACTUALIZAR               :   ActualizarArbol();						return;
+		case ID_MENUBD_ANALIZAR					:	AnalizarBD();							return;
+		case ID_MENUBD_AGREGARANUEVALISTA:
+			Lista.BorrarListaReproduccion();
+			Arbol.AgregarNodoALista(Arbol.NodoMarcado());
+			App.MostrarToolTipPlayer(L"\"" + Arbol.NodoMarcado()->Texto + L"\" añadido a una nueva lista.");
+			Lista_Play();
+			return;
+		case ID_MENUBD_AGREGARALISTA:
+			Arbol.AgregarNodoALista(Arbol.NodoMarcado());
+			App.MostrarToolTipPlayer(L"\"" + Arbol.NodoMarcado()->Texto + L"\" añadido a la lista.");
+			if (App.VLC.ComprobarEstado() != EnPlay) App.VentanaRave.Lista_Play();
+			return;
+		// Menu Lista
+		case ID_MENULISTA_ABRIRCARPETA :
+			//std::wstring Path;
+			BDMedio nMedio;			
+			App.BD.ObtenerMedio(Lista.MedioMarcado()->Hash, nMedio);
+//			Params = L"/select, " + nMedio.Path;
+//			ShellExecute(_hWnd, NULL, L"explorer.exe" , Params.c_str(), L"", SW_SHOW);
+			PIDLIST_ABSOLUTE pidl;
+			pidl = ILCreateFromPath(nMedio.Path.c_str());
+			if (pidl) {
+				SHOpenFolderAndSelectItems(pidl, 0, 0, 0);
+				ILFree(pidl);
+			}
+			return;
 	}
 
 
@@ -479,8 +504,35 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID, const float ValorBarr
 		App.MenuVideoProporcion->Menu(cID - ID_MENUVIDEO_PROPORCION_PREDETERMINADO)->Icono(IDI_CHECK2);
 		return;
 	}
+}
+
+// MouseDown o MouseMove en la barraEx del menú
+void VentanaPrincipal::Evento_MenuEx_Barra_Cambiando(const UINT cID, const float ValorBarra) {
+	switch (cID) {
+		// Barras del menu del video
+		case ID_MENUVIDEO_BRILLO				:	App.VLC.Brillo(ValorBarra);				return;
+		case ID_MENUVIDEO_CONTRASTE				:	App.VLC.Contraste(ValorBarra);			return;
+		case ID_MENUVIDEO_SATURACION			:	App.VLC.Saturacion(ValorBarra);			return;
+	}
 
 }
+
+// MouseUp en la barraEx del menú
+void VentanaPrincipal::Evento_MenuEx_Barra_Cambiado(const UINT cID, const float ValorBarra) {
+	switch (cID) {
+		// Barras del menu del video
+		case ID_MENUVIDEO_BRILLO				:	App.VLC.Brillo(ValorBarra);				return;
+		case ID_MENUVIDEO_CONTRASTE				:	App.VLC.Contraste(ValorBarra);			return;
+		case ID_MENUVIDEO_SATURACION			:	App.VLC.Saturacion(ValorBarra);			return;
+		// Menu Lista -> Nota
+		case ID_MENULISTA_NOTA:
+			App.BD.MedioNota(Lista.MedioMarcado(), ValorBarra);
+			App.VentanaRave.Menu_Lista.Ocultar(TRUE);
+			App.MostrarToolTipPlayer(L"Nota para el medio " + Lista.MedioMarcado()->Texto(0) + L" \"" + Lista.MedioMarcado()->Texto(1) + L"\" asignada a " + DWL::Strings::ToStrF(ValorBarra, 2));
+			return;
+	}
+}
+
 
 
 void VentanaPrincipal::Evento_BotonEx_Mouse_Presionado(DWL::DEventoMouse &DatosMouse) {
@@ -886,6 +938,7 @@ void VentanaPrincipal::AnalizarBD(void) {
 	if (Menu_ArbolBD.Menu(3)->Activado() == FALSE) return;	
 	// Desactivo el menú analizar
 	Menu_ArbolBD.Menu(3)->Activado(FALSE);
+	Menu_BotonArbolBD.Menu(1)->Activado(FALSE);
 	// Inicio el thread del analisis
 	ThreadAnalizar.Iniciar(_hWnd);
 }
@@ -896,6 +949,7 @@ void VentanaPrincipal::ActualizarArbol(void) {
 
 	// Desactivo el menú actualizar
 	Menu_ArbolBD.Menu(2)->Activado(FALSE);
+	Menu_BotonArbolBD.Menu(0)->Activado(FALSE);
 
 	// Envio la señal para cancelar el thread del analisis
 	ThreadAnalizar.Cancelar(TRUE);
@@ -963,7 +1017,7 @@ void VentanaPrincipal::Evento_Tecla(DWL::DEventoTeclado &DatosTeclado) {
 
 }*/
 
-void VentanaPrincipal::Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse) {
+void VentanaPrincipal::Evento_BarraEx_Cambiando(DWL::DEventoMouse &DatosMouse) {
 	switch (DatosMouse.ID()) {
 		case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambio();					break;
 	}
@@ -1015,6 +1069,7 @@ void VentanaPrincipal::ThreadABuscarArchivos_AgregarDirectorio(LPARAM lParam) {
 void VentanaPrincipal::ThreadABuscarArchivos_Terminado(const BOOL Cancelado, LPARAM lParam) {
 	ThreadActualizar.Terminar();
 	Menu_ArbolBD.Menu(2)->Activado(TRUE);
+	Menu_BotonArbolBD.Menu(0)->Activado(TRUE);
 	BarraTareas.Estado_SinProgreso();
 	//			BarraTareas.Resaltar();
 	if (Cancelado == FALSE) {
@@ -1035,11 +1090,7 @@ void VentanaPrincipal::ThreadAnalizar_Terminado(const BOOL Cancelado, LPARAM lPa
 	ThreadAnalizar.Terminar();
 	BarraTareas.Estado_SinProgreso();
 	Menu_ArbolBD.Menu(3)->Activado(TRUE);
-
-
-	ThreadAnalizar.Terminar();
-	BarraTareas.Estado_SinProgreso();
-	Menu_ArbolBD.Menu(3)->Activado(TRUE);
+	Menu_BotonArbolBD.Menu(1)->Activado(TRUE);
 
 	if (Cancelado == FALSE) {
 		App.BD.ObtenerEtiquetas();
@@ -1123,9 +1174,14 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 		case WM_CLOSE : 
 			Evento_Cerrar();
 			return 0;
-		case WM_COMMAND :
-//			Debug_Escribir_Varg(L"WM_COMMAND %d, %d\n", HIWORD(wParam), LOWORD(wParam));
-			Evento_MenuEx_Click(LOWORD(wParam), static_cast<float>(lParam) / 100.0f);
+		case DWL_MENUEX_CLICK :
+			Evento_MenuEx_Click(LOWORD(wParam));
+			return 0;
+		case DWL_MENUEX_BARRA_CAMBIADO:
+			Evento_MenuEx_Barra_Cambiado(LOWORD(wParam), static_cast<float>(lParam) / 100.0f);
+			return 0;
+		case DWL_MENUEX_BARRA_CAMBIANDO :
+			Evento_MenuEx_Barra_Cambiando(LOWORD(wParam), static_cast<float>(lParam) / 100.0f);
 			return 0;
 		case WM_EXITSIZEMOVE  :
 			if (App.VentanaRave.Maximizada() == FALSE) {
@@ -1152,8 +1208,8 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			return TRUE;
 
 		// Barra de desplazamiento (barra de tiempo y volumen)
-		case DWL_BARRAEX_CAMBIO:	// Se está modificando (mouse down)
-			Evento_BarraEx_Cambio(WPARAM_TO_DEVENTOMOUSE(wParam));
+		case DWL_BARRAEX_CAMBIANDO:	// Se está modificando (mouse down)
+			Evento_BarraEx_Cambiando(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
 		case DWL_BARRAEX_CAMBIADO:  // Se ha modificado	(mouse up)
 			Evento_BarraEx_Cambiado(WPARAM_TO_DEVENTOMOUSE(wParam));

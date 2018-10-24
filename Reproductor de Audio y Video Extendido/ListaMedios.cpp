@@ -97,7 +97,7 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 	if (DatosMouse.Boton == 2) {		
 		if (_ItemResaltado != -1) {
 			BDMedio nMedio;
-			App.BD.ObtenerMedio(Medio(_ItemResaltado)->Hash, nMedio);
+			App.BD.ObtenerMedio(Medio(static_cast<unsigned int>(_ItemResaltado))->Hash, nMedio);
 
 			_ToolTip.Destruir();
 			_ToolTip.Mostrar(nMedio);
@@ -112,6 +112,14 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 	// Mostrar el menú
 	if (DatosMouse.Boton == 1) {
 		BOOL nActivar = (_ItemResaltado == -1) ? FALSE : TRUE;
+				
+		// Asigno la nota al menu/barra de la nota
+		if (_ItemResaltado != -1) {
+			BDMedio mItem;
+			App.BD.ObtenerMedio(Medio(static_cast<unsigned int>(_ItemResaltado))->Hash, mItem);
+			App.VentanaRave.Menu_Lista.Menu(3)->BarraValor(mItem.Nota);
+		}
+
 		for (size_t i = 0; i < App.VentanaRave.Menu_Lista.TotalMenus(); i++) {
 			App.VentanaRave.Menu_Lista.Menu(i)->Activado(nActivar);
 		}

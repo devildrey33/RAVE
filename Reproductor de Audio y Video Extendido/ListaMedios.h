@@ -26,10 +26,11 @@ class ListaMedios : public DWL::DListaEx {
 
 	ItemMedio                  *BuscarHash(sqlite3_int64 Hash);
 
-	inline ItemMedio           *Medio(const size_t nPos) { return static_cast<ItemMedio *>(_Items[nPos]); 						}
+	inline ItemMedio           *Medio(const size_t nPos)	{ return static_cast<ItemMedio *>(_Items[nPos]); 												}
+	inline ItemMedio           *MedioMarcado(void)			{ return static_cast<ItemMedio *>(ItemMarcado());												}
 
-	inline ItemMedio		   *MedioResaltado(void)  { return static_cast<ItemMedio *>(ItemResaltado()); }
-	inline ItemMedio           *UMedioResaltado(void) { return static_cast<ItemMedio *>((_ItemUResaltado == -1) ? NULL : _Items[_ItemUResaltado]); }
+	inline ItemMedio		   *MedioResaltado(void)		{ return static_cast<ItemMedio *>(ItemResaltado());																		}
+	inline ItemMedio           *UMedioResaltado(void)		{ return static_cast<ItemMedio *>((_ItemUResaltado == -1) ? NULL : _Items[static_cast<unsigned int>(_ItemUResaltado)]);	}
 
 	/*void                        Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado);
 	void                        Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado);

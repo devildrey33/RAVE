@@ -79,10 +79,10 @@ namespace DWL {
 		const UINT										EliminarItemsSeleccionados(void);
 		void											EliminarTodosLosItems(void);
 														// Acceso a los DListaEx_Item
-		inline DListaEx_Item                           *Item(const LONGLONG iPos) { if (iPos == -1)            { return NULL; }	return _Items[iPos]; }
-		inline DListaEx_Item                           *ItemResaltado(void)	  	  { if (_ItemResaltado == -1)  { return NULL; }	return _Items[_ItemResaltado]; };
-		inline DListaEx_Item                           *ItemPresionado(void)	  { if (_ItemPresionado == -1) { return NULL; }	return _Items[_ItemPresionado]; };
-		inline DListaEx_Item                           *ItemMarcado(void)		  { if (_ItemMarcado == -1)    { return NULL; }	return _Items[_ItemMarcado]; };
+		inline DListaEx_Item                           *Item(const LONGLONG iPos) { if (iPos == -1)            { return NULL; }	return _Items[static_cast<unsigned int>(iPos)]; }
+		inline DListaEx_Item                           *ItemResaltado(void)	  	  { if (_ItemResaltado == -1)  { return NULL; }	return _Items[static_cast<unsigned int>(_ItemResaltado)]; };
+		inline DListaEx_Item                           *ItemPresionado(void)	  { if (_ItemPresionado == -1) { return NULL; }	return _Items[static_cast<unsigned int>(_ItemPresionado)]; };
+		inline DListaEx_Item                           *ItemMarcado(void)		  { if (_ItemMarcado == -1)    { return NULL; }	return _Items[static_cast<unsigned int>(_ItemMarcado)]; };
 		void											ItemMarcado(DListaEx_Item *NuevoItemMarcado, const BOOL nRepintar = FALSE);
 														// Devuelve la posición del DListaEx_Item que está dentro de esta lista
 		const LONGLONG                                  ItemPos(DListaEx_Item *pItem);
@@ -98,7 +98,7 @@ namespace DWL {
 		void											TotalItemsSeleccionados(void); // poc util...
 
 		inline const size_t                             TotalColumnas(void) { return _Columnas.size();  }
-		inline DListaEx_Columna                        *Columna(const LONGLONG cPos) { return _Columnas[cPos];  }
+		inline DListaEx_Columna                        *Columna(const LONGLONG cPos) { return _Columnas[static_cast<unsigned int>(cPos)];  }
 
 		void											Pintar(HDC hDC);
 		void											PintarItem(HDC hDC, const LONGLONG pPosItem, RECT &Espacio);

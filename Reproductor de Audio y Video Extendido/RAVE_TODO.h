@@ -166,6 +166,7 @@
 						V Superior
 						V Dreta						
 					? Font per defecte en subtituls externs ???? molta matuja.. pero es posible que existeixi algo...
+					- Proporción por defecto
 
 		-  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
 			- Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)

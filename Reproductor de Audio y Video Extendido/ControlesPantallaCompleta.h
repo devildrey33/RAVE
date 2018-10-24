@@ -32,7 +32,7 @@ class ControlesPantallaCompleta :public DVentana {
 	void					Evento_SliderVolumen_Cambiado(void);
 
 	void					Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse);
-	void					Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse);
+	void					Evento_BarraEx_Cambiando(DWL::DEventoMouse &DatosMouse);
 
 	void					Evento_BotonEx_Click(DWL::DEventoMouse &DatosMouse);
 

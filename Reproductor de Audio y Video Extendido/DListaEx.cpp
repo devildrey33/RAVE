@@ -110,14 +110,14 @@ namespace DWL {
 		// Diferencia de pixeles Vertical (puede ser negativo si el primer item es parcialmente visible, o 0 si el primer item está justo al principio del área visible)
 		LONG DifInicioV = _ItemPaginaVDif;
 
-		size_t nItemFin = _ItemPaginaFin;
+		LONGLONG nItemFin = _ItemPaginaFin;
 		if (nItemFin == -1) nItemFin = _Items.size() - 1;
 
 		RECT RectaItem;
 		LONG nAlto = Fuente.Alto() + (DLISTAEX_PADDING * 2);
 		// _ItemPaginaInicio es unsigned -1 se refiere al valor máximo en una variable del tipo size_t
 		if (_ItemPaginaInicio != -1) {
-			for (size_t i = _ItemPaginaInicio; i < nItemFin + 1; i++) {
+			for (LONGLONG i = _ItemPaginaInicio; i < nItemFin + 1; i++) {
 				RectaItem = { 0, DifInicioV, RCS.right, DifInicioV + nAlto };
 				PintarItem(Buffer, i, RectaItem);
 				DifInicioV += nAlto;							// Sumo la altura del nodo a la diferencia inicial
@@ -166,7 +166,7 @@ namespace DWL {
 			}
 		}
 		// Seleccionado //////////////////////////////////
-		else if (_Items[nPosItem]->Seleccionado == TRUE && MostrarSeleccion == TRUE) { 
+		else if (_Items[static_cast<unsigned int>(nPosItem)]->Seleccionado == TRUE && MostrarSeleccion == TRUE) { 
 			if (bResaltado == FALSE) {	////////////////// Normal
 				ColTexto = COLOR_LISTA_SELECCION_TEXTO;
 				ColFondo = COLOR_LISTA_SELECCION;
@@ -198,9 +198,9 @@ namespace DWL {
 
 		// Pinto el icono
 		if (_PintarIconos == TRUE) {
-			if (_Items[nPosItem]->_Icono != NULL) {
+			if (_Items[static_cast<unsigned int>(nPosItem)]->_Icono != NULL) {
 				int PosYIco = ((Espacio.bottom - Espacio.top) - DLISTAEX_TAMICONO) / 2;
-				DrawIconEx(_BufferItem, bPresionado + DLISTAEX_PADDING, bPresionado + PosYIco, _Items[nPosItem]->_Icono->Icono(), DLISTAEX_TAMICONO, DLISTAEX_TAMICONO, 0, 0, DI_NORMAL);
+				DrawIconEx(_BufferItem, bPresionado + DLISTAEX_PADDING, bPresionado + PosYIco, _Items[static_cast<unsigned int>(nPosItem)]->_Icono->Icono(), DLISTAEX_TAMICONO, DLISTAEX_TAMICONO, 0, 0, DI_NORMAL);
 			}
 		}
 		RECT RCelda;
@@ -218,15 +218,15 @@ namespace DWL {
 				RCelda.left += (DLISTAEX_PADDING * 2) + DLISTAEX_TAMICONO;
 			}
 			// Si hay texto lo pinto
-			if (_Items[nPosItem]->Texto(i).size() > 0) {
+			if (_Items[static_cast<unsigned int>(nPosItem)]->Texto(i).size() > 0) {
 				// Pinto la sombra
 				SetTextColor(_BufferItem, ColSombra);
-				DrawText(_BufferItem, _Items[nPosItem]->Texto(i).c_str(), static_cast<int>(_Items[nPosItem]->Texto(i).size()), &RCelda, _Columnas[i]->Alineacion | DT_NOPREFIX);
+				DrawText(_BufferItem, _Items[static_cast<unsigned int>(nPosItem)]->Texto(i).c_str(), static_cast<int>(_Items[static_cast<unsigned int>(nPosItem)]->Texto(i).size()), &RCelda, _Columnas[i]->Alineacion | DT_NOPREFIX);
 
 				// Pinto el texto
 				SetTextColor(_BufferItem, ColTexto);
 				OffsetRect(&RCelda, -1, -1);
-				DrawText(_BufferItem, _Items[nPosItem]->Texto(i).c_str(), static_cast<int>(_Items[nPosItem]->Texto(i).size()), &RCelda, _Columnas[i]->Alineacion | DT_NOPREFIX);
+				DrawText(_BufferItem, _Items[static_cast<unsigned int>(nPosItem)]->Texto(i).c_str(), static_cast<int>(_Items[static_cast<unsigned int>(nPosItem)]->Texto(i).size()), &RCelda, _Columnas[i]->Alineacion | DT_NOPREFIX);
 			}
 			// Llamo al evento virtual para pintar el subitem (para extender el control y pintar iconos por ejemplo)
 			Evento_PintarSubItem(_BufferItem, nPosItem, i, &RCelda);
@@ -323,8 +323,8 @@ namespace DWL {
 
 	void DListaEx::EliminarItem(const LONGLONG ePos) {
 		if (ePos < static_cast<LONGLONG>(_Items.size())) {
-			delete _Items[ePos];
-			_Items.erase(_Items.begin() + ePos);
+			delete _Items[static_cast<unsigned int>(ePos)];
+			_Items.erase(_Items.begin() + static_cast<unsigned int>(ePos));
 
 			_ItemMarcado        = -1;
 			_ItemPresionado		= -1;
@@ -649,16 +649,16 @@ namespace DWL {
 			BOOL tControl = DatosMouse.Control();
 			if (tShift == TRUE && _ItemShift != -1) {
 				DesSeleccionarTodo();
-				if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) 	_Items[i]->Seleccionado = TRUE; }
-				else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) 	_Items[i]->Seleccionado = TRUE; }
+				if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
+				else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
 			}
 			else if (tControl == TRUE) {
-				_Items[_ItemPresionado]->Seleccionado = !_Items[_ItemPresionado]->Seleccionado;
+				_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado = !_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado;
 			}
 			else {
 				// Si la multiseleccion está des-habilitada o la tecla control no está pulsada
 				if (MultiSeleccion == FALSE || tControl == FALSE || tShift == FALSE) DesSeleccionarTodo();
-				_Items[_ItemPresionado]->Seleccionado = TRUE;
+				_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado = TRUE;
 			}
 		}
 
@@ -772,7 +772,7 @@ namespace DWL {
 		// Si no hay item marcado, marco el primero visible
 		if (_ItemMarcado == -1) {	
 			_ItemMarcado = _ItemPaginaInicio;
-			_Items[_ItemMarcado]->Seleccionado = TRUE;
+			_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
 			MostrarItem(_ItemMarcado);
 		}
 
@@ -787,8 +787,8 @@ namespace DWL {
 			if (tShift == TRUE && MultiSeleccion == TRUE) {
 				DesSeleccionarTodo();
 				if (_ItemShift != -1) {
-					if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) 	_Items[i]->Seleccionado = TRUE; }
-					else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) 	_Items[i]->Seleccionado = TRUE; }
+					if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
+					else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
 				}
 				#if DLISTAEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir_Varg(L"DListaEx::_Tecla_CursorArriba & Shift -> IS : %d, IM : %d\n", _ItemShift, _ItemMarcado);
@@ -803,7 +803,7 @@ namespace DWL {
 			}*/
 			else {
 				if (MultiSeleccion == FALSE || tControl == FALSE || tShift == FALSE) DesSeleccionarTodo();
-				_Items[_ItemMarcado]->Seleccionado = TRUE;
+				_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
 				#if DLISTAEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir(L"DListaEx::_Tecla_CursorArriba\n");
 				#endif
@@ -820,7 +820,7 @@ namespace DWL {
 		// Si no hay item marcado, marco el primero visible
 		if (_ItemMarcado == -1) {
 			_ItemMarcado = _ItemPaginaInicio;
-			_Items[_ItemMarcado]->Seleccionado = TRUE;
+			_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
 			MostrarItem(_ItemMarcado);
 		}
 
@@ -835,8 +835,8 @@ namespace DWL {
 			if (tShift == TRUE && MultiSeleccion == TRUE) {
 				if (_ItemShift != -1) {
 					DesSeleccionarTodo();
-					if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) 	_Items[i]->Seleccionado = TRUE; }
-					else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) 	_Items[i]->Seleccionado = TRUE; }
+					if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
+					else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
 				}
 				#if DLISTAEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir_Varg(L"DListaEx::_Tecla_CursorAbajo & Shift -> IS : %d, IM : %d\n", _ItemShift, _ItemMarcado);
@@ -851,7 +851,7 @@ namespace DWL {
 			}*/
 			else {
 				if (MultiSeleccion == FALSE || tControl == FALSE || tShift == FALSE) DesSeleccionarTodo();
-				_Items[_ItemMarcado]->Seleccionado = TRUE;
+				_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
 				#if DLISTAEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir(L"DListaEx::_Tecla_CursorAbajo\n");
 				#endif
@@ -867,11 +867,11 @@ namespace DWL {
 		DesSeleccionarTodo();
 
 		if (DatosTeclado.Shift() == TRUE && MultiSeleccion == TRUE) {
-			for (LONGLONG i = 0; i <= _ItemShift; i++) _Items[i]->Seleccionado = TRUE;
+			for (LONGLONG i = 0; i <= _ItemShift; i++) _Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE;
 		}
 
 		_ItemMarcado = 0;
-		_Items[_ItemMarcado]->Seleccionado = TRUE;
+		_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
 		MostrarItem(_ItemMarcado);
 	}
 
@@ -883,10 +883,10 @@ namespace DWL {
 		_ItemMarcado = _Items.size() - 1;
 
 		if (DatosTeclado.Shift() == TRUE && MultiSeleccion == TRUE) {
-			for (LONGLONG i = _ItemShift; i < _ItemMarcado; i++) _Items[i]->Seleccionado = TRUE;
+			for (LONGLONG i = _ItemShift; i < _ItemMarcado; i++) _Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE;
 		}
 
-		_Items[_ItemMarcado]->Seleccionado = TRUE;
+		_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
 		MostrarItem(_ItemMarcado);
 	}
 
@@ -897,13 +897,14 @@ namespace DWL {
 
 		DesSeleccionarTodo();
 		if (DatosTeclado.Shift() == TRUE && MultiSeleccion == TRUE) {
-			if (_ItemShift < _ItemPaginaFin) { for (LONGLONG i = _ItemShift; i <= _ItemPaginaFin; i++) 	_Items[i]->Seleccionado = TRUE; }
-			else                             { for (LONGLONG i = _ItemPaginaFin; i <= _ItemShift; i++) 	_Items[i]->Seleccionado = TRUE; }
+			LONGLONG ItemFin = (_ItemPaginaFin != -1) ? _ItemPaginaFin : static_cast<LONGLONG>(_Items.size());
+			if (_ItemShift < ItemFin) { for (LONGLONG i = _ItemShift; i <= ItemFin; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
+			else                      { for (LONGLONG i = ItemFin; i <= _ItemShift; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
 		}
 
 		MostrarItem(_ItemPaginaFin, FALSE);
 		_ItemMarcado = _ItemPaginaFin;		// Asigno el itemMarcado DESPRES de MostrarItem (que per alguna rao em cambia el _ItemPagina
-		_Items[_ItemMarcado]->Seleccionado = TRUE;
+		_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
 		Repintar();
 	}
 
@@ -915,13 +916,14 @@ namespace DWL {
 
 		DesSeleccionarTodo();
 		if (DatosTeclado.Shift() == TRUE && MultiSeleccion == TRUE) {
-			if (_ItemShift < _ItemPaginaInicio) { for (LONGLONG i = _ItemShift; i <= _ItemPaginaInicio; i++) 	_Items[i]->Seleccionado = TRUE; }
-			else								{ for (LONGLONG i = _ItemPaginaInicio; i <= _ItemShift; i++) 	_Items[i]->Seleccionado = TRUE; }
+			LONGLONG ItemInicio = (_ItemPaginaInicio != -1) ? _ItemPaginaInicio : 0;
+			if (_ItemShift < ItemInicio) { for (LONGLONG i = _ItemShift; i <= ItemInicio; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
+			else						 { for (LONGLONG i = ItemInicio; i <= _ItemShift; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
 		}
 
 		_ItemMarcado = _ItemPaginaInicio;
 		MostrarItem(_ItemMarcado, FALSE);
-		_Items[_ItemMarcado]->Seleccionado = TRUE;
+		_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
 		Repintar();
 	}
 

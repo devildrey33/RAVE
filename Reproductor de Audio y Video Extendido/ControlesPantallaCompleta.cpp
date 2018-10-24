@@ -326,7 +326,7 @@ void ControlesPantallaCompleta::Evento_Pintar(void) {
 }
 
 
-void ControlesPantallaCompleta::Evento_BarraEx_Cambio(DWL::DEventoMouse &DatosMouse) {
+void ControlesPantallaCompleta::Evento_BarraEx_Cambiando(DWL::DEventoMouse &DatosMouse) {
 	switch (DatosMouse.ID()) {
 		case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambio();					break;
 	}
@@ -385,8 +385,8 @@ LRESULT CALLBACK ControlesPantallaCompleta::GestorMensajes(UINT uMsg, WPARAM wPa
 			return 0;
 
 			// Barra de desplazamiento (barra de tiempo y volumen)
-		case DWL_BARRAEX_CAMBIO:	// Se está modificando (mouse down)
-			Evento_BarraEx_Cambio(WPARAM_TO_DEVENTOMOUSE(wParam));
+		case DWL_BARRAEX_CAMBIANDO:	// Se está modificando (mouse down)
+			Evento_BarraEx_Cambiando(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
 		case DWL_BARRAEX_CAMBIADO:  // Se ha modificado	(mouse up)
 			Evento_BarraEx_Cambiado(WPARAM_TO_DEVENTOMOUSE(wParam));

@@ -238,19 +238,21 @@ void RAVE::IniciarUI(int nCmdShow) {
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_AGREGARANUEVALISTA	, L"Añadir a una nueva lista");
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ACTUALIZAR			, L"Actualizar");
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ANALIZAR				, L"Analizar");
+
 	// Menu Boton Arbol BD	
 	VentanaRave.Menu_BotonArbolBD.AgregarMenu(ID_MENUBD_ACTUALIZAR		, L"Actualizar");
 	VentanaRave.Menu_BotonArbolBD.AgregarMenu(ID_MENUBD_ANALIZAR		, L"Analizar");
 	
 	// Menu Lista
-	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_ABRIRCARPETA		, L"Abrir carpeta en el explorador");
+	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_ABRIRCARPETA		, L"Abrir carpeta");
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_ELIMINAR			, L"Eliminar de la lista");
-	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_MOSTRARBD			, L"Mostrar en la base de datos");
+	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_MOSTRARBD			, L"Mostrar en la BD");
 	VentanaRave.Menu_Lista.AgregarBarra(ID_MENULISTA_NOTA				, L"Nota", NULL, 0.0f, 5.0f, 2.5f, DBarraEx_MostrarValor_ValorMaximo2Decimales);
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_PROPIEDADES			, L"Propiedades");
+
 	// Menu Boton Lista
 	VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_BORRAR					, L"Borrar Lista");
-	DMenuEx *Menu = VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_GENERAR	, L"Generar Lista");
+	DMenuEx *Menu = VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_GENERAR	, L"Lista Aleatória");
 		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GENERO									, L"Por Genero");
 		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GRUPO									, L"Por Grupo");
 		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_DISCO									, L"Por Disco");

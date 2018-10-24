@@ -137,6 +137,7 @@ enum TipoListaAleatoria {
 };
 
 class ThreadAnalisis;
+class ItemMedio;
 
 class RaveBD {
   public:
@@ -167,6 +168,7 @@ class RaveBD {
 
 								// Suma 1 a las veces que se ha reproducido el medio
 	const BOOL                  MedioReproducido(BDMedio *rMedio);
+	const BOOL                  MedioNota(ItemMedio *nMedio, const float nNota);
 								
 								// Obtiene la etiqueta con el texto especificado
 	EtiquetaBD                 *ObtenerEtiqueta(std::wstring &eTexto);

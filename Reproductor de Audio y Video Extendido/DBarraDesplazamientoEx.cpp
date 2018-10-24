@@ -100,7 +100,7 @@ namespace DWL {
 			#endif
 			_Valor = valor;
 			Repintar();
-			SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
+			SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIANDO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
 			Evento_MouseMovimiento(DatosMouse);
 		}
 	}
@@ -119,7 +119,7 @@ namespace DWL {
 			_Estado = DBarraEx_Estado_Presionado;
 			_Valor = _ValorMouse(RC, Pt.x, Pt.y);
 			//Repintar();
-			SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
+			SendMessage(GetParent(hWnd()), DWL_BARRAEX_CAMBIANDO, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
 			Evento_MousePresionado(DatosMouse);
 			Transicion(DBarraEx_Transicion_Presionado);
 		}
