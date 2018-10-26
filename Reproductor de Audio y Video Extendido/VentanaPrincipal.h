@@ -110,6 +110,9 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						Lista_Pausa(void);
 	void						Lista_Stop(void);
 
+	void                        Lista_Propiedades(void);
+	void                        Lista_AbrirEnExplorador(void);
+
 	void						ExploradorAgregarMedio(const BOOL Reproducir);
 
 	DWL::DBotonEx				BotonPlay;

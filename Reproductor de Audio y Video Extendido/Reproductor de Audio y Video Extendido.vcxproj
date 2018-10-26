@@ -322,6 +322,12 @@
   <ItemGroup>
     <Image Include="..\iconos\icon2.ico" />
     <Image Include="..\iconos\icon3.ico" />
+    <Image Include="..\iconos\icon5.ico" />
+    <Image Include="..\Iconos\IDI_Actualizar.ico" />
+    <Image Include="..\Iconos\IDI_AgregarLista.ico" />
+    <Image Include="..\Iconos\IDI_AgregarNuevaLista.ico" />
+    <Image Include="..\Iconos\IDI_Analizar.ico" />
+    <Image Include="..\Iconos\IDI_BASEDATOS.ico" />
     <Image Include="..\Iconos\IDI_Borrar.ico" />
     <Image Include="..\Iconos\IDI_BorrarResaltado.ico" />
     <Image Include="..\Iconos\IDI_Cancion.ico" />
@@ -331,18 +337,23 @@
     <Image Include="..\Iconos\IDI_Check2.ico" />
     <Image Include="..\Iconos\IDI_Directorio.ico" />
     <Image Include="..\Iconos\IDI_Disco.ico" />
+    <Image Include="..\Iconos\IDI_Eliminar.ico" />
     <Image Include="..\Iconos\IDI_Genero.ico" />
     <Image Include="..\Iconos\IDI_Grupo.ico" />
+    <Image Include="..\Iconos\IDI_ListaAleatoria.ico" />
     <Image Include="..\Iconos\IDI_NEXT32.ico" />
+    <Image Include="..\Iconos\IDI_Nota.ico" />
     <Image Include="..\Iconos\IDI_Pausa.ico" />
     <Image Include="..\Iconos\IDI_Pausa2.ico" />
     <Image Include="..\Iconos\IDI_Pausa3.ico" />
     <Image Include="..\Iconos\IDI_PAUSA32.ico" />
+    <Image Include="..\Iconos\IDI_PistaAudio.ico" />
     <Image Include="..\Iconos\IDI_Play.ico" />
     <Image Include="..\Iconos\IDI_Play2.ico" />
     <Image Include="..\Iconos\IDI_Play3.ico" />
     <Image Include="..\Iconos\IDI_PLAY32.ico" />
     <Image Include="..\Iconos\IDI_PREV32.ico" />
+    <Image Include="..\Iconos\IDI_Proporcion.ico" />
     <Image Include="..\Iconos\IDI_Raiz.ico" />
     <Image Include="..\Iconos\IDI_STOP32.ico" />
     <Image Include="..\Iconos\IDI_Subtitulos.ico" />

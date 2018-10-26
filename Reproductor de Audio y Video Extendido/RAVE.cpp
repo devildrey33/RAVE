@@ -234,25 +234,25 @@ void RAVE::IniciarUI(int nCmdShow) {
 //	Fuente13 = CreateFont(13, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, L"Tahoma");
 
 	// Menu Arbol BD	
-	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_AGREGARALISTA		, L"Añadir a lista");
-	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_AGREGARANUEVALISTA	, L"Añadir a una nueva lista");
-	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ACTUALIZAR			, L"Actualizar");
-	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ANALIZAR				, L"Analizar");
+	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_AGREGARALISTA		, L"Añadir a lista"								, IDI_AGREGARLISTA);
+	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_AGREGARANUEVALISTA	, L"Añadir a una nueva lista"					, IDI_AGREGARNUEVALISTA);
+	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ACTUALIZAR			, L"Actualizar"									, IDI_ACTUALIZAR);
+	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ANALIZAR				, L"Analizar"									, IDI_ANALIZAR);
 
 	// Menu Boton Arbol BD	
-	VentanaRave.Menu_BotonArbolBD.AgregarMenu(ID_MENUBD_ACTUALIZAR		, L"Actualizar");
-	VentanaRave.Menu_BotonArbolBD.AgregarMenu(ID_MENUBD_ANALIZAR		, L"Analizar");
+	VentanaRave.Menu_BotonArbolBD.AgregarMenu(ID_MENUBD_ACTUALIZAR		, L"Actualizar"									, IDI_ACTUALIZAR);
+	VentanaRave.Menu_BotonArbolBD.AgregarMenu(ID_MENUBD_ANALIZAR		, L"Analizar"									, IDI_ANALIZAR);
 	
 	// Menu Lista
-	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_ABRIRCARPETA		, L"Abrir carpeta");
-	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_ELIMINAR			, L"Eliminar de la lista");
-	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_MOSTRARBD			, L"Mostrar en la BD");
-	VentanaRave.Menu_Lista.AgregarBarra(ID_MENULISTA_NOTA				, L"Nota", NULL, 0.0f, 5.0f, 2.5f, DBarraEx_MostrarValor_ValorMaximo2Decimales);
+	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_ABRIRCARPETA		, L"Abrir carpeta"								, IDI_DIRECTORIO);
+	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_ELIMINAR			, L"Eliminar de la lista"						, IDI_ELIMINAR);
+	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_MOSTRARBD			, L"Mostrar en la BD"							, IDI_BASEDATOS);
+	VentanaRave.Menu_Lista.AgregarBarra(ID_MENULISTA_NOTA				, L"Nota"										, IDI_NOTA , 0.0f, 5.0f, 2.5f, DBarraEx_MostrarValor_ValorMaximo2Decimales);
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_PROPIEDADES			, L"Propiedades");
 
 	// Menu Boton Lista
-	VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_BORRAR					, L"Borrar Lista");
-	DMenuEx *Menu = VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_GENERAR	, L"Lista Aleatória");
+	VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_BORRAR					, L"Borrar Lista"				, IDI_ELIMINAR);
+	DMenuEx *Menu = VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_GENERAR	, L"Lista Aleatória"			, IDI_LISTAALEATORIA);
 		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GENERO									, L"Por Genero");
 		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GRUPO									, L"Por Grupo");
 		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_DISCO									, L"Por Disco");
@@ -276,10 +276,10 @@ void RAVE::IniciarUI(int nCmdShow) {
 	}
 
 //	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_AUDIO									, L"Audio");
-	MenuVideoPistasDeAudio = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_PISTA_AUDIO			, L"Pistas de audio", NULL, -1, FALSE);
+	MenuVideoPistasDeAudio = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_PISTA_AUDIO	, L"Pistas de audio"		, IDI_PISTAAUDIO, -1, FALSE);
 //	MenuPistasDeAudio->Activado(FALSE);
 																						// ID_MENUVIDEO_AUDIO_PISTAS_AUDIO <-> ID_MENUVIDEO_AUDIO_PISTAS_AUDIO_FIN (Espacio para 20 pistas de audio para no hacer corto...)
-	MenuVideoProporcion = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_PROPORCION		, L"Proporción"	, NULL, -1, FALSE);
+	MenuVideoProporcion = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_PROPORCION		, L"Proporción"				, IDI_PROPORCION, -1, FALSE);
 		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_PREDETERMINADO					, L"Predeterminado");
 		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_16A9							, L"16:9");
 		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_4A3							, L"4:3");
@@ -290,13 +290,13 @@ void RAVE::IniciarUI(int nCmdShow) {
 		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_2P39A1							, L"2.39:1");
 		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_5A4							, L"5:4");
 //	MenuProporcion->Activado(FALSE);
-	MenuVideoFiltros = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_FILTROS				, L"Filtros"	, NULL, -1, FALSE);
-	MenuVideoFiltros->AgregarBarra(ID_MENUVIDEO_BRILLO											, L"Brillo"			, NULL, 0.0f, 2.0f, 1.0f, DBarraEx_MostrarValor_Valor2Decimales);
-	MenuVideoFiltros->AgregarBarra(ID_MENUVIDEO_CONTRASTE										, L"Contraste"		, NULL, 0.0f, 2.0f, 1.0f, DBarraEx_MostrarValor_Valor2Decimales);
-	MenuVideoFiltros->AgregarBarra(ID_MENUVIDEO_SATURACION										, L"Saturación"		, NULL, 0.0f, 2.0f, 1.0f, DBarraEx_MostrarValor_Valor2Decimales);
+	MenuVideoFiltros = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_FILTROS				, L"Filtros"				, NULL, -1, FALSE);
+	MenuVideoFiltros->AgregarBarra(ID_MENUVIDEO_BRILLO											, L"Brillo"				, NULL, 0.0f, 2.0f, 1.0f, DBarraEx_MostrarValor_Valor2Decimales);
+	MenuVideoFiltros->AgregarBarra(ID_MENUVIDEO_CONTRASTE										, L"Contraste"			, NULL, 0.0f, 2.0f, 1.0f, DBarraEx_MostrarValor_Valor2Decimales);
+	MenuVideoFiltros->AgregarBarra(ID_MENUVIDEO_SATURACION										, L"Saturación"			, NULL, 0.0f, 2.0f, 1.0f, DBarraEx_MostrarValor_Valor2Decimales);
 	MenuVideoFiltros->AgregarSeparador();
 	MenuVideoFiltros->AgregarMenu(ID_MENUVIDEO_PORDEFECTO										, L"Restaurar valores iniciales");
-	MenuVideoSubtitulos = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_SUBTITULOS		, L"Subtitulos"	, NULL, -1, FALSE);
+	MenuVideoSubtitulos = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_SUBTITULOS		, L"Subtitulos"				, IDI_SUBTITULOS, -1, FALSE);
 
 
 	// Ventana principal

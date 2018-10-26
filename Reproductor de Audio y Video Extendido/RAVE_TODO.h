@@ -166,7 +166,7 @@
 						V Superior
 						V Dreta						
 					? Font per defecte en subtituls externs ???? molta matuja.. pero es posible que existeixi algo...
-					- Proporción por defecto
+					X Proporción por defecto (Si ho pensem bé el que seria necesari es guardar una proporcio per cada medi, ja que cada video es diferent...)
 
 		-  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
 			- Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)
@@ -175,11 +175,10 @@
 
 		-  Menu per la llista (val tant per audio com per video)
 			- Mostrar en la BD (oju perque hi ha medis que no tenen per que existir a la BD)
-			- Mostrar directorio (explorer.exe /select,"C:\Folder\subfolder\file.txt")
-			- Nota
+			V Mostrar directorio (explorer.exe /select,"C:\Folder\subfolder\file.txt")
+			V Nota
 			- Eliminar
-			- Propiedades (les de l'explorador de moment...)
-		-  Proporción del menu del video ha de tenir una opció a la BD i que al obrir un medi s'asigni la proporcio seleccionada.
+			V Propiedades (les de l'explorador de moment...)
 		-  Repat lista aleatória
 		-  Crear un nou correu pels dumps... que pugui fer servir per enviar... (de moment encara tinc web .. xd, no corre molta presa)
 			- si es un email de gmail, hotmail, yahoo, etc.. necesito fer un client TLS de email... que es chungo...

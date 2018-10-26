@@ -420,6 +420,32 @@ void VentanaPrincipal::FiltrosVideoPorDefecto(void) {
 	App.MenuVideoFiltros->Menu(2)->BarraValor(1.0f);
 }
 
+void VentanaPrincipal::Lista_Propiedades(void) {
+	BDMedio nMedio; 
+	App.BD.ObtenerMedio(Lista.MedioMarcado()->Hash, nMedio);
+	SHELLEXECUTEINFO info = { 0 };
+	info.cbSize = sizeof info;
+	info.lpFile = nMedio.Path.c_str();
+	info.nShow = SW_SHOW;
+	info.fMask = SEE_MASK_INVOKEIDLIST;
+	info.lpVerb = L"properties";
+
+	ShellExecuteEx(&info);
+}
+
+void VentanaPrincipal::Lista_AbrirEnExplorador(void) {
+	BDMedio nMedio;
+	App.BD.ObtenerMedio(Lista.MedioMarcado()->Hash, nMedio);
+	PIDLIST_ABSOLUTE pidl;
+	pidl = ILCreateFromPath(nMedio.Path.c_str());
+	if (pidl) {
+		SHOpenFolderAndSelectItems(pidl, 0, 0, 0);
+		ILFree(pidl);
+	}
+
+}
+
+
 void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 	switch (cID) {
 		case ID_MENUBOTONLISTA_GENERAR			:	GenerarListaAleatoria();				return;
@@ -452,19 +478,8 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 			if (App.VLC.ComprobarEstado() != EnPlay) App.VentanaRave.Lista_Play();
 			return;
 		// Menu Lista
-		case ID_MENULISTA_ABRIRCARPETA :
-			//std::wstring Path;
-			BDMedio nMedio;			
-			App.BD.ObtenerMedio(Lista.MedioMarcado()->Hash, nMedio);
-//			Params = L"/select, " + nMedio.Path;
-//			ShellExecute(_hWnd, NULL, L"explorer.exe" , Params.c_str(), L"", SW_SHOW);
-			PIDLIST_ABSOLUTE pidl;
-			pidl = ILCreateFromPath(nMedio.Path.c_str());
-			if (pidl) {
-				SHOpenFolderAndSelectItems(pidl, 0, 0, 0);
-				ILFree(pidl);
-			}
-			return;
+		case ID_MENULISTA_ABRIRCARPETA			:	Lista_AbrirEnExplorador();				return;
+		case ID_MENULISTA_PROPIEDADES			:	Lista_Propiedades();					return;
 	}
 
 

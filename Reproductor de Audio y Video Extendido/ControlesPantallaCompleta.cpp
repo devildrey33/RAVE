@@ -146,15 +146,17 @@ void ControlesPantallaCompleta::Transicion(const CPC_Transicion nTransicion) {
 void ControlesPantallaCompleta::Alinear(void) {	
 	int Ancho, Alto;
 	RECT RC;
-	GetClientRect(App.VentanaRave.hWnd(), &RC);
+	GetWindowRect(App.VentanaRave.hWnd(), &RC);
+	int X = 0, Y = 0;
 
 	// Colocación de los controles (vertical / horizontal)
 	switch (Alineacion) {
 		case Abajo :
 		case Arriba:
-			if (RC.right < ANCHO_CPCH) Ancho = RC.right - 100;
-			else                       Ancho = ANCHO_CPCH;
+			if (RC.right - RC.left < ANCHO_CPCH)	Ancho = (RC.right - RC.left) - 100;
+			else									Ancho = ANCHO_CPCH;
 			Alto = ALTO_CPCH;
+			X = (RC.right + RC.left - Ancho) / 2;
 
 			SetWindowPos(BotonAtras.hWnd()			, HWND_TOP, 10, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(BotonAdelante.hWnd()		, HWND_TOP, 130, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
@@ -174,9 +176,10 @@ void ControlesPantallaCompleta::Alinear(void) {
 			break;
 		case Izquierda:
 		case Derecha:
-			if (RC.bottom < ALTO_CPCV) Alto = RC.bottom - 100;
-			else                       Alto = ALTO_CPCV;
+			if (RC.bottom - RC.top < ALTO_CPCV)		Alto = (RC.bottom - RC.top) - 100;
+			else									Alto = ALTO_CPCV;
 			Ancho = ANCHO_CPCV;
+			Y = (RC.bottom + RC.top - Alto) / 2;
 
 			SetWindowPos(BotonAtras.hWnd()			, HWND_TOP, 10, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(BotonAdelante.hWnd()		, HWND_TOP, 50, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
@@ -199,21 +202,26 @@ void ControlesPantallaCompleta::Alinear(void) {
 //	RECT RV;
 //	GetWindowRect(App.VentanaRave.hWnd(), &RV);
 	// Colocación del control (Arriba, Abajo, Izquierda, Derecha)
+	int Top = 0;
 	switch (Alineacion) {
 		case Abajo		:	
-			SetWindowPos(_hWnd, HWND_TOPMOST	, (RC.right - Ancho) / 2, RC.bottom - Alto, Ancho, Alto	, SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_FRAMECHANGED);	
+			Y = (RC.top >= 0) ? RC.bottom + RC.top - Alto : RC.bottom - Ancho;
+			SetWindowPos(_hWnd, HWND_TOPMOST	, X, Y, Ancho, Alto		, SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_FRAMECHANGED);	
 			SliderTiempo.ToolTip(DBarraEx_ToolTip_Arriba);
 			break;
 		case Izquierda	:	
-			SetWindowPos(_hWnd, HWND_TOPMOST	, 0, (RC.bottom - Alto) / 2, Ancho, Alto				, SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_FRAMECHANGED);
+			X = RC.left;
+			SetWindowPos(_hWnd, HWND_TOPMOST	, X, Y, Ancho, Alto		, SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_FRAMECHANGED);
 			SliderTiempo.ToolTip(DBarraEx_ToolTip_Derecha);
 			break;
 		case Arriba		:	
-			SetWindowPos(_hWnd, HWND_TOPMOST	, (RC.right - Ancho) / 2, 0, Ancho, Alto				, SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_FRAMECHANGED);
+			Y = RC.top;
+			SetWindowPos(_hWnd, HWND_TOPMOST	, X, Y, Ancho, Alto		, SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_FRAMECHANGED);
 			SliderTiempo.ToolTip(DBarraEx_ToolTip_Abajo);
 			break;
 		case Derecha	:	
-			SetWindowPos(_hWnd, HWND_TOPMOST	, RC.right - Ancho, (RC.bottom - Alto) / 2, Ancho, Alto	, SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_FRAMECHANGED);
+			X = (RC.left >= 0) ? RC.right + RC.left - Ancho : RC.right - Ancho;
+			SetWindowPos(_hWnd, HWND_TOPMOST	, X , Y, Ancho, Alto	, SWP_SHOWWINDOW | SWP_NOACTIVATE | SWP_FRAMECHANGED);
 			SliderTiempo.ToolTip(DBarraEx_ToolTip_Izquierda);
 			break;
 	}
