@@ -75,7 +75,7 @@ NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre,
 
 
 
-const BOOL ArbolBD::AgregarNodoALista(DArbolEx_Nodo *nNodo) {
+const BOOL ArbolBD::AgregarNodoALista(NodoBD *nNodo) {
 	if (nNodo == NULL) return FALSE;
 	NodoBD *TmpNodo = static_cast<NodoBD *>(nNodo);
 	sqlite3_int64 Hash = TmpNodo->Hash;
@@ -191,12 +191,12 @@ NodoBD *ArbolBD::BuscarHijoTxt(std::wstring &Buscar, NodoBD *nPadre) {
 
 void ArbolBD::Evento_Nodo_Expandido(DWL::DArbolEx_Nodo *nNodo, const BOOL nExpandido) {
 	if (nExpandido == TRUE && nNodo->TotalHijos() == 0) {
-		ExplorarPath(nNodo);
+		ExplorarPath(static_cast<NodoBD *>(nNodo));
 	}
 }
 
-
-void ArbolBD::ObtenerPath(DArbolEx_Nodo *nNodo, std::wstring &rPath) {
+// Obtiene el path del nodo especificado terminado con \ si es un directorio
+void ArbolBD::ObtenerPath(NodoBD *nNodo, std::wstring &rPath) {
 	DArbolEx_Nodo *Tmp = nNodo;
 	std::wstring TmpStr;
 	while (Tmp != NULL) {
@@ -211,7 +211,8 @@ void ArbolBD::ObtenerPath(DArbolEx_Nodo *nNodo, std::wstring &rPath) {
 	}
 }
 
-void ArbolBD::ExplorarPath(DWL::DArbolEx_Nodo *nNodo) {
+// Función que explora el nodo expecificado
+void ArbolBD::ExplorarPath(NodoBD *nNodo) {
 	if (nNodo == NULL) return;
 	DWORD Tick = GetTickCount();
 	Debug_Escribir_Varg(L"ArbolBD::ExplorarPath  Nodo = '%s'\n", nNodo->Texto.c_str());
@@ -226,19 +227,21 @@ void ArbolBD::ExplorarPath(DWL::DArbolEx_Nodo *nNodo) {
 
 	BOOL AgregarMedios = FALSE;
 
+	// Busco los archivos / directorios del path nodo
 	hFind = FindFirstFile(nTmpTxt.c_str(), &FindInfoPoint);
 	size_t nEntradas = 0;
 	while (FindNextFile(hFind, &FindInfoPoint) != 0) {
 		nNombre = FindInfoPoint.cFileName;
-
-		if (FindInfoPoint.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) { // Directorio
+		// Si es un directorio
+		if (FindInfoPoint.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) { 
 			if (nNombre != L"." && nNombre != L"..") {
 				RaveBD::FiltroPath(nNombre, nTmpTxt);
 				AgregarBDNodo(ArbolBD_TipoNodo_Directorio, static_cast<NodoBD *>(nNodo), nTmpTxt.c_str());
 				nEntradas++;
 			}
 		}
-		else { // Archivo (Si hay archivos, hay que hacer una consulta que devuelva todos los archivos que tengan el path similar
+		// Es un archivo (Si hay archivos, hay que hacer una consulta que devuelva todos los archivos que tengan el path similar
+		else { 
 			AgregarMedios = TRUE;
 			nEntradas++;
 		}
@@ -273,8 +276,8 @@ void ArbolBD::ExplorarPath(DWL::DArbolEx_Nodo *nNodo) {
 				BarrasMedio = DWL::Strings::ContarCaracter(mPath, L'\\');
 
 				if (BarrasPath == BarrasMedio) {
-					if (mPista < 10) { nTmpTxt = L"0" + std::to_wstring(mPista) + L" " + mNombre; }
-					else { nTmpTxt = std::to_wstring(mPista) + L" " + mNombre; }
+					if (mPista < 10)	{ nTmpTxt = L"0" + std::to_wstring(mPista) + L" " + mNombre; }
+					else				{ nTmpTxt = std::to_wstring(mPista) + L" " + mNombre; }
 					switch (mTipoMedio) {
 						case Tipo_Medio_Audio:		mTipoNodo = ArbolBD_TipoNodo_Cancion;	break;
 						case Tipo_Medio_Video:		mTipoNodo = ArbolBD_TipoNodo_Video;		break;

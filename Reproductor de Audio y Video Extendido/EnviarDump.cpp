@@ -11,6 +11,14 @@
 BOOL	EnviarDump::_Error	= FALSE;
 SOCKET	EnviarDump::_Server = NULL;
 
+/* El archivo RAVE_CuentaEmail.h Contiene las siguientes definiciones, NO SE HA INCLUIDO EL ARCHIVO RAVE_CuentaEmail POR MOTIVOS DE SEGURIDAD
+#define EMAIL_SMTP		"smtp.server.ese"
+#define EMAIL_LOGIN 	"login en base64"
+#define EMAIL_PASS		"pass en base64"
+#define EMAIL_ORIGEN	"correo@origen.aqui"	// Debe ser el correo desde el que se envia el email (si no no suele funcionar)
+#define EMAIL_DESTINO	"correo@destino.alli"
+*/
+
 EnviarDump::EnviarDump(void) {
 }
 
@@ -212,9 +220,9 @@ unsigned long  EnviarDump::_ThreadEnviar(void *pDatosDump) {
 //	_Enviar(szMsgLine, TRUE);
 
 	// AUTENTIFICAMOS
-/*	_Enviar("AUTH LOGIN", TRUE);
+	_Enviar("AUTH LOGIN", TRUE);
 	_Enviar(CorreoOrigen_Login, TRUE);			// login
-	_Enviar(CorreoOrigen_Password, TRUE);		// pass*/
+	_Enviar(CorreoOrigen_Password, TRUE);		// pass
 
 	// Send MAIL FROM: <sender@mydomain.com>
 	sprintf_s(szMsgLine, 255, "MAIL FROM:<%s>", CorreoOrigen);

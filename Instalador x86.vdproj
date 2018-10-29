@@ -12057,7 +12057,7 @@
                                     }
                                     "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_F6EA2FBA31F74152A4B9147FD759B475"
                                     {
-                                    "Name" = "8:.CRODOWNLOAD"
+                                    "Name" = "8:.CRDOWNLOAD"
                                     "Condition" = "8:"
                                     "AlwaysCreate" = "11:FALSE"
                                     "DeleteAtUninstall" = "11:FALSE"
@@ -12409,7 +12409,7 @@
                                                             }
                                                             "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_5DBDB54B9AFC495C9693290BCB279510"
                                                             {
-                                                            "Name" = "8:.CRODOWNLOAD"
+                                                            "Name" = "8:.CRDOWNLOAD"
                                                             "Condition" = "8:"
                                                             "Transitive" = "11:FALSE"
                                                             "ValueTypes" = "3:1"
@@ -13958,7 +13958,7 @@
                                                                             }
                                                                             "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_8F803E565C3D4D44B2BBA91E9F20199D"
                                                                             {
-                                                                            "Name" = "8:.CRODOWNLOAD"
+                                                                            "Name" = "8:.CRDOWNLOAD"
                                                                             "Condition" = "8:"
                                                                             "AlwaysCreate" = "11:FALSE"
                                                                             "DeleteAtUninstall" = "11:FALSE"

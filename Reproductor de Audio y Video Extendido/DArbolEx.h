@@ -147,6 +147,7 @@ namespace DWL {
 
 		inline DArbolEx_Nodo                           *NodoResaltado(void) { return _NodoResaltado; };
 		inline DArbolEx_Nodo                           *NodoMarcado(void)   { return _NodoMarcado; };
+		inline void                                     NodoMarcado(DArbolEx_Nodo *nNodoMarcado) { _NodoMarcado = nNodoMarcado; };
 
 	  protected:		
 														// Valor que determina si hay que recalcular los tamaños antes de pintar

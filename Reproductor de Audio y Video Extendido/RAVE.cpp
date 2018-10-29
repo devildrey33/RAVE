@@ -262,6 +262,14 @@ void RAVE::IniciarUI(int nCmdShow) {
 	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_NO					, L"Desactivado");
 	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI					, L"Repetir");
 	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI_MEZCLAR			, L"Repetir y mezclar");
+	Menu = VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_GENERAR		, L"Generar lista");
+	Menu->AgregarMenu(ID_REPETIR_GENERO										, L"Genero");
+	Menu->AgregarMenu(ID_REPETIR_GRUPO										, L"Grupo");
+	Menu->AgregarMenu(ID_REPETIR_DISCO										, L"Disco");
+	Menu->AgregarMenu(ID_REPETIR_50CANCIONES								, L"60 Canciones");
+	Menu->AgregarSeparador();
+	Menu->AgregarMenu(ID_REPETIR_LOQUESEA									, L"Lo que sea");
+
 	VentanaRave.Menu_Repetir.AgregarSeparador();
 	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI_APAGAR_REP		, L"Apagar RAVE");
 	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI_APAGAR_WIN		, L"Apagar Windows");
@@ -270,6 +278,11 @@ void RAVE::IniciarUI(int nCmdShow) {
 		case Tipo_Repeat_NADA				:		VentanaRave.Menu_Repetir.Menu(0)->Icono(IDI_CHECK);		break;
 		case Tipo_Repeat_RepetirLista		:		VentanaRave.Menu_Repetir.Menu(1)->Icono(IDI_CHECK);		break;
 		case Tipo_Repeat_RepetirListaShufle	:		VentanaRave.Menu_Repetir.Menu(2)->Icono(IDI_CHECK);		break;
+		case Tipo_Repeat_Generar50Canciones :       VentanaRave.Menu_Repetir.Menu(3)->Icono(IDI_CHECK);		VentanaRave.Menu_Repetir.Menu(3)->Menu(3)->Icono(IDI_CHECK);	break;
+		case Tipo_Repeat_GenerarGenero      :       VentanaRave.Menu_Repetir.Menu(3)->Icono(IDI_CHECK);		VentanaRave.Menu_Repetir.Menu(3)->Menu(0)->Icono(IDI_CHECK);	break;
+		case Tipo_Repeat_GenerarGrupo		:       VentanaRave.Menu_Repetir.Menu(3)->Icono(IDI_CHECK);		VentanaRave.Menu_Repetir.Menu(3)->Menu(1)->Icono(IDI_CHECK);	break;
+		case Tipo_Repeat_GenerarDisco		:       VentanaRave.Menu_Repetir.Menu(3)->Icono(IDI_CHECK);		VentanaRave.Menu_Repetir.Menu(3)->Menu(2)->Icono(IDI_CHECK);	break;
+		case Tipo_Repeat_GenerarLoQueSea    :       VentanaRave.Menu_Repetir.Menu(3)->Icono(IDI_CHECK);		VentanaRave.Menu_Repetir.Menu(3)->Menu(5)->Icono(IDI_CHECK);	break;
 		default                             : 		VentanaRave.Menu_Repetir.Menu(0)->Icono(IDI_CHECK);		break;
 //		case Tipo_Repeat_ApagarReproductor	:		Menu_Repetir.Menu(3)->Icono(IDI_CHECK);		break;
 //		case Tipo_Repeat_ApagarOrdenador	:		Menu_Repetir.Menu(4)->Icono(IDI_CHECK);		break;
@@ -290,7 +303,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_2P39A1							, L"2.39:1");
 		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_5A4							, L"5:4");
 //	MenuProporcion->Activado(FALSE);
-	MenuVideoFiltros = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_FILTROS				, L"Filtros"				, NULL, -1, FALSE);
+	MenuVideoFiltros = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_FILTROS				, L"Filtros"				, IDI_FILTROS, -1, FALSE);
 	MenuVideoFiltros->AgregarBarra(ID_MENUVIDEO_BRILLO											, L"Brillo"				, NULL, 0.0f, 2.0f, 1.0f, DBarraEx_MostrarValor_Valor2Decimales);
 	MenuVideoFiltros->AgregarBarra(ID_MENUVIDEO_CONTRASTE										, L"Contraste"			, NULL, 0.0f, 2.0f, 1.0f, DBarraEx_MostrarValor_Valor2Decimales);
 	MenuVideoFiltros->AgregarBarra(ID_MENUVIDEO_SATURACION										, L"Saturación"			, NULL, 0.0f, 2.0f, 1.0f, DBarraEx_MostrarValor_Valor2Decimales);

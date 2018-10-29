@@ -338,6 +338,7 @@
     <Image Include="..\Iconos\IDI_Directorio.ico" />
     <Image Include="..\Iconos\IDI_Disco.ico" />
     <Image Include="..\Iconos\IDI_Eliminar.ico" />
+    <Image Include="..\Iconos\IDI_Filtros.ico" />
     <Image Include="..\Iconos\IDI_Genero.ico" />
     <Image Include="..\Iconos\IDI_Grupo.ico" />
     <Image Include="..\Iconos\IDI_ListaAleatoria.ico" />

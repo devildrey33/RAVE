@@ -179,7 +179,7 @@
 			V Nota
 			- Eliminar
 			V Propiedades (les de l'explorador de moment...)
-		-  Repat lista aleatória
+		V  Repat lista aleatória
 		-  Crear un nou correu pels dumps... que pugui fer servir per enviar... (de moment encara tinc web .. xd, no corre molta presa)
 			- si es un email de gmail, hotmail, yahoo, etc.. necesito fer un client TLS de email... que es chungo...
 				- una opcio podria ser recompilar la CSmtp per que funcioni en x64 (les llibreries del OpenSSL son de 32)
@@ -198,7 +198,12 @@
 		-  Test básic en win 7 (nova bd, afegir arrels, buscar, analitzar, generar llista aleatoria, i jugar amb la AimatedToolTipParty
 			-o- Instalar amb els instalador (x86) (x64 FUNCIONA)
 		
+		-  Al afegir arxius externs NO S'HA D'AGREGAR L'ARREL.
 	RAVE 0.6
+		-  DMenuEx::_MostrarSubMenu ha de detectar la pantalla on es mostra per sapiguer si te suficient espai per mostrar el submenu o l'ha de posar a l'altre banda
+			- De fet a MostrarMenu tambe faria falta fer el mateix
+		-  Separar el icona del texte amb un marge (ja que amb la selecció, queda enganxat el marc amb l'icona)
+		-  Afegir tecles ràpides F2, F3, F4 -> Mostrar medio actual en : BD, Lista, Tooltip
 		-  Afegir menu tipo Marca, que serveixi tant com a menú, o com a marca pel seu menú pare.
 			- La idea es que el menu generar llista mostri els seus sub-menus amb una marca, la marca al presionarla no oculta el menú, i despres si presionem en el pare (generar lista) generara una llista del que estigui marcat.
 				- aixó necesitara guardar les marques en la BD, i aixi es "personalitza" el tema de generar llisters aleatories.

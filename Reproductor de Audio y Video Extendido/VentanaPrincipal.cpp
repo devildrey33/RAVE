@@ -271,6 +271,21 @@ void VentanaPrincipal::Repeat(void) {
 				Lista_Siguiente();
 			}
 			break;
+		case Tipo_Repeat_GenerarLoQueSea :
+			GenerarListaAleatoria();
+			break;
+		case Tipo_Repeat_GenerarGenero:
+			GenerarListaAleatoria(TLA_Genero);
+			break;
+		case Tipo_Repeat_GenerarGrupo:
+			GenerarListaAleatoria(TLA_Grupo);
+			break;
+		case Tipo_Repeat_GenerarDisco:
+			GenerarListaAleatoria(TLA_Disco);
+			break;
+		case Tipo_Repeat_Generar50Canciones:
+			GenerarListaAleatoria(TLA_50Medios);
+			break;
 		case Tipo_Repeat_ApagarReproductor:
 			PostMessage(_hWnd, WM_CLOSE, 0, 0);
 			break;
@@ -445,6 +460,11 @@ void VentanaPrincipal::Lista_AbrirEnExplorador(void) {
 
 }
 
+void VentanaPrincipal::Lista_MostrarEnBaseDatos(void) {
+	Arbol_MostrarMedio(Lista.MedioMarcado()->Hash);
+	_MostrarMarco(ID_BOTON_BD);
+}
+
 
 void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 	switch (cID) {
@@ -468,18 +488,19 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		case ID_MENUBD_ANALIZAR					:	AnalizarBD();							return;
 		case ID_MENUBD_AGREGARANUEVALISTA:
 			Lista.BorrarListaReproduccion();
-			Arbol.AgregarNodoALista(Arbol.NodoMarcado());
+			Arbol.AgregarNodoALista(Arbol.MedioMarcado());
 			App.MostrarToolTipPlayer(L"\"" + Arbol.NodoMarcado()->Texto + L"\" añadido a una nueva lista.");
 			Lista_Play();
 			return;
 		case ID_MENUBD_AGREGARALISTA:
-			Arbol.AgregarNodoALista(Arbol.NodoMarcado());
+			Arbol.AgregarNodoALista(Arbol.MedioMarcado());
 			App.MostrarToolTipPlayer(L"\"" + Arbol.NodoMarcado()->Texto + L"\" añadido a la lista.");
 			if (App.VLC.ComprobarEstado() != EnPlay) App.VentanaRave.Lista_Play();
 			return;
 		// Menu Lista
 		case ID_MENULISTA_ABRIRCARPETA			:	Lista_AbrirEnExplorador();				return;
 		case ID_MENULISTA_PROPIEDADES			:	Lista_Propiedades();					return;
+		case ID_MENULISTA_MOSTRARBD             :   Lista_MostrarEnBaseDatos();				return;
 	}
 
 
@@ -695,12 +716,23 @@ void VentanaPrincipal::Repetir_Click(void) {
 
 	 
 	if (Ret != NULL) {
-		// Elimino los iconos de todos los submenus
+		// Elimino los iconos de todos los submenus de la raíz
 		for (size_t i = 0; i < Menu_Repetir.TotalMenus(); i++) {
 			Menu_Repetir.Menu(i)->Icono(0);
 		}
+		// Elimino los iconos de todos los submenus del submenu 'Generar'
+		for (size_t i2 = 0; i2 < Menu_Repetir.Menu(3)->TotalMenus(); i2++) {
+			Menu_Repetir.Menu(3)->Menu(i2)->Icono(0);
+		}
+
 		// Asigno el icono de la marca al menú seleccionado
 		Ret->Icono(IDI_CHECK);
+		if (Ret->ID() == ID_REPETIR_GENERAR) {
+			Menu_Repetir.Menu(3)->Menu(5)->Icono(IDI_CHECK); // Lo Que Sea
+		}
+		else if (Ret->ID() == ID_REPETIR_LOQUESEA || Ret->ID() == ID_REPETIR_GENERO || Ret->ID() == ID_REPETIR_GRUPO || Ret->ID() == ID_REPETIR_DISCO || Ret->ID() == ID_REPETIR_50CANCIONES) {
+			Menu_Repetir.Menu(3)->Icono(IDI_CHECK);
+		}
 		
 		// Asigno el tipo de repeat 
 		switch (Ret->ID()) {
@@ -709,6 +741,12 @@ void VentanaPrincipal::Repetir_Click(void) {
 			case ID_REPETIR_SI_MEZCLAR		:	App.BD.Opciones_Repeat(Tipo_Repeat_RepetirListaShufle);		break;
 			case ID_REPETIR_SI_APAGAR_REP	:	App.BD.Opciones_Repeat(Tipo_Repeat_ApagarReproductor);		break;	// No se guarda en la BD
 			case ID_REPETIR_SI_APAGAR_WIN	:	App.BD.Opciones_Repeat(Tipo_Repeat_ApagarOrdenador);		break;	// No se guarda en la BD
+			case ID_REPETIR_GENERAR         :
+			case ID_REPETIR_LOQUESEA        :	App.BD.Opciones_Repeat(Tipo_Repeat_GenerarLoQueSea);		break;
+			case ID_REPETIR_GENERO			:	App.BD.Opciones_Repeat(Tipo_Repeat_GenerarGenero);			break;
+			case ID_REPETIR_GRUPO			:	App.BD.Opciones_Repeat(Tipo_Repeat_GenerarGrupo);			break;
+			case ID_REPETIR_DISCO			:	App.BD.Opciones_Repeat(Tipo_Repeat_GenerarDisco);			break;
+			case ID_REPETIR_50CANCIONES     :   App.BD.Opciones_Repeat(Tipo_Repeat_Generar50Canciones);		break;
 		}
 		
 		// Marco / desmarco el boton del repeat según la ID
@@ -877,7 +915,7 @@ void VentanaPrincipal::Evento_SoltarArchivos(WPARAM wParam) {
 		Tmp = Archivo;
 		// Si no es un directorio, recorto el path para agregar la raiz
 		if ((FILE_ATTRIBUTE_DIRECTORY & GetFileAttributes(Archivo)) == FALSE) Tmp = Tmp.substr(0, Tmp.find_last_of(L'\\'));
-		App.BD.AgregarRaiz(Tmp);
+//		App.BD.AgregarRaiz(Tmp);
 		Paths.push_back(Archivo);
 	}
 	DragFinish((HDROP)wParam);
@@ -886,10 +924,12 @@ void VentanaPrincipal::Evento_SoltarArchivos(WPARAM wParam) {
 }
 
 
-
+// Solo crea la raiz (si no está creada)
+// Tiene que ser un puntero por que normalmente viene del ThreadActualizar, y es memória creada en el otro trhead que elimino desde el thread principal.
 NodoBD *VentanaPrincipal::Arbol_AgregarRaiz(std::wstring *Path) {
-	// Solo crea la raiz
+	// Busco la raíz en el arbol
 	NodoBD *Tmp = Arbol.BuscarHijoTxt(*Path);
+	// Si no existe la raíz la creo
 	if (Tmp == NULL) {
 		Tmp = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Raiz, NULL, Path->c_str());
 		Tmp->Expandido = TRUE;
@@ -900,22 +940,24 @@ NodoBD *VentanaPrincipal::Arbol_AgregarRaiz(std::wstring *Path) {
 
 
 NodoBD *VentanaPrincipal::Arbol_AgregarDir(std::wstring *Path, const BOOL nRepintar) {
+	// Si no hay raíz no hay galletas
 	BDRaiz *Raiz = App.BD.BuscarRaiz(*Path);
-//	CeRaiz *Raiz = Tabla_Raiz.Buscar_Raiz(Path->c_str());
 	if (Raiz == NULL) return NULL;
-	// Busco la raíz
-	//	DWL::DSplit SplitRaiz(Raiz->Path, L'\\');
+
+	// Busco el nodo de la raíz
 	NodoBD *TmpNodo = static_cast<NodoBD *>(Arbol.BuscarHijoTxt(Raiz->Path, NULL));
-	// Busco el ultimo nodo padre
+
+	// Separo el path en directorios y archivo por las '\'
 	std::wstring tmp = Path->substr(Raiz->Path.size(), Path->size() - Raiz->Path.size());
 	DWL::Strings::Split nSplit(tmp, L'\\');
 
+	// Busco el ultimo nodo padre
 	for (int i = 0; i < static_cast<int>(nSplit.Total()) - 1; i++) {
-		TmpNodo = static_cast<NodoBD *>(Arbol.BuscarHijoTxt(nSplit[i], TmpNodo));
+		TmpNodo = Arbol.BuscarHijoTxt(nSplit[i], TmpNodo);
 	}
 
+	// Paso el filtro al nombre de archivo
 	std::wstring Filtrado;
-
 	RaveBD::FiltroPath(nSplit[nSplit.Total() - 1], Filtrado);
 
 	NodoBD *Ret = Arbol.BuscarHijoTxt(Filtrado, TmpNodo);
@@ -929,24 +971,74 @@ NodoBD *VentanaPrincipal::Arbol_AgregarDir(std::wstring *Path, const BOOL nRepin
 	return Ret;
 }
 
-/*
-NodoBD *VentanaPrincipal::Arbol_AgregarCancion(const size_t Hash) {
-//	ArbolBD &Arbol = App.VentanaRave.Arbol;
-	// Busco el medio en el arbol
-	for (size_t i = 0; i < Arbol.TotalNodos(); i++) {
-		if (Arbol.BDNodo(i)->Hash == Hash)
-			return NULL; // Ya exsite
+const BOOL VentanaPrincipal::Arbol_MostrarMedio(BDMedio &mMedio) {
+	// Si no hay raíz no hay galletas
+	BDRaiz *Raiz = App.BD.BuscarRaiz(mMedio.Path);
+	if (Raiz == NULL) return FALSE;
+
+	// Busco el nodo de la raíz
+	NodoBD *TmpNodo = static_cast<NodoBD *>(Arbol.BuscarHijoTxt(Raiz->Path, NULL));
+	NodoBD *TmpNodo2 = NULL;
+	// Si el noro raíz no existe lo creo
+	if (TmpNodo == NULL) {
+		TmpNodo = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Raiz, NULL, mMedio.Path.c_str());
+		TmpNodo->Expandido = TRUE;
 	}
+	
+	// Excluyo la raíz del path, y separo el resto del path en directorios y archivo por las '\'
+	std::wstring tmp = mMedio.Path.substr(Raiz->Path.size(), mMedio.Path.size() - Raiz->Path.size());
+	DWL::Strings::Split nSplit(tmp, L'\\');
+	std::wstring PathActual = Raiz->Path;
+	// Recorro los nodos (TmpNodo hace de padre, y TmpNodo2 se usa para comprobar si existe o no el nodo especificado)
+	for (size_t i = 0; i < nSplit.Total() ; i++) {
+		if (i != nSplit.Total() - 1) {
+			PathActual = PathActual + nSplit[i] + L"\\";
+			TmpNodo2 = Arbol.BuscarHijoTxt(nSplit[i], TmpNodo);
+			// El nodo no existe, lo creo
+			if (TmpNodo2 == NULL && i != nSplit.Total() - 1) {
+				TmpNodo = Arbol_AgregarDir(&PathActual);
+				Arbol.Expandir(TmpNodo, TRUE);
+//				Arbol.Evento_Nodo_Expandido(TmpNodo, TRUE);
+			}
+			// El nodo si que existe, asigno TmpNodo2 a TmpNodo
+			else {
+				TmpNodo = TmpNodo2;
+				Arbol.Expandir(TmpNodo, TRUE);
+//				Arbol.Evento_Nodo_Expandido(TmpNodo, TRUE);
+			}
+		}
+		else {
+			std::wstring FiltroNombre;
+//			RaveBD::FiltroNombre(nSplit[i], FiltroNombre);
 
-	BDMedio Medio;
-	App.BD.ObtenerMedio(Hash, Medio);
-	// Obtengo la cancion de la bd
-//	TablaMedios_Medio Cancion(_BD, Hash);
-	NodoBD *TmpNodo = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Directorio, NULL, Medio.Path.c_str(), Hash);
-	//	TmpNodo->Hash = Hash;
+			if (mMedio.Pista() < 10)	{ FiltroNombre = L"0" + std::to_wstring(mMedio.Pista()) + L" " + mMedio.Nombre(); }
+			else						{ FiltroNombre = std::to_wstring(mMedio.Pista()) + L" " + mMedio.Nombre(); }
 
-	return TmpNodo;
-}*/
+
+			TmpNodo2 = Arbol.BuscarHijoTxt(FiltroNombre, TmpNodo);
+			Arbol.DesSeleccionarTodo();
+			Arbol.SeleccionarNodo(TmpNodo2, TRUE);
+			Arbol.NodoMarcado(TmpNodo2);
+			Arbol.MostrarNodo(TmpNodo2);
+
+//			Arbol.Evento_Nodo_Expandido(TmpNodo, TRUE);
+		}
+	}
+//	Arbol.MostrarNodo(TmpNodo);
+//	Arbol.Repintar();
+	return TRUE;
+}
+
+const BOOL VentanaPrincipal::Arbol_MostrarMedio(const sqlite3_int64 Hash) {
+	BDMedio mMedio;
+	// Si el medio existe lo muestro
+	if (App.BD.ObtenerMedio(Hash, mMedio) == TRUE) {
+		Arbol_MostrarMedio(mMedio);
+		return TRUE;
+	}
+	// El medio no existe en la BD (lo que no debería pasar nunca)
+	return FALSE;
+}
 
 void VentanaPrincipal::AnalizarBD(void) {
 	// ya se está analizando

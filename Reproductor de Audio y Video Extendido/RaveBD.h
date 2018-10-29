@@ -44,8 +44,14 @@ enum Tipo_Repeat {
 	Tipo_Repeat_NADA				= 0,
 	Tipo_Repeat_RepetirLista		= 1,
 	Tipo_Repeat_RepetirListaShufle  = 2,
-	Tipo_Repeat_ApagarReproductor	= 3,
-	Tipo_Repeat_ApagarOrdenador		= 4
+	Tipo_Repeat_GenerarGenero       = 3,
+	Tipo_Repeat_GenerarGrupo		= 4,
+	Tipo_Repeat_GenerarDisco		= 5,
+	Tipo_Repeat_Generar50Canciones  = 6,
+	Tipo_Repeat_GenerarLoQueSea		= 7,
+
+	Tipo_Repeat_ApagarReproductor	= 8,
+	Tipo_Repeat_ApagarOrdenador		= 9
 //	Tipo_Repeat_HibernarOrdenador	= 5
 };
 

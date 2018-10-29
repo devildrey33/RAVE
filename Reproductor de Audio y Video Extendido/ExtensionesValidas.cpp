@@ -64,7 +64,7 @@ const Extension_Medio ExtensionesValidas::ObtenerExtension(const wchar_t *Extens
 	if (_wcsicmp(Extension, TEXT("WMV")) == 0)			return Extension_WMV;
 	if (_wcsicmp(Extension, TEXT("XM")) == 0)			return Extension_XM;
 
-	if (_wcsicmp(Extension, TEXT("CRODOWNLOAD")) == 0)	return Extension_CRODOWNLOAD;
+	if (_wcsicmp(Extension, TEXT("CRDOWNLOAD")) == 0)	return Extension_CRODOWNLOAD;
 	if (_wcsicmp(Extension, TEXT("OPDOWNLOAD")) == 0)	return Extension_OPDOWNLOAD;
 	if (_wcsicmp(Extension, TEXT("M3U")) == 0)			return Extension_M3U;
 	if (_wcsicmp(Extension, TEXT("SRT")) == 0)			return Extension_SRT;
