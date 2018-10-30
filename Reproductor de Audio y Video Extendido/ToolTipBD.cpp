@@ -274,6 +274,10 @@ LRESULT CALLBACK ToolTipBD::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lPar
 		case WM_LBUTTONUP:		_Evento_MouseSoltado(0, wParam, lParam);																									return 0;
 		case WM_RBUTTONUP:		_Evento_MouseSoltado(1, wParam, lParam);																									return 0;
 		case WM_MBUTTONUP:		_Evento_MouseSoltado(2, wParam, lParam);																									return 0;
+
+		case WM_MOUSEACTIVATE:
+			return MA_NOACTIVATEANDEAT;
+
 			// Sombra de la ventana
 			// https://stackoverflow.com/questions/43818022/borderless-window-with-drop-shadow
 		case WM_NCCALCSIZE	:

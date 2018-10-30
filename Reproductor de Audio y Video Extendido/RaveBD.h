@@ -230,8 +230,8 @@ class RaveBD {
 	inline const int			Opciones_PosY(void) { return _Opciones_PosY; }
 	inline const int			Opciones_VentanaOpciones_PosX(void) { return _Opciones_VentanaOpciones_PosX; }
 	inline const int			Opciones_VentanaOpciones_PosY(void) { return _Opciones_VentanaOpciones_PosY; }
-	inline const int			Opciones_VentanaAsociar_PosX(void) { return _Opciones_VentanaAsociar_PosX; }
-	inline const int			Opciones_VentanaAsociar_PosY(void) { return _Opciones_VentanaAsociar_PosY; }
+	inline const int			Opciones_DlgDirectorios_PosX(void)  { return _Opciones_DlgDirectorios_PosX; }
+	inline const int			Opciones_DlgDirectorios_PosY(void)  { return _Opciones_DlgDirectorios_PosY; }
 	inline const int			Opciones_VentanaAnalizar_PosX(void) { return _Opciones_VentanaAnalizar_PosX; }
 	inline const int			Opciones_VentanaAnalizar_PosY(void) { return _Opciones_VentanaAnalizar_PosY; }
 
@@ -318,8 +318,8 @@ protected:
 	int                        _Opciones_PosY;
 	int                        _Opciones_VentanaOpciones_PosX;
 	int                        _Opciones_VentanaOpciones_PosY;
-	int                        _Opciones_VentanaAsociar_PosX;
-	int                        _Opciones_VentanaAsociar_PosY;
+	int                        _Opciones_DlgDirectorios_PosX;
+	int                        _Opciones_DlgDirectorios_PosY;
 	int                        _Opciones_VentanaAnalizar_PosX;
 	int                        _Opciones_VentanaAnalizar_PosY;
 	int                        _Opciones_Ancho;

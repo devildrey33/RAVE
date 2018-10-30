@@ -158,10 +158,13 @@ LRESULT CALLBACK ToolTipInfo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lP
 		case WM_PAINT		:	_Evento_Pintar();																															return 0;
 		// Print y Print Client (para AnimateWindow)
 		case WM_PRINTCLIENT	:    Pintar(reinterpret_cast<HDC>(wParam));																										return 0;
+
+		case WM_MOUSEACTIVATE :
+			return MA_NOACTIVATEANDEAT;
 		// Mouse 
-		case WM_MOUSEMOVE:		
 		case WM_LBUTTONDOWN:	case WM_RBUTTONDOWN:	case WM_MBUTTONDOWN:// Mouse presionado
 		case WM_LBUTTONUP:		case WM_RBUTTONUP:		case WM_MBUTTONUP:	// Mouse soltado
+		case WM_MOUSEMOVE:
 			Ocultar();
 			return 0;
 			// Sombra de la ventana

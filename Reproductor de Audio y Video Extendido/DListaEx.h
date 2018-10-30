@@ -76,7 +76,7 @@ namespace DWL {
 
 		void											EliminarItem(const LONGLONG ePosItem);
 		void											EliminarItem(DListaEx_Item *eItem);
-		const UINT										EliminarItemsSeleccionados(void);
+		const LONGLONG									EliminarItemsSeleccionados(void);
 		void											EliminarTodosLosItems(void);
 														// Acceso a los DListaEx_Item
 		inline DListaEx_Item                           *Item(const LONGLONG iPos) { if (iPos == -1)            { return NULL; }	return _Items[static_cast<unsigned int>(iPos)]; }
@@ -94,8 +94,8 @@ namespace DWL {
 		const BOOL                                      ObtenerRectaItem(const LONGLONG iPos, RECT &rRecta);
 		inline const BOOL                               ObtenerRectaItem(DListaEx_Item *eItem, RECT &rRecta) { return ObtenerRectaItem(ItemPos(eItem), rRecta); }
 
-		inline const size_t								TotalItems(void) { return _Items.size(); }
-		void											TotalItemsSeleccionados(void); // poc util...
+		inline const LONGLONG							TotalItems(void) { return static_cast<LONGLONG>(_Items.size()); }
+//		void											TotalItemsSeleccionados(void); // poc util...
 
 		inline const size_t                             TotalColumnas(void) { return _Columnas.size();  }
 		inline DListaEx_Columna                        *Columna(const LONGLONG cPos) { return _Columnas[static_cast<unsigned int>(cPos)];  }

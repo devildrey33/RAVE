@@ -13,7 +13,7 @@ namespace DWL {
 									DDlgDirectorios();
 		                           ~DDlgDirectorios();
 
-		const BOOL					Mostrar(DhWnd *nPadre, std::wstring &Path);
+		const BOOL					Mostrar(DhWnd *nPadre, std::wstring &Path, const int cX, const int cY);
 
 									// Controles
 		DExplorarDirectoriosEx      ArbolDirectorios;

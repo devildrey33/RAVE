@@ -7,11 +7,11 @@
 		V  Controls DBarraDesplazamiento, DBarraProgreso, i DBarraScroll
 		V  Poder afegir i eliminar arrels a la BD desde les opcions
 	   +o- Control DArbolEx
-		   +o- Acabar el teclat i el mouse amb el shift
+		    V  Acabar el teclat i el mouse amb el shift
 			V  Implementar sub-selecció
 			-  Implementar LabelEdit (estic pensant amb un control d'edició personalitzat que tindra DArbolEx i DListaEx de posibilitats) [DEdicionTextoEx]
-	   +o- Control DListaEx
-			-  Implementar teclat complexe (shifts, controls, av, repag, i tal...) 
+	    V  Control DListaEx
+			V  Implementar teclat complexe (shifts, controls, av, repag, i tal...) 
 	   +o- Control DExplorarDirectorios que crea un arbre amb l'escriptori, MisDocuemntos, MiPC, i Entorno de Red (per poguer seleccionar un directori) [Extensió de DArbolEx]
 			+  Directoris desactivats si no hi ha privilegis per explorar-los
 		o- Clase adaptable per formar part d'un control DEdicionTextoEx
@@ -168,38 +168,46 @@
 					? Font per defecte en subtituls externs ???? molta matuja.. pero es posible que existeixi algo...
 					X Proporción por defecto (Si ho pensem bé el que seria necesari es guardar una proporcio per cada medi, ja que cada video es diferent...)
 
-		-  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
-			- Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)
-		-  Aplicar transicións al objecte DBarraScrollEx
-			- Començar a mirar com aplicar transicións al DListaEx i al DArbolEx
-
-		-  Menu per la llista (val tant per audio com per video)
-			- Mostrar en la BD (oju perque hi ha medis que no tenen per que existir a la BD)
+		V  Menu per la llista (val tant per audio com per video)
+			V Mostrar en la BD 
+				V oju perque hi ha medis que no tenen per que existir a la BD
 			V Mostrar directorio (explorer.exe /select,"C:\Folder\subfolder\file.txt")
 			V Nota
-			- Eliminar
+			V Eliminar
 			V Propiedades (les de l'explorador de moment...)
 		V  Repat lista aleatória
-		-  Crear un nou correu pels dumps... que pugui fer servir per enviar... (de moment encara tinc web .. xd, no corre molta presa)
-			- si es un email de gmail, hotmail, yahoo, etc.. necesito fer un client TLS de email... que es chungo...
-				- una opcio podria ser recompilar la CSmtp per que funcioni en x64 (les llibreries del OpenSSL son de 32)
-				- o lo mes facil (ja que no haig de adaaptar codi) seria trobar una conta que no requereixi encriptació
+		V  Crear un nou correu pels dumps... que pugui fer servir per enviar... (de moment encara tinc web .. xd, no corre molta presa)
+			X si es un email de gmail, hotmail, yahoo, etc.. necesito fer un client TLS de email... que es chungo...
+				X una opció podria ser recompilar la CSmtp per que funcioni en x64 (les llibreries del OpenSSL son de 32)
+				V o lo mes facil (ja que no haig de adaaptar codi) seria trobar una conta que no requereixi encriptació [MERCI BARBA]
 	    V  Crear instalador (amb lo que tingui el visual studio)
 			V  Falta fer el tema del registre de windows (associar arxius)
 			V  Falta porbar en win7 aviam si li he posat els runtimes que toca
 				- Els runtimes funcionen, lo que necesito un win7 en condicions... (format al canto... però amb la calma, o igual un virtual box es mes facil)
-		-  Teclat per la DListaEx i el DArbolEx (suprimir, shift, control, carácters)
+		V  Teclat per la DListaEx i el DArbolEx (suprimir, shift, control)
 			V  DListaEx Shift : Cursors, AvPag, Repag, Inicio, Fin, MouseClick.  Control : MouseClick.
-			-  s'ha de replantejar el DBarraScrollEx per que sigui de 0.0 a 1.0, i se li ha de restar la pàgina abans de calcular la part corresponent, per que el máxim no sigui 1.0 - Pagina
-		-  Drag & drop intern a la DListaEx per moure items (multiselecció inclosa)
 		
+		V  Pasar les opcions Opciones_VentanaAsociar_Pos* a la finestra dels dialegs, i renombrarles. (En la BD segueix el nom igual per compatibilitat..., i aixi reaprofito 2 valors que no s'utilitzaven)
+
 		V  Anular VentanaAsociarReproductor SENSE ELIMINAR, simplement que no surti sempre, i ja veurem si la liquido del tot en un futur..
-			- Amb l'instalador puc posar entrades al registre, aixi que en principi es pot eliminar la VentanaAsociarReproductor i el AsociaciarReproductor (UN COP FACI EL REGISTRE AL INSTALADOR, OFCOURSE...)			
-		-  Test básic en win 7 (nova bd, afegir arrels, buscar, analitzar, generar llista aleatoria, i jugar amb la AimatedToolTipParty
-			-o- Instalar amb els instalador (x86) (x64 FUNCIONA)
-		
-		-  Al afegir arxius externs NO S'HA D'AGREGAR L'ARREL.
+			V Amb l'instalador puc posar entrades al registre, aixi que en principi es pot eliminar la VentanaAsociarReproductor i el AsociaciarReproductor (UN COP FACI EL REGISTRE AL INSTALADOR, OFCOURSE...)			
+				V De moment encara les conservare com a DEPRECATED
+		X  Test básic en win 7 (nova bd, afegir arrels, buscar, analitzar, generar llista aleatoria, i jugar amb la AimatedToolTipParty
+			+o- Instalar amb els instalador (x86) (x64 FUNCIONA)
+		 	 V  A la merda, que ho provi el krusti, i ja em dira xd
+		 
+		V  Al afegir arxius externs NO S'HA D'AGREGAR L'ARREL.
+
+		-  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
+			- Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)
+				V  DE MOMENT NO HA PASAT MES DESDE QUE VAIG ARRECLAR L'EXTENSIO CRDOWNLOAD.
+
 	RAVE 0.6
+		-  Drag & drop intern a la DListaEx per moure items (multiselecció inclosa)
+		-  S'ha de replantejar el DBarraScrollEx per que sigui de 0.0 a 1.0, i se li ha de restar la pàgina abans de calcular la part corresponent, per que el máxim no sigui 1.0 menys la Pagina
+
+		-  Aplicar transicións al objecte DBarraScrollEx
+			- Començar a mirar com aplicar transicións al DListaEx i al DArbolEx
 		-  DMenuEx::_MostrarSubMenu ha de detectar la pantalla on es mostra per sapiguer si te suficient espai per mostrar el submenu o l'ha de posar a l'altre banda
 			- De fet a MostrarMenu tambe faria falta fer el mateix
 		-  Separar el icona del texte amb un marge (ja que amb la selecció, queda enganxat el marc amb l'icona)

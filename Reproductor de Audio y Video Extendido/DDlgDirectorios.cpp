@@ -18,10 +18,10 @@ namespace DWL {
 	}
 
 
-	const BOOL DDlgDirectorios::Mostrar(DhWnd *nPadre, std::wstring &rPath) {
+	const BOOL DDlgDirectorios::Mostrar(DhWnd *nPadre, std::wstring &rPath, const int cX, const int cY) {
 		_Terminado = FALSE;
 		// Creo la ventana
-		CrearVentana(nPadre, L"DDlgDirectorio", L"Selecciona un Directorio", CW_USEDEFAULT, 0, 400, 600, WS_OVERLAPPEDWINDOW, WS_EX_APPWINDOW, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+		CrearVentana(nPadre, L"DDlgDirectorio", L"Selecciona un Directorio", cX, cY, 400, 600, WS_OVERLAPPEDWINDOW, WS_EX_APPWINDOW, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 		// Obtengo el tamaño de la recta cliente de la ventana.
 		RECT RC;
 		GetClientRect(_hWnd, &RC);
@@ -29,7 +29,8 @@ namespace DWL {
 		ArbolDirectorios.CrearExplorarDirectoriosEx(this, 10, 10, RC.right - 20, RC.bottom - 100, ID_ARBOLDIRECTORIOS, WS_CHILD | WS_VISIBLE | WS_BORDER);
 		ArbolDirectorios.MultiSeleccion = FALSE;
 		ArbolDirectorios.SubSeleccion   = FALSE;
-		EdicionSeleccion.CrearEdicionTextoEx(this, L"Txt", 10, RC.bottom - 80, RC.right - 20, 24, ID_EDICIONDIRECTORIO, NULL, WS_CHILD | WS_VISIBLE | WS_BORDER);
+		EdicionSeleccion.CrearEdicionTextoEx(this, L"", 10, RC.bottom - 80, RC.right - 20, 24, ID_EDICIONDIRECTORIO, NULL, WS_CHILD | WS_VISIBLE);
+		EdicionSeleccion.TextoEditable = FALSE;
 		BotonAceptar.CrearBotonEx(this, L"Aceptar", (RC.right / 2) - 110, RC.bottom - 40, 100, 30, ID_BOTONACEPTAR);
 		BotonCancelar.CrearBotonEx(this, L"Cancelar", (RC.right / 2) + 10, RC.bottom - 40, 100, 30, ID_BOTONCANCELAR);
 		

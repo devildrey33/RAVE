@@ -319,9 +319,6 @@
     <ClInclude Include="DMarcaEx.h">
       <Filter>DWL\Ventanas\ControlesEx\MarcaEx</Filter>
     </ClInclude>
-    <ClInclude Include="VentanaAsociarReproductor.h">
-      <Filter>Ventanas</Filter>
-    </ClInclude>
     <ClInclude Include="EtiquetaBD.h">
       <Filter>Base de datos</Filter>
     </ClInclude>
@@ -384,6 +381,9 @@
     </ClInclude>
     <ClInclude Include="DDesplegableEx_ExplorarDirectoriosEx %28DEPRECATED%29.h">
       <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
+    </ClInclude>
+    <ClInclude Include="VentanaAsociarReproductor %28DEPRECATED%29.h">
+      <Filter>Ventanas</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -528,9 +528,6 @@
     <ClCompile Include="DMarcaEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\MarcaEx</Filter>
     </ClCompile>
-    <ClCompile Include="VentanaAsociarReproductor.cpp">
-      <Filter>Ventanas</Filter>
-    </ClCompile>
     <ClCompile Include="ThreadAnalisis.cpp">
       <Filter>Base de datos\Threads\Analisis</Filter>
     </ClCompile>
@@ -581,6 +578,9 @@
     </ClCompile>
     <ClCompile Include="DDesplegableEx_ExplorarDirectoriosEx %28DEPRECATED%29.cpp">
       <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaAsociarReproductor %28DEPRECATED%29.cpp">
+      <Filter>Ventanas</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

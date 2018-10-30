@@ -71,6 +71,17 @@ namespace DWL {
 		_Repintar = TRUE;
 	}
 
+	const LONGLONG DListaEx::EliminarItemsSeleccionados(void) {
+		LONGLONG Ret = 0;
+		for (LONGLONG i = _Items.size() - 1; i > 0; i--) {
+			if (_Items[i]->Seleccionado == TRUE) {
+				EliminarItem(i);
+				Ret++;
+			}
+		}
+		return Ret;
+	}
+
 	void DListaEx::Repintar(const BOOL nForzar) {
 		if (_Repintar == FALSE)	_Repintar = nForzar;
 		if (IsWindowVisible(_hWnd) == FALSE) return;
@@ -656,8 +667,11 @@ namespace DWL {
 				_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado = !_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado;
 			}
 			else {
-				// Si la multiseleccion está des-habilitada o la tecla control no está pulsada
-				if (MultiSeleccion == FALSE || tControl == FALSE || tShift == FALSE) DesSeleccionarTodo();
+				// Si no es el boton derecho del mouse (el boton derecho suele desplegar un menú)
+				if (DatosMouse.Boton != 1) {
+					// Si la multiseleccion está des-habilitada o la tecla control no está pulsada
+					if (MultiSeleccion == FALSE || tControl == FALSE || tShift == FALSE) DesSeleccionarTodo();
+				}
 				_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado = TRUE;
 			}
 		}

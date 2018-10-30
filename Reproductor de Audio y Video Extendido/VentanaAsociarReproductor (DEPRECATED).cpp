@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "VentanaAsociarReproductor.h"
+#include "VentanaAsociarReproductor (DEPRECATED).h"
 #include "DMensajesWnd.h"
 #include "resource.h"
 #include <shellapi.h>
@@ -21,7 +21,7 @@ void VentanaAsociarReproductor::Mostrar(void) {
 	if (App.BD.Opciones_MostrarAsociarArchivos() == FALSE) return;
 
 	// Creo la ventana que mostrará el progreso
-	CrearVentana(NULL, L"RAVE_AsociarReproductor", L"Asociar Reproductor", App.BD.Opciones_VentanaAsociar_PosX(), App.BD.Opciones_VentanaAsociar_PosY(), 510, 155, WS_CAPTION | WS_SYSMENU | WS_VISIBLE, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+	CrearVentana(NULL, L"RAVE_AsociarReproductor", L"Asociar Reproductor", App.BD.Opciones_DlgDirectorios_PosX(), App.BD.Opciones_DlgDirectorios_PosY(), 510, 155, WS_CAPTION | WS_SYSMENU | WS_VISIBLE, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 	RECT RC;
 	GetClientRect(_hWnd, &RC);
 

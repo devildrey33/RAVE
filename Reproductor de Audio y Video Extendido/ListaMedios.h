@@ -26,7 +26,7 @@ class ListaMedios : public DWL::DListaEx {
 
 	ItemMedio                  *BuscarHash(sqlite3_int64 Hash);
 
-	inline ItemMedio           *Medio(const size_t nPos)	{ return static_cast<ItemMedio *>(_Items[nPos]); 												}
+	inline ItemMedio           *Medio(const LONGLONG nPos)	{ return static_cast<ItemMedio *>(_Items[nPos]); 												}
 	inline ItemMedio           *MedioMarcado(void)			{ return static_cast<ItemMedio *>(ItemMarcado());												}
 
 	inline ItemMedio		   *MedioResaltado(void)		{ return static_cast<ItemMedio *>(ItemResaltado());																		}
@@ -41,8 +41,10 @@ class ListaMedios : public DWL::DListaEx {
 	void						Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse);
 	void                        Evento_MouseSaliendo(void);
 
-	long						MedioActual;
-	long						MedioActualOrdenado;
+	void                        Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado);
+
+	LONGLONG					MedioActual;
+	LONGLONG					MedioActualOrdenado;
 
 	int							Errores;
 

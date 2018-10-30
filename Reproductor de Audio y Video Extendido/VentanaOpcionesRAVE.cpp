@@ -182,7 +182,7 @@ void VentanaOpcionesRAVE::Crear(void) {
 	///////////////////////////////////////
 	// Creo los controles del marco Video
 	EtiquetaVideoTiempo.CrearEtiquetaEx(&MarcoVideo, L"Tiempo para ocultar los controles (pantalla completa)", 10, 10, 350, 20, ID_ETIQUETA_VIDEOTIEMPO);
-	BarraVideoTiempo.CrearBarraDesplazamientoEx(&MarcoVideo, 385, 10, 100, 20, ID_BARRA_VIDEOTIEMPO, 500, 5000, static_cast<float>(App.BD.Opciones_OcultarMouseEnVideo()));
+	BarraVideoTiempo.CrearBarraDesplazamientoEx(&MarcoVideo, 385, 10, 100, 20, ID_BARRA_VIDEOTIEMPO, 1000, 5000, static_cast<float>(App.BD.Opciones_OcultarMouseEnVideo()));
 	TmpStr = std::to_wstring(App.BD.Opciones_OcultarMouseEnVideo()) + L" ms";
 	EtiquetaVideoTiempoTA.CrearEtiquetaEx(&MarcoVideo, TmpStr.c_str(), 485, 10, 60, 20, ID_ETIQUETA_VIDEOTIEMPOTA, DEtiquetaEx_Alineacion_Derecha);
 	SeparadorVideo1.Crear(&MarcoVideo, 0, 40, RC.right - 10);
@@ -301,7 +301,7 @@ void VentanaOpcionesRAVE::AgregarRaiz(void) {
 	App.VentanaRave.ThreadActualizar.Cancelar(TRUE);
 	App.VentanaRave.ThreadAnalizar.Cancelar(TRUE);
 
-	BOOL Ret = DialogoDirectorios.Mostrar(this, Path);
+	BOOL Ret = DialogoDirectorios.Mostrar(this, Path, App.BD.Opciones_DlgDirectorios_PosX(), App.BD.Opciones_DlgDirectorios_PosY());
 	//	SetFocus(_hWnd);
 	if (Ret == TRUE) {
 		// Agrego la raíz a la BD.

@@ -336,6 +336,9 @@ void VentanaPrincipal::Lista_Play(void) {
 	switch (App.VLC.ComprobarEstado()) {
 		case SinCargar:
 			if (Lista.TotalItems() > 0) {
+				// Compruebo que el medio actual no sea mas grande que el total de medios
+				if (Lista.MedioActual > Lista.TotalItems() - 1) Lista.MedioActual = Lista.TotalItems() - 1;
+
 				App.BD.ObtenerMedio(Lista.Medio(Lista.MedioActual)->Hash, NCan);
 //				NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
 				if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
@@ -349,7 +352,7 @@ void VentanaPrincipal::Lista_Play(void) {
 		case Terminada:
 			App.VLC.ActualizarIconos(0);
 			Lista.MedioActual++;
-			if (Lista.MedioActual >= static_cast<int>(Lista.TotalItems())) {
+			if (Lista.MedioActual >= Lista.TotalItems()) {
 				Lista.MedioActual = 0;
 			}
 			App.BD.ObtenerMedio(Lista.Medio(Lista.MedioActual)->Hash, NCan);
@@ -384,7 +387,7 @@ void VentanaPrincipal::Lista_Siguiente(void) {
 	if (Lista.TotalItems() == 0) return;
 
 	Lista.MedioActual++;
-	if (Lista.MedioActual >= static_cast<int>(Lista.TotalItems())) Lista.MedioActual = 0;
+	if (Lista.MedioActual >= Lista.TotalItems()) Lista.MedioActual = 0;
 
 
 	BDMedio NCan;
@@ -397,7 +400,7 @@ void VentanaPrincipal::Lista_Siguiente(void) {
 void VentanaPrincipal::Lista_Anterior(void) {
 	if (Lista.TotalItems() == 0) return;
 
-	long TotalItems = static_cast<long>(Lista.TotalItems()) - 1;
+	LONGLONG TotalItems = Lista.TotalItems() - 1;
 	if (TotalItems == -1) TotalItems = 0;
 	Lista.MedioActual--;
 	if (Lista.MedioActual < 0) Lista.MedioActual = TotalItems;
@@ -465,6 +468,52 @@ void VentanaPrincipal::Lista_MostrarEnBaseDatos(void) {
 	_MostrarMarco(ID_BOTON_BD);
 }
 
+void VentanaPrincipal::Lista_EliminarSeleccionados(void) {
+	LONGLONG Ret = 0;
+	BOOL MAC = FALSE;  // Medio Actual Cerrado
+	for (LONGLONG i = Lista.TotalItems() - 1; i > -1; i--) {
+		if (Lista.Item(i)->Seleccionado == TRUE) {
+			if (Lista.Medio(i)->Hash == App.VLC.MedioActual.Hash) {
+				App.VLC.CerrarMedio();
+				MAC = TRUE;
+			}
+			Lista.EliminarItem(i);
+			Ret++;
+		}
+	}
+
+	std::wstring Txt = std::to_wstring(Ret) + L" medios eliminados de la lista";
+	App.MostrarToolTipPlayer(Txt);
+
+	if (MAC == TRUE) {
+		Lista_Play();
+	}
+
+	Lista.Repintar();
+
+//	LONGLONG nItems = Lista.EliminarItemsSeleccionados();
+}
+
+void VentanaPrincipal::Arbol_AgregarALista(const BOOL NuevaLista) {
+	std::wstring nTexto = L"\" añadido a la lista.";
+	if (NuevaLista == TRUE) {
+		nTexto = L"\" añadido a una nueva lista.";
+		Lista.BorrarListaReproduccion();
+	}
+
+	// Busco los nodos seleccionados
+	NodoBD *Tmp = static_cast<NodoBD *>(Arbol.NodoRaiz());
+	while (Tmp != NULL) {
+		if (Tmp->Seleccionado == TRUE) {
+			Arbol.AgregarNodoALista(Tmp);
+			App.MostrarToolTipPlayer(L"\"" + Tmp->Texto + nTexto);
+		}
+		Tmp = static_cast<NodoBD *>(Arbol.BuscarNodoSiguiente(Tmp, TRUE));
+	}
+
+	if (App.VLC.ComprobarEstado() != EnPlay) App.VentanaRave.Lista_Play();
+}
+
 
 void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 	switch (cID) {
@@ -486,25 +535,16 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		// Menu BotonBD, MenuBD
 		case ID_MENUBD_ACTUALIZAR               :   ActualizarArbol();						return;
 		case ID_MENUBD_ANALIZAR					:	AnalizarBD();							return;
-		case ID_MENUBD_AGREGARANUEVALISTA:
-			Lista.BorrarListaReproduccion();
-			Arbol.AgregarNodoALista(Arbol.MedioMarcado());
-			App.MostrarToolTipPlayer(L"\"" + Arbol.NodoMarcado()->Texto + L"\" añadido a una nueva lista.");
-			Lista_Play();
-			return;
-		case ID_MENUBD_AGREGARALISTA:
-			Arbol.AgregarNodoALista(Arbol.MedioMarcado());
-			App.MostrarToolTipPlayer(L"\"" + Arbol.NodoMarcado()->Texto + L"\" añadido a la lista.");
-			if (App.VLC.ComprobarEstado() != EnPlay) App.VentanaRave.Lista_Play();
-			return;
+		case ID_MENUBD_AGREGARANUEVALISTA		:	Arbol_AgregarALista(TRUE);				return;
+		case ID_MENUBD_AGREGARALISTA			:	Arbol_AgregarALista(FALSE);				return;
 		// Menu Lista
 		case ID_MENULISTA_ABRIRCARPETA			:	Lista_AbrirEnExplorador();				return;
 		case ID_MENULISTA_PROPIEDADES			:	Lista_Propiedades();					return;
 		case ID_MENULISTA_MOSTRARBD             :   Lista_MostrarEnBaseDatos();				return;
+		case ID_MENULISTA_ELIMINAR              :   Lista_EliminarSeleccionados();			return;
 	}
 
-
-	// Pistas de audio
+	// Menu Video -> Pistas de audio
 	if (cID >= ID_MENUVIDEO_AUDIO_PISTAS_AUDIO && cID < ID_MENUVIDEO_AUDIO_PISTAS_AUDIO_FIN) {
 		// Des-marco todas las pistas de audio
 		for (size_t i = 0; i < App.MenuVideoPistasDeAudio->TotalMenus(); i++) {
@@ -519,7 +559,7 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 	}
 
 
-	// Proporción
+	// Menu Video -> Proporción
 	if (cID >= ID_MENUVIDEO_PROPORCION_PREDETERMINADO && cID < ID_MENUVIDEO_PROPORCION_5A4 + 1) {
 		// Des-marco todas las porporciones
 		for (size_t i = 0; i < App.MenuVideoProporcion->TotalMenus(); i++) {
@@ -562,9 +602,13 @@ void VentanaPrincipal::Evento_MenuEx_Barra_Cambiado(const UINT cID, const float 
 		case ID_MENUVIDEO_SATURACION			:	App.VLC.Saturacion(ValorBarra);			return;
 		// Menu Lista -> Nota
 		case ID_MENULISTA_NOTA:
-			App.BD.MedioNota(Lista.MedioMarcado(), ValorBarra);
+			for (LONGLONG i = 0; i < Lista.TotalItems(); i++) {
+				if (Lista.Medio(i)->Seleccionado == TRUE) {
+					App.BD.MedioNota(Lista.Medio(i), ValorBarra);
+				}
+			}
 			App.VentanaRave.Menu_Lista.Ocultar(TRUE);
-			App.MostrarToolTipPlayer(L"Nota para el medio " + Lista.MedioMarcado()->Texto(0) + L" \"" + Lista.MedioMarcado()->Texto(1) + L"\" asignada a " + DWL::Strings::ToStrF(ValorBarra, 2));
+			App.MostrarToolTipPlayer(L"Nota actualizada a " + DWL::Strings::ToStrF(ValorBarra, 2));
 			return;
 	}
 }
@@ -1100,9 +1144,9 @@ void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
 
 	if (Reproducir == TRUE) {
 		ItemMedio *Item = Lista.BuscarHash(Medio.Hash);
-		for (size_t i = 0; i < Lista.TotalItems(); i++) {
+		for (LONGLONG i = 0; i < Lista.TotalItems(); i++) {
 			if (Item == Lista.Medio(i)) {
-				Lista.MedioActual = static_cast<long>(i);
+				Lista.MedioActual = i;
 				break;
 			}
 		}		

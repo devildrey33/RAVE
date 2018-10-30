@@ -81,7 +81,7 @@ ItemMedio *ListaMedios::BuscarHash(sqlite3_int64 bHash) {
 void ListaMedios::Evento_MouseDobleClick(DWL::DEventoMouse &EventoMouse) {
 	if (EventoMouse.Boton == 0) {
 		if (_ItemResaltado != -1) {
-			MedioActual = static_cast<long>(_ItemResaltado);
+			MedioActual = _ItemResaltado;
 			ItemMedio *Itm = Medio(MedioActual);
 			
 			BDMedio NCan;
@@ -97,7 +97,7 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 	if (DatosMouse.Boton == 2) {		
 		if (_ItemResaltado != -1) {
 			BDMedio nMedio;
-			App.BD.ObtenerMedio(Medio(static_cast<unsigned int>(_ItemResaltado))->Hash, nMedio);
+			App.BD.ObtenerMedio(Medio(_ItemResaltado)->Hash, nMedio);
 
 			_ToolTip.Destruir();
 			_ToolTip.Mostrar(nMedio);
@@ -112,16 +112,29 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 	// Mostrar el menú
 	if (DatosMouse.Boton == 1) {
 		BOOL nActivar = (_ItemResaltado == -1) ? FALSE : TRUE;
+		// Miro si el medio tiene una raíz (si no tiene raíz no saldrá en la base de datos)
+		BOOL nBuscarBDActivado = nActivar;
+		if (_ItemMarcado > -1 && _ItemMarcado < static_cast<LONGLONG>(_Items.size())) {
+			BDMedio TmpMedio;
+			App.BD.ObtenerMedio(Medio(_ItemMarcado)->Hash, TmpMedio);
+
+			if (App.BD.BuscarRaiz(TmpMedio.Path) == NULL) 
+				nBuscarBDActivado = FALSE;
+		}
+
+//		
+//		if (App.BD.BuscarRaiz(Medio(_ItemMarcado)->) == NULL) nBuscarBDActivado = FALSE;
 				
 		// Asigno la nota al menu/barra de la nota
 		if (_ItemResaltado != -1) {
 			BDMedio mItem;
-			App.BD.ObtenerMedio(Medio(static_cast<unsigned int>(_ItemResaltado))->Hash, mItem);
+			App.BD.ObtenerMedio(Medio(_ItemResaltado)->Hash, mItem);
 			App.VentanaRave.Menu_Lista.Menu(3)->BarraValor(mItem.Nota);
 		}
 
 		for (size_t i = 0; i < App.VentanaRave.Menu_Lista.TotalMenus(); i++) {
-			App.VentanaRave.Menu_Lista.Menu(i)->Activado(nActivar);
+			if (i == 2)	App.VentanaRave.Menu_Lista.Menu(i)->Activado(nBuscarBDActivado);
+			else        App.VentanaRave.Menu_Lista.Menu(i)->Activado(nActivar);
 		}
 		App.VentanaRave.Menu_Lista.Mostrar(&App.VentanaRave);
 	}
@@ -144,6 +157,12 @@ void ListaMedios::Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse) {
 
 void ListaMedios::Evento_MouseSaliendo(void) {
 	_ToolTip.Destruir();
+}
+
+void ListaMedios::Evento_TeclaSoltada(DEventoTeclado &DatosTeclado) {
+	if (DatosTeclado.TeclaVirtual() == VK_DELETE) {
+		App.VentanaRave.Lista_EliminarSeleccionados();
+	}
 }
 
 // 	Función que mezcla las canciones de la lista (TRUE), o restaura el orden original en que se añadieron (FALSE)
@@ -173,7 +192,7 @@ const BOOL ListaMedios::Mezclar(const BOOL nMezclar) {
 		// Busco la posición del medio actual en la lista mezclada
 		for (i = 0; i < _Items.size(); i++) {
 			if (_Items[i] == _MediosOrdenados[MedioActual]) {
-				MedioActual = static_cast<long>(i);
+				MedioActual = static_cast<LONGLONG>(i);
 				MostrarItem(i);
 				break;
 			}
@@ -185,7 +204,7 @@ const BOOL ListaMedios::Mezclar(const BOOL nMezclar) {
 		// Busco la posición del medio actual en la lista original
 		for (i = 0; i < _Items.size(); i++) {
 			if (_Items[MedioActual] == _MediosOrdenados[i]) {
-				MedioActual = static_cast<long>(i);
+				MedioActual = static_cast<LONGLONG>(i);
 				MostrarItem(i);
 				break;
 			}

@@ -231,7 +231,7 @@
     <ClInclude Include="RAVE_TODO.h" />
     <ClInclude Include="ToolTipBD.h" />
     <ClInclude Include="ToolTipInfo.h" />
-    <ClInclude Include="VentanaAsociarReproductor.h" />
+    <ClInclude Include="VentanaAsociarReproductor %28DEPRECATED%29.h" />
     <ClInclude Include="VentanaErrorCritico.h" />
     <ClInclude Include="VentanaOpcionesRAVE.h" />
     <ClInclude Include="VentanaPrecarga.h" />
@@ -309,7 +309,7 @@
     <ClCompile Include="ThreadAnalisis.cpp" />
     <ClCompile Include="ToolTipBD.cpp" />
     <ClCompile Include="ToolTipInfo.cpp" />
-    <ClCompile Include="VentanaAsociarReproductor.cpp" />
+    <ClCompile Include="VentanaAsociarReproductor %28DEPRECATED%29.cpp" />
     <ClCompile Include="VentanaErrorCritico.cpp" />
     <ClCompile Include="VentanaOpcionesRAVE.cpp" />
     <ClCompile Include="VentanaPrecarga.cpp" />

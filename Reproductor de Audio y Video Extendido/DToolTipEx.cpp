@@ -160,6 +160,9 @@ namespace DWL {
 			case WM_MOUSEMOVE:
 				OcultarAnimado();
 				break;
+			case WM_MOUSEACTIVATE:
+				return MA_NOACTIVATEANDEAT;
+
 			case WM_PAINT:
 				HDC         DC;
 				PAINTSTRUCT PS;

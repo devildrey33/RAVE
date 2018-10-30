@@ -94,6 +94,7 @@ class VentanaPrincipal : public DWL::DVentana {
 
 	const BOOL                  Arbol_MostrarMedio(BDMedio &mMedio);
 	const BOOL                  Arbol_MostrarMedio(const sqlite3_int64 Hash);
+	void                        Arbol_AgregarALista(const BOOL NuevaLista);
 
 	ThreadActualizarArbol		ThreadActualizar;
 	ThreadAgregarArchivosLista  ThreadArchivosLista;
@@ -117,6 +118,7 @@ class VentanaPrincipal : public DWL::DVentana {
 	void                        Lista_Propiedades(void);
 	void                        Lista_AbrirEnExplorador(void);
 	void						Lista_MostrarEnBaseDatos(void);
+	void                        Lista_EliminarSeleccionados(void);
 
 	void						ExploradorAgregarMedio(const BOOL Reproducir);
 

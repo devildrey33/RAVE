@@ -1002,7 +1002,10 @@ namespace DWL {
 			}
 		}
 		else {
-			DesSeleccionarTodo();
+			// Si no es el boton derecho del ratón (se suele desplegar un menú)
+			if (DatosMouse.Boton != 1) {
+				DesSeleccionarTodo();
+			}
 			SeleccionarNodo(_NodoPresionado, TRUE);
 		}
 		

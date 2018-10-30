@@ -76,6 +76,8 @@ void ControlesPantallaCompleta::Mostrar(void) {
 
 	if (IsWindowVisible(_hWnd) == TRUE) return;
 
+	Debug_Escribir(L"ControlesPantallaCompleta::Mostrar\n");
+
 	Alinear();
 
 //	RECT RV;
@@ -101,15 +103,17 @@ void ControlesPantallaCompleta::Mostrar(void) {
 
 	DMouse::ObtenerPosicion(&App.VentanaRave.MousePos);
 	DMouse::Visible(TRUE);
-//	Debug_Escribir(L"ControlesPantallaCompleta::Mostrar\n");
+
+
 //	DMouse::Visible(TRUE);
 }
 
 void ControlesPantallaCompleta::Transicion(const CPC_Transicion nTransicion) {
+	Debug_Escribir_Varg(L"ControlesPantallaCompleta::Transicion : %d\n", nTransicion);
 	DWORD Duracion = DhWnd::TiempoAnimaciones;
 	if (_AniMostrar.Animando() == TRUE) {
-//		Duracion = _AniMostrar.TiempoActual();
-		_AniMostrar.Invertir();
+		Duracion = _AniMostrar.TiempoActual();
+		_AniMostrar.Terminar();
 		return;
 	}
 
