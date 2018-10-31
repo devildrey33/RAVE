@@ -63,6 +63,7 @@ namespace DWL {
 		inline DArbolEx_Nodo                           *NodoRaiz(void)			{ return &_Raiz; }
 														// Total de nodos
 		inline const size_t								TotalNodos(void)		{ return _Raiz._Hijos.size(); }
+		const size_t                                    TotalNodosSeleccionados(void);
 
 														// Agrega un nodo personalizado (por defecto es del tipo DArbolEx_Nodo) para iconos de los recursos
 		template <class TNodo = DArbolEx_Nodo> TNodo   *AgregarNodo(const TCHAR *nTexto, DArbolEx_Nodo *nPadre = NULL, const int nIcono = NULL, DhWnd_Fuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN) {

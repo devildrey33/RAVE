@@ -55,6 +55,7 @@ class ArbolBD : public DWL::DArbolEx {
 	void				Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado);
 	void				Evento_Tecla(DWL::DEventoTeclado &DatosTeclado);*/
 	inline NodoBD      *MedioMarcado(void) { return static_cast<NodoBD *>(_NodoMarcado); }
+	inline NodoBD      *MedioResaltado(void) { return static_cast<NodoBD *>(_NodoResaltado); }
 
   protected:
     void               _AgregarMedio(NodoBD *nPadre, BDMedio *nMedio);

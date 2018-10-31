@@ -718,5 +718,8 @@
     <Image Include="..\Iconos\IDI_Filtros.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
+    <Image Include="..\Iconos\IDI_NoCheck.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
   </ItemGroup>
 </Project>

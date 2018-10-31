@@ -35,9 +35,9 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	Lista.CrearListaEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_LISTAMEDIOS, WS_CHILD);
 	Lista.MultiSeleccion = TRUE;
 	// Columnas
-	Lista.AgregarColumna(50, DListaEx_Columna_Alineacion_Derecha);							// Icono y pista
+	Lista.AgregarColumna(45, DListaEx_Columna_Alineacion_Derecha);								// Icono y pista
 	Lista.AgregarColumna(DLISTAEX_COLUMNA_ANCHO_AUTO, DListaEx_Columna_Alineacion_Izquierda);	// Nombre
-	Lista.AgregarColumna(80, DListaEx_Columna_Alineacion_Derecha);								// Tiempo
+	Lista.AgregarColumna(60, DListaEx_Columna_Alineacion_Derecha);								// Tiempo
 
 	
 	Video.Crear(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_VERVIDEO);
@@ -762,11 +762,11 @@ void VentanaPrincipal::Repetir_Click(void) {
 	if (Ret != NULL) {
 		// Elimino los iconos de todos los submenus de la raíz
 		for (size_t i = 0; i < Menu_Repetir.TotalMenus(); i++) {
-			Menu_Repetir.Menu(i)->Icono(0);
+			Menu_Repetir.Menu(i)->Icono(IDI_NOCHECK);
 		}
 		// Elimino los iconos de todos los submenus del submenu 'Generar'
 		for (size_t i2 = 0; i2 < Menu_Repetir.Menu(3)->TotalMenus(); i2++) {
-			Menu_Repetir.Menu(3)->Menu(i2)->Icono(0);
+			Menu_Repetir.Menu(3)->Menu(i2)->Icono(IDI_NOCHECK);
 		}
 
 		// Asigno el icono de la marca al menú seleccionado

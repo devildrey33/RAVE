@@ -301,38 +301,16 @@ void ArbolBD::ExplorarPath(NodoBD *nNodo) {
 
 void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 	if (DatosMouse.Boton == 1) {
-		if (_NodoResaltado == NULL) {	// Anulo los menuitems agregar... si no hay un nodo marcado
-			App.VentanaRave.Menu_ArbolBD.Menu(0)->Activado(FALSE); // Agregar a lista
-			App.VentanaRave.Menu_ArbolBD.Menu(1)->Activado(FALSE); // Agregar a nueva lista
+		BOOL nActivar = FALSE;
+		// Compruebo si existe el nodo resaltado
+		if (_NodoResaltado != NULL) {	
+			// Si el nodo resaltado no es una raíz
+			if (MedioResaltado()->TipoNodo != ArbolBD_TipoNodo_Raiz) 	nActivar = TRUE;
 		}
-		else {							// activo los menuitems agregar si hay un nodo marcado
-			App.VentanaRave.Menu_ArbolBD.Menu(0)->Activado(TRUE); // Agregar a lista
-			App.VentanaRave.Menu_ArbolBD.Menu(1)->Activado(TRUE); // Agregar a nueva lista
-		}
+		App.VentanaRave.Menu_ArbolBD.Menu(0)->Activado(nActivar); // Agregar a lista
+		App.VentanaRave.Menu_ArbolBD.Menu(1)->Activado(nActivar); // Agregar a nueva lista
 
-//		DMenuEx *Menu = App.VentanaRave.Menu_ArbolBD.MostrarModal(&App.VentanaRave);
 		App.VentanaRave.Menu_ArbolBD.Mostrar(&App.VentanaRave);
-/*		if (Menu != NULL) {
-			switch (Menu->ID()) {
-				case ID_MENUBD_AGREGARANUEVALISTA:
-					App.VentanaRave.Lista.BorrarListaReproduccion();
-					AgregarNodoALista(_NodoMarcado);
-					App.MostrarToolTipPlayer(L"\"" + _NodoMarcado->Texto + L"\" añadido a una nueva lista.");
-					App.VentanaRave.Lista_Play();
-					break;
-				case ID_MENUBD_AGREGARALISTA:
-					AgregarNodoALista(_NodoMarcado);
-					App.MostrarToolTipPlayer(L"\"" + _NodoMarcado->Texto + L"\" añadido a la lista.");
-					if (App.VLC.ComprobarEstado() != EnPlay) App.VentanaRave.Lista_Play();
-					break;
-				case ID_MENUBD_ACTUALIZAR:
-					App.VentanaRave.ActualizarArbol();					
-					break;
-				case ID_MENUBD_ANALIZAR :
-					App.VentanaRave.AnalizarBD();					
-					break;
-			}
-		}*/
 	}
 	// Muestro el nodo resaltado con un ToolTip
 	else if (DatosMouse.Boton == 2 && _NodoResaltado != NULL) {

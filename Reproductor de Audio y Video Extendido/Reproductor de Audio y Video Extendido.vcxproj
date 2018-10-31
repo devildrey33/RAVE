@@ -343,6 +343,7 @@
     <Image Include="..\Iconos\IDI_Grupo.ico" />
     <Image Include="..\Iconos\IDI_ListaAleatoria.ico" />
     <Image Include="..\Iconos\IDI_NEXT32.ico" />
+    <Image Include="..\Iconos\IDI_NoCheck.ico" />
     <Image Include="..\Iconos\IDI_Nota.ico" />
     <Image Include="..\Iconos\IDI_Pausa.ico" />
     <Image Include="..\Iconos\IDI_Pausa2.ico" />

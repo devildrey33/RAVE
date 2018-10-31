@@ -939,8 +939,19 @@ namespace DWL {
 			_NodoUResaltadoParte = _NodoResaltadoParte;
 			Repintar(); // TODO : substituir per un RepintarNodo(nNodo, nUNodo)
 		}
+	}
 
-
+	// Devuelve el total de nodos seleccionados (si son visibles, es decir si su padre está expandido)
+	const size_t DArbolEx::TotalNodosSeleccionados(void) {
+		DArbolEx_Nodo *TmpNodo = &_Raiz;
+		size_t Ret = 0;
+		while (TmpNodo != NULL) {
+			TmpNodo = BuscarNodoSiguiente(TmpNodo, TRUE);
+			if (TmpNodo != NULL) {
+				if (TmpNodo->Seleccionado == TRUE) Ret++;
+			}
+		}
+		return Ret;
 	}
 
 	void DArbolEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {
@@ -1003,7 +1014,11 @@ namespace DWL {
 		}
 		else {
 			// Si no es el boton derecho del ratón (se suele desplegar un menú)
-			if (DatosMouse.Boton != 1) {
+			if (DatosMouse.Boton != 1 || _NodoMarcado == NULL) {
+				DesSeleccionarTodo();
+			}
+			// Si solo hay un nodo seleccionado, y pulsamos con el botón derecho, desseleccionamos todo
+			else if (DatosMouse.Boton == 1 && TotalNodosSeleccionados() == 1) {
 				DesSeleccionarTodo();
 			}
 			SeleccionarNodo(_NodoPresionado, TRUE);

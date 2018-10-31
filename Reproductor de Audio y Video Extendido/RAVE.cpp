@@ -259,20 +259,20 @@ void RAVE::IniciarUI(int nCmdShow) {
 		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_50MEDIOS								, L"Con 50 Medios");
 
 	// Menu Repetir
-	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_NO					, L"Desactivado");
-	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI					, L"Repetir");
-	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI_MEZCLAR			, L"Repetir y mezclar");
-	Menu = VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_GENERAR		, L"Generar lista");
-	Menu->AgregarMenu(ID_REPETIR_GENERO										, L"Genero");
-	Menu->AgregarMenu(ID_REPETIR_GRUPO										, L"Grupo");
-	Menu->AgregarMenu(ID_REPETIR_DISCO										, L"Disco");
-	Menu->AgregarMenu(ID_REPETIR_50CANCIONES								, L"60 Canciones");
+	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_NO					, L"Desactivado"		, IDI_NOCHECK);
+	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI					, L"Repetir"			, IDI_NOCHECK);
+	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI_MEZCLAR			, L"Repetir y mezclar"	, IDI_NOCHECK);
+	Menu = VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_GENERAR		, L"Generar lista"		, IDI_NOCHECK);
+	Menu->AgregarMenu(ID_REPETIR_GENERO										, L"Genero"			, IDI_NOCHECK);
+	Menu->AgregarMenu(ID_REPETIR_GRUPO										, L"Grupo"			, IDI_NOCHECK);
+	Menu->AgregarMenu(ID_REPETIR_DISCO										, L"Disco"			, IDI_NOCHECK);
+	Menu->AgregarMenu(ID_REPETIR_50CANCIONES								, L"60 Canciones"	, IDI_NOCHECK);
 	Menu->AgregarSeparador();
-	Menu->AgregarMenu(ID_REPETIR_LOQUESEA									, L"Lo que sea");
+	Menu->AgregarMenu(ID_REPETIR_LOQUESEA									, L"Lo que sea"		, IDI_NOCHECK);
 
 	VentanaRave.Menu_Repetir.AgregarSeparador();
-	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI_APAGAR_REP		, L"Apagar RAVE");
-	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI_APAGAR_WIN		, L"Apagar Windows");
+	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI_APAGAR_REP		, L"Apagar RAVE"		, IDI_NOCHECK);
+	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI_APAGAR_WIN		, L"Apagar Windows"		, IDI_NOCHECK);
 
 	switch (BD.Opciones_Repeat()) {
 		case Tipo_Repeat_NADA				:		VentanaRave.Menu_Repetir.Menu(0)->Icono(IDI_CHECK);		break;

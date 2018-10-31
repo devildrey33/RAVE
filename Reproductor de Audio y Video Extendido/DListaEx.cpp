@@ -518,7 +518,8 @@ namespace DWL {
 
 
 	void DListaEx::_CalcularColumnas(void) {
-		INT		nAnchoFijo		= (_PintarIconos == TRUE) ? (DLISTAEX_PADDING * 2) + DLISTAEX_TAMICONO : DLISTAEX_PADDING;
+		INT		nAnchoFijo = DLISTAEX_PADDING;
+//		INT		nAnchoFijo = (_PintarIconos == TRUE) ? (DLISTAEX_PADDING * 2) + DLISTAEX_TAMICONO : DLISTAEX_PADDING;
 		UINT	ColumnasAuto	= 0;
 		size_t  i               = 0;
 		// Cuento el ancho fijo y las columnas con ancho automático
@@ -529,15 +530,28 @@ namespace DWL {
 		RECT RC, RCSS;
 		ObtenerRectaCliente(&RC, &RCSS);
 		// Asigno el AnchoCalculado a todas las columnas
+		#if DLISTAEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DListaEx::_CalcularColumnas Total : %d, Cols { ", RCSS.right);
+		#endif
 		for (i = 0; i < _Columnas.size(); i++) {
 			if (_Columnas[i]->Ancho != DLISTAEX_COLUMNA_ANCHO_AUTO) {	
 				_Columnas[i]->_AnchoCalculado = _Columnas[i]->Ancho;	// Ancho en pixeles
 			} 
 			else													{	
 				_Columnas[i]->_AnchoCalculado = static_cast<LONG>((RCSS.right - nAnchoFijo) / ColumnasAuto);	// Ancho sobrante dividido por el número de columnas automáticas
-				if (i == 0) { _Columnas[i]->_AnchoCalculado += (DLISTAEX_PADDING * 2) + DLISTAEX_TAMICONO; }	// Si es la primera columna, añado el ancho del icono al tamaño auto
-			} 
+				// Si es la primera columna, añado el ancho del icono al tamaño auto
+				if (i == 0 && _PintarIconos == TRUE) {
+					_Columnas[i]->_AnchoCalculado += DLISTAEX_PADDING + DLISTAEX_TAMICONO;
+					nAnchoFijo += DLISTAEX_PADDING + DLISTAEX_TAMICONO;
+				}
+			}
+			#if DLISTAEX_MOSTRARDEBUG == TRUE
+				Debug_EscribirSinMS_Varg(L"%d -> %d, ", i, _Columnas[i]->_AnchoCalculado);
+			#endif
 		}
+		#if DLISTAEX_MOSTRARDEBUG == TRUE
+			Debug_EscribirSinMS(L"}\n");
+		#endif
 	}
 
 

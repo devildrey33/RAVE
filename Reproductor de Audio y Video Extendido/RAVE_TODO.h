@@ -197,6 +197,10 @@
 		 	 V  A la merda, que ho provi el krusti, i ja em dira xd
 		 
 		V  Al afegir arxius externs NO S'HA D'AGREGAR L'ARREL.
+		V  Al fer click amb el buto dret sobre l'arbre, si nomes hi ha un seleccionat, es desselecciona, i es selecciona el item que hi ha sota el mouse.
+		V  No es permet afegir arrels a la llista
+		V  El tamany de les columnes de DListaEx no es calcula correctament.
+		V  Re-retocat el icona IDI_CHECK, i ara he afegit el icona IDI_NOCHECK
 
 		-  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
 			- Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)
