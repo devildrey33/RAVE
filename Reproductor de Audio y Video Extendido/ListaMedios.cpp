@@ -3,11 +3,11 @@
 #include "RAVE_Iconos.h"
 
 
-ListaMedios::ListaMedios() : MedioActual(0), Errores(0) {
+ListaMedios::ListaMedios(void) : MedioActual(NULL), Errores(0) {
 }
 
 
-ListaMedios::~ListaMedios() {
+ListaMedios::~ListaMedios(void) {
 }
 
 /*
@@ -23,6 +23,51 @@ void ListaMedios::Evento_Tecla(DWL::DEventoTeclado &DatosTeclado) {
 	App.VentanaRave.Evento_Tecla(DatosTeclado);
 }*/
 
+const LONGLONG ListaMedios::PosMedio(ItemMedio *pMedio) {
+	for (LONGLONG i = 0; i < static_cast<LONGLONG>(_Items.size()); i++) {
+		if (Medio(i) == pMedio) return i;
+	}
+	return -1;
+}
+
+// Obtiene el medio anterior (Si no hay medio anterior y SituarAlFinal es TRUE devuelve el ultimo Medio, Si SituarAlFinal es FALSE devolverá NULL)
+ItemMedio *ListaMedios::MedioAnterior(ItemMedio *nMedio, const BOOL SituarAlFinal) {
+	ItemMedio *Ret = NULL;
+	// Si no hay items, asigno el medio actual a NULL y salgo
+	if (_Items.size() != 0) {
+		// Si el medio actual es NULL o es el primer medio de la lista, lo asigno al final de la lista
+		if (nMedio == NULL || nMedio == static_cast<ItemMedio *>(_Items[0])) {
+			Ret = static_cast<ItemMedio *>(_Items[_Items.size() - 1]);
+		}
+		// No es el primero de la lista, retrocedo un medio
+		else {
+			LONGLONG Pm = PosMedio(nMedio);
+			if (Pm > 0 && SituarAlFinal == TRUE) {
+				Ret = static_cast<ItemMedio *>(_Items[Pm - 1]);
+			}
+		}
+	}
+	return Ret;
+}
+
+ItemMedio *ListaMedios::MedioSiguiente(ItemMedio *nMedio) {
+	ItemMedio *Ret = NULL;
+	// Si no hay items, asigno el medio actual a NULL y salgo
+	if (_Items.size() != 0) {
+		// Si el medio actual es el ultimo de la lista
+		if (nMedio == NULL || nMedio == static_cast<ItemMedio *>(_Items[_Items.size() - 1])) {
+			Ret = static_cast<ItemMedio *>(_Items[0]);
+		}
+		// No es el ultimo de la lista
+		else {
+			LONGLONG Pm = PosMedio(nMedio);
+			if (Pm > -1 && Pm < static_cast<LONGLONG>(_Items.size())) {
+				Ret = static_cast<ItemMedio *>(_Items[Pm + 1]);
+			}
+		}
+	}
+	return Ret;
+}
 
 
 void ListaMedios::BorrarListaReproduccion(void) {
@@ -30,7 +75,7 @@ void ListaMedios::BorrarListaReproduccion(void) {
 	App.VLC.CerrarMedio();
 
 	EliminarTodosLosItems();
-	MedioActual = 0;
+	MedioActual = NULL;
 
 	Repintar();
 }
@@ -80,12 +125,11 @@ ItemMedio *ListaMedios::BuscarHash(sqlite3_int64 bHash) {
 // Reproduce el medio especificado con el ratón
 void ListaMedios::Evento_MouseDobleClick(DWL::DEventoMouse &EventoMouse) {
 	if (EventoMouse.Boton == 0) {
-		if (_ItemResaltado != -1) {
-			MedioActual = _ItemResaltado;
-			ItemMedio *Itm = Medio(MedioActual);
+		if (MedioResaltado() != NULL) {
+			MedioActual = MedioResaltado();
 			
 			BDMedio NCan;
-			App.BD.ObtenerMedio(Medio(MedioActual)->Hash, NCan);
+			App.BD.ObtenerMedio(MedioActual->Hash, NCan);
 
 			if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
 			App.VLC.Play();
@@ -188,27 +232,27 @@ const BOOL ListaMedios::Mezclar(const BOOL nMezclar) {
 			_Items[R] = _MediosOrdenados[i];
 		}
 		// Guardo la posición del medio actual en la lista ordenada
-		MedioActualOrdenado = MedioActual;
+//		MedioActualOrdenado = MedioActual;
 		// Busco la posición del medio actual en la lista mezclada
-		for (i = 0; i < _Items.size(); i++) {
+/*		for (i = 0; i < _Items.size(); i++) {
 			if (_Items[i] == _MediosOrdenados[MedioActual]) {
 				MedioActual = static_cast<LONGLONG>(i);
 				MostrarItem(i);
 				break;
 			}
-		}
+		}*/
 		Ret = TRUE;
 	}
 	// Restaurar medios ordenados
 	else {
 		// Busco la posición del medio actual en la lista original
-		for (i = 0; i < _Items.size(); i++) {
+/*		for (i = 0; i < _Items.size(); i++) {
 			if (_Items[MedioActual] == _MediosOrdenados[i]) {
 				MedioActual = static_cast<LONGLONG>(i);
 				MostrarItem(i);
 				break;
 			}
-		}
+		}*/
 		// Restauro los items desde la lista original
 		for (i = 0; i < _Items.size(); i++) {
 			_Items[i] = _MediosOrdenados[i];

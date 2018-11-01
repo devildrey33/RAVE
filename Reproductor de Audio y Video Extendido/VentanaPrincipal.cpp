@@ -35,7 +35,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	Lista.CrearListaEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_LISTAMEDIOS, WS_CHILD);
 	Lista.MultiSeleccion = TRUE;
 	// Columnas
-	Lista.AgregarColumna(45, DListaEx_Columna_Alineacion_Derecha);								// Icono y pista
+	Lista.AgregarColumna(50, DListaEx_Columna_Alineacion_Derecha);								// Icono y pista
 	Lista.AgregarColumna(DLISTAEX_COLUMNA_ANCHO_AUTO, DListaEx_Columna_Alineacion_Izquierda);	// Nombre
 	Lista.AgregarColumna(60, DListaEx_Columna_Alineacion_Derecha);								// Tiempo
 
@@ -241,7 +241,7 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 			if (Estado == Terminada) {			
 				App.BD.MedioReproducido(&App.VLC.MedioActual);
 				App.VLC.Stop();
-				if (Lista.MedioActual == Lista.TotalItems() - 1) {
+				if (Lista.PosMedio(Lista.MedioActual) == Lista.TotalItems() - 1) {
 					Repeat();
 				}
 				else {
@@ -264,7 +264,7 @@ void VentanaPrincipal::Repeat(void) {
 		case Tipo_Repeat_RepetirListaShufle :
 			if (Lista.TotalItems() > 0) {
 				Lista.Mezclar(TRUE);
-				Lista.MedioActual = -1;
+				Lista.MedioActual = NULL;
 				Lista.DesSeleccionarTodo();
 				Lista.ItemMarcado(Lista.Item(0));
 				Lista.Item(0)->Seleccionado = TRUE;
@@ -331,31 +331,33 @@ void VentanaPrincipal::Lista_Pausa(void) {
 void VentanaPrincipal::Lista_Play(void) {
 	if (Lista.TotalItems() == 0) return;
 
+	if (Lista.MedioActual == NULL) {
+		Lista.MedioActual = Lista.MedioSiguiente(NULL);
+	}
+
 	Lista.Errores = 0;
 	BDMedio NCan;
 	switch (App.VLC.ComprobarEstado()) {
 		case SinCargar:
-			if (Lista.TotalItems() > 0) {
-				// Compruebo que el medio actual no sea mas grande que el total de medios
-				if (Lista.MedioActual > Lista.TotalItems() - 1) Lista.MedioActual = Lista.TotalItems() - 1;
+			// Compruebo que el medio actual no sea mas grande que el total de medios
+			//if (Lista.PosMedio(Lista.MedioActual) > Lista.TotalItems() - 1) Lista.MedioActual = Lista.Medio(Lista.TotalItems() - 1);
 
-				App.BD.ObtenerMedio(Lista.Medio(Lista.MedioActual)->Hash, NCan);
+			App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
 //				NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
-				if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
-				if (App.VLC.Play() == TRUE) {
-					BotonPlay.Icono(IDI_PAUSA32, 32);
-					App.ControlesPC.BotonPlay.Icono(IDI_PAUSA32, 32);
-					BarraTareas.Boton_Icono(ID_BOTON_PLAY, IDI_PAUSA32);
-				}
+			if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
+			if (App.VLC.Play() == TRUE) {
+				BotonPlay.Icono(IDI_PAUSA32, 32);
+				App.ControlesPC.BotonPlay.Icono(IDI_PAUSA32, 32);
+				BarraTareas.Boton_Icono(ID_BOTON_PLAY, IDI_PAUSA32);
 			}
 			break;
 		case Terminada:
 			App.VLC.ActualizarIconos(0);
-			Lista.MedioActual++;
-			if (Lista.MedioActual >= Lista.TotalItems()) {
+			Lista.MedioActual = Lista.MedioSiguiente(Lista.MedioActual);
+/*			if (Lista.PosMedio(Lista.MedioActual) >= Lista.TotalItems()) {
 				Lista.MedioActual = 0;
-			}
-			App.BD.ObtenerMedio(Lista.Medio(Lista.MedioActual)->Hash, NCan);
+			}*/
+			App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
 //			NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
 			if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
 			App.VLC.Play();
@@ -386,12 +388,12 @@ void VentanaPrincipal::Lista_Stop(void) {
 void VentanaPrincipal::Lista_Siguiente(void) {
 	if (Lista.TotalItems() == 0) return;
 
-	Lista.MedioActual++;
-	if (Lista.MedioActual >= Lista.TotalItems()) Lista.MedioActual = 0;
+	Lista.MedioActual = Lista.MedioSiguiente(Lista.MedioActual);
+//	if (Lista.MedioActual >= Lista.TotalItems()) Lista.MedioActual = 0;
 
 
 	BDMedio NCan;
-	App.BD.ObtenerMedio(Lista.Medio(Lista.MedioActual)->Hash, NCan);
+	App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
 	if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
 	App.VLC.Play();
 }
@@ -402,16 +404,16 @@ void VentanaPrincipal::Lista_Anterior(void) {
 
 	LONGLONG TotalItems = Lista.TotalItems() - 1;
 	if (TotalItems == -1) TotalItems = 0;
-	Lista.MedioActual--;
-	if (Lista.MedioActual < 0) Lista.MedioActual = TotalItems;
+	Lista.MedioActual = Lista.MedioAnterior(Lista.MedioActual);
+/*	if (Lista.MedioActual < 0) Lista.MedioActual = TotalItems;
 
-	if (Lista.MedioActual >= 0 && Lista.MedioActual <= TotalItems) {
+	if (Lista.MedioActual >= 0 && Lista.MedioActual <= TotalItems) {*/
 		BDMedio NCan;
-		App.BD.ObtenerMedio(Lista.Medio(Lista.MedioActual)->Hash, NCan);
+		App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
 //		TablaMedios_Medio NCan(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
 		if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
 		App.VLC.Play();
-	}
+//	}
 }
 
 void VentanaPrincipal::GenerarListaAleatoria(const TipoListaAleatoria nTipo) {
@@ -423,7 +425,7 @@ void VentanaPrincipal::GenerarListaAleatoria(const TipoListaAleatoria nTipo) {
 	}
 	if (BotonMezclar.Marcado() == TRUE) {
 		Lista.Mezclar(TRUE);
-		Lista.MedioActual = 0;
+		Lista.MedioActual = NULL;
 	}
 	Lista.Repintar();
 	App.VentanaRave.Lista_Play();
@@ -473,9 +475,10 @@ void VentanaPrincipal::Lista_EliminarSeleccionados(void) {
 	BOOL MAC = FALSE;  // Medio Actual Cerrado
 	for (LONGLONG i = Lista.TotalItems() - 1; i > -1; i--) {
 		if (Lista.Item(i)->Seleccionado == TRUE) {
-			if (Lista.Medio(i)->Hash == App.VLC.MedioActual.Hash) {
+			if (Lista.Medio(i) == Lista.MedioActual) {
 				App.VLC.CerrarMedio();
 				MAC = TRUE;
+				Lista.MedioActual = Lista.MedioAnterior(Lista.MedioActual, FALSE);
 			}
 			Lista.EliminarItem(i);
 			Ret++;
@@ -486,6 +489,7 @@ void VentanaPrincipal::Lista_EliminarSeleccionados(void) {
 	App.MostrarToolTipPlayer(Txt);
 
 	if (MAC == TRUE) {
+		if (Lista.TotalItems() == 0)	Lista.MedioActual = NULL;
 		Lista_Play();
 	}
 
@@ -1143,13 +1147,14 @@ void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
 	Lista.Repintar();
 
 	if (Reproducir == TRUE) {
-		ItemMedio *Item = Lista.BuscarHash(Medio.Hash);
+/*		ItemMedio *Item = Lista.BuscarHash(Medio.Hash);
 		for (LONGLONG i = 0; i < Lista.TotalItems(); i++) {
 			if (Item == Lista.Medio(i)) {
 				Lista.MedioActual = i;
 				break;
 			}
-		}		
+		}		*/
+		Lista.MedioActual = Lista.BuscarHash(Medio.Hash);
 		//Lista_Stop();
 		App.VLC.CerrarMedio();
 		Lista_Play();

@@ -192,7 +192,7 @@
 		V  Anular VentanaAsociarReproductor SENSE ELIMINAR, simplement que no surti sempre, i ja veurem si la liquido del tot en un futur..
 			V Amb l'instalador puc posar entrades al registre, aixi que en principi es pot eliminar la VentanaAsociarReproductor i el AsociaciarReproductor (UN COP FACI EL REGISTRE AL INSTALADOR, OFCOURSE...)			
 				V De moment encara les conservare com a DEPRECATED
-		X  Test básic en win 7 (nova bd, afegir arrels, buscar, analitzar, generar llista aleatoria, i jugar amb la AimatedToolTipParty
+		X  Test básic en win 7 (nova bd, afegir arrels, buscar, analitzar, generar llista aleatoria, i jugar amb la AnimatedToolTipParty
 			+o- Instalar amb els instalador (x86) (x64 FUNCIONA)
 		 	 V  A la merda, que ho provi el krusti, i ja em dira xd
 		 
@@ -201,6 +201,7 @@
 		V  No es permet afegir arrels a la llista
 		V  El tamany de les columnes de DListaEx no es calcula correctament.
 		V  Re-retocat el icona IDI_CHECK, i ara he afegit el icona IDI_NOCHECK
+		V  Posar icones en el thumbnail de la barra d'inici..
 
 		-  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
 			- Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)
@@ -220,6 +221,8 @@
 			- La idea es que el menu generar llista mostri els seus sub-menus amb una marca, la marca al presionarla no oculta el menú, i despres si presionem en el pare (generar lista) generara una llista del que estigui marcat.
 				- aixó necesitara guardar les marques en la BD, i aixi es "personalitza" el tema de generar llisters aleatories.
 			- I ja que hi som, un nou tipus de llista aleatoria podria estar basat en el jamendo... el VLC pot carregar llistes jamendo... osigui que no hauria de ser un problema imposible.
+		
+		
 		-  Fer una taula Audio i una Video, i eliminar la taula Medios.... (ANALITZAR IDEA..)
 			- La idea es tenir les opcions suficients per posarles en un arbre (OJU que aixo es un canvi drástic i que a l'hora podria ordenar molt mes tot el projecte, inclus podria suposar crear una taula d'audio u una video separades i no com ara que els dos son un medio)
 				- o inclus crear una taula medios global amb un tipo (audio / video / lista / cdaudio), i despres crear una taula per cada un d'ells amb una id
@@ -228,8 +231,8 @@
 
 
 		- Buscar actualitzacións
+		- Captar WM_RESIZE del DlgDirectorios
 		- Crear Icona Buscar en l'arbre de la BD adal a la dreta
-		V Posar icones en el thumbnail de la barra d'inici..
 		- Finestra de propietats per un medi o una etiqueta
 		- Mostrar la llista de medis al reproduir un medi de forma "diferent", per exemple una liista translucida reduida (pensa que aixó nomes pasara si el reproductor no está maximitzat i está reproduint video)
 		- Si la llista / BD (autio/video) está buida mostrar un icona que inciti a arrosegar un arxiu / directori

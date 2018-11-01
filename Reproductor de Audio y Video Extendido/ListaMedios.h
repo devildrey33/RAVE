@@ -43,15 +43,18 @@ class ListaMedios : public DWL::DListaEx {
 
 	void                        Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado);
 
-	LONGLONG					MedioActual;
-	LONGLONG					MedioActualOrdenado;
+	ItemMedio                  *MedioSiguiente(ItemMedio *nMedio);
+	ItemMedio                  *MedioAnterior(ItemMedio *nMedio, const BOOL SituarAlFinal = TRUE);
+//	ItemMedio					*MedioActualOrdenado;
+	ItemMedio				   *MedioActual;
 
 	int							Errores;
-
+								// Posición en la lista del medio especificado (puede ser -1 si no hay medio actual)
+	const LONGLONG              PosMedio(ItemMedio *pMedio);
    protected:
 
-	size_t                    _ItemMarcadoOriginal;
-	std::vector<ItemMedio *>  _MediosOrdenados;
-	ToolTipBD                 _ToolTip;
+	size_t                     _ItemMarcadoOriginal;
+	std::vector<ItemMedio *>   _MediosOrdenados;
+	ToolTipBD                  _ToolTip;
 };
 
