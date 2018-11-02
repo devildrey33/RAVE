@@ -30,23 +30,23 @@ class ToolTipBD : public DWL::DVentana {
 
 	LRESULT CALLBACK				GestorMensajes(UINT uMSg, WPARAM wParam, LPARAM lParam);
 
-	inline std::wstring				&Titulo(void) { return _Titulo; }
+	inline std::wstring			   &Titulo(void) { return _Titulo; }
   protected:
-	void                            _Mostrar(POINT &Tam, const int PosX = POS_MOUSE, const int PosY = POS_MOUSE);
-	void			                _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
-	void			                _Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam);
-	void		          	        _Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam);
-	const POINT                     _CalcularEtiqueta(EtiquetaBD &nEtiqueta);
-	const POINT                     _CalcularMedio(BDMedio &nMedio);
-	void                            _Evento_Pintar(void);
+	void                           _Mostrar(POINT &Tam, const int PosX = POS_MOUSE, const int PosY = POS_MOUSE);
+	void			               _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
+	void			               _Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam);
+	void		          	       _Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam);
+	const POINT                    _CalcularEtiqueta(EtiquetaBD &nEtiqueta);
+	const POINT                    _CalcularMedio(BDMedio &nMedio);
+	void                           _Evento_Pintar(void);
 	
-	std::wstring                    _Titulo;
-	int                             _AnchoCol1;
+	std::wstring                   _Titulo;
+	int                            _AnchoCol1;
 
-	DWL::DListaIconos_Icono        *_Icono;
+	DWL::DListaIconos_Icono       *_Icono;
 
-	std::vector<ToolTipBD_Celda>    _Col1;
-	std::vector<ToolTipBD_Celda>    _Col2;
-	POINT                           _Tam;
+	std::vector<ToolTipBD_Celda>   _Col1;
+	std::vector<ToolTipBD_Celda>   _Col2;
+	POINT                          _Tam;
 };
 

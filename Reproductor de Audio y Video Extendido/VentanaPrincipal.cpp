@@ -478,6 +478,7 @@ void VentanaPrincipal::Lista_EliminarSeleccionados(void) {
 			if (Lista.Medio(i) == Lista.MedioActual) {
 				App.VLC.CerrarMedio();
 				MAC = TRUE;
+				// Asigno el medio anterior o NULL si no hay medio anterior
 				Lista.MedioActual = Lista.MedioAnterior(Lista.MedioActual, FALSE);
 			}
 			Lista.EliminarItem(i);

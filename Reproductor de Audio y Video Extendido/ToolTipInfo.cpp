@@ -10,16 +10,16 @@
 //#define TIEMPO_ANIMACION             400
 
 /*
-  _______          _ _______ _      _____        __      
- |__   __|        | |__   __(_)    |_   _|      / _|     
-    | | ___   ___ | |  | |   _ _ __  | |  _ __ | |_ ___  
-    | |/ _ \ / _ \| |  | |  | | '_ \ | | | '_ \|  _/ _ \ 
-    | | (_) | (_) | |  | |  | | |_) || |_| | | | || (_) |
-    |_|\___/ \___/|_|  |_|  |_| .__/_____|_| |_|_| \___/ 
-                              | |                        
-                              |_|							 */
+  _______          _ _______ _      _____        __                _______        _        
+ |__   __|        | |__   __(_)    |_   _|      / _|              |__   __|      | |       
+    | | ___   ___ | |  | |   _ _ __  | |  _ __ | |_ ___              | | _____  _| |_ ___  
+    | |/ _ \ / _ \| |  | |  | | '_ \ | | | '_ \|  _/ _ \             | |/ _ \ \/ / __/ _ \ 
+    | | (_) | (_) | |  | |  | | |_) || |_| | | | || (_) |            | |  __/>  <| || (_) |
+    |_|\___/ \___/|_|  |_|  |_| .__/_____|_| |_|_| \___/   ______    |_|\___/_/\_\\__\___/ 
+                              | |                         |______|                    
+                              |_|                                                          */
 
-void ToolTipInfo::Mostrar(const int cX, const int cY, const int cAncho, const int cAlto, std::wstring &Str, ToolTipsInfo *nPadre, std::function<void(void)> CallbackOcultarTerminado) {
+void ToolTipInfo_Texto::Mostrar(const int cX, const int cY, const int cAncho, const int cAlto, std::wstring &Str, ToolTipsInfo *nPadre, std::function<void(void)> CallbackOcultarTerminado) {
 	_Str						= Str;
 	_Padre						= nPadre;
 	_CallbackOcultarTerminado	= CallbackOcultarTerminado;
@@ -46,7 +46,7 @@ void ToolTipInfo::Mostrar(const int cX, const int cY, const int cAncho, const in
 }
 
 
-SIZE ToolTipInfo::CalcularTam(std::wstring &Str) {
+SIZE ToolTipInfo_Texto::CalcularTam(std::wstring &Str) {
 	// Calculo el tamaño del texto (una sola línea de texto)
 	HDC	   		hDC = CreateCompatibleDC(NULL);
 	HBITMAP		Bmp = CreateCompatibleBitmap(hDC, 1, 1);
@@ -68,7 +68,7 @@ SIZE ToolTipInfo::CalcularTam(std::wstring &Str) {
 }
 
 
-void ToolTipInfo::Ocultar(const BOOL Rapido) {
+void ToolTipInfo_Texto::Ocultar(const BOOL Rapido) {
 	if (_Ocultando == TRUE && Rapido == FALSE) return;
 	_Ocultando = TRUE;
 
@@ -94,7 +94,7 @@ void ToolTipInfo::Ocultar(const BOOL Rapido) {
 }
 
 
-void ToolTipInfo::Pintar(HDC DC) {
+void ToolTipInfo_Texto::Pintar(HDC DC) {
 	RECT RC;
 	GetClientRect(hWnd(), &RC);
 	RECT RCF = { RC.left + 1, RC.top + 1, RC.right - 1, RC.bottom - 1 };
@@ -133,14 +133,14 @@ void ToolTipInfo::Pintar(HDC DC) {
 }
 
 
-void ToolTipInfo::_Evento_Pintar(void) {
+void ToolTipInfo_Texto::_Evento_Pintar(void) {
 	PAINTSTRUCT PS;
 	HDC DC = BeginPaint(hWnd(), &PS);
 	Pintar(DC);
 	EndPaint(hWnd(), &PS);	
 }
 
-void ToolTipInfo::_Evento_Temporizador(INT_PTR tID) {
+void ToolTipInfo_Texto::_Evento_Temporizador(INT_PTR tID) {
 	switch (tID) {
 		case ID_TEMPORIZADOR_OCULTAR :
 			Ocultar();
@@ -148,7 +148,7 @@ void ToolTipInfo::_Evento_Temporizador(INT_PTR tID) {
 	}
 }
 
-LRESULT CALLBACK ToolTipInfo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK ToolTipInfo_Texto::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
 		case WM_TIMER :
 			_Evento_Temporizador(static_cast<INT_PTR>(wParam));
@@ -158,7 +158,7 @@ LRESULT CALLBACK ToolTipInfo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lP
 		case WM_PAINT		:	_Evento_Pintar();																															return 0;
 		// Print y Print Client (para AnimateWindow)
 		case WM_PRINTCLIENT	:    Pintar(reinterpret_cast<HDC>(wParam));																										return 0;
-
+		// Al activar via mouse
 		case WM_MOUSEACTIVATE :
 			return MA_NOACTIVATEANDEAT;
 		// Mouse 
@@ -176,7 +176,7 @@ LRESULT CALLBACK ToolTipInfo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lP
 				return TRUE;
 			}
 			return 0;
-			// Evita que al obtener el foco cambie la parte del caption
+		// Evita que al obtener el foco cambie la parte del caption
 		case WM_NCACTIVATE	:																																				return TRUE;
 	}
 	return DVentana::GestorMensajes(uMsg, wParam, lParam);
@@ -228,7 +228,7 @@ void ToolTipsInfo::MostrarToolTip(std::wstring &Texto) {
 	if (IsWindowVisible(_Padre->hWnd()) == FALSE) return;
 	
 	// Creo el tooltip y calculo su tamaño
-	ToolTipInfo *TT = new ToolTipInfo();
+	ToolTipInfo_Texto *TT = new ToolTipInfo_Texto();
 	RECT RV;
 	GetWindowRect(_Padre->hWnd(), &RV);
 	SIZE Tam = TT->CalcularTam(Texto);

@@ -6,24 +6,45 @@
 
 class ToolTipsInfo;
 
-// Clase que controla un unico tooltip informativo
+enum ToolTipInfo_Tipo {
+	ToolTipInfo_Tipo_Texto,
+	ToolTipInfo_Tipo_Medio
+};
+
+// Plantilla para un tooltip básico
 class ToolTipInfo : public DVentana {
   public:
-						ToolTipInfo() : _Ocultando(FALSE) { };
-				       ~ToolTipInfo() { };
-	SIZE                CalcularTam(std::wstring &Str);
-	void				Mostrar(const int cX, const int cY, const int cAncho, const int cAlto, std::wstring &Str, ToolTipsInfo *nPadre, std::function<void(void)> CallbackOcultarTerminado);
-	void				Ocultar(const BOOL Rapido = FALSE);
-	void				Pintar(HDC DC);
-	LRESULT CALLBACK	GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
-	DWL::DAnimacion     Ani;
-protected:
-	void		       _Evento_Pintar(void);
-	void               _Evento_Temporizador(INT_PTR tID);
-	std::wstring	   _Str;
-	ToolTipsInfo      *_Padre;
-	BOOL               _Ocultando;
-	std::function<void(void)> _CallbackOcultarTerminado;
+								ToolTipInfo(const ToolTipInfo_Tipo nTipo) : _Ocultando(FALSE), _Padre(NULL), _Tipo(nTipo)	{ };
+  							   ~ToolTipInfo()																				{ };
+	virtual void				Ocultar(const BOOL Rapido = FALSE)															{ };
+	virtual LRESULT CALLBACK	GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam)										{ return DVentana::GestorMensajes(uMsg, wParam, lParam); };
+//	virtual SIZE				CalcularTam(std::wstring &Str)																{ SIZE R = { 0, 0 }; return R; };
+	DWL::DAnimacion			    Ani;
+  protected:
+	BOOL                       _Ocultando;
+	ToolTipInfo_Tipo           _Tipo;
+	ToolTipsInfo              *_Padre;
+};
+
+
+// Clase que controla un unico tooltip informativo
+class ToolTipInfo_Texto : public ToolTipInfo {
+  public:
+								ToolTipInfo_Texto(void) : ToolTipInfo(ToolTipInfo_Tipo_Texto) { };
+				               ~ToolTipInfo_Texto(void) { };
+	SIZE						CalcularTam(std::wstring &Str);
+	void						Mostrar(const int cX, const int cY, const int cAncho, const int cAlto, std::wstring &Str, ToolTipsInfo *nPadre, std::function<void(void)> CallbackOcultarTerminado);
+	void						Ocultar(const BOOL Rapido = FALSE);
+	void						Pintar(HDC DC);
+	LRESULT CALLBACK			GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
+//	DWL::DAnimacion				Ani;
+  protected:
+	void		               _Evento_Pintar(void);
+	void                       _Evento_Temporizador(INT_PTR tID);
+	std::wstring	           _Str;
+//	ToolTipsInfo              *_Padre;
+//	BOOL                       _Ocultando;
+	std::function<void(void)>  _CallbackOcultarTerminado;
 };
 
 

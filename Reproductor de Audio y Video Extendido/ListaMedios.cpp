@@ -24,6 +24,7 @@ void ListaMedios::Evento_Tecla(DWL::DEventoTeclado &DatosTeclado) {
 }*/
 
 const LONGLONG ListaMedios::PosMedio(ItemMedio *pMedio) {
+	if (pMedio == NULL) return -1;
 	for (LONGLONG i = 0; i < static_cast<LONGLONG>(_Items.size()); i++) {
 		if (Medio(i) == pMedio) return i;
 	}

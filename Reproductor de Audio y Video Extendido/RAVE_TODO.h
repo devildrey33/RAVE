@@ -208,33 +208,63 @@
 				V  DE MOMENT NO HA PASAT MES DESDE QUE VAIG ARRECLAR L'EXTENSIO CRDOWNLOAD.
 
 	RAVE 0.6
-		-  Drag & drop intern a la DListaEx per moure items (multiselecció inclosa)
-		-  S'ha de replantejar el DBarraScrollEx per que sigui de 0.0 a 1.0, i se li ha de restar la pàgina abans de calcular la part corresponent, per que el máxim no sigui 1.0 menys la Pagina
+		-  ToolTipBD ha de ser integrat a ToolTipInfo, per poguer mostrar tooltips amb columnes en els tooltipinfo
+			-  De moment he fet una clase base ToolTipInfo, i ara hi ha el unaltre clase ToolTipInfo_Texto que hereda de ToolTipInfo, falta el tipus ToolTipInfo_Medio.
+			-  Molaria que compartisin windowrpocedure els dos tipus de tooltip.
+			-  Els tooltips d'etiquetes han de generar totes les seves dades (nota, tiempo, longitud, totalmedios)
+				-  S'ha de treure del objecte EtiquetaBD els membres : Medios, Tiempo, Longitud
+					-  També s'ha de treure de la BD
 
-		-  Aplicar transicións al objecte DBarraScrollEx
-			- Començar a mirar com aplicar transicións al DListaEx i al DArbolEx
-		-  DMenuEx::_MostrarSubMenu ha de detectar la pantalla on es mostra per sapiguer si te suficient espai per mostrar el submenu o l'ha de posar a l'altre banda
-			- De fet a MostrarMenu tambe faria falta fer el mateix
-		-  Separar el icona del texte amb un marge (ja que amb la selecció, queda enganxat el marc amb l'icona)
-		-  Afegir tecles ràpides F2, F3, F4 -> Mostrar medio actual en : BD, Lista, Tooltip
+		-  DBarraScrollEx
+			- Els calculs no estan ben fets, s'ha de restar la pagina al total, i mirar si em resulta mes facil calcular-ho de 0.0 a 1.0 i no de 0.0 a 100.0
+				- Aixó implica revisar calculs en DArbolEx i DListaEx...
+			- Direfenciar estat de la barra resaltat / presionat, i estat del fondo resaltat / presionat
+			- Afegir transicións de resaltat i presionat
+		-  DArbolEx 
+			- Separar l'icona un pel mes del texte (per que no quedi l'icona enganxatr a la selecció)  [subgerència : afegir un doble padding en ves d'un padding normal]
+			- Transicións de resaltat i presionat
+			- Refer Shift + AvPag & RePag
+			- Fer expansors amb un triangle, i deixar les dues opcions
+		-  DListaEx
+			-  Al fer click amb el buto dret, detectar si nomes hi ha un item seleccionat, per desseleccionar tot o no,
+			-  Drag & drop intern a la DListaEx per moure items (multiselecció inclosa)
+			-  Transicións de resaltat i presionat		
+		-  DMenuEx
+			-  MostrarMenu i _MostrarSubMenu ha de detectar la pantalla on es mostra per sapiguer si te suficient espai per mostrar el submenu o l'ha de posar a l'altre banda
+		-  DDlgDirectorios
+			-  Captar WM_RESIZE i modificar tamany dels controls en consequencia.
+				- Guardar el tamany a les opcions de la BD
+
+		-  Mostrar en la BD no funciona correctament.., proba-ho amb Simphpony X -> Prelude to the new milenium
+		-  Tractar arxius del tipus CRDOWNLOAD i OPDOWNLOAD per renombrar-los al acabar de reproduïr, OFC també s'haura de guardar el nou path a la BD.
+
+		-  Afegir al MenuBD : 
+			-  Nota (per poguer modificar la nota de tots els medis d'un directori)
+			-  Abrir carpeta
+			-  Propiedades
+			-  Orden!?!?! saps el follón que suposa no? xd ja veurem... jo no el trobo a faltar...
+
+		-  Buscar actualitzacións
+		-  Afegir a les etiquetes les arrels, sense medir la distancia
+
+		-  Afegir tecles ràpides F1, F2, F3 -> Mostrar medio actual en : Tooltip, BD, Lista
 		-  Afegir menu tipo Marca, que serveixi tant com a menú, o com a marca pel seu menú pare.
 			- La idea es que el menu generar llista mostri els seus sub-menus amb una marca, la marca al presionarla no oculta el menú, i despres si presionem en el pare (generar lista) generara una llista del que estigui marcat.
 				- aixó necesitara guardar les marques en la BD, i aixi es "personalitza" el tema de generar llisters aleatories.
 			- I ja que hi som, un nou tipus de llista aleatoria podria estar basat en el jamendo... el VLC pot carregar llistes jamendo... osigui que no hauria de ser un problema imposible.
 		
-		
+
 		-  Fer una taula Audio i una Video, i eliminar la taula Medios.... (ANALITZAR IDEA..)
 			- La idea es tenir les opcions suficients per posarles en un arbre (OJU que aixo es un canvi drástic i que a l'hora podria ordenar molt mes tot el projecte, inclus podria suposar crear una taula d'audio u una video separades i no com ara que els dos son un medio)
 				- o inclus crear una taula medios global amb un tipo (audio / video / lista / cdaudio), i despres crear una taula per cada un d'ells amb una id
 			-  Dividir Base de Datos en : Mi música , i Mis Videos, en 2 butons i en 2 arbres diferents
 			-  Afegir buto mis listas
+		
+		-  Crear Icona Buscar en l'arbre de la BD adal a la dreta (m'estic plantejant si el necesito també per la llista, i si l'haig d'implementar com una part del DArbolEx i la DListaEx)
+		-  Mostrar la llista de medis al reproduir un medi de forma "diferent", per exemple una liista translucida reduida (pensa que aixó nomes pasara si el reproductor no está maximitzat i está reproduint video)
+		-  Si la llista / BD (autio/video) está buida mostrar un icona que inciti a arrosegar un arxiu / directori
 
-
-		- Buscar actualitzacións
-		- Captar WM_RESIZE del DlgDirectorios
-		- Crear Icona Buscar en l'arbre de la BD adal a la dreta
-		- Finestra de propietats per un medi o una etiqueta
-		- Mostrar la llista de medis al reproduir un medi de forma "diferent", per exemple una liista translucida reduida (pensa que aixó nomes pasara si el reproductor no está maximitzat i está reproduint video)
-		- Si la llista / BD (autio/video) está buida mostrar un icona que inciti a arrosegar un arxiu / directori
+	RAVE 0.7
+		-  Finestra de propietats per un medi o una etiqueta
 
 */

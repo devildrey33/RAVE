@@ -181,6 +181,8 @@ class RaveBD {
 								// Obtiene la lista completa de etiquetas
 	const BOOL                  ObtenerEtiquetas(void);
 
+//	const float                 ObtenerEtiquetaNota(EtiquetaBD *nEtiqueta);
+
 								// Guarda los datos del medio especificado en la BD
 	const BOOL                  ActualizarMedio(BDMedio *nMedio);
 

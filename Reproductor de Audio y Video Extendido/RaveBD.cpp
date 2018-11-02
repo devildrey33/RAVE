@@ -233,6 +233,16 @@ const BOOL RaveBD::_ConsultaObtenerMedio(std::wstring &TxtConsulta, BDMedio &OUT
 	return Ret;
 }
 
+/*const float RaveBD::ObtenerEtiquetaNota(EtiquetaBD *nEtiqueta) {
+	if (nEtiqueta->EsGrupoPath() == TRUE) {
+
+	}
+	else if (nEtiqueta->EsDiscoPath() == TRUE) {
+
+	}
+	return 0.0f;
+}*/
+
 // Elimina las raices de la memória
 void RaveBD::_BorrarRaices(void) {
 	for (size_t i = 0; i < _Raices.size(); i++) delete _Raices[i];

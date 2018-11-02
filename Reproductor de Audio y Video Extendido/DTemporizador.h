@@ -5,21 +5,21 @@
 
 namespace DWL {
 
-
+	// Clase para controlar multiples temporizadores (se puede heredar y re-emplazar la función virtual Evento_Temporizador, o se puede utilizar una función lambda como callback)
 	class DTemporizador {
    	  public:
-
+		// Objeto que engloba un unico temporizador
 		class DTemporizador_Unico {
    		  public:
-									DTemporizador_Unico(const DTemporizador_Unico &Temporizador) : ID(Temporizador.ID), Timer(Temporizador.Timer), Padre(Temporizador.Padre) { };
-									DTemporizador_Unico(const UINT_PTR nID, DTemporizador *nPadre, BOOL nUnaVez) : ID(nID), Timer(0), Padre(nPadre), UnaVez(nUnaVez) { };
-									DTemporizador_Unico(const UINT_PTR nID, DTemporizador *nPadre, BOOL nUnaVez, std::function<void(void)> nCallback) : ID(nID), Timer(0), Padre(nPadre), UnaVez(nUnaVez), Callback(nCallback) { };
-									~DTemporizador_Unico() { };
-			DTemporizador          *Padre;
-			UINT_PTR                ID;
-			HANDLE                  Timer;
-			BOOL                    UnaVez;
-			std::function<void(void)>      Callback;
+											DTemporizador_Unico(const DTemporizador_Unico &Temporizador) : ID(Temporizador.ID), Timer(Temporizador.Timer), Padre(Temporizador.Padre) { };
+											DTemporizador_Unico(const UINT_PTR nID, DTemporizador *nPadre, BOOL nUnaVez) : ID(nID), Timer(0), Padre(nPadre), UnaVez(nUnaVez) { };
+											DTemporizador_Unico(const UINT_PTR nID, DTemporizador *nPadre, BOOL nUnaVez, std::function<void(void)> nCallback) : ID(nID), Timer(0), Padre(nPadre), UnaVez(nUnaVez), Callback(nCallback) { };
+									       ~DTemporizador_Unico(void) { };
+			DTemporizador                  *Padre;
+			UINT_PTR						ID;
+			HANDLE							Timer;
+			BOOL							UnaVez;
+			std::function<void(void)>		Callback;
 		};
 
 											DTemporizador();
