@@ -22,6 +22,8 @@ namespace DWL {
 
 																// Iniciar para un solo valor (desde - hasta)
 		void													Iniciar(const float Desde, const float Hasta, const DWORD Milisegundos, std::function<void(std::vector<float> &, const BOOL)> LambdaCallback);
+																// Iniciar para dos valore (desde - hasta)
+		void													Iniciar(const float Desde0, const float Hasta0, const float Desde1, const float Hasta1, const DWORD Milisegundos, std::function<void(std::vector<float> &, const BOOL)> LambdaCallback);
 																// Iniciar para un vector de valores (cada valor tiene un desde y un hasta)
 		void													Iniciar(std::vector<Valores> &Valores, const DWORD Milisegundos, std::function<void(std::vector<float> &, const BOOL)> LambdaCallback);
 		void                                                    Invertir(void);

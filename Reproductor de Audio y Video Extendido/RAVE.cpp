@@ -478,6 +478,11 @@ void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 		case VK_MEDIA_PREV_TRACK:
 			App.VentanaRave.Lista_Anterior();
 			return;
+		case VK_F1 :
+			if (VLC.ComprobarEstado() == EnPlay || VLC.ComprobarEstado() == EnPausa) {
+				MostrarToolTipPlayer(VLC.MedioActual);
+			}
+			return;
 	}
 	
 	BOOL Control	= ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0);

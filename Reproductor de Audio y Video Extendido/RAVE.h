@@ -72,6 +72,7 @@ class RAVE {
 
 	inline void                     MostrarToolTipPlayer(const wchar_t *Texto)		{ _ToolTipPlayer.MostrarToolTip(Texto); };
 	inline void                     MostrarToolTipPlayer(std::wstring &Texto)		{ _ToolTipPlayer.MostrarToolTip(Texto); };
+	inline void                     MostrarToolTipPlayer(BDMedio &Medio)            { _ToolTipPlayer.MostrarToolTip(Medio); };
 
 	inline void                     MostrarToolTipOpciones(const wchar_t *Texto)	{ _ToolTipOpciones.MostrarToolTip(Texto); };
 	inline void                     MostrarToolTipOpciones(std::wstring &Texto)		{ _ToolTipOpciones.MostrarToolTip(Texto); };

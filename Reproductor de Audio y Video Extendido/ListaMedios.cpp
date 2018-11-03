@@ -143,15 +143,16 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 		if (_ItemResaltado != -1) {
 			BDMedio nMedio;
 			App.BD.ObtenerMedio(Medio(_ItemResaltado)->Hash, nMedio);
-
-			_ToolTip.Destruir();
-			_ToolTip.Mostrar(nMedio);
+			if (_ToolTip.Medio != nMedio ||_ToolTip.Visible() == FALSE) {
+				_ToolTip.Ocultar(TRUE);
+				_ToolTip.MostrarFijo(nMedio);
+			}
 		}
 	}
 
 	// Oculto el tooltip por que no hay Nodo resaltado, o por que se ha presionado un boton que no es el del medio
 	if (DatosMouse.Boton != 2 || _ItemResaltado == -1) {
-		_ToolTip.Destruir();
+		_ToolTip.Ocultar(TRUE);
 	}
 
 	// Mostrar el menú
@@ -187,11 +188,11 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 
 void ListaMedios::Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse) {
 	if (_ItemResaltado == -1) {
-		_ToolTip.Destruir();
+		_ToolTip.Ocultar();
 	}
 	else {
 		if (_ItemResaltado != _ItemUResaltado) {
-			_ToolTip.Destruir();
+			_ToolTip.Ocultar();
 		}
 		else {
 			_ToolTip.Mover();
@@ -201,7 +202,7 @@ void ListaMedios::Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse) {
 
 
 void ListaMedios::Evento_MouseSaliendo(void) {
-	_ToolTip.Destruir();
+	_ToolTip.Ocultar();
 }
 
 void ListaMedios::Evento_TeclaSoltada(DEventoTeclado &DatosTeclado) {

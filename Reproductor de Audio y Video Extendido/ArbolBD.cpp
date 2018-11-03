@@ -331,16 +331,22 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 				Etiqueta = App.BD.ObtenerEtiqueta(EtiquetaFiltrada);
 				if (Etiqueta != NULL) {
 					Debug_Escribir(L"Destruir1\n");
-					_ToolTip.Destruir();
-					_ToolTip.Mostrar(*Etiqueta);
+					if (_ToolTipE.Etiqueta != Etiqueta || _ToolTipE.Visible() == FALSE) {
+						_ToolTipM.Ocultar(TRUE);
+						_ToolTipE.Ocultar(TRUE);
+						_ToolTipE.MostrarFijo(Etiqueta);
+					}
 				}
 				break;
 			case ArbolBD_TipoNodo_Cancion	 :
 			case ArbolBD_TipoNodo_Video		 :
 				if (App.BD.ObtenerMedio(NodoRes->Hash, Medio) == TRUE) {
-					Debug_Escribir(L"Destruir1\n");
-					_ToolTip.Destruir();
-					_ToolTip.Mostrar(Medio);
+					if (Medio != _ToolTipM.Medio || _ToolTipM.Visible() == FALSE) {
+						Debug_Escribir(L"Destruir2\n");
+						_ToolTipM.Ocultar(TRUE);
+						_ToolTipE.Ocultar(TRUE);
+						_ToolTipM.MostrarFijo(Medio);
+					}
 				}				
 				break;
 		}
@@ -350,7 +356,8 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 	
 	// Oculto el tooltip por que no hay Nodo resaltado, o por que se ha presionado un boton que no es el del medio
 	if (DatosMouse.Boton != 2 || _NodoResaltado == NULL) {
-		_ToolTip.Destruir();
+		_ToolTipM.Ocultar(TRUE);
+		_ToolTipE.Ocultar(TRUE);
 	}
 
 
@@ -359,14 +366,17 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 
 void ArbolBD::Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse) {
 	if (_NodoResaltado == NULL) {
-		_ToolTip.Destruir();
+		_ToolTipM.Ocultar();
+		_ToolTipE.Ocultar();
 	}
 	else {
 		if (_NodoUResaltado != _NodoResaltado) {
-			_ToolTip.Destruir();
+			_ToolTipM.Ocultar();
+			_ToolTipE.Ocultar();
 		}
 		else {
-			_ToolTip.Mover();
+			_ToolTipM.Mover();
+			_ToolTipE.Mover();
 		}
 	}
 }

@@ -131,6 +131,8 @@ class BDMedio {
 		
 	void					PistaStr(std::wstring &nPistaStr);
 	void					ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
+
+	bool					operator != (const BDMedio &Comp) const { if (Comp.Hash != Hash) return true; return false; }
 };
 
 

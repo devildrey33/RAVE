@@ -20,7 +20,7 @@ namespace DWL {
 		}
 	}
 
-
+	// Busca si existe un icono con la misma ID y tamaño, si no existe lo crea
 	DListaIconos_Icono *DListaIconos::AgregarIconoRecursos(const INT_PTR IDRecursos, const int nAncho, const int nAlto) {
 		if (IDRecursos == 0) return NULL;
 
@@ -34,27 +34,7 @@ namespace DWL {
 		_Iconos.push_back(nIcono);
 		return nIcono;
 	}
-	/* // DEPRECATED
-	DListaIconos_Icono *DListaIconos::AgregarIconoCSIDL(const int CSIDL, const int nAncho, const int nAlto) {
-		DWORD_PTR	 hr;
-		LPITEMIDLIST pidl = 0;
-		SHFILEINFO   sfi  = { 0 };
-		hr = SHGetSpecialFolderLocation(0, CSIDL, &pidl);
-		hr = SHGetFileInfo((LPCTSTR)pidl, -1, &sfi, sizeof(sfi), SHGFI_PIDL | SHGFI_ICONLOCATION);
-		std::wstring Nombre = sfi.szDisplayName;
-		int          PosIco = sfi.iIcon;
-		DListaIconos_Icono *TmpIco = _BuscarIDStr(sfi.szDisplayName, sfi.iIcon);
-		// No existe, lo creamos
-		if (TmpIco == NULL) {
-			hr = SHGetFileInfo((LPCTSTR)pidl, -1, &sfi, sizeof(sfi), SHGFI_PIDL | SHGFI_ICON);
-			if (SUCCEEDED(hr)) {
-				DListaIconos_Icono *nIcono = new DListaIconos_Icono(sfi.hIcon, --_IDNegativa, nAncho, nAlto, Nombre, PosIco);
-				_Iconos.push_back(nIcono);
-				return nIcono;
-			}
-		}
-		return NULL;
-	}*/
+	
 
 	DListaIconos_Icono *DListaIconos::AgregarIconoKnownFolder(const GUID &rfid, const int nAncho, const int nAlto) {
 		PIDLIST_ABSOLUTE	npi;

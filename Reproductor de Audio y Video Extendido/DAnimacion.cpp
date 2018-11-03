@@ -25,6 +25,13 @@ namespace DWL {
 		Iniciar(vValores, Milisegundos, LambdaCallback);
 	}
 
+	void DAnimacion::Iniciar(const float Desde0, const float Hasta0, const float Desde1, const float Hasta1, const DWORD Milisegundos, std::function<void(std::vector<float> &, const BOOL)> LambdaCallback) {
+		std::vector<Valores> vValores;
+		vValores.push_back(Valores(Desde0, Hasta0));
+		vValores.push_back(Valores(Desde1, Hasta1));
+		Iniciar(vValores, Milisegundos, LambdaCallback);
+	}
+
 	void DAnimacion::Iniciar(std::vector<Valores> &Datos, const DWORD Milisegundos, std::function<void(std::vector<float> &, const BOOL)> LambdaCallback) {
 		// Compruebo que los valores Desde sean distintos a los valores Hasta
 		BOOL Iguales = TRUE;

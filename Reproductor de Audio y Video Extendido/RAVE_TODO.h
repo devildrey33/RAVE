@@ -203,17 +203,19 @@
 		V  Re-retocat el icona IDI_CHECK, i ara he afegit el icona IDI_NOCHECK
 		V  Posar icones en el thumbnail de la barra d'inici..
 
-		-  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
-			- Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)
-				V  DE MOMENT NO HA PASAT MES DESDE QUE VAIG ARRECLAR L'EXTENSIO CRDOWNLOAD.
-
 	RAVE 0.6
-		-  ToolTipBD ha de ser integrat a ToolTipInfo, per poguer mostrar tooltips amb columnes en els tooltipinfo
-			-  De moment he fet una clase base ToolTipInfo, i ara hi ha el unaltre clase ToolTipInfo_Texto que hereda de ToolTipInfo, falta el tipus ToolTipInfo_Medio.
-			-  Molaria que compartisin windowrpocedure els dos tipus de tooltip.
-			-  Els tooltips d'etiquetes han de generar totes les seves dades (nota, tiempo, longitud, totalmedios)
-				-  S'ha de treure del objecte EtiquetaBD els membres : Medios, Tiempo, Longitud
-					-  També s'ha de treure de la BD
+		V  ToolTipBD ha de ser integrat a ToolTipInfo, per poguer mostrar tooltips amb columnes en els tooltipinfo
+			V  De moment he fet una clase base ToolTipInfo, i ara hi ha el unaltre clase ToolTipInfo_Texto que hereda de ToolTipInfo, falta el tipus ToolTipInfo_Medio.
+			V  Molaria que compartisin windowrpocedure tots els tipus de tooltip.
+			V  Objecte ToolTipBD eliminat, ara l'arbre i la llista utilitzen ToolTipInfo_Medio i ToolTipInfo_Etiqueta
+			V  S'ha de posar el tooltip del play amb un ToolTipInfo_Medio
+				V Solucionar bug al reposicionar els tooltips que es posicionen uns pixels per sobre
+			V  S'ha de suavitzar el mostrar dels tooltips, ja que si es fa un doble click es talla l'animacio i torna a començar
+			V  Pintar la nota amb icones d'estrelles als ToolTipInfo_Medio i ToolTipInfo_Etiqueta
+
+		-  Els tooltips d'etiquetes han de generar totes les seves dades (nota, tiempo, longitud, totalmedios)
+			-  S'ha de treure del objecte EtiquetaBD els membres : Medios, Tiempo, Longitud
+				-  També s'ha de treure de la BD
 
 		-  DBarraScrollEx
 			- Els calculs no estan ben fets, s'ha de restar la pagina al total, i mirar si em resulta mes facil calcular-ho de 0.0 a 1.0 i no de 0.0 a 100.0
@@ -263,6 +265,12 @@
 		-  Crear Icona Buscar en l'arbre de la BD adal a la dreta (m'estic plantejant si el necesito també per la llista, i si l'haig d'implementar com una part del DArbolEx i la DListaEx)
 		-  Mostrar la llista de medis al reproduir un medi de forma "diferent", per exemple una liista translucida reduida (pensa que aixó nomes pasara si el reproductor no está maximitzat i está reproduint video)
 		-  Si la llista / BD (autio/video) está buida mostrar un icona que inciti a arrosegar un arxiu / directori
+
+		-  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
+			- Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)
+				X  DE MOMENT NO HA PASAT MES DESDE QUE VAIG ARRECLAR L'EXTENSIO CRDOWNLOAD.
+				-  Ha tornat a pasar al grabar un directori nou dintre d'una arrel existent, pero aquest cop m'ha deixat fer play desde la llista
+
 
 	RAVE 0.7
 		-  Finestra de propietats per un medi o una etiqueta

@@ -310,20 +310,20 @@ const BOOL RaveVLC::Play(void) {
 			}
 
 			// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
-			std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" [" + std::to_wstring(MedioActual.Pista()) + L" " + MedioActual.Nombre() + L"]";
+			std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" [" + DWL::Strings::ToStr(MedioActual.Pista(), 2) + L" " + MedioActual.Nombre() + L"]";
 			App.VentanaRave.Titulo(nTitulo);
 
 			// Muestro el tooltip con los datos
-			std::wstring TT = DWL::Strings::ToStr(MedioActual.Pista(), 2) + L" " + MedioActual.Nombre();
+/*			std::wstring TT = DWL::Strings::ToStr(MedioActual.Pista(), 2) + L" " + MedioActual.Nombre();
 
 			if (MedioActual.Disco().size() > 0)
 				TT += L"\n" + MedioActual.Disco(); 
 			if (MedioActual.Grupo().size() > 0) 
 				TT += L"\n" + MedioActual.Grupo();
 			if (MedioActual.Genero.size() > 0)
-				TT += L"\n" + MedioActual.Genero;
+				TT += L"\n" + MedioActual.Genero;*/
 			
-			App.MostrarToolTipPlayer(TT);
+			App.MostrarToolTipPlayer(MedioActual);
 			return TRUE;
 		}
 	}

@@ -39,7 +39,7 @@ class EtiquetaBD {
 	inline const BOOL   EsGrupoTag(void)																	{ return ((Tipo & TIPO_GRUPOTAG)	> 0);	}
 	inline const BOOL   EsDiscoTag(void)																	{ return ((Tipo & TIPO_DISCOTAG)	> 0);	}
 	inline const BOOL   EsNombreTag(void)																	{ return ((Tipo & TIPO_NOMBRETAG)	> 0);	}
-
+//	bool                operator == (const EtiquetaBD &Comp) const											{ if (Comp.Tipo == Tipo && Comp.Texto == Texto) return true; return false; }
 	DWORD				Tipo;
 	std::wstring		Texto;
 	UINT                Medios;

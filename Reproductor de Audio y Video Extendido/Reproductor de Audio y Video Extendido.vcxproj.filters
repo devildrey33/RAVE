@@ -328,9 +328,6 @@
     <ClInclude Include="MemoriaCompartida.h">
       <Filter>xXx _MAIN_ xXx\Memoria compartida</Filter>
     </ClInclude>
-    <ClInclude Include="ToolTipBD.h">
-      <Filter>Ventanas</Filter>
-    </ClInclude>
     <ClInclude Include="VentanaPrecarga.h">
       <Filter>Ventanas</Filter>
     </ClInclude>
@@ -533,9 +530,6 @@
     </ClCompile>
     <ClCompile Include="MemoriaCompartida.cpp">
       <Filter>xXx _MAIN_ xXx\Memoria compartida</Filter>
-    </ClCompile>
-    <ClCompile Include="ToolTipBD.cpp">
-      <Filter>Ventanas</Filter>
     </ClCompile>
     <ClCompile Include="VentanaPrecarga.cpp">
       <Filter>Ventanas</Filter>

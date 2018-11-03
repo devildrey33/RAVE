@@ -1,7 +1,7 @@
 #pragma once
 
 #include "DListaEx.h"
-#include "ToolTipBD.h"
+#include "ToolTipInfo.h"
 
 class ItemMedio : public DWL::DListaEx_Item {
   public:
@@ -55,6 +55,6 @@ class ListaMedios : public DWL::DListaEx {
 
 	size_t                     _ItemMarcadoOriginal;
 	std::vector<ItemMedio *>   _MediosOrdenados;
-	ToolTipBD                  _ToolTip;
+	ToolTipInfo_Medio          _ToolTip;
 };
 
