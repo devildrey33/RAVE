@@ -319,10 +319,10 @@ const BOOL RaveBD::ObtenerEtiquetas(void) {
 			std::wstring	Texto	 = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 1));
 			UINT			Tipo	 = static_cast<UINT>(sqlite3_column_int(SqlQuery, 2));
 			UINT			Medios	 = static_cast<UINT>(sqlite3_column_int(SqlQuery, 3));
-//			float			Nota	 = static_cast<float>(sqlite3_column_double(SqlQuery, 4));
-			libvlc_time_t	Tiempo   = static_cast<libvlc_time_t>(sqlite3_column_int64(SqlQuery, 4));
-			ULONGLONG		Longitud = static_cast<ULONGLONG>(sqlite3_column_int64(SqlQuery, 5));
-			_Etiquetas.push_back(EtiquetaBD(Texto, Tipo, /*Nota,*/ Tiempo, Longitud, Medios));
+			float			Nota	 = static_cast<float>(sqlite3_column_double(SqlQuery, 4));
+			libvlc_time_t	Tiempo   = static_cast<libvlc_time_t>(sqlite3_column_int64(SqlQuery, 5));
+			ULONGLONG		Longitud = static_cast<ULONGLONG>(sqlite3_column_int64(SqlQuery, 6));
+			_Etiquetas.push_back(EtiquetaBD(Texto, Tipo, Nota, Tiempo, Longitud, Medios));
 		}
 		if (SqlRet == SQLITE_BUSY) {
 			VecesBusy++;
@@ -685,7 +685,7 @@ const BOOL RaveBD::_CrearTablas(void) {
 											L"Texto"			L" VARCHAR(260),"	 	  
 											L"Tipo"				L" INTEGER,"
 											L"Medios"			L" INTEGER,"
-//											L"Nota"				L" DOUBLE,"				
+											L"Nota"				L" DOUBLE,"				
 											L"Tiempo"			L" BIGINT,"				
 											L"Longitud"			L" BIGINT"				
 									   L")";

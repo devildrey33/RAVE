@@ -213,8 +213,9 @@
 			V  S'ha de suavitzar el mostrar dels tooltips, ja que si es fa un doble click es talla l'animacio i torna a començar
 			V  Pintar la nota amb icones d'estrelles als ToolTipInfo_Medio i ToolTipInfo_Etiqueta
 			-  Missio compactar al máxim el tooltip
-				- Pas 1 Afegir la pista al nom, aixi trec una fila (uns 20px px d'altura)
+				V Pas 1 Afegir la pista al nom, aixi trec una fila (uns 20px px d'altura)
 				- Pas 2 Si el nom + pista supera en un 140% del tamany necesari per les columnes s'ha de partir
+					- (buscar exemples)
 
 		V  Afegir funcións de temps a les DAnimacion i DAnimacion_Color
 			V Fusionat DAnimacion_Color amb DAnimacionm ara puc fer animacions decimals i de color desde el mateix objecte a l'hora.
@@ -257,6 +258,7 @@
 		-  Afegir a les etiquetes les arrels, sense medir la distancia
 
 		-  Afegir tecles ràpides F1, F2, F3 -> Mostrar medio actual en : Tooltip, BD, Lista
+			V  F1
 		-  Afegir menu tipo Marca, que serveixi tant com a menú, o com a marca pel seu menú pare.
 			- La idea es que el menu generar llista mostri els seus sub-menus amb una marca, la marca al presionarla no oculta el menú, i despres si presionem en el pare (generar lista) generara una llista del que estigui marcat.
 				- aixó necesitara guardar les marques en la BD, i aixi es "personalitza" el tema de generar llisters aleatories.

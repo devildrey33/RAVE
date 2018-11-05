@@ -610,10 +610,7 @@ void ToolTipsInfo::_MostrarToolTip(ToolTipInfo *TT) {
 		_ToolTips[i]->Y = Tmp.top - (Tam.cy + TOOLTIPINFO_PADDING);
 		// Si el tooltip sobresale por encima de la parte superior de la ventana padre, lo oculto
 		if (RV.top > Tmp.top - (Tam.cy + TOOLTIPINFO_PADDING)) {
-			_ToolTips[i]->Ocultar(TRUE);
-		}
-		else {
-//			SetWindowPos(_ToolTips[i]->hWnd(), HWND_TOP, Tmp.left, Tmp.top - (Tam.cy + TOOLTIPINFO_PADDING), 0, 0, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOSIZE);
+			_ToolTips[i]->Ocultar(FALSE);
 		}
 	}
 
@@ -664,10 +661,10 @@ void ToolTipsInfo::RecolocarToolTips(void) {
 
 void ToolTipsInfo::Ocultar(void) {
 	for (size_t i = 0; i < _ToolTips.size(); i++) {
-		_ToolTips[i]->Ocultar(TRUE);		
-		delete _ToolTips[i];
+		_ToolTips[i]->Ocultar(FALSE);		
+//		delete _ToolTips[i];
 	}
-	_ToolTips.resize(0);
+//	_ToolTips.resize(0);
 }
 
 HWND ToolTipsInfo::Padre(void) {

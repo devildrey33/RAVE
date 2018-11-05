@@ -42,7 +42,7 @@ namespace DWL {
 		Iniciar(nDatos, Milisegundos, LambdaCallback);
 	}
 
-	void DAnimacion::Iniciar(const COLORREF Desde0, const COLORREF Hasta0, const COLORREF Desde1, const COLORREF Hasta1, const COLORREF Desde2, const COLORREF Hasta3, const COLORREF Desde3, const COLORREF Hasta2, const DWORD Milisegundos, std::function<void(Valores &, const BOOL)> LambdaCallback, FuncionTiempo Funcion) {
+	void DAnimacion::Iniciar(const COLORREF Desde0, const COLORREF Hasta0, const COLORREF Desde1, const COLORREF Hasta1, const COLORREF Desde2, const COLORREF Hasta2, const COLORREF Desde3, const COLORREF Hasta3, const DWORD Milisegundos, std::function<void(Valores &, const BOOL)> LambdaCallback, FuncionTiempo Funcion) {
 		Datos nDatos;
 		nDatos.AgregarRGB(Desde0, Hasta0, Funcion);
 		nDatos.AgregarRGB(Desde1, Hasta1, Funcion);

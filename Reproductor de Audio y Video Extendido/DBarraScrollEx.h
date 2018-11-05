@@ -5,7 +5,7 @@
 
 namespace DWL {
 	// Mostrar mensajes de depuración en la consola
-	#define DBARRASCROLLEX_MOSTRARDEBUG		FALSE
+	#define DBARRASCROLLEX_MOSTRARDEBUG		TRUE
 
 	enum DBarraScrollEx_Estado {
 		DBarraScrollEx_Estado_Invisible,
@@ -17,8 +17,8 @@ namespace DWL {
 	// Control que puede mostrar una barra de scroll vertical y una barra de scroll horizontal.
 	class DBarraScrollEx : public DControlEx {
 	  public:
-									DBarraScrollEx();
-		                           ~DBarraScrollEx();
+									DBarraScrollEx(void);
+		                           ~DBarraScrollEx(void);
 //		HWND						CrearBarraScrollEx(DhWnd &Padre, const int cX, const int cY, const int cAncho, const int cAlto, const UINT nID);
 		void						Scrolls_Pintar(HDC hDC, RECT &RC); // El HDC especificado se supone que es un back buffer
 		const BOOL					Scrolls_MouseMovimiento(DEventoMouse &DatosMouse);
