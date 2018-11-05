@@ -150,6 +150,7 @@ BOOL CALLBACK VentanaPrincipal::EnumerarPantallas(HMONITOR hMonitor, HDC hdcMoni
 		App.VentanaRave.MonitorDisponible	= TRUE;
 		return FALSE;
 	}
+	App.VentanaRave.MonitorDisponible = FALSE;
 	App.VentanaRave.RectMonitorActual = *lprcMonitor;
 	return TRUE;
 }

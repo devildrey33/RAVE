@@ -659,9 +659,9 @@ namespace DWL {
 				TextoHasta = COLOR_MENU_TEXTO_DESACTIVADO;
 				break;
 		}
-		_AniTransicion.Iniciar(_ColorFondo, FondoHasta, _ColorTexto, TextoHasta, Duracion, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
-			_ColorFondo = Valores[0];
-			_ColorTexto = Valores[1];
+		_AniTransicion.Iniciar(_ColorFondo, FondoHasta, _ColorTexto, TextoHasta, Duracion, [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
+			_ColorFondo = Datos[0].Color();
+			_ColorTexto = Datos[1].Color();
 			_Padre->Repintar();
 		});
 	}

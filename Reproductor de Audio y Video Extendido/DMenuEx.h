@@ -151,7 +151,7 @@ namespace DWL {
 		DMenuEx_Tipo           _Tipo;
 		static DhWnd          *_hWndDest;  // Destino para los mensajes
 //		HWND                   _hWndPadre; // Ventana padre que contiene el hWndDest;
-		DAnimacionColor        _AniTransicion;
+		DAnimacion             _AniTransicion;
 
 		DBarraDesplazamientoEx _Barra;
 		int                    _BarraPosX;

@@ -212,6 +212,13 @@
 				V Solucionar bug al reposicionar els tooltips que es posicionen uns pixels per sobre
 			V  S'ha de suavitzar el mostrar dels tooltips, ja que si es fa un doble click es talla l'animacio i torna a començar
 			V  Pintar la nota amb icones d'estrelles als ToolTipInfo_Medio i ToolTipInfo_Etiqueta
+			-  Missio compactar al máxim el tooltip
+				- Pas 1 Afegir la pista al nom, aixi trec una fila (uns 20px px d'altura)
+				- Pas 2 Si el nom + pista supera en un 140% del tamany necesari per les columnes s'ha de partir
+
+		V  Afegir funcións de temps a les DAnimacion i DAnimacion_Color
+			V Fusionat DAnimacion_Color amb DAnimacionm ara puc fer animacions decimals i de color desde el mateix objecte a l'hora.
+			V Retocats els parametres de les funcions lambda, ja no apuntan a vectors blancs, ara apunten a un objecte que fa de vector i de helper
 
 		-  Els tooltips d'etiquetes han de generar totes les seves dades (nota, tiempo, longitud, totalmedios)
 			-  S'ha de treure del objecte EtiquetaBD els membres : Medios, Tiempo, Longitud

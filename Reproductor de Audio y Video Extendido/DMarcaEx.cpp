@@ -124,11 +124,11 @@ namespace DWL {
 				break;
 		}
 
-		_AniTransicion.Iniciar(_ColorFondo, FondoHasta, _ColorFondoMarca, FondoMarcaHasta, _ColorBorde, BordeHasta, _ColorTexto, TextoHasta, Duracion, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
-			_ColorFondo		 = Valores[0];
-			_ColorFondoMarca = Valores[1];
-			_ColorBorde		 = Valores[2];
-			_ColorTexto		 = Valores[3];
+		_AniTransicion.Iniciar(_ColorFondo, FondoHasta, _ColorFondoMarca, FondoMarcaHasta, _ColorBorde, BordeHasta, _ColorTexto, TextoHasta, Duracion, [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
+			_ColorFondo		 = Datos[0].Color();
+			_ColorFondoMarca = Datos[1].Color();
+			_ColorBorde		 = Datos[2].Color();
+			_ColorTexto		 = Datos[3].Color();
 			Repintar();
 		});
 	}

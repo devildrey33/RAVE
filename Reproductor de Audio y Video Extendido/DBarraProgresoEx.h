@@ -86,7 +86,7 @@ namespace DWL {
 		float					           _Maximo;
 		float		         			   _Valor;
 		DBarraEx_Estado		         	   _Estado;
-		DAnimacionColor                    _AniTransicion;
+		DAnimacion                         _AniTransicion;
 		DBarraEx_MostrarValor              _MostrarValor;
 		BOOL                               _Activado;
 		DBarraEx_Alineacion                _Alineacion;

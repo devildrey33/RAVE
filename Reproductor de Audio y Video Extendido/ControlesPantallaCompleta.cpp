@@ -131,12 +131,12 @@ void ControlesPantallaCompleta::Transicion(const CPC_Transicion nTransicion) {
 			break;
 	}
 
-	_AniMostrar.Iniciar(static_cast<float>(Opacidad()), OpacidadHasta, Duracion, [=](std::vector<float> &Valores, const BOOL Terminado) {
-		Opacidad(static_cast<BYTE>(Valores[0]));
+	_AniMostrar.Iniciar(static_cast<float>(Opacidad()), OpacidadHasta, Duracion, [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
+		Opacidad(static_cast<BYTE>(Datos[0].Decimal()));
 //		_ColorBorde = Valores[1];
 //		_ColorTexto = Valores[2];
 		// Ha terminado de ocultarse
-		if (Valores[0] == 0.0f && Terminado == TRUE) {
+		if (Datos[0].Decimal() == 0.0f && Terminado == TRUE) {
 			Visible(FALSE);
 		}
 		else {

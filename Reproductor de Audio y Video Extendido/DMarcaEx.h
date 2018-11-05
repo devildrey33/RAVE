@@ -48,7 +48,7 @@ namespace DWL {
 		BOOL                   _Marcado;
 		DMarcaEx_Estado        _Estado;
 		DListaIconos_Icono    *_Icono;
-		DAnimacionColor        _AniTransicion;
+		DAnimacion             _AniTransicion;
 		COLORREF               _ColorFondoMarca;
 		COLORREF               _ColorFondo;
 		COLORREF               _ColorBorde;

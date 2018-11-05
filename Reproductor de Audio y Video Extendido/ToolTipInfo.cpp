@@ -8,7 +8,8 @@
 #define ID_TEMPORIZADOR_OCULTAR		1000
 #define ID_TEMPORIZADOR_ANIMACION	1001
 #define ID_ANIMACION_TTI            1002
-#define DESPLAZAMIENTOY              10.0f
+#define DESPLAZAMIENTOY              15.0f
+#define MAX_OPACIDAD                220.0f
 
 //#define TIEMPO_ANIMACION             400
 
@@ -27,6 +28,7 @@ void ToolTipInfo::Mostrar(const int cX, const int cY, const int cAncho, const in
 	_Padre = nPadre;
 	_CallbackOcultarTerminado = CallbackOcultarTerminado;
 	Y = cY;
+	X = cX;
 
 	DhWnd *DWndPadre = NULL;
 	if (_Padre != NULL) DWndPadre = _Padre->DPadre();
@@ -48,16 +50,29 @@ void ToolTipInfo::Mostrar(const int cX, const int cY, const int cAncho, const in
 		SetTimer(_hWnd, ID_TEMPORIZADOR_OCULTAR, App.BD.Opciones_TiempoToolTips(), NULL);
 	}
 	// Inicio la animación de la opacidad
-	Ani.Iniciar(0.0f, 255.0f, DESPLAZAMIENTOY, 0.0f, App.BD.Opciones_TiempoAnimaciones(), [=](std::vector<float> &Valores, const BOOL Terminado) {
-		Opacidad(static_cast<BYTE>(Valores[0]));
-		RECT RV;
-		GetWindowRect(_hWnd, &RV);
-		Mover(RV.left, Y + static_cast<int>(Valores[1]));
+	Ani.Iniciar(0.0f, MAX_OPACIDAD, DESPLAZAMIENTOY, 0.0f, App.BD.Opciones_TiempoAnimaciones(), [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
+		double Op = Datos[0].Decimal();
+		if (Op > 0.0f && Op < 255.1f) {
+			Opacidad(static_cast<BYTE>(Op));
+		}
+		Mover(X, Y + static_cast<int>(Datos[1].Decimal()));
+//		Debug_Escribir_Varg(L"Mostrar %d, %d\n", static_cast<int>(Datos[0].Decimal()), static_cast<int>(Datos[1].Decimal()))
 	});	
+	#if DEBUG_TOOLTIPINFO == TRUE
+		Debug_Escribir(L"ToolTipInfo::Mostrar\n");
+	#endif
 }
 
 
 void ToolTipInfo::Mover(const int PosX, const int PosY) {
+	// Si no es visible, o se está ocultando SALGO
+	if (_hWnd == NULL)						return;
+	if (IsWindowVisible(_hWnd) == FALSE)	return;
+//	if (_Ocultando == TRUE)					return;
+	#if DEBUG_TOOLTIPINFO == TRUE
+		Debug_Escribir_Varg(L"ToolTipInfo::Mover (X=%d, Y=%d)\n", PosX, PosY);
+	#endif	
+	// Determino la posición (manual, o debajo del mouse)
 	POINT Punto = { PosX, PosY };
 	if (PosX == -1 || PosY == -1) {
 		GetCursorPos(&Punto);
@@ -71,18 +86,27 @@ void ToolTipInfo::Mover(const int PosX, const int PosY) {
 void ToolTipInfo::Ocultar(const BOOL Rapido) {
 	if (_Ocultando == TRUE && Rapido == FALSE) return;
 	_Ocultando = TRUE;
+	#if DEBUG_TOOLTIPINFO == TRUE
+		Debug_Escribir_Varg(L"ToolTipInfo::Ocultar (Rapido=%d)\n", Rapido);
+	#endif
+
+	RECT RW;
+	GetWindowRect(_hWnd, &RW);
+	X = RW.left;
+	Y = RW.top;
 
 	KillTimer(_hWnd, ID_TEMPORIZADOR_OCULTAR);
 	//	KillTimer(_hWnd, ID_TEMPORIZADOR_ANIMACION);
 	if (Rapido == FALSE) {
 		if (_hWnd != NULL) { 
 			Ani.Terminar();
-			Ani.Iniciar(255.0f, 0.0f, 0.0f, DESPLAZAMIENTOY, App.BD.Opciones_TiempoAnimaciones(), [=](std::vector<float> &Valores, const BOOL Terminado) {
-				Opacidad(static_cast<BYTE>(Valores[0]));
-				RECT RV;
-				GetWindowRect(_hWnd, &RV);
-				Mover(RV.left, Y + static_cast<int>(Valores[1]));
-
+			Ani.Iniciar(MAX_OPACIDAD, 0.0f, 0.0f, 200.0f, App.BD.Opciones_TiempoAnimaciones(), [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
+				double Op = Datos[0].Decimal();				
+				if (Op > 0.0f && Op < 255.1f) {
+					Opacidad(static_cast<BYTE>(Op));
+				}
+//				Debug_Escribir_Varg(L"Ocultar %d, %d\n", static_cast<int>(Datos[0].Decimal()), static_cast<int>(Datos[1].Decimal()))
+				Mover(X + static_cast<int>(Datos[1].Decimal()), Y);
 				if (Terminado == TRUE) {
 					ShowWindow(_hWnd, SW_HIDE);
 					PostMessage(_hWnd, WM_CLOSE, 0, 0);
@@ -218,6 +242,10 @@ void ToolTipInfo_2Columnas::Pintar(HDC hDC) {
 	DeleteDC(DC);
 }
 
+
+// Para recortar las estrellas en decimales, no me queda otra que crear un segundo backbuffer del tamaño que debería ocupar la nota (16.0f * Nota)
+// DrawIconEx no permite pintar una porción del icono, si le pngo menos ancho o alto redimensiona el icono (COSA QUE NO ME INTERESA), por lo que me obliga a utilizar este segundo backbuffer.
+// Realmente pinto estrellas completas aunque solo se requiera un 0.1f, y al tener el backbuffer ajustado a la nota, se recorta la ultima estrella decimal.
 void ToolTipInfo_2Columnas::_PintarNota(HDC hDC, const int cX, const int cY, const float nNota) {
 	float Nota = nNota;
 	int X = 0;
@@ -245,7 +273,6 @@ void ToolTipInfo_2Columnas::_PintarNota(HDC hDC, const int cX, const int cY, con
 	SelectObject(DC, BmpViejo);
 	DeleteObject(Bmp);
 	DeleteDC(DC);
-
 }
 
 
@@ -282,30 +309,33 @@ SIZE ToolTipInfo_Medio::CalcularTam(void) {
 	_Col2.resize(0);
 
 	// Construyo las columnas con sus datos
-	const size_t	NumFilas = 8;
-	const wchar_t  *Col1[NumFilas] = { L"Pista", L"Genero", L"Grupo", L"Disco", L"Tiempo", L"Tamaño", L"Nota", L"Acabado" };
+	const size_t	NumFilas = 7;
+	const wchar_t  *Col1[NumFilas] = { L"Genero", L"Grupo", L"Disco", L"Tiempo", L"Tamaño", L"Nota", L"Acabado" };
 	std::wstring    Col2[NumFilas];
+	
+	// Creo el titulo con la pista y el nombre
+	Medio.PistaStr(_Titulo);
+	_Titulo += L" " + Medio.Nombre();
 
-	_Titulo = Medio.Nombre();
-
-	Medio.PistaStr(Col2[0]);	//	Col2[0] = std::to_wstring(nMedio.Pista());
-	Col2[1] = Medio.Genero;
-	Col2[2] = Medio.Grupo();
-	Col2[3] = Medio.Disco();
-	RaveVLC::TiempoStr(Medio.Tiempo, Col2[4]);
-	Strings::FormatoBytes(Medio.Longitud, Col2[5]);
-	Col2[6] = DWL::Strings::ToStrF(Medio.Nota, 2);
-	Col2[7] = std::to_wstring(Medio.Reproducido);
-	if (Medio.Reproducido == 1) Col2[7] += +L" vez";
-	else                        Col2[7] += +L" veces";
+//	Medio.PistaStr(Col2[0]);	//	Col2[0] = std::to_wstring(nMedio.Pista());
+	Col2[0] = Medio.Genero;
+	Col2[1] = Medio.Grupo();
+	Col2[2] = Medio.Disco();
+	RaveVLC::TiempoStr(Medio.Tiempo, Col2[3]);
+	Strings::FormatoBytes(Medio.Longitud, Col2[4]);
+	Col2[5] = DWL::Strings::ToStrF(Medio.Nota, 2);
+	Col2[6] = std::to_wstring(Medio.Reproducido);
+	if (Medio.Reproducido == 1) Col2[6] += +L" vez";
+	else                        Col2[6] += +L" veces";
 
 	// Miro el ancho del titulo
 	SIZE Tam = { 0, 0 };
-	GetTextExtentPoint32(hDC, Medio.Nombre().c_str(), static_cast<int>(Medio.Nombre().size()), &Tam);
+	GetTextExtentPoint32(hDC, _Titulo.c_str(), static_cast<int>(_Titulo.size()), &Tam);
 	int TamIcono = (_Icono == NULL) ? 0 : 20;
 	Ret.cx = TamIcono + (TOOLTIPINFO_PADDING * 2) + Tam.cx;
 
-	int Ancho1 = 0, Ancho2 = 0;
+	int Ancho1 = 0;
+	int Ancho2 = static_cast<int>(16.0f * Medio.Nota) + TOOLTIPINFO_PADDING; // El ancho mínimo es el tamaño que ocupan las estrellas de la nbota
 	// Miro el ancho de cada columna y guardo las columnas
 	for (size_t i = 0; i < NumFilas; i++) {
 		// Si la segunda columna tiene resultado
@@ -323,15 +353,29 @@ SIZE ToolTipInfo_Medio::CalcularTam(void) {
 			Ret.cy += 20;
 		}
 	}
+
 	// Miro si el ancho del titulo es mas grande que el ancho de las dos columnas sumadas
 	int AnchoTmp = (TOOLTIPINFO_PADDING * 2) + Ancho1 + 20 + Ancho2;	// el 20 es el espacio para los ':'
 	_AnchoCol1 = TOOLTIPINFO_PADDING + Ancho1 + 20;
 
 	if (Ret.cx < AnchoTmp) Ret.cx = AnchoTmp;
 
+	/*   _______ ____  _____   ____
+		|__   __/ __ \|  __ \ / __ \
+		   | | | |  | | |  | | |  | |  O
+		   | | | |  | | |  | | |  | |
+		   | | | |__| | |__| | |__| |  O
+		   |_|  \____/|_____/ \____/	 */
+	// Hay que mirar si el titulo supera el 140& del ancho de las columnas, y en ese caso reajustar-lo para varias líneas
+	// Subgerencia crear un RECT dentro del objeto para el titulo, y pintar-lo con DrawText DT_MULTILINE añadiendo los '\n' que sean necesarios
+	// Por ultimo recalcular el ancho máximo de las lineas del titulo, y la altura máxima
+
+
 	// Des-selecciono la fuente y libero el DC
 	SelectObject(hDC, VFont);
 	ReleaseDC(NULL, hDC);
+
+
 
 	return Ret;
 }

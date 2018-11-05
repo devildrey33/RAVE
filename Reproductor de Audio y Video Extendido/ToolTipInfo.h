@@ -17,6 +17,8 @@ enum ToolTipInfo_Tipo {
 };
 
 #define POS_MOUSE -1
+// Depuración de los tooltips
+#define DEBUG_TOOLTIPINFO FALSE
 
 // Plantilla para un tooltip básico
 class ToolTipInfo : public DWL::DVentana {
@@ -26,14 +28,16 @@ class ToolTipInfo : public DWL::DVentana {
 	void							Mostrar(const int cX, const int cY, const int cAncho, const int cAlto, ToolTipsInfo *nPadre, std::function<void(void)> CallbackOcultarTerminado);
 	void							Mover(const int PosX = POS_MOUSE, const int PosY = POS_MOUSE);
 	void							Ocultar(const BOOL Rapido = FALSE);
+	inline const BOOL               Ocultando(void) { return _Ocultando;  }
 	LRESULT CALLBACK				GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	DWL::DAnimacion					Ani;
 									// Virtuales 
 	virtual void					Pintar(HDC DC)																				{ };
 	virtual SIZE					CalcularTam(void)																			{ SIZE R = { 0, 0 }; return R; };
 	virtual inline ToolTipInfo_Tipo	Tipo(void)																					{ return ToolTipInfo_Tipo_SinTipo;	};
+	int                             X;
 	int                             Y;
-  protected:
+protected:
 	void		                   _Evento_Pintar(void);
     void                           _Evento_Temporizador(INT_PTR tID);
 

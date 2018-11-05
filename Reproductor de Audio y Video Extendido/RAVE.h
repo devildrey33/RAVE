@@ -163,10 +163,16 @@ void RAVE_Iniciar();
 
 
 #ifdef RAVE_MOSTRAR_CONSOLA 
+	// Macros para escribir datos en la consola de depuración 
+	// Macro que escribe datos con argumentos variables (al estilo printf), sin mostrar milisegundos (OJO! REQUIERE TERMINAR LA LÍNEA CON '\n')
 	#define Debug_EscribirSinMS_Varg(TEXTO, ...)	App.ConsolaDebug.Escribir(TEXTO, __VA_ARGS__);
+	// Macro que escribe datos con argumentos variables (al estilo printf), mostrando los milisegundos desde el último Debug_Escribir (OJO! REQUIERE TERMINAR LA LÍNEA CON '\n')
 	#define Debug_Escribir_Varg(TEXTO, ...)			App.ConsolaDebug.EscribirMS(TEXTO, __VA_ARGS__);
+	// Macro que escribe datos, sin mostrar milisegundos (OJO! REQUIERE TERMINAR LA LÍNEA CON '\n')
 	#define Debug_EscribirSinMS(TEXTO)				App.ConsolaDebug.Escribir(TEXTO);
+	// Macro que escribe datos, sin mostrar milisegundos, mostrando los milisegundos desde el último Debug_Escribir (OJO! REQUIERE TERMINAR LA LÍNEA CON '\n')
 	#define Debug_Escribir(TEXTO)					App.ConsolaDebug.EscribirMS(TEXTO);
+	// WUT??
 	#define Debug_Leer(TEXTO)						App.ConsolaDebug.Leer(TEXTO);
 	// Marco que muestra si la función WINAPI tiene un error por la consola (GetLastError)
 	#define Debug_MostrarUltimoError()				App.ConsolaDebug.MostrarUltimoError()

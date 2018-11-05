@@ -54,10 +54,10 @@ void BarraVolumen::Transicion(const DBarraEx_Transicion nTransicion) {
 			break;
 	}
 
-	_AniTransicion.Iniciar(_ColorFondo, FondoHasta, _ColorBorde, BordeHasta, _ColorBarra, BarraHasta, Duracion, [=](std::vector<COLORREF> &Valores, const BOOL Terminado) {
-		_ColorFondo = Valores[0];
-		_ColorBorde = Valores[1];
-		_ColorBarra = Valores[2];
+	_AniTransicion.Iniciar(_ColorFondo, FondoHasta, _ColorBorde, BordeHasta, _ColorBarra, BarraHasta, Duracion, [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
+		_ColorFondo = Datos[0].Color();
+		_ColorBorde = Datos[1].Color();
+		_ColorBarra = Datos[2].Color();
 		Repintar();
 	});
 

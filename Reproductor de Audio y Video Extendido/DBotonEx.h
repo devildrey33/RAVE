@@ -74,7 +74,7 @@ namespace DWL {
 		DListaIconos_Icono    *_Icono;
 		int                    _PosIconoX;
 		int                    _PosIconoY;
-		DAnimacionColor        _AniTransicion;
+		DAnimacion             _AniTransicion;
 		COLORREF               _ColorBorde;
 		COLORREF               _ColorFondo;
 		COLORREF               _ColorTexto;

@@ -195,7 +195,9 @@ void ListaMedios::Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse) {
 			_ToolTip.Ocultar();
 		}
 		else {
-			_ToolTip.Mover();
+			if (_ToolTip.Ocultando() == FALSE) {
+				_ToolTip.Mover();
+			}
 		}
 	}
 }

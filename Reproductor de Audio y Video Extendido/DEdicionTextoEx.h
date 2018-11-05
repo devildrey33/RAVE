@@ -61,8 +61,8 @@ namespace DWL {
 
 		size_t                     _PosCursor;
 //		size_t                     _FinSeleccion;
-		DAnimacionColor            _AniCursor;
-		DAnimacionColor            _AniTransicion;		
+		DAnimacion                 _AniCursor;
+		DAnimacion                 _AniTransicion;		
 		BOOL                       _Presionado;
 	};
 

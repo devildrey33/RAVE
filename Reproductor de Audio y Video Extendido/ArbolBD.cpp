@@ -375,8 +375,8 @@ void ArbolBD::Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse) {
 			_ToolTipE.Ocultar();
 		}
 		else {
-			_ToolTipM.Mover();
-			_ToolTipE.Mover();
+			if (_ToolTipM.Ocultando() == FALSE)	_ToolTipM.Mover();
+			if (_ToolTipE.Ocultando() == FALSE) _ToolTipE.Mover();
 		}
 	}
 }
