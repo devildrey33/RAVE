@@ -45,6 +45,32 @@ void ToolTipInfo::Mostrar(const int cX, const int cY, const int cAncho, const in
 	SetWindowPos(_hWnd, DWndPadre->hWnd(), cX, cY, cAncho, cAlto, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 	// Situo el padre justo detras de este tooltip
 	SetWindowPos(DWndPadre->hWnd(), _hWnd, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+
+
+	// Corrijo el z-order de las ventanas que puedan tener el foco en este momento
+	HWND Foco = GetForegroundWindow();
+	if (DWndPadre->hWnd() != Foco) {
+		// Si la ventana del thread analizar tiene el foco
+		if (Foco == App.VentanaRave.ThreadAnalizar.hWnd()) {
+			// Si la ventana opciones es visible
+			if (App.VentanaOpciones.Visible() == TRUE) {
+				// Muevo la ventana de las opciones arriba del todo
+				SetWindowPos(App.VentanaOpciones.hWnd(), HWND_TOP, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW | SWP_NOSIZE | SWP_NOMOVE);
+			}
+			// Muevo la ventana del thread arriba del todo
+//			SetWindowPos(Foco, HWND_TOP, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW | SWP_NOSIZE | SWP_NOMOVE);
+		}
+		// Si la ventana opciones tiene el foco
+//		if (Foco == App.VentanaOpciones.hWnd()) {
+		// Muevo la ventana de las opciones arriba del todo
+		SetWindowPos(Foco, HWND_TOP, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW | SWP_NOSIZE | SWP_NOMOVE); 
+		// NOTA : De moment ho deixo general, si amb els warcos no dona problemes, es quedará aixi.
+//		}
+	}
+
+
+
+
 	// Inicio el temporizador para ocultar el tooltip (si está bajo el gestor de tooltips ToolTipsInfo)
 	if (_Padre != NULL) {
 		SetTimer(_hWnd, ID_TEMPORIZADOR_OCULTAR, App.BD.Opciones_TiempoToolTips(), NULL);
@@ -79,7 +105,7 @@ void ToolTipInfo::Mover(const int PosX, const int PosY) {
 		Punto.x += 10;
 		Punto.y += 20;
 	}
-	SetWindowPos(_hWnd, HWND_TOP, Punto.x, Punto.y, 0, 0, SWP_NOACTIVATE | SWP_NOSIZE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+	SetWindowPos(_hWnd, NULL, Punto.x, Punto.y, 0, 0, SWP_NOACTIVATE | SWP_NOSIZE | SWP_FRAMECHANGED | SWP_SHOWWINDOW | SWP_NOZORDER);
 }
 
 

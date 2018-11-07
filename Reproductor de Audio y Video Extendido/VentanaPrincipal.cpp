@@ -596,7 +596,6 @@ void VentanaPrincipal::Evento_MenuEx_Barra_Cambiando(const UINT cID, const float
 		case ID_MENUVIDEO_CONTRASTE				:	App.VLC.Contraste(ValorBarra);			return;
 		case ID_MENUVIDEO_SATURACION			:	App.VLC.Saturacion(ValorBarra);			return;
 	}
-
 }
 
 // MouseUp en la barraEx del menú
@@ -608,13 +607,18 @@ void VentanaPrincipal::Evento_MenuEx_Barra_Cambiado(const UINT cID, const float 
 		case ID_MENUVIDEO_SATURACION			:	App.VLC.Saturacion(ValorBarra);			return;
 		// Menu Lista -> Nota
 		case ID_MENULISTA_NOTA:
+			std::wstring StrMedio;
 			for (LONGLONG i = 0; i < Lista.TotalItems(); i++) {
 				if (Lista.Medio(i)->Seleccionado == TRUE) {
 					App.BD.MedioNota(Lista.Medio(i), ValorBarra);
+					StrMedio = Lista.Medio(i)->Texto(0) + L" " + Lista.Medio(i)->Texto(1);
 				}
 			}
 			App.VentanaRave.Menu_Lista.Ocultar(TRUE);
-			App.MostrarToolTipPlayer(L"Nota actualizada a " + DWL::Strings::ToStrF(ValorBarra, 2));
+			LONGLONG TM;
+			TM = Lista.TotalItemsSeleccionados();
+			if (TM == 1)	{	App.MostrarToolTipPlayer(StrMedio + L" ahora tiene " + DWL::Strings::ToStrF(ValorBarra, 2) + L" de nota");			}
+			else			{	App.MostrarToolTipPlayer(L"Nota actualizada a " + DWL::Strings::ToStrF(ValorBarra, 2));								}
 			return;
 	}
 }
@@ -893,6 +897,8 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 		App.ControlesPC.Ocultar();
 		DWL::DMouse::Visible(TRUE);
 		KillTimer(hWnd(), TIMER_CPC_INACTIVIDAD);
+		// Elimino la región de pintado en la barra de tareas
+		BOOL R = BarraTareas.Clip(&RC);
 //		AsignarFoco();
 	}
 

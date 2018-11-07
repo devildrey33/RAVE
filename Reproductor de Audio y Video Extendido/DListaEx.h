@@ -95,7 +95,7 @@ namespace DWL {
 		inline const BOOL                               ObtenerRectaItem(DListaEx_Item *eItem, RECT &rRecta) { return ObtenerRectaItem(ItemPos(eItem), rRecta); }
 
 		inline const LONGLONG							TotalItems(void) { return static_cast<LONGLONG>(_Items.size()); }
-//		void											TotalItemsSeleccionados(void); // poc util...
+		const LONGLONG									TotalItemsSeleccionados(void);
 
 		inline const size_t                             TotalColumnas(void) { return _Columnas.size();  }
 		inline DListaEx_Columna                        *Columna(const LONGLONG cPos) { return _Columnas[static_cast<unsigned int>(cPos)];  }

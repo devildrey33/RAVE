@@ -59,9 +59,9 @@ class RAVE {
 									// Obtiene la linea de comando y determina que hay que hacer
 	const LineaComando				ObtenerLineaComando(std::vector<std::wstring> &Paths);
 
-	void							Eventos_Mirar();
+	void							Eventos_Mirar(void);
 
-	void							ObtenerSO();
+	void							ObtenerSO(void);
 
 									// Evento Tecla soltada general de todas las ventanas excepto el video del VLC
 	void                            Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado);

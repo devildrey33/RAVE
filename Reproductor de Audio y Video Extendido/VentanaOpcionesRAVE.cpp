@@ -174,7 +174,7 @@ void VentanaOpcionesRAVE::Crear(void) {
 	MarcaSumar005.Marcado(App.BD.Opciones_Sumar005());
 
 	SeparadorLista3.Crear(&MarcoListas, 0, 270, RC.right - 10);
-	EtiquetaListaInicio.CrearEtiquetaEx(&MarcoListas, L"Selecciona que lista debe cargar el reproductor al iniciar"	, 10, 280, RC.right - 205, 20, ID_ETIQUETA_LISTAINICIO);
+	EtiquetaListaInicio.CrearEtiquetaEx(&MarcoListas, L"Que tipo de lista debe generar el reproductor al iniciar?"	, 10, 280, RC.right - 205, 20, ID_ETIQUETA_LISTAINICIO);
 	DesplegableListaInicio.CrearListaDesplegable(&MarcoListas, L"", ID_DESPLEGABLE_LISTAINICIO, 0					, RC.right - 205, 280, 185, 20, FALSE, 160);
 	ActualizarListaInicio();
 
@@ -215,7 +215,7 @@ void VentanaOpcionesRAVE::Crear(void) {
 
 void VentanaOpcionesRAVE::ActualizarListaInicio(void) {
 	const wchar_t *Listas[7] = {
-		L"Nada",					// 0
+		L"Ninguna",					// 0
 		L"Genero aleatório",
 		L"Grupo aleatório",
 		L"Disco aleatório",

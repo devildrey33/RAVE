@@ -87,10 +87,10 @@ namespace DWL {
 
 
 	const BOOL DBarraTareas::Clip(RECT *Recta) {
-		RECT RC;
-		if (Recta == NULL) GetClientRect(App.VentanaRave.hWnd(), &RC);
-		else               RC = *Recta;
-		HRESULT Ret = _BarraTareas->SetThumbnailClip(_hWnd, &RC);
+//		RECT RC;
+//		if (Recta == NULL) GetClientRect(App.VentanaRave.hWnd(), &RC);
+//		else               RC = *Recta;
+		HRESULT Ret = _BarraTareas->SetThumbnailClip(_hWnd, Recta);
 		return (Ret == S_OK) ? TRUE : FALSE;
 	}
 

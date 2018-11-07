@@ -90,6 +90,12 @@ ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {
 		}
 	}
 
+	// El medio no existe
+	if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(nMedio->Path.c_str())) {
+		Debug_Escribir_Varg(L"ListaMedios::AgregarMedio El medio path : '%s', id : '%d' no existe!", nMedio->Path.c_str(), nMedio->Hash);
+		return NULL;
+	}
+
 	// Miro el icono que necesita el medio
 	int nIcono = RAVE_Iconos::RAVE_Icono_Cancion;
 	switch (nMedio->TipoMedio) {

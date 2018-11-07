@@ -217,36 +217,57 @@
 				- Pas 2 Si el nom + pista supera en un 140% del tamany necesari per les columnes s'ha de partir
 					- (buscar exemples)
 
+		
+
 		V  Afegir funcións de temps a les DAnimacion i DAnimacion_Color
 			V Fusionat DAnimacion_Color amb DAnimacionm ara puc fer animacions decimals i de color desde el mateix objecte a l'hora.
 			V Retocats els parametres de les funcions lambda, ja no apuntan a vectors blancs, ara apunten a un objecte que fa de vector i de helper
 
 		-  Els tooltips d'etiquetes han de generar totes les seves dades (nota, tiempo, longitud, totalmedios)
-			-  S'ha de treure del objecte EtiquetaBD els membres : Medios, Tiempo, Longitud
-				-  També s'ha de treure de la BD
+			X  S'ha de treure del objecte EtiquetaBD els membres : Medios, Tiempo, Longitud (i de rebot he recuperat el Nota)
+				X  També s'ha de treure de la BD
+			-  Lo millor es anar refrescant les dades al mostrar el tooltip, haig de fer un multisqlselect chachi 
+		
+		-  Tractar arxius del tipus CRDOWNLOAD i OPDOWNLOAD per renombrar-los al acabar de reproduïr, OFC també s'haura de guardar el nou path a la BD.
 
-		-  DBarraScrollEx
-			- Els calculs no estan ben fets, s'ha de restar la pagina al total, i mirar si em resulta mes facil calcular-ho de 0.0 a 1.0 i no de 0.0 a 100.0
-				- Aixó implica revisar calculs en DArbolEx i DListaEx...
-			- Direfenciar estat de la barra resaltat / presionat, i estat del fondo resaltat / presionat
-			- Afegir transicións de resaltat i presionat
+		V  Solucionar problema amb el manifest que no em deixa obtenir el SO correctament i a partir de Win8 ja no em diu el SO correcte.		
+		V  Solucionar Follón de l'ordre de les finestres amb els tooltips quan hi ha la finestra opcions o la del threadanalizar
+
+		V  DBarraScrollEx
+			V  La barra del scroll ha de tenir un mínim PERCEPTIBLE (no val 1 pixel xd)
+			V  Els calculs no estan ben fets, s'ha de restar la pagina al total, i mirar si em resulta mes facil calcular-ho de 0.0 a 1.0 i no de 0.0 a 100.0
+				V Aixó implica revisar calculs en DArbolEx i DListaEx...
+					V Revisar el teclat que fa coses rares amb els dos controls
+			V  Direfenciar estat de la barra resaltat fondo, barra
+			V  Afegir transicións de resaltat i presionat
 		-  DArbolEx 
-			- Separar l'icona un pel mes del texte (per que no quedi l'icona enganxatr a la selecció)  [subgerència : afegir un doble padding en ves d'un padding normal]
-			- Transicións de resaltat i presionat
-			- Refer Shift + AvPag & RePag
-			- Fer expansors amb un triangle, i deixar les dues opcions
+			-  Separar l'icona un pel mes del texte (per que no quedi l'icona enganxat a la selecció)  [subgerència : afegir un doble padding en ves d'un padding normal]
+			-  Refer Shift + AvPag & RePag
+			-  Fer expansors amb un triangle, i deixar les dues opcions.
+			-  Afegir borde amb transició
+			-  Transicións de resaltat i presionat
+			-  Resaltar texte buscat (ha de ser una capa per pintar el fondo abans de pintar el texte)
 		-  DListaEx
 			-  Al fer click amb el buto dret, detectar si nomes hi ha un item seleccionat, per desseleccionar tot o no,
 			-  Drag & drop intern a la DListaEx per moure items (multiselecció inclosa)
 			-  Transicións de resaltat i presionat		
-		-  DMenuEx
-			-  MostrarMenu i _MostrarSubMenu ha de detectar la pantalla on es mostra per sapiguer si te suficient espai per mostrar el submenu o l'ha de posar a l'altre banda
+			-  Afegir borde amb transició
+			-  Resaltar texte buscat (ha de ser una capa per pintar el fondo abans de pintar el texte)
+		-  ListaMedios
+			-  Mostrar el % del medi reproduit en el item que es el MedioActual
+				- Necesitare crear virtuals a DListaEx
+
+		V  DMenuEx
+			V  MostrarMenu i _MostrarSubMenu ha de detectar la pantalla on es mostra per sapiguer si te suficient espai per mostrar el submenu o l'ha de posar a l'altre banda
+			-  Afegir transició al mostrar
+
 		-  DDlgDirectorios
 			-  Captar WM_RESIZE i modificar tamany dels controls en consequencia.
 				- Guardar el tamany a les opcions de la BD
 
 		-  Mostrar en la BD no funciona correctament.., proba-ho amb Simphpony X -> Prelude to the new milenium
-		-  Tractar arxius del tipus CRDOWNLOAD i OPDOWNLOAD per renombrar-los al acabar de reproduïr, OFC també s'haura de guardar el nou path a la BD.
+		
+
 
 		-  Afegir al MenuBD : 
 			-  Nota (per poguer modificar la nota de tots els medis d'un directori)
@@ -275,11 +296,23 @@
 		-  Mostrar la llista de medis al reproduir un medi de forma "diferent", per exemple una liista translucida reduida (pensa que aixó nomes pasara si el reproductor no está maximitzat i está reproduint video)
 		-  Si la llista / BD (autio/video) está buida mostrar un icona que inciti a arrosegar un arxiu / directori
 
+		-  La llista s'ha de poguer veure desde els ControlesPantallaCompleta
+			- Munta-t'ho com vulguis xd
+
 		-  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
 			- Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)
 				X  DE MOMENT NO HA PASAT MES DESDE QUE VAIG ARRECLAR L'EXTENSIO CRDOWNLOAD.
 				-  Ha tornat a pasar al grabar un directori nou dintre d'una arrel existent, pero aquest cop m'ha deixat fer play desde la llista
+				V  Ho he estat probant en debug sense BD i ja no pasa mes :/
 
+
+		-  Opcions 
+			-  Llista
+				-  Mezclar listas aleatoíras generadas por genero, grupo, 50 canciones.
+				-  No Mezclar listas aleatórias generadas por disco.
+
+		-  Les llistes aleatóries per estil, grup, 50 can han d'activar el shufle
+			- Les llistes aleatóries per disc han de desactivar el shufle
 
 	RAVE 0.7
 		-  Finestra de propietats per un medi o una etiqueta

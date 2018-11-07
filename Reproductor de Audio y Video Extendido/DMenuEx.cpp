@@ -73,7 +73,7 @@ namespace DWL {
 	}
 
 
-	void DMenuEx::Mostrar(DhWnd *nPadre, const int PosX, const int PosY) {
+	void DMenuEx::Mostrar(DhWnd *nPadre, int PosX, int PosY) {
 		_MouseDentro    = FALSE;
 		_MenuResaltado  = NULL;
 		_MenuPresionado = NULL;
@@ -84,8 +84,22 @@ namespace DWL {
 		// Guardo el hWnd de la ventana que ha llamado al menú
 		_hWndDest = nPadre;
 		if (_hWnd == NULL) {
-			CrearVentana(_hWndDest, L"DMenuEx", L"", PosX, PosY, Tam.x, Tam.y, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST, CS_DBLCLKS);
 
+			// Miro si hay suficiente espacio para mostrar el menú en el monitor actual
+			MONITORINFO InfoMonitor;
+			InfoMonitor.cbSize = sizeof(MONITORINFO);
+			// Obtengo la recta del monitor
+			HMONITOR Monitor = MonitorFromWindow(_hWndDest->hWnd(), MONITOR_DEFAULTTOPRIMARY);
+			GetMonitorInfoA(Monitor, &InfoMonitor);
+			// No hay suficiente ancho
+			if (PosX + Tam.x < InfoMonitor.rcMonitor.left || PosX + Tam.x > InfoMonitor.rcMonitor.right) {
+				PosX = InfoMonitor.rcMonitor.right - Tam.x;
+			}
+			if (PosY + Tam.y < InfoMonitor.rcMonitor.top || PosY + Tam.y > InfoMonitor.rcMonitor.bottom) {
+				PosY = InfoMonitor.rcMonitor.bottom - Tam.y;
+			}
+			// Creo la ventana
+			CrearVentana(_hWndDest, L"DMenuEx", L"", PosX, PosY, Tam.x, Tam.y, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST, CS_DBLCLKS);	
 			DMouse::CambiarCursor();
 			Opacidad(230);
 			MARGINS Margen = { 0, 0, 0, 1 };
@@ -318,7 +332,7 @@ namespace DWL {
 
 	// Función que pinta un separador
 	void DMenuEx::_PintarSeparador(HDC DC, DMenuEx *pMenu) {
-		RECT RectaSeparador = { pMenu->_Recta.left + 10 , pMenu->_Recta.top + DMENUEX_MARGEN_Y,  pMenu->_Recta.right - 10 , pMenu->_Recta.bottom - DMENUEX_MARGEN_Y };
+		RECT RectaSeparador = { pMenu->_Recta.left + 5 , pMenu->_Recta.top + DMENUEX_MARGEN_Y,  pMenu->_Recta.right - 5 , pMenu->_Recta.bottom - DMENUEX_MARGEN_Y };
 
 		// Pinto el fondo
 		HBRUSH BrochaFondo = CreateSolidBrush(COLOR_MENU_FONDO);
@@ -497,14 +511,15 @@ namespace DWL {
 
 
 	// Función que muestra un Sub-menu con mas sub-menus 
-	void DMenuEx::_MostrarSubMenu(DMenuEx *nPadre, const int cX, const int cY, const BOOL AsignarFoco) {
+	void DMenuEx::_MostrarSubMenu(DMenuEx *nPadre, int cX, int cY, const BOOL AsignarFoco) {
 		if (_Activado == FALSE) return;
 
 		if (_hWnd == NULL) {
+
 			#if DMENUEX_MOSTRARDEBUG == TRUE
 				Debug_Escribir_Varg(L"DMenuEx::_MostrarSubMenu AsignarFoco = %d\n", AsignarFoco);
 			#endif
-			POINT Punto = { cX, cY };
+			//POINT Punto = { cX, cY };
 			RECT WR;
 			GetWindowRect(nPadre->hWnd(), &WR);
 
@@ -514,8 +529,26 @@ namespace DWL {
 
 			// Calculo el tamaño que necesitará el menú
 			POINT Tam = CalcularEspacio();
+			
+			cX = -4 + WR.left + cX;
+			cY = -1 + WR.top + cY;
 
-			CrearVentana(_hWndDest, L"DMenuEx", L"", -4 + WR.left + Punto.x, -1 + WR.top + Punto.y, Tam.x, Tam.y, WS_POPUP | WS_CAPTION, NULL, CS_DBLCLKS);
+			// Miro si hay suficiente espacio para mostrar el menú en el monitor actual
+			MONITORINFO InfoMonitor;
+			InfoMonitor.cbSize = sizeof(MONITORINFO);
+			// Obtengo la recta del monitor
+			HMONITOR Monitor = MonitorFromWindow(_hWndDest->hWnd(), MONITOR_DEFAULTTOPRIMARY);
+			GetMonitorInfoA(Monitor, &InfoMonitor);
+			// No hay suficiente ancho
+			if (cX + Tam.x > InfoMonitor.rcMonitor.right) {
+				cX = WR.left - Tam.x + 4;
+			}
+			if (cY + Tam.y > InfoMonitor.rcMonitor.bottom) {
+				cY = WR.top - Tam.y + 1;
+			}
+
+
+			CrearVentana(_hWndDest, L"DMenuEx", L"", cX, cY, Tam.x, Tam.y, WS_POPUP | WS_CAPTION, NULL, CS_DBLCLKS);
 
 			DMouse::CambiarCursor();
 			Opacidad(230);
@@ -524,7 +557,7 @@ namespace DWL {
 			DwmExtendFrameIntoClientArea(_hWnd, &Margen);
 
 			// Asigno la posición del menú y lo hago siempre visible
-			SetWindowPos(_hWnd, HWND_TOPMOST, -4 + WR.left + Punto.x, -1 + WR.top + Punto.y, Tam.x, Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+			SetWindowPos(_hWnd, HWND_TOPMOST, cX, cY, Tam.x, Tam.y, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 
 			// Creo las barras (si ahy alguna), y asigno los colores por defecto en cada submenu
 			for (size_t i = 0; i < _Menus.size(); i++) {

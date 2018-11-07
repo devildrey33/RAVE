@@ -2,6 +2,7 @@
 
 #include "DControlEx.h"
 #include "DEventoMouse.h"
+#include "DAnimacion.h"
 
 namespace DWL {
 	// Mostrar mensajes de depuración en la consola
@@ -10,9 +11,19 @@ namespace DWL {
 	enum DBarraScrollEx_Estado {
 		DBarraScrollEx_Estado_Invisible,
 		DBarraScrollEx_Estado_Normal,
-		DBarraScrollEx_Estado_Resaltado,
+		DBarraScrollEx_Estado_FondoResaltado,
+		DBarraScrollEx_Estado_BarraResaltada,
+//		DBarraScrollEx_Estado_Resaltado,
 		DBarraScrollEx_Estado_Presionado
 	};
+
+	enum DBarraScrollEx_Transicion {
+		DBarraScrollEx_Transicion_Normal,
+		DBarraScrollEx_Transicion_BarraResaltada,
+		DBarraScrollEx_Transicion_FondoResaltado,
+		DBarraScrollEx_Transicion_Presionado
+	};
+
 
 	// Control que puede mostrar una barra de scroll vertical y una barra de scroll horizontal.
 	class DBarraScrollEx : public DControlEx {
@@ -26,7 +37,7 @@ namespace DWL {
 		const BOOL					Scrolls_MouseSoltado(DEventoMouse &DatosMouse);
 
 //		const BOOL					Scrolls_MouseEntrando();
-		const BOOL                  Scrolls_MouseSaliendo();
+		const BOOL                  Scrolls_MouseSaliendo(void);
 									// Obtiene el área que pertenece al control (RectaCliente es el resultado de GetClientRect, y RectaClienteSinScroll es el área del control excluyendo las barras de scroll) 
 		void						ObtenerRectaCliente(RECT *RectaCliente, RECT *RectaClienteSinScroll);
 									// Obtiene el área de los scrolls
@@ -52,17 +63,20 @@ namespace DWL {
 		const float					ScrollV_Posicion(void);
 		void						ScrollV_Visible(const BOOL nVisible);
 
-		COLORREF				    ColorFondo;
+/*		COLORREF				    ColorFondo;
 		COLORREF				    ColorScroll;
 		COLORREF				    ColorScrollResaltado;
 		COLORREF                    ColorScrollPresionado;
 		COLORREF				    ColorFondoScroll;
 		COLORREF				    ColorFondoScrollResaltado;
-		COLORREF				    ColorFondoScrollPresionado;
+		COLORREF				    ColorFondoScrollPresionado;*/
 
 		virtual void                AvPag(void);
 		virtual void                RePag(void);
-	protected:
+
+		void						ScrollV_Transicion(const DBarraScrollEx_Transicion nTransicion);
+		void						ScrollH_Transicion(const DBarraScrollEx_Transicion nTransicion);
+	  protected:
 		void					   _PintarBarraScrollEx(HDC hDC, RECT &RectaScroll, RECT &RectaBarra, const COLORREF pColorBarra, const COLORREF pColorFondo);
 		const float				   _CalcularPosScrollH(const UINT nTam, const int nPos);
 		const float				   _CalcularPosScrollV(const UINT nTam, const int nPos);
@@ -79,7 +93,12 @@ namespace DWL {
 		float					   _ScrollH_Pagina;
 		float					   _ScrollH_Posicion;
 
-
+		DAnimacion                 _ScrollV_AniTransicion;
+		DAnimacion                 _ScrollH_AniTransicion;
+		COLORREF                   _ColorFondoV;
+		COLORREF                   _ColorBarraV;
+		COLORREF                   _ColorFondoH;
+		COLORREF                   _ColorBarraH;
 	};
 
 };

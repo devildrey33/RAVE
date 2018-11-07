@@ -49,7 +49,6 @@ void ThreadAgregarArchivosLista::Cancelar(const BOOL nCancelar) {
 
 
 unsigned long ThreadAgregarArchivosLista::_ThreadAgregarArchivosLista(void *pThis) {
-	
 	ThreadAgregarArchivosLista *This = reinterpret_cast<ThreadAgregarArchivosLista *>(pThis);
 	// Inicio la BD en este thread
 	This->_BD.Iniciar();

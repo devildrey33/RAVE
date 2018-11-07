@@ -147,8 +147,11 @@ namespace DWL {
 				if (nPadre->TotalHijos() > 0 && nPos > 0) { nNodo->_Anterior = nPadre->_Hijos[nPos - 1]; }
 
 				// Enlazo el nodo siguiente
-				if (nPos > 0) { nPadre->_Hijos[nPos - 1]->_Siguiente = nNodo; }
-				if (nPos < nPadre->_Hijos.size()) { nNodo->_Siguiente = nPadre->_Hijos[nPos]; }
+				if (nPos > 0)						{ nPadre->_Hijos[nPos - 1]->_Siguiente = nNodo; }
+				if (nPos < nPadre->_Hijos.size())	{ 
+					nNodo->_Siguiente = nPadre->_Hijos[nPos]; 
+					nNodo->_Siguiente->_Anterior = nNodo;
+				}
 
 				// Agrego el nodo 
 				if (nPadre->_Hijos.size() == 0) { nPadre->_Hijos.push_back(nNodo); }
@@ -252,7 +255,8 @@ namespace DWL {
 
 		DArbolEx_Nodo *nActual	= _NodoPaginaInicio;
 
-		LONG PixelInicio		= static_cast<LONG>((static_cast<float>(_TotalAltoVisible) / 100.0f) * _ScrollV_Posicion);
+		//float alto = static_cast<float>(_TotalAltoVisible) - (static_cast<float>(_TotalAltoVisible) * _ScrollV_Pagina);
+		LONG PixelInicio		= static_cast<LONG>(static_cast<float>(_TotalAltoVisible) * _ScrollV_Posicion);
 		LONG PixelFin			= PixelInicio + RCS.bottom;
 		LONG nAlto				= 0;
 		// Diferencia de pixeles Vertical (puede ser negativa si el primer nodo es parcialmente visible, o 0 si el primer nodo está justo al principio del área visible)
@@ -734,21 +738,24 @@ namespace DWL {
 		// Obtengo la recta absoluta visible
 		RECT RC, RAV;
 		ObtenerRectaCliente(&RC, &RAV);
+
 		// Sumo a la recta RAV las posiciones de los Scrolls V y H
-		LONG YInicio = static_cast<LONG>((static_cast<float>(_TotalAltoVisible) / 100.0f) * _ScrollV_Posicion);
-		LONG XInicio = static_cast<LONG>((static_cast<float>(_TotalAnchoVisible) / 100.0f) * _ScrollH_Posicion);
+		float ancho = static_cast<float>(_TotalAnchoVisible) - (static_cast<float>(_TotalAnchoVisible) * _ScrollH_Pagina);
+		float alto  = static_cast<float>(_TotalAltoVisible) - (static_cast<float>(_TotalAltoVisible) * _ScrollV_Pagina);
+		LONG YInicio = static_cast<LONG>(alto * _ScrollV_Posicion);
+		LONG XInicio = static_cast<LONG>(ancho * _ScrollH_Posicion);
 		OffsetRect(&RAV, XInicio, YInicio);
 
 		if (RNodo.left < RAV.left) {			// Hay una parte a la izquierda del nodo que no es visible (lateral)
-			_ScrollH_Posicion = (100.0f / static_cast<float>(_TotalAnchoVisible)) * static_cast<float>(RNodo.left);
+			_ScrollH_Posicion = (1.0f / static_cast<float>(ancho)) * static_cast<float>(RNodo.left);
 		}
 
 		if (RNodo.top < RAV.top) {				// Hay una parte del nodo que no es visible (por arriba)
-			_ScrollV_Posicion = (100.0f / static_cast<float>(_TotalAltoVisible)) * static_cast<float>(RNodo.top);
+			_ScrollV_Posicion = (1.0f / static_cast<float>(alto)) * static_cast<float>(RNodo.top);
 		}
 		else if (RNodo.bottom > RAV.bottom) {	// Hay una parte del nodo que no es visible (por abajo)
 			// Sumo la diferencia de RNodo.bottom + RAV.bottom a la posición del ScrollV
-			_ScrollV_Posicion += (100.0f / static_cast<float>(_TotalAltoVisible)) * static_cast<float>(RNodo.bottom - RAV.bottom);			
+			_ScrollV_Posicion += (1.0f / static_cast<float>(alto)) * static_cast<float>(RNodo.bottom - RAV.bottom);			
 		}
 
 		// Calculo los nodos InicioPagina y FinPagina
@@ -763,13 +770,20 @@ namespace DWL {
 		_NodoPaginaInicio = NULL;
 		_NodoPaginaFin = NULL;
 		if (_Raiz.TotalHijos() == 0) { return; }
-		LONG   PixelInicio = static_cast<LONG>((static_cast<float>(_TotalAltoVisible) / 100.0f) * _ScrollV_Posicion); // Calculo de forma temporal los pixeles que hay que contar hasta empezar a pintar
+/*		float p1 = 1.0f / static_cast<float>(_TotalAltoVisible);
+		float p2 = p1 * _ScrollV_Posicion;
+		float p3 = _TotalAltoVisible * p2;*/
+
+		float ancho = static_cast<float>(_TotalAnchoVisible) - (static_cast<float>(_TotalAnchoVisible) * _ScrollH_Pagina);
+		float alto = static_cast<float>(_TotalAltoVisible) - (static_cast<float>(_TotalAltoVisible) * _ScrollV_Pagina);
+
+		LONG   PixelInicio = static_cast<LONG>(static_cast<float>(alto) * _ScrollV_Posicion); // Calculo de forma temporal los pixeles que hay que contar hasta empezar a pintar
 		LONG   PixelFin = static_cast<LONG>(TamPagina);
 		LONG   TotalPixelesContados = -PixelInicio;
 		LONG   AltoNodo = 0;
 		PixelInicio = 0; // El pixel inicial se cuenta desde 0
 
-		_NodoPaginaHDif = -static_cast<LONG>((static_cast<float>(_TotalAnchoVisible) / 100.0f) * _ScrollH_Posicion);
+		_NodoPaginaHDif = -static_cast<LONG>(static_cast<float>(ancho) * _ScrollH_Posicion);
 
 
 		//		std::wstring Ini, Fini;
@@ -856,26 +870,28 @@ namespace DWL {
 
 		// calculo el ancho máximo
 		if (SH == FALSE) {
-			_ScrollH_Pagina = 100.0f;
+			_ScrollH_Pagina = 1.0f;
 		}
 		else {
-			_ScrollH_Pagina = ((static_cast<float>(RC.right) / static_cast<float>(_TotalAnchoVisible)) * 100.0f);
+			_ScrollH_Pagina = (1.0f / _TotalAnchoVisible) * static_cast<float>(RC.right);
+//			_ScrollH_Pagina = ((static_cast<float>(RC.right) / static_cast<float>(_TotalAnchoVisible)) * 100.0f);
 			// Si la suma de la posición del scroll y la pagina son más grandes que 100% 
-			if (_ScrollH_Posicion + _ScrollH_Pagina > 100.0f) {
-				_ScrollH_Posicion = 100.0f - _ScrollH_Pagina; // Ajusto la posición del scroll para que sumada con la página sea el 100%
+			if (_ScrollH_Posicion > 1.0f) {
+				_ScrollH_Posicion = 1.0f; // Ajusto la posición del scroll para que sumada con la página sea el 100%
 			}
 		}
 		ScrollH_Visible(SH);
 
 		// calculo la altura máxima
 		if (SV == FALSE) {
-			_ScrollV_Pagina = 100.0f;
+			_ScrollV_Pagina = 1.0f;
 		}
 		else {
-			_ScrollV_Pagina = ((static_cast<float>(RC.bottom) / static_cast<float>(_TotalAltoVisible)) * 100.0f);
+			_ScrollV_Pagina = (1.0f / _TotalAltoVisible) * static_cast<float>(RC.bottom);
+//			_ScrollV_Pagina = ((static_cast<float>(RC.bottom) / static_cast<float>(_TotalAltoVisible)) * 100.0f);
 			// Si la suma de la posición del scroll y la pagina son más grandes que 100% 
-			if (_ScrollV_Posicion + _ScrollV_Pagina > 100.0f) {
-				_ScrollV_Posicion = 100.0f - _ScrollV_Pagina; // Ajusto la posición del scroll para que sumada con la página sea el 100%
+			if (_ScrollV_Posicion > 1.0f) {
+				_ScrollV_Posicion = 1.0f; // Ajusto la posición del scroll para que sumada con la página sea el 100%
 			}
 		}
 		ScrollV_Visible(SV);
@@ -1082,7 +1098,7 @@ namespace DWL {
 		}
 		else { // hacia abajo
 			_ScrollV_Posicion += _ScrollV_Pagina / 10.0f;
-			if (_ScrollV_Posicion + _ScrollV_Pagina > 100.0f) _ScrollV_Posicion = 100.0f - _ScrollV_Pagina;
+			if (_ScrollV_Posicion > 1.0f) _ScrollV_Posicion = 1.0f;
 		}
 		
 		_CalcularScrolls();

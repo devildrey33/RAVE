@@ -63,7 +63,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 			break;
 		}
 	}
-		
+			
 	// Consola para mensajes de depuración
 	#ifdef RAVE_MOSTRAR_CONSOLA
 		ConsolaDebug.Crear(L"Consola de depuración");
@@ -83,6 +83,8 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 
 	// Obtengo el sistema operativo (NO FUNCIONA BIEN A PARTIR DE WIN 8)
 	ObtenerSO();
+	Debug_Escribir(SO.c_str());
+	Debug_EscribirSinMS(L"\n");
 
 
 	// Inicializo la librería COM (para el TaskBarList)

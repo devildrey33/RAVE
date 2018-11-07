@@ -190,9 +190,7 @@ void RaveVLC::CerrarMedio(void) {
 		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEncounteredError,	EventosVLC, this);*/
 		Debug_Escribir(L"RaveVLC::CerrarMedio\n");
 		libvlc_media_player_release(_MediaPlayer);
-		_MediaPlayer = NULL;
-
-		BOOL R = App.VentanaRave.BarraTareas.Clip(NULL);
+		_MediaPlayer = NULL;		
 	}
 }
 
@@ -266,6 +264,10 @@ const BOOL RaveVLC::Stop(void) {
 		hWndVLC = NULL;
 
 		SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, TRUE, NULL, TRUE); // Activo protector de pantalla
+		// Elimino la región del clip
+		RECT RC;
+		GetClientRect(App.VentanaRave.hWnd(), &RC);
+		BOOL R = App.VentanaRave.BarraTareas.Clip(&RC);
 		
 		// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
 //		std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" - " +  MedioActual.Nombre();

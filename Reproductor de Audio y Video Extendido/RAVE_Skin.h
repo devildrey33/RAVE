@@ -91,12 +91,12 @@ ____                       ______
 
 */
 
-#define COLOR_SCROLL_FONDO							RGB(200, 200, 200)
-#define COLOR_SCROLL_FONDO_RESALTADO				RGB(210, 210, 210)
-#define COLOR_SCROLL_FONDO_PRESIONADO				RGB(190, 190, 190)
+#define COLOR_SCROLL_FONDO							RGB(225, 225, 225)
+#define COLOR_SCROLL_FONDO_RESALTADO				RGB(200, 200, 200)
+#define COLOR_SCROLL_FONDO_PRESIONADO				RGB(165, 165, 165)
 #define COLOR_SCROLL_BARRA							RGB(160, 160, 160)
-#define COLOR_SCROLL_BARRA_RESALTADO				RGB(180, 180, 180)
-#define COLOR_SCROLL_BARRA_PRESIONADO				RGB(140, 140, 140)
+#define COLOR_SCROLL_BARRA_RESALTADO				RGB(100, 100, 100)
+#define COLOR_SCROLL_BARRA_PRESIONADO				RGB( 50,  50,  50)
 
 /*              _           _ ______      
      /\        | |         | |  ____|     
