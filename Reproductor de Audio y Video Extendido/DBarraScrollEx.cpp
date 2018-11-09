@@ -114,13 +114,13 @@ namespace DWL {
 
 	// S'ha de recalcular de forma que el maxim sigui 1, i li haig de restar al tamany total, el tamany d'una pagina
 	const float DBarraScrollEx::_CalcularPosScrollH(const UINT nTam, const int nPos) {
-		float ancho = (static_cast<float>(nTam) - (static_cast<float>(nTam) * _ScrollH_Pagina)); // ancho resatandole la página
+//		float ancho = (static_cast<float>(nTam) - (static_cast<float>(nTam) * _ScrollH_Pagina)); // ancho resatandole la página
 
-		int TamBarra = static_cast<int>(static_cast<float>(ancho) * _ScrollH_Pagina);
+		int TamBarra = static_cast<int>(static_cast<float>(nTam) * _ScrollH_Pagina);
 		if (TamBarra < BARRA_MIN_TAM) TamBarra = BARRA_MIN_TAM;
 
 
-		float tam = static_cast<float>(ancho) - TamBarra;
+		float tam = static_cast<float>(nTam) - TamBarra;
 		//		float tam = (static_cast<float>(nTam) - (static_cast<float>(nTam) * _ScrollH_Pagina)); // altura resatandole la página
 		float NuevaPos = _Scroll_PosInicio + (1.0f / tam) * static_cast<float>(nPos - _Scroll_PosPresionado.x);
 		//		float NuevaPos = _Scroll_PosInicio + (1.0f / static_cast<float>(nTam)) * nPos;
@@ -136,14 +136,14 @@ namespace DWL {
 
 	const float DBarraScrollEx::_CalcularPosScrollV(const UINT nTam, const int nPos) {
 		
-		float alto = (static_cast<float>(nTam) - (static_cast<float>(nTam) * _ScrollV_Pagina)); // alto resatandole la página
+//		float alto = (static_cast<float>(nTam) - (static_cast<float>(nTam) * _ScrollV_Pagina)); // alto resatandole la página
 //		float Pos = (static_cast<float>(nPos) - (static_cast<float>(nTam) * _ScrollV_Pagina)); // alto resatandole la página
 //		if (Pos < 0.0f) Pos = 0.0f;
 
-		int TamBarra = static_cast<int>(static_cast<float>(alto) * _ScrollV_Pagina);
+		int TamBarra = static_cast<int>(static_cast<float>(nTam) * _ScrollV_Pagina);
 		if (TamBarra < BARRA_MIN_TAM) TamBarra = BARRA_MIN_TAM;
 
-		float tam = static_cast<float>(alto) - TamBarra;
+		float tam = static_cast<float>(nTam) - TamBarra;
 		//		float tam = (static_cast<float>(nTam) - (static_cast<float>(nTam) * _ScrollV_Pagina)); // altura resatandole la página
 		float NuevaPos = _Scroll_PosInicio + (1.0f / tam) * static_cast<float>(nPos - _Scroll_PosPresionado.y);
 		if (NuevaPos > 1.0f)	NuevaPos = 1.0f;
