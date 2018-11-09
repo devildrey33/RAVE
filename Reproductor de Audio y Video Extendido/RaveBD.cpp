@@ -372,7 +372,7 @@ const BOOL RaveBD::ObtenerEtiquetas(void) {
 		BOOL				PistaEleccion      24			TINYINT(1)				*/
 const BOOL RaveBD::ActualizarMedio(BDMedio *nMedio) {
 	std::wstring Q =	L"UPDATE Medios SET "
-							L"NombrePath=\""	+ nMedio->NombrePath						+ L"\","
+							L"NombrePath=\""	+ nMedio->NombrePath						+ L"\","	//	1
 							L"Reproducido="		+ std::to_wstring(nMedio->Reproducido)		+ L","
 							L"Nota="			+ DWL::Strings::ToStrF(nMedio->Nota, 1)		+ L","
 							L"Genero=\""		+ nMedio->Genero							+ L"\","
@@ -403,6 +403,20 @@ const BOOL RaveBD::ActualizarMedio(BDMedio *nMedio) {
 												nMedio->NombreTag.c_str(),	nMedio->GrupoTag.c_str(),	nMedio->DiscoTag.c_str(),	nMedio->PistaTag,
 												nMedio->NombreEleccion,		nMedio->GrupoEleccion,		nMedio->DiscoEleccion,		nMedio->PistaEleccion,			
 								nMedio->Id);*/
+	int SqlRet = Consulta(Q);
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+	return TRUE;
+}
+
+// Actualiza el path del medio (SOLO para medios con extension CRDOWNLOAD y OPDOWNLOAD)
+const BOOL RaveBD::ActualizarPathMedio(std::wstring &Path, const UINT mID) {
+	size_t				PosNombre	 = Path.find_last_of(TEXT("\\"));																				// Posición donde empieza el nombre
+	size_t				PosExtension = Path.find_last_of(TEXT("."));																				// Posición donde empieza la extensión
+	Extension_Medio		Extension = ExtensionesValidas::ObtenerExtension(Path.substr(PosExtension + 1, (Path.size() - PosExtension) - 1).c_str());	// Obtengo el tipo de extensión
+	std::wstring Q = L"UPDATE Medios SET Path =\"" + Path + L"\", Extension =" + std::to_wstring(Extension) + L" WHERE Id=" + std::to_wstring(mID);
 	int SqlRet = Consulta(Q);
 	if (SqlRet == SQLITE_ERROR) {
 		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
@@ -782,7 +796,7 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 	
 	// Recorto el path y elimino los dos primeros caracteres que representan la unidad
 	std::wstring		PathCortado = nPath;
-	PathCortado[0] = L'?';
+//	PathCortado[0] = L'?';
 	DWL::DUnidadDisco  *UnidadDisco = Unidades.Buscar_Letra(nPath[0]);
 
 

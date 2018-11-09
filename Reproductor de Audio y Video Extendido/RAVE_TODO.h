@@ -240,6 +240,8 @@
 					V Revisar el teclat que fa coses rares amb els dos controls
 			V  Direfenciar estat de la barra resaltat fondo, barra
 			V  Afegir transicións de resaltat i presionat
+			-  Minimitza el G:\MP3... pasa algo raro, hi ha mes barra de escroll que fondo..
+				- I ja de pas obre pelis i series, -> startrek i flipa amb el scrollH
 		-  DArbolEx 
 			-  Separar l'icona un pel mes del texte (per que no quedi l'icona enganxat a la selecció)  [subgerència : afegir un doble padding en ves d'un padding normal]
 			-  Refer Shift + AvPag & RePag
@@ -257,6 +259,9 @@
 			-  Mostrar el % del medi reproduit en el item que es el MedioActual
 				- Necesitare crear virtuals a DListaEx
 
+		V  Mostrar en la BD no funciona correctament.., proba-ho amb Simphpony X -> Prelude to the new milenium
+			V  S'ha solucionat al calculat bé la DBarraScrollEx (com ja imaginava... era per la diferencia de la barra)
+
 		V  DMenuEx
 			V  MostrarMenu i _MostrarSubMenu ha de detectar la pantalla on es mostra per sapiguer si te suficient espai per mostrar el submenu o l'ha de posar a l'altre banda
 			-  Afegir transició al mostrar
@@ -264,10 +269,6 @@
 		-  DDlgDirectorios
 			-  Captar WM_RESIZE i modificar tamany dels controls en consequencia.
 				- Guardar el tamany a les opcions de la BD
-
-		-  Mostrar en la BD no funciona correctament.., proba-ho amb Simphpony X -> Prelude to the new milenium
-		
-
 
 		-  Afegir al MenuBD : 
 			-  Nota (per poguer modificar la nota de tots els medis d'un directori)
@@ -299,17 +300,21 @@
 		-  La llista s'ha de poguer veure desde els ControlesPantallaCompleta
 			- Munta-t'ho com vulguis xd
 
-		-  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
-			- Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)
+		V  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
+			V Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)
 				X  DE MOMENT NO HA PASAT MES DESDE QUE VAIG ARRECLAR L'EXTENSIO CRDOWNLOAD.
-				-  Ha tornat a pasar al grabar un directori nou dintre d'una arrel existent, pero aquest cop m'ha deixat fer play desde la llista
+				V  Ha tornat a pasar al grabar un directori nou dintre d'una arrel existent, pero aquest cop m'ha deixat fer play desde la llista
 				V  Ho he estat probant en debug sense BD i ja no pasa mes :/
+				V  El problema era que asigno ? a la lletra d'unitat al afegir el medi en la BD, ara afegire la unitat corresponent, però no sera retrocompatible amb la ID del disc dur.
 
+		-  Separar el anáilisis del tag i la obtenció de dades de les etiquetes
 
 		-  Opcions 
 			-  Llista
 				-  Mezclar listas aleatoíras generadas por genero, grupo, 50 canciones.
 				-  No Mezclar listas aleatórias generadas por disco.
+			-  General 
+				- Ocultar tooltips al pasar por encima con el mouse
 
 		-  Les llistes aleatóries per estil, grup, 50 can han d'activar el shufle
 			- Les llistes aleatóries per disc han de desactivar el shufle

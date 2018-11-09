@@ -241,6 +241,17 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 			// Un medio de la lista ha terminado
 			if (Estado == Terminada) {			
 				App.BD.MedioReproducido(&App.VLC.MedioActual);
+
+				// Renombro archivos CRDOWNLOAD y OPDOWNLOAD
+				if (App.VLC.MedioActual.Extension == Extension_CRDOWNLOAD || App.VLC.MedioActual.Extension == Extension_OPDOWNLOAD) {
+					size_t PosExtension = App.VLC.MedioActual.Path.find_last_of(TEXT("."));																				// Posición donde empieza la extensión
+					std::wstring NuevoPath = App.VLC.MedioActual.Path.substr(0, PosExtension);
+					if (MoveFile(App.VLC.MedioActual.Path.c_str(), NuevoPath.c_str()) != FALSE) {
+						App.BD.ActualizarPathMedio(NuevoPath, App.VLC.MedioActual.Id);
+					}
+				}
+
+
 				App.VLC.Stop();
 				if (Lista.PosMedio(Lista.MedioActual) == Lista.TotalItems() - 1) {
 					Repeat();

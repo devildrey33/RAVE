@@ -91,10 +91,10 @@ namespace DWL {
 
 	/* Obtiene el área de la barra de scroll vertical (sin el fondo) */
 	void DBarraScrollEx::ObtenerRectaBarraScrollV(RECT &RectaScroll, RECT &RectaBarra) {
-		int TamBarra = static_cast<int>(static_cast<float>(RectaScroll.right) * _ScrollV_Pagina);
+		int TamBarra = static_cast<int>(static_cast<float>(RectaScroll.bottom) * _ScrollV_Pagina);
 		if (TamBarra < BARRA_MIN_TAM) TamBarra = BARRA_MIN_TAM;
 
-		RectaBarra = { 2 + RectaScroll.left,																													// left
+		RectaBarra = {  2 + RectaScroll.left,																													// left
 						2 + static_cast<int>(_ScrollV_Posicion * (RectaScroll.bottom - TamBarra)),																// top
 					   -2 + RectaScroll.right,																													// right
 					   -2 + static_cast<int>((_ScrollV_Posicion * (RectaScroll.bottom - TamBarra)) + TamBarra) };	// bottom
@@ -106,7 +106,7 @@ namespace DWL {
 		if (TamBarra < BARRA_MIN_TAM) TamBarra = BARRA_MIN_TAM;
 
 		//		float Parte	= static_cast<float>(1.0f / RectaScroll.right);
-		RectaBarra = { 2 + static_cast<int>(_ScrollH_Posicion * (RectaScroll.right - TamBarra)),															// left
+		RectaBarra = {  2 + static_cast<int>(_ScrollH_Posicion * (RectaScroll.right - TamBarra)),															// left
 						2 + RectaScroll.top,																												// top
 					   -2 + static_cast<int>((_ScrollH_Posicion * (RectaScroll.right - TamBarra)) + TamBarra),	// right
 					   -2 + RectaScroll.bottom }; // bottom
@@ -114,27 +114,45 @@ namespace DWL {
 
 	// S'ha de recalcular de forma que el maxim sigui 1, i li haig de restar al tamany total, el tamany d'una pagina
 	const float DBarraScrollEx::_CalcularPosScrollH(const UINT nTam, const int nPos) {
-		int TamBarra = static_cast<int>(static_cast<float>(nTam) * _ScrollH_Pagina);
+		float ancho = (static_cast<float>(nTam) - (static_cast<float>(nTam) * _ScrollH_Pagina)); // ancho resatandole la página
+
+		int TamBarra = static_cast<int>(static_cast<float>(ancho) * _ScrollH_Pagina);
 		if (TamBarra < BARRA_MIN_TAM) TamBarra = BARRA_MIN_TAM;
 
-		float tam = static_cast<float>(nTam) - TamBarra;
+
+		float tam = static_cast<float>(ancho) - TamBarra;
 		//		float tam = (static_cast<float>(nTam) - (static_cast<float>(nTam) * _ScrollH_Pagina)); // altura resatandole la página
 		float NuevaPos = _Scroll_PosInicio + (1.0f / tam) * static_cast<float>(nPos - _Scroll_PosPresionado.x);
 		//		float NuevaPos = _Scroll_PosInicio + (1.0f / static_cast<float>(nTam)) * nPos;
 		if (NuevaPos > 1.0f)	NuevaPos = 1.0f;
 		if (NuevaPos < 0.0f)	NuevaPos = 0.0f;
+
+		#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DBarraScrollEx::_CalcularPosScrollH  NuevaPos = %0.2f\n", NuevaPos);
+		#endif
+
 		return NuevaPos;
 	}
 
 	const float DBarraScrollEx::_CalcularPosScrollV(const UINT nTam, const int nPos) {
-		int TamBarra = static_cast<int>(static_cast<float>(nTam) * _ScrollV_Pagina);
+		
+		float alto = (static_cast<float>(nTam) - (static_cast<float>(nTam) * _ScrollV_Pagina)); // alto resatandole la página
+//		float Pos = (static_cast<float>(nPos) - (static_cast<float>(nTam) * _ScrollV_Pagina)); // alto resatandole la página
+//		if (Pos < 0.0f) Pos = 0.0f;
+
+		int TamBarra = static_cast<int>(static_cast<float>(alto) * _ScrollV_Pagina);
 		if (TamBarra < BARRA_MIN_TAM) TamBarra = BARRA_MIN_TAM;
 
-		float tam = static_cast<float>(nTam) - TamBarra;
+		float tam = static_cast<float>(alto) - TamBarra;
 		//		float tam = (static_cast<float>(nTam) - (static_cast<float>(nTam) * _ScrollV_Pagina)); // altura resatandole la página
 		float NuevaPos = _Scroll_PosInicio + (1.0f / tam) * static_cast<float>(nPos - _Scroll_PosPresionado.y);
 		if (NuevaPos > 1.0f)	NuevaPos = 1.0f;
 		if (NuevaPos < 0.0f)	NuevaPos = 0.0f;
+
+		#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DBarraScrollEx::_CalcularPosScrollV  NuevaPos = %0.2f\n", NuevaPos);
+		#endif
+
 		return NuevaPos;
 	}
 
@@ -308,7 +326,7 @@ namespace DWL {
 				break;
 		}
 
-		_ScrollH_AniTransicion.Iniciar(_ColorFondoV, FondoHasta, _ColorBarraV, BarraHasta, Duracion, [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
+		_ScrollH_AniTransicion.Iniciar(_ColorFondoH, FondoHasta, _ColorBarraH, BarraHasta, Duracion, [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
 			_ColorFondoH = Datos[0].Color();
 			_ColorBarraH = Datos[1].Color();
 			RepintarAni();
@@ -334,8 +352,9 @@ namespace DWL {
 				ObtenerRectaBarraScrollV(RCV, RCBV);
 				RetBV = PtInRect(&RCBV, Pt);
 				if (RetBV == FALSE) { // Está en la parte del fondo (recalculo la posición de la barra antes de empezar el drag)
-					float alto = (static_cast<float>(RCV.bottom) - (static_cast<float>(RCV.bottom) * _ScrollV_Pagina)); // altura resatandole la página
-					_ScrollV_Posicion = (1.0f / alto) * static_cast<float>(cY);
+//					float alto = (static_cast<float>(RCV.bottom) - (static_cast<float>(RCV.bottom) * _ScrollV_Pagina)); // altura resatandole la página
+					_ScrollV_Posicion = _CalcularPosScrollV(RCH.bottom, cY);
+//					_ScrollV_Posicion = (1.0f / RCV.bottom) * static_cast<float>(cY);
 				}
 				SetCapture(hWnd());
 				_Scroll_PosPresionado = { cX, cY };			// Posición del mouse desde donde se inicia el drag de la barra
@@ -356,8 +375,9 @@ namespace DWL {
 				ObtenerRectaBarraScrollH(RCH, RCBH);
 				RetBH = PtInRect(&RCBH, Pt);
 				if (RetBH == FALSE) { // Está en la parte del fondo (recalculo la posición de la barra antes de empezar el drag)
-					float ancho = (static_cast<float>(RCH.right) - (static_cast<float>(RCH.right) * _ScrollH_Pagina)); // ancho resatandole la página
-					_ScrollH_Posicion = (1.0f / static_cast<float>(RCH.right)) * static_cast<float>(cX);
+					//float ancho = (static_cast<float>(RCH.right) - (static_cast<float>(RCH.right) * _ScrollH_Pagina)); // ancho resatandole la página
+					//_ScrollH_Posicion = (1.0f / static_cast<float>(RCH.right)) * static_cast<float>(cX);
+					_ScrollH_Posicion = _CalcularPosScrollH(RCH.right, cX);
 				}
 				SetCapture(hWnd());
 				_Scroll_PosPresionado = { cX, cY };			// Posición desde donde se inicia el drag de la barra

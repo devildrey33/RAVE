@@ -64,7 +64,7 @@ const Extension_Medio ExtensionesValidas::ObtenerExtension(const wchar_t *Extens
 	if (_wcsicmp(Extension, TEXT("WMV")) == 0)			return Extension_WMV;
 	if (_wcsicmp(Extension, TEXT("XM")) == 0)			return Extension_XM;
 
-	if (_wcsicmp(Extension, TEXT("CRDOWNLOAD")) == 0)	return Extension_CRODOWNLOAD;
+	if (_wcsicmp(Extension, TEXT("CRDOWNLOAD")) == 0)	return Extension_CRDOWNLOAD;
 	if (_wcsicmp(Extension, TEXT("OPDOWNLOAD")) == 0)	return Extension_OPDOWNLOAD;
 	if (_wcsicmp(Extension, TEXT("M3U")) == 0)			return Extension_M3U;
 	if (_wcsicmp(Extension, TEXT("SRT")) == 0)			return Extension_SRT;
@@ -81,7 +81,7 @@ const Tipo_Medio ExtensionesValidas::ObtenerTipoMedio(const Extension_Medio Exte
 		case Extension_MPE:		case Extension_MP4:		case Extension_MP4V:	case Extension_MTS:		case Extension_MXF:		case Extension_M1V:		case Extension_M2T:		case Extension_M2TS:
 		case Extension_M2V:		case Extension_M4V:		case Extension_NSV:		case Extension_NUV:		case Extension_OGM:		case Extension_OGV:
 		case Extension_OGX:		case Extension_PS:		case Extension_RM:		case Extension_RMVB:	case Extension_SDP:		case Extension_TOD:		case Extension_TS:		case Extension_VOB:
-		case Extension_VRO:		case Extension_WMV:		case Extension_CRODOWNLOAD:						case Extension_OPDOWNLOAD:
+		case Extension_VRO:		case Extension_WMV:		case Extension_CRDOWNLOAD:						case Extension_OPDOWNLOAD:
 			return Tipo_Medio_Video;
 		case Extension_FLAC:	case Extension_MID:		case Extension_MP2:		case Extension_MP3:		case Extension_S3M:		case Extension_WAV:		case Extension_WEBM:	case Extension_WMA:	
 		case Extension_XM:		case Extension_OGG:		case Extension_MOD:
@@ -153,7 +153,7 @@ const wchar_t *ExtensionesValidas::ExtensionStr(const Extension_Medio Extension)
 		case Extension_WMV			:	return L"WMV";
 		case Extension_XM			:	return L"XM";
 
-		case Extension_CRODOWNLOAD	:	return L"CRODOWNLOAD";
+		case Extension_CRDOWNLOAD	:	return L"CRDOWNLOAD";
 		case Extension_OPDOWNLOAD	:	return L"OPDOWNLOAD";
 		case Extension_SRT			:	return L"SRT";
 	}

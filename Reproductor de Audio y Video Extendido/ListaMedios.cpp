@@ -2,7 +2,6 @@
 #include "ListaMedios.h"
 #include "RAVE_Iconos.h"
 
-
 ListaMedios::ListaMedios(void) : MedioActual(NULL), Errores(0) {
 }
 
@@ -92,7 +91,7 @@ ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {
 
 	// El medio no existe
 	if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(nMedio->Path.c_str())) {
-		Debug_Escribir_Varg(L"ListaMedios::AgregarMedio El medio path : '%s', id : '%d' no existe!", nMedio->Path.c_str(), nMedio->Hash);
+		Debug_Escribir_Varg(L"ListaMedios::AgregarMedio El medio path : '%s', id : '%d' no existe!\n", nMedio->Path.c_str(), nMedio->Hash);
 		return NULL;
 	}
 

@@ -69,7 +69,7 @@ enum Extension_Medio {
 	Extension_WMV,
 	Extension_XM,
 	
-	Extension_CRODOWNLOAD,
+	Extension_CRDOWNLOAD,
 	Extension_OPDOWNLOAD,
 	Extension_SRT,
 	// Ultima extensión

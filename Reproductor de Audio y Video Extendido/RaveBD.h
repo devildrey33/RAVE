@@ -187,6 +187,8 @@ class RaveBD {
 
 								// Guarda los datos del medio especificado en la BD
 	const BOOL                  ActualizarMedio(BDMedio *nMedio);
+								// Guarda el path del medio (especial para renombrar archivos CRDOWNLOAD y OPDOWNLOAD)
+	const BOOL                  ActualizarPathMedio(std::wstring &Path, const UINT mID);
 
 								// Genera una lista aleatoria por el tipo especificado
 	const BOOL                  GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const TipoListaAleatoria nTipo = TLA_LoQueSea);
