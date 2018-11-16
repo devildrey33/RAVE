@@ -25,14 +25,20 @@ namespace DWL {
 		MoveToEx(hDC, x0 + x1, y0 + y1, NULL);
 		LineTo(hDC, x0 + x2, y0 + y2);
 		LineTo(hDC, x0 + x3, y0 + y3);*/
-		
 		POINT Pt[3];
-		Pt[0].x = (cX + cTamRadio) + static_cast<int>(cos((nAngulo - 90.0f) * RAD) * (cTamRadio / 1.5f));
-		Pt[0].y = (cY + cTamRadio) + static_cast<int>(sin((nAngulo - 90.0f) * RAD) * (cTamRadio / 1.5f));
-		Pt[1].x = (cX + cTamRadio) + static_cast<int>(cos((nAngulo) * RAD) * cTamRadio);
-		Pt[1].y = (cY + cTamRadio) + static_cast<int>(sin((nAngulo) * RAD) * cTamRadio);
-		Pt[2].x = (cX + cTamRadio) + static_cast<int>(cos((nAngulo + 90.0f) * RAD) * (cTamRadio / 1.5f));
-		Pt[2].y = (cY + cTamRadio) + static_cast<int>(sin((nAngulo + 90.0f) * RAD) * (cTamRadio / 1.5f));
+/*		Pt[0].x = cX + ((cos(nAngulo - 120.0f) * RAD) * cTamRadio);
+		Pt[0].y = cY + ((sin(nAngulo - 120.0f) * RAD) * cTamRadio);
+		Pt[1].x = cX + ((cos(nAngulo) * RAD) * cTamRadio);
+		Pt[1].y = cY + ((sin(nAngulo) * RAD) * cTamRadio);
+		Pt[2].x = cX + ((cos(nAngulo + 120.0f) * RAD) * cTamRadio);
+		Pt[2].y = cY + ((sin(nAngulo + 120.0f) * RAD) * cTamRadio);*/
+
+		Pt[0].x = (cX + cTamRadio) + static_cast<int>((cos((nAngulo - 90.0f) * RAD) * (cTamRadio / 1.5f)));
+		Pt[0].y = (cY + cTamRadio) + static_cast<int>((sin((nAngulo - 90.0f) * RAD) * (cTamRadio / 1.5f)));
+		Pt[1].x = (cX + cTamRadio) + static_cast<int>((cos((nAngulo) * RAD) * cTamRadio));
+		Pt[1].y = (cY + cTamRadio) + static_cast<int>((sin((nAngulo) * RAD) * cTamRadio));
+		Pt[2].x = (cX + cTamRadio) + static_cast<int>((cos((nAngulo + 90.0f) * RAD) * (cTamRadio / 1.5f)));
+		Pt[2].y = (cY + cTamRadio) + static_cast<int>((sin((nAngulo + 90.0f) * RAD) * (cTamRadio / 1.5f)));
 
 		Polygon(hDC, Pt, 3);
 

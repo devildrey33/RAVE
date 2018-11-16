@@ -21,7 +21,7 @@ namespace DWL {
 		DExplorarDirectoriosEx_Nodo *Ret = AgregarNodo<DExplorarDirectoriosEx_Nodo>(nTexto, nPadre, IconoRecursos);
 		Ret->Tipo		= nTipo;
 		Ret->Path		= nPath;
-		Ret->Activado	= nActivado;
+		Ret->Activado   = nActivado;
 		// Añado la barra final al path (si no existe)
 		if (Ret->Path.size() > 0) {
 			if (Ret->Path[Ret->Path.size() - 1] != L'\\') Ret->Path += L'\\';
@@ -33,7 +33,7 @@ namespace DWL {
 		DExplorarDirectoriosEx_Nodo *Ret = AgregarNodo<DExplorarDirectoriosEx_Nodo>(nTexto, nPadre, KnowFolderId);
 		Ret->Tipo		= nTipo;
 		Ret->Path		= nPath;
-		Ret->Activado	= nActivado;
+		Ret->Activado   = nActivado;
 		// Añado la barra final al path (si no existe)
 		if (Ret->Path.size() > 0) {
 			if (Ret->Path[Ret->Path.size() - 1] != L'\\') Ret->Path += L'\\';
@@ -45,7 +45,7 @@ namespace DWL {
 		DExplorarDirectoriosEx_Nodo *Ret = AgregarNodo<DExplorarDirectoriosEx_Nodo>(nTexto, nPadre, PathIcono, PosIcono);
 		Ret->Tipo		= nTipo;
 		Ret->Path		= nPath;
-		Ret->Activado	= nActivado;
+		Ret->Activado   = nActivado;
 		// Añado la barra final al path (si no existe)
 		if (Ret->Path.size() > 0) {
 			if (Ret->Path[Ret->Path.size() - 1] != L'\\') Ret->Path += L'\\';

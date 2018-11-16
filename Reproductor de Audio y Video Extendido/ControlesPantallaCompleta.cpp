@@ -74,38 +74,16 @@ void ControlesPantallaCompleta::Mostrar(void) {
 	KillTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD);
 	SetTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD, App.BD.Opciones_OcultarMouseEnVideo(), NULL);
 
-	if (IsWindowVisible(_hWnd) == TRUE) return;
+	// NO USAR IsWindowVisible para comprobar si están visibles los controles
+	if (_Visible == TRUE) return;
 
+	_Visible = TRUE;
 	Debug_Escribir(L"ControlesPantallaCompleta::Mostrar\n");
 
 	Alinear();
 
-//	RECT RV;
-//	GetWindowRect(App.VentanaRave.hWnd(), &RV);
-	
-/*	int AnchoTotal = (RV.right - RV.left);
-	LONG X = (AnchoTotal - 1000) / 2;
-
-	int Ancho = 1000;
-//	MoveWindow(hWnd(), X, RC.bottom - 80, Ancho, 80, TRUE);
-
-	MoveWindow(SliderTiempo.hWnd(),				10, 45, Ancho - 20, 24, TRUE);
-	MoveWindow(SliderVolumen.hWnd(),			Ancho - 145, 13, 90, 16, TRUE);
-	MoveWindow(LabelVolumen.hWnd(),				Ancho - 50, 12, 40, 20, TRUE);
-	MoveWindow(LabelTiempoActual.hWnd(),		Ancho - 285, 12, 55, 20, TRUE);
-	MoveWindow(LabelTiempoSeparador.hWnd(),		Ancho - 230, 12, 10, 20, TRUE);
-	MoveWindow(LabelTiempoTotal.hWnd(),			Ancho - 220, 12, 55, 20, TRUE);
-
-	SetWindowPos(_hWnd, HWND_TOP, RV.left + X, RV.bottom - 80, Ancho, 80, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
-	//	ShowWindow(_hWnd, SW_SHOWNOACTIVATE);*/
-
-
-
 	DMouse::ObtenerPosicion(&App.VentanaRave.MousePos);
 	DMouse::Visible(TRUE);
-
-
-//	DMouse::Visible(TRUE);
 }
 
 void ControlesPantallaCompleta::Transicion(const CPC_Transicion nTransicion) {
@@ -256,7 +234,7 @@ void ControlesPantallaCompleta::Ocultar(void) {
 	Transicion(CPC_Transicion_Ocultar);
 
 	DMouse::Visible(FALSE);
-//	_Visible = FALSE;
+	_Visible = FALSE;
 }
 
 

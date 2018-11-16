@@ -17,7 +17,7 @@ namespace DWL {
 		GetWindowRect(_hWnd, &RV);
 		_AltoLista = AltoLista;
 		_Lista.Padre = this;
-		_Lista.CrearListaEx(this, RV.left, RV.bottom, cAncho, AltoLista, NULL, WS_POPUP | WS_BORDER, WS_EX_NOACTIVATE | WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
+		_Lista.CrearListaEx(this, RV.left, RV.bottom, cAncho, AltoLista, NULL, WS_POPUP, WS_EX_NOACTIVATE | WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
 		_Lista.AgregarColumna(-1, DListaEx_Columna_Alineacion_Izquierda);
 	}
 

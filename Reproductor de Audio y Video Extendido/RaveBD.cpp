@@ -108,8 +108,8 @@ const BOOL RaveBD::ObtenerMedio(const sqlite3_int64 mHash, BDMedio &OUT_Medio) {
 
 const BOOL RaveBD::ObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio) {
 	std::wstring TmpPath = mPath;
-	TmpPath[0] = L'?'; // Los paths de la BD emnpiezan por ?
-	std::wstring SqlStr = L"SELECT * FROM Medios WHERE Path =\"" + TmpPath + L"\" COLLATE NOCASE"; // COLLATE NOCASE = Comparar strings case insensitive
+	TmpPath[0] = L'%'; // Evito la letra de unidad (para raices cambiantes)
+	std::wstring SqlStr = L"SELECT * FROM Medios WHERE Path like \"" + TmpPath + L"\" COLLATE NOCASE"; // COLLATE NOCASE = Comparar strings case insensitive
 	return _ConsultaObtenerMedio(SqlStr, OUT_Medio);
 }
 
@@ -464,7 +464,6 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 
 	std::vector<EtiquetaBD *> Etiquetas;
 	std::wstring Q;
-	std::wstring ToolTip;
 	int Intentos = 0;
 	#define MAX_INTENTOS 20
 	size_t Rand;
@@ -480,7 +479,6 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 				} while (Etiquetas[Rand]->Medios < 5 && Intentos++ < MAX_INTENTOS);
 			}
 			Q = L"SELECT * FROM Medios WHERE Genero=\"" + Etiquetas[Rand]->Texto + L"\"";
-			ToolTip = L"Lista aleatória por Genero :\"" + Etiquetas[Rand]->Texto + L"\" generada.";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Genero (%s)\n", Etiquetas[Rand]->Texto.c_str());
 			break;
 		case TLA_Grupo:
@@ -494,7 +492,6 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 				} while (Etiquetas[Rand]->Medios < 5 && Intentos++ < MAX_INTENTOS);
 			}
 			Q = L"SELECT * FROM Medios WHERE (GrupoPath=\"" + Etiquetas[Rand]->Texto + L"\") OR (GrupoTag=\"" + Etiquetas[Rand]->Texto + L"\")";
-			ToolTip = L"Lista aleatória por Grupo :\"" + Etiquetas[Rand]->Texto + L"\" generada.";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Grupo (%s)\n", Etiquetas[Rand]->Texto.c_str());
 			break;
 		case TLA_Disco:
@@ -508,17 +505,14 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 				} while (Etiquetas[Rand]->Medios < 5 && Intentos++ < MAX_INTENTOS);
 			}
 			Q = L"SELECT * FROM Medios WHERE (DiscoPath=\"" + Etiquetas[Rand]->Texto + L"\") OR (DiscoTag=\"" + Etiquetas[Rand]->Texto + L"\")";
-			ToolTip = L"Lista aleatória por Disco :\"" + Etiquetas[Rand]->Texto + L"\" generada.";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Disco (%s)\n", Etiquetas[Rand]->Texto.c_str());
 			break;
 		case TLA_50Medios:
 			Q = L"SELECT * FROM Medios WHERE TipoMedio=1 ORDER BY RANDOM() LIMIT 50";
 			Debug_Escribir(L"RaveBD::GenerarListaAleatoria Tipo : 50 Canciones.\n");
-			ToolTip = L"Lista aleatória con 50 canciones generada.";
 			break;
 	}
 
-	App.MostrarToolTipPlayer(ToolTip);
 	
 	int				    SqlRet = 0;
 	sqlite3_stmt       *SqlQuery = NULL;
@@ -557,6 +551,17 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
 		return FALSE;
 	}
+
+	// Muestro el tooltip en el player
+	std::wstring ToolTip;
+	switch (Tipo) {
+		case TLA_Genero:	ToolTip = L"Lista aleatória por Genero \"" + Etiquetas[Rand]->Texto + L"\" generada con " + std::to_wstring(OUT_Medios.size()) + L" canciones.";	break;
+		case TLA_Grupo:		ToolTip = L"Lista aleatória por Grupo \"" + Etiquetas[Rand]->Texto + L"\" generada con " + std::to_wstring(OUT_Medios.size()) + L" canciones.";		break;
+		case TLA_Disco:		ToolTip = L"Lista aleatória por Disco \"" + Etiquetas[Rand]->Texto + L"\" generada con " + std::to_wstring(OUT_Medios.size()) + L" canciones.";		break;
+		case TLA_50Medios:	ToolTip = L"Lista aleatória con " + std::to_wstring(OUT_Medios.size()) + L" canciones generada.";													break;
+	}
+	App.MostrarToolTipPlayer(ToolTip);
+
 
 	return (SqlRet != SQLITE_BUSY);
 }

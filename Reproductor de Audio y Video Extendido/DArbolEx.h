@@ -41,6 +41,10 @@ namespace DWL {
 		DArbolEx_ParteNodo_Texto	= 4
 	};
 
+	enum DArbolEx_Expansor {
+		DArbolEx_Expansor_Rectangulo = 0,
+		DArbolEx_Expansor_Triangulo  = 1
+	};
 
 	class DDesplegableEx;
 
@@ -103,6 +107,8 @@ namespace DWL {
 
 														// Pintar Nodo
 		void											PintarNodo(HDC hDC, RECT *Espacio, DArbolEx_Nodo *nNodo, const int PosH);
+		void                                            PintarExpansorRectangulo(HDC hDC, RECT *Espacio, DArbolEx_Nodo *nNodo, const int AnchoOcupado);
+		void                                            PintarExpansorTriangulo(HDC hDC, RECT *Espacio, DArbolEx_Nodo *nNodo, const int AnchoOcupado);
 
 		void											Scrolls_EventoCambioPosicion(void);
 														// Eventos virtuales
@@ -149,8 +155,12 @@ namespace DWL {
 		inline DArbolEx_Nodo                           *NodoResaltado(void) { return _NodoResaltado; };
 		inline DArbolEx_Nodo                           *NodoMarcado(void)   { return _NodoMarcado; };
 		inline void                                     NodoMarcado(DArbolEx_Nodo *nNodoMarcado) { _NodoMarcado = nNodoMarcado; };
+		
+		inline const DArbolEx_Expansor					ExpansorPorDefecto(void) { return _ExpansorPorDefecto; };
+		void                                            ExpansorPorDefecto(const DArbolEx_Expansor nExpansor) { _ExpansorPorDefecto = nExpansor; }
 
 	  protected:		
+		DArbolEx_Expansor							   _ExpansorPorDefecto;
 														// Valor que determina si hay que recalcular los tamaños antes de pintar
 		BOOL                                           _Repintar;
 														// Eventos internos

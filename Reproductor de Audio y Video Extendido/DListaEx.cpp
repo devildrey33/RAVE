@@ -2,6 +2,7 @@
 #include "DListaEx.h"
 #include "DListaIconos.h"
 #include "DMensajesWnd.h"
+#include <assert.h>
 
 namespace DWL {
 
@@ -107,12 +108,18 @@ namespace DWL {
 			_CalcularScrolls();			
 		}
 
-		RECT	RC, RCS;
-		ObtenerRectaCliente(&RC, &RCS);
+		RECT	RC, RCS, RCB;
+		ObtenerRectaCliente(&RC, &RCS, &RCB);
+//		GetClientRect(_hWnd, &RCB);
 
 		HDC		Buffer		= CreateCompatibleDC(hDC);
-		HBITMAP Bmp			= CreateCompatibleBitmap(hDC, RC.right, RC.bottom);
-		HBITMAP BmpViejo	= static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
+		HBITMAP Bmp			= CreateCompatibleBitmap(hDC, RCB.right - RCB.left, RCB.bottom - RCB.top);
+		HBITMAP BmpViejo	= static_cast<HBITMAP>(SelectObject(Buffer, Bmp));		
+
+		// Pinto el fondo
+		HBRUSH BFondo = CreateSolidBrush(COLOR_LISTA_FONDO);
+		FillRect(Buffer, &RCB, BFondo);
+		DeleteObject(BFondo);
 
 
 		// Diferencia de pixeles Vertical (puede ser negativo si el primer item es parcialmente visible, o 0 si el primer item está justo al principio del área visible)
@@ -133,18 +140,20 @@ namespace DWL {
 		}
 
 		// Pinto el resto del fondo
-		if (DifInicioV < RCS.bottom) {
+/*		if (DifInicioV < RCS.bottom) {
 			RECT RFondo = RCS; RFondo.top = DifInicioV;
 			HBRUSH BFondo = CreateSolidBrush(COLOR_LISTA_FONDO);
 			FillRect(Buffer, &RFondo, BFondo);
 			DeleteObject(BFondo);
-		}
+		}*/
+
+		PintarBorde(&RCB, Buffer);
 
 		// Pinto las barras de scroll en el buffer
 		Scrolls_Pintar(Buffer, RC);
 
 		// Pinto el buffer en el DC
-		BitBlt(hDC, RC.left, RC.top, RC.right, RC.bottom, Buffer, 0, 0, SRCCOPY);
+		BitBlt(hDC, RCB.left, RCB.top, RCB.right, RCB.bottom, Buffer, 0, 0, SRCCOPY);
 
 		// Elimino objetos gdi de la memoria
 		SelectObject(Buffer, BmpViejo);
@@ -257,9 +266,9 @@ namespace DWL {
 
 	/* Evento que se recibe al cambiar el scroll de posición */
 	void DListaEx::Scrolls_EventoCambioPosicion(void) {
-		RECT RC, RCS;
+		RECT RC, RCS, RCB;
 		//		GetClientRect(hWnd(), &RC);
-		ObtenerRectaCliente(&RC, &RCS);
+		ObtenerRectaCliente(&RC, &RCS, &RCB);
 		_CalcularItemsPagina(RCS.bottom);
 	}
 
@@ -373,8 +382,8 @@ namespace DWL {
 //		int nAltoItem = _Fuente.Alto() + (LISTAEX_PADDING * 2);
 		
 		// Obtengo la recta absoluta visible
-		RECT RC, RAV;
-		ObtenerRectaCliente(&RC, &RAV);
+		RECT RC, RAV, RCB;
+		ObtenerRectaCliente(&RC, &RAV, &RCB);
 		
 		// Sumo a la recta RAV las posiciones de los Scrolls V y H
 		float ancho = static_cast<float>(_TotalAnchoVisible) - (static_cast<float>(_TotalAnchoVisible) * _ScrollH_Pagina);
@@ -385,14 +394,17 @@ namespace DWL {
 		OffsetRect(&RAV, XInicio, YInicio);
 
 		if (RItem.left < RAV.left) {			// Hay una parte a la izquierda del item que no es visible (lateral)
+			assert(ancho != 0.0f);
 			_ScrollH_Posicion = (1.0f / ancho) * static_cast<float>(RItem.left);
 		}
 
 		if (RItem.top < RAV.top) {				// Hay una parte del item que no es visible (por arriba)
+			assert(alto != 0.0f);
 			_ScrollV_Posicion = (1.0f / alto) * static_cast<float>(RItem.top);
 		}
 		else if (RItem.bottom > RAV.bottom) {	// Hay una parte del item que no es visible (por abajo)
 												// Sumo la diferencia de RItem.bottom + RAV.bottom a la posición del ScrollV
+			assert(alto != 0.0f);
 			_ScrollV_Posicion += (1.0f / alto) * static_cast<float>(RItem.bottom - RAV.bottom);
 		}
 
@@ -433,10 +445,10 @@ namespace DWL {
 		for (size_t i = 0; i < _Columnas.size(); i++) nAncho += _Columnas[i]->_AnchoCalculado;		
 
 		const int nAltoItem = Fuente.Alto() + (DLISTAEX_PADDING * 2);
-		rRecta.left   = 0;
-		rRecta.top    = nAltoItem * static_cast<LONG>(iPos);
+		rRecta.left   = 2;
+		rRecta.top    = 2 + nAltoItem * static_cast<LONG>(iPos);
 		rRecta.right  = nAncho;
-		rRecta.bottom = nAltoItem * (static_cast<LONG>(iPos) + 1);
+		rRecta.bottom = 2 + nAltoItem * (static_cast<LONG>(iPos) + 1);
 		return TRUE;
 	}
 
@@ -532,8 +544,8 @@ namespace DWL {
 			if (_Columnas[i]->Ancho != DLISTAEX_COLUMNA_ANCHO_AUTO) {	nAnchoFijo += _Columnas[i]->Ancho;		}
 			else													{	ColumnasAuto++;							}
 		}
-		RECT RC, RCSS;
-		ObtenerRectaCliente(&RC, &RCSS);
+		RECT RC, RCSS, RCB;
+		ObtenerRectaCliente(&RC, &RCSS, &RCB);
 		// Asigno el AnchoCalculado a todas las columnas
 		#if DLISTAEX_MOSTRARDEBUG == TRUE
 			Debug_Escribir_Varg(L"DListaEx::_CalcularColumnas Total : %d, Cols { ", RCSS.right);
@@ -644,16 +656,16 @@ namespace DWL {
 		DEventoMouse DatosMouse(wParam, lParam, this);
 //		_mX = cX; _mY = cY;
 		// Utilizo la función _MouseEntrando() para poder recibir los mensajes WM_MOUSELEAVE
-		BOOL bME = _MouseEntrando();
-//		if (bME == TRUE)	Scrolls_MouseEntrando();		
-
+		if (_MouseEntrando() == TRUE) {
+			Evento_MouseEntrando();
+			Scrolls_MouseEntrando();
+		}
+		
 		if (Scrolls_MouseMovimiento(DatosMouse) == TRUE) { return; } // las coordenadas pertenecen al scroll (salgo del evento)
 		
 		_ItemResaltado = HitTest(DatosMouse.X(), DatosMouse.Y(), &_SubItemResaltado);
 		
 		Evento_MouseMovimiento(DatosMouse);
-
-		if (bME == TRUE)	Evento_MouseEntrando();
 
 		// Envio el evento mouseup a la ventana padre
 		SendMessage(GetParent(hWnd()), DWL_LISTAEX_MOUSEMOVIMIENTO, reinterpret_cast<WPARAM>(&DatosMouse), 0);

@@ -46,9 +46,9 @@ NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre,
 		}
 	}
 
-	int                       nIcono   = 0;
-	DhWnd_Fuente             *nFuente  = &Fuente;
-	DArbolEx_MostrarExpansor  nExpansor = DArbolEx_MostrarExpansor_Mostrar;
+	int                       nIcono    = 0;
+	DhWnd_Fuente             *nFuente   = &Fuente;
+	DArbolEx_MostrarExpansor  nExpansor = (ExpansorPorDefecto() == DArbolEx_Expansor_Rectangulo) ? DArbolEx_MostrarExpansor_MostrarRectangulo : DArbolEx_MostrarExpansor_MostrarTriangulo;
 //	size_t			nPos = 0;
 	switch (nTipoNodo) {
 		case ArbolBD_TipoNodo_Raiz:			// Raíz añadida por el usuario

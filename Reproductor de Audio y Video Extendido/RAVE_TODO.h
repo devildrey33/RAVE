@@ -13,7 +13,7 @@
 	    V  Control DListaEx
 			V  Implementar teclat complexe (shifts, controls, av, repag, i tal...) 
 	   +o- Control DExplorarDirectorios que crea un arbre amb l'escriptori, MisDocuemntos, MiPC, i Entorno de Red (per poguer seleccionar un directori) [Extensió de DArbolEx]
-			+  Directoris desactivats si no hi ha privilegis per explorar-los
+			V  Directoris desactivats si no hi ha privilegis per explorar-los
 		o- Clase adaptable per formar part d'un control DEdicionTextoEx
 			-  Edició de textes bàsic amb una sola linea (s'ha de poder especificar la part del control que mostrará el control per editar el texte)
 			   +o- Pensat per tenir : una font amb tamany fixe, un color de texte, sombra i un de fondo, amb posibilitat de Resaltat i Presionat
@@ -217,8 +217,6 @@
 				- Pas 2 Si el nom + pista supera en un 140% del tamany necesari per les columnes s'ha de partir
 					- (buscar exemples)
 
-		
-
 		V  Afegir funcións de temps a les DAnimacion i DAnimacion_Color
 			V Fusionat DAnimacion_Color amb DAnimacionm ara puc fer animacions decimals i de color desde el mateix objecte a l'hora.
 			V Retocats els parametres de les funcions lambda, ja no apuntan a vectors blancs, ara apunten a un objecte que fa de vector i de helper
@@ -227,11 +225,13 @@
 			X  S'ha de treure del objecte EtiquetaBD els membres : Medios, Tiempo, Longitud (i de rebot he recuperat el Nota)
 				X  També s'ha de treure de la BD
 			-  Lo millor es anar refrescant les dades al mostrar el tooltip, haig de fer un multisqlselect chachi 
+			-  No hi han etiquetes pels videos de la BD...
 		
-		-  Tractar arxius del tipus CRDOWNLOAD i OPDOWNLOAD per renombrar-los al acabar de reproduïr, OFC també s'haura de guardar el nou path a la BD.
+		V  Tractar arxius del tipus CRDOWNLOAD i OPDOWNLOAD per renombrar-los al acabar de reproduïr, OFC també s'haura de guardar el nou path a la BD.
 
 		V  Solucionar problema amb el manifest que no em deixa obtenir el SO correctament i a partir de Win8 ja no em diu el SO correcte.		
 		V  Solucionar Follón de l'ordre de les finestres amb els tooltips quan hi ha la finestra opcions o la del threadanalizar
+		V  Solucionar bug dels ControlesPantallaCompleta que no es mostren despres d'acabar un medi (no val apretar el Next, ha de ser acabat totalment)
 
 		V  DBarraScrollEx
 			V  La barra del scroll ha de tenir un mínim PERCEPTIBLE (no val 1 pixel xd)
@@ -240,20 +240,26 @@
 					V Revisar el teclat que fa coses rares amb els dos controls
 			V  Direfenciar estat de la barra resaltat fondo, barra
 			V  Afegir transicións de resaltat i presionat
-			-  Minimitza el G:\MP3... pasa algo raro, hi ha mes barra de escroll que fondo..
-				- I ja de pas obre pelis i series, -> startrek i flipa amb el scrollH
+			V  Minimitza el G:\MP3... pasa algo raro, hi ha mes barra de escroll que fondo..
+				V I ja de pas obre pelis i series, -> startrek i flipa amb el scrollH
+			V  Afegir borde amb transició
+
 		-  DArbolEx 
-			-  Separar l'icona un pel mes del texte (per que no quedi l'icona enganxat a la selecció)  [subgerència : afegir un doble padding en ves d'un padding normal]
+			V  Separar l'icona un pel mes del texte (per que no quedi l'icona enganxat a la selecció)  [subgerència : afegir un doble padding en ves d'un padding normal]
 			-  Refer Shift + AvPag & RePag
-			-  Fer expansors amb un triangle, i deixar les dues opcions.
-			-  Afegir borde amb transició
-			-  Transicións de resaltat i presionat
+		    V  Fer expansors amb un triangle, i deixar les dues opcions.
+				V També he refet els expansors normals, i ara nomes utilitzen un color
+					V Transicións pels expansors de resaltat i presionat
+			X  Transicións de resaltat i presionat
+			V  Afegir borde amb transició
+
 			-  Resaltar texte buscat (ha de ser una capa per pintar el fondo abans de pintar el texte)
+			-  MouseDown y MouseUp s'han de fer amb un SetCapture
 		-  DListaEx
 			-  Al fer click amb el buto dret, detectar si nomes hi ha un item seleccionat, per desseleccionar tot o no,
 			-  Drag & drop intern a la DListaEx per moure items (multiselecció inclosa)
 			-  Transicións de resaltat i presionat		
-			-  Afegir borde amb transició
+			V  Afegir borde amb transició
 			-  Resaltar texte buscat (ha de ser una capa per pintar el fondo abans de pintar el texte)
 		-  ListaMedios
 			-  Mostrar el % del medi reproduit en el item que es el MedioActual

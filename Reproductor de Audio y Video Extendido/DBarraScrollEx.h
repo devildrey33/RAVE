@@ -6,7 +6,7 @@
 
 namespace DWL {
 	// Mostrar mensajes de depuración en la consola
-	#define DBARRASCROLLEX_MOSTRARDEBUG		TRUE
+	#define DBARRASCROLLEX_MOSTRARDEBUG		FALSE
 
 	enum DBarraScrollEx_Estado {
 		DBarraScrollEx_Estado_Invisible,
@@ -24,6 +24,10 @@ namespace DWL {
 		DBarraScrollEx_Transicion_Presionado
 	};
 
+	enum DBarraScrollEx_Transicion_Borde {
+		DBarraScrollEx_Transicion_Borde_Normal,
+		DBarraScrollEx_Transicion_Borde_Resaltado
+	};
 
 	// Control que puede mostrar una barra de scroll vertical y una barra de scroll horizontal.
 	class DBarraScrollEx : public DControlEx {
@@ -36,12 +40,12 @@ namespace DWL {
 		const BOOL					Scrolls_MousePresionado(DEventoMouse &DatosMouse);
 		const BOOL					Scrolls_MouseSoltado(DEventoMouse &DatosMouse);
 
-//		const BOOL					Scrolls_MouseEntrando();
+		const BOOL					Scrolls_MouseEntrando(void);
 		const BOOL                  Scrolls_MouseSaliendo(void);
-									// Obtiene el área que pertenece al control (RectaCliente es el resultado de GetClientRect, y RectaClienteSinScroll es el área del control excluyendo las barras de scroll) 
-		void						ObtenerRectaCliente(RECT *RectaCliente, RECT *RectaClienteSinScroll);
+									// Obtiene el área que pertenece al control (RectaCliente es el resultado de GetClientRect sin el borde del control, y RectaClienteSinScroll es el área del control excluyendo las barras de scroll) 
+		void						ObtenerRectaCliente(RECT *RectaCliente, RECT *RectaClienteSinScroll, RECT *RectaBorde);
 									// Obtiene el área de los scrolls
-		void						ObtenerRectasScroll(RECT &RC, RECT &RectaH, RECT &RectaV);
+		void						ObtenerRectasScroll(RECT &IN_RC, RECT &OUT_RectaH, RECT &OUT_RectaV);
 		void						ObtenerRectasScroll(RECT &RectaH, RECT &RectaV);
 									// Obtiene el área de la barra dentro del scroll vertical
 		void						ObtenerRectaBarraScrollV(RECT &RectaScroll, RECT &RectaBarra);
@@ -49,7 +53,6 @@ namespace DWL {
 		void						ObtenerRectaBarraScrollH(RECT &RectaScroll, RECT &RectaBarra);
 
 		virtual void				Scrolls_EventoCambioPosicion(void) { };
-		//		LRESULT CALLBACK			GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 		////////////////////////////// ScrollH
 		void						ScrollH_Pagina(const float nValor);
 		const float					ScrollH_Pagina(void);
@@ -63,19 +66,14 @@ namespace DWL {
 		const float					ScrollV_Posicion(void);
 		void						ScrollV_Visible(const BOOL nVisible);
 
-/*		COLORREF				    ColorFondo;
-		COLORREF				    ColorScroll;
-		COLORREF				    ColorScrollResaltado;
-		COLORREF                    ColorScrollPresionado;
-		COLORREF				    ColorFondoScroll;
-		COLORREF				    ColorFondoScrollResaltado;
-		COLORREF				    ColorFondoScrollPresionado;*/
-
 		virtual void                AvPag(void);
 		virtual void                RePag(void);
 
 		void						ScrollV_Transicion(const DBarraScrollEx_Transicion nTransicion);
 		void						ScrollH_Transicion(const DBarraScrollEx_Transicion nTransicion);
+									
+		void                        Scrolls_TransicionBorde(const DBarraScrollEx_Transicion_Borde nTransicion);
+		void                        PintarBorde(RECT *Recta, HDC hDC);
 	  protected:
 		void					   _PintarBarraScrollEx(HDC hDC, RECT &RectaScroll, RECT &RectaBarra, const COLORREF pColorBarra, const COLORREF pColorFondo);
 		const float				   _CalcularPosScrollH(const UINT nTam, const int nPos);
@@ -99,6 +97,9 @@ namespace DWL {
 		COLORREF                   _ColorBarraV;
 		COLORREF                   _ColorFondoH;
 		COLORREF                   _ColorBarraH;
+
+		DAnimacion                 _Scrolls_AniTransicionBorde;
+		COLORREF                   _ColorBorde;
 	};
 
 };

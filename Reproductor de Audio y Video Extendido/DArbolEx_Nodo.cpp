@@ -5,8 +5,9 @@
 
 namespace DWL {
 
-	DArbolEx_Nodo::DArbolEx_Nodo() :	_Siguiente(NULL), _Anterior(NULL), _Icono(NULL), _Fuente(NULL), _Ancestros(0), _AnchoTexto(0), _Arbol(NULL),
-										Expandido(FALSE), Seleccionado(FALSE), _SubSeleccionado(FALSE), _MostrarExpansor(DArbolEx_MostrarExpansor_Auto), Activado(TRUE) {
+	DArbolEx_Nodo::DArbolEx_Nodo(void) :	_Siguiente(NULL), _Anterior(NULL), _Icono(NULL), _Fuente(NULL), _Ancestros(0), _AnchoTexto(0), _Arbol(NULL), 
+											_ColorExpansor(COLOR_ARBOL_EXPANSOR_NORMAL), /*_ColorTexto(COLOR_ARBOL_TEXTO), _ColorTextoSombra(COLOR_ARBOL_TEXTO_SOMBRA), _ColorFondo(COLOR_ARBOL_FONDO),*/
+											Expandido(FALSE), Seleccionado(FALSE), _SubSeleccionado(FALSE), _MostrarExpansor(DArbolEx_MostrarExpansor_Auto), Activado(TRUE) {
 	};
 	
 	DArbolEx_Nodo::~DArbolEx_Nodo(void) {
@@ -15,13 +16,14 @@ namespace DWL {
 	};
 
 	/* Devuelve TRUE o FALSE dependiendo de si hay que mostrar el expansor o no.. (si MostrarExpansor está en Auto, devolverá TRUE si el nodo tiene hijos, FALSE enc aso contrario) */
-	const BOOL DArbolEx_Nodo::MostrarExpansor(void) { 
-		switch (_MostrarExpansor) {
-			case DArbolEx_MostrarExpansor_Auto		: return (_Hijos.size() > 0) ? TRUE : FALSE;
-			case DArbolEx_MostrarExpansor_Mostrar	: return TRUE;
-			case DArbolEx_MostrarExpansor_Ocultar	: return FALSE;
+	const DArbolEx_MostrarExpansor DArbolEx_Nodo::MostrarExpansor(void) {
+		if (_MostrarExpansor == DArbolEx_MostrarExpansor_Auto) {
+			DArbolEx_Expansor EPD = _Arbol->ExpansorPorDefecto();
+			return (_Hijos.size() > 0) ?
+				(EPD == DArbolEx_Expansor_Triangulo) ? DArbolEx_MostrarExpansor_MostrarTriangulo : DArbolEx_MostrarExpansor_MostrarRectangulo :
+				DArbolEx_MostrarExpansor_Ocultar;
 		}
-		return Expandido; 
+		return _MostrarExpansor;
 	}
 
 
@@ -55,5 +57,129 @@ namespace DWL {
 		}
 	}*/
 
+	void DArbolEx_Nodo::_TransicionExpansor(const DArbolEx_TransicionExpansor nTransicion) {
+		DWORD Duracion = DhWnd::TiempoAnimaciones;
+		if (_AniTransicionExpansor.Animando() == TRUE) {
+			Duracion = _AniTransicionExpansor.TiempoActual();
+			_AniTransicionExpansor.Terminar();
+		}
+
+		COLORREF ExpansorHasta;
+		switch (nTransicion) {
+		case DArbolEx_TransicionExpansor_Normal:
+			ExpansorHasta = COLOR_ARBOL_EXPANSOR_NORMAL;
+			break;
+		case DArbolEx_TransicionExpansor_Resaltado:
+			ExpansorHasta = COLOR_ARBOL_EXPANSOR_RESALTADO;
+			break;
+		case DArbolEx_TransicionExpansor_Presionado:
+			ExpansorHasta = COLOR_ARBOL_EXPANSOR_PRESIONADO;
+			break;
+		}
+
+		_AniTransicionExpansor.Iniciar(_ColorExpansor, ExpansorHasta, Duracion, [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
+			_ColorExpansor = Datos[0].Color();
+			_Arbol->RepintarAni();
+		});
+	}
+	/*
+	void DArbolEx_Nodo::_Transicion(const DArbolEx_TransicionNodo nTransicion) {
+		DWORD Duracion = DhWnd::TiempoAnimaciones;
+		if (_AniTransicion.Animando() == TRUE) {
+			Duracion = _AniTransicion.TiempoActual();
+			_AniTransicion.Terminar();
+		}
+
+		COLORREF TextoHasta, SombraHasta, FondoHasta;
+		switch (nTransicion) {
+			case DArbolEx_TransicionNodo_Normal:
+				TextoHasta  = COLOR_ARBOL_TEXTO;
+				SombraHasta = COLOR_ARBOL_TEXTO_SOMBRA;
+				FondoHasta  = COLOR_ARBOL_FONDO;
+				break;
+			case DArbolEx_TransicionNodo_Resaltado:
+				TextoHasta  = COLOR_ARBOL_TEXTO_RESALTADO;
+				SombraHasta = COLOR_ARBOL_TEXTO_SOMBRA;
+				FondoHasta  = COLOR_ARBOL_FONDO_RESALTADO;
+				break;
+			case DArbolEx_TransicionNodo_Seleccionado:
+				TextoHasta  = COLOR_ARBOL_SELECCION_TEXTO;
+				SombraHasta = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
+				FondoHasta  = COLOR_ARBOL_SELECCION;
+				break;
+			case DArbolEx_TransicionNodo_SeleccionadoResaltado :
+				TextoHasta  = COLOR_ARBOL_SELECCION_TEXTO_RESALTADO;
+				SombraHasta = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
+				FondoHasta  = COLOR_ARBOL_SELECCION_RESALTADO;
+				break;
+			case DArbolEx_TransicionNodo_SeleccionadoPresionado :
+				TextoHasta  = COLOR_ARBOL_SELECCION_TEXTO_PRESIONADO;
+				SombraHasta = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
+				FondoHasta  = COLOR_ARBOL_SELECCION_PRESIONADO;
+				break;
+			case DArbolEx_TransicionNodo_SubSeleccionado:
+				TextoHasta  = COLOR_ARBOL_SUBSELECCION_TEXTO;
+				SombraHasta = COLOR_ARBOL_SUBSELECCION_TEXTO_SOMBRA;
+				FondoHasta  = COLOR_ARBOL_SUBSELECCION;
+				break;
+			case DArbolEx_TransicionNodo_SubSeleccionadoResaltado:
+				TextoHasta  = COLOR_ARBOL_SUBSELECCION_TEXTO_RESALTADO;
+				SombraHasta = COLOR_ARBOL_SUBSELECCION_TEXTO_SOMBRA;
+				FondoHasta  = COLOR_ARBOL_SUBSELECCION_RESALTADO;
+				break;
+			case DArbolEx_TransicionNodo_SubSeleccionadoPresionado:
+				TextoHasta  = COLOR_ARBOL_SELECCION_TEXTO_PRESIONADO;
+				SombraHasta = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
+				FondoHasta  = COLOR_ARBOL_SELECCION_PRESIONADO;
+				break;
+			case DArbolEx_TransicionNodo_Desactivado:
+				TextoHasta  = COLOR_ARBOL_TEXTO_DESACTIVADO;
+				SombraHasta = COLOR_ARBOL_TEXTO_SOMBRA;
+				FondoHasta  = COLOR_ARBOL_FONDO;
+				break;
+			case DArbolEx_TransicionNodo_DesactivadoResaltado	:
+				TextoHasta  = COLOR_ARBOL_TEXTO_DESACTIVADO;
+				SombraHasta = COLOR_ARBOL_TEXTO_SOMBRA;
+				FondoHasta  = COLOR_ARBOL_FONDO_RESALTADO;
+				break;
+		}
+
+		_AniTransicion.Iniciar(_ColorTexto, TextoHasta, _ColorTextoSombra, SombraHasta, _ColorFondo, FondoHasta, Duracion, [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
+			_ColorTexto			= Datos[0].Color();
+			_ColorTextoSombra	= Datos[1].Color();
+			_ColorFondo			= Datos[2].Color();
+			_Arbol->RepintarAni();
+		});
+	}
+
+	void DArbolEx_Nodo::Activado(const BOOL nActivado) {
+		_Activado = nActivado;
+		
+		if (_Activado == TRUE) {
+			if (Seleccionado == TRUE) {
+				if (_SubSeleccionado == TRUE) {					
+					_ColorTexto			= COLOR_ARBOL_SUBSELECCION_TEXTO;
+					_ColorTextoSombra	= COLOR_ARBOL_SUBSELECCION_TEXTO_SOMBRA;
+					_ColorFondo			= COLOR_ARBOL_SUBSELECCION;
+				}
+				else {
+					_ColorTexto			= COLOR_ARBOL_SELECCION_TEXTO;
+					_ColorTextoSombra	= COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
+					_ColorFondo			= COLOR_ARBOL_SELECCION;
+				}
+			}
+			else {
+				_ColorTexto			= COLOR_ARBOL_TEXTO;
+				_ColorTextoSombra	= COLOR_ARBOL_TEXTO_SOMBRA;
+				_ColorFondo			= COLOR_ARBOL_FONDO;
+			}
+		}
+		else {
+			_ColorTexto			= COLOR_ARBOL_TEXTO_DESACTIVADO;
+			_ColorTextoSombra	= COLOR_ARBOL_TEXTO_SOMBRA;
+			_ColorFondo			= COLOR_ARBOL_FONDO;
+		}
+		
+	}*/
 
 }

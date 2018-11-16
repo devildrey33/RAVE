@@ -2,11 +2,12 @@
 #include "DBarraScrollEx.h"
 
 namespace DWL {
-#define BARRA_MIN_TAM 10
+	// Minimo de tamaño para la barra de scroll
+	#define BARRA_MIN_TAM 10
 
 	DBarraScrollEx::DBarraScrollEx(void) :	DControlEx(),
 											_Scroll_PosPresionado({ 0 ,0 })					, _Scroll_PosInicio(0.0f)			,
-											_ColorFondoV(COLOR_SCROLL_FONDO)				, _ColorFondoH(COLOR_SCROLL_FONDO)	,
+											_ColorFondoV(COLOR_SCROLL_FONDO)				, _ColorFondoH(COLOR_SCROLL_FONDO)	, _ColorBorde(COLOR_BORDE),
 											_ColorBarraV(COLOR_SCROLL_BARRA)				, _ColorBarraH(COLOR_SCROLL_BARRA)	,
 											_ScrollV_Estado(DBarraScrollEx_Estado_Invisible), _ScrollV_Pagina(1.0f)				, _ScrollV_Posicion(0.0f),
 											_ScrollH_Estado(DBarraScrollEx_Estado_Invisible), _ScrollH_Pagina(1.0f)				, _ScrollH_Posicion(0.0f) {
@@ -18,37 +19,49 @@ namespace DWL {
 	DBarraScrollEx::~DBarraScrollEx(void) {
 	}
 
+	void DBarraScrollEx::PintarBorde(RECT *Recta, HDC hDC) {
+//		RECT RC;
+//		GetClientRect(_hWnd, &RC);
+//		HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO_CLARO);
+		HBRUSH BrochaBorde = CreateSolidBrush(_ColorBorde);
+//		FillRect(hDC, Recta, BrochaFondo);
+		FrameRect(hDC, Recta, BrochaBorde);
+//		DeleteObject(BrochaFondo);
+		DeleteObject(BrochaBorde);
+	}
 
 	void DBarraScrollEx::Scrolls_Pintar(HDC hDC, RECT &RC) {
+		// Si no hay un scroll visible salgo
 		if (_ScrollV_Estado == DBarraScrollEx_Estado_Invisible && _ScrollH_Estado == DBarraScrollEx_Estado_Invisible) return;
-		/*		#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
-					Debug_Escribir_Varg(L"DBarraScrollEx::Scrolls_Pintar  _ScrollV_Estado = %d\n", _ScrollV_Estado);
-				#endif*/
 
-		BOOL PintarRecuadro = TRUE;
-		RECT RCV, RCH, RCBV, RCBH;
+		BOOL PintarRecuadro = TRUE;		// Determina si hay que pintar el recuadro inferior derecha
+		RECT RCV, RCH, RCBV, RCBH;		// Rectas para la barra y el fondo tanto vertical como horizontal
+		// Obtengo las rectas para el scroll H y V
 		ObtenerRectasScroll(RC, RCH, RCV);
-		if (_ScrollV_Estado != DBarraScrollEx_Estado_Invisible)	ObtenerRectaBarraScrollV(RCV, RCBV);
-		if (_ScrollH_Estado != DBarraScrollEx_Estado_Invisible)	ObtenerRectaBarraScrollH(RCH, RCBH);
-		//		Debug_Escribir_Varg(L"_ScrollV_Estado : %d, _ScrollH_Estado : %d, ColorFondoScroll %d\n", _ScrollV_Estado, _ScrollH_Estado, ColorFondoScroll);
-		switch (_ScrollV_Estado) {
-			case DBarraScrollEx_Estado_Normal			:	
-			case DBarraScrollEx_Estado_BarraResaltada	:	
-			case DBarraScrollEx_Estado_FondoResaltado	:	
-			case DBarraScrollEx_Estado_Presionado		:	
-				_PintarBarraScrollEx(hDC, RCV, RCBV, _ColorBarraV, _ColorFondoV);
-				break;
-			case DBarraScrollEx_Estado_Invisible		:   PintarRecuadro = FALSE;																					break;
+		
+		// Pinto la barra de scroll si no es invisible
+		if (_ScrollV_Estado != DBarraScrollEx_Estado_Invisible) {
+			// Obtengo las rectas para las barras de scroll V
+			ObtenerRectaBarraScrollV(RCV, RCBV);
+			// Pinto la barra de scroll V
+			_PintarBarraScrollEx(hDC, RCV, RCBV, _ColorBarraV, _ColorFondoV);
 		}
-		switch (_ScrollH_Estado) {
-			case DBarraScrollEx_Estado_Normal			:	
-			case DBarraScrollEx_Estado_BarraResaltada	:	
-			case DBarraScrollEx_Estado_FondoResaltado	:	
-			case DBarraScrollEx_Estado_Presionado		:	
-				_PintarBarraScrollEx(hDC, RCH, RCBH, _ColorBarraH, _ColorFondoH);
-				break;
-			case DBarraScrollEx_Estado_Invisible		:   PintarRecuadro = FALSE;																					break;
+		// La barra es invisible, no será necesario pintar el recuadro
+		else {
+			PintarRecuadro = FALSE;
 		}
+		// Pinto la barra de scroll si no es invisible
+		if (_ScrollH_Estado != DBarraScrollEx_Estado_Invisible) {
+			// Obtengo las rectas para las barras de scroll H
+			ObtenerRectaBarraScrollH(RCH, RCBH);
+			// Pinto la barra de scroll H
+			_PintarBarraScrollEx(hDC, RCH, RCBH, _ColorBarraH, _ColorFondoH);
+		}
+		// La barra es invisible, no será necesario pintar el recuadro
+		else {
+			PintarRecuadro = FALSE;
+		}
+
 		// Si las dos barras son visibles hay que pintar un recuadro en la parte inferior derecha del control 
 		if (PintarRecuadro == TRUE) {
 			RECT Recuadro = { RCV.left, RCH.top, RCV.right, RCH.bottom };
@@ -59,71 +72,87 @@ namespace DWL {
 	}
 
 	/* Obtiene el área que pertenece al control (RectaCliente es el resultado de GetClientRect, y RectaClienteSinScroll es el área del control excluyendo las barras de scroll) */
-	void DBarraScrollEx::ObtenerRectaCliente(RECT *RectaCliente, RECT *RectaClienteSinScroll) {
-		GetClientRect(hWnd(), RectaCliente);
+	void DBarraScrollEx::ObtenerRectaCliente(RECT *RectaCliente, RECT *RectaClienteSinScroll, RECT *RectaBorde) {
+		GetClientRect(hWnd(), RectaBorde);
+		*RectaCliente = *RectaBorde;
+		// Quito el borde a la recta cliente
+		RectaCliente->left += 2; RectaCliente->top += 2; RectaCliente->right -= 2; RectaCliente->bottom -= 2;
 		*RectaClienteSinScroll = *RectaCliente;
+		// Si la barra V no es invisible quito su espacio de la recta cliente
 		if (_ScrollV_Estado != DBarraScrollEx_Estado_Invisible) RectaClienteSinScroll->right -= _ScrollV_Ancho;
+		// Si la barra H no es invisible quito su espacio de la recta cliente
 		if (_ScrollH_Estado != DBarraScrollEx_Estado_Invisible) RectaClienteSinScroll->bottom -= _ScrollH_Alto;
 	}
 
 
-	/* Obtiene el área que pertenece los scrolls Horizontal y Vertical */
-	void DBarraScrollEx::ObtenerRectasScroll(RECT &RC, RECT &RectaH, RECT &RectaV) {
-		RectaH = RC; RectaH.top = RectaH.bottom - _ScrollH_Alto;
-		RectaV = RC; RectaV.left = RectaV.right - _ScrollV_Ancho;
+	/* Obtiene el área que pertenece los scrolls Horizontal y Vertical
+		IN_RC : debe ser la recta cliente del control previamente obtenida con GetClientRect
+	*/
+	void DBarraScrollEx::ObtenerRectasScroll(RECT &IN_RC, RECT &OUT_RectaH, RECT &OUT_RectaV) {
+		RECT RC = IN_RC;
+		// Quito el borde
+//		RC.left += 2; RC.top += 2; RC.right -= 2; RC.bottom -= 2;
+		// Calculo las rectas V y H
+		OUT_RectaH = RC; OUT_RectaH.top = OUT_RectaH.bottom - _ScrollH_Alto;
+		OUT_RectaV = RC; OUT_RectaV.left = OUT_RectaV.right - _ScrollV_Ancho;
+		// Si las dos barras están visibles, hago espacio para el recuadro inferior izquierda
 		if (_ScrollH_Estado != DBarraScrollEx_Estado_Invisible && _ScrollV_Estado != DBarraScrollEx_Estado_Invisible) {
-			RectaH.right -= _ScrollH_Alto;
-			RectaV.bottom -= _ScrollV_Ancho;
+			OUT_RectaH.right  -= _ScrollH_Alto;
+			OUT_RectaV.bottom -= _ScrollV_Ancho;
 		}
 	}
 
 	/* Obtiene el área que pertenece los scrolls Horizontal y Vertical */
 	void DBarraScrollEx::ObtenerRectasScroll(RECT &RectaH, RECT &RectaV) {
+		// Obtengo la recta cliente
 		RECT Recta;
 		GetClientRect(hWnd(), &Recta);
+		// Quito el borde
+//		Recta.left += 2; Recta.top += 2; Recta.right -= 2; Recta.bottom -= 2;
+		// Calculo las rectas V y H
 		RectaH = Recta; RectaH.top = RectaH.bottom - _ScrollH_Alto;
 		RectaV = Recta; RectaV.left = RectaV.right - _ScrollV_Ancho;
+		// Si las dos barras están visibles, hago espacio para el recuadro inferior izquierda
 		if (_ScrollH_Estado != DBarraScrollEx_Estado_Invisible && _ScrollV_Estado != DBarraScrollEx_Estado_Invisible) {
-			RectaH.right -= _ScrollH_Alto;
+			RectaH.right  -= _ScrollH_Alto;
 			RectaV.bottom -= _ScrollV_Ancho;
 		}
 	}
 
 	/* Obtiene el área de la barra de scroll vertical (sin el fondo) */
 	void DBarraScrollEx::ObtenerRectaBarraScrollV(RECT &RectaScroll, RECT &RectaBarra) {
+		// Calculo el tamaño de la barra V
 		int TamBarra = static_cast<int>(static_cast<float>(RectaScroll.bottom) * _ScrollV_Pagina);
 		if (TamBarra < BARRA_MIN_TAM) TamBarra = BARRA_MIN_TAM;
-
-		RectaBarra = {  2 + RectaScroll.left,																													// left
-						2 + static_cast<int>(_ScrollV_Posicion * (RectaScroll.bottom - TamBarra)),																// top
-					   -2 + RectaScroll.right,																													// right
+		// Calculo la recta de la barra V
+		RectaBarra = {  2 + RectaScroll.left,																		// left
+						2 + static_cast<int>(_ScrollV_Posicion * (RectaScroll.bottom - TamBarra)),					// top
+					   -2 + RectaScroll.right,																		// right
 					   -2 + static_cast<int>((_ScrollV_Posicion * (RectaScroll.bottom - TamBarra)) + TamBarra) };	// bottom
 	}
 
 	/* Obtiene el área de la barra de scroll horizontal (sin el fondo) */
 	void DBarraScrollEx::ObtenerRectaBarraScrollH(RECT &RectaScroll, RECT &RectaBarra) {
+		// Calculo el tamaño de la barra H
 		int TamBarra = static_cast<int>(static_cast<float>(RectaScroll.right) * _ScrollH_Pagina);
 		if (TamBarra < BARRA_MIN_TAM) TamBarra = BARRA_MIN_TAM;
-
-		//		float Parte	= static_cast<float>(1.0f / RectaScroll.right);
-		RectaBarra = {  2 + static_cast<int>(_ScrollH_Posicion * (RectaScroll.right - TamBarra)),															// left
-						2 + RectaScroll.top,																												// top
-					   -2 + static_cast<int>((_ScrollH_Posicion * (RectaScroll.right - TamBarra)) + TamBarra),	// right
-					   -2 + RectaScroll.bottom }; // bottom
+		// Calculo la recta de la barra H
+		RectaBarra = {  2 + static_cast<int>(_ScrollH_Posicion * (RectaScroll.right - TamBarra)),					// left
+						2 + RectaScroll.top,																		// top
+					   -2 + static_cast<int>((_ScrollH_Posicion * (RectaScroll.right - TamBarra)) + TamBarra),		// right
+					   -2 + RectaScroll.bottom																	};	// bottom
 	}
 
 	// S'ha de recalcular de forma que el maxim sigui 1, i li haig de restar al tamany total, el tamany d'una pagina
-	const float DBarraScrollEx::_CalcularPosScrollH(const UINT nTam, const int nPos) {
-//		float ancho = (static_cast<float>(nTam) - (static_cast<float>(nTam) * _ScrollH_Pagina)); // ancho resatandole la página
-
+	const float DBarraScrollEx::_CalcularPosScrollH(const UINT nTam, const int nPos) {		
+		// Calculo el tamaño de la barra
 		int TamBarra = static_cast<int>(static_cast<float>(nTam) * _ScrollH_Pagina);
 		if (TamBarra < BARRA_MIN_TAM) TamBarra = BARRA_MIN_TAM;
-
-
+		// Tamaño restante para el scroll
 		float tam = static_cast<float>(nTam) - TamBarra;
-		//		float tam = (static_cast<float>(nTam) - (static_cast<float>(nTam) * _ScrollH_Pagina)); // altura resatandole la página
+		// Calculo la nueva posición
 		float NuevaPos = _Scroll_PosInicio + (1.0f / tam) * static_cast<float>(nPos - _Scroll_PosPresionado.x);
-		//		float NuevaPos = _Scroll_PosInicio + (1.0f / static_cast<float>(nTam)) * nPos;
+		// Si la posición se sale de 0.0 o 1.0 la reajusto
 		if (NuevaPos > 1.0f)	NuevaPos = 1.0f;
 		if (NuevaPos < 0.0f)	NuevaPos = 0.0f;
 
@@ -135,17 +164,14 @@ namespace DWL {
 	}
 
 	const float DBarraScrollEx::_CalcularPosScrollV(const UINT nTam, const int nPos) {
-		
-//		float alto = (static_cast<float>(nTam) - (static_cast<float>(nTam) * _ScrollV_Pagina)); // alto resatandole la página
-//		float Pos = (static_cast<float>(nPos) - (static_cast<float>(nTam) * _ScrollV_Pagina)); // alto resatandole la página
-//		if (Pos < 0.0f) Pos = 0.0f;
-
+		// Calculo el tamaño de la barra
 		int TamBarra = static_cast<int>(static_cast<float>(nTam) * _ScrollV_Pagina);
 		if (TamBarra < BARRA_MIN_TAM) TamBarra = BARRA_MIN_TAM;
-
+		// Tamaño restante para el scroll
 		float tam = static_cast<float>(nTam) - TamBarra;
-		//		float tam = (static_cast<float>(nTam) - (static_cast<float>(nTam) * _ScrollV_Pagina)); // altura resatandole la página
+		// Calculo la nueva posición
 		float NuevaPos = _Scroll_PosInicio + (1.0f / tam) * static_cast<float>(nPos - _Scroll_PosPresionado.y);
+		// Si la posición se sale de 0.0 o 1.0 la reajusto
 		if (NuevaPos > 1.0f)	NuevaPos = 1.0f;
 		if (NuevaPos < 0.0f)	NuevaPos = 0.0f;
 
@@ -158,35 +184,32 @@ namespace DWL {
 
 	// Devuelve TRUE si el mouse está dentro de alguna barra de scroll
 	const BOOL DBarraScrollEx::Scrolls_MouseMovimiento(DEventoMouse &DatosMouse) {
-		int cX = DatosMouse.X(),
-			cY = DatosMouse.Y();
-
 		RECT RCV, RCH, RectaBarra;
 		ObtenerRectasScroll(RCH, RCV);
-		POINT Pt = { cX, cY };
+		POINT Pt = { DatosMouse.X(), DatosMouse.Y() };
 		BOOL  RetV = FALSE, RetH = FALSE, RetB = FALSE;
 		// Compruebo el estado vertical
 		if (_ScrollV_Estado != DBarraScrollEx_Estado_Invisible) {
+			// Si el estado no es presionado
 			if (_ScrollV_Estado != DBarraScrollEx_Estado_Presionado) {
 				ObtenerRectaBarraScrollV(RCV, RectaBarra);
 				RetV = PtInRect(&RCV, Pt);			// Espacio del fondo del scroll vertical
 				RetB = PtInRect(&RectaBarra, Pt);	// Espacio de la barra del scroll vertical
-				// Dentro del scroll vertical 
+				// Dentro de la barra de scroll vertical 
 				if (RetV == TRUE && RetB == TRUE && _ScrollV_Estado != DBarraScrollEx_Estado_BarraResaltada) {
 					_ScrollV_Estado = DBarraScrollEx_Estado_BarraResaltada;
 					#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
 						Debug_Escribir(L"DBarraScrollEx::Scrolls_MouseMovimiento  _ScrollV_Estado = DBarraScrollEx_Estado_BarraResaltada\n");
 					#endif
 					ScrollV_Transicion(DBarraScrollEx_Transicion_BarraResaltada);
-					//Repintar();
 					return TRUE;
 				}
+				// Dentro del fondo del scroll vertical 
 				else if (RetV == TRUE && RetB == FALSE && _ScrollV_Estado != DBarraScrollEx_Estado_FondoResaltado) {
 					_ScrollV_Estado = DBarraScrollEx_Estado_FondoResaltado;
 					#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
 						Debug_Escribir(L"DBarraScrollEx::Scrolls_MouseMovimiento  _ScrollV_Estado = DBarraScrollEx_Estado_FondoResaltado\n");
 					#endif
-					//Repintar();
 					ScrollV_Transicion(DBarraScrollEx_Transicion_FondoResaltado);
 					return TRUE;
 				}
@@ -196,40 +219,40 @@ namespace DWL {
 					#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
 						Debug_Escribir(L"DBarraScrollEx::Scrolls_MouseMovimiento  _ScrollV_Estado = DBarraScrollEx_Estado_Normal\n");
 					#endif
-					//Repintar();
 					ScrollV_Transicion(DBarraScrollEx_Transicion_Normal);
 					return TRUE;
 				}
 			}
-			else { // ScrollV presionado
-				_ScrollV_Posicion = _CalcularPosScrollV(RCH.bottom, cY);
-/*				#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
-					Debug_Escribir_Varg(L"DBarraScrollEx::Scrolls_MouseMovimiento _ScrollV_Estado = DBarraScrollEx_Estado_Presionado  V:%.02f\n", _ScrollV_Posicion);
-				#endif*/
+			// ScrollV presionado
+			else { 
+				_ScrollV_Posicion = _CalcularPosScrollV(RCH.bottom, Pt.y);
 				Scrolls_EventoCambioPosicion();
 				Repintar();
-				//ScrollV_Transicion(DBarraScrollEx_Transicion_Presionado);
 				return TRUE;
 			}
 		}
 		// Compruebo el estado horizontal
 		if (_ScrollH_Estado != DBarraScrollEx_Estado_Invisible) {
+			// Si el estado no es presionado
 			if (_ScrollH_Estado != DBarraScrollEx_Estado_Presionado) {
 				ObtenerRectaBarraScrollH(RCH, RectaBarra);
 				RetB = PtInRect(&RectaBarra, Pt);	// Espacio de la barra del scroll vertical
 				RetH = PtInRect(&RCH, Pt);
+				// Dentro de la barra de scroll horizontal 
 				if (RetH == TRUE && RetB == TRUE && _ScrollH_Estado != DBarraScrollEx_Estado_BarraResaltada) {
 					_ScrollH_Estado = DBarraScrollEx_Estado_BarraResaltada;
 					ScrollH_Transicion(DBarraScrollEx_Transicion_BarraResaltada);
 					//Repintar();
 					return TRUE;
 				}
+				// Dentro del fondo del scroll horizontal 
 				else if (RetH == TRUE && RetB == FALSE && _ScrollH_Estado != DBarraScrollEx_Estado_FondoResaltado) {
 					_ScrollH_Estado = DBarraScrollEx_Estado_FondoResaltado;
 					ScrollH_Transicion(DBarraScrollEx_Transicion_FondoResaltado);
 					//Repintar();
 					return TRUE;
 				}
+				// Fuera del scroll horizontal
 				if (RetH == FALSE && _ScrollH_Estado != DBarraScrollEx_Estado_Normal) {
 					_ScrollH_Estado = DBarraScrollEx_Estado_Normal;
 					//Repintar();
@@ -237,18 +260,18 @@ namespace DWL {
 					return TRUE;
 				}
 			}
-			else { // ScrollH presionado
-				_ScrollH_Posicion = _CalcularPosScrollH(RCH.right, cX);
+			// ScrollH presionado
+			else { 
+				_ScrollH_Posicion = _CalcularPosScrollH(RCH.right, Pt.x);
 				#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir_Varg(L"Scrolls_MouseMovimiento H:%.02f\n", _ScrollH_Posicion);
 				#endif
 				Scrolls_EventoCambioPosicion();
 				Repintar();
-				//ScrollH_Transicion(DBarraScrollEx_Transicion_Presionado);
 				return TRUE;
 			}
 		}
-
+		// El mouse no está encima de ningún scroll devuelvo FALSE
 		return FALSE;
 	}
 
@@ -334,6 +357,31 @@ namespace DWL {
 
 	}
 
+	
+	void DBarraScrollEx::Scrolls_TransicionBorde(const DBarraScrollEx_Transicion_Borde nTransicion) {
+		DWORD Duracion = DhWnd::TiempoAnimaciones;
+		if (_Scrolls_AniTransicionBorde.Animando() == TRUE) {
+//			Duracion = _ScrollH_AniTransicion.TiempoActual();
+			_Scrolls_AniTransicionBorde.Terminar();
+		}
+
+		COLORREF BordeHasta;
+		switch (nTransicion) {
+			case DBarraScrollEx_Transicion_Borde_Normal:
+				BordeHasta = COLOR_BORDE;
+				break;
+			case DBarraScrollEx_Transicion_Borde_Resaltado:
+				BordeHasta = COLOR_BORDE_RESALTADO;
+				break;
+		}
+
+		_Scrolls_AniTransicionBorde.Iniciar(_ColorBorde, BordeHasta, Duracion, [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
+			_ColorBorde = Datos[0].Color();
+			RepintarAni();
+		});
+
+	}
+
 
 	// Devuelve TRUE si el mouse está dentro de alguna barra de scroll
 	const BOOL DBarraScrollEx::Scrolls_MousePresionado(DEventoMouse &DatosMouse) {
@@ -352,9 +400,7 @@ namespace DWL {
 				ObtenerRectaBarraScrollV(RCV, RCBV);
 				RetBV = PtInRect(&RCBV, Pt);
 				if (RetBV == FALSE) { // Está en la parte del fondo (recalculo la posición de la barra antes de empezar el drag)
-//					float alto = (static_cast<float>(RCV.bottom) - (static_cast<float>(RCV.bottom) * _ScrollV_Pagina)); // altura resatandole la página
 					_ScrollV_Posicion = _CalcularPosScrollV(RCH.bottom, cY);
-//					_ScrollV_Posicion = (1.0f / RCV.bottom) * static_cast<float>(cY);
 				}
 				SetCapture(hWnd());
 				_Scroll_PosPresionado = { cX, cY };			// Posición del mouse desde donde se inicia el drag de la barra
@@ -365,7 +411,6 @@ namespace DWL {
 				#endif
 				Scrolls_EventoCambioPosicion();
 				ScrollV_Transicion(DBarraScrollEx_Transicion_Presionado);
-				//Repintar();
 				return TRUE;
 			}
 		}
@@ -375,8 +420,6 @@ namespace DWL {
 				ObtenerRectaBarraScrollH(RCH, RCBH);
 				RetBH = PtInRect(&RCBH, Pt);
 				if (RetBH == FALSE) { // Está en la parte del fondo (recalculo la posición de la barra antes de empezar el drag)
-					//float ancho = (static_cast<float>(RCH.right) - (static_cast<float>(RCH.right) * _ScrollH_Pagina)); // ancho resatandole la página
-					//_ScrollH_Posicion = (1.0f / static_cast<float>(RCH.right)) * static_cast<float>(cX);
 					_ScrollH_Posicion = _CalcularPosScrollH(RCH.right, cX);
 				}
 				SetCapture(hWnd());
@@ -388,7 +431,6 @@ namespace DWL {
 				#endif
 				Scrolls_EventoCambioPosicion();
 				ScrollH_Transicion(DBarraScrollEx_Transicion_Presionado);
-				//Repintar();
 				return TRUE;
 			}
 		}
@@ -412,13 +454,9 @@ namespace DWL {
 			ObtenerRectaBarraScrollV(RCV, RectaBarra);
 			RetV = PtInRect(&RCV, Pt);
 			RetB = PtInRect(&RectaBarra, Pt);
-			if (RetV == TRUE && RetB == TRUE)		{ _ScrollV_Estado = DBarraScrollEx_Estado_BarraResaltada;	Trans = DBarraScrollEx_Transicion_BarraResaltada;	}
+			if		(RetV == TRUE && RetB == TRUE)	{ _ScrollV_Estado = DBarraScrollEx_Estado_BarraResaltada;	Trans = DBarraScrollEx_Transicion_BarraResaltada;	}
 			else if (RetV == TRUE && RetB == FALSE) { _ScrollV_Estado = DBarraScrollEx_Estado_FondoResaltado;	Trans = DBarraScrollEx_Transicion_FondoResaltado;	}
 			else									{ _ScrollV_Estado = DBarraScrollEx_Estado_Normal;			Trans = DBarraScrollEx_Transicion_Normal;			}
-			#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
-				Debug_Escribir_Varg(L"DBarraScrollEx::Scrolls_MouseSoltado  _ScrollV_Estado = %d\n", _ScrollV_Estado);
-			#endif
-
 			_ScrollV_Posicion = _CalcularPosScrollV(RCH.bottom, cY);
 			#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
 				Debug_Escribir_Varg(L"Scrolls_MouseSoltado V:%.02f\n", _ScrollV_Posicion);
@@ -432,7 +470,7 @@ namespace DWL {
 			ObtenerRectaBarraScrollH(RCH, RectaBarra);
 			RetH = PtInRect(&RCH, Pt);
 			RetB = PtInRect(&RectaBarra, Pt);
-			if (RetH == TRUE && RetB == TRUE)		{ _ScrollH_Estado = DBarraScrollEx_Estado_BarraResaltada;	Trans = DBarraScrollEx_Transicion_BarraResaltada;	}
+			if		(RetH == TRUE && RetB == TRUE)	{ _ScrollH_Estado = DBarraScrollEx_Estado_BarraResaltada;	Trans = DBarraScrollEx_Transicion_BarraResaltada;	}
 			else if (RetH == TRUE && RetB == FALSE) { _ScrollH_Estado = DBarraScrollEx_Estado_FondoResaltado;	Trans = DBarraScrollEx_Transicion_FondoResaltado;	}
 			else									{ _ScrollH_Estado = DBarraScrollEx_Estado_Normal;			Trans = DBarraScrollEx_Transicion_Normal;			}
 			_ScrollH_Posicion = _CalcularPosScrollH(RCH.right, cX);
@@ -525,21 +563,24 @@ namespace DWL {
 		#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
 			Debug_Escribir_Varg(L"DBarraScrollEx::ScrollV_Visible  _ScrollV_Estado = %d\n", _ScrollV_Estado);
 		#endif
-
 	}
 
 	// Devuelve TRUE si es necesario repintar, FALSE en caso contrario
-/*	const BOOL DBarraScrollEx::Scrolls_MouseEntrando(void) {
+	const BOOL DBarraScrollEx::Scrolls_MouseEntrando(void) {
+		Scrolls_TransicionBorde(DBarraScrollEx_Transicion_Borde_Resaltado);
+		#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir(L"DBarraScrollEx::Scrolls_MouseEntrando\n");
+		#endif
 		return FALSE;
-	}**/
+	}
 
 	// Devuelve TRUE si es necesario repintar, FALSE en caso contrario
 	const BOOL DBarraScrollEx::Scrolls_MouseSaliendo(void) {
-		BOOL nRepintar = FALSE;
+		//BOOL nRepintar = FALSE;
 		if (_ScrollV_Estado != DBarraScrollEx_Estado_Presionado && _ScrollH_Estado != DBarraScrollEx_Estado_Presionado) {
 			if (_ScrollV_Estado != DBarraScrollEx_Estado_Invisible && _ScrollV_Estado != DBarraScrollEx_Estado_Normal) {
 				#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
-					Debug_Escribir(L"DBarraScrollEx::Scrolls_MouseSaliendo  _ScrollV_Estado = 1\n");
+					Debug_Escribir(L"DBarraScrollEx::Scrolls_MouseSaliendo  _ScrollV_Estado = DBarraScrollEx_Estado_Normal\n");
 				#endif
 				_ScrollV_Estado = DBarraScrollEx_Estado_Normal;
 				ScrollV_Transicion(DBarraScrollEx_Transicion_Normal);
@@ -551,7 +592,12 @@ namespace DWL {
 				//nRepintar = TRUE;
 			}			
 		}
-		return nRepintar;
+		#if DBARRASCROLLEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir(L"DBarraScrollEx::Scrolls_MouseSaliendo\n");
+		#endif
+
+		Scrolls_TransicionBorde(DBarraScrollEx_Transicion_Borde_Normal);
+		return FALSE;
 	}
 
 	/*

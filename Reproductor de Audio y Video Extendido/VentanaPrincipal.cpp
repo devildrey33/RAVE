@@ -440,6 +440,7 @@ void VentanaPrincipal::GenerarListaAleatoria(const TipoListaAleatoria nTipo) {
 		Lista.MedioActual = NULL;
 	}
 	Lista.Repintar();
+
 	App.VentanaRave.Lista_Play();
 }
 

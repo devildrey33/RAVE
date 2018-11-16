@@ -21,7 +21,7 @@ enum CPC_Transicion {
 
 class ControlesPantallaCompleta :public DVentana {
   public:
-							ControlesPantallaCompleta() : DVentana(), Alineacion(Abajo) { };
+							ControlesPantallaCompleta() : DVentana(), Alineacion(Abajo), _Visible(FALSE) { };
 	                       ~ControlesPantallaCompleta() { };
 							// Se está modificando (WM_MOUSEDOWN, WM_MOUSEHOVER)
 	void					Evento_SliderTiempo_Cambio(void);
@@ -81,7 +81,7 @@ class ControlesPantallaCompleta :public DVentana {
   protected :
 	DAnimacion             _AniMostrar;
 
-//	BOOL				   _Visible;
+	BOOL				   _Visible;
 
 
 };
