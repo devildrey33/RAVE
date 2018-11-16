@@ -3,7 +3,7 @@
 
 namespace DWL {
 	// Minimo de tamaño para la barra de scroll
-	#define BARRA_MIN_TAM 10
+	#define BARRA_MIN_TAM 20
 
 	DBarraScrollEx::DBarraScrollEx(void) :	DControlEx(),
 											_Scroll_PosPresionado({ 0 ,0 })					, _Scroll_PosInicio(0.0f)			,
@@ -20,13 +20,8 @@ namespace DWL {
 	}
 
 	void DBarraScrollEx::PintarBorde(RECT *Recta, HDC hDC) {
-//		RECT RC;
-//		GetClientRect(_hWnd, &RC);
-//		HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO_CLARO);
 		HBRUSH BrochaBorde = CreateSolidBrush(_ColorBorde);
-//		FillRect(hDC, Recta, BrochaFondo);
 		FrameRect(hDC, Recta, BrochaBorde);
-//		DeleteObject(BrochaFondo);
 		DeleteObject(BrochaBorde);
 	}
 
@@ -126,7 +121,7 @@ namespace DWL {
 		if (TamBarra < BARRA_MIN_TAM) TamBarra = BARRA_MIN_TAM;
 		// Calculo la recta de la barra V
 		RectaBarra = {  2 + RectaScroll.left,																		// left
-						2 + static_cast<int>(_ScrollV_Posicion * (RectaScroll.bottom - TamBarra)),					// top
+						4 + static_cast<int>(_ScrollV_Posicion * (RectaScroll.bottom - TamBarra)),					// top
 					   -2 + RectaScroll.right,																		// right
 					   -2 + static_cast<int>((_ScrollV_Posicion * (RectaScroll.bottom - TamBarra)) + TamBarra) };	// bottom
 	}
@@ -137,7 +132,7 @@ namespace DWL {
 		int TamBarra = static_cast<int>(static_cast<float>(RectaScroll.right) * _ScrollH_Pagina);
 		if (TamBarra < BARRA_MIN_TAM) TamBarra = BARRA_MIN_TAM;
 		// Calculo la recta de la barra H
-		RectaBarra = {  2 + static_cast<int>(_ScrollH_Posicion * (RectaScroll.right - TamBarra)),					// left
+		RectaBarra = {  4 + static_cast<int>(_ScrollH_Posicion * (RectaScroll.right - TamBarra)),					// left
 						2 + RectaScroll.top,																		// top
 					   -2 + static_cast<int>((_ScrollH_Posicion * (RectaScroll.right - TamBarra)) + TamBarra),		// right
 					   -2 + RectaScroll.bottom																	};	// bottom

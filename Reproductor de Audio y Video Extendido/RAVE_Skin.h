@@ -13,7 +13,8 @@
 #define COLOR_ROJO_MARCADO							RGB(155,   0,   0)
 
 // Colores básicos para las ventanas y los controles
-#define COLOR_FONDO									RGB( 31,  29,  34)
+
+#define COLOR_FONDO									RGB( 35,  35,  35)
 #define COLOR_FONDO_RESALTADO						RGB( 86,  84,  89)
 #define COLOR_FONDO_PRESIONADO						RGB( 11,   9,  14)
 #define COLOR_FONDO_CLARO							RGB(240, 240, 240)

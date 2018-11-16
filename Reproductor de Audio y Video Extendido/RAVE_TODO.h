@@ -261,6 +261,7 @@
 			-  Transicións de resaltat i presionat		
 			V  Afegir borde amb transició
 			-  Resaltar texte buscat (ha de ser una capa per pintar el fondo abans de pintar el texte)
+			-  Quan no hi ha scroll la marca ha d'arribar fins al tope de la dreta
 		-  ListaMedios
 			-  Mostrar el % del medi reproduit en el item que es el MedioActual
 				- Necesitare crear virtuals a DListaEx

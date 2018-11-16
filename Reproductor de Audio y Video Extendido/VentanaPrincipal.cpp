@@ -945,6 +945,7 @@ void VentanaPrincipal::Evento_SliderVolumen_Cambiado(void) {
 void VentanaPrincipal::Evento_BorraFondo(HDC DC) {
 	RECT RC;
 	GetClientRect(hWnd(), &RC);
+//	HBRUSH BrochaFondo = CreateSolidBrush(RGB(70,70,70));
 	HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO);
 	FillRect(DC, &RC, BrochaFondo);
 	DeleteObject(BrochaFondo);
