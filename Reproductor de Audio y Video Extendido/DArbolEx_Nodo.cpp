@@ -100,61 +100,81 @@ namespace DWL {
 				TextoHasta  = COLOR_ARBOL_TEXTO;
 				SombraHasta = COLOR_ARBOL_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_FONDO;
-				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Normal)\n", Texto.c_str());
+				#if DARBOLEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Normal)\n", Texto.c_str());
+				#endif			
 				break;
 			case DArbolEx_TransicionNodo_Resaltado:
 				TextoHasta  = COLOR_ARBOL_TEXTO_RESALTADO;
 				SombraHasta = COLOR_ARBOL_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_FONDO_RESALTADO;
-				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Resaltado)\n", Texto.c_str());
+				#if DARBOLEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Resaltado)\n", Texto.c_str());
+				#endif
 				break;
 			case DArbolEx_TransicionNodo_Seleccionado:
 				TextoHasta  = COLOR_ARBOL_SELECCION_TEXTO;
 				SombraHasta = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_SELECCION;
-				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Seleccionado)\n", Texto.c_str());
+				#if DARBOLEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Seleccionado)\n", Texto.c_str());
+				#endif
 				break;
 			case DArbolEx_TransicionNodo_SeleccionadoResaltado :
 				TextoHasta  = COLOR_ARBOL_SELECCION_TEXTO_RESALTADO;
 				SombraHasta = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_SELECCION_RESALTADO;
-				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Seleccionado resaltado)\n", Texto.c_str());
+				#if DARBOLEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Seleccionado resaltado)\n", Texto.c_str());
+				#endif
 				break;
 			case DArbolEx_TransicionNodo_SeleccionadoPresionado :
 				TextoHasta  = COLOR_ARBOL_SELECCION_TEXTO_PRESIONADO;
 				SombraHasta = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_SELECCION_PRESIONADO;
-				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Seleccionado presionado)\n", Texto.c_str());
+				#if DARBOLEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Seleccionado presionado)\n", Texto.c_str());
+				#endif
 				break;
 			case DArbolEx_TransicionNodo_SubSeleccionado:
 				TextoHasta  = COLOR_ARBOL_SUBSELECCION_TEXTO;
 				SombraHasta = COLOR_ARBOL_SUBSELECCION_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_SUBSELECCION;
+				#if DARBOLEX_MOSTRARDEBUG == TRUE
 				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> SubSeleccionado resaltado)\n", Texto.c_str());
+				#endif
 				break;
 			case DArbolEx_TransicionNodo_SubSeleccionadoResaltado:
 				TextoHasta  = COLOR_ARBOL_SUBSELECCION_TEXTO_RESALTADO;
 				SombraHasta = COLOR_ARBOL_SUBSELECCION_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_SUBSELECCION_RESALTADO;
-				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> SubSeleccionado resaltado)\n", Texto.c_str());
+				#if DARBOLEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> SubSeleccionado resaltado)\n", Texto.c_str());
+				#endif
 				break;
 			case DArbolEx_TransicionNodo_SubSeleccionadoPresionado:
 				TextoHasta  = COLOR_ARBOL_SELECCION_TEXTO_PRESIONADO;
 				SombraHasta = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_SELECCION_PRESIONADO;
-				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> SubSeleccionado presionado)\n", Texto.c_str());
+				#if DARBOLEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> SubSeleccionado presionado)\n", Texto.c_str());
+				#endif
 				break;
 			case DArbolEx_TransicionNodo_Desactivado:
 				TextoHasta  = COLOR_ARBOL_TEXTO_DESACTIVADO;
 				SombraHasta = COLOR_ARBOL_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_FONDO;
-				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Desactivado)\n", Texto.c_str());
+				#if DARBOLEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Desactivado)\n", Texto.c_str());
+				#endif
 				break;
 			case DArbolEx_TransicionNodo_DesactivadoResaltado	:
 				TextoHasta  = COLOR_ARBOL_TEXTO_DESACTIVADO;
 				SombraHasta = COLOR_ARBOL_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_FONDO_RESALTADO;
-				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Desactivado resaltado)\n", Texto.c_str());
+				#if DARBOLEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Desactivado resaltado)\n", Texto.c_str());
+				#endif
 				break;
 		}
 

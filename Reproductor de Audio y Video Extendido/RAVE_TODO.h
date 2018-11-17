@@ -254,16 +254,16 @@
 			V  Afegir borde amb transició
 			V  MouseDown y MouseUp s'han de fer amb un SetCapture
 			-  Resaltar texte buscat (ha de ser una capa per pintar el fondo abans de pintar el texte)
-			-  Acabar el teclat amb els caracters imprimibles (fer que es pugui tenir mes d'un caracter amb un temporitzador)
+			V  Acabar el teclat amb els caracters imprimibles (fer que es pugui tenir mes d'un caracter amb un temporitzador)
 
 		-  DListaEx
-			-  Al fer click amb el buto dret, detectar si nomes hi ha un item seleccionat, per desseleccionar tot o no,
+			V  Al fer click amb el buto dret, detectar si nomes hi ha un item seleccionat, per desseleccionar tot o no,
 			-  Drag & drop intern a la DListaEx per moure items (multiselecció inclosa)
 			-  Transicións de resaltat i presionat		
 			V  Afegir borde amb transició
 			-  Resaltar texte buscat (ha de ser una capa per pintar el fondo abans de pintar el texte)
-			-  Quan no hi ha scroll la marca ha d'arribar fins al tope de la dreta
-			-  MouseDown y MouseUp s'han de fer amb un SetCapture
+			V  Quan no hi ha scroll la marca ha d'arribar fins al tope de la dreta
+			V  MouseDown y MouseUp s'han de fer amb un SetCapture
 		-  ListaMedios
 			-  Mostrar el % del medi reproduit en el item que es el MedioActual
 				- Necesitare crear virtuals a DListaEx

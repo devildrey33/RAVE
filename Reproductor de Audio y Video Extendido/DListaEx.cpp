@@ -696,6 +696,7 @@ namespace DWL {
 
 	void DListaEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {
 		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
+		SetCapture(_hWnd);
 		SetFocus(_hWnd);
 		if (Scrolls_MousePresionado(DatosMouse) == TRUE) { return; }
 
@@ -744,7 +745,7 @@ namespace DWL {
 
 	void DListaEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
 		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
-
+		ReleaseCapture();
 		if (Scrolls_MouseSoltado(DatosMouse) == TRUE) { return; }
 
 /*		if (_ItemPresionado != -1) {
