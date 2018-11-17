@@ -30,6 +30,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	GetClientRect(hWnd(), &RC);
 
 	Arbol.CrearArbolEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_ARBOLBD, WS_CHILD | WS_VISIBLE);
+//	Arbol.SubSeleccion = TRUE;
 //	Arbol.Visible(TRUE);
 
 	Lista.CrearListaEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_LISTAMEDIOS, WS_CHILD);

@@ -133,7 +133,8 @@ namespace DWL {
 		// _ItemPaginaInicio es unsigned -1 se refiere al valor máximo en una variable del tipo size_t
 		if (_ItemPaginaInicio != -1) {
 			for (LONGLONG i = _ItemPaginaInicio; i < nItemFin + 1; i++) {
-				RectaItem = { 0, DifInicioV, RCS.right, DifInicioV + nAlto };
+				// Si RCS.right y RC.right son iguales, es que no hay scroll vertical, y le sumo 2 al ancho para ajustarme al borde 
+				RectaItem = { 0, DifInicioV, (RCS.right != RC.right) ? RCS.right : RCS.right + 2, DifInicioV + nAlto };
 				PintarItem(Buffer, i, RectaItem);
 				DifInicioV += nAlto;							// Sumo la altura del nodo a la diferencia inicial
 			}
@@ -554,8 +555,9 @@ namespace DWL {
 			if (_Columnas[i]->Ancho != DLISTAEX_COLUMNA_ANCHO_AUTO) {	
 				_Columnas[i]->_AnchoCalculado = _Columnas[i]->Ancho;	// Ancho en pixeles
 			} 
-			else													{	
+			else {					
 				_Columnas[i]->_AnchoCalculado = static_cast<LONG>((RCSS.right - nAnchoFijo) / ColumnasAuto);	// Ancho sobrante dividido por el número de columnas automáticas
+				_Columnas[i]->_AnchoCalculado = 2 + static_cast<LONG>((RCSS.right - nAnchoFijo) / ColumnasAuto);	// Ancho sobrante dividido por el número de columnas automáticas
 				// Si es la primera columna, añado el ancho del icono al tamaño auto
 				if (i == 0 && _PintarIconos == TRUE) {
 					_Columnas[i]->_AnchoCalculado += DLISTAEX_PADDING + DLISTAEX_TAMICONO;
@@ -566,6 +568,12 @@ namespace DWL {
 				Debug_EscribirSinMS_Varg(L"%d -> %d, ", i, _Columnas[i]->_AnchoCalculado);
 			#endif
 		}
+
+		// No hay scroll, reajusto el espacio de la ultima columna
+/*		if (RC.right == RCSS.right && _Columnas.size() != 0) {
+			_Columnas[_Columnas.size() - 1]->_AnchoCalculado += 4;
+		}*/
+
 		#if DLISTAEX_MOSTRARDEBUG == TRUE
 			Debug_EscribirSinMS(L"}\n");
 		#endif
@@ -790,7 +798,7 @@ namespace DWL {
 	void DListaEx::_Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam) {
 		DEventoTeclado DatosTeclado(wParam, lParam, this);
 		// Marco la tecla como presionada
-		DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = true;
+//		DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = true;
 
 		// Si hay items ...
 		if (_Items.size() > 0) {
@@ -1009,12 +1017,12 @@ namespace DWL {
 	}
 
 	void DListaEx::_Evento_FocoObtenido(HWND hWndUltimoFoco) {
-		BorrarBufferTeclado();
+//		BorrarBufferTeclado();
 		Evento_FocoObtenido(hWndUltimoFoco);
 	}
 
 	void DListaEx::_Evento_FocoPerdido(HWND hWndNuevoFoco) {
-		BorrarBufferTeclado();
+//		BorrarBufferTeclado();
 		Evento_FocoPerdido(hWndNuevoFoco);
 	}
 

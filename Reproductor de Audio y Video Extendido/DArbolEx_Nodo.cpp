@@ -6,8 +6,8 @@
 namespace DWL {
 
 	DArbolEx_Nodo::DArbolEx_Nodo(void) :	_Siguiente(NULL), _Anterior(NULL), _Icono(NULL), _Fuente(NULL), _Ancestros(0), _AnchoTexto(0), _Arbol(NULL), 
-											_ColorExpansor(COLOR_ARBOL_EXPANSOR_NORMAL), /*_ColorTexto(COLOR_ARBOL_TEXTO), _ColorTextoSombra(COLOR_ARBOL_TEXTO_SOMBRA), _ColorFondo(COLOR_ARBOL_FONDO),*/
-											Expandido(FALSE), Seleccionado(FALSE), _SubSeleccionado(FALSE), _MostrarExpansor(DArbolEx_MostrarExpansor_Auto), Activado(TRUE) {
+											_ColorExpansor(COLOR_ARBOL_EXPANSOR_NORMAL), _ColorTexto(COLOR_ARBOL_TEXTO), _ColorTextoSombra(COLOR_ARBOL_TEXTO_SOMBRA), _ColorFondo(COLOR_ARBOL_FONDO),
+											Expandido(FALSE), Seleccionado(FALSE), _SubSeleccionado(FALSE), _MostrarExpansor(DArbolEx_MostrarExpansor_Auto), _Activado(TRUE) {
 	};
 	
 	DArbolEx_Nodo::~DArbolEx_Nodo(void) {
@@ -19,9 +19,13 @@ namespace DWL {
 	const DArbolEx_MostrarExpansor DArbolEx_Nodo::MostrarExpansor(void) {
 		if (_MostrarExpansor == DArbolEx_MostrarExpansor_Auto) {
 			DArbolEx_Expansor EPD = _Arbol->ExpansorPorDefecto();
-			return (_Hijos.size() > 0) ?
-				(EPD == DArbolEx_Expansor_Triangulo) ? DArbolEx_MostrarExpansor_MostrarTriangulo : DArbolEx_MostrarExpansor_MostrarRectangulo :
-				DArbolEx_MostrarExpansor_Ocultar;
+			if (_Hijos.size() == 0) 
+				return DArbolEx_MostrarExpansor_Ocultar;
+			switch (EPD) {
+				case DArbolEx_Expansor_Triangulo		:  return DArbolEx_MostrarExpansor_MostrarTriangulo;
+				case DArbolEx_Expansor_TrianguloLinea	:  return DArbolEx_MostrarExpansor_MostrarTrianguloLinea;
+				case DArbolEx_Expansor_Rectangulo		:  return DArbolEx_MostrarExpansor_MostrarRectangulo;
+			}
 		}
 		return _MostrarExpansor;
 	}
@@ -82,7 +86,7 @@ namespace DWL {
 			_Arbol->RepintarAni();
 		});
 	}
-	/*
+	
 	void DArbolEx_Nodo::_Transicion(const DArbolEx_TransicionNodo nTransicion) {
 		DWORD Duracion = DhWnd::TiempoAnimaciones;
 		if (_AniTransicion.Animando() == TRUE) {
@@ -96,51 +100,61 @@ namespace DWL {
 				TextoHasta  = COLOR_ARBOL_TEXTO;
 				SombraHasta = COLOR_ARBOL_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_FONDO;
+				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Normal)\n", Texto.c_str());
 				break;
 			case DArbolEx_TransicionNodo_Resaltado:
 				TextoHasta  = COLOR_ARBOL_TEXTO_RESALTADO;
 				SombraHasta = COLOR_ARBOL_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_FONDO_RESALTADO;
+				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Resaltado)\n", Texto.c_str());
 				break;
 			case DArbolEx_TransicionNodo_Seleccionado:
 				TextoHasta  = COLOR_ARBOL_SELECCION_TEXTO;
 				SombraHasta = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_SELECCION;
+				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Seleccionado)\n", Texto.c_str());
 				break;
 			case DArbolEx_TransicionNodo_SeleccionadoResaltado :
 				TextoHasta  = COLOR_ARBOL_SELECCION_TEXTO_RESALTADO;
 				SombraHasta = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_SELECCION_RESALTADO;
+				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Seleccionado resaltado)\n", Texto.c_str());
 				break;
 			case DArbolEx_TransicionNodo_SeleccionadoPresionado :
 				TextoHasta  = COLOR_ARBOL_SELECCION_TEXTO_PRESIONADO;
 				SombraHasta = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_SELECCION_PRESIONADO;
+				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Seleccionado presionado)\n", Texto.c_str());
 				break;
 			case DArbolEx_TransicionNodo_SubSeleccionado:
 				TextoHasta  = COLOR_ARBOL_SUBSELECCION_TEXTO;
 				SombraHasta = COLOR_ARBOL_SUBSELECCION_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_SUBSELECCION;
+				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> SubSeleccionado resaltado)\n", Texto.c_str());
 				break;
 			case DArbolEx_TransicionNodo_SubSeleccionadoResaltado:
 				TextoHasta  = COLOR_ARBOL_SUBSELECCION_TEXTO_RESALTADO;
 				SombraHasta = COLOR_ARBOL_SUBSELECCION_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_SUBSELECCION_RESALTADO;
+				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> SubSeleccionado resaltado)\n", Texto.c_str());
 				break;
 			case DArbolEx_TransicionNodo_SubSeleccionadoPresionado:
 				TextoHasta  = COLOR_ARBOL_SELECCION_TEXTO_PRESIONADO;
 				SombraHasta = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_SELECCION_PRESIONADO;
+				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> SubSeleccionado presionado)\n", Texto.c_str());
 				break;
 			case DArbolEx_TransicionNodo_Desactivado:
 				TextoHasta  = COLOR_ARBOL_TEXTO_DESACTIVADO;
 				SombraHasta = COLOR_ARBOL_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_FONDO;
+				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Desactivado)\n", Texto.c_str());
 				break;
 			case DArbolEx_TransicionNodo_DesactivadoResaltado	:
 				TextoHasta  = COLOR_ARBOL_TEXTO_DESACTIVADO;
 				SombraHasta = COLOR_ARBOL_TEXTO_SOMBRA;
 				FondoHasta  = COLOR_ARBOL_FONDO_RESALTADO;
+				Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Desactivado resaltado)\n", Texto.c_str());
 				break;
 		}
 
@@ -153,6 +167,7 @@ namespace DWL {
 	}
 
 	void DArbolEx_Nodo::Activado(const BOOL nActivado) {
+		_AniTransicion.Terminar();
 		_Activado = nActivado;
 		
 		if (_Activado == TRUE) {
@@ -180,6 +195,39 @@ namespace DWL {
 			_ColorFondo			= COLOR_ARBOL_FONDO;
 		}
 		
-	}*/
+	}
+
+
+	void DArbolEx_Nodo::_AsignarColores(COLORREF nColTexto, COLORREF nColTextoSombra, COLORREF nColFondo) {
+		_AniTransicion.Terminar();
+		_ColorTexto			= nColTexto;
+		_ColorTextoSombra	= nColTextoSombra;
+		_ColorFondo			= nColFondo;
+	}
+
+
+	void DArbolEx_Nodo::_TransicionResaltado(void) {
+		_Transicion(
+			(_Activado == TRUE) ? 
+				(_SubSeleccionado == TRUE) ? 
+					DArbolEx_TransicionNodo_SubSeleccionadoResaltado	 :
+					(Seleccionado == TRUE) ?
+						DArbolEx_TransicionNodo_SeleccionadoResaltado : 
+						DArbolEx_TransicionNodo_Resaltado : 
+				DArbolEx_TransicionNodo_DesactivadoResaltado
+		);
+	}
+
+	void DArbolEx_Nodo::_TransicionNormal(void) {
+		_Transicion(
+			(_Activado == TRUE) ? 
+				(_SubSeleccionado == TRUE) ? 
+					DArbolEx_TransicionNodo_SubSeleccionado	 :
+					(Seleccionado == TRUE) ?
+						DArbolEx_TransicionNodo_Seleccionado : 
+						DArbolEx_TransicionNodo_Normal : 
+				DArbolEx_TransicionNodo_Desactivado
+		);
+	}
 
 }

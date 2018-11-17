@@ -102,7 +102,7 @@ namespace DWL {
 		// SI hay un nodo
 		if (Nodo != NULL) {
 			// Si el nodo está activado
-			if (Nodo->Activado == TRUE) {
+			if (Nodo->Activado() == TRUE) {
 				// Si no es un nodo de la raíz
 				if (Nodo != ArbolDirectorios.PathEscritorio() &&
 					Nodo != ArbolDirectorios.PathMiPC() &&

@@ -23,6 +23,7 @@ namespace DWL {
 	enum DArbolEx_MostrarExpansor {
 		DArbolEx_MostrarExpansor_Auto,
 		DArbolEx_MostrarExpansor_MostrarTriangulo,
+		DArbolEx_MostrarExpansor_MostrarTrianguloLinea,
 		DArbolEx_MostrarExpansor_MostrarRectangulo,
 		DArbolEx_MostrarExpansor_Ocultar
 	};
@@ -80,13 +81,19 @@ namespace DWL {
 
 		std::wstring				    Texto;
 
-//		inline const BOOL               Activado(void) { return _Activado; }
-//		void                            Activado(const BOOL nActivar);
-		BOOL                            Activado;			// bits necesaris 1	
+		inline const BOOL               Activado(void) { return _Activado; }
+		void                            Activado(const BOOL nActivar);
+//		BOOL                            Activado;			// bits necesaris 1	
 		BOOL						    Expandido;			// bits necesaris 1	
 		BOOL						    Seleccionado;		// bits necesaris 1
 	  protected:
-		//BOOL                           _Activado;
+										// Función que termina cualquier animación en curso y asigna los colores del nodo
+		void                           _AsignarColores(COLORREF nColTexto, COLORREF nColTextoSombra, COLORREF nColFondo);
+
+		void                           _TransicionResaltado(void);
+		void                           _TransicionNormal(void);
+
+		BOOL                           _Activado;
 		DArbolEx_MostrarExpansor       _MostrarExpansor;	// bits necesaris 4
 		BOOL						   _SubSeleccionado;	// bits necesaris 1
 
@@ -106,11 +113,11 @@ namespace DWL {
 		COLORREF                       _ColorExpansor;
 		DAnimacion                     _AniTransicionExpansor;
 
-/*		void                           _Transicion(const DArbolEx_TransicionNodo nTransicion);
+		void                           _Transicion(const DArbolEx_TransicionNodo nTransicion);
 		COLORREF                       _ColorTexto;
 		COLORREF                       _ColorTextoSombra;
 		COLORREF                       _ColorFondo;
-		DAnimacion                     _AniTransicion;*/
+		DAnimacion                     _AniTransicion;
 
 		friend class DArbolEx;
 		friend class DExplorarDirectoriosEx;

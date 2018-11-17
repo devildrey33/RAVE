@@ -21,7 +21,7 @@ namespace DWL {
 		DExplorarDirectoriosEx_Nodo *Ret = AgregarNodo<DExplorarDirectoriosEx_Nodo>(nTexto, nPadre, IconoRecursos);
 		Ret->Tipo		= nTipo;
 		Ret->Path		= nPath;
-		Ret->Activado   = nActivado;
+		Ret->Activado(nActivado);
 		// Añado la barra final al path (si no existe)
 		if (Ret->Path.size() > 0) {
 			if (Ret->Path[Ret->Path.size() - 1] != L'\\') Ret->Path += L'\\';
@@ -33,7 +33,7 @@ namespace DWL {
 		DExplorarDirectoriosEx_Nodo *Ret = AgregarNodo<DExplorarDirectoriosEx_Nodo>(nTexto, nPadre, KnowFolderId);
 		Ret->Tipo		= nTipo;
 		Ret->Path		= nPath;
-		Ret->Activado   = nActivado;
+		Ret->Activado(nActivado);
 		// Añado la barra final al path (si no existe)
 		if (Ret->Path.size() > 0) {
 			if (Ret->Path[Ret->Path.size() - 1] != L'\\') Ret->Path += L'\\';
@@ -45,7 +45,7 @@ namespace DWL {
 		DExplorarDirectoriosEx_Nodo *Ret = AgregarNodo<DExplorarDirectoriosEx_Nodo>(nTexto, nPadre, PathIcono, PosIcono);
 		Ret->Tipo		= nTipo;
 		Ret->Path		= nPath;
-		Ret->Activado   = nActivado;
+		Ret->Activado(nActivado);
 		// Añado la barra final al path (si no existe)
 		if (Ret->Path.size() > 0) {
 			if (Ret->Path[Ret->Path.size() - 1] != L'\\') Ret->Path += L'\\';
@@ -195,7 +195,7 @@ namespace DWL {
 					TmpNodo = AgregarEntrada(FindInfoPoint.cFileName, nNodo, sPath.c_str(), 0, DExplorarDirectoriosEx_TipoNodo_Directorio, sPath.c_str(), TRUE);
 					BOOL Ret = _TieneDirectorios(sPath.c_str());
 					if		(Ret == TRUE)	{	AgregarEntrada(L"+", TmpNodo, 0, DExplorarDirectoriosEx_TipoNodo_Directorio_PorExplorar);	} // Si tiene subdirectorios agrego el expansor
-					else if (Ret == 2)		{	TmpNodo->Activado = FALSE;																	} // Aceso denegado (desactivo el item)
+					else if (Ret == 2)		{	TmpNodo->Activado(FALSE);																	} // Aceso denegado (desactivo el item)
 				}
 				
 			}

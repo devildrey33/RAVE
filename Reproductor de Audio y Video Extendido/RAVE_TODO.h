@@ -241,20 +241,21 @@
 			V  Direfenciar estat de la barra resaltat fondo, barra
 			V  Afegir transicións de resaltat i presionat
 			V  Minimitza el G:\MP3... pasa algo raro, hi ha mes barra de escroll que fondo..
-				V I ja de pas obre pelis i series, -> startrek i flipa amb el scrollH
+				V  I ja de pas obre pelis i series, -> startrek i flipa amb el scrollH
 			V  Afegir borde amb transició
 
 		-  DArbolEx 
 			V  Separar l'icona un pel mes del texte (per que no quedi l'icona enganxat a la selecció)  [subgerència : afegir un doble padding en ves d'un padding normal]
-			-  Refer Shift + AvPag & RePag
+			V  Refer Shift + AvPag & RePag
 		    V  Fer expansors amb un triangle, i deixar les dues opcions.
 				V També he refet els expansors normals, i ara nomes utilitzen un color
 					V Transicións pels expansors de resaltat i presionat
-			X  Transicións de resaltat i presionat
+			V  Transicións de resaltat i presionat
 			V  Afegir borde amb transició
-
+			V  MouseDown y MouseUp s'han de fer amb un SetCapture
 			-  Resaltar texte buscat (ha de ser una capa per pintar el fondo abans de pintar el texte)
-			-  MouseDown y MouseUp s'han de fer amb un SetCapture
+			-  Acabar el teclat amb els caracters imprimibles (fer que es pugui tenir mes d'un caracter amb un temporitzador)
+
 		-  DListaEx
 			-  Al fer click amb el buto dret, detectar si nomes hi ha un item seleccionat, per desseleccionar tot o no,
 			-  Drag & drop intern a la DListaEx per moure items (multiselecció inclosa)
@@ -262,6 +263,7 @@
 			V  Afegir borde amb transició
 			-  Resaltar texte buscat (ha de ser una capa per pintar el fondo abans de pintar el texte)
 			-  Quan no hi ha scroll la marca ha d'arribar fins al tope de la dreta
+			-  MouseDown y MouseUp s'han de fer amb un SetCapture
 		-  ListaMedios
 			-  Mostrar el % del medi reproduit en el item que es el MedioActual
 				- Necesitare crear virtuals a DListaEx
@@ -271,7 +273,7 @@
 
 		V  DMenuEx
 			V  MostrarMenu i _MostrarSubMenu ha de detectar la pantalla on es mostra per sapiguer si te suficient espai per mostrar el submenu o l'ha de posar a l'altre banda
-			-  Afegir transició al mostrar
+			-  Afegir transició al mostrar (porbar ample i altura amb la bounce que vaig fer)
 
 		-  DDlgDirectorios
 			-  Captar WM_RESIZE i modificar tamany dels controls en consequencia.
@@ -301,11 +303,10 @@
 			-  Afegir buto mis listas
 		
 		-  Crear Icona Buscar en l'arbre de la BD adal a la dreta (m'estic plantejant si el necesito també per la llista, i si l'haig d'implementar com una part del DArbolEx i la DListaEx)
-		-  Mostrar la llista de medis al reproduir un medi de forma "diferent", per exemple una liista translucida reduida (pensa que aixó nomes pasara si el reproductor no está maximitzat i está reproduint video)
 		-  Si la llista / BD (autio/video) está buida mostrar un icona que inciti a arrosegar un arxiu / directori
 
 		-  La llista s'ha de poguer veure desde els ControlesPantallaCompleta
-			- Munta-t'ho com vulguis xd
+			-  Mostrar la llista de medis al reproduir un video de forma "diferent", per exemple una liista translucida reduida (pensa que aixó nomes pasara si el reproductor no está maximitzat i está reproduint video)
 
 		V  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
 			V Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)
@@ -328,5 +329,6 @@
 
 	RAVE 0.7
 		-  Finestra de propietats per un medi o una etiqueta
+		-  Sistema per fer skins amb un txt que pugui utilitzar definicions de colors i funcions de colors per sumar/ restar al rgb
 
 */

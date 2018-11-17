@@ -42,8 +42,9 @@ namespace DWL {
 	};
 
 	enum DArbolEx_Expansor {
-		DArbolEx_Expansor_Rectangulo = 0,
-		DArbolEx_Expansor_Triangulo  = 1
+		DArbolEx_Expansor_Rectangulo     = 0,
+		DArbolEx_Expansor_Triangulo		 = 1,
+		DArbolEx_Expansor_TrianguloLinea = 2
 	};
 
 	class DDesplegableEx;
@@ -109,6 +110,7 @@ namespace DWL {
 		void											PintarNodo(HDC hDC, RECT *Espacio, DArbolEx_Nodo *nNodo, const int PosH);
 		void                                            PintarExpansorRectangulo(HDC hDC, RECT *Espacio, DArbolEx_Nodo *nNodo, const int AnchoOcupado);
 		void                                            PintarExpansorTriangulo(HDC hDC, RECT *Espacio, DArbolEx_Nodo *nNodo, const int AnchoOcupado);
+		void                                            PintarExpansorTrianguloLinea(HDC hDC, RECT *Espacio, DArbolEx_Nodo *nNodo, const int AnchoOcupado);
 
 		void											Scrolls_EventoCambioPosicion(void);
 														// Eventos virtuales
@@ -137,6 +139,8 @@ namespace DWL {
 
 
 		void											SeleccionarNodo(DArbolEx_Nodo *sNodo, const BOOL nSeleccionado);
+														// Función que selecciona los nodos entre Desde y Hasta (incluyendo ambos), y des-selecciona todos los demás nodos
+		void											SeleccionarNodosShift(DArbolEx_Nodo *Desde, DArbolEx_Nodo *Hasta);
 														// Comportamiento del ArbolEx (Multiseleccion, subseleccion, drag&drop, etc..)
 //		DArbolEx_Comportamiento							Comportamiento;
 		BOOL											MultiSeleccion;
@@ -188,12 +192,12 @@ namespace DWL {
 		HBITMAP                                        _BufferNodoBmpViejo;
 
 														// Teclas especiales
-		void										   _Tecla_CursorArriba(void);
-		void										   _Tecla_CursorAbajo(void);
-		void										   _Tecla_Inicio(void);
-		void										   _Tecla_Fin(void);
-		void										   _Tecla_AvPag(void);
-		void										   _Tecla_RePag(void);
+		void										   _Tecla_CursorArriba(const BOOL TeclaShift);
+		void										   _Tecla_CursorAbajo(const BOOL TeclaShift);
+		void										   _Tecla_Inicio(const BOOL TeclaShift);
+		void										   _Tecla_Fin(const BOOL TeclaShift);
+		void										   _Tecla_AvPag(const BOOL TeclaShift);
+		void										   _Tecla_RePag(const BOOL TeclaShift);
 
 	    void					  					   _CalcularNodosPagina(const size_t TamPagina);
 

@@ -39,7 +39,7 @@ namespace DWL {
 		inline const BOOL			Visible(const BOOL nMostrar)    { return ShowWindow(_hWnd, (nMostrar != TRUE) ? SW_HIDE : SW_SHOW); };
 		inline const BOOL			Visible(void)                   { return IsWindowVisible(_hWnd); };
 
-		inline void					BorrarBufferTeclado(void)		{ for (size_t i = 0; i < 256; i++) Teclado[i] = false; }
+//		inline void					BorrarBufferTeclado(void)		{ for (size_t i = 0; i < 256; i++) Teclado[i] = false; }
 		void						IniciarMiembrosEstaticos(void);
 									// Repinta la ventana
 		inline virtual void			Repintar(void)					{ RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT); };
@@ -58,7 +58,7 @@ namespace DWL {
 		static DhWnd_Fuente         Fuente21Negrita;
 		static DhWnd_Fuente         FuenteTest;
 
-		static bool                 Teclado[256];
+//		static bool                 Teclado[256];
 									// Tiempo para animaciones / transiciones
 		static DWORD                TiempoAnimaciones;
 

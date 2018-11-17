@@ -4,7 +4,7 @@
 #include "DMensajesWnd.h"
 #include "DArbolEx.h"
 #include "DGDI.h"
-#include <assert.h>
+//#include <assert.h>
 
 /*		_________ _______  ______   _______																											 _  _ 
 		\__   __/(  ___  )(  __  \ (  ___  )	   - Fer el teclat pels caracters, que detecti si es un caracter o una paraula  			        ( )( )
@@ -23,7 +23,7 @@ namespace DWL {
 	  _NodoPresionado(NULL)		, _NodoPresionadoParte(DArbolEx_ParteNodo_Nada)	, _Repintar(FALSE)			,							// Info nodo presionado
 	  _NodoResaltado(NULL)		, _NodoResaltadoParte(DArbolEx_ParteNodo_Nada)	, MultiSeleccion(TRUE)		,							// Info nodo resaltado
 	  _NodoUResaltado(NULL)		, _NodoUResaltadoParte(DArbolEx_ParteNodo_Nada)	, SubSeleccion(FALSE)		,							// Info ultimo nodo resaltado (para evitar repintados innecesarios en el mousemove)
-	  _TotalAnchoVisible(0)		, _TotalAltoVisible(0)							, _ExpansorPorDefecto(DArbolEx_Expansor_Rectangulo),		// tamaño y el expansor por defecto
+	  _TotalAnchoVisible(0)		, _TotalAltoVisible(0)							, _ExpansorPorDefecto(DArbolEx_Expansor_TrianguloLinea),		// tamaño y el expansor por defecto
 	  _NodoPaginaInicio(NULL)	, _NodoPaginaFin(NULL)							, _NodoPaginaVDif(0)		, _NodoPaginaHDif(0),		// Nodo inicial y final de la página visible
 	  _BufferNodo(NULL)			, _BufferNodoBmp(NULL)							, _BufferNodoBmpViejo(NULL)							{	// Buffer para pintar un solo nodo
 
@@ -309,7 +309,7 @@ namespace DWL {
 
 	void DArbolEx::PintarNodo(HDC hDC, RECT *Espacio, DArbolEx_Nodo *nNodo, const int PosH) {
 		// Determino el estado del nodo (0 normal, 1 presionado, 2 resaltado, 3 seleccionado, 4 presionado, 5 resaltado, 6 sub-seleccionado, 7 presionado, 8 resaltado)
-		int Estado = 0;
+		/*int Estado = 0;
 
 		// Normal +0, Presionado +1, Resaltado +2
 		if			(nNodo == _NodoPresionado) 			Estado = 1;
@@ -381,7 +381,7 @@ namespace DWL {
 				ColSombra = COLOR_ARBOL_TEXTO_SOMBRA;
 				ColFondo  = COLOR_ARBOL_FONDO_RESALTADO;
 				break;
-		}
+		}*/
 
 		// Pinto el fondo del buffer
 		HBRUSH BrochaFondo = CreateSolidBrush(COLOR_ARBOL_FONDO);
@@ -393,8 +393,9 @@ namespace DWL {
 		
 		// Pinto el expansor si es necesario
 		switch (nNodo->MostrarExpansor()) {
-			case DArbolEx_MostrarExpansor_MostrarTriangulo	: PintarExpansorTriangulo(hDC, Espacio, nNodo, AnchoOcupado);	break;
-			case DArbolEx_MostrarExpansor_MostrarRectangulo	: PintarExpansorRectangulo(hDC, Espacio, nNodo, AnchoOcupado);  break;
+			case DArbolEx_MostrarExpansor_MostrarTriangulo		: PintarExpansorTriangulo(hDC, Espacio, nNodo, AnchoOcupado);		break;
+			case DArbolEx_MostrarExpansor_MostrarTrianguloLinea : PintarExpansorTrianguloLinea(hDC, Espacio, nNodo, AnchoOcupado);	break;
+			case DArbolEx_MostrarExpansor_MostrarRectangulo		: PintarExpansorRectangulo(hDC, Espacio, nNodo, AnchoOcupado);		break;
 		}
 
 		AnchoOcupado += DARBOLEX_PADDING + DARBOLEX_TAMEXPANSOR;
@@ -415,7 +416,7 @@ namespace DWL {
 						SPresionado + (AnchoOcupado + nNodo->_AnchoTexto) + DARBOLEX_PADDING,
 						SPresionado + ((DARBOLEX_PADDING * 2) + nNodo->_Fuente->Alto()) - DARBOLEX_MARGEN_Y_SELECCION };
 
-		HBRUSH BrochaFondoTexto = CreateSolidBrush(ColFondo);
+		HBRUSH BrochaFondoTexto = CreateSolidBrush(nNodo->_ColorFondo);
 		FillRect(_BufferNodo, &RFondo, BrochaFondoTexto);
 		DeleteObject(BrochaFondoTexto);
 
@@ -423,7 +424,7 @@ namespace DWL {
 		HFONT FuenteVieja = static_cast<HFONT>(SelectObject(_BufferNodo, nNodo->_Fuente->Fuente()));
 
 		// Pinto la sombra del texto
-		SetTextColor(_BufferNodo, ColSombra);
+		SetTextColor(_BufferNodo, nNodo->_ColorTextoSombra);
 		RECT RTexto = { SPresionado + AnchoOcupado								+1,
 						SPresionado + DARBOLEX_PADDING							+1,
 						SPresionado + AnchoOcupado + nNodo->_AnchoTexto			+1,
@@ -431,7 +432,7 @@ namespace DWL {
 		DrawText(_BufferNodo, nNodo->Texto.c_str(), static_cast<int>(nNodo->Texto.size()), &RTexto, DT_LEFT | DT_NOPREFIX);
 
 		// Pinto el texto del nodo
-		SetTextColor(_BufferNodo, ColTexto);
+		SetTextColor(_BufferNodo, nNodo->_ColorTexto);
 		RTexto = {	SPresionado + AnchoOcupado,
 					SPresionado + DARBOLEX_PADDING,
 					SPresionado + AnchoOcupado + nNodo->_AnchoTexto,
@@ -513,19 +514,43 @@ namespace DWL {
 		int PosExpansorY = ((Espacio->bottom - Espacio->top) - DARBOLEX_TAMEXPANSOR) / 2;
 		POINT Pt[3];
 		if (nNodo->Expandido == FALSE) {
-			Pt[0] = { EPresionado + AnchoOcupado + 1 , EPresionado + PosExpansorY - 2  };
-			Pt[1] = { EPresionado + AnchoOcupado + 9 , EPresionado + PosExpansorY + 4  };
+			Pt[0] = { EPresionado + AnchoOcupado + 1 , EPresionado + PosExpansorY - 2 };
+			Pt[1] = { EPresionado + AnchoOcupado + 9 , EPresionado + PosExpansorY + 4 };
 			Pt[2] = { EPresionado + AnchoOcupado + 1 , EPresionado + PosExpansorY + 10 };
 		}
 		else {
-			Pt[0] = { EPresionado + AnchoOcupado	 , EPresionado + PosExpansorY + 8  };
-			Pt[1] = { EPresionado + AnchoOcupado + 10, EPresionado + PosExpansorY + 8  };
-			Pt[2] = { EPresionado + AnchoOcupado + 10, EPresionado + PosExpansorY - 2  };
+			Pt[0] = { EPresionado + AnchoOcupado	 , EPresionado + PosExpansorY + 8 };
+			Pt[1] = { EPresionado + AnchoOcupado + 10, EPresionado + PosExpansorY + 8 };
+			Pt[2] = { EPresionado + AnchoOcupado + 10, EPresionado + PosExpansorY - 2 };
 		}
 
 		HBRUSH Brocha = CreateSolidBrush(nNodo->_ColorExpansor);
 		HRGN Region = CreatePolygonRgn(Pt, 3, ALTERNATE);
 		FillRgn(_BufferNodo, Region, Brocha);
+		DeleteObject(Region);
+		DeleteObject(Brocha);
+	}
+
+	void DArbolEx::PintarExpansorTrianguloLinea(HDC hDC, RECT *Espacio, DArbolEx_Nodo *nNodo, const int AnchoOcupado) {
+		int EPresionado = 0; // Pixel de mas (si el expansor está presionado)
+		if (_NodoPresionado == nNodo) EPresionado = 1;
+
+		int PosExpansorY = ((Espacio->bottom - Espacio->top) - DARBOLEX_TAMEXPANSOR) / 2;
+		POINT Pt[3];
+		if (nNodo->Expandido == FALSE) {
+			Pt[0] = { EPresionado + AnchoOcupado + 1 , EPresionado + PosExpansorY - 2 };
+			Pt[1] = { EPresionado + AnchoOcupado + 9 , EPresionado + PosExpansorY + 4 };
+			Pt[2] = { EPresionado + AnchoOcupado + 1 , EPresionado + PosExpansorY + 10 };
+		}
+		else {
+			Pt[0] = { EPresionado + AnchoOcupado	 , EPresionado + PosExpansorY + 8 };
+			Pt[1] = { EPresionado + AnchoOcupado + 10, EPresionado + PosExpansorY + 8 };
+			Pt[2] = { EPresionado + AnchoOcupado + 10, EPresionado + PosExpansorY - 2 };
+		}
+
+		HBRUSH Brocha = CreateSolidBrush(nNodo->_ColorExpansor);
+		HRGN Region = CreatePolygonRgn(Pt, 3, ALTERNATE);
+		FrameRgn(_BufferNodo, Region, Brocha, 1, 1);
 		DeleteObject(Region);
 		DeleteObject(Brocha);
 	}
@@ -794,19 +819,19 @@ namespace DWL {
 		LONG XInicio = static_cast<LONG>(ancho * _ScrollH_Posicion);
 		OffsetRect(&RAV, XInicio, YInicio);
 
-		if (RNodo.left < RAV.left) {			// Hay una parte a la izquierda del nodo que no es visible (lateral)
-			assert(ancho != 0.0f);
-			_ScrollH_Posicion = (1.0f / static_cast<float>(ancho)) * static_cast<float>(RNodo.left);
+		if (RNodo.left < RAV.left) {			// Hay una parte a la izquierda del nodo que no es visible (lateral)			
+			if (ancho != 0.0f) _ScrollH_Posicion = (1.0f / static_cast<float>(ancho)) * static_cast<float>(RNodo.left);
+			else               _ScrollH_Posicion = 0.0f;
 		}
 
 		if (RNodo.top < RAV.top) {				// Hay una parte del nodo que no es visible (por arriba)
-			assert(alto != 0.0f);
-			_ScrollV_Posicion = (1.0f / static_cast<float>(alto)) * static_cast<float>(RNodo.top);
+			if (alto != 0.0f) _ScrollV_Posicion = (1.0f / static_cast<float>(alto)) * static_cast<float>(RNodo.top);
+			else              _ScrollV_Posicion = 0.0f;
 		}
 		else if (RNodo.bottom > RAV.bottom) {	// Hay una parte del nodo que no es visible (por abajo)
-												// Sumo la diferencia de RNodo.bottom + RAV.bottom a la posición del ScrollV
-			assert(alto != 0.0f);
-			_ScrollV_Posicion += (1.0f / static_cast<float>(alto)) * static_cast<float>(RNodo.bottom - RAV.bottom);			
+												// Sumo la diferencia de RNodo.bottom + RAV.bottom a la posición del ScrollV			
+			if (alto != 0.0f) _ScrollV_Posicion += (1.0f / static_cast<float>(alto)) * static_cast<float>(RNodo.bottom - RAV.bottom);
+			else              _ScrollV_Posicion = 0.0f;
 		}
 
 		// Calculo los nodos InicioPagina y FinPagina
@@ -982,39 +1007,48 @@ namespace DWL {
 
 	void DArbolEx::SeleccionarNodo(DArbolEx_Nodo *sNodo, const BOOL nSeleccionado) {
 		if (sNodo == NULL) return;
-		if (sNodo->Activado == FALSE) return;
+		if (sNodo->Activado() == FALSE) return;
 
 		sNodo->Seleccionado = nSeleccionado;
-/*		if (nSeleccionado == TRUE) {
-			sNodo->_ColorTexto		 = COLOR_ARBOL_SELECCION_TEXTO;
-			sNodo->_ColorTextoSombra = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
-			sNodo->_ColorFondo		 = COLOR_ARBOL_SELECCION;
-		}
-		else {
-			sNodo->_ColorTexto		 = COLOR_ARBOL_TEXTO;
-			sNodo->_ColorTextoSombra = COLOR_ARBOL_TEXTO_SOMBRA;
-			sNodo->_ColorFondo		 = COLOR_ARBOL_FONDO;
-		}*/
+		if (nSeleccionado == TRUE)			{	sNodo->_AsignarColores(COLOR_ARBOL_SELECCION_TEXTO		, COLOR_ARBOL_SELECCION_TEXTO_SOMBRA	, COLOR_ARBOL_SELECCION);	}
+		else								{	sNodo->_AsignarColores(COLOR_ARBOL_TEXTO				, COLOR_ARBOL_TEXTO_SOMBRA				, COLOR_ARBOL_FONDO);		}
 
 		if (SubSeleccion == TRUE && sNodo->_Hijos.size() > 0) {
 			DArbolEx_Nodo *Tmp = sNodo->_Hijos[0];
 			while (Tmp != NULL) {
-				if (Tmp->Activado == TRUE) {
+				if (Tmp->Activado() == TRUE) {
 					Tmp->_SubSeleccionado = nSeleccionado;
-/*					if (nSeleccionado == TRUE) {
-						Tmp->_ColorTexto		= COLOR_ARBOL_SUBSELECCION_TEXTO;
-						Tmp->_ColorTextoSombra	= COLOR_ARBOL_SUBSELECCION_TEXTO_SOMBRA;
-						Tmp->_ColorFondo		= COLOR_ARBOL_SUBSELECCION;
-					}
-					else {
-						Tmp->_ColorTexto		= COLOR_ARBOL_TEXTO;
-						Tmp->_ColorTextoSombra	= COLOR_ARBOL_TEXTO_SOMBRA;
-						Tmp->_ColorFondo		= COLOR_ARBOL_FONDO;
-					}*/
+					if (nSeleccionado == TRUE)	{ Tmp->_AsignarColores(COLOR_ARBOL_SUBSELECCION_TEXTO	, COLOR_ARBOL_SUBSELECCION_TEXTO_SOMBRA	, COLOR_ARBOL_SUBSELECCION);	}
+					else						{ Tmp->_AsignarColores(COLOR_ARBOL_TEXTO				, COLOR_ARBOL_TEXTO_SOMBRA				, COLOR_ARBOL_FONDO);  			}
 				}
 				Tmp = BuscarNodoSiguiente(Tmp, FALSE, sNodo);
 			}
 		}
+	}
+
+	void DArbolEx::SeleccionarNodosShift(DArbolEx_Nodo *Desde, DArbolEx_Nodo *Hasta) {
+		if (_Raiz.TotalHijos() == 0 || Desde == NULL || Hasta == NULL) return;
+		// Paso 1 determinar que nodo esta delante, hay que recorrer todos los nodos visibles hasta que encuentre el nodo Desde o el nodo Hasta
+		DArbolEx_Nodo *Delante = _Raiz.Hijo(0), *Detras = NULL;
+		while (Delante != NULL && Detras == NULL) {
+			if		(Delante == Desde)	{	Detras = Hasta;		}	// El orden es Desde -> Hasta
+			else if (Delante == Hasta)	{	Detras = Desde;		}	// El orden es Hasta -> Desde
+			Delante = BuscarNodoSiguiente(Delante, TRUE);
+		}
+		// No se ha encontrado ninguno de los dos nodos...
+		if (Delante == NULL) return;
+
+		DesSeleccionarTodo();
+		// Si el nodo Desde es distitno que el nodo Hasta
+		if (Desde != Hasta) {
+			// Selecciono todos los nodos que hay entre Desde y Hasta
+			while (Delante != Detras) {
+				SeleccionarNodo(Delante, TRUE);
+				Delante = BuscarNodoSiguiente(Delante, TRUE);
+			}
+		}
+		SeleccionarNodo(Detras, TRUE);
+		Repintar();
 	}
 
 
@@ -1042,20 +1076,21 @@ namespace DWL {
 		if (_NodoPresionado == NULL) {
 			// Comprueba si el nodo resaltado es el mismo que la ultima vez, y si no lo és repinta el control
 			if (_NodoUResaltado != _NodoResaltado || _NodoResaltadoParte != _NodoUResaltadoParte) {
-				switch (_NodoResaltadoParte) {
-					case DArbolEx_ParteNodo_Expansor	: _NodoResaltado->_TransicionExpansor(DArbolEx_TransicionExpansor_Resaltado);	break;
+				if (_NodoResaltadoParte == DArbolEx_ParteNodo_Expansor) {
+					_NodoResaltado->_TransicionExpansor(DArbolEx_TransicionExpansor_Resaltado);
 				}
 
-				switch (_NodoUResaltadoParte) {
-					case DArbolEx_ParteNodo_Expansor	: _NodoUResaltado->_TransicionExpansor(DArbolEx_TransicionExpansor_Normal);	break;
-						break;
+				if (_NodoUResaltadoParte == DArbolEx_ParteNodo_Expansor) {
+					_NodoUResaltado->_TransicionExpansor(DArbolEx_TransicionExpansor_Normal);
 				}
+
+				if (_NodoUResaltado != NULL) _NodoUResaltado->_TransicionNormal();
 				
-//				if (_NodoUResaltado != NULL) _NodoUResaltado->_Transicion((_NodoUResaltado->Activado() == TRUE) ? (_NodoUResaltado->Seleccionado == TRUE) ? (_NodoUResaltado->_SubSeleccionado == TRUE) ? DArbolEx_TransicionNodo_SubSeleccionado : DArbolEx_TransicionNodo_Seleccionado : DArbolEx_TransicionNodo_Normal : DArbolEx_TransicionNodo_Desactivado);
-//				if (_NodoResaltado != NULL)  _NodoResaltado->_Transicion((_NodoResaltado->Activado() == TRUE) ? (_NodoResaltado->Seleccionado == TRUE) ? (_NodoResaltado->_SubSeleccionado == TRUE) ? DArbolEx_TransicionNodo_SubSeleccionadoResaltado : DArbolEx_TransicionNodo_SeleccionadoResaltado : DArbolEx_TransicionNodo_Resaltado : DArbolEx_TransicionNodo_DesactivadoResaltado);
+				if (_NodoResaltado != NULL)  _NodoResaltado->_TransicionResaltado();
+				
 				_NodoUResaltado			= _NodoResaltado;
 				_NodoUResaltadoParte	= _NodoResaltadoParte;
-				Repintar(); // TODO : substituir per un RepintarNodo(nNodo, nUNodo)
+				Repintar(); 
 			}
 		}
 	}
@@ -1063,6 +1098,8 @@ namespace DWL {
 
 	void DArbolEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {
 		
+		SetCapture(_hWnd);
+
 		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		int cX		= DatosMouse.X(),
 			cY		= DatosMouse.Y();
@@ -1072,12 +1109,12 @@ namespace DWL {
 		
 		DArbolEx_Nodo *Tmp = HitTest(cX, cY, _NodoResaltadoParte);
 		if (Tmp != NULL) {
-			if (Tmp->Activado == FALSE) return;
+			if (Tmp->Activado() == FALSE) return;
 		}
 
 		_NodoMarcado = Tmp;
 		if (_NodoMarcado != NULL) {
-			if (_NodoMarcado->Activado == TRUE) {
+			if (_NodoMarcado->Activado() == TRUE) {
 				_NodoPresionadoParte	= _NodoResaltadoParte;
 				_NodoPresionado			= _NodoMarcado;
 			}
@@ -1087,49 +1124,18 @@ namespace DWL {
 			_NodoPresionado->_TransicionExpansor(DArbolEx_TransicionExpansor_Presionado);
 		}
 
-
-		if (MultiSeleccion == TRUE && (DhWnd::Teclado[VK_CONTROL] == true || DhWnd::Teclado[VK_SHIFT] == true)) {
-			if (DhWnd::Teclado[VK_CONTROL] == true) {
+		BOOL TeclaControl = DatosMouse.Control();
+		BOOL TeclaShift   = DatosMouse.Shift();
+		// Si la multiseleccion esta habilitada, y la tecla control o la tecla shift estan presionadas
+		if (MultiSeleccion == TRUE && (TeclaControl == TRUE || TeclaShift == TRUE)) {
+			if (TeclaControl == TRUE) {
 				if (_NodoPresionado != NULL) SeleccionarNodo(_NodoPresionado, !_NodoPresionado->Seleccionado);
 			}
-			else if (DhWnd::Teclado[VK_SHIFT] == true) {
-				if (_NodoPresionado != NULL && _NodoShift != NULL) {
-					// Determino el orden (Shift, Pres) o (Pres, Shift)
-					bool ShiftPrimero = false;
-					DArbolEx_Nodo *Tmp = _NodoPaginaInicio, *nFin = BuscarNodoSiguiente(_NodoPaginaFin, TRUE);
-					while (Tmp != nFin) {
-						if (_NodoShift == Tmp) {
-							ShiftPrimero = true;
-							break;
-						}
-						if (_NodoMarcado == Tmp) {
-							ShiftPrimero = false;
-							break;
-						}
-						Tmp = BuscarNodoSiguiente(Tmp, TRUE);
-					}
-					DesSeleccionarTodo();
-					// Ahora que tenemos el orden seleccionamos los nodos
-					if (ShiftPrimero == false) {
-						Tmp = _NodoMarcado;
-//						nFin = BuscarNodoSiguiente(_NodoShift, TRUE);
-						while (Tmp != _NodoShift) {
-							SeleccionarNodo(Tmp, TRUE);							
-							Tmp = BuscarNodoSiguiente(Tmp, TRUE);
-						}
-					}
-					else {
-						Tmp = _NodoShift;
-//						nFin = BuscarNodoSiguiente(_NodoMarcado, TRUE);
-						while (Tmp != _NodoMarcado) {
-							SeleccionarNodo(Tmp, TRUE);
-							Tmp = BuscarNodoSiguiente(Tmp, TRUE);
-						}
-					}
-
-				}
+			else if (TeclaShift == TRUE) {
+				SeleccionarNodosShift(_NodoPresionado, _NodoShift);
 			}
 		}
+		// No hay multiselección
 		else {
 			// Si no es el boton derecho del ratón (se suele desplegar un menú)
 			if (DatosMouse.Boton != 1 || _NodoMarcado == NULL) {
@@ -1141,15 +1147,15 @@ namespace DWL {
 			}
 			SeleccionarNodo(_NodoPresionado, TRUE);
 		}
-		
+		// Aseguro que se seleccionan el nodo mardado y el nodo shift
 		if (_NodoMarcado != NULL) SeleccionarNodo(_NodoMarcado, TRUE);
 		if (_NodoShift != NULL)   SeleccionarNodo(_NodoShift, TRUE);
 
-/*		if (_NodoPresionado != NULL) {
+		if (_NodoPresionado != NULL) {
 			if (_NodoPresionado->_Activado == TRUE) {
 				_NodoPresionado->_Transicion((_NodoPresionado->_SubSeleccionado == TRUE) ? DArbolEx_TransicionNodo_SubSeleccionadoPresionado : DArbolEx_TransicionNodo_SeleccionadoPresionado);
 			}
-		}*/
+		}
 
 		Evento_MousePresionado(DatosMouse);
 
@@ -1163,6 +1169,8 @@ namespace DWL {
 	}
 
 	void DArbolEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
+		ReleaseCapture();
+
 		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		int cX		= DatosMouse.X(),
 			cY		= DatosMouse.Y();
@@ -1173,7 +1181,7 @@ namespace DWL {
 		DArbolEx_Nodo *NodoSoltado = HitTest(cX, cY, nParte);
 
 		if (NodoSoltado != NULL) {
-			if (NodoSoltado->Activado == FALSE) return;
+			if (NodoSoltado->Activado() == FALSE) return;
 		}
 
 
@@ -1192,11 +1200,11 @@ namespace DWL {
 			}
 		}
 
-/*		if (_NodoPresionado != NULL) {
+		if (_NodoPresionado != NULL) {
 			if (_NodoPresionado->_Activado == TRUE) {
 				_NodoPresionado->_Transicion((NodoSoltado == _NodoPresionado) ? (_NodoPresionado->_SubSeleccionado == TRUE) ? DArbolEx_TransicionNodo_SubSeleccionadoResaltado : DArbolEx_TransicionNodo_SeleccionadoResaltado : (_NodoPresionado->_SubSeleccionado == TRUE) ? DArbolEx_TransicionNodo_SubSeleccionado : DArbolEx_TransicionNodo_Seleccionado);
 			}
-		}*/
+		}
 
 
 		// Llamo al evento virtual
@@ -1231,10 +1239,13 @@ namespace DWL {
 		ObtenerRectaCliente(&RC, &RCC, &RCB);		
 		_CalcularNodosPagina(RCC.bottom);
 
-//		if (_NodoUResaltado != NULL) _NodoUResaltado->_Transicion((_NodoUResaltado->Activado() == TRUE) ? (_NodoUResaltado->Seleccionado == TRUE) ? (_NodoUResaltado->_SubSeleccionado == TRUE) ? DArbolEx_TransicionNodo_SubSeleccionado : DArbolEx_TransicionNodo_Seleccionado : DArbolEx_TransicionNodo_Normal : DArbolEx_TransicionNodo_Desactivado);
 		_NodoUResaltado = _NodoResaltado;
 		_NodoResaltado	= HitTest(DatosMouse.X(), DatosMouse.Y(), _NodoResaltadoParte);
-//		if (_NodoResaltado != NULL) _NodoResaltado->_Transicion((_NodoResaltado->Activado() == TRUE) ? (_NodoResaltado->Seleccionado == TRUE) ? (_NodoResaltado->_SubSeleccionado == TRUE) ? DArbolEx_TransicionNodo_SubSeleccionadoResaltado : DArbolEx_TransicionNodo_SeleccionadoResaltado : DArbolEx_TransicionNodo_Resaltado : DArbolEx_TransicionNodo_DesactivadoResaltado);
+
+		if (_NodoUResaltado != NULL) _NodoUResaltado->_TransicionNormal();
+		
+		if (_NodoResaltado != NULL)  _NodoResaltado->_TransicionResaltado();
+		
 
 		Evento_MouseRueda(DatosMouse);
 		Repintar();
@@ -1255,9 +1266,8 @@ namespace DWL {
 		while (dNodo != NULL) {
 			dNodo->Seleccionado			= FALSE;
 			dNodo->_SubSeleccionado		= FALSE;
-/*			dNodo->_ColorTexto			= COLOR_ARBOL_TEXTO;
-			dNodo->_ColorTextoSombra	= COLOR_ARBOL_TEXTO_SOMBRA;
-			dNodo->_ColorFondo			= COLOR_ARBOL_FONDO;*/
+			if (dNodo->Activado() == TRUE)	dNodo->_AsignarColores(COLOR_ARBOL_TEXTO			, COLOR_ARBOL_TEXTO_SOMBRA, COLOR_ARBOL_FONDO);
+			else                            dNodo->_AsignarColores(COLOR_ARBOL_TEXTO_DESACTIVADO, COLOR_ARBOL_TEXTO_SOMBRA, COLOR_ARBOL_FONDO);
 			dNodo = BuscarNodoSiguiente(dNodo, FALSE);
 		}
 	}
@@ -1290,7 +1300,7 @@ namespace DWL {
 		#endif
 	}
 
-	void DArbolEx::_Tecla_CursorAbajo(void) {
+	void DArbolEx::_Tecla_CursorAbajo(const BOOL TeclaShift) {
 		// Si no hay nodos, salgo de la función
 		if (_Raiz._Hijos.size() == 0) return;
 
@@ -1306,7 +1316,7 @@ namespace DWL {
 		if (nTmp != NULL) _NodoMarcado = nTmp;
 		else              return;
 
-		if (DhWnd::Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
+		if (TeclaShift == TRUE && MultiSeleccion == TRUE) {
 			_AplicarShift(_PosShift + 1);
 		}
 		else {
@@ -1319,7 +1329,7 @@ namespace DWL {
 		}		
 	}
 
-	void DArbolEx::_Tecla_CursorArriba(void) {
+	void DArbolEx::_Tecla_CursorArriba(const BOOL TeclaShift) {
 		// Si no hay nodos, salgo de la función
 		if (_Raiz._Hijos.size() == 0) return;
 
@@ -1335,7 +1345,7 @@ namespace DWL {
 		if (nTmp != NULL) _NodoMarcado = nTmp;
 		else              return;
 
-		if (DhWnd::Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
+		if (TeclaShift == TRUE && MultiSeleccion == TRUE) {
 			_AplicarShift(_PosShift - 1);
 		}
 		else {
@@ -1350,50 +1360,41 @@ namespace DWL {
 
 	}
 
-	void DArbolEx::_Tecla_Inicio(void) {
+	void DArbolEx::_Tecla_Inicio(const BOOL TeclaShift) {
 		// Si no hay nodos, salgo de la función
 		if (_Raiz._Hijos.size() == 0) return;
 
-		if (DhWnd::Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
-/*			DArbolEx_Nodo *Tmp = _NodoShift;
-			LONG nPosShift = 0;
-			while (Tmp != NULL) {
-				Tmp = BuscarNodoAnterior(Tmp, TRUE);
-				nPosShift--;
-			}
-			_AplicarShift(_PosShift + nPosShift);*/
-
+		DArbolEx_Nodo *PrimerNodo = _Raiz._Hijos[0];
+		if (TeclaShift == TRUE && MultiSeleccion == TRUE) {
+			SeleccionarNodosShift(_NodoShift, PrimerNodo);
 		}
 		else {
 			DesSeleccionarTodo();
 		}
-		_NodoMarcado = _Raiz._Hijos[0];
+		_NodoMarcado = PrimerNodo;
+		if (_NodoShift != NULL) SeleccionarNodo(_NodoShift, TRUE);
 		SeleccionarNodo(_NodoMarcado, TRUE);
 		MostrarNodo(_NodoMarcado);
 	}
 
-	void DArbolEx::_Tecla_Fin(void) {
+	void DArbolEx::_Tecla_Fin(const BOOL TeclaShift) {
 		// Si no hay nodos, salgo de la función
 		if (_Raiz._Hijos.size() == 0) return;
 
-		if (DhWnd::Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
-/*			DArbolEx_Nodo *Tmp = _NodoShift;
-			LONG nPosShift = 0;
-			while (Tmp != NULL) {
-				Tmp = BuscarNodoSiguiente(Tmp, TRUE);
-				nPosShift++;
-			}
-			_AplicarShift(_PosShift + nPosShift);*/
+		DArbolEx_Nodo *UltimoNodo = UltimoNodoVisible();
+		if (TeclaShift == TRUE && MultiSeleccion == TRUE) {
+			SeleccionarNodosShift(_NodoShift, UltimoNodo);
 		}
 		else {
 			DesSeleccionarTodo();
 		}
-		_NodoMarcado = UltimoNodoVisible();
+		_NodoMarcado = UltimoNodo;
+		if (_NodoShift != NULL) SeleccionarNodo(_NodoShift, TRUE);
 		SeleccionarNodo(_NodoMarcado, TRUE);
 		MostrarNodo(_NodoMarcado);
 	}
 
-	void DArbolEx::_Tecla_AvPag(void) {
+	void DArbolEx::_Tecla_AvPag(const BOOL TeclaShift) {
 		// Si no hay nodos, salgo de la función
 		if (_Raiz._Hijos.size() == 0) return;
 
@@ -1410,21 +1411,24 @@ namespace DWL {
 			if (Tmp != NULL) {
 				UTmp = Tmp;
 				PixelesContados += Tmp->_Fuente->Alto() + (DARBOLEX_PADDING * 2);
-				if (DhWnd::Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
+/*				if (TeclaShift == TRUE && MultiSeleccion == TRUE) {
 					SeleccionarNodo(Tmp, !Tmp->Seleccionado);
-				}
+				}*/
 				Tmp = BuscarNodoSiguiente(Tmp, TRUE);
 			}
 		}
 
-		if (DhWnd::Teclado[VK_SHIFT] == false || MultiSeleccion == FALSE) DesSeleccionarTodo();
+		if (TeclaShift == FALSE || MultiSeleccion == FALSE) DesSeleccionarTodo();
 		_NodoMarcado = (Tmp == NULL) ? UTmp : Tmp;
+		if (TeclaShift == TRUE && MultiSeleccion == TRUE) {
+			SeleccionarNodosShift(_NodoMarcado, _NodoShift);
+		}
 		SeleccionarNodo(_NodoMarcado, TRUE);
 		if (_NodoShift != NULL) SeleccionarNodo(_NodoShift, TRUE);
 		MostrarNodo(_NodoMarcado);
 	}
 
-	void DArbolEx::_Tecla_RePag(void) {
+	void DArbolEx::_Tecla_RePag(const BOOL TeclaShift) {
 		// Si no hay nodos, salgo de la función
 		if (_Raiz._Hijos.size() == 0) return;
 
@@ -1441,15 +1445,19 @@ namespace DWL {
 			if (Tmp != NULL) {
 				UTmp = Tmp;
 				PixelesContados += Tmp->_Fuente->Alto() + (DARBOLEX_PADDING * 2);
-				if (DhWnd::Teclado[VK_SHIFT] == TRUE && MultiSeleccion == TRUE) {
+/*				if (TeclaShift == TRUE && MultiSeleccion == TRUE) {
 					SeleccionarNodo(Tmp, !Tmp->Seleccionado);					
-				}
+				}*/
 				Tmp = BuscarNodoAnterior(Tmp, TRUE);
 			}
 		}
 
-		if (DhWnd::Teclado[VK_SHIFT] == false || MultiSeleccion == FALSE) DesSeleccionarTodo();
+		if (TeclaShift == FALSE || MultiSeleccion == FALSE) DesSeleccionarTodo();
 		_NodoMarcado = (Tmp == NULL) ? UTmp : Tmp;
+		if (TeclaShift == TRUE && MultiSeleccion == TRUE) {
+			SeleccionarNodosShift(_NodoMarcado, _NodoShift);
+		}
+
 		SeleccionarNodo(_NodoMarcado, TRUE);
 		if (_NodoShift != NULL) 		SeleccionarNodo(_NodoShift, TRUE);
 		MostrarNodo(_NodoMarcado);
@@ -1458,33 +1466,26 @@ namespace DWL {
 	void DArbolEx::_Evento_TeclaPresionada(WPARAM wParam, LPARAM lParam) {
 		DEventoTeclado DatosTeclado(wParam, lParam, this);
 		UINT Tecla = DatosTeclado.TeclaVirtual();
-		// Marco la tecla como presionada
-//		DhWnd::Teclado[Tecla] = true;
 
 		// Si no hay nodos, salgo de la función
 		if (_Raiz._Hijos.size() == 0) {
 			Evento_TeclaPresionada(DatosTeclado);
 			return;
 		}
-		// Me guardo el nodo marcado para indicar desde donde empieza el shift
-		if (Tecla == VK_SHIFT) {
-			if (_NodoShift == NULL) {
-				_NodoShift = (_NodoMarcado == NULL) ? _NodoPaginaInicio : _NodoMarcado;
-			}
-		}
-
+		
 		switch (Tecla) {
-			case VK_HOME		: _Tecla_Inicio();								break;
-			case VK_END			: _Tecla_Fin();									break;
-			case VK_UP			: _Tecla_CursorArriba();						break;
-			case VK_DOWN		: _Tecla_CursorAbajo();							break;
-			case VK_LEFT		: Expandir(_NodoMarcado, FALSE);				break;
-			case VK_RIGHT		: Expandir(_NodoMarcado, TRUE);					break;
-			case VK_ADD			: Expandir(_NodoMarcado, TRUE);                 break; // +
-			case VK_SUBTRACT	: Expandir(_NodoMarcado, FALSE);                break; // -
-			case VK_PRIOR		: _Tecla_RePag();								break; // RePag
-			case VK_NEXT		: _Tecla_AvPag();								break; // AvPag
-			default				: Evento_Tecla(DatosTeclado);					break; // if (Caracter >= 0x30 && Caracter <= 0x5A) // Cualquier tecla valida
+			case VK_SHIFT		: if (_NodoShift == NULL) _NodoShift = (_NodoMarcado == NULL) ? _NodoPaginaInicio : _NodoMarcado;		break;	// Me guardo el nodo marcado para indicar desde donde empieza el shift
+			case VK_HOME		: _Tecla_Inicio(DatosTeclado.Shift());																	break;
+			case VK_END			: _Tecla_Fin(DatosTeclado.Shift());																		break;
+			case VK_UP			: _Tecla_CursorArriba(DatosTeclado.Shift());															break;
+			case VK_DOWN		: _Tecla_CursorAbajo(DatosTeclado.Shift());																break;
+			case VK_LEFT		: Expandir(_NodoMarcado, FALSE);																		break;
+			case VK_RIGHT		: Expandir(_NodoMarcado, TRUE);																			break;
+			case VK_ADD			: Expandir(_NodoMarcado, TRUE);																			break; // +
+			case VK_SUBTRACT	: Expandir(_NodoMarcado, FALSE);																		break; // -
+			case VK_PRIOR		: _Tecla_RePag(DatosTeclado.Shift());																	break; // RePag
+			case VK_NEXT		: _Tecla_AvPag(DatosTeclado.Shift());																	break; // AvPag
+			default				: Evento_Tecla(DatosTeclado);																			break; // if (Caracter >= 0x30 && Caracter <= 0x5A) // Cualquier tecla valida
 		}
 
 		Evento_TeclaPresionada(DatosTeclado);
@@ -1493,8 +1494,6 @@ namespace DWL {
 	void DArbolEx::_Evento_TeclaSoltada(WPARAM wParam, LPARAM lParam) {
 		DEventoTeclado DatosTeclado(wParam, lParam, this);
 		UINT Tecla = DatosTeclado.TeclaVirtual();
-		// Marco la tecla como no presionada
-		// DhWnd::Teclado[Tecla] = false;
 
 		// Si no hay nodos, salgo de la función
 		if (_Raiz._Hijos.size() == 0) {
@@ -1532,6 +1531,9 @@ namespace DWL {
 	void DArbolEx::_Evento_MouseSaliendo(void) {
 		BOOL nRepintar = Scrolls_MouseSaliendo();
 		_MouseDentro = FALSE;
+		
+		if (_NodoResaltado != NULL) _NodoResaltado->_Transicion(DArbolEx_TransicionNodo_Normal);
+
 		_NodoResaltado = NULL;
 		Evento_MouseSaliendo();
 		if (nRepintar == TRUE) Repintar();
@@ -1543,7 +1545,7 @@ namespace DWL {
 		DArbolEx_Nodo *NodoDblClick = HitTest(DatosMouse.X(), DatosMouse.Y(), nParte);
 
 		if (NodoDblClick != NULL) {
-			if (NodoDblClick->Activado == FALSE) return;
+			if (NodoDblClick->Activado() == FALSE) return;
 		}
 
 		if (_NodoMarcado != NULL) {
@@ -1555,12 +1557,12 @@ namespace DWL {
 	}
 
 	void DArbolEx::_Evento_FocoObtenido(HWND hWndUltimoFoco) {
-		BorrarBufferTeclado();
+//		BorrarBufferTeclado();
 		Evento_FocoObtenido(hWndUltimoFoco);
 	}
 
 	void DArbolEx::_Evento_FocoPerdido(HWND hWndNuevoFoco) {
-		BorrarBufferTeclado();
+//		BorrarBufferTeclado();
 		Evento_FocoPerdido(hWndNuevoFoco);
 	}
 

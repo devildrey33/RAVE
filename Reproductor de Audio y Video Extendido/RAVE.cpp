@@ -458,13 +458,13 @@ void RAVE::CerrarSistema(const SOCerrarSistema Forma, const BOOL Forzar) {
 
 // TECLADO GENERAL PARA TODAS LAS VENTANAS DE ESTE HILO EXCEPTO LA DEL VIDEO DEL VLC
 void RAVE::Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado) {
-	DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = true;
+//	DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = true;
 //	Debug_Escribir_Varg(L"RAVE::Evento_TeclaPresionada Tecla : %d, Id : %d\n", DatosTeclado.TeclaVirtual(), DatosTeclado.ID());
 }
 
 // TECLADO GENERAL PARA TODAS LAS VENTANAS DE ESTE HILO EXCEPTO LA DEL VIDEO DEL VLC
 void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
-	DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = false;
+//	DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = false;
 
 	// Teclas extendidas para teclados con teclas para Play / Pausa, Stop, Next, Prev
 	switch (DatosTeclado.TeclaVirtual()) {
