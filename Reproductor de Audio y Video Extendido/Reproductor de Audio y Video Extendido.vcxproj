@@ -341,6 +341,7 @@
     <Image Include="..\iconos\icon3.ico" />
     <Image Include="..\iconos\icon5.ico" />
     <Image Include="..\Iconos\IDI_Actualizar.ico" />
+    <Image Include="..\Iconos\IDI_Agregar.ico" />
     <Image Include="..\Iconos\IDI_AgregarLista.ico" />
     <Image Include="..\Iconos\IDI_AgregarNuevaLista.ico" />
     <Image Include="..\Iconos\IDI_Analizar.ico" />
@@ -376,6 +377,10 @@
     <Image Include="..\Iconos\IDI_Raiz.ico" />
     <Image Include="..\Iconos\IDI_STOP32.ico" />
     <Image Include="..\Iconos\IDI_Subtitulos.ico" />
+    <Image Include="..\Iconos\IDI_Tam.ico" />
+    <Image Include="..\Iconos\IDI_Terminado.ico" />
+    <Image Include="..\Iconos\IDI_Tiempo.ico" />
+    <Image Include="..\Iconos\IDI_Video.ico" />
     <Image Include="..\Iconos\IDI_Video2.ico" />
     <Image Include="..\Iconos\IDI_Video3.ico" />
     <Image Include="..\Iconos\IDI_VLC.ico" />

@@ -255,6 +255,8 @@
 			V  MouseDown y MouseUp s'han de fer amb un SetCapture
 			-  Resaltar texte buscat (ha de ser una capa per pintar el fondo abans de pintar el texte)
 			V  Acabar el teclat amb els caracters imprimibles (fer que es pugui tenir mes d'un caracter amb un temporitzador)
+			-  Fer resaltat del fondo amb el resaltat del borde... OJU perque será un pilotaço, ja que cada nodo te el seu porpi color... 
+				-  Subgeriment.. el color del fondo del nodo ha de ser un punter que apunti al color del fondo general de l'arbre, i quan faci animacións ha de crearse el seu propi punter (obviament al acabar haig de tornar a apuntar al color del fondo general)
 
 		-  DListaEx
 			V  Al fer click amb el buto dret, detectar si nomes hi ha un item seleccionat, per desseleccionar tot o no,
@@ -274,6 +276,7 @@
 		V  DMenuEx
 			V  MostrarMenu i _MostrarSubMenu ha de detectar la pantalla on es mostra per sapiguer si te suficient espai per mostrar el submenu o l'ha de posar a l'altre banda
 			-  Afegir transició al mostrar (porbar ample i altura amb la bounce que vaig fer)
+			-  Fer alphablend amb els icones quan el menu está desactivat
 
 		-  DDlgDirectorios
 			-  Captar WM_RESIZE i modificar tamany dels controls en consequencia.
@@ -323,6 +326,7 @@
 				-  No Mezclar listas aleatórias generadas por disco.
 			-  General 
 				- Ocultar tooltips al pasar por encima con el mouse
+				- Tamaño tooltips (fer 3 mides : petit, normal [que es la actual], gran)
 
 		-  Les llistes aleatóries per estil, grup, 50 can han d'activar el shufle
 			- Les llistes aleatóries per disc han de desactivar el shufle

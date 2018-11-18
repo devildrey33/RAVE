@@ -105,7 +105,7 @@ namespace DWL {
 	}
 
 
-	const BOOL DConsola::MostrarUltimoError() {
+	const BOOL DConsola::MostrarUltimoError(void) {
 		WaitForSingleObject(_Mutex, INFINITE);
 		const wchar_t Texto[] = L"GetLastError() : ";
 		LPVOID lpMsgBuf;

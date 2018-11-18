@@ -2,13 +2,13 @@
 #include "BarraTiempo.h"
 #include "RAVE.h"
 
-BarraTiempo::BarraTiempo() : DBarraDesplazamientoEx() {
+BarraTiempo::BarraTiempo(void) : DBarraDesplazamientoEx() {
 }
 
-BarraTiempo::~BarraTiempo() {
+BarraTiempo::~BarraTiempo(void) {
 }
 
 void BarraTiempo::Evento_MostrarToolTip(float nValor, std::wstring &Texto) {
-	float t = static_cast<float>(App.VLC.TiempoTotalMs());
-	App.VLC.TiempoStr(static_cast<UINT64>(static_cast<float>(App.VLC.TiempoTotalMs()) * nValor), Texto);
+	double t = static_cast<double>(App.VLC.TiempoTotalMs());
+	App.VLC.TiempoStr(static_cast<UINT64>(static_cast<double>(App.VLC.TiempoTotalMs()) * nValor), Texto);
 }

@@ -324,7 +324,7 @@ void ToolTipInfo_Medio::MostrarFijo(BDMedio &nMedio) {
 }
 
 SIZE ToolTipInfo_Medio::CalcularTam(void) {	
-	if (Medio.TipoMedio == Tipo_Medio_Video)	{	_Icono = DListaIconos::AgregarIconoRecursos(IDI_VIDEO3, 16, 16);	}
+	if (Medio.TipoMedio == Tipo_Medio_Video)	{	_Icono = DListaIconos::AgregarIconoRecursos(IDI_VIDEO, 16, 16);	}
 	else										{	_Icono = DListaIconos::AgregarIconoRecursos(IDI_CANCION2, 16, 16);	}
 
 	HDC   hDC = GetDC(NULL);
