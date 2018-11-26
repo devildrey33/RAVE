@@ -117,7 +117,7 @@ namespace DWL {
 		HBITMAP BmpViejo	= static_cast<HBITMAP>(SelectObject(Buffer, Bmp));		
 
 		// Pinto el fondo
-		HBRUSH BFondo = CreateSolidBrush(COLOR_LISTA_FONDO);
+		HBRUSH BFondo = CreateSolidBrush(COLOR_ARBOL_FONDO);
 		FillRect(Buffer, &RCB, BFondo);
 		DeleteObject(BFondo);
 

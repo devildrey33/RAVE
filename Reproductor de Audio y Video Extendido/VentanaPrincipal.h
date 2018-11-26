@@ -16,6 +16,9 @@
 #include "ThreadActualizarArbol.h"
 #include "ThreadAgregarArchivosLista.h"
 #include "ThreadAnalisis.h"
+#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
+	#include "ControlVisualizacion.h"
+#endif
 
 using namespace DWL;
 
@@ -141,8 +144,9 @@ class VentanaPrincipal : public DWL::DVentana {
 	MarcoControles				MarcoSI;
 								// Marco que contiene los botones lista bd video
 	MarcoControles				MarcoII;
-
-//	MarcoOpciones				Opciones;
+	#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
+		ControlVisualizacion	Vis;
+	#endif
 
 	BarraVolumen				SliderVolumen;
 

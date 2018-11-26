@@ -4,11 +4,17 @@
 #include "VentanaPrecarga.h"
 #include "DStringUtils.h"
 
-RaveVLC::RaveVLC() : _Log(NULL), _MediaPlayer(NULL), _Instancia(NULL), MedioActual(), hWndVLC(NULL), _Eventos(NULL), _Parseado(FALSE) {
+RaveVLC::RaveVLC(void) : /*_Log(NULL), */ _MediaPlayer(NULL), _Instancia(NULL), MedioActual(), hWndVLC(NULL), _Eventos(NULL), _Parseado(FALSE), _Canales(0), TiempoTotal(0) {	
+	#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
+		for (int i = 0; i < 2048; i++) Oscy[i] = 0.0f;
+		TamVisualizacion = 64;
+		MaxOscy = 0;
+		_MediaPlayerOscy = NULL;
+	#endif 
 }
 
 
-RaveVLC::~RaveVLC() {
+RaveVLC::~RaveVLC(void) {
 }
 
 
@@ -37,17 +43,17 @@ const BOOL RaveVLC::Iniciar(void) {
 	VentanaPrecarga Precarga;
 
 
-	char OpcionesSMem[1024];
-	sprintf_s(OpcionesSMem,	1024, "smem{audio-prerender-callback=\"%lld\",audio-postrender-callback=\"%lld\",audio-data=\"%lld\"}", ((long long int)(intptr_t)(void*)&audio_prerendercb), ((long long int)(intptr_t)(void*)&audio_postrendercb), ((long long int)(intptr_t)(void*)this));
-	const char * const Argumentos[] = {	
+//	char OpcionesSMem[1024];
+//	sprintf_s(OpcionesSMem,	1024, "smem{audio-prerender-callback=\"%lld\",audio-postrender-callback=\"%lld\",audio-data=\"%lld\"}", ((long long int)(intptr_t)(void*)&audio_prerendercb), ((long long int)(intptr_t)(void*)&audio_postrendercb), ((long long int)(intptr_t)(void*)this));
+/*	const char * const Argumentos[] = {	
 		OpcionesSMem,
 //		"--verbose=3"
-	};
+	};*/
 
 	Debug_Escribir_Varg(L"RaveVLC::Iniciar Cargando LibVLC...\n", _Instancia);
 	DWORD t = GetTickCount();
-//	_Instancia = libvlc_new(0, NULL);
-	_Instancia = libvlc_new(sizeof(Argumentos) / sizeof(Argumentos[0]), Argumentos);
+	_Instancia = libvlc_new(0, NULL);
+//	_Instancia = libvlc_new(sizeof(Argumentos) / sizeof(Argumentos[0]), Argumentos);
 
 //	libvlc_set_log_verbosity(_Instancia, 3);
 
@@ -63,35 +69,42 @@ const BOOL RaveVLC::Iniciar(void) {
 	Precarga.Destruir();
 
 
-
+/*
 	libvlc_module_description_t *LA = libvlc_audio_filter_list_get(_Instancia);
 	libvlc_module_description_t *LV = libvlc_video_filter_list_get(_Instancia);
 	
 	libvlc_module_description_list_release(LA);
-	libvlc_module_description_list_release(LV);
+	libvlc_module_description_list_release(LV); */
 
 
 	return TRUE;
 }
 
+/*
 void RaveVLC::audio_prerendercb(void* data, unsigned char** buffer, size_t size) {
 	int i = 0;
 }
 void RaveVLC::audio_postrendercb(void* data, unsigned char* buffer, unsigned int channels, unsigned int rate, unsigned int nb_samples, unsigned int bits_per_sample, size_t size, int64_t pts) {
 	int i = 0;
-}
+}*/
 
 
 void RaveVLC::Terminar(void) {
 	Debug_Escribir(L"RaveVLC::Terminar\n");
-	if (_Log != NULL) {
+/*	if (_Log != NULL) {
 		libvlc_log_close(_Log);
 		_Log = NULL;
-	}
+	}*/
 	if (_MediaPlayer != NULL) {
 		libvlc_media_player_stop(_MediaPlayer);
 		libvlc_media_player_release(_MediaPlayer);
 		_MediaPlayer = NULL;
+
+		#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
+			libvlc_media_player_stop(_MediaPlayerOscy);
+			libvlc_media_player_release(_MediaPlayerOscy);
+			_MediaPlayerOscy = NULL;
+		#endif	
 	}
 	if (_Instancia != NULL) {
 		libvlc_release(_Instancia);
@@ -112,6 +125,104 @@ void EventosVLC(const libvlc_event_t* event, void* ptr) {
 	}
 }*/
 
+
+#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
+
+	void RaveVLC::CallbackAudio(void *data, const void *samples, unsigned count, int64_t pts) {
+		RaveVLC *This = reinterpret_cast<RaveVLC *>(data);
+		int *sa = (int *)samples;
+		// Capto una lectura de cada 5 las otras las desestimo
+	/*	static int Evitar = 0;
+		if (Evitar != 1) {
+			Evitar++;
+			return;
+		}
+		Evitar = 0;*/
+	/*	int t[1024];
+		for (int n = 0; n < 1024; n++) {
+			t[n] = sa[count + n];
+		}*/
+	//	int se = sa[(count * 2) - 1];
+
+
+		int Count = 1024;
+		if (count > 256) {
+			if (count > 512) {
+				if (count > 1024)	Count = 1024;
+				else	  			Count = 512;			
+			}
+			else				{	Count = 256;	}
+		}
+		else					{	Count = 128;	}
+
+		int SPT = Count / This->TamVisualizacion; // samples por tamaño
+		long long Tmp = 0;
+		for (int i = 0; i < This->TamVisualizacion; i++) {
+			// Sumo los samples
+			Tmp = 0;
+	//		for (int z = 0; z < SPT; z++)
+	//			Tmp += sa[(i * SPT) + z];
+			// Divido el resultado por el numero de samples
+	//		Tmp = Tmp / SPT;
+			Tmp = sa[(i * SPT)];
+			// Compruebo si el máximo es mas pequeño que el valor
+			if (Tmp > This->MaxOscy) {
+				This->MaxOscy = static_cast<int>(Tmp);
+				Debug_Escribir_Varg(L"RaveVLC::CallbackAudio Max : %d\n", This->MaxOscy);
+			}
+			This->Oscy[i] = static_cast<float>(Tmp) / static_cast<float>(This->MaxOscy);
+		}
+		// Si hay 2 canales LOS DATOS DEL SEGUNDO CANAL NO PARECEN COHERENTES....
+		/*if (This->_Canales == 2) {
+			for (int i = 0; i < This->TamVisualizacion; i++) {
+				// Sumo los samples
+				Tmp = 0;
+				for (int z = 0; z < SPT; z++)
+					Tmp += sa[((i * SPT) + z) + count];
+				// Divido el resultado por el numero de samples
+				Tmp = Tmp / SPT;
+				// Compruebo si el máximo es mas pequeño que el valor
+				if (Tmp > This->MaxOscy)
+					This->MaxOscy = static_cast<int>(Tmp);
+				This->Oscy[This->TamVisualizacion + i] = static_cast<float>(Tmp) / static_cast<float>(This->MaxOscy);
+			}
+		}*/
+
+
+		/*
+		if (count > 1024) {
+	//		int s1 = 0.0f, s2 = 0.0f;
+			for (unsigned i = 0; i < 512; i++) {
+	//			s1 = (sa[i * 2]			!=	sa[i * 2])			? 0.0f : sa[i * 2];
+	//			s2 = (sa[(i * 2) + 1]	!=	sa[(i * 2) + 1])	? 0.0f : sa[(i * 2) + 1];
+	//			This->Oscy[i] = (s1 + s2) / 2.0f;
+				if (sa[i * 2] > This->MaxOscy) This->MaxOscy = sa[i * 2];
+				This->Oscy[i] = static_cast<float>(sa[i * 2]) / static_cast<float>(This->MaxOscy);
+			}
+		}
+		else {
+			if (count > 512) {
+				for (unsigned i = 0; i < 512; i++) {
+					if (sa[i] > This->MaxOscy) This->MaxOscy = sa[i];
+					This->Oscy[i] = static_cast<float>(sa[i]) / static_cast<float>(This->MaxOscy);
+				}
+			}
+			else {
+				// 256
+			}
+		}*/
+	}
+
+
+	int RaveVLC::CallbackSetupAudio(void **data, char *format, unsigned *rate, unsigned *channels) {
+		RaveVLC *This = reinterpret_cast<RaveVLC *>(*data);
+		This->_Canales = *channels;
+		for (int i = 0; i < 2048; i++) This->Oscy[i] = 0.0f;
+	//	format = "FL32";
+		return 0;
+	}
+
+#endif
 
 const BOOL RaveVLC::AbrirMedio(BDMedio &Medio) {
 	CerrarMedio();
@@ -148,6 +259,19 @@ const BOOL RaveVLC::AbrirMedio(BDMedio &Medio) {
 		return FALSE;
 	}
 	_MediaPlayer = libvlc_media_player_new_from_media(_Media);
+	
+	#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
+		_MediaPlayerOscy = libvlc_media_player_new_from_media(_Media);
+
+		MaxOscy = 2100000000;
+		for (int i = 0; i < 512; i++) Oscy[i] = 0.0f;
+
+		// Añado el callback para obtener el audio	
+		libvlc_audio_set_callbacks(_MediaPlayerOscy, CallbackAudio, NULL, NULL, NULL, NULL, (void *)this);
+	//	libvlc_video_set_callbacks(_MediaPlayerOscy, CallbackVideo, NULL, NULL, (void *)this);
+	//	libvlc_audio_set_format(_MediaPlayerOscy, "FL32", );
+		libvlc_audio_set_format_callbacks(_MediaPlayerOscy, CallbackSetupAudio, NULL); // para obtener el numero de canales
+	#endif
 	libvlc_media_release(_Media);
 	
 //	_Eventos = libvlc_media_player_event_manager(_MediaPlayer);
@@ -178,7 +302,10 @@ const BOOL RaveVLC::AbrirMedio(BDMedio &Medio) {
 
 	return TRUE;
 }
-
+/*
+void *RaveVLC::CallbackVideo(void *opaque, void **planes) {
+	return NULL;
+}*/
 
 void RaveVLC::CerrarMedio(void) {
 	hWndVLC = NULL;
@@ -190,7 +317,11 @@ void RaveVLC::CerrarMedio(void) {
 		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEncounteredError,	EventosVLC, this);*/
 		Debug_Escribir(L"RaveVLC::CerrarMedio\n");
 		libvlc_media_player_release(_MediaPlayer);
-		_MediaPlayer = NULL;		
+		_MediaPlayer = NULL;
+		#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
+			libvlc_media_player_release(_MediaPlayerOscy);
+			_MediaPlayerOscy = NULL;
+		#endif
 	}
 }
 
@@ -260,6 +391,9 @@ const BOOL RaveVLC::Stop(void) {
 		// Desactivo los filtros que pueda haber activados para evitar un crash en la versión x86
 		libvlc_video_set_adjust_int(_MediaPlayer, libvlc_adjust_Enable, 0);
 		libvlc_media_player_stop(_MediaPlayer);
+		#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
+			libvlc_media_player_stop(_MediaPlayerOscy);
+		#endif
 
 		hWndVLC = NULL;
 
@@ -284,6 +418,9 @@ const BOOL RaveVLC::Pausa(void) {
 		if (ComprobarEstado() == EnPlay) {
 			ActualizarIconos(2);
 			libvlc_media_player_pause(_MediaPlayer);
+			#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
+				libvlc_media_player_pause(_MediaPlayerOscy); 
+			#endif
 		}
 		return TRUE;
 	}
@@ -293,6 +430,9 @@ const BOOL RaveVLC::Pausa(void) {
 const BOOL RaveVLC::Play(void) {
 	if (_MediaPlayer != NULL) {
 		if (libvlc_media_player_play(_MediaPlayer) == 0)	{
+			#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
+				libvlc_media_player_play(_MediaPlayerOscy);
+			#endif		
 			App.VentanaRave.SliderTiempo.ToolTip(DBarraEx_ToolTip_Abajo);
 			// Establezco la norma del tooltip según la alineación de los controles pantalla completa
 			switch (App.ControlesPC.Alineacion) {
@@ -522,6 +662,9 @@ const float RaveVLC::TiempoActual(void) {
 void RaveVLC::TiempoActual(float nTiempo) {
 	if (_MediaPlayer != NULL) {
 		libvlc_media_player_set_position(_MediaPlayer, nTiempo);
+		#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
+			libvlc_media_player_set_position(_MediaPlayerOscy, nTiempo);
+		#endif
 	}
 }
 
@@ -529,6 +672,9 @@ void RaveVLC::Ratio(const float R) {
 	int r;
 	if (_MediaPlayer != NULL) {
 		r = libvlc_media_player_set_rate(_MediaPlayer, R);
+		#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
+			libvlc_media_player_set_rate(_MediaPlayerOscy, R);
+		#endif
 	}	
 	std::wstring Tmp = L"x" + DWL::Strings::ToStrF(R, 1);
 	App.VentanaRave.LabelRatio.Texto(Tmp);

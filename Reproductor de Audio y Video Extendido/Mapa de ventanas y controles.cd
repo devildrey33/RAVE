@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DWL::DhWnd" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kFAACSCIgAQAgAQgEAAAKBBAAABAAAAKAAAAQAoAABA=</HashCode>
+      <FileName>DhWnd.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DWL::DControlEx" Collapsed="true">
+    <Position X="1" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAACAEAAAAAAAAAAAAAABAAAAAAAAAAAAAgCAAEAAA=</HashCode>
+      <FileName>DControlEx.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DWL::DBarraScrollEx" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BJQBKAhAAMAAISgAAgAQgTAkiAIAABIAJECEgQCIQIA=</HashCode>
+      <FileName>DBarraScrollEx.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DWL::DArbolEx" Collapsed="true">
+    <Position X="6.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>2GxCjIgslIBKQpEikZLEEApIQ4DFZEgDoLBJAFgQyVo=</HashCode>
+      <FileName>DArbolEx.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DWL::DListaEx" Collapsed="true">
+    <Position X="6.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>UEpAmoBOFBBKQzEB0YCEUAhMIRRk5AgGoLAJwAJEqAA=</HashCode>
+      <FileName>DListaEx.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DWL::DBotonEx" Collapsed="true">
+    <Position X="3.5" Y="2.5" Width="1.25" />
+    <TypeIdentifier>
+      <HashCode>AAAIuAAAAAALQQAAggQAgBAICQDFQUAEAAAIAEKAAAg=</HashCode>
+      <FileName>DBotonEx.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DWL::DBarraProgresoEx" Collapsed="true">
+    <Position X="3.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hwBICYFAAIAIAAIABwAAhBAECABAQEAUCAAAAAAAAAg=</HashCode>
+      <FileName>DBarraProgresoEx.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DWL::DBarraDesplazamientoEx" Collapsed="true">
+    <Position X="6.25" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AABACQAAAAgKQAACDgAAAAgIAABAQAAAABAoAAAAAAg=</HashCode>
+      <FileName>DBarraDesplazamientoEx.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DWL::DControlDesplegableEx" Collapsed="true">
+    <Position X="3.5" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAASAAAAAAAAAAAAAAAAIgBQQAAAAQAAAAAAAIAAAA=</HashCode>
+      <FileName>DControlDesplegableEx.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DWL::DListaDesplegableEx" Collapsed="true">
+    <Position X="6.25" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAGSAAAAAAAAAARAAAAIAAAAAgACAAAAAAAAAAAAA=</HashCode>
+      <FileName>DListaDesplegableEx.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DWL::DEdicionTextoEx" Collapsed="true">
+    <Position X="3.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AcCIiAEAAABIQAEAiwAAgBAACUBGQgAAAAAAAiqAAAg=</HashCode>
+      <FileName>DEdicionTextoEx.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DWL::DEtiquetaEx" Collapsed="true">
+    <Position X="3.5" Y="5.5" Width="1.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAiAICAAAAAAACCAAAEAgAASAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DEtiquetaEx.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DWL::DExplorarDirectoriosEx" Collapsed="true">
+    <Position X="8.5" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAkABAACAgAAYAeAAAAQCABIAABAAAQBhBA=</HashCode>
+      <FileName>DExplorarDirectoriosEx.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DWL::DMarcaEx" Collapsed="true">
+    <Position X="3.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIKAAAEAALQAAIgggAgBAICABEQAAEAACIgAIAAAg=</HashCode>
+      <FileName>DMarcaEx.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DWL::DMenuEx" Collapsed="true">
+    <Position X="3.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>YcAMCARBiAToxAUAwwIIgBgASVFMQQBYAAAAAALEIAg=</HashCode>
+      <FileName>DMenuEx.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DWL::DVentana" Collapsed="true">
+    <Position X="1" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAEIAAAAAACQAAAAABAAAAAAAAAAAAIAAAEAABA=</HashCode>
+      <FileName>DVentana.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DWL::DToolTipEx" Collapsed="true">
+    <Position X="3.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAUCAAAAAQAAEAAAQAAAAAAAAAEAAAAAQgAAAAAAAA=</HashCode>
+      <FileName>DToolTipEx.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DWL::DDlgDirectorios" Collapsed="true">
+    <Position X="3.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAACAAAAAQAAAAAAAAABBACAAIAAAAAQBAAAAICABA=</HashCode>
+      <FileName>DDlgDirectorios.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

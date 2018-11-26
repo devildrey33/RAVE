@@ -9,7 +9,7 @@
 
 namespace DWL {
 
-	#define DARBOLEX_MOSTRARDEBUG	TRUE
+	#define DARBOLEX_MOSTRARDEBUG	FALSE
 
 #ifdef _WIN64
 	#define DARBOLEX_POSICIONNODO_INICIO	0
@@ -246,7 +246,7 @@ namespace DWL {
 		DWORD                                          _TiempoTecladoTmp;
 		const BOOL                                     _StringEmpiezaPor(std::wstring &String1, std::wstring &String2);
 		DArbolEx_Nodo                                 *_NodoUltimaBusqueda;
-//		bool										   _Teclado[256];
+
 
 		friend class DArbolEx_Nodo;
 

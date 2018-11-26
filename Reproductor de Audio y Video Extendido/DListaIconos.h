@@ -3,7 +3,7 @@
 #include "DListaIconos_Icono.h"
 
 namespace DWL {
-
+	// Objeto para mantener iconos cargados en memória de esta forma se pueden pintar sin mas 
 	class DListaIconos {
 	  public:
 													DListaIconos(void);

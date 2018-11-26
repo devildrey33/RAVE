@@ -3,7 +3,7 @@
 // Versión y titulo
 #define RAVE_VERSION			0, 5, 0, 6
 #define RAVE_VERSIONF			0.506
-#define RAVE_VERSIONSTR			L"0.506c"
+#define RAVE_VERSIONSTR			L"0.506d"
 #define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
 #define RAVE_VERSIONBD          L"1.0"
 
@@ -30,3 +30,7 @@
 
 // Simula los argumentos para reproducir un video nada mas iniciar
 //#define RAVE_SIMULAR_REPRODUCIR_VIDEO
+
+// Utiliza un segundo media player para obtener el oscyloscopio
+// No acaba de funcionar muy bien, y hay problemas al ejecutar un video...
+//#define RAVE_VLC_DOBLE_MEDIO_FFT

@@ -20,10 +20,11 @@
 
 // TODO: mencionar aquí los encabezados adicionales que el programa necesita
 // GDI +
-#include <objidl.h>
+/*#include <objidl.h>
 #include <gdiplus.h>
-#pragma comment (lib,"Gdiplus.lib")
+#pragma comment (lib,"Gdiplus.lib")*/
 
+#pragma comment (lib,"Msimg32.lib")		// Alpha blend
 
 #pragma comment(lib, "Shlwapi.lib")		// Libreria ShellWinApi.dll (para probar la función PathFileExists)
 #pragma comment(lib, "Comctl32.lib")	// Libreria para InitCommonControlEx
@@ -76,7 +77,7 @@
 #define ID_LISTARAIZ						    2023
 //#define ID_COMBORAIZ							2024
 #define ID_BOTON_AGREGARRAIZ					2024
-
+#define ID_VISUALIZACION						2025
 
 
 #define ID_MENUBD_AGREGARALISTA					2100

@@ -93,13 +93,16 @@ namespace DWL {
 
 		DAnimacion                 _ScrollV_AniTransicion;
 		DAnimacion                 _ScrollH_AniTransicion;
+//		COLORREF                   _ColorFondoV_Real;
 		COLORREF                   _ColorFondoV;
 		COLORREF                   _ColorBarraV;
+//		COLORREF                   _ColorFondoH_Real;
 		COLORREF                   _ColorFondoH;
 		COLORREF                   _ColorBarraH;
 
 		DAnimacion                 _Scrolls_AniTransicionBorde;
 		COLORREF                   _ColorBorde;
+//		COLORREF                   _ColorFondo;
 	};
 
 };

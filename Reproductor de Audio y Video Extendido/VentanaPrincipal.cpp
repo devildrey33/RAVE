@@ -14,6 +14,8 @@
 #define RAVE_MIN_ALTO  280
 #define RAVE_BOTONES_LATERALES_ANCHO 140
 
+
+
 /* TODO : Moure els butons de l'esquerra a la dreta, y fer que la llista / bd / opcions / video quedin ajustats a l'esquerra per evitar els flickerings dels scrolls de la llista i l'arbre */
 HWND VentanaPrincipal::Crear(int nCmdShow) {
 	// Detección de monitores
@@ -77,13 +79,22 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	LabelTiempoTotal.CrearEtiquetaEx(&MarcoSD, L"00:00", 65, 2, 55, 20, ID_LABEL_TIEMPOTOTAL, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
 
 	// Marco inferior izquierdo /////////////
-	MarcoII.Crear(this, 10, 80, RAVE_BOTONES_LATERALES_ANCHO, 160, ID_MARCOSI);
+	MarcoII.Crear(this, 10, 80, RAVE_BOTONES_LATERALES_ANCHO, 200, ID_MARCOSI);
 	BotonBD.CrearBotonEx(&MarcoII, L"Base de datos", 0, 0, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_BD);
 	BotonBD.Marcado(TRUE);
 	BotonLista.CrearBotonEx(&MarcoII, L"Lista de medios", 0, 40, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_LISTA);
 	BotonVideo.CrearBotonEx(&MarcoII, L"Ver video", 0, 80, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_VIDEO);
 	BotonOpciones.CrearBotonEx(&MarcoII, L"Opciones", 0, 120, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_OPCIONES);
+	
+	#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
+		Vis.Crear(&MarcoII, 0, 160, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_VISUALIZACION);
+	#endif
 	/////////////////////////////////////////
+
+
+	// Inicio la VLC justo antes de mostrar la ventana y de activar el thread para actualizar el arbol
+	App.VLC.Iniciar();
+
 
 	// Muestro la ventana principal
 	ShowWindow(hWnd(), nCmdShow);

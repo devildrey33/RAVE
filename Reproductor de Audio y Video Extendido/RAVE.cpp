@@ -126,7 +126,6 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 	#endif
 
 
-
 	// Teclas rapidas por defecto
 	TeclasRapidas.push_back(TeclaRapida(VK_SPACE, FALSE, FALSE, FALSE));
 	TeclasRapidas.push_back(TeclaRapida(VK_INSERT, FALSE, FALSE, FALSE));
@@ -159,7 +158,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 			BD.Iniciar();
 
 			// Cargo la LibVLC
-			VLC.Iniciar();
+			//VLC.Iniciar();
 
 			// Muestro la ventana principal y creo los menús
 			IniciarUI(nCmdShow);
@@ -177,20 +176,19 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 				VentanaRave.ThreadArchivosLista.Iniciar(VentanaRave.hWnd(), Paths);
 			}
 			else {
-			#ifndef  RAVE_IGNORAR_LISTA_INICIO 	// No genera ninguna lista al iniciar (por el debug del VLC que es muy heavy.. y carga mucho al visual studio)
-				// Inicia la acción por defecto al empezar
-				Debug_Escribir_Varg(L"Rave::Iniciar ->  Acción de inicio : %d\n", BD.Opciones_Inicio());
-				switch (BD.Opciones_Inicio()) {
-//					case Tipo_Inicio_NADA			:																		break;
-					case Tipo_Inicio_Genero			:	VentanaRave.GenerarListaAleatoria(TLA_Genero);						break;
-					case Tipo_Inicio_Grupo			:	VentanaRave.GenerarListaAleatoria(TLA_Grupo);						break;
-					case Tipo_Inicio_Disco			:	VentanaRave.GenerarListaAleatoria(TLA_Disco);						break;
-					case Tipo_Inicio_50Medios		:	VentanaRave.GenerarListaAleatoria(TLA_50Medios);					break;
-					case Tipo_Inicio_LoQueSea		:	VentanaRave.GenerarListaAleatoria(TLA_LoQueSea);					break;
-					case Tipo_Inicio_UltimaLista	:	BD.ObtenerUltimaLista();											break;
-				}
-			#endif // !1
-
+				#ifndef  RAVE_IGNORAR_LISTA_INICIO 	// No genera ninguna lista al iniciar (por el debug del VLC que es muy heavy.. y carga mucho al visual studio)
+					// Inicia la acción por defecto al empezar
+					Debug_Escribir_Varg(L"Rave::Iniciar ->  Acción de inicio : %d\n", BD.Opciones_Inicio());
+					switch (BD.Opciones_Inicio()) {
+	//					case Tipo_Inicio_NADA			:																		break;
+						case Tipo_Inicio_Genero			:	VentanaRave.GenerarListaAleatoria(TLA_Genero);						break;
+						case Tipo_Inicio_Grupo			:	VentanaRave.GenerarListaAleatoria(TLA_Grupo);						break;
+						case Tipo_Inicio_Disco			:	VentanaRave.GenerarListaAleatoria(TLA_Disco);						break;
+						case Tipo_Inicio_50Medios		:	VentanaRave.GenerarListaAleatoria(TLA_50Medios);					break;
+						case Tipo_Inicio_LoQueSea		:	VentanaRave.GenerarListaAleatoria(TLA_LoQueSea);					break;
+						case Tipo_Inicio_UltimaLista	:	BD.ObtenerUltimaLista();											break;
+					}
+				#endif // !1
 			}
 			
 			Ret = TRUE;

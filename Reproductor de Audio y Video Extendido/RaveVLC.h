@@ -128,8 +128,8 @@ class RaveVLC {
 
 	HWND									hWndVLC;
 
-	static void								audio_prerendercb(void* data, unsigned char** buffer, size_t size);
-	static void								audio_postrendercb(void* data, unsigned char* buffer, unsigned int channels, unsigned int rate, unsigned int nb_samples, unsigned int bits_per_sample, size_t size, int64_t pts);
+//	static void								audio_prerendercb(void* data, unsigned char** buffer, size_t size);
+//	static void								audio_postrendercb(void* data, unsigned char* buffer, unsigned int channels, unsigned int rate, unsigned int nb_samples, unsigned int bits_per_sample, size_t size, int64_t pts);
 
 	inline const BOOL                       Parseado(void) { return _Parseado; }
 	void									ObtenerDatosParsing(void);
@@ -140,13 +140,27 @@ class RaveVLC {
 	void                                    Gamma(const float nGamma);
 	void                                    Hue(const int nHue);
 	void                                    Saturacion(const float nSaturacion);
+	#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
+		float                               Oscy[2048];
+		int                                 MaxOscy;
+		int		                            TamVisualizacion;
+	#endif
   protected:
+
+    unsigned int                           _Canales;
+
+
 	BOOL                                   _Parseado;
 	//libvlc_media_t                        *_Media;
 	libvlc_instance_t					  *_Instancia;
 	libvlc_media_player_t				  *_MediaPlayer;
-	libvlc_log_t						  *_Log;
+	#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
+		static void							CallbackAudio(void *data, const void *samples, unsigned count, int64_t pts);
+//		static void						   *CallbackVideo(void *opaque, void **planes);
+		static int							CallbackSetupAudio(void **data, char *format, unsigned *rate, unsigned *channels);
+		libvlc_media_player_t			  *_MediaPlayerOscy;
+	#endif
+//	libvlc_log_t						  *_Log;
 	libvlc_event_manager_t				  *_Eventos;
-
 
 };

@@ -5,12 +5,12 @@ namespace DWL {
 	// Minimo de tamaño para la barra de scroll
 	#define BARRA_MIN_TAM 20
 
-	DBarraScrollEx::DBarraScrollEx(void) :	DControlEx(),
-											_Scroll_PosPresionado({ 0 ,0 })					, _Scroll_PosInicio(0.0f)			,
-											_ColorFondoV(COLOR_SCROLL_FONDO)				, _ColorFondoH(COLOR_SCROLL_FONDO)	, _ColorBorde(COLOR_BORDE),
-											_ColorBarraV(COLOR_SCROLL_BARRA)				, _ColorBarraH(COLOR_SCROLL_BARRA)	,
-											_ScrollV_Estado(DBarraScrollEx_Estado_Invisible), _ScrollV_Pagina(1.0f)				, _ScrollV_Posicion(0.0f),
-											_ScrollH_Estado(DBarraScrollEx_Estado_Invisible), _ScrollH_Pagina(1.0f)				, _ScrollH_Posicion(0.0f) {
+	DBarraScrollEx::DBarraScrollEx(void) : DControlEx(),
+											_Scroll_PosPresionado({ 0 ,0 })					, _Scroll_PosInicio(0.0f),
+											/*_ColorFondoV_Real(COLOR_SCROLL_FONDO)			, _ColorFondoH_Real(COLOR_SCROLL_FONDO),*/ _ColorBorde(COLOR_BORDE),
+											_ColorBarraV(COLOR_SCROLL_BARRA)				, _ColorBarraH(COLOR_SCROLL_BARRA)		,/* _ColorFondo(COLOR_FONDO_CLARO),*/
+											_ScrollV_Estado(DBarraScrollEx_Estado_Invisible), _ScrollV_Pagina(1.0f)					, _ScrollV_Posicion(0.0f), _ColorFondoV(COLOR_SCROLL_FONDO),
+											_ScrollH_Estado(DBarraScrollEx_Estado_Invisible), _ScrollH_Pagina(1.0f)					, _ScrollH_Posicion(0.0f), _ColorFondoH(COLOR_SCROLL_FONDO)  {
 		_ScrollH_Alto = GetSystemMetrics(SM_CYHSCROLL);
 		_ScrollV_Ancho = GetSystemMetrics(SM_CXVSCROLL);
 	}
@@ -277,7 +277,7 @@ namespace DWL {
 //			Duracion = _ScrollV_AniTransicion.TiempoActual();
 			_ScrollV_AniTransicion.Terminar();
 		}
-
+//		_ColorFondoV = &_ColorFondoV_Real;
 		COLORREF FondoHasta, BarraHasta;
 		switch (nTransicion) {
 			case DBarraScrollEx_Transicion_Normal:
@@ -314,6 +314,9 @@ namespace DWL {
 			_ColorFondoV = Datos[0].Color();
 			_ColorBarraV = Datos[1].Color();
 			RepintarAni();
+/*			if (Terminado == TRUE) {
+				_ColorFondoV = &_ColorFondo;
+			}*/
 		});
 	}
 
@@ -323,7 +326,7 @@ namespace DWL {
 //			Duracion = _ScrollH_AniTransicion.TiempoActual();
 			_ScrollH_AniTransicion.Terminar();
 		}
-
+//		_ColorFondoH = &_ColorFondoH_Real;
 		COLORREF FondoHasta, BarraHasta;
 		switch (nTransicion) {
 			case DBarraScrollEx_Transicion_Normal:
@@ -345,9 +348,12 @@ namespace DWL {
 		}
 
 		_ScrollH_AniTransicion.Iniciar(_ColorFondoH, FondoHasta, _ColorBarraH, BarraHasta, Duracion, [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
-			_ColorFondoH = Datos[0].Color();
-			_ColorBarraH = Datos[1].Color();
+			_ColorFondoH	= Datos[0].Color();
+			_ColorBarraH		= Datos[1].Color();
 			RepintarAni();
+			/*if (Terminado == TRUE) {
+				_ColorFondoH = &_ColorFondo;
+			}*/
 		});
 
 	}

@@ -382,6 +382,9 @@
     <ClInclude Include="VentanaAsociarReproductor %28DEPRECATED%29.h">
       <Filter>Ventanas</Filter>
     </ClInclude>
+    <ClInclude Include="ControlVisualizacion.h">
+      <Filter>Ventanas\Controles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -576,6 +579,9 @@
     <ClCompile Include="VentanaAsociarReproductor %28DEPRECATED%29.cpp">
       <Filter>Ventanas</Filter>
     </ClCompile>
+    <ClCompile Include="ControlVisualizacion.cpp">
+      <Filter>Ventanas\Controles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Reproductor de Audio y Video Extendido.rc">
@@ -730,5 +736,10 @@
     <Image Include="..\Iconos\IDI_Agregar.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Mapa de ventanas y controles.cd">
+      <Filter>DWL</Filter>
+    </None>
   </ItemGroup>
 </Project>
