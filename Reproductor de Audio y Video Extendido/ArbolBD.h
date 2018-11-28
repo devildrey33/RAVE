@@ -22,7 +22,7 @@ enum ArbolBD_TipoNodo {
 
 class NodoBD : public DWL::DArbolEx_Nodo {
   public :
-							NodoBD() : DArbolEx_Nodo(), Hash(0) {};
+							NodoBD() : DArbolEx_Nodo(), Hash(0), TipoNodo(ArbolBD_TipoNodo_Indefinido) {};
 	                       ~NodoBD() {};
 
 	ArbolBD_TipoNodo		TipoNodo;

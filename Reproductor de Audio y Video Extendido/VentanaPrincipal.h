@@ -24,7 +24,7 @@ using namespace DWL;
 
 class VentanaPrincipal : public DWL::DVentana {
  public:
-								VentanaPrincipal(void) : DWL::DVentana(), _PantallaCompleta(FALSE), EstadoMedio(EnStop), MousePos({ 0, 0 }), MonitorDisponible(FALSE), _MaximoTotalMedios2(0), _ValorMedios2(0) {};
+								VentanaPrincipal(void) : DWL::DVentana(), _PantallaCompleta(FALSE), EstadoMedio(EnStop), MousePos({ 0, 0 }), MonitorDisponible(FALSE), _MaximoTotalMedios2(0), _ValorMedios2(0), RectMonitorActual({ 0,0,0,0 }), CTW_ExtraX(0), CTW_ExtraY(0), _BotonExMouseDownTick(0) {};
 					           ~VentanaPrincipal(void) { };
 	HWND						Crear(int nCmdShow);
 

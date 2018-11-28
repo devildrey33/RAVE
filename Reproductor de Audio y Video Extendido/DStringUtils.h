@@ -10,7 +10,8 @@
 
 	namespace DWL {
 		namespace Strings {
-			/* Split para separar una cadena por un carácter delimitador */
+			/* Split para separar una cadena por un carácter delimitador 
+				NOTA : si no encuentra el delimitador, devuelve la cadena completa */
 			class Split {
 			  public:
 											Split(std::wstring &Texto, const TCHAR Separador);

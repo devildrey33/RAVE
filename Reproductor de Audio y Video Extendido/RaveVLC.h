@@ -19,7 +19,7 @@
 
 
 // Clase para crear un array de chars con los argumentos que requiera el VLC, se ha diseñado de forma que resulte facil agregar nuevos argumentos
-class ArgumentosVLC {
+/*class ArgumentosVLC {
 public:
 	ArgumentosVLC(void) {
 		Argumentos = NULL;
@@ -47,13 +47,6 @@ public:
 		Args.push_back(Str);
 	};
 
-	/*void							AgregarArgumento(DWL::DWLString &Argumento) {
-	char *Str = new char[512];
-	int	TamRes = WideCharToMultiByte(CP_UTF8, NULL, Argumento(), Argumento.Tam(), Str, 512, NULL, NULL);
-	Str[TamRes] = 0; // Termino el string, ya que en algunas compilaciones la funcion WideCharToMultiByte no pone el terminador.
-	Args.push_back(Str);
-	};*/
-
 	const char **ObtenerArgumentos(void) {
 		if (Argumentos != NULL) delete Argumentos;
 		Argumentos = new const char *[Args.size()];
@@ -74,7 +67,7 @@ private:
 	const char				  **Argumentos;
 	std::vector<char *>			Args;
 };
-
+*/
 
 
 

@@ -440,14 +440,14 @@ SIZE ToolTipInfo_Etiqueta::CalcularTam(void) {
 	_Col2.resize(0);
 
 	// Construyo las columnas con sus datos
-	const size_t	NumFilas = 3;
-	const wchar_t  *Col1[NumFilas] = { L"Medios", /*L"Nota",*/ L"Tiempo", L"Longitud" };
+	const size_t	NumFilas = 4;
+	const wchar_t  *Col1[NumFilas] = { L"Medios", L"Nota", L"Tiempo", L"Longitud" };
 	std::wstring    Col2[NumFilas];
 
 	Col2[0] = std::to_wstring(Etiqueta->Medios);
-	//	Col2[1] = DWL::Strings::ToStrF(static_cast<float>(nEtiqueta.Nota / static_cast<float>(nEtiqueta.Medios)), 2);
-	RaveVLC::TiempoStr(Etiqueta->Tiempo, Col2[1]);
-	DWL::Strings::FormatoBytes(Etiqueta->Longitud, Col2[2]);
+	Col2[1] = DWL::Strings::ToStrF(Etiqueta->Nota, 2);
+	RaveVLC::TiempoStr(Etiqueta->Tiempo, Col2[2]);
+	DWL::Strings::FormatoBytes(Etiqueta->Longitud, Col2[3]);
 
 
 	// Miro el ancho del titulo
@@ -456,7 +456,7 @@ SIZE ToolTipInfo_Etiqueta::CalcularTam(void) {
 	int TamIcono = (_Icono == NULL) ? 0 : 20;
 	Ret.cx = TamIcono + (TOOLTIPINFO_PADDING * 2) + Tam.cx;
 
-	int Ancho1 = 0, Ancho2 = 0;
+	int Ancho1 = 0, Ancho2 = static_cast<int>(Etiqueta->Nota * 16.0f);
 	// Miro el ancho de cada columna y guardo las columnas
 	for (size_t i = 0; i < NumFilas; i++) {
 		SelectObject(hDC, Fuente18Negrita.Fuente());

@@ -221,10 +221,10 @@
 			V Fusionat DAnimacion_Color amb DAnimacionm ara puc fer animacions decimals i de color desde el mateix objecte a l'hora.
 			V Retocats els parametres de les funcions lambda, ja no apuntan a vectors blancs, ara apunten a un objecte que fa de vector i de helper
 
-		-  Els tooltips d'etiquetes han de generar totes les seves dades (nota, tiempo, longitud, totalmedios)
+		V  Els tooltips d'etiquetes han de generar totes les seves dades (nota, tiempo, longitud, totalmedios)
 			X  S'ha de treure del objecte EtiquetaBD els membres : Medios, Tiempo, Longitud (i de rebot he recuperat el Nota)
 				X  També s'ha de treure de la BD
-			-  Lo millor es anar refrescant les dades al mostrar el tooltip, haig de fer un multisqlselect chachi 
+			V  Lo millor es anar refrescant les dades al mostrar el tooltip, haig de fer un multisqlselect chachi 
 			-  No hi han etiquetes pels videos de la BD...
 		
 		V  Tractar arxius del tipus CRDOWNLOAD i OPDOWNLOAD per renombrar-los al acabar de reproduïr, OFC també s'haura de guardar el nou path a la BD.
@@ -283,7 +283,8 @@
 			-  Captar WM_RESIZE i modificar tamany dels controls en consequencia.
 				- Guardar el tamany a les opcions de la BD
 
-		-  S'ha de poder afegir medis desde l'explorador mentres es carrega la libvlc.
+		V  S'ha de poder afegir medis desde l'explorador mentres es carrega la libvlc.
+			-  s'ha de probar desde la RELEASE quan em carregui la libvlc per primer cop
 
 		-  Afegir al MenuBD : 
 			-  Nota (per poguer modificar la nota de tots els medis d'un directori)

@@ -14,7 +14,7 @@ namespace DWL {
 
 	class DEventoMouseRueda	{
 	  public:
-										DEventoMouseRueda() : wParam(0), lParam(0), Wnd(NULL) { };
+										DEventoMouseRueda(void) : wParam(0), lParam(0), Wnd(NULL), MousePosCliente({0, 0}) { };
 										//! Constructor que define todos los valores
 										/*!	Constructor asignador de datos.
 											\fn			DEventoMouseRueda(const int cX, const int cY, const UINT cID);

@@ -1,9 +1,9 @@
 // Configuración para compilar RAVE
 
 // Versión y titulo
-#define RAVE_VERSION			0, 5, 0, 6
-#define RAVE_VERSIONF			0.506
-#define RAVE_VERSIONSTR			L"0.506d"
+#define RAVE_VERSION			0, 5, 0, 7
+#define RAVE_VERSIONF			0.507
+#define RAVE_VERSIONSTR			L"0.507"
 #define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
 #define RAVE_VERSIONBD          L"1.0"
 
@@ -11,7 +11,7 @@
 	// Mostrar consola de depuración
 	#define RAVE_MOSTRAR_CONSOLA
 
-	// Simular el AppPath en "C:\ProgramFiles\RAVE\"
+	// Simular el AppPath en "C:\ProgramFiles\RAVE\" (OJO PORQUE LA LIBVLC LA CARGA DE LA CARPETA "...\RAVE\VLCx64")
 	#define RAVE_SIMULAR_APPPATH
 
 	// Si ya existe un reproductor encendido, se arranca igual
@@ -31,6 +31,6 @@
 // Simula los argumentos para reproducir un video nada mas iniciar
 //#define RAVE_SIMULAR_REPRODUCIR_VIDEO
 
-// Utiliza un segundo media player para obtener el oscyloscopio
-// No acaba de funcionar muy bien, y hay problemas al ejecutar un video...
+// Utiliza un segundo media player para obtener el oscyloscopio (EXPERIMENTAL)
+// No acaba de funcionar muy bien, y hay problemas al ejecutar un video con la doble reproducción...
 //#define RAVE_VLC_DOBLE_MEDIO_FFT

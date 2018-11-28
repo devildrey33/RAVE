@@ -4,7 +4,11 @@
 #include "DStringUtils.h"
 #include "ListaMedios.h"
 
-RaveBD::RaveBD(void) : _BD(NULL)  {
+RaveBD::RaveBD(void) : _BD(NULL), _Opciones_Volumen(0), _Opciones_PosX(0), _Opciones_PosY(0), _Opciones_VentanaOpciones_PosX(0), _Opciones_VentanaOpciones_PosY(0), _Opciones_DlgDirectorios_PosX(0), _Opciones_DlgDirectorios_PosY(0), 
+								  _Opciones_VentanaAnalizar_PosX(0), _Opciones_VentanaAnalizar_PosY(0), _Opciones_Ancho(0), _Opciones_Alto(0), _Opciones_Shufle(FALSE), _Opciones_Repeat(Tipo_Repeat_NADA), _Opciones_Inicio(Tipo_Inicio_NADA),
+								  _Opciones_Version(0.0f), _Opciones_OcultarMouseEnVideo(0), _Opciones_MostrarObtenerMetadatos(FALSE), _Opciones_MostrarAsociarArchivos(FALSE), _Opciones_AnalizarMediosPendientes(FALSE),
+								  _Opciones_BuscarActualizacion(FALSE), _Opciones_TiempoAnimaciones(0), _Opciones_TiempoToolTips(0), _Opciones_NoAgregarMedioMenos25(FALSE), _Opciones_NoGenerarListasMenos3(FALSE), 
+							 	  _Opciones_Sumar005(FALSE), _Opciones_AlineacionControlesVideo(0), _Opciones_OpacidadControlesVideo(0) {
 }
 
 
@@ -466,7 +470,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 	std::wstring Q;
 	int Intentos = 0;
 	#define MAX_INTENTOS 20
-	size_t Rand;
+	size_t Rand = 0;
 	switch (Tipo) {
 		case TLA_Genero:
 			for (size_t i = 0; i < _Etiquetas.size(); i++) {
@@ -1549,6 +1553,78 @@ EtiquetaBD *RaveBD::ObtenerEtiqueta(std::wstring &eTexto) {
 	}
 	return NULL;
 }
+
+
+void RaveBD::CalcularDatosEtiqueta(EtiquetaBD *Etiqueta) {
+	std::vector<std::wstring> Condiciones;
+
+
+	if (Etiqueta->EsGenero() == TRUE) {
+		Condiciones.push_back(L"(Genero =\"" + Etiqueta->Texto + L"\")");
+	}
+
+	if (Etiqueta->EsGrupoPath() == TRUE) {
+		Condiciones.push_back(L"(GrupoPath =\"" + Etiqueta->Texto + L"\")");
+	}
+
+	if (Etiqueta->EsGrupoTag() == TRUE) {
+		Condiciones.push_back(L"(GrupoTag =\"" + Etiqueta->Texto + L"\")");
+	}
+
+	if (Etiqueta->EsDiscoPath() == TRUE) {
+		Condiciones.push_back(L"(DiscoPath =\"" + Etiqueta->Texto + L"\")");
+	}
+
+	if (Etiqueta->EsDiscoTag() == TRUE) {
+		Condiciones.push_back(L"(DiscoTag =\"" + Etiqueta->Texto + L"\")");
+	}
+
+
+	std::wstring Q = L"SELECT Longitud, Tiempo, Nota FROM Medios WHERE ";
+
+	for (size_t i = 0; i < Condiciones.size(); i++) {
+		Q += Condiciones[i];
+		if (i + 1 < Condiciones.size()) Q += L" OR ";
+	}
+
+	
+	wchar_t		   *SqlError = NULL;
+	int				SqlRet = 0;
+	sqlite3_stmt   *SqlQuery = NULL;
+	BDMedio         TmpMedio;
+
+	Etiqueta->Longitud	= 0;
+	Etiqueta->Medios	= 0;
+	Etiqueta->Tiempo	= 0;
+	Etiqueta->Nota		= 0.0f; // nota total de todos los medios, que dividida por los medios nos da la nota media
+
+	SqlRet = sqlite3_prepare16_v2(_BD, Q.c_str(), -1, &SqlQuery, NULL);
+	if (SqlRet) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return;
+	}
+
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
+		SqlRet = sqlite3_step(SqlQuery);
+		if (SqlRet == SQLITE_ROW) { // La iD es el 0, pero no la necesito para nada.
+			Etiqueta->Longitud	+= static_cast<DWORD>(sqlite3_column_int(SqlQuery, 0));
+			Etiqueta->Tiempo	+= static_cast<libvlc_time_t>(sqlite3_column_int(SqlQuery, 1));
+			Etiqueta->Nota		+= static_cast<float>(sqlite3_column_double(SqlQuery, 2));
+			Etiqueta->Medios	++;
+		}
+	}
+
+	Etiqueta->Nota = Etiqueta->Nota / static_cast<float>(Etiqueta->Medios);
+
+	sqlite3_finalize(SqlQuery);
+
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return;
+	}
+
+}
+
 /*
 const BOOL RaveBD::ObtenerEtiqueta(std::wstring &eTexto, EtiquetaBD &Etiqueta) {
 	std::wstring Q = L"SELECT * FROM Etiquetas WHERE Texto=\"";	Q += eTexto.c_str(); Q += L"\""; 
@@ -1609,7 +1685,7 @@ const BOOL RaveBD::ObtenerEtiqueta(std::wstring &eTexto, EtiquetaBD &Etiqueta) {
 
 
 // Constructor que obtiene los datos de una fila
-BDMedio::BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades) : Actualizar(FALSE) {
+BDMedio::BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades) : PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0), Parseado(FALSE), Actualizar(FALSE), Nota(2.5f), PistaEleccion(0), Reproducido(0), GrupoEleccion(0), DiscoEleccion(0), NombreEleccion(0) {
 	ObtenerFila(SqlQuery, Unidades);
 }
 

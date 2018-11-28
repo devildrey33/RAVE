@@ -23,12 +23,12 @@ enum ToolTipInfo_Tipo {
 // Plantilla para un tooltip básico
 class ToolTipInfo : public DWL::DVentana {
   public:
-									ToolTipInfo(void) : _Ocultando(FALSE), _Padre(NULL)											{ };
+									ToolTipInfo(void) : _Ocultando(FALSE), _Padre(NULL), X(0), Y(0)								{ };
   							       ~ToolTipInfo(void)																			{ };
 	void							Mostrar(const int cX, const int cY, const int cAncho, const int cAlto, ToolTipsInfo *nPadre, std::function<void(void)> CallbackOcultarTerminado);
 	void							Mover(const int PosX = POS_MOUSE, const int PosY = POS_MOUSE);
 	void							Ocultar(const BOOL Rapido = FALSE);
-	inline const BOOL               Ocultando(void) { return _Ocultando;  }
+	inline const BOOL               Ocultando(void)																				{ return _Ocultando;  }
 	LRESULT CALLBACK				GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	DWL::DAnimacion					Ani;
 									// Virtuales 
@@ -64,8 +64,8 @@ class ToolTipInfo_Texto : public ToolTipInfo {
 class ToolTipInfo_Celda {
 	public :
 					ToolTipInfo_Celda(void) : Ancho(0) { };
-					ToolTipInfo_Celda(std::wstring &nTexto, const int nAncho) : Texto(nTexto), Ancho(nAncho) { };
-					ToolTipInfo_Celda(const wchar_t *nTexto, const int nAncho) : Texto(nTexto), Ancho(nAncho) { };
+					ToolTipInfo_Celda(std::wstring &nTexto, const int nAncho) : Texto(nTexto), Ancho(nAncho)	{ };
+					ToolTipInfo_Celda(const wchar_t *nTexto, const int nAncho) : Texto(nTexto), Ancho(nAncho)	{ };
 				   ~ToolTipInfo_Celda(void) { };
 	std::wstring	Texto;
 	int				Ancho;
@@ -74,8 +74,8 @@ class ToolTipInfo_Celda {
 // Clase base para crear Tooltips de 2 columnas (para no repetir la función de pintado en ToolTipInfo_Medio y ToolTipInfo_Etiqueta)
 class ToolTipInfo_2Columnas : public ToolTipInfo {
   public:
-									ToolTipInfo_2Columnas(void) : ToolTipInfo()									 { };
-									ToolTipInfo_2Columnas(std::wstring &Titulo) : ToolTipInfo(), _Titulo(Titulo) { };
+									ToolTipInfo_2Columnas(void) : ToolTipInfo(), _Icono(NULL), _AnchoCol1(0)									{ };
+									ToolTipInfo_2Columnas(std::wstring &Titulo) : ToolTipInfo(), _Titulo(Titulo), _Icono(NULL), _AnchoCol1(0)	{ };
 	                               ~ToolTipInfo_2Columnas(void) { };
 	void							Pintar(HDC DC);
 	virtual inline ToolTipInfo_Tipo	Tipo(void) { return ToolTipInfo_Tipo_2Columnas; };
@@ -97,7 +97,7 @@ class ToolTipInfo_Medio : public ToolTipInfo_2Columnas {
 	                               ~ToolTipInfo_Medio(void)																		{ };
 	inline ToolTipInfo_Tipo			Tipo(void)																					{ return ToolTipInfo_Tipo_Medio; };
 	void                            MostrarFijo(BDMedio &nMedio);
-	inline void						PintarNota(HDC DC, const int cX, const int cY) { _PintarNota(DC, cX, cY, Medio.Nota); }
+	inline void						PintarNota(HDC DC, const int cX, const int cY)												{ _PintarNota(DC, cX, cY, Medio.Nota); }
 	SIZE							CalcularTam(void);
 	BDMedio	                        Medio;
 };
@@ -110,7 +110,7 @@ class ToolTipInfo_Etiqueta : public ToolTipInfo_2Columnas {
 	                               ~ToolTipInfo_Etiqueta(void)																					{ };
 	inline ToolTipInfo_Tipo			Tipo(void)																									{ return ToolTipInfo_Tipo_Etiqueta; };
 	void                            MostrarFijo(EtiquetaBD *nEtiqueta);
-	inline void						PintarNota(HDC DC, const int cX, const int cY) { _PintarNota(DC, cX, cY, 5.0f); }
+	inline void						PintarNota(HDC DC, const int cX, const int cY)																{ _PintarNota(DC, cX, cY, Etiqueta->Nota); }
 	SIZE							CalcularTam(void);
 	EtiquetaBD	                   *Etiqueta;
 };

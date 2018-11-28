@@ -11,11 +11,15 @@ class MemoriaCompartida {
 	const BOOL		Obtener(std::wstring &nNombre);
 	const BOOL		Obtener(const wchar_t *nNombre);
 
+	const BOOL      AgregarPath(std::wstring &Path);
+	const BOOL      ObtenerPaths(std::vector<std::wstring> &Paths);
+	const BOOL      EliminarPaths(void);
 	void            Destruir(void);
-	
-	const BOOL		Leer(std::wstring &Texto);
-	const BOOL		Escribir(std::wstring &Texto);
   protected:
+	
+	const BOOL	   _Leer(std::wstring &Texto);
+	const BOOL	   _Escribir(std::wstring &Texto);
+  
 	HANDLE		   _hMapFile;
 	std::wstring   _Nombre;	
 };

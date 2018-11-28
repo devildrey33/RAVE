@@ -42,9 +42,9 @@ namespace DWL {
 		// Objeto que contiene un valor de la animación (el valor puede ser decimál o un color)
 		class Valor {
 		  public :
-									Valor(void) : _Tipo(Valor_Tipo::Decimal), _Valor(0), _Color(0)          { }
-									Valor(const COLORREF nCol) : _Tipo(RGB), _Color(nCol)					{ }
-									Valor(const double nValor) : _Tipo(Valor_Tipo::Decimal), _Valor(nValor) { }
+									Valor(void) : _Tipo(Valor_Tipo::Decimal), _Valor(0.0f), _Color(0)					{ }
+									Valor(const COLORREF nCol) : _Tipo(RGB), _Color(nCol), _Valor(0.0f)					{ }
+									Valor(const double nValor) : _Tipo(Valor_Tipo::Decimal), _Valor(nValor), _Color(0)	{ }
 			inline void				operator = (const COLORREF nCol)										{ _Color = nCol; }
 			inline void				operator = (const double nValor)										{ _Valor = nValor; }
 			inline bool             operator == (const Valor& Comp)											{ return (_Tipo == Valor_Tipo::Decimal) ? (_Valor == Comp._Valor) : (_Color == Comp._Color); }

@@ -938,7 +938,7 @@ void VentanaPrincipal::Evento_SliderTiempo_Cambiado(void) {
 	if (App.VLC.ComprobarEstado() != Estados_Medio::EnPlay && App.VLC.ComprobarEstado() != Estados_Medio::EnPausa) return;
 	std::wstring TiempoStr;
 //	Debug_Escribir_Varg(L"Evento_SliderTiempo_Cambiado %d, %.02f\n", App.VLC.TiempoTotalMs(), SliderTiempo.Valor());
-	App.VLC.TiempoStr(static_cast<UINT64>(static_cast<float>(App.VLC.TiempoTotalMs()) * SliderTiempo.Valor()), TiempoStr);
+	App.VLC.TiempoStr(static_cast<UINT64>(static_cast<double>(App.VLC.TiempoTotalMs()) * static_cast<double>(SliderTiempo.Valor())), TiempoStr);
 	LabelTiempoActual.Texto(TiempoStr);
 	App.ControlesPC.LabelTiempoActual.Texto(TiempoStr);
 	App.VLC.TiempoActual(SliderTiempo.Valor());
@@ -1168,15 +1168,27 @@ void VentanaPrincipal::ActualizarArbol(void) {
 
 // Agrega un medio desde el explorador (haciendo dobleclick o desde el menú)
 void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
-	std::wstring Param;
-	App.MemCompartida.Leer(Param);
-	BDMedio Medio;
-	if (App.BD.ObtenerMedio(Param, Medio) == FALSE) {
-		if (App.BD.AnalizarMedio(Param, Medio, 0) == FALSE) return;
-	}
+	std::vector <std::wstring> Paths;
+	// Obtengo los paths de la memoria compartida
+	App.MemCompartida.ObtenerPaths(Paths);	
+	// Si no hay paths salgo
+	if (Paths.size() == 0) return;
 
-	Debug_Escribir_Varg(L"VentanaPrincipal::ExploradorAgregarMedio : %s\n", Param.c_str());
-	Lista.AgregarMedio(&Medio);
+	// Elimino los paths de la memoria compartida
+	App.MemCompartida.EliminarPaths();
+
+	sqlite3_int64 Hash = 0; 
+	BDMedio Medio;
+	for (size_t i = 0; i < Paths.size(); i++) {
+		if (App.BD.ObtenerMedio(Paths[i], Medio) == FALSE) {
+			if (App.BD.AnalizarMedio(Paths[i], Medio, 0) == FALSE) return;
+		}
+
+		Debug_Escribir_Varg(L"VentanaPrincipal::ExploradorAgregarMedio : %s\n", Paths[i].c_str());
+		Lista.AgregarMedio(&Medio);
+		// Guardo el hash del primer medio, para asignarlo como medio actual si es necesario
+		if (i == 0) Hash = Medio.Hash;		
+	}
 	Lista.Repintar();
 
 	if (Reproducir == TRUE) {
@@ -1187,7 +1199,7 @@ void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
 				break;
 			}
 		}		*/
-		Lista.MedioActual = Lista.BuscarHash(Medio.Hash);
+		Lista.MedioActual = Lista.BuscarHash(Hash);
 		//Lista_Stop();
 		App.VLC.CerrarMedio();
 		Lista_Play();

@@ -329,7 +329,6 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 		EtiquetaBD *Etiqueta = NULL;
 		BDMedio     Medio;
 
-
 		switch (NodoRes->TipoNodo) {
 			case ArbolBD_TipoNodo_Directorio :
 			case ArbolBD_TipoNodo_Genero	 :
@@ -337,7 +336,8 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 			case ArbolBD_TipoNodo_Disco		 :
 				Etiqueta = App.BD.ObtenerEtiqueta(EtiquetaFiltrada);
 				if (Etiqueta != NULL) {
-					Debug_Escribir(L"Destruir1\n");
+					App.BD.CalcularDatosEtiqueta(Etiqueta);
+
 					if (_ToolTipE.Etiqueta != Etiqueta || _ToolTipE.Visible() == FALSE) {
 						_ToolTipM.Ocultar(TRUE);
 						_ToolTipE.Ocultar(TRUE);

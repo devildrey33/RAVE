@@ -5,7 +5,7 @@ namespace DWL {
 
 	class DListaIconos_Icono {
 	  public:
-								DListaIconos_Icono(void) : _ID(0) { };
+								DListaIconos_Icono(void) : _Alto(0), _Ancho(0), _Icono(0), _ID(0), _IDStrPos(0) { };
 								DListaIconos_Icono(HICON nIcono, const INT_PTR nID, const int nAncho, const int nAlto) : _Icono(nIcono), _ID(nID), _Ancho(nAncho), _Alto(nAlto), _IDStrPos(0) { };
 								DListaIconos_Icono(HICON nIcono, const INT_PTR nID, const int nAncho, const int nAlto, std::wstring &nIDStr, const int nIDStrPos) : _Icono(nIcono), _ID(nID), _Ancho(nAncho), _Alto(nAlto), _IDStr(nIDStr), _IDStrPos(nIDStrPos) { };
 						       ~DListaIconos_Icono(void) { };

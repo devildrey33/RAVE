@@ -25,7 +25,7 @@ enum EtiquetaBD_Tipo {
 
 class EtiquetaBD {
   public:
-						EtiquetaBD(void) : Tipo(0), /*Nota(0.0f),*/ Tiempo(0), Medios(0), Longitud(0)			{ };
+						EtiquetaBD(void) : Tipo(0), Nota(0.0f), Tiempo(0), Medios(0), Longitud(0)			{ };
 						EtiquetaBD(std::wstring &nTexto, const DWORD nTipo, const float nNota, const libvlc_time_t nTiempo, const ULONGLONG nLongitud, const UINT nMedios = 1) : Tipo(nTipo), Texto(nTexto), Nota(nNota), Tiempo(nTiempo), Medios(nMedios), Longitud(nLongitud) { };
 					   ~EtiquetaBD(void)																	{ };
 

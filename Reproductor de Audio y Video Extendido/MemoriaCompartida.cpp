@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "MemoriaCompartida.h"
+#include "DStringUtils.h"
 
-#define TAM_BUFFER 4096 * sizeof(wchar_t)
+#define TAM_BUFFER (4096 *4) * sizeof(wchar_t)
 
 MemoriaCompartida::MemoriaCompartida(void) : _hMapFile(NULL) {
 }
@@ -70,8 +71,59 @@ const BOOL MemoriaCompartida::Obtener(const wchar_t *nNombre) {
 	return TRUE;
 }
 
-const BOOL MemoriaCompartida::Leer(std::wstring &Texto) {
-	Debug_Escribir_Varg(L"MemoriaCompartida::Leer %s\n", _Nombre.c_str());
+
+const BOOL MemoriaCompartida::AgregarPath(std::wstring &Path) {
+	std::wstring Tmp;
+	// Si hay un error al leer el contenido, salgo
+	if (_Leer(Tmp) == FALSE) return FALSE;
+	// Agrego el path
+	if (Tmp.size() > 0 )	Tmp += L';' + Path;
+	else					Tmp = Path;
+	// Guardo los paths en la memoria
+	return _Escribir(Tmp);
+}
+
+
+const BOOL MemoriaCompartida::ObtenerPaths(std::vector<std::wstring> &Paths) {
+	Debug_Escribir_Varg(L"MemoriaCompartida::ObtenerPaths %s\n", _Nombre.c_str());
+	std::wstring Tmp;
+	// Si hay un error al leer el contenido, salgo
+	if (_Leer(Tmp) == FALSE) return FALSE;
+
+	DWL::Strings::Split Sp(Tmp, L';');
+	for (size_t i = 0; i < Sp.Total(); i++) {
+		Paths.push_back(Sp[i]);
+	}
+
+	return TRUE;
+}
+
+
+const BOOL MemoriaCompartida::EliminarPaths(void) {
+	Debug_Escribir_Varg(L"MemoriaCompartida::EliminarPaths %s\n", _Nombre.c_str());
+
+	LPCTSTR pBuf = (LPTSTR)MapViewOfFile(_hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, TAM_BUFFER);
+
+	if (pBuf == NULL) {
+		Debug_MostrarUltimoError();
+		return FALSE;
+	}
+	ZeroMemory((PVOID)pBuf, TAM_BUFFER);
+
+	UnmapViewOfFile(pBuf);
+
+	return TRUE;
+}
+
+
+
+
+
+
+
+
+const BOOL MemoriaCompartida::_Leer(std::wstring &Texto) {
+	Debug_Escribir_Varg(L"MemoriaCompartida::_Leer %s\n", _Nombre.c_str());
 	
 	LPCTSTR pBuf = (LPTSTR)MapViewOfFile(_hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, TAM_BUFFER);
 
@@ -87,8 +139,8 @@ const BOOL MemoriaCompartida::Leer(std::wstring &Texto) {
 	return TRUE;
 }
 
-const BOOL MemoriaCompartida::Escribir(std::wstring &Texto) {
-	Debug_Escribir_Varg(L"MemoriaCompartida::Escribir %s\n", _Nombre.c_str());
+const BOOL MemoriaCompartida::_Escribir(std::wstring &Texto) {
+	Debug_Escribir_Varg(L"MemoriaCompartida::_Escribir %s\n", _Nombre.c_str());
 
 	LPCTSTR pBuf = (LPTSTR)MapViewOfFile(_hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, TAM_BUFFER);
 

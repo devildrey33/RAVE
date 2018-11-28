@@ -11,7 +11,7 @@
 #define ID_MARCANOMOSTRARMAS	1004
 #define ID_BOTONOCULTAR			1005
 
-ThreadAnalisis::ThreadAnalisis(void) : DWL::DVentana(), _FASE(0) {
+ThreadAnalisis::ThreadAnalisis(void) : DWL::DVentana(), _FASE(0), _VentanaPlayer(NULL), _Cancelar(FALSE), _Thread(NULL) {
 }
 
 

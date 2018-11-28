@@ -16,7 +16,7 @@ void RAVE_Iniciar(void) {
 
 RAVE *_APLICACION = NULL;
 
-RAVE::RAVE(void) : PlayerInicial(FALSE), MutexPlayer(NULL) {
+RAVE::RAVE(void) : PlayerInicial(FALSE), MutexPlayer(NULL), MenuVideoPistasDeAudio(NULL), MenuVideoProporcion(NULL), MenuVideoFiltros(NULL), MenuVideoSubtitulos(NULL) {
 	// Inicio la semilla para generar números aleatórios
 //	srand(GetTickCount());
 }
@@ -80,16 +80,13 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 		AppPath = L"C:\\ProgramFiles\\RAVE\\";
 		Debug_Escribir(L"Simulando AppPath en : C:\\ProgramFiles\\Rave\\\n");
 	#endif
-
-	// Obtengo el sistema operativo (NO FUNCIONA BIEN A PARTIR DE WIN 8)
+	
 	ObtenerSO();
 	Debug_Escribir(SO.c_str());
 	Debug_EscribirSinMS(L"\n");
 
-
 	// Inicializo la librería COM (para el TaskBarList)
-	CoInitializeEx(0, COINIT_MULTITHREADED | COINIT_SPEED_OVER_MEMORY);
-//	CoInitializeEx(0, COINIT_APARTMENTTHREADED | COINIT_SPEED_OVER_MEMORY);
+	HRESULT CIE = CoInitializeEx(0, COINIT_MULTITHREADED | COINIT_SPEED_OVER_MEMORY);
 
 	BOOL MemRet = FALSE;
 	// Si este hilo pertenece al reproductor inicial, creo la memória compartida.
@@ -134,31 +131,27 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 	TeclasRapidas.push_back(TeclaRapida(VK_RIGHT, TRUE, FALSE, FALSE));
 	TeclasRapidas.push_back(TeclaRapida(VK_LEFT, TRUE, FALSE, FALSE));
 
-//	Gdiplus::GdiplusStartupInput	gdiplusStartupInput;
-	
-
+/*	Gdiplus::GdiplusStartupInput	gdiplusStartupInput;
 	// Initialize GDI+.
-//	Gdiplus::GdiplusStartup(&_gdiplusToken, &gdiplusStartupInput, NULL);
+	Gdiplus::GdiplusStartup(&_gdiplusToken, &gdiplusStartupInput, NULL);*/
 
 	switch (LC) {
 		// Ejecución normal sin parámetros
 		case LineaComando_Nada :
 		case LineaComando_Path :
 		case LineaComando_Reproducir :
+			// Agrego el path a la memoria compartida, y envio un mensaje al reproductor
+			if (Paths.size() > 0) {
+				MemCompartida.AgregarPath(Paths[Paths.size() - 1]);					
+				PostMessage(hWndPlayer, (Paths[0] == L"-r") ? WM_REPRODUCIRMEDIO : WM_AGREGARMEDIO, 0, 0);
+			}
 			// Si ya existe un reproductor activo, salgo
-			if (PlayerInicial == FALSE) {				
-				if (Paths.size() > 0) {
-					MemCompartida.Escribir(Paths[Paths.size() - 1]);					
-					PostMessage(hWndPlayer, (Paths[0] == L"-r") ? WM_REPRODUCIRMEDIO : WM_AGREGARMEDIO, 0, 0);
-				}
+			if (PlayerInicial == FALSE) {
 				Ret = FALSE;
 				break;
 			}
 			// Inicio la base de datos y cargo las opciones antes de mostrar la ventana
 			BD.Iniciar();
-
-			// Cargo la LibVLC
-			//VLC.Iniciar();
 
 			// Muestro la ventana principal y creo los menús
 			IniciarUI(nCmdShow);
@@ -168,14 +161,8 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 				VentanaAsociar.Mostrar();
 			}*/
 
-			// Hay uno o mas paths por agregar a la lista
-			if (Paths.size() > 0) {
-				// Si el comando es Reproducir, hay que borrar la lista
-//				if (LC == LineaComando_Reproducir) VentanaRave.Lista.BorrarListaReproduccion();
-				// Agrega los paths a la lista de medios
-				VentanaRave.ThreadArchivosLista.Iniciar(VentanaRave.hWnd(), Paths);
-			}
-			else {
+			// No hay paths, creo una lista de inicio
+			if (Paths.size() == 0) {
 				#ifndef  RAVE_IGNORAR_LISTA_INICIO 	// No genera ninguna lista al iniciar (por el debug del VLC que es muy heavy.. y carga mucho al visual studio)
 					// Inicia la acción por defecto al empezar
 					Debug_Escribir_Varg(L"Rave::Iniciar ->  Acción de inicio : %d\n", BD.Opciones_Inicio());
@@ -188,7 +175,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 						case Tipo_Inicio_LoQueSea		:	VentanaRave.GenerarListaAleatoria(TLA_LoQueSea);					break;
 						case Tipo_Inicio_UltimaLista	:	BD.ObtenerUltimaLista();											break;
 					}
-				#endif // !1
+				#endif
 			}
 			
 			Ret = TRUE;
