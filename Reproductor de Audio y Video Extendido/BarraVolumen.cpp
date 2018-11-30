@@ -30,7 +30,7 @@ void BarraVolumen::Transicion(const DBarraEx_Transicion nTransicion) {
 		_AniTransicion.Terminar();
 	}
 
-	COLORREF FondoHasta, BordeHasta, BarraHasta;
+	COLORREF FondoHasta = NULL, BordeHasta = NULL, BarraHasta = NULL;
 	switch (nTransicion) {
 		case DBarraEx_Transicion_Normal:
 			FondoHasta = COLOR_BARRA_FONDO;

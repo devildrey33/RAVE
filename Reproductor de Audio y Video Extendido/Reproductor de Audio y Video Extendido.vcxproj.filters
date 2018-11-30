@@ -385,6 +385,9 @@
     <ClInclude Include="ControlVisualizacion.h">
       <Filter>Ventanas\Controles</Filter>
     </ClInclude>
+    <ClInclude Include="DFuente.h">
+      <Filter>DWL\Ventanas\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -581,6 +584,9 @@
     </ClCompile>
     <ClCompile Include="ControlVisualizacion.cpp">
       <Filter>Ventanas\Controles</Filter>
+    </ClCompile>
+    <ClCompile Include="DFuente.cpp">
+      <Filter>DWL\Ventanas\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

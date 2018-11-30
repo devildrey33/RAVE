@@ -199,6 +199,7 @@
     <ClInclude Include="DEventoMouseRueda.h" />
     <ClInclude Include="DEventoTeclado.h" />
     <ClInclude Include="DExplorarDirectoriosEx.h" />
+    <ClInclude Include="DFuente.h" />
     <ClInclude Include="DGDI.h" />
     <ClInclude Include="DhWnd_Fuente.h" />
     <ClInclude Include="DListaDesplegableEx.h" />
@@ -283,6 +284,7 @@
     <ClCompile Include="DDesplegableEx_ExplorarDirectoriosEx %28DEPRECATED%29.cpp" />
     <ClCompile Include="DEdicionTextoEx.cpp" />
     <ClCompile Include="DExplorarDirectoriosEx.cpp" />
+    <ClCompile Include="DFuente.cpp" />
     <ClCompile Include="DGDI.cpp" />
     <ClCompile Include="DhWnd.cpp" />
     <ClCompile Include="DEtiquetaEx.cpp" />

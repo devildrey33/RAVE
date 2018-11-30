@@ -104,7 +104,7 @@ void VentanaOpcionesRAVE::Crear(void) {
 	ListaRaiz.Visible(TRUE);
 	// Boton agregar raíz
 	BotonAgregarRaiz.CrearBotonEx(&MarcoBaseDeDatos, L"Agregar Raíz", ((RC.right - 120) / 2) - 10, 220, 120, 24, ID_BOTON_AGREGARRAIZ);
-	BotonAgregarRaiz.Fuente = Fuente21Normal;
+	BotonAgregarRaiz.Fuente.CrearFuente(21, DBotonEx_Skin::FuenteNombre.c_str());
 	// Separador
 	SeparadorBD.Crear(&MarcoBaseDeDatos, 0, 254, RC.right - 10);
 	// Marca Mostrar analisis en una ventana

@@ -39,6 +39,51 @@ namespace DWL {
 			RGB			// COLORREF
 		};
 
+//		class ValorFinal;
+		// Objeto que contiene el valor inicial de la animación (el valor puede ser decimál o un color)
+/*		class Valor {
+		  public :
+									Valor(void) : _Tipo(Valor_Tipo::Decimal), _Valor(NULL), _Color(NULL), _Propio(FALSE)				{ }
+									// Constructores que crean sus punteros
+									Valor(const COLORREF nCol) : _Tipo(Valor_Tipo::RGB), _Valor(NULL), _Color(NULL), _Propio(TRUE)		{
+										_Color = new COLORREF; *_Color = nCol; 
+									}
+									Valor(const double nValor) : _Tipo(Valor_Tipo::Decimal), _Valor(NULL), _Color(NULL), _Propio(TRUE)	{ 
+										_Valor = new double; *_Valor = nValor; 
+									}
+									// Constructores por "referencia"
+									Valor(COLORREF *nCol) : _Tipo(RGB), _Color(nCol), _Valor(NULL), _Propio(FALSE)						{ }
+									Valor(double *nValor) : _Tipo(Valor_Tipo::Decimal), _Valor(nValor), _Color(NULL), _Propio(FALSE)	{ }
+								   ~Valor(void)																							{ 
+									   if (_Propio == TRUE) { 
+										   if (_Valor != NULL) { delete _Valor; } 
+										   if (_Color != NULL) { delete _Color; } 
+									   }
+								   }
+			inline void				operator = (const COLORREF nCol)	{ *_Color = nCol; }
+			inline void				operator = (const double nValor)	{ *_Valor = nValor; }
+			inline void				operator = (const Valor &nValor)	{ if (_Tipo == Valor_Tipo::Decimal) { *_Valor = *nValor._Valor; } else { *_Color = *nValor._Color;  } }
+			inline bool             operator == (const Valor &Comp)		{ return (_Tipo == Valor_Tipo::Decimal) ? (*_Valor == *Comp._Valor) : (*_Color == *Comp._Color); }
+			inline bool             operator != (const Valor &Comp)		{ return (_Tipo == Valor_Tipo::Decimal) ? (*_Valor != *Comp._Valor) : (*_Color != *Comp._Color); }
+			inline bool             operator < (const Valor &Comp)		{ return (_Tipo == Valor_Tipo::Decimal) ? (*_Valor < *Comp._Valor) : (*_Color < *Comp._Color); }
+			inline bool             operator > (const Valor &Comp)		{ return (_Tipo == Valor_Tipo::Decimal) ? (*_Valor > *Comp._Valor) : (*_Color > *Comp._Color); }
+			inline bool             operator < (const double &Comp)		{ return (*_Valor < Comp); }
+			inline bool             operator > (const double &Comp)		{ return (*_Valor > Comp); }
+			inline const double		operator() (void)					{ return *_Valor; }
+			inline const BYTE		R(void)								{ return GetRValue(*_Color); };
+			inline const BYTE		G(void)								{ return GetGValue(*_Color); };
+			inline const BYTE		B(void)								{ return GetBValue(*_Color); };
+			inline const double		Decimal(void)			  			{ return *_Valor; }
+			inline const COLORREF	Color(void)							{ return *_Color; }
+			inline const Valor_Tipo Tipo(void)							{ return _Tipo; };
+		  protected:
+			double                *_Valor;
+			COLORREF              *_Color;
+			Valor_Tipo             _Tipo;
+			BOOL                   _Propio;
+			friend class ValorFinal;
+		};*/
+
 		// Objeto que contiene un valor de la animación (el valor puede ser decimál o un color)
 		class Valor {
 		  public :
@@ -66,13 +111,46 @@ namespace DWL {
 			Valor_Tipo             _Tipo;
 		};
 
+		// Objeto que contiene el valor final de la animación (el valor puede ser decimál o un color)
+		// El valor final tiene que ser un puntero ya que puede cambiar durante la animación
+/*		class ValorFinal {
+		  public :
+									ValorFinal(void) : _Tipo(Valor_Tipo::Decimal), _Valor(NULL), _Color(NULL)				{ }
+									ValorFinal(COLORREF *nCol) : _Tipo(RGB), _Color(nCol), _Valor(NULL)						{ }
+									ValorFinal(double *nValor) : _Tipo(Valor_Tipo::Decimal), _Valor(nValor), _Color(NULL)	{ }
+			inline void				operator = (COLORREF *nCol)																{ _Color = nCol; }
+			inline void				operator = (double *nValor)																{ _Valor = nValor; }
+			inline bool             operator == (const Valor& Comp)												{ return (_Tipo == Valor_Tipo::Decimal) ? (*_Valor == Comp._Valor) : (*_Color == Comp._Color); }
+			inline bool             operator != (const Valor& Comp)												{ return (_Tipo == Valor_Tipo::Decimal) ? (*_Valor != Comp._Valor) : (*_Color != Comp._Color); }
+			inline bool             operator < (const Valor &Comp)															{ return (_Tipo == Valor_Tipo::Decimal) ? (*_Valor < Comp._Valor) : (*_Color < Comp._Color); }
+			inline bool             operator > (const Valor &Comp)															{ return (_Tipo == Valor_Tipo::Decimal) ? (*_Valor > Comp._Valor) : (*_Color > Comp._Color); }
+			inline bool             operator < (const double &Comp)															{ return (*_Valor < Comp); }
+			inline bool             operator > (const double &Comp)															{ return (*_Valor > Comp); }
+			inline const double		operator() (void)																		{ return *_Valor; }
+			inline const BYTE		R(void)																					{ return GetRValue(*_Color); };
+			inline const BYTE		G(void)																					{ return GetGValue(*_Color); };
+			inline const BYTE		B(void)																					{ return GetBValue(*_Color); };
+			inline const double		Decimal(void)			  																{ return *_Valor; }
+			inline const COLORREF	Color(void)																				{ return *_Color; }
+			inline const Valor_Tipo Tipo(void)																				{ return _Tipo; };
+		  protected:
+			double                *_Valor;
+			COLORREF              *_Color;
+			Valor_Tipo             _Tipo;
+			friend class Valor;
+		};*/
+
 		// Objeto que contiene el valor origen y el valor destino de la animación
 		class Dato {
 	   		public:
-										Dato(void) : Funcion(NULL)																																{ };
-										Dato(const double nDesde, const double nHasta, FuncionTiempo nFuncion = FuncionesTiempo::Linear) : Desde(nDesde), Hasta(nHasta), Funcion(nFuncion)		{ };
-										Dato(const COLORREF nDesde, const COLORREF nHasta, FuncionTiempo nFuncion = FuncionesTiempo::Linear) : Desde(nDesde), Hasta(nHasta), Funcion(nFuncion)	{ };
-					                   ~Dato(void)																																				{ };
+										Dato(void) : Funcion(NULL)																															{ };
+										Dato(const double nDesde,	double nHasta,		FuncionTiempo nFuncion = FuncionesTiempo::Linear) : Desde(nDesde), Hasta(nHasta), Funcion(nFuncion)	{ };
+										Dato(const COLORREF nDesde, COLORREF nHasta,	FuncionTiempo nFuncion = FuncionesTiempo::Linear) : Desde(nDesde), Hasta(nHasta), Funcion(nFuncion)	{ };
+//										Dato(const double nDesde,	double *nHasta,		FuncionTiempo nFuncion = FuncionesTiempo::Linear) : Desde(nDesde), Hasta(nHasta), Funcion(nFuncion)	{ };
+//										Dato(const COLORREF nDesde, COLORREF *nHasta,	FuncionTiempo nFuncion = FuncionesTiempo::Linear) : Desde(nDesde), Hasta(nHasta), Funcion(nFuncion)	{ };
+//										Dato(double *nDesde,		double *nHasta,		FuncionTiempo nFuncion = FuncionesTiempo::Linear) : Desde(nDesde), Hasta(nHasta), Funcion(nFuncion)	{ };
+//										Dato(COLORREF *nDesde,		COLORREF *nHasta,	FuncionTiempo nFuncion = FuncionesTiempo::Linear) : Desde(nDesde), Hasta(nHasta), Funcion(nFuncion)	{ };
+									   ~Dato(void)																																			{ };
 		     Valor						Desde;
 			 Valor						Hasta;
 			 FuncionTiempo				Funcion;
@@ -84,8 +162,10 @@ namespace DWL {
 		   public :
 									Datos(void) { }
 				                   ~Datos(void) { }
-			void                    AgregarRGB(const COLORREF nDesde, const COLORREF nHasta, FuncionTiempo nFuncion = FuncionesTiempo::Linear) { _Datos.push_back(Dato(nDesde, nHasta, nFuncion)); };
-			void                    AgregarDecimal(const double nDesde, const double nHasta, FuncionTiempo nFuncion = FuncionesTiempo::Linear) { _Datos.push_back(Dato(nDesde, nHasta, nFuncion)); };
+			void                    AgregarRGB(const COLORREF nDesde, const COLORREF nHasta,	FuncionTiempo nFuncion = FuncionesTiempo::Linear) { _Datos.push_back(Dato(nDesde, nHasta, nFuncion)); };
+//			void                    AgregarRGB(const COLORREF nDesde, COLORREF *nHasta,			FuncionTiempo nFuncion = FuncionesTiempo::Linear) { _Datos.push_back(Dato(nDesde, nHasta, nFuncion)); };
+			void                    AgregarDecimal(const double nDesde, const double nHasta,	FuncionTiempo nFuncion = FuncionesTiempo::Linear) { _Datos.push_back(Dato(nDesde, nHasta, nFuncion)); };
+//			void                    AgregarDecimal(const double nDesde, double *nHasta,			FuncionTiempo nFuncion = FuncionesTiempo::Linear) { _Datos.push_back(Dato(nDesde, nHasta, nFuncion)); };
 			inline Dato            &operator [] (const size_t Pos) { return _Datos[Pos]; }
 			inline const size_t     Total(void) { return _Datos.size(); }
 		   protected:
@@ -121,7 +201,7 @@ namespace DWL {
 		void										Iniciar(const COLORREF Desde0, const COLORREF Hasta0, const COLORREF Desde1, const COLORREF Hasta1, const COLORREF Desde2, const COLORREF Hasta2, const COLORREF Desde3, const COLORREF Hasta3, const DWORD Milisegundos, std::function<void(Valores &, const BOOL)> LambdaCallback, FuncionTiempo Funcion = FUNCION_POR_DEFECTO);
 
 		void										Iniciar(DAnimacion::Datos &Datos, const DWORD Milisegundos, std::function<void(DAnimacion::Valores &, const BOOL)> LambdaCallback);
-		void                                        Invertir(void);
+//		void                                        Invertir(void);
 		void										Terminar(void);
 		inline const BOOL                           Animando(void) { return (_Timer != NULL); }
 		inline const DWORD							TiempoActual(void) { return _TiempoActual; }

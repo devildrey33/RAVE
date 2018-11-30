@@ -1,5 +1,7 @@
 #pragma once
 
+#define RGBA(R,G,B,A)          (COLORREF) (R | (G<<8) | (B <<16) | (A <<24))
+
 // Fuente por defecto
 #define FUENTE_NORMAL			L"tahoma"
 #define FUENTE_NORMAL_TAM		21
@@ -107,12 +109,13 @@ ____                       ______
  /_/    \_\_|  |_.__/ \___/|_|______/_/\_\    
 
 */
+#define ARBOL_PINTAR_SOMBRA_TEXTO                   FALSE
 #define COLOR_ARBOL_FONDO							COLOR_FONDO_CLARO
 //#define COLOR_ARBOL_FONDO_SCROLL					RGB(200, 200, 200)
 //#define COLOR_ARBOL_FONDO_SCROLL_RESALTADO		RGB(170, 170, 170)
 //#define COLOR_ARBOL_FONDO_SCROLL_PRESIONADO		RGB(110, 110, 110)
 
-#define COLOR_ARBOL_FONDO_RESALTADO					COLOR_FONDO_CLARO_RESALTADO
+#define COLOR_ARBOL_FONDO_RESALTADO					RGB(255, 220, 220)
 #define COLOR_ARBOL_FONDO_PRESIONADO				COLOR_FONDO_CLARO_PRESIONADO
 #define COLOR_ARBOL_TEXTO							RGB( 30,  30,  30)
 #define COLOR_ARBOL_TEXTO_DESACTIVADO				RGB(128, 128, 128)
@@ -152,10 +155,10 @@ ____                       ______
  |______|_|___/\__\__,_|______/_/\_\                                                                
 
 */
-
+#define LISTA_PINTAR_SOMBRA_TEXTO                   FALSE
 #define COLOR_LISTA_FONDO							COLOR_FONDO_CLARO
 //#define COLOR_LISTA_FONDO_SCROLL					RGB(200, 200, 200)
-#define COLOR_LISTA_FONDO_RESALTADO					COLOR_FONDO_CLARO_RESALTADO
+#define COLOR_LISTA_FONDO_RESALTADO					RGB(255, 220, 220)
 #define COLOR_LISTA_FONDO_PRESIONADO                COLOR_FONDO_CLARO_PRESIONADO// Solo cuando MostrarSeleccion está desactivado
 
 #define COLOR_LISTA_TEXTO							RGB( 30,  30,  30)

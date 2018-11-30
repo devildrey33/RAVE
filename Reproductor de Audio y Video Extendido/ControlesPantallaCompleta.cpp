@@ -34,14 +34,15 @@ void ControlesPantallaCompleta::Crear(void) {
 	LabelRatio.CrearEtiquetaEx(this, L"x1.0", 170, 16, 40, 30, ID_LABEL_RATIO, DEtiquetaEx_Alineacion_Centrado);
 
 	BotonMezclar.CrearBotonEx(this, L"Mezclar", 220, 10, 80, 30, ID_BOTON_MEZCLAR);
-	BotonMezclar.Fuente = Fuente18Negrita;
+	BotonMezclar.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str(), TRUE);
+	
 	if (App.BD.Opciones_Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
 	BotonRepetir.CrearBotonEx(this, L"Repetir", 310, 10, 80, 30, ID_BOTON_REPETIR);
-	BotonRepetir.Fuente = Fuente18Negrita;
+	BotonRepetir.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str(), TRUE); 
 	if (App.BD.Opciones_Repeat() > 0) BotonRepetir.Marcado(TRUE);
 
 	BotonRotar.CrearBotonEx(this, L"Rotar", 400, 10, 70, 30, ID_BOTON_ROTAR);
-	BotonRotar.Fuente = Fuente18Negrita;
+	BotonRotar.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str(), TRUE);;
 
 	SliderTiempo.CrearBarraDesplazamientoEx(this, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO);
 //	SliderTiempo.Crear(hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO, WS_CHILD | TBS_NOTICKS | WS_VISIBLE, 0, 30000, 0);
@@ -95,7 +96,7 @@ void ControlesPantallaCompleta::Transicion(const CPC_Transicion nTransicion) {
 		return;
 	}
 
-	float OpacidadHasta;
+	float OpacidadHasta = 0.0f;
 	switch (nTransicion) {
 		case CPC_Transicion_Mostrar:
 			OpacidadHasta = static_cast<float>(App.BD.Opciones_OpacidadControlesVideo());
@@ -126,7 +127,7 @@ void ControlesPantallaCompleta::Transicion(const CPC_Transicion nTransicion) {
 
 
 void ControlesPantallaCompleta::Alinear(void) {	
-	int Ancho, Alto;
+	int Ancho = 0, Alto = 0;
 	RECT RC;
 	GetWindowRect(App.VentanaRave.hWnd(), &RC);
 	int X = 0, Y = 0;

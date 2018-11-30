@@ -56,10 +56,10 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	LabelRatio.CrearEtiquetaEx(&MarcoSI, L"x1.0", 160, 6, 40, 30, ID_LABEL_RATIO, DEtiquetaEx_Alineacion_Centrado);
 
 	BotonMezclar.CrearBotonEx(&MarcoSI, L"Mezclar", 210, 0, 80, 30, ID_BOTON_MEZCLAR);
-	BotonMezclar.Fuente = Fuente18Negrita;
+	BotonMezclar.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str(), TRUE);
 	if (App.BD.Opciones_Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
 	BotonRepetir.CrearBotonEx(&MarcoSI, L"Repetir", 300, 0, 80, 30, ID_BOTON_REPETIR);
-	BotonRepetir.Fuente = Fuente18Negrita;
+	BotonRepetir.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str(), TRUE);
 	if (App.BD.Opciones_Repeat() > 0) BotonRepetir.Marcado(TRUE);
 	//////////////////////////////////////////
 

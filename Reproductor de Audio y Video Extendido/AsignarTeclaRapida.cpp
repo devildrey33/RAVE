@@ -5,7 +5,7 @@
 #define MARGEN            10
 #define ID_BOTON_EDITAR 1000
 
-AsignarTeclaRapida::AsignarTeclaRapida(void) {
+AsignarTeclaRapida::AsignarTeclaRapida(void) : _Editando(FALSE) {
 }
 
 AsignarTeclaRapida::~AsignarTeclaRapida(void) {
@@ -18,7 +18,7 @@ void AsignarTeclaRapida::Crear(DWL::DhWnd *nPadre, const int cX, const int cY, c
 	_TeclaRapida = nTecla;
 	_Texto = nTecla->String();
 	_Boton.CrearBotonEx(this, L"Editar", RC.right - ANCHO_BOTON, 0, ANCHO_BOTON, RC.bottom, ID_BOTON_EDITAR);
-	_Boton.Fuente = Fuente18Negrita;
+	_Boton.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str(), TRUE);
 }
 
 void AsignarTeclaRapida::Pintar(HDC DC) {

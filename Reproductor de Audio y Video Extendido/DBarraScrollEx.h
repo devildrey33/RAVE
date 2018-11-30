@@ -102,7 +102,7 @@ namespace DWL {
 
 		DAnimacion                 _Scrolls_AniTransicionBorde;
 		COLORREF                   _ColorBorde;
-//		COLORREF                   _ColorFondo;
+		COLORREF                   _ColorFondo;
 	};
 
 };

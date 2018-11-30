@@ -244,7 +244,7 @@ namespace DWL {
 			_AniTransicion.Terminar();
 		}
 
-		COLORREF FondoHasta, BordeHasta, BarraHasta;
+		COLORREF FondoHasta = 0, BordeHasta = 0, BarraHasta = 0;
 		switch (nTransicion) {
 			case DBarraEx_Transicion_Normal:
 				FondoHasta = COLOR_BARRA_FONDO;

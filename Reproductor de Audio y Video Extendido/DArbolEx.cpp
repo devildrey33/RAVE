@@ -259,7 +259,8 @@ namespace DWL {
 		HBITMAP BmpViejo		= static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
 
 		// Pinto el fondo
-		HBRUSH BFondo = CreateSolidBrush(COLOR_ARBOL_FONDO);
+		HBRUSH BFondo = CreateSolidBrush(_ColorFondo);
+//		HBRUSH BFondo = CreateSolidBrush(COLOR_ARBOL_FONDO);
 		FillRect(Buffer, &RCB, BFondo);
 		DeleteObject(BFondo);
 
@@ -386,7 +387,7 @@ namespace DWL {
 		}*/
 
 		// Pinto el fondo del buffer
-		HBRUSH BrochaFondo = CreateSolidBrush(COLOR_ARBOL_FONDO);
+		HBRUSH BrochaFondo = CreateSolidBrush(_ColorFondo);
 		RECT EspacioLocal = { Espacio->left , 0, (static_cast<LONG>(_TotalAnchoVisible) > Espacio->right) ? static_cast<LONG>(_TotalAnchoVisible) : Espacio->right, (2 * DARBOLEX_PADDING) + nNodo->_Fuente->Alto() };
 		FillRect(_BufferNodo, &EspacioLocal, BrochaFondo);
 		DeleteObject(BrochaFondo);
@@ -412,27 +413,33 @@ namespace DWL {
 		AnchoOcupado += DARBOLEX_TAMICONO + (DARBOLEX_PADDING * 2) + 2;
 //		AnchoOcupado += DARBOLEX_TAMICONO + DARBOLEX_PADDING + 2;
 
-		// Pinto el fondo del texto del nodo (tanto si está seleccionado como si no)
+		// Recta para el fondo del texto
 		RECT RFondo = { SPresionado + (AnchoOcupado - DARBOLEX_PADDING),
 						SPresionado + (DARBOLEX_MARGEN_Y_SELECCION * 2),
 						SPresionado + (AnchoOcupado + nNodo->_AnchoTexto) + DARBOLEX_PADDING,
 						SPresionado + ((DARBOLEX_PADDING * 2) + nNodo->_Fuente->Alto()) - DARBOLEX_MARGEN_Y_SELECCION };
 
-		HBRUSH BrochaFondoTexto = CreateSolidBrush(nNodo->_ColorFondo);
-		FillRect(_BufferNodo, &RFondo, BrochaFondoTexto);
-		DeleteObject(BrochaFondoTexto);
+		// Pinto el fondo del texto del nodo (si no es del mismo color que el fondo normal / resaltado)
+		if (nNodo->_ColorFondo != COLOR_FONDO_CLARO && nNodo->_ColorFondo != COLOR_FONDO_CLARO_RESALTADO) {
+
+			HBRUSH BrochaFondoTexto = CreateSolidBrush(nNodo->_ColorFondo);
+			FillRect(_BufferNodo, &RFondo, BrochaFondoTexto);
+			DeleteObject(BrochaFondoTexto);
+		}
 
 		// Seleciono la fuente del nodo
 		HFONT FuenteVieja = static_cast<HFONT>(SelectObject(_BufferNodo, nNodo->_Fuente->Fuente()));
 
-		// Pinto la sombra del texto
-		SetTextColor(_BufferNodo, nNodo->_ColorTextoSombra);
+		// Defino la recta para el texto
 		RECT RTexto = { SPresionado + AnchoOcupado								+1,
 						SPresionado + DARBOLEX_PADDING							+1,
 						SPresionado + AnchoOcupado + nNodo->_AnchoTexto			+1,
 						SPresionado + DARBOLEX_PADDING + nNodo->_Fuente->Alto()	+1 };
-		DrawText(_BufferNodo, nNodo->Texto.c_str(), static_cast<int>(nNodo->Texto.size()), &RTexto, DT_LEFT | DT_NOPREFIX);
-
+		// Pinto la sombra del texto
+		#if ARBOL_PINTAR_SOMBRA_TEXTO == TRUE
+			SetTextColor(_BufferNodo, nNodo->_ColorTextoSombra);
+			DrawText(_BufferNodo, nNodo->Texto.c_str(), static_cast<int>(nNodo->Texto.size()), &RTexto, DT_LEFT | DT_NOPREFIX);
+		#endif
 		// Pinto el texto del nodo
 		SetTextColor(_BufferNodo, nNodo->_ColorTexto);
 		RTexto = {	SPresionado + AnchoOcupado,

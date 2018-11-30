@@ -8,7 +8,7 @@ namespace DWL {
 	DBarraScrollEx::DBarraScrollEx(void) : DControlEx(),
 											_Scroll_PosPresionado({ 0 ,0 })					, _Scroll_PosInicio(0.0f),
 											/*_ColorFondoV_Real(COLOR_SCROLL_FONDO)			, _ColorFondoH_Real(COLOR_SCROLL_FONDO),*/ _ColorBorde(COLOR_BORDE),
-											_ColorBarraV(COLOR_SCROLL_BARRA)				, _ColorBarraH(COLOR_SCROLL_BARRA)		,/* _ColorFondo(COLOR_FONDO_CLARO),*/
+											_ColorBarraV(COLOR_SCROLL_BARRA)				, _ColorBarraH(COLOR_SCROLL_BARRA)		, _ColorFondo(COLOR_FONDO_CLARO),
 											_ScrollV_Estado(DBarraScrollEx_Estado_Invisible), _ScrollV_Pagina(1.0f)					, _ScrollV_Posicion(0.0f), _ColorFondoV(COLOR_SCROLL_FONDO),
 											_ScrollH_Estado(DBarraScrollEx_Estado_Invisible), _ScrollH_Pagina(1.0f)					, _ScrollH_Posicion(0.0f), _ColorFondoH(COLOR_SCROLL_FONDO)  {
 		_ScrollH_Alto = GetSystemMetrics(SM_CYHSCROLL);
@@ -327,7 +327,7 @@ namespace DWL {
 			_ScrollH_AniTransicion.Terminar();
 		}
 //		_ColorFondoH = &_ColorFondoH_Real;
-		COLORREF FondoHasta, BarraHasta;
+		COLORREF FondoHasta = 0, BarraHasta = 0;
 		switch (nTransicion) {
 			case DBarraScrollEx_Transicion_Normal:
 				FondoHasta = COLOR_SCROLL_FONDO;
@@ -366,19 +366,23 @@ namespace DWL {
 			_Scrolls_AniTransicionBorde.Terminar();
 		}
 
-		COLORREF BordeHasta;
+		COLORREF BordeHasta = 0, FondoHasta = 0;
 		switch (nTransicion) {
 			case DBarraScrollEx_Transicion_Borde_Normal:
 				BordeHasta = COLOR_BORDE;
+				FondoHasta = COLOR_FONDO_CLARO;
 				break;
 			case DBarraScrollEx_Transicion_Borde_Resaltado:
 				BordeHasta = COLOR_BORDE_RESALTADO;
+				FondoHasta = COLOR_FONDO_CLARO_RESALTADO;
 				break;
 		}
 
-		_Scrolls_AniTransicionBorde.Iniciar(_ColorBorde, BordeHasta, Duracion, [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
+		_Scrolls_AniTransicionBorde.Iniciar(_ColorBorde, BordeHasta, _ColorFondo, FondoHasta, Duracion + 25, [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
 			_ColorBorde = Datos[0].Color();
-			RepintarAni();
+			_ColorFondo = Datos[1].Color();
+			if (Terminado == FALSE) RepintarAni();	
+			else                    Repintar();		// Aseguro que se repinte el ultimo frame
 		});
 
 	}

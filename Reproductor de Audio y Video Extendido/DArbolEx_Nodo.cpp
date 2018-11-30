@@ -94,12 +94,12 @@ namespace DWL {
 			_AniTransicion.Terminar();
 		}
 
-		COLORREF TextoHasta, SombraHasta, FondoHasta;
+		COLORREF TextoHasta = 0, SombraHasta = 0, FondoHasta = 0;
 		switch (nTransicion) {
 			case DArbolEx_TransicionNodo_Normal:
 				TextoHasta  = COLOR_ARBOL_TEXTO;
 				SombraHasta = COLOR_ARBOL_TEXTO_SOMBRA;
-				FondoHasta  = COLOR_ARBOL_FONDO;
+				FondoHasta  = _Arbol->_ColorFondo;
 				#if DARBOLEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Normal)\n", Texto.c_str());
 				#endif			
@@ -163,7 +163,7 @@ namespace DWL {
 			case DArbolEx_TransicionNodo_Desactivado:
 				TextoHasta  = COLOR_ARBOL_TEXTO_DESACTIVADO;
 				SombraHasta = COLOR_ARBOL_TEXTO_SOMBRA;
-				FondoHasta  = COLOR_ARBOL_FONDO;
+				FondoHasta  = _Arbol->_ColorFondo;
 				#if DARBOLEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir_Varg(L"DArbolEx_Nodo::_Transicion('%s' -> Desactivado)\n", Texto.c_str());
 				#endif

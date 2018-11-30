@@ -254,9 +254,10 @@
 			V  Afegir borde amb transició
 			V  MouseDown y MouseUp s'han de fer amb un SetCapture
 			V  Acabar el teclat amb els caracters imprimibles (fer que es pugui tenir mes d'un caracter amb un temporitzador)
-			X  Fer resaltat del fondo amb el resaltat del borde... OJU perque será un pilotaço, ja que cada nodo te el seu porpi color... 
+			V  Fer resaltat del fondo amb el resaltat del borde... OJU perque será un pilotaço, ja que cada nodo te el seu porpi color... 
 				X  Subgeriment.. el color del fondo del nodo ha de ser un punter que apunti al color del fondo general de l'arbre, i quan faci animacións ha de crearse el seu propi punter (obviament al acabar haig de tornar a apuntar al color del fondo general)
-					V PROU PARAFERNALIES, QUE NO ES UNA WEB
+					V   Quan el color del fondo del nodo sigui com el color de fondo arbre normal/resaltat, no s'ha de pintar.
+					
 			-  Resaltar texte buscat (ha de ser una capa per pintar el fondo abans de pintar el texte)
 
 		-  DListaEx

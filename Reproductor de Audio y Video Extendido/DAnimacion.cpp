@@ -13,7 +13,7 @@ namespace DWL {
 	|_____/_/    \_\_| |_|_|_| |_| |_|\__,_|\___|_|\___/|_| |_|
 */
 
-	DAnimacion::DAnimacion(void) : _Timer(NULL), _TickInicio(NULL) {
+	DAnimacion::DAnimacion(void) : _Timer(NULL), _TickInicio(NULL), _Duracion(0), _TiempoActual(0) {
 	}
 	
 
@@ -99,7 +99,7 @@ namespace DWL {
 		#endif
 	}
 
-	void DAnimacion::Invertir(void) {
+/*	void DAnimacion::Invertir(void) {
 		if (_Timer == NULL) return;
 		#if DANIMACION_MOSTRARDEBUG == TRUE
 			Debug_Escribir_Varg(L"DAnimacion::Invertir %d milisegundos.\n", _TiempoActual);
@@ -112,7 +112,7 @@ namespace DWL {
 			_Datos[i].Hasta = _Datos[i].Desde;
 			_Datos[i].Desde = _Valores[i];
 		}
-	}
+	}*/
 
 	void DAnimacion::Terminar(void) {
 		#if DANIMACION_MOSTRARDEBUG == TRUE

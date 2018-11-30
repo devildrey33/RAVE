@@ -8,7 +8,7 @@ namespace DWL {
 
 	DListaEx::DListaEx(void) :  DBarraScrollEx()		, _ItemPaginaInicio(0)		, _ItemPaginaFin(0)			, _ItemPaginaVDif(0)		, _ItemPaginaHDif(0),
 								_SubItemResaltado(-1)	, _SubItemUResaltado(-1)	, _SubItemPresionado(-1)	, MostrarSeleccion(TRUE)	, MultiSeleccion(FALSE),
-								_ItemResaltado(-1)		, _ItemUResaltado(-1)		, _ItemMarcado(0)			,
+								_ItemResaltado(-1)		, _ItemUResaltado(-1)		, _ItemMarcado(0)			, _PintarIconos(TRUE),
 								_ItemPresionado(-1)		, _ItemShift(-1)			, _Repintar(FALSE)			,
 								_TotalAnchoVisible(0)	, _TotalAltoVisible(0)		, 
 								_BufferItem(NULL)		, _BufferItemBmp(NULL)		, _BufferItemBmpViejo(NULL)	, _BufferItemFuenteViejo(NULL) {
@@ -117,7 +117,7 @@ namespace DWL {
 		HBITMAP BmpViejo	= static_cast<HBITMAP>(SelectObject(Buffer, Bmp));		
 
 		// Pinto el fondo
-		HBRUSH BFondo = CreateSolidBrush(COLOR_ARBOL_FONDO);
+		HBRUSH BFondo = CreateSolidBrush(_ColorFondo);
 		FillRect(Buffer, &RCB, BFondo);
 		DeleteObject(BFondo);
 
@@ -199,7 +199,7 @@ namespace DWL {
 		else { 
 			if (bResaltado == FALSE) {	////////////////// Normal
 				ColTexto = COLOR_LISTA_TEXTO;
-				ColFondo = COLOR_LISTA_FONDO;
+				ColFondo = _ColorFondo;
 			}
 			else {  ////////////////////////////////////// Resaltado
 				ColTexto = COLOR_LISTA_TEXTO_RESALTADO;
@@ -238,8 +238,10 @@ namespace DWL {
 			// Si hay texto lo pinto
 			if (_Items[static_cast<unsigned int>(nPosItem)]->Texto(i).size() > 0) {
 				// Pinto la sombra
-				SetTextColor(_BufferItem, ColSombra);
-				DrawText(_BufferItem, _Items[static_cast<unsigned int>(nPosItem)]->Texto(i).c_str(), static_cast<int>(_Items[static_cast<unsigned int>(nPosItem)]->Texto(i).size()), &RCelda, _Columnas[i]->Alineacion | DT_NOPREFIX);
+				#if LISTA_PINTAR_SOMBRA_TEXTO == TRUE
+					SetTextColor(_BufferItem, ColSombra);
+					DrawText(_BufferItem, _Items[static_cast<unsigned int>(nPosItem)]->Texto(i).c_str(), static_cast<int>(_Items[static_cast<unsigned int>(nPosItem)]->Texto(i).size()), &RCelda, _Columnas[i]->Alineacion | DT_NOPREFIX);
+				#endif
 
 				// Pinto el texto
 				SetTextColor(_BufferItem, ColTexto);

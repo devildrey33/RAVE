@@ -3,6 +3,7 @@
 
 #include "DControlEx.h"
 #include "DAnimacion.h"
+#include "DFuente.h"
 
 namespace DWL {
 	enum DBotonEx_Estado {
@@ -21,6 +22,32 @@ namespace DWL {
 
 	#define DBOTONEX_MOSTRARDEBUG	FALSE
 	#define DBOTONEX_CENTRADO -1
+
+	// Skin por defecto del boton
+	class DBotonEx_Skin {
+	  public :
+								DBotonEx_Skin(void) { }
+		                       ~DBotonEx_Skin(void) { }
+								// Colores
+		 static COLORREF		FondoNormal;
+		 static COLORREF		FondoResaltado;
+		 static COLORREF		FondoPresionado;
+		 static COLORREF		FondoMarcado;
+		 static COLORREF		BordeNormal;
+		 static COLORREF		BordeResaltado;
+		 static COLORREF		BordePresionado;
+		 static COLORREF		TextoNormal;
+		 static COLORREF		TextoResaltado;
+		 static COLORREF		TextoPresionado;
+		 static COLORREF		TextoDesactivado;
+								// Fuente
+		 static int				FuenteTam;
+		 static std::wstring	FuenteNombre;
+		 static BOOL            FuenteNegrita;
+		 static BOOL            FuenteCursiva;
+		 static BOOL            FuenteSubrayado;
+		 static BOOL			SombraTexto;
+	};
 
 	class DBotonEx : public DControlEx {
 	  public:
@@ -46,7 +73,8 @@ namespace DWL {
 
 		LRESULT CALLBACK		GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-		DhWnd_Fuente            Fuente;
+		DFuente			        Fuente;
+//		DhWnd_Fuente            Fuente;
 
 		inline const BOOL       Marcado(void) { return _Marcado; }
 		void                    Marcado(const BOOL nMarcar);
