@@ -8,6 +8,26 @@ namespace DWL {
 	// Mostrar mensajes de depuración en la consola
 	#define DBARRASCROLLEX_MOSTRARDEBUG		FALSE
 
+	// Colores por defecto de un control EX con barra de scroll
+	class DBarraScrollEx_Skin {
+	   public :
+							DBarraScrollEx_Skin(void) { }
+						   ~DBarraScrollEx_Skin(void) { }
+							// Colores para la barra de scroll (para la transición del scroll V/H)
+		static COLORREF		FondoScrollNormal;
+		static COLORREF		FondoScrollResaltado;
+		static COLORREF		FondoScrollPresionado;
+		static COLORREF		BarraScrollNormal;
+		static COLORREF		BarraScrollResaltado;
+		static COLORREF		BarraScrollPresionado;
+							// Colores del borde del control (para la transición hover)
+		static COLORREF     BordeNormal;
+		static COLORREF     BordeResaltado;
+							// colores del fondo del control (para la transición hover)
+		static COLORREF     FondoNormal;
+		static COLORREF     FondoResaltado;
+	};
+
 	enum DBarraScrollEx_Estado {
 		DBarraScrollEx_Estado_Invisible,
 		DBarraScrollEx_Estado_Normal,
@@ -93,10 +113,8 @@ namespace DWL {
 
 		DAnimacion                 _ScrollV_AniTransicion;
 		DAnimacion                 _ScrollH_AniTransicion;
-//		COLORREF                   _ColorFondoV_Real;
 		COLORREF                   _ColorFondoV;
 		COLORREF                   _ColorBarraV;
-//		COLORREF                   _ColorFondoH_Real;
 		COLORREF                   _ColorFondoH;
 		COLORREF                   _ColorBarraH;
 

@@ -3,6 +3,7 @@
 
 #include "DControlEx.h"
 #include "DAnimacion.h"
+#include "DFuente.h"
 
 namespace DWL {
 
@@ -10,6 +11,38 @@ namespace DWL {
 
 	class DMenuEx;
 	class DMenuEx2;
+
+	// Colores por defecto de un control EX con barra de scroll
+	class DBarraEx_Skin {
+	   public :
+								DBarraEx_Skin(void) { }
+							   ~DBarraEx_Skin(void) { }
+								// Colores para la barra de scroll (para la transición normal / hover / presionado)
+		static COLORREF			BarraNormal;
+		static COLORREF			BarraResaltado;
+		static COLORREF			BarraPresionado;
+		static COLORREF			BarraDesactivado;
+								// Colores del borde del control (para la transición normal / hover / presionado)
+		static COLORREF			BordeNormal;
+		static COLORREF			BordeResaltado;
+		static COLORREF			BordePresionado;
+								// Colores del fondo del control (para la transición normal / hover / presionado)
+		static COLORREF			FondoNormal;
+		static COLORREF			FondoResaltado;
+		static COLORREF			FondoPresionado;
+		static COLORREF			FondoDesactivado;
+								// Color del texto
+		static COLORREF			Texto;
+		static COLORREF			TextoSombra;
+								// Fuente
+		static int				FuenteTam;
+		static std::wstring		FuenteNombre;
+		static BOOL             FuenteNegrita;
+		static BOOL             FuenteCursiva;
+//		static BOOL             FuenteSubrayado;
+		static BOOL				SombraTexto;
+
+	};
 
 	enum DBarraEx_Estado {
 		DBarraEx_Estado_Normal,
@@ -90,6 +123,8 @@ namespace DWL {
 		DBarraEx_MostrarValor              _MostrarValor;
 		BOOL                               _Activado;
 		DBarraEx_Alineacion                _Alineacion;
+
+		DFuente                            _Fuente;
 
 		friend class DMenuEx;
 	};	

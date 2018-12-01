@@ -89,11 +89,11 @@ namespace DWL {
 		RCT = RC; 
 
 		// Creo un buffer en memória para pintar el control
-		HDC		Buffer = CreateCompatibleDC(NULL);
+		HDC		Buffer   = CreateCompatibleDC(NULL);
 		// Creo un DC compatible para el buffer
-		HBITMAP Bmp = CreateCompatibleBitmap(DC, RC.right, RC.bottom);
+		HBITMAP Bmp      = CreateCompatibleBitmap(DC, RC.right, RC.bottom);
 		HBITMAP BmpViejo = static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
-		HFONT   vFuente = static_cast<HFONT>(SelectObject(Buffer, Fuente()));
+		HFONT   vFuente  = static_cast<HFONT>(SelectObject(Buffer, Fuente()));
 
 		int bPresionado = 0;
 		// Si el control está presionado retoco las posiciones del texto i los iconos
