@@ -4,7 +4,7 @@
 //#define ID_LISTA  1000
 
 namespace DWL {
-	DListaDesplegableEx::DListaDesplegableEx(void) {
+	DListaDesplegableEx::DListaDesplegableEx(void) : _AltoLista(100)  {
 	}
 
 
@@ -27,6 +27,10 @@ namespace DWL {
 
 	void DListaDesplegableEx::Evento_Desplegar(void) {
 		if (_Lista.Visible() == FALSE) {
+			// Ajusto el tamaño de la lista si el (total de items * altura del item + 2 pixeles) es mas pequeño, la altura del item se mide con la altura de la fuente + el (padding * 2)
+			if (_AltoLista > (_Lista.TotalItems() * (_Lista.Fuente.Alto() + (DLISTAEX_PADDING * 2))) + 2)	// El +2 es el borde
+				_AltoLista = static_cast<UINT>((_Lista.TotalItems() * (_Lista.Fuente.Alto() + (DLISTAEX_PADDING * 2))) + 2);
+
 			RECT RV;
 			GetWindowRect(_hWnd, &RV);
 			SetWindowPos(_Lista.hWnd(), HWND_TOPMOST, RV.left, RV.bottom, RV.right - RV.left, _AltoLista, SWP_SHOWWINDOW);

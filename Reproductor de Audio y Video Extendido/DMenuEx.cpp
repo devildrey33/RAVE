@@ -127,7 +127,7 @@ namespace DWL {
 			// Creo la ventana
 			CrearVentana(_hWndDest, L"DMenuEx", L"", PosX, PosY, Tam.x, Tam.y, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST, CS_DBLCLKS);	
 			DMouse::CambiarCursor();
-			Opacidad(230);
+			Opacidad(0);
 			MARGINS Margen = { 0, 0, 0, 1 };
 			DwmExtendFrameIntoClientArea(_hWnd, &Margen);
 
@@ -145,6 +145,10 @@ namespace DWL {
 					_Menus[i]->_Barra.Activado(_Menus[i]->_Activado);
 				}
 			}
+			_AniMostrar.Terminar();
+			_AniMostrar.Iniciar(0.0f, 230.0f, DhWnd::TiempoAnimaciones, [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
+				Opacidad(static_cast<BYTE>(Datos[0].Decimal()));
+			});
 
 		}
 		// Asigno el foco al menú
@@ -552,7 +556,7 @@ namespace DWL {
 			CrearVentana(_hWndDest, L"DMenuEx", L"", cX, cY, Tam.x, Tam.y, WS_POPUP | WS_CAPTION, NULL, CS_DBLCLKS);
 
 			DMouse::CambiarCursor();
-			Opacidad(230);
+			Opacidad(0);
 
 			MARGINS Margen = { 0, 0, 0, 1 };
 			DwmExtendFrameIntoClientArea(_hWnd, &Margen);
@@ -570,6 +574,12 @@ namespace DWL {
 					_Menus[i]->_Barra.Activado(_Menus[i]->_Activado);
 				}
 			}
+
+			_AniMostrar.Terminar();
+			_AniMostrar.Iniciar(0.0f, 230.0f, DhWnd::TiempoAnimaciones, [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
+				Opacidad(static_cast<BYTE>(Datos[0].Decimal()));
+			});
+
 		}
 
 		SetFocus(_hWnd); // REVISADO

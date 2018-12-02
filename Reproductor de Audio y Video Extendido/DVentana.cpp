@@ -16,7 +16,7 @@ namespace DWL {
 		HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : HWND_DESKTOP;
 
 		// Afegit expresament per borrar el fondo amb els colors del RAVE
-		static HBRUSH ColFondo = CreateSolidBrush(COLOR_FONDO);
+		HBRUSH ColFondo = CreateSolidBrush(COLOR_FONDO); // NO ELIMINAR LA BROCHA DE MEMORIA, HO FA EL WINDOWS
 
 		ATOM RetRgistrarClase = RegistrarClase(nNombre, reinterpret_cast<WNDPROC>(_GestorMensajes), nEstilosClase, nIconoRecursos, ColFondo);
 		_hWnd = CreateWindowEx(nEstilosExtendidos, nNombre, nTexto, nEstilos, cX, cY, cAncho, cAlto, hWndPadre, nMenu, GetModuleHandle(NULL), this);

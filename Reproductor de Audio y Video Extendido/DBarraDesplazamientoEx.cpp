@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "DBarraDesplazamientoEx.h"
-#include "Rave_Skin.h"
+//#include "Rave_Skin.h"
 #include "DMensajesWnd.h"
 
 namespace DWL {

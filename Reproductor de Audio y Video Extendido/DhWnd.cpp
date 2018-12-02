@@ -72,7 +72,7 @@ namespace DWL {
 
 
 	const BOOL DhWnd::Maximizada(void) {
-		WINDOWPLACEMENT WndPl;
+		WINDOWPLACEMENT WndPl = { 0, 0, 0, { 0, 0}, {0,0}, {0, 0, 0,0} };
 		GetWindowPlacement(_hWnd, &WndPl);
 		if (WndPl.showCmd == SW_MAXIMIZE) return TRUE;
 		return FALSE;

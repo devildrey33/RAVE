@@ -46,9 +46,9 @@ NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre,
 		}
 	}
 
-	int                  nIcono    = 0;
-	DFuente              nFuente   = Fuente;		
-	DArbolEx_MostrarExpansor  nExpansor;
+	int						 nIcono    = 0;
+	DFuente					 nFuente   = Fuente;
+	DArbolEx_MostrarExpansor nExpansor = DArbolEx_MostrarExpansor_Auto;
 	switch (_ExpansorPorDefecto) {
 		case DArbolEx_Expansor_Rectangulo		: nExpansor = DArbolEx_MostrarExpansor_MostrarRectangulo;		break;
 		case DArbolEx_Expansor_Triangulo		: nExpansor = DArbolEx_MostrarExpansor_MostrarTriangulo;		break;
@@ -59,7 +59,7 @@ NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre,
 //	size_t			nPos = 0;
 	switch (nTipoNodo) {
 		case ArbolBD_TipoNodo_Raiz:			// Raíz añadida por el usuario
-			nFuente.CrearFuente(21, DArbolEx_Skin::FuenteNombre.c_str(), TRUE, FALSE, FALSE);
+			nFuente.CrearFuente(DArbolEx_Skin::FuenteTam + 2, DArbolEx_Skin::FuenteNombre.c_str(), TRUE, FALSE, FALSE);
 			nIcono = RAVE_Iconos::RAVE_Icono_Raiz;
 			break;
 		case ArbolBD_TipoNodo_Directorio:	// Directorio dentro de una raíz

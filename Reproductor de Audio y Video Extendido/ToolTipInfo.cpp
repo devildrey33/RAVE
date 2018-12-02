@@ -223,12 +223,12 @@ void ToolTipInfo_2Columnas::Pintar(HDC hDC) {
 	HFONT	VFont		= static_cast<HFONT>(SelectObject(DC, _FuenteTitulo()));
 
 	// Pinto el fondo
-	HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO);
+	HBRUSH BrochaFondo = CreateSolidBrush(DToolTipEx_Skin::Fondo);
 	FillRect(DC, &RC, BrochaFondo);
 	DeleteObject(BrochaFondo);
 
 	// Pinto el borde
-	HBRUSH BrochaBorde = CreateSolidBrush(COLOR_MENU_BORDE);
+	HBRUSH BrochaBorde = CreateSolidBrush(DToolTipEx_Skin::Borde);
 	FrameRect(DC, &RC, BrochaBorde);
 	DeleteObject(BrochaBorde);
 
@@ -284,7 +284,7 @@ void ToolTipInfo_2Columnas::_PintarNota(HDC hDC, const int cX, const int cY, con
 
 	RECT RC = { 0, 0, static_cast<int>(Nota * 16.0f), 16 };
 	// Pinto el fondo
-	HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO);
+	HBRUSH BrochaFondo = CreateSolidBrush(DToolTipEx_Skin::Fondo);
 	FillRect(DC, &RC, BrochaFondo);
 	DeleteObject(BrochaFondo);
 
@@ -528,20 +528,20 @@ void ToolTipInfo_Texto::Pintar(HDC DC) {
 	// Creo un DC compatible para el buffer
 	HBITMAP Bmp = CreateCompatibleBitmap(DC, RC.right, RC.bottom);
 	HBITMAP BmpViejo = static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
-
+	
 	// Pinto el borde
-	HBRUSH BrochaBorde = CreateSolidBrush(COLOR_TOOLTIP_BORDE);
+	HBRUSH BrochaBorde = CreateSolidBrush(DToolTipEx_Skin::Borde);
 	FrameRect(Buffer, &RC, BrochaBorde);
 	DeleteObject(BrochaBorde);
 
 	// Pinto el fondo
-	HBRUSH BrochaFondo = CreateSolidBrush(COLOR_TOOLTIP_FONDO);
+	HBRUSH BrochaFondo = CreateSolidBrush(DToolTipEx_Skin::Fondo);
 	FillRect(Buffer, &RCF, BrochaFondo);
 	DeleteObject(BrochaFondo);
 
 	// Pinto el texto
 	SetBkMode(Buffer, TRANSPARENT);
-	SetTextColor(Buffer, COLOR_TOOLTIP_TEXTO);
+	SetTextColor(Buffer, DToolTipEx_Skin::Texto);
 	HFONT vFuente = static_cast<HFONT>(SelectObject(Buffer, _Fuente()));
 	DrawText(Buffer, _Str.c_str(), static_cast<int>(_Str.size()), &RCT, DT_CENTER);
 	SelectObject(Buffer, vFuente);

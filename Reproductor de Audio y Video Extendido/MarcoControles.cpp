@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "MarcoControles.h"
 #include "DMensajesWnd.h"
-#include "Rave_Skin.h"
+//#include "Rave_Skin.h"
 
 HWND MarcoControles::Crear(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID) {
 //	HWND hWndPadre = (nPadre != NULL) ? nPadre->hWnd() : NULL;

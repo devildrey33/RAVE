@@ -10,7 +10,7 @@ namespace DWL {
 	class DMenuEx_Skin {
 	  public:
 							DMenuEx_Skin(void) { };
-
+							// Colores por defecto
 		static COLORREF     FondoNormal;
 		static COLORREF     FondoResaltado;
 		static COLORREF     FondoPresionado;
@@ -21,7 +21,6 @@ namespace DWL {
 		static COLORREF     TextoSombra;
 		static COLORREF     Borde;
 		static COLORREF     Separador;
-
 							// Fuente
 		static int			FuenteTam;
 		static std::wstring FuenteNombre;
@@ -179,6 +178,7 @@ namespace DWL {
 		static DhWnd          *_hWndDest;  // Destino para los mensajes
 //		HWND                   _hWndPadre; // Ventana padre que contiene el hWndDest;
 		DAnimacion             _AniTransicion;
+		DAnimacion             _AniMostrar;
 
 		DBarraDesplazamientoEx _Barra;
 		int                    _BarraPosX;

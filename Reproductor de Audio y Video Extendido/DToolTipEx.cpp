@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "DToolTipEx.h"
-#include "Rave_Skin.h"
+//#include "Rave_Skin.h"
 #include <dwmapi.h>
 
 #define ID_TEMPORIZADOR_OCULTAR	1000
@@ -17,7 +17,7 @@ namespace DWL {
 	BOOL         DToolTipEx_Skin::FuenteNegrita		= FALSE;
 	BOOL         DToolTipEx_Skin::FuenteCursiva		= FALSE;
 	BOOL         DToolTipEx_Skin::FuenteSubrayado	= FALSE;
-	BOOL		 DToolTipEx_Skin::FuenteSombraTexto		= FALSE;
+	BOOL		 DToolTipEx_Skin::FuenteSombraTexto	= FALSE;
 
 
 

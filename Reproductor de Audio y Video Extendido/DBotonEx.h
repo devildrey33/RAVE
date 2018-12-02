@@ -40,6 +40,7 @@ namespace DWL {
 		 static COLORREF		TextoResaltado;
 		 static COLORREF		TextoPresionado;
 		 static COLORREF		TextoDesactivado;
+		 static COLORREF        TextoSombra;
 								// Fuente
 		 static int				FuenteTam;
 		 static std::wstring	FuenteNombre;

@@ -2,7 +2,7 @@
 #include "ControlesPantallaCompleta.h"
 #include "DMouse.h"
 #include "DMensajesWnd.h"
-#include "Rave_Skin.h"
+//#include "Rave_Skin.h"
 #include "resource.h"
 
 // Tamaño del ControlesPantallaCompleta máximo horizontal

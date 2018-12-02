@@ -140,14 +140,14 @@ class RAVE {
 
 
 // Función para pintar texto con sombra utilizando TextOut
-static void PintarTexto(HDC DC, const wchar_t *pTexto, const int PosX, const int PosY, COLORREF ColorTexto = COLOR_TEXTO, COLORREF ColorSombra = COLOR_TEXTO_SOMBRA) {
+static void PintarTexto(HDC DC, const wchar_t *pTexto, const int PosX, const int PosY, COLORREF ColorTexto = COLOR_TOOLTIP_TEXTO, COLORREF ColorSombra = COLOR_TOOLTIP_TEXTO_SOMBRA) {
 	SetTextColor(DC, ColorSombra);
 	TextOut(DC, PosX + 1, PosY + 1, pTexto, static_cast<int>(wcslen(pTexto)));
 	SetTextColor(DC, ColorTexto);
 	TextOut(DC, PosX, PosY, pTexto, static_cast<int>(wcslen(pTexto)));
 }
 
-static void PintarTexto(HDC DC, std::wstring &sTexto, const int PosX, const int PosY, COLORREF ColorTexto = COLOR_TEXTO, COLORREF ColorSombra = COLOR_TEXTO_SOMBRA) {
+static void PintarTexto(HDC DC, std::wstring &sTexto, const int PosX, const int PosY, COLORREF ColorTexto = COLOR_TOOLTIP_TEXTO, COLORREF ColorSombra = COLOR_TOOLTIP_TEXTO_SOMBRA) {
 	SetTextColor(DC, ColorSombra);
 	TextOut(DC, PosX + 1, PosY + 1, sTexto.c_str(), static_cast<int>(sTexto.size()));
 	SetTextColor(DC, ColorTexto);

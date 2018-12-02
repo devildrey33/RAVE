@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "DBotonEx.h"
-#include "Rave_Skin.h"
+//#include "Rave_Skin.h"
 #include "DMensajesWnd.h"
 
 namespace DWL {
@@ -10,16 +10,17 @@ namespace DWL {
 	COLORREF		DBotonEx_Skin::FondoNormal			= COLOR_BOTON;
 	COLORREF		DBotonEx_Skin::FondoResaltado		= COLOR_BOTON_RESALTADO;
 	COLORREF		DBotonEx_Skin::FondoPresionado		= COLOR_BOTON_PRESIONADO;
-	COLORREF		DBotonEx_Skin::FondoMarcado			= COLOR_ROJO_MARCADO;
+	COLORREF		DBotonEx_Skin::FondoMarcado			= COLOR_BOTON_MARCADO;
 	// Colores del borde
-	COLORREF		DBotonEx_Skin::BordeNormal			= COLOR_BORDE;
-	COLORREF		DBotonEx_Skin::BordeResaltado		= COLOR_BORDE_RESALTADO;
-	COLORREF		DBotonEx_Skin::BordePresionado		= COLOR_BORDE_PRESIONADO;
+	COLORREF		DBotonEx_Skin::BordeNormal			= COLOR_BOTON_BORDE;
+	COLORREF		DBotonEx_Skin::BordeResaltado		= COLOR_BOTON_BORDE_RESALTADO;
+	COLORREF		DBotonEx_Skin::BordePresionado		= COLOR_BOTON_BORDE_PRESIONADO;
 	// Colores del texto
 	COLORREF		DBotonEx_Skin::TextoNormal			= COLOR_BOTON_TEXTO;
 	COLORREF		DBotonEx_Skin::TextoResaltado		= COLOR_BOTON_TEXTO_RESALTADO;
 	COLORREF		DBotonEx_Skin::TextoPresionado		= COLOR_BOTON_TEXTO_PRESIONADO;
-	COLORREF		DBotonEx_Skin::TextoDesactivado		= COLOR_TEXTO_DESACTIVADO;
+	COLORREF		DBotonEx_Skin::TextoDesactivado		= COLOR_BOTON_TEXTO_DESACTIVADO;
+	COLORREF		DBotonEx_Skin::TextoSombra			= COLOR_BOTON_TEXTO_SOMBRA;
 	// Tipo de fuente
 	int				DBotonEx_Skin::FuenteTam			= FUENTE_GRANDE;
 	std::wstring	DBotonEx_Skin::FuenteNombre			= FUENTE_NOMBRE;
@@ -73,6 +74,7 @@ namespace DWL {
 		_ColorFondo = DBotonEx_Skin::FondoNormal;
 		_ColorBorde = DBotonEx_Skin::BordeNormal;
 		_ColorTexto = DBotonEx_Skin::TextoNormal;
+		_Marcado = FALSE;
 //		if (hWnd()) { Debug_Escribir(L"DBotonEx::CrearBotonEx() Error : ya se ha creado el botón\n"); return hWnd(); }
 		_hWnd = CrearControlEx(nPadre, L"DBotonEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
 		Fuente.CrearFuente(DBotonEx_Skin::FuenteTam, DBotonEx_Skin::FuenteNombre.c_str(), DBotonEx_Skin::FuenteNegrita, DBotonEx_Skin::FuenteCursiva, DBotonEx_Skin::FuenteSubrayado);
@@ -118,7 +120,7 @@ namespace DWL {
 			SetBkMode(Buffer, TRANSPARENT);
 			if (DBotonEx_Skin::FuenteSombraTexto == TRUE) {
 				// Pinto la sombra del texto
-				SetTextColor(Buffer, COLOR_TEXTO_SOMBRA);
+				SetTextColor(Buffer, DBotonEx_Skin::TextoSombra);
 				DrawText(Buffer, _Texto.c_str(), static_cast<int>(_Texto.size()), &RCS, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 			}
 

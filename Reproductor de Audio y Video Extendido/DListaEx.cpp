@@ -30,13 +30,13 @@ namespace DWL {
 	BOOL         DListaEx_Skin::FuenteNegrita						= FALSE;		
 	BOOL         DListaEx_Skin::FuenteCursiva						= FALSE;
 	BOOL         DListaEx_Skin::FuenteSubrayado						= FALSE;
-	BOOL		 DListaEx_Skin::FuenteSombraTexto							= FALSE;
+	BOOL		 DListaEx_Skin::FuenteSombraTexto					= FALSE;
 
 
 
 	DListaEx::DListaEx(void) :  DBarraScrollEx()		, _ItemPaginaInicio(0)		, _ItemPaginaFin(0)			, _ItemPaginaVDif(0)		, _ItemPaginaHDif(0),
 								_SubItemResaltado(-1)	, _SubItemUResaltado(-1)	, _SubItemPresionado(-1)	, MostrarSeleccion(TRUE)	, MultiSeleccion(FALSE),
-								_ItemResaltado(-1)		, _ItemUResaltado(-1)		, _ItemMarcado(0)			, _PintarIconos(TRUE),
+								_ItemResaltado(-1)		, _ItemUResaltado(-1)		, _ItemMarcado(-1)			, _PintarIconos(TRUE),
 								_ItemPresionado(-1)		, _ItemShift(-1)			, _Repintar(FALSE)			,
 								_TotalAnchoVisible(0)	, _TotalAltoVisible(0)		, 
 								_BufferItem(NULL)		, _BufferItemBmp(NULL)		, _BufferItemBmpViejo(NULL)	, _BufferItemFuenteViejo(NULL) {
@@ -863,11 +863,12 @@ namespace DWL {
 		// Si no hay nodos, salgo de la función
 		if (_Items.size() == 0) return;
 
-		// Si no hay item marcado, marco el primero visible
+		// Si no hay item marcado, marco el primero visible y salgo
 		if (_ItemMarcado == -1) {	
 			_ItemMarcado = _ItemPaginaInicio;
 			_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
 			MostrarItem(_ItemMarcado);
+			return;
 		}
 
 		BOOL tControl = DatosTeclado.Control();
@@ -911,11 +912,12 @@ namespace DWL {
 		// Si no hay nodos, salgo de la función
 		if (_Items.size() == 0) return;
 
-		// Si no hay item marcado, marco el primero visible
+		// Si no hay item marcado, marco el primero visible y salgo
 		if (_ItemMarcado == -1) {
 			_ItemMarcado = _ItemPaginaInicio;
 			_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
 			MostrarItem(_ItemMarcado);
+			return;
 		}
 
 		BOOL tControl = DatosTeclado.Control();

@@ -223,9 +223,6 @@
     <ClInclude Include="DBarraScrollEx.h">
       <Filter>DWL\Ventanas\ControlesEx\BarraScrollEx</Filter>
     </ClInclude>
-    <ClInclude Include="RAVE_Skin.h">
-      <Filter>xXx _MAIN_ xXx</Filter>
-    </ClInclude>
     <ClInclude Include="DArbolEx_Nodo.h">
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
     </ClInclude>
@@ -384,6 +381,12 @@
     </ClInclude>
     <ClInclude Include="DFuente.h">
       <Filter>DWL\Ventanas\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="RAVE_SkinVisualStudio.h">
+      <Filter>xXx _MAIN_ xXx</Filter>
+    </ClInclude>
+    <ClInclude Include="RAVE_Skin.h">
+      <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

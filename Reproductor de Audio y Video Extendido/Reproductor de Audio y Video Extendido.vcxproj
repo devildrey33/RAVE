@@ -241,6 +241,7 @@
     <ClInclude Include="MarcoControles.h" />
     <ClInclude Include="RAVE.h" />
     <ClInclude Include="RaveVLC.h" />
+    <ClInclude Include="RAVE_SkinVisualStudio.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="stdafx.h" />

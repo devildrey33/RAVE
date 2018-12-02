@@ -344,5 +344,6 @@
 		-  Actualitzar la BD automáticament al detectar una nova unitat per si es un cd d'audio o un DVD de video.
 		-  Finestra de propietats per un medi o una etiqueta
 		-  Sistema per fer skins amb un txt que pugui utilitzar definicions de colors i funcions de colors per sumar/ restar al rgb
+			V  De moment tots els controls ex tenen un Objecte_Skin que te tots els colors i fonts per defecte.
 
 */

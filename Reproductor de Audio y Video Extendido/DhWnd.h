@@ -8,7 +8,14 @@
 	#define GET_Y_LPARAM(lp)			((int)(short)HIWORD(lp))
 
 #include <string>
-#include "Rave_Skin.h"
+#include "RAVE_Configuracion.h"
+
+#if RAVE_SKIN == 0
+	#include "Rave_Skin.h"
+#elif RAVE_SKIN == 1
+	#include "Rave_SkinVisualStudio.h"
+#endif
+
 //#include "DhWnd_Fuente.h"
 #include "DBarraTareas.h"
 /*#include "DEventoMouse.h"

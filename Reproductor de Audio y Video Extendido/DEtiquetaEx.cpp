@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "DEtiquetaEx.h"
-#include "Rave_Skin.h"
+//#include "Rave_Skin.h"
 
 namespace DWL {
 

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "VerVideo.h"
 #include "DMouse.h"
-#include "Rave_Skin.h"
+//#include "Rave_Skin.h"
 #include "resource.h"
 
 #define ID_TIEMPOOSCY 1000

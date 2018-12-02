@@ -3,9 +3,15 @@
 // Versión y titulo
 #define RAVE_VERSION			0, 5, 0, 8
 #define RAVE_VERSIONF			0.508
-#define RAVE_VERSIONSTR			L"0.508"
+#define RAVE_VERSIONSTR			L"0.508b"
 #define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
 #define RAVE_VERSIONBD          L"1.0"
+
+// Skin del reproductor (0 = normal, 1 = visual studio)
+#define RAVE_SKIN               RAVE_SKIN_NORMAL			// Se tiene que modificar DhWnd.h para añadir mas skins de prueba
+//#define RAVE_SKIN               RAVE_SKIN_VISUALSTUDIO		// Se tiene que modificar DhWnd.h para añadir mas skins de prueba
+#define RAVE_SKIN_NORMAL        0
+#define RAVE_SKIN_VISUALSTUDIO  1
 
 #ifdef _DEBUG
 	// Mostrar consola de depuración

@@ -1456,6 +1456,7 @@ namespace DWL {
 					if (_StringEmpiezaPor(_NodoUltimaBusqueda->Texto, _TecladoTmp) == TRUE) {
 						MostrarNodo(_NodoUltimaBusqueda);
 						DesSeleccionarTodo();
+						_NodoMarcado = _NodoUltimaBusqueda;
 						SeleccionarNodo(_NodoUltimaBusqueda, TRUE);
 						#if DARBOLEX_MOSTRARDEBUG == TRUE
 							Debug_Escribir_Varg(L"DArbolEx::_Evento_TeclaPresionada (Txt : '%s', Nodo : '%s')\n", _TecladoTmp.c_str(), _NodoUltimaBusqueda->Texto.c_str());

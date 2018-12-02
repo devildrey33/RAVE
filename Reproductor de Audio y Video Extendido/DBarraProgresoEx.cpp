@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "DBarraProgresoEx.h"
-#include "Rave_Skin.h"
+//#include "Rave_Skin.h"
 #include "DMensajesWnd.h"
 #include "DStringUtils.h"
 
