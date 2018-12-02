@@ -6,6 +6,7 @@
 #include "DBarraProgresoEx.h"
 #include "DBotonEx.h"
 #include "DMarcaEx.h"
+#include "DFuente.h"
 
 // Coincidencia de texto en uno o mas medios 
 class CoincidenciasTexto {
@@ -91,6 +92,8 @@ class ThreadAnalisis :	public DWL::DVentana {
 	
 	std::vector<EtiquetaBD>			   _Etiquetas;
 
+	DWL::DFuente                       _FuenteNegrita;
+	DWL::DFuente                       _FuenteNormal;
 										// OJO esta variable solo se puede utilizar desde el thread principal, para ello si hay que actualizarla se utilizara un sendmessage desde el ThreadAnalisis al principal
 	int                                _FASE; // Fase actual del analisis (para el pintado)
 };

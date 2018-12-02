@@ -16,7 +16,7 @@ VentanaPrecarga::VentanaPrecarga(void) {
 	DwmExtendFrameIntoClientArea(_hWnd, &Margen);
 	// Asigno la posición del menú y lo hago siempre visible
 	SetWindowPos(_hWnd, HWND_TOPMOST, PosX, PosY, VENTANAPRECARGA_ANCHO, VENTANAPRECARGA_ALTO, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
-
+	Fuente.CrearFuente(FUENTE_GRANDE, FUENTE_NOMBRE, TRUE);
 	App.Eventos_Mirar();
 }
 
@@ -47,7 +47,7 @@ void VentanaPrecarga::Pintar(HDC hDC) {
 	// Pinto el texto
 	SetBkMode(DC, TRANSPARENT);
 	SetTextColor(DC, COLOR_TEXTO_SOMBRA);
-	HFONT vFuente = static_cast<HFONT>(SelectObject(DC, Fuente21Negrita()));
+	HFONT vFuente = static_cast<HFONT>(SelectObject(DC, Fuente()));
 	const wchar_t Cargando[] = L"Cargando LibVLC...";
 	TextOut(DC, 20, 140, Cargando, static_cast<int>(wcslen(Cargando)));
 	SelectObject(DC, vFuente);

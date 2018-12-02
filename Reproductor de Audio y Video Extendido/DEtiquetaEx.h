@@ -1,8 +1,24 @@
 #pragma once
 
 #include "DControlEx.h"
+#include "DFuente.h"
 
 namespace DWL {
+
+	class DEtiquetaEx_Skin {
+	  public:
+							DEtiquetaEx_Skin(void) { };
+		static COLORREF     Fondo;
+		static COLORREF     Texto;
+		static COLORREF     TextoSombra;
+							// Fuente
+		static int			FuenteTam;
+		static std::wstring	FuenteNombre;
+		static BOOL         FuenteNegrita;
+		static BOOL         FuenteCursiva;
+		static BOOL         FuenteSubrayado;
+		static BOOL			FuenteSombraTexto;
+	};
 
 	enum DEtiquetaEx_Alineacion {
 		DEtiquetaEx_Alineacion_Izquierda,
@@ -24,7 +40,7 @@ namespace DWL {
 		COLORREF                ColorTexto;
 		COLORREF                ColorTextoSombra;
 	
-		DhWnd_Fuente            Fuente;
+		DFuente		            Fuente;
 	  protected:
 		UINT				   _Formato;
 		std::wstring           _Texto;

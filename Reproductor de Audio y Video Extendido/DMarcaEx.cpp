@@ -4,10 +4,35 @@
 
 namespace DWL {
 
+	// Colores por defecto
+	COLORREF     DMarcaEx_Skin::FondoNormal				= COLOR_MARCA_FONDO;
+	COLORREF     DMarcaEx_Skin::FondoResaltado			= COLOR_MARCA_FONDO_RESALTADO;
+	COLORREF     DMarcaEx_Skin::FondoPresionado			= COLOR_MARCA_FONDO_PRESIONADO;
+	COLORREF     DMarcaEx_Skin::FondoMarcaNormal		= COLOR_MARCA_FONDO_MARCA;
+	COLORREF     DMarcaEx_Skin::FondoMarcaResaltado		= COLOR_MARCA_FONDO_MARCA_RESALTADO;
+	COLORREF     DMarcaEx_Skin::FondoMarcaPresionado	= COLOR_MARCA_FONDO_MARCA_PRESIONADO;
+	COLORREF     DMarcaEx_Skin::FondoMarcaDesactivado	= COLOR_MARCA_FONDO_MARCA_DESACTIVADO;
+	COLORREF     DMarcaEx_Skin::BordeNormal				= COLOR_MARCA_BORDE;
+	COLORREF     DMarcaEx_Skin::BordeResaltado			= COLOR_MARCA_BORDE_RESALTADO;
+	COLORREF     DMarcaEx_Skin::BordePresionado			= COLOR_MARCA_BORDE_PRESIONADO;
+	COLORREF     DMarcaEx_Skin::TextoNormal				= COLOR_MARCA_TEXTO;
+	COLORREF     DMarcaEx_Skin::TextoResaltado			= COLOR_MARCA_TEXTO_RESALTADO;
+	COLORREF     DMarcaEx_Skin::TextoPresionado			= COLOR_MARCA_TEXTO_PRESIONADO;
+	COLORREF     DMarcaEx_Skin::TextoDesactivado		= COLOR_MARCA_TEXTO_DESACTIVADO;
+	COLORREF     DMarcaEx_Skin::TextoSombra				= COLOR_MARCA_TEXTO_SOMBRA;
+
+	// Fuente
+	int			 DMarcaEx_Skin::FuenteTam				= FUENTE_NORMAL;
+	std::wstring DMarcaEx_Skin::FuenteNombre			= FUENTE_NOMBRE;
+	BOOL         DMarcaEx_Skin::FuenteNegrita			= FALSE;
+	BOOL         DMarcaEx_Skin::FuenteCursiva			= FALSE;
+	BOOL         DMarcaEx_Skin::FuenteSubrayado			= FALSE;
+	BOOL		 DMarcaEx_Skin::FuenteSombraTexto		= TRUE;
+
+
 	#define DMARCAEX_TAMICONO 16
 
-	DMarcaEx::DMarcaEx(void) {
-	}
+	DMarcaEx::DMarcaEx(void): _Estado(DMarcaEx_Estado_Normal), _Marcado(FALSE), _ColorFondoMarca(DMarcaEx_Skin::FondoMarcaNormal), _ColorFondo(DMarcaEx_Skin::FondoNormal), _ColorTexto(DMarcaEx_Skin::TextoNormal), _ColorBorde(DMarcaEx_Skin::BordeNormal), _Icono(NULL) {	}
 
 
 	DMarcaEx::~DMarcaEx(void) {
@@ -22,10 +47,12 @@ namespace DWL {
 		_Texto = nTxt;
 		_Icono = DListaIconos::AgregarIconoRecursos(IDIconoMarca, DMARCAEX_TAMICONO, DMARCAEX_TAMICONO);
 		_MouseDentro	 = FALSE;
-		_ColorFondo		 = COLOR_FONDO;
-		_ColorTexto		 = COLOR_TEXTO;
-		_ColorFondoMarca = COLOR_FONDO_CLARO;
-		_ColorBorde		 = COLOR_BORDE;
+		_ColorFondo		 = DMarcaEx_Skin::FondoNormal;
+		_ColorTexto		 = DMarcaEx_Skin::TextoNormal;
+		_ColorFondoMarca = DMarcaEx_Skin::FondoMarcaNormal;
+		_ColorBorde		 = DMarcaEx_Skin::BordeNormal;
+
+		Fuente.CrearFuente(DMarcaEx_Skin::FuenteTam, DMarcaEx_Skin::FuenteNombre.c_str(), DMarcaEx_Skin::FuenteNegrita, DMarcaEx_Skin::FuenteCursiva, DMarcaEx_Skin::FuenteSubrayado);
 		return hWnd();
 	}
 
@@ -38,7 +65,7 @@ namespace DWL {
 		// Creo un DC compatible para el buffer
 		HBITMAP Bmp			= CreateCompatibleBitmap(DC, RC.right, RC.bottom);
 		HBITMAP BmpViejo	= static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
-		HFONT   vFuente		= static_cast<HFONT>(SelectObject(Buffer, DhWnd::Fuente18Normal()));
+		HFONT   vFuente		= static_cast<HFONT>(SelectObject(Buffer, Fuente()));
 
 		// Pinto el fondo
 		HBRUSH ColorFondo = CreateSolidBrush(_ColorFondo);
@@ -73,8 +100,11 @@ namespace DWL {
 
 		// Pinto el texto
 		SetBkMode(Buffer, TRANSPARENT);
-		SetTextColor(Buffer, COLOR_TEXTO_SOMBRA);
-		TextOut(Buffer, DMARCAEX_TAMICONO + 7, bPresionado + YMarco + 1, _Texto.c_str(), static_cast<int>(_Texto.size()));
+		if (DMarcaEx_Skin::FuenteSombraTexto == TRUE) {
+			SetTextColor(Buffer, DMarcaEx_Skin::TextoSombra);
+			TextOut(Buffer, DMARCAEX_TAMICONO + 7, bPresionado + YMarco + 1, _Texto.c_str(), static_cast<int>(_Texto.size()));
+		}
+
 		SetTextColor(Buffer, _ColorTexto);
 		TextOut(Buffer, DMARCAEX_TAMICONO + 6, bPresionado + YMarco, _Texto.c_str(), static_cast<int>(_Texto.size()));
 
@@ -96,31 +126,31 @@ namespace DWL {
 			_AniTransicion.Terminar();
 		}
 
-		COLORREF FondoHasta, BordeHasta, TextoHasta, FondoMarcaHasta;
+		COLORREF FondoHasta = 0, BordeHasta = 0, TextoHasta = 0, FondoMarcaHasta = 0;
 		switch (nTransicion) {
 			case DMarcaEx_Transicion_Normal:
-				FondoHasta		= COLOR_FONDO;
-				FondoMarcaHasta = COLOR_FONDO_CLARO;
-				BordeHasta		= COLOR_BORDE;
-				TextoHasta		= COLOR_TEXTO;
+				FondoHasta		= DMarcaEx_Skin::FondoNormal;
+				FondoMarcaHasta = DMarcaEx_Skin::FondoMarcaNormal;
+				BordeHasta		= DMarcaEx_Skin::BordeNormal;
+				TextoHasta		= DMarcaEx_Skin::TextoNormal;
 				break;
 			case DMarcaEx_Transicion_Resaltado:
-				FondoHasta		= COLOR_FONDO_RESALTADO;
-				FondoMarcaHasta = COLOR_FONDO_CLARO_RESALTADO;
-				BordeHasta		= COLOR_BORDE_RESALTADO;
-				TextoHasta		= COLOR_TEXTO_RESALTADO;
+				FondoHasta		= DMarcaEx_Skin::FondoResaltado;
+				FondoMarcaHasta = DMarcaEx_Skin::FondoMarcaResaltado;
+				BordeHasta		= DMarcaEx_Skin::BordeResaltado;
+				TextoHasta		= DMarcaEx_Skin::TextoResaltado;
 				break;
 			case DMarcaEx_Transicion_Presionado:
-				FondoHasta		= COLOR_FONDO_PRESIONADO;
-				FondoMarcaHasta = COLOR_FONDO_CLARO_PRESIONADO;
-				BordeHasta		= COLOR_BORDE_PRESIONADO;
-				TextoHasta		= COLOR_TEXTO_PRESIONADO;
+				FondoHasta		= DMarcaEx_Skin::FondoPresionado;
+				FondoMarcaHasta = DMarcaEx_Skin::FondoMarcaPresionado;
+				BordeHasta		= DMarcaEx_Skin::BordePresionado;
+				TextoHasta		= DMarcaEx_Skin::TextoPresionado;
 				break;
 			case DMarcaEx_Transicion_Desactivado:
-				FondoHasta		= COLOR_FONDO;
-				FondoMarcaHasta = COLOR_FONDO_CLARO_DESACTIVADO;
-				BordeHasta		= COLOR_BORDE;
-				TextoHasta		= COLOR_TEXTO_DESACTIVADO;
+				FondoHasta		= DMarcaEx_Skin::FondoNormal;
+				FondoMarcaHasta = DMarcaEx_Skin::FondoMarcaDesactivado;
+				BordeHasta		= DMarcaEx_Skin::BordeNormal;
+				TextoHasta		= DMarcaEx_Skin::TextoDesactivado;
 				break;
 		}
 

@@ -3,6 +3,7 @@
 #include "DVentana.h"
 #include "DBotonEx.h"
 #include "DMarcaEx.h"
+#include "DFuente.h"
 
 class VentanaAsociarReproductor : public DWL::DVentana {
   public:
@@ -14,6 +15,8 @@ class VentanaAsociarReproductor : public DWL::DVentana {
 	void                        Boton_Click(const INT_PTR IdBoton);
 	LRESULT CALLBACK			GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
   protected:
+	DFuente					   _Fuente;
+	DFuente					   _FuenteNegrita;
 	void					   _Evento_Pintar(void);
 	DWL::DBotonEx              _BotonCancelar;
 	DWL::DBotonEx              _BotonAceptar;

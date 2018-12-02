@@ -21,7 +21,7 @@ namespace DWL {
 */
 
 
-	DControlDesplegableEx::DControlDesplegableEx(void) {
+	DControlDesplegableEx::DControlDesplegableEx(void) : _Icono(NULL) {
 	}
 
 

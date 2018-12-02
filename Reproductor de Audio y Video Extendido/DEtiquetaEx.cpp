@@ -3,7 +3,21 @@
 #include "Rave_Skin.h"
 
 namespace DWL {
-	DEtiquetaEx::DEtiquetaEx(void) : _Formato(DT_LEFT), ColorTexto(COLOR_TEXTO), ColorTextoSombra(COLOR_TEXTO_SOMBRA), ColorFondo(COLOR_FONDO) {
+
+	// Colores por defecto
+	COLORREF     DEtiquetaEx_Skin::Fondo				= COLOR_ETIQUETA_FONDO;
+	COLORREF     DEtiquetaEx_Skin::Texto				= COLOR_ETIQUETA_TEXTO;
+	COLORREF     DEtiquetaEx_Skin::TextoSombra			= COLOR_ETIQUETA_TEXTO_SOMBRA;
+	// Fuente
+	int			 DEtiquetaEx_Skin::FuenteTam			= FUENTE_NORMAL;
+	std::wstring DEtiquetaEx_Skin::FuenteNombre			= FUENTE_NOMBRE;
+	BOOL         DEtiquetaEx_Skin::FuenteNegrita		= FALSE;
+	BOOL         DEtiquetaEx_Skin::FuenteCursiva		= FALSE;
+	BOOL         DEtiquetaEx_Skin::FuenteSubrayado		= FALSE;
+	BOOL		 DEtiquetaEx_Skin::FuenteSombraTexto	= TRUE;
+
+
+	DEtiquetaEx::DEtiquetaEx(void) : _Formato(DT_LEFT), ColorTexto(DEtiquetaEx_Skin::Texto), ColorTextoSombra(DEtiquetaEx_Skin::TextoSombra), ColorFondo(DEtiquetaEx_Skin::Fondo) {
 	}
 
 
@@ -19,7 +33,7 @@ namespace DWL {
 			case DEtiquetaEx_Alineacion_Derecha		: _Formato = DT_RIGHT;		break;
 		}
 //		_Formato = (nCentrado == TRUE) ? DT_CENTER : DT_LEFT;
-		Fuente = Fuente18Normal;
+		Fuente.CrearFuente(DEtiquetaEx_Skin::FuenteTam, DEtiquetaEx_Skin::FuenteNombre.c_str(), DEtiquetaEx_Skin::FuenteNegrita, DEtiquetaEx_Skin::FuenteCursiva, DEtiquetaEx_Skin::FuenteSubrayado);
 		_Texto = nTxt;
 		return hWnd();
 	}
@@ -45,9 +59,11 @@ namespace DWL {
 		RC2.left++; RC2.top++; RC2.right++; RC2.bottom++;
 
 		SetBkMode(TmphDC, TRANSPARENT);
-		// Pinto la sombra del texto
-		SetTextColor(TmphDC, ColorTextoSombra);
-		DrawText(TmphDC, _Texto.c_str(), static_cast<int>(_Texto.size()), &RC2, _Formato);
+		if (DEtiquetaEx_Skin::FuenteSombraTexto == TRUE) {
+			// Pinto la sombra del texto
+			SetTextColor(TmphDC, ColorTextoSombra);
+			DrawText(TmphDC, _Texto.c_str(), static_cast<int>(_Texto.size()), &RC2, _Formato);
+		}
 		// Pinto el texto
 		SetTextColor(TmphDC, ColorTexto);
 		DrawText(TmphDC, _Texto.c_str(), static_cast<int>(_Texto.size()), &RC, _Formato);

@@ -7,6 +7,8 @@
 
 namespace DWL {
 
+	
+
 	class DBotonDesplegable : public DBotonEx {
 	  public :
 				DBotonDesplegable(void) : DBotonEx() { };
@@ -17,8 +19,8 @@ namespace DWL {
 	// Base para los controles desplegables (viene a ser un control con un icono, un texto y un boton)
 	class DControlDesplegableEx : public DControlEx {
 	  public:
-									DControlDesplegableEx();
-		                           ~DControlDesplegableEx();
+									DControlDesplegableEx(void);
+		                           ~DControlDesplegableEx(void);
 		virtual void				Evento_Desplegar(void) { };
 		virtual LRESULT CALLBACK	GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 //		void						Pintar(HDC DC);

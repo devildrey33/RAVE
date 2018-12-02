@@ -1,5 +1,7 @@
 #pragma once
 
+
+
 // Este objeto asocia el reproductor a windows de varias formas :
 // - Añade este reproductor a la lista de reproductores de archivos (mpg, avi, mp3, mp4, etc...)
 class AsociarReproductor {

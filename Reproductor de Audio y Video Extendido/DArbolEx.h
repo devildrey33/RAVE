@@ -6,6 +6,7 @@
 #include "DListaIconos.h"
 #include "DEventoMouseRueda.h"
 #include "DEventoTeclado.h"
+//#include "DFuente.h"
 
 namespace DWL {
 
@@ -20,6 +21,44 @@ namespace DWL {
 	#define DARBOLEX_POSICIONNODO_FIN		_UI32_MAX - 1
 	#define DARBOLEX_POSICIONNODO_ORDENADO	_UI32_MAX - 2
 #endif
+
+	class DArbolEx_Skin {
+	  public :
+							DArbolEx_Skin(void) { }
+							// Colores del fondo para los nodos (OJO el color del fondo del arbol está en (DBarraScrollEx_Skin::FondoNormal / DBarraScrollEx_Skin::FondoResaltado)
+		static COLORREF     FondoNodoResaltado;
+		static COLORREF     FondoNodoSeleccionado;
+		static COLORREF     FondoNodoSeleccionadoResaltado;
+		static COLORREF     FondoNodoSubSeleccionado;
+		static COLORREF     FondoNodoSubSeleccionadoResaltado;
+		static COLORREF     FondoNodoPresionado;
+							// Color del borde del nodo marcado
+		static COLORREF     BordeNodoMarcado;
+							// Colores para el expansor
+		static COLORREF     ExpansorNormal;
+		static COLORREF     ExpansorResaltado;
+		static COLORREF     ExpansorPresionado;
+							// Colores para el texto
+		static COLORREF     TextoNodoNormal;
+		static COLORREF     TextoNodoResaltado;
+		static COLORREF     TextoNodoDesactivado;
+		static COLORREF     TextoNodoSombra;
+		static COLORREF     TextoNodoSeleccionado;
+		static COLORREF     TextoNodoSeleccionadoSombra;
+		static COLORREF     TextoNodoSeleccionadoResaltado;
+		static COLORREF     TextoNodoSubSeleccionado;
+		static COLORREF     TextoNodoSubSeleccionadoSombra;
+		static COLORREF     TextoNodoSubSeleccionadoResaltado;
+		static COLORREF     TextoNodoPresionado;
+							// Fuente
+		static int			FuenteTam;
+		static std::wstring	FuenteNombre;
+		static BOOL         FuenteNegrita;
+		static BOOL         FuenteCursiva;
+		static BOOL         FuenteSubrayado;
+		static BOOL			FuenteSombraTexto;
+	};
+
 	enum DArbolEx_PosicionNodo {
 		DArbolEx_PosicionNodo_Inicio,
 		DArbolEx_PosicionNodo_Fin,
@@ -71,7 +110,7 @@ namespace DWL {
 		const size_t                                    TotalNodosSeleccionados(void);
 
 														// Agrega un nodo personalizado (por defecto es del tipo DArbolEx_Nodo) para iconos de los recursos
-		template <class TNodo = DArbolEx_Nodo> TNodo   *AgregarNodo(const TCHAR *nTexto, DArbolEx_Nodo *nPadre = NULL, const int nIcono = NULL, DhWnd_Fuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN) {
+		template <class TNodo = DArbolEx_Nodo> TNodo   *AgregarNodo(const TCHAR *nTexto, DArbolEx_Nodo *nPadre = NULL, const int nIcono = NULL, DFuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN) {
 															DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoRecursos(nIcono, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
 															TNodo *nNodo = new TNodo();
 															_AgregarNodo(nNodo, nTexto, nPadre, TmpIco, nFuente, PosicionNodo);
@@ -79,7 +118,7 @@ namespace DWL {
 														};
 
 														// Agrega un nodo personalizado (por defecto es del tipo DArbolEx_Nodo) para iconos del sistema
-		template <class TNodo = DArbolEx_Nodo> TNodo   *AgregarNodo(const TCHAR *nTexto, DArbolEx_Nodo *nPadre, const GUID &KnowFolderId, DhWnd_Fuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN) {
+		template <class TNodo = DArbolEx_Nodo> TNodo   *AgregarNodo(const TCHAR *nTexto, DArbolEx_Nodo *nPadre, const GUID &KnowFolderId, DFuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN) {
 															DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoKnownFolder(KnowFolderId, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
 															TNodo *nNodo = new TNodo();
 															_AgregarNodo(nNodo, nTexto, nPadre, TmpIco, nFuente, PosicionNodo);
@@ -87,7 +126,7 @@ namespace DWL {
 														};
 
 														// Agrega un nodo personalizado (por defecto es del tipo DArbolEx_Nodo) para iconos especificos de un path
-		template <class TNodo = DArbolEx_Nodo> TNodo   *AgregarNodo(const TCHAR *nTexto, DArbolEx_Nodo *nPadre, const wchar_t *PathIcono, const int nPosIcono = 0, DhWnd_Fuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN) {
+		template <class TNodo = DArbolEx_Nodo> TNodo   *AgregarNodo(const TCHAR *nTexto, DArbolEx_Nodo *nPadre, const wchar_t *PathIcono, const int nPosIcono = 0, DFuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN) {
 															DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoExterno(PathIcono, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO, nPosIcono);
 															TNodo *nNodo = new TNodo();
 															_AgregarNodo(nNodo, nTexto, nPadre, TmpIco, nFuente, PosicionNodo);
@@ -135,17 +174,13 @@ namespace DWL {
 		void											MostrarNodo(DArbolEx_Nodo *vNodo);
 		const BOOL										ObtenerRectaNodo(DArbolEx_Nodo *rNodo, RECT &rRecta);
 
-		LRESULT CALLBACK								GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
-
-
 		void											SeleccionarNodo(DArbolEx_Nodo *sNodo, const BOOL nSeleccionado);
 														// Función que selecciona los nodos entre Desde y Hasta (incluyendo ambos), y des-selecciona todos los demás nodos
 		void											SeleccionarNodosShift(DArbolEx_Nodo *Desde, DArbolEx_Nodo *Hasta);
-														// Comportamiento del ArbolEx (Multiseleccion, subseleccion, drag&drop, etc..)
-//		DArbolEx_Comportamiento							Comportamiento;
+
+														// Comportamiento (multiselección, subselección)
 		BOOL											MultiSeleccion;
 		BOOL											SubSeleccion;
-
 
 		void											DesSeleccionarTodo(void);
 
@@ -154,14 +189,16 @@ namespace DWL {
 														// Busca el nodo siguiente
 		DArbolEx_Nodo								   *BuscarNodoSiguiente(DArbolEx_Nodo *nActual, const BOOL nVisible = FALSE, DArbolEx_Nodo *DentroDe = NULL);
 
-		DhWnd_Fuente			                        Fuente;
+		DFuente					                        Fuente;
 
-		inline DArbolEx_Nodo                           *NodoResaltado(void) { return _NodoResaltado; };
-		inline DArbolEx_Nodo                           *NodoMarcado(void)   { return _NodoMarcado; };
-		inline void                                     NodoMarcado(DArbolEx_Nodo *nNodoMarcado) { _NodoMarcado = nNodoMarcado; };
+		inline DArbolEx_Nodo                           *NodoResaltado(void)										{ return _NodoResaltado; };
+		inline DArbolEx_Nodo                           *NodoMarcado(void)										{ return _NodoMarcado; };
+		inline void                                     NodoMarcado(DArbolEx_Nodo *nNodoMarcado)				{ _NodoMarcado = nNodoMarcado; };
 		
-		inline const DArbolEx_Expansor					ExpansorPorDefecto(void) { return _ExpansorPorDefecto; };
-		void                                            ExpansorPorDefecto(const DArbolEx_Expansor nExpansor) { _ExpansorPorDefecto = nExpansor; }
+		inline const DArbolEx_Expansor					ExpansorPorDefecto(void)								{ return _ExpansorPorDefecto; };
+		void                                            ExpansorPorDefecto(const DArbolEx_Expansor nExpansor)	{ _ExpansorPorDefecto = nExpansor; }
+
+		LRESULT CALLBACK								GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 	  protected:		
 		DArbolEx_Expansor							   _ExpansorPorDefecto;
@@ -205,7 +242,7 @@ namespace DWL {
 
 														// Agrega un nodo (se tiene que reservar memória en la variable nNodo antes de agregar. ej nNodo = new DArbolEx_Nodo)
 //		DArbolEx_Nodo                                 *_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre = NULL, const int nIcono = NULL, DhWnd_Fuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN);
-		DArbolEx_Nodo                                 *_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre = NULL, DListaIconos_Icono *nIcono = NULL, DhWnd_Fuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN);
+		DArbolEx_Nodo                                 *_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre = NULL, DListaIconos_Icono *nIcono = NULL, DFuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN);
 
 														// Obtiene el espacio en pixeles que necesita todo el arbol tal y como están los nodos expandidos
 		void									       _CalcularTotalEspacioVisible(void);

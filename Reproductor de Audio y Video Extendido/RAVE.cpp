@@ -324,7 +324,6 @@ void RAVE::Terminar(void) {
 
 //	Gdiplus::GdiplusShutdown(_gdiplusToken);
 	DFuente::EliminarFuentes();
-	DhWnd::EliminarFuentesEstaticas();
 	Debug_Escribir(L"Rave::Terminar\n");
 }
 

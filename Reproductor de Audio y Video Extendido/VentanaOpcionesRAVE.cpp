@@ -129,7 +129,7 @@ void VentanaOpcionesRAVE::Crear(void) {
 	};
 	for (int i = 0; i < static_cast<int>(App.TeclasRapidas.size()); i++) {
 		EtiquetasTeclas[i].CrearEtiquetaEx(&MarcoGeneral, Textos[i], 10, 80 + (i * 25), 160, 20, ID_ETIQUETAS_TECLADO + i);
-		EtiquetasTeclas[i].Fuente = Fuente18Normal;
+//		EtiquetasTeclas[i].Fuente = Fuente18Normal;
 		TeclasRapidas[i].Crear(&MarcoGeneral, 180, 80 + (i * 25), RC.right - 210, 20, ID_ASINGAR_TECLA, &App.TeclasRapidas[i]);
 	}
 

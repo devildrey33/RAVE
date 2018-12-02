@@ -5,6 +5,7 @@
 #include "DVentana.h"
 #include "EtiquetaBD.h"
 #include "RaveBD.h"
+#include "DFuente.h"
 
 class ToolTipsInfo;
 
@@ -51,12 +52,13 @@ protected:
 // Clase que controla un unico tooltip informativo de texto
 class ToolTipInfo_Texto : public ToolTipInfo {
   public:
-								ToolTipInfo_Texto(std::wstring &nTexto) : ToolTipInfo(), _Str(nTexto) { };
+								ToolTipInfo_Texto(std::wstring &nTexto) : ToolTipInfo(), _Str(nTexto) { _Fuente.CrearFuente(FUENTE_NORMAL, FUENTE_NOMBRE); };
 				               ~ToolTipInfo_Texto(void) { };
 	SIZE						CalcularTam(void);
 	void						Pintar(HDC DC);
 	inline ToolTipInfo_Tipo		Tipo(void) { return ToolTipInfo_Tipo_Texto; };
   protected:
+	DWL::DFuente               _Fuente;
 	std::wstring	           _Str;
 };
 
@@ -74,13 +76,24 @@ class ToolTipInfo_Celda {
 // Clase base para crear Tooltips de 2 columnas (para no repetir la función de pintado en ToolTipInfo_Medio y ToolTipInfo_Etiqueta)
 class ToolTipInfo_2Columnas : public ToolTipInfo {
   public:
-									ToolTipInfo_2Columnas(void) : ToolTipInfo(), _Icono(NULL), _AnchoCol1(0)									{ };
-									ToolTipInfo_2Columnas(std::wstring &Titulo) : ToolTipInfo(), _Titulo(Titulo), _Icono(NULL), _AnchoCol1(0)	{ };
+									ToolTipInfo_2Columnas(void) : ToolTipInfo(), _Icono(NULL), _AnchoCol1(0) {
+										_FuenteTitulo.CrearFuente(FUENTE_GRANDE, FUENTE_NOMBRE, TRUE); 
+										_FuenteNombreValor.CrearFuente(FUENTE_NORMAL, FUENTE_NOMBRE, TRUE); 
+										_FuenteValor.CrearFuente(FUENTE_NORMAL, FUENTE_NOMBRE, FALSE);	
+									};
+									ToolTipInfo_2Columnas(std::wstring &Titulo) : ToolTipInfo(), _Titulo(Titulo), _Icono(NULL), _AnchoCol1(0) { 
+										_FuenteTitulo.CrearFuente(FUENTE_GRANDE, FUENTE_NOMBRE, TRUE);
+										_FuenteNombreValor.CrearFuente(FUENTE_NORMAL, FUENTE_NOMBRE, TRUE);
+										_FuenteValor.CrearFuente(FUENTE_NORMAL, FUENTE_NOMBRE, FALSE);
+									};
 	                               ~ToolTipInfo_2Columnas(void) { };
 	void							Pintar(HDC DC);
 	virtual inline ToolTipInfo_Tipo	Tipo(void) { return ToolTipInfo_Tipo_2Columnas; };
 	virtual void                    PintarNota(HDC DC, const int cX, const int cY) { };
   protected:
+	DWL::DFuente                   _FuenteTitulo;
+	DWL::DFuente                   _FuenteNombreValor;
+	DWL::DFuente                   _FuenteValor;
 	void                           _PintarNota(HDC DC, const int cX, const int cY, const float nNota);
 	std::wstring                   _Titulo;
 	std::vector<ToolTipInfo_Celda> _Col1;

@@ -3,8 +3,38 @@
 
 #include "DControlEx.h"
 #include "DAnimacion.h"
+#include "DFuente.h"
 
 namespace DWL {
+
+	class DMarcaEx_Skin {
+	  public:
+							DMarcaEx_Skin(void) {};
+							// Colores por defecto
+		static COLORREF     FondoNormal;
+		static COLORREF     FondoResaltado;
+		static COLORREF     FondoPresionado;
+		static COLORREF     FondoMarcaNormal;
+		static COLORREF     FondoMarcaResaltado;
+		static COLORREF     FondoMarcaPresionado;
+		static COLORREF     FondoMarcaDesactivado;
+		static COLORREF     BordeNormal;
+		static COLORREF     BordeResaltado;
+		static COLORREF     BordePresionado;
+		static COLORREF     TextoNormal;
+		static COLORREF     TextoResaltado;
+		static COLORREF     TextoPresionado;
+		static COLORREF     TextoDesactivado;
+		static COLORREF     TextoSombra;
+							// Fuente
+		static int			FuenteTam;
+		static std::wstring FuenteNombre;
+		static BOOL         FuenteNegrita;
+		static BOOL         FuenteCursiva;
+		static BOOL         FuenteSubrayado;
+		static BOOL			FuenteSombraTexto;
+	};
+
 	enum DMarcaEx_Estado {
 		DMarcaEx_Estado_Normal,
 		DMarcaEx_Estado_Resaltado,
@@ -38,6 +68,7 @@ namespace DWL {
 		void                    Pintar(HDC DC);
 								// Inicia una transición desde el estado actual al estado especificado
 		void                    Transicion(const DMarcaEx_Transicion nTransicion);
+		DFuente                 Fuente;
 	  protected:
 		void			       _Evento_MouseMovimiento(WPARAM wParam, LPARAM lParam);
 		void		           _Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam);

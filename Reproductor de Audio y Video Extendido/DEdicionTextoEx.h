@@ -3,8 +3,39 @@
 
 #include "DControlEx.h"
 #include "DAnimacion.h"
+#include "DFuente.h"
 
 namespace DWL {
+
+	class DEdicionTextoEx_Skin {
+	  public:
+							DEdicionTextoEx_Skin(void) { };
+		static COLORREF     FondoNormal;
+		static COLORREF     FondoResaltado;
+		static COLORREF     FondoPresionado;
+		static COLORREF     FondoDesactivado;
+		static COLORREF     TextoNormal;
+		static COLORREF     TextoResaltado;
+		static COLORREF     TextoPresionado;
+		static COLORREF     TextoSombra;
+		static COLORREF     TextoDesactivado;
+		static COLORREF     BordeNormal;
+		static COLORREF     BordeResaltado;
+		static COLORREF     BordePresionado;							
+		static COLORREF     Seleccion;
+		static COLORREF     SeleccionTexto;
+		static COLORREF     SeleccionTextoSombra;
+
+		static COLORREF     Cursor;
+							// Fuente
+		static int			FuenteTam;
+		static std::wstring	FuenteNombre;
+		static BOOL         FuenteNegrita;
+		static BOOL         FuenteCursiva;
+		static BOOL         FuenteSubrayado;
+		static BOOL			FuenteSombraTexto;
+	};
+
 
 	enum DEdicionTextoEx_Transicion {
 		DEdicionTextoEx_Transicion_Normal,
@@ -32,10 +63,10 @@ namespace DWL {
 		void                        Icono(DListaIconos_Icono *nIcono, const BOOL nRepintar = TRUE);
 		inline const wchar_t       *Texto(void) { return _Texto.c_str(); };
 		virtual void				Texto(std::wstring &nTexto, const BOOL nRepintar = TRUE);
-		virtual void				Texto(const wchar_t * nTexto, const BOOL nRepintar = TRUE);
+		virtual void				Texto(const wchar_t *nTexto, const BOOL nRepintar = TRUE);
 
 		void						Transicion(const DEdicionTextoEx_Transicion nTransicion);
-		DhWnd_Fuente				Fuente;
+		DFuente						Fuente;
 		BOOL                        TextoEditable;
 		DEdicionTextoEx_Alineacion	Alineacion;
 	  protected:

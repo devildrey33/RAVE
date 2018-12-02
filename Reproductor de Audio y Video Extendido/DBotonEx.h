@@ -46,7 +46,7 @@ namespace DWL {
 		 static BOOL            FuenteNegrita;
 		 static BOOL            FuenteCursiva;
 		 static BOOL            FuenteSubrayado;
-		 static BOOL			SombraTexto;
+		 static BOOL			FuenteSombraTexto;
 	};
 
 	class DBotonEx : public DControlEx {

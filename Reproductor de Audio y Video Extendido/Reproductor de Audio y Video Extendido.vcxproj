@@ -201,7 +201,6 @@
     <ClInclude Include="DExplorarDirectoriosEx.h" />
     <ClInclude Include="DFuente.h" />
     <ClInclude Include="DGDI.h" />
-    <ClInclude Include="DhWnd_Fuente.h" />
     <ClInclude Include="DListaDesplegableEx.h" />
     <ClInclude Include="DListaEx.h" />
     <ClInclude Include="DListaEx_Columna.h" />

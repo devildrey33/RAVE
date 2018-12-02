@@ -10,7 +10,7 @@ namespace DWL {
 	#define DBARRAEX_DEBUG FALSE
 
 	class DMenuEx;
-	class DMenuEx2;
+//	class DMenuEx2;
 
 	// Colores por defecto de un control EX con barra de scroll
 	class DBarraEx_Skin {
@@ -40,7 +40,7 @@ namespace DWL {
 		static BOOL             FuenteNegrita;
 		static BOOL             FuenteCursiva;
 //		static BOOL             FuenteSubrayado;
-		static BOOL				SombraTexto;
+		static BOOL				FuenteSombraTexto;
 
 	};
 

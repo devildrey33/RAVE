@@ -3,11 +3,11 @@
 #define RGBA(R,G,B,A)          (COLORREF) (R | (G<<8) | (B <<16) | (A <<24))
 
 // Fuente por defecto
-#define FUENTE_NORMAL			L"tahoma"
-#define FUENTE_NORMAL_TAM		21
-#define FUENTE_PEQUE_TAM		18
-// Tamaño ancho / alto de la barra de scroll (ancho si es vertical, alto si es horizontal)
-//#define TAM_BARRA_SCROLL		16
+#define FUENTE_NOMBRE			L"tahoma"
+#define FUENTE_PEQUE			16
+#define FUENTE_NORMAL			18
+#define FUENTE_GRANDE			21
+
 
 #define COLOR_ROJO									RGB(234,  80,  78)
 #define COLOR_ROJO_RESALTADO						RGB(254, 100,  98)
@@ -68,6 +68,7 @@ ____                       ______
 #define COLOR_TOOLTIP_BORDE							COLOR_BORDE_POPUP //RGB(155, 155, 155)
 #define COLOR_TOOLTIP_FONDO							RGB( 21,  19,  24) //COLOR_FONDO
 #define COLOR_TOOLTIP_TEXTO							COLOR_TEXTO //RGB(  0,   0,   0)
+#define COLOR_TOOLTIP_TEXTO_SOMBRA					COLOR_TEXTO_SOMBRA //RGB(  0,   0,   0)
 
 /*
   ____        _              ______      
@@ -110,7 +111,7 @@ ____                       ______
  /_/    \_\_|  |_.__/ \___/|_|______/_/\_\    
 
 */
-#define ARBOL_PINTAR_SOMBRA_TEXTO                   FALSE
+//#define ARBOL_PINTAR_SOMBRA_TEXTO                   FALSE
 #define COLOR_ARBOL_FONDO							COLOR_FONDO_CLARO
 //#define COLOR_ARBOL_FONDO_SCROLL					RGB(200, 200, 200)
 //#define COLOR_ARBOL_FONDO_SCROLL_RESALTADO		RGB(170, 170, 170)
@@ -156,7 +157,7 @@ ____                       ______
  |______|_|___/\__\__,_|______/_/\_\                                                                
 
 */
-#define LISTA_PINTAR_SOMBRA_TEXTO                   FALSE
+//#define LISTA_PINTAR_SOMBRA_TEXTO                   FALSE
 #define COLOR_LISTA_FONDO							COLOR_FONDO_CLARO
 //#define COLOR_LISTA_FONDO_SCROLL					RGB(200, 200, 200)
 #define COLOR_LISTA_FONDO_RESALTADO					RGB(255, 220, 220)
@@ -175,7 +176,7 @@ ____                       ______
 #define COLOR_LISTA_SELECCION_TEXTO_RESALTADO		RGB(255, 255, 255)
 #define COLOR_LISTA_SELECCION_TEXTO_PRESIONADO		RGB(190, 190, 190)
 
-#define COLOR_LISTA_NODO_MARCA						RGB(255,   0,   0)
+#define COLOR_LISTA_MARCA_ITEM						RGB(255,   0,   0)
 
 /* 
 ______    _ _      _          _______        _        ______
@@ -226,3 +227,45 @@ ______    _ _      _          _______        _        ______
 #define COLOR_MENU_TEXTO_RESALTADO					COLOR_TEXTO_RESALTADO
 #define COLOR_MENU_TEXTO_PRESIONADO					COLOR_TEXTO_PRESIONADO
 #define COLOR_MENU_TEXTO_DESACTIVADO				COLOR_TEXTO_DESACTIVADO
+
+/* 
+  __  __                     ______
+ |  \/  |                   |  ____|
+ | \  / | __ _ _ __ ___ __ _| |__  __  __
+ | |\/| |/ _` | '__/ __/ _` |  __| \ \/ /
+ | |  | | (_| | | | (_| (_| | |____ >  <
+ |_|  |_|\__,_|_|  \___\__,_|______/_/\_\
+
+*/
+
+#define COLOR_MARCA_BORDE							COLOR_BORDE
+#define COLOR_MARCA_BORDE_RESALTADO					COLOR_BORDE_RESALTADO
+#define COLOR_MARCA_BORDE_PRESIONADO				COLOR_BORDE_PRESIONADO
+#define COLOR_MARCA_FONDO							COLOR_FONDO
+#define COLOR_MARCA_FONDO_RESALTADO					COLOR_FONDO_RESALTADO
+#define COLOR_MARCA_FONDO_PRESIONADO				COLOR_FONDO_PRESIONADO
+#define COLOR_MARCA_FONDO_MARCA						COLOR_FONDO_CLARO
+#define COLOR_MARCA_FONDO_MARCA_RESALTADO			COLOR_FONDO_CLARO_RESALTADO
+#define COLOR_MARCA_FONDO_MARCA_PRESIONADO			COLOR_FONDO_CLARO_PRESIONADO
+#define COLOR_MARCA_FONDO_MARCA_DESACTIVADO			COLOR_FONDO_CLARO_DESACTIVADO
+#define COLOR_MARCA_TEXTO							COLOR_TEXTO
+#define COLOR_MARCA_TEXTO_RESALTADO					COLOR_TEXTO_RESALTADO
+#define COLOR_MARCA_TEXTO_PRESIONADO				COLOR_TEXTO_PRESIONADO
+#define COLOR_MARCA_TEXTO_DESACTIVADO				COLOR_TEXTO_DESACTIVADO
+#define COLOR_MARCA_TEXTO_SOMBRA					COLOR_TEXTO_SOMBRA
+
+/*
+  ______ _   _                  _        ______
+ |  ____| | (_)                | |      |  ____|
+ | |__  | |_ _  __ _ _   _  ___| |_ __ _| |__  __  __
+ |  __| | __| |/ _` | | | |/ _ \ __/ _` |  __| \ \/ /
+ | |____| |_| | (_| | |_| |  __/ || (_| | |____ >  <
+ |______|\__|_|\__, |\__,_|\___|\__\__,_|______/_/\_\
+				  | |
+				  |_|
+*/
+
+#define COLOR_ETIQUETA_FONDO						COLOR_FONDO
+#define COLOR_ETIQUETA_TEXTO						COLOR_TEXTO
+#define COLOR_ETIQUETA_TEXTO_SOMBRA					COLOR_TEXTO_SOMBRA
+

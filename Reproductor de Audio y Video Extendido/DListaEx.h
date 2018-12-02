@@ -4,8 +4,37 @@
 #include "DControlEx.h"
 #include "DListaEx_Columna.h"
 #include "DListaEx_Item.h"
+#include "DFuente.h"
 
 namespace DWL {
+
+	class DListaEx_Skin {
+	  public:
+							DListaEx_Skin(void) { }
+							// Colores para el fondo (OJO los colores del fondo y del borde del control están en DBarraSroll_Skin)
+		static COLORREF     FondoItemNormal;
+		static COLORREF     FondoItemResaltado;
+		static COLORREF     FondoItemSeleccionado;
+		static COLORREF     FondoItemSeleccionadoResaltado;
+		static COLORREF     FondoItemPresionado;
+							// Color para el borde del item marcado
+		static COLORREF     BordeItemMarcado;
+							// Colores para el texto
+		static COLORREF     TextoItemNormal;
+		static COLORREF     TextoItemResaltado;
+		static COLORREF     TextoItemSombra;
+		static COLORREF     TextoItemSeleccionado;
+		static COLORREF     TextoItemSeleccionadoSombra;
+		static COLORREF     TextoItemSeleccionadoResaltado;
+		static COLORREF     TextoItemPresionado;
+							// Fuente
+		static int			FuenteTam;
+		static std::wstring	FuenteNombre;
+		static BOOL         FuenteNegrita;
+		static BOOL         FuenteCursiva;
+		static BOOL         FuenteSubrayado;
+		static BOOL			FuenteSombraTexto;
+	};
 
 	#define DLISTAEX_MOSTRARDEBUG	FALSE
 
@@ -131,7 +160,7 @@ namespace DWL {
 
 		LRESULT CALLBACK								GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-		DhWnd_Fuente                                    Fuente;
+		DFuente			                                Fuente;
 
 	  protected:
 														// Eventos internos

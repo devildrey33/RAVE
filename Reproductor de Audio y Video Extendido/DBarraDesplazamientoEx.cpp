@@ -32,7 +32,7 @@ namespace DWL {
 			EnableWindow(_hWnd, FALSE);
 		}
 
-		_ToolTip.CrearToolTipEx(Fuente18Normal, nPadre);
+		_ToolTip.CrearToolTipEx(nPadre);
 		return hWnd();
 	}
 

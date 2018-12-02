@@ -7,30 +7,30 @@
 namespace DWL {
 
 	// Colores para la barra de scroll (para la transición normal / hover / presionado)
-	COLORREF		DBarraEx_Skin::BarraNormal		= COLOR_BARRA;
-	COLORREF		DBarraEx_Skin::BarraResaltado	= COLOR_BARRA_RESALTADO;
-	COLORREF		DBarraEx_Skin::BarraPresionado	= COLOR_BARRA_PRESIONADO;
-	COLORREF		DBarraEx_Skin::BarraDesactivado	= COLOR_BARRA_PRESIONADO;
+	COLORREF		DBarraEx_Skin::BarraNormal			= COLOR_BARRA;
+	COLORREF		DBarraEx_Skin::BarraResaltado		= COLOR_BARRA_RESALTADO;
+	COLORREF		DBarraEx_Skin::BarraPresionado		= COLOR_BARRA_PRESIONADO;
+	COLORREF		DBarraEx_Skin::BarraDesactivado		= COLOR_BARRA_PRESIONADO;
 	// Colores del borde del control (para la transición normal / hover / presionado)
-	COLORREF		DBarraEx_Skin::BordeNormal		= COLOR_BORDE;
-	COLORREF		DBarraEx_Skin::BordeResaltado	= COLOR_BORDE_RESALTADO;
-	COLORREF		DBarraEx_Skin::BordePresionado	= COLOR_BORDE_PRESIONADO;
+	COLORREF		DBarraEx_Skin::BordeNormal			= COLOR_BORDE;
+	COLORREF		DBarraEx_Skin::BordeResaltado		= COLOR_BORDE_RESALTADO;
+	COLORREF		DBarraEx_Skin::BordePresionado		= COLOR_BORDE_PRESIONADO;
 	// Colores del fondo del control (para la transición normal / hover / presionado)
-	COLORREF		DBarraEx_Skin::FondoNormal		= COLOR_BARRA_FONDO;
-	COLORREF		DBarraEx_Skin::FondoResaltado	= COLOR_BARRA_FONDO_RESALTADO;
-	COLORREF		DBarraEx_Skin::FondoPresionado  = COLOR_BARRA_FONDO_PRESIONADO;
-	COLORREF		DBarraEx_Skin::FondoDesactivado = COLOR_BARRA_FONDO_DESACTIVADO;
-	// Color del texto
-	COLORREF		DBarraEx_Skin::Texto			= COLOR_BARRA_TEXTO;
-	COLORREF		DBarraEx_Skin::TextoSombra		= COLOR_BARRA_TEXTO_SOMBRA;
+	COLORREF		DBarraEx_Skin::FondoNormal			= COLOR_BARRA_FONDO;
+	COLORREF		DBarraEx_Skin::FondoResaltado		= COLOR_BARRA_FONDO_RESALTADO;
+	COLORREF		DBarraEx_Skin::FondoPresionado		= COLOR_BARRA_FONDO_PRESIONADO;
+	COLORREF		DBarraEx_Skin::FondoDesactivado		= COLOR_BARRA_FONDO_DESACTIVADO;
+	// Color del texto	
+	COLORREF		DBarraEx_Skin::Texto				= COLOR_BARRA_TEXTO;
+	COLORREF		DBarraEx_Skin::TextoSombra			= COLOR_BARRA_TEXTO_SOMBRA;
 	// Fuente
-	int				DBarraEx_Skin::FuenteTam		= 16;
-	std::wstring	DBarraEx_Skin::FuenteNombre		= L"tahoma";
-	BOOL            DBarraEx_Skin::FuenteNegrita	= FALSE;
-	BOOL            DBarraEx_Skin::FuenteCursiva	= FALSE;
-//	BOOL            DBarraEx_Skin::FuenteSubrayado	= FALSE;
+	int				DBarraEx_Skin::FuenteTam			= FUENTE_PEQUE;
+	std::wstring	DBarraEx_Skin::FuenteNombre			= FUENTE_NOMBRE;
+	BOOL            DBarraEx_Skin::FuenteNegrita		= FALSE;
+	BOOL            DBarraEx_Skin::FuenteCursiva		= FALSE;
+//	BOOL            DBarraEx_Skin::FuenteSubrayado		= FALSE;
 	// Pintar sombra al texto
-	BOOL			DBarraEx_Skin::SombraTexto		= FALSE;
+	BOOL			DBarraEx_Skin::FuenteSombraTexto	= FALSE;
 
 
 	DBarraProgresoEx::DBarraProgresoEx(void) : _Minimo(0), _Maximo(0), _Valor(0), _Estado(DBarraEx_Estado_Normal), _ColorBarra(DBarraEx_Skin::BarraNormal), _ColorFondo(DBarraEx_Skin::FondoNormal), _ColorBorde(DBarraEx_Skin::BordeNormal), _MostrarValor(DBarraEx_MostrarValor_Nada), _Activado(TRUE), _Alineacion(IzquierdaDerecha) {
@@ -173,7 +173,7 @@ namespace DWL {
 
 	void DBarraProgresoEx::Evento_PintarValor(HDC DC, RECT &RC) {
 		if (_MostrarValor != DBarraEx_MostrarValor_Nada) {
-			HFONT VFuente = static_cast<HFONT>(SelectObject(DC, Fuente16Normal()));
+			HFONT VFuente = static_cast<HFONT>(SelectObject(DC, _Fuente()));
 			std::wstring TxtValor;
 			switch (_MostrarValor) {
 				case DBarraEx_MostrarValor_Valor2Decimales :			TxtValor = DWL::Strings::ToStrF(_Valor, 2);													break;
@@ -183,7 +183,7 @@ namespace DWL {
 			}
 			Evento_FormatearValor(TxtValor);
 			SetBkMode(DC, TRANSPARENT);
-			if (DBarraEx_Skin::SombraTexto == TRUE) {
+			if (DBarraEx_Skin::FuenteSombraTexto == TRUE) {
 				SetTextColor(DC, DBarraEx_Skin::TextoSombra);
 				RECT RCS = { RC.left + 1, RC.top + 1, RC.right + 1, RC.bottom + 1 };
 				DrawText(DC, TxtValor.c_str(), static_cast<int>(TxtValor.size()), &RCS, DT_CENTER | DT_VCENTER | DT_SINGLELINE);

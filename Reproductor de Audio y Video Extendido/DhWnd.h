@@ -9,7 +9,7 @@
 
 #include <string>
 #include "Rave_Skin.h"
-#include "DhWnd_Fuente.h"
+//#include "DhWnd_Fuente.h"
 #include "DBarraTareas.h"
 /*#include "DEventoMouse.h"
 #include "DEventoMouseRueda.h"
@@ -23,7 +23,7 @@ namespace DWL {
 	// - Está costruida de forma que solo se puede asignar el miembro _hWmd internamente.
 	class DhWnd {
 	  public:
-									DhWnd(void)		 : _hWnd(0)		, _MouseDentro(FALSE) { IniciarMiembrosEstaticos(); };
+									DhWnd(void)		 : _hWnd(0)		, _MouseDentro(FALSE) { };
 //									DhWnd(HWND hWnd) : _hWnd(hWnd)	, _MouseDentro(FALSE) { };
                                    ~DhWnd(void)						{ Destruir(); };
 		inline HWND					hWnd(void)						{ return _hWnd; };
@@ -40,7 +40,7 @@ namespace DWL {
 		inline const BOOL			Visible(void)                   { return IsWindowVisible(_hWnd); };
 
 //		inline void					BorrarBufferTeclado(void)		{ for (size_t i = 0; i < 256; i++) Teclado[i] = false; }
-		void						IniciarMiembrosEstaticos(void);
+//		void						IniciarMiembrosEstaticos(void);
 									// Repinta la ventana
 		inline virtual void			Repintar(void)					{ RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT); };
 									// Función que repinta la ventana si no se ha utilizado esta función hace 15 milisegundos (de esta forma aseguramos que no se repinte 1000 veces un control, pero que se repinte a 60fps)
@@ -49,14 +49,14 @@ namespace DWL {
 
 		ATOM						RegistrarClase(const TCHAR *nNombre, WNDPROC WindowProcedureInicial, UINT Estilos = 0, const int nIconoRecursos = 0, HBRUSH nColorFondo = NULL, HINSTANCE hInstance = NULL);
 									// Debe utilizarse una sola vez al terminar la apliación
-		static void                 EliminarFuentesEstaticas();
+//		static void                 EliminarFuentesEstaticas();
 
-		static DhWnd_Fuente         Fuente16Normal;
+/*		static DhWnd_Fuente         Fuente16Normal;
 		static DhWnd_Fuente         Fuente18Normal;
 		static DhWnd_Fuente         Fuente18Negrita;
 		static DhWnd_Fuente         Fuente21Normal;
 		static DhWnd_Fuente         Fuente21Negrita;
-		static DhWnd_Fuente         FuenteTest;
+		static DhWnd_Fuente         FuenteTest;*/
 
 //		static bool                 Teclado[256];
 									// Tiempo para animaciones / transiciones

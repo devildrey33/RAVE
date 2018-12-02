@@ -23,7 +23,7 @@ namespace DWL {
 		if (hWnd() != NULL) {
 			SetWindowLongPtr(hWnd(), GWLP_USERDATA, (LONG_PTR)this);
 			SetWindowLongPtr(hWnd(), GWLP_WNDPROC, (LONG_PTR)_GestorMensajes);
-			SendMessage(hWnd(), WM_SETFONT, (WPARAM)Fuente18Normal(), 0);
+//			SendMessage(hWnd(), WM_SETFONT, (WPARAM)Fuente18Normal(), 0);
 		}
 	};
 

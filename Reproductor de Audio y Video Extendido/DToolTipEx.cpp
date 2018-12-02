@@ -7,16 +7,29 @@
 
 namespace DWL {
 
+	COLORREF     DToolTipEx_Skin::Fondo				= COLOR_TOOLTIP_FONDO;
+	COLORREF     DToolTipEx_Skin::Texto				= COLOR_TOOLTIP_TEXTO;
+	COLORREF     DToolTipEx_Skin::TextoSombra		= COLOR_TOOLTIP_TEXTO_SOMBRA;
+	COLORREF     DToolTipEx_Skin::Borde				= COLOR_TOOLTIP_BORDE;
+	// Fuente
+	int			 DToolTipEx_Skin::FuenteTam			= FUENTE_NORMAL;
+	std::wstring DToolTipEx_Skin::FuenteNombre		= FUENTE_NOMBRE;
+	BOOL         DToolTipEx_Skin::FuenteNegrita		= FALSE;
+	BOOL         DToolTipEx_Skin::FuenteCursiva		= FALSE;
+	BOOL         DToolTipEx_Skin::FuenteSubrayado	= FALSE;
+	BOOL		 DToolTipEx_Skin::FuenteSombraTexto		= FALSE;
 
-	DToolTipEx::DToolTipEx() : _Fuente(NULL), Padre(NULL) {
+
+
+	DToolTipEx::DToolTipEx(void) : Padre(NULL) {
 	}
 
 
-	DToolTipEx::~DToolTipEx() {
+	DToolTipEx::~DToolTipEx(void) {
 	}
 
 
-	HWND DToolTipEx::CrearToolTipEx(DhWnd_Fuente Fuente, DhWnd *nPadre) {
+	HWND DToolTipEx::CrearToolTipEx(DhWnd *nPadre) {
 		_hWnd = DVentana::CrearVentana(NULL, L"DToolTipEx", L"", 0, 0, 0, 0, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
 		Padre = nPadre->hWnd();
 		while (GetParent(Padre) != NULL) {
@@ -24,7 +37,7 @@ namespace DWL {
 		}
 		MARGINS Margen = { 0, 0, 0, 1 };
 		DwmExtendFrameIntoClientArea(_hWnd, &Margen);
-		_Fuente = Fuente; // _Fuente18Normal;
+		_Fuente.CrearFuente(DToolTipEx_Skin::FuenteTam, DToolTipEx_Skin::FuenteNombre.c_str(), DToolTipEx_Skin::FuenteNegrita, DToolTipEx_Skin::FuenteCursiva, DToolTipEx_Skin::FuenteSubrayado);
 		return hWnd();
 	}
 
@@ -70,35 +83,9 @@ namespace DWL {
 
 	void DToolTipEx::Mostrar(const int cX, const int cY, std::wstring &Str, const int cAncho, const int cAlto) {
 		_Str = Str;
-//		MoveWindow(hWnd(), cX, cY, cAncho, cAlto, FALSE);
-		/*HWND Before = GetWindow(Padre, GW_HWNDPREV);
-		if (Before == NULL) {
-			Before = HWND_TOP;
-		}
-		else {
-			while (IsWindowVisible(Before) == FALSE) {
-				if (GetWindow(Before, GW_HWNDPREV) != NULL) {
-					Before = GetWindow(Before, GW_HWNDPREV);
-				}
-				else {
-					break;
-				}
-			}
-		}*/
-		
-/*		HWND After = GetWindow(Padre, GW_HWNDNEXT);
-		wchar_t Txt[128], Txt2[128];
-		wchar_t Txt3[128], Txt4[128];
-		GetWindowText(Before, Txt, 128);
-		GetClassName(Before, Txt2, 128);
-		GetWindowText(After, Txt3, 128);
-		GetClassName(After, Txt4, 128);
-		Debug_Escribir_Varg(L"%s | %s ||,|| %s | %s\n", Txt, Txt2, Txt3, Txt4);*/
-//		if (Before == NULL) Before = HWND_TOP;
+
 		SetWindowPos(_hWnd, HWND_TOP, cX, cY, cAncho, cAlto, SWP_SHOWWINDOW | SWP_NOACTIVATE);
 		
-//		ShowWindow(hWnd(), SW_SHOWNOACTIVATE);
-//		AnimateWindow(_hWnd, 100, AW_BLEND);
 		RedrawWindow(hWnd(), NULL, NULL, RDW_INVALIDATE | RDW_INTERNALPAINT);
 
 		SetTimer(_hWnd, ID_TEMPORIZADOR_OCULTAR, 5000, NULL);
@@ -119,24 +106,32 @@ namespace DWL {
 		RECT RCF = { RC.left + 1, RC.top + 1, RC.right - 1, RC.bottom - 1 };
 		RECT RCT = { RC.left, RC.top + DTOOLTIPEX_PADDING, RC.right, RC.bottom + (DTOOLTIPEX_PADDING * 2) };
 		
+		
 		// Creo un buffer en memória para pintar el control
 		HDC		Buffer		= CreateCompatibleDC(NULL);
 		// Creo un DC compatible para el buffer
 		HBITMAP Bmp			= CreateCompatibleBitmap(DC, RC.right, RC.bottom);
 		HBITMAP BmpViejo	= static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
 
-		HBRUSH BrochaBorde = CreateSolidBrush(COLOR_TOOLTIP_BORDE);
+		HBRUSH BrochaBorde = CreateSolidBrush(DToolTipEx_Skin::Borde);
 		FrameRect(Buffer, &RC, BrochaBorde);
 		DeleteObject(BrochaBorde);
 
-		HBRUSH BrochaFondo = CreateSolidBrush(COLOR_TOOLTIP_FONDO);
+		HBRUSH BrochaFondo = CreateSolidBrush(DToolTipEx_Skin::Fondo);
 		FillRect(Buffer, &RCF, BrochaFondo);
 		DeleteObject(BrochaFondo);
 
 		SetBkMode(Buffer, TRANSPARENT);
-		SetTextColor(Buffer, COLOR_TOOLTIP_TEXTO);
+
 		HFONT vFuente = static_cast<HFONT>(SelectObject(Buffer, _Fuente()));
 		
+		if (DToolTipEx_Skin::FuenteSombraTexto == TRUE) {
+			RECT RCTS = { RCT.left + 1, RCT.top + 1, RCT.right + 1, RCT.bottom + 1 };
+			SetTextColor(Buffer, DToolTipEx_Skin::TextoSombra);
+			DrawText(Buffer, _Str.c_str(), static_cast<int>(_Str.size()), &RCTS, DT_CENTER);
+		}
+
+		SetTextColor(Buffer, DToolTipEx_Skin::Texto);
 		DrawText(Buffer, _Str.c_str(), static_cast<int>(_Str.size()), &RCT, DT_CENTER);
 
 		//TextOut(Buffer, DTOOLTIPEX_PADDING, DTOOLTIPEX_PADDING, _Str.c_str(), static_cast<int>(_Str.size()));
@@ -149,7 +144,6 @@ namespace DWL {
 		SelectObject(Buffer, BmpViejo);
 		DeleteObject(Bmp);
 		DeleteDC(Buffer);
-
 	}
 
 	LRESULT CALLBACK DToolTipEx::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {

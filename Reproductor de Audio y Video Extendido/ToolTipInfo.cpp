@@ -217,10 +217,10 @@ void ToolTipInfo_2Columnas::Pintar(HDC hDC) {
 	GetClientRect(_hWnd, &RC);
 
 	// Creo un DC compatible para utilizar-lo de back buffer
-	HDC		DC = CreateCompatibleDC(NULL);
-	HBITMAP Bmp = CreateCompatibleBitmap(hDC, RC.right, RC.bottom);
-	HBITMAP BmpViejo = static_cast<HBITMAP>(SelectObject(DC, Bmp));
-	HFONT	VFont = static_cast<HFONT>(SelectObject(DC, Fuente21Negrita.Fuente()));
+	HDC		DC			= CreateCompatibleDC(NULL);
+	HBITMAP Bmp			= CreateCompatibleBitmap(hDC, RC.right, RC.bottom);
+	HBITMAP BmpViejo	= static_cast<HBITMAP>(SelectObject(DC, Bmp));
+	HFONT	VFont		= static_cast<HFONT>(SelectObject(DC, _FuenteTitulo()));
 
 	// Pinto el fondo
 	HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO);
@@ -244,14 +244,14 @@ void ToolTipInfo_2Columnas::Pintar(HDC hDC) {
 	PintarTexto(DC, _Titulo, 10 + TamIcono, 10);
 
 	// Pinto la columna con los nombres de los datos, y tambien pinto los 2 puntos
-	SelectObject(DC, Fuente18Negrita.Fuente());
+	SelectObject(DC, _FuenteNombreValor());
 	for (int i = 0; i < static_cast<int>(_Col1.size()); i++) {
 		PintarTexto(DC, _Col1[i].Texto, 10, 35 + (i * 20));
 		PintarTexto(DC, L":", _AnchoCol1 - 10, 35 + (i * 20));
 	}
 
 	// Pinto los datos
-	SelectObject(DC, Fuente18Normal.Fuente());
+	SelectObject(DC, _FuenteValor());
 	for (int i = 0; i < static_cast<int>(_Col2.size()); i++) {
 		if (_Col1[i].Texto != L"Nota") 	PintarTexto(DC, _Col2[i].Texto, _AnchoCol1, 35 + (i * 20));		
 		else							PintarNota(DC, _AnchoCol1, 35 + (i * 20));		
@@ -328,7 +328,7 @@ SIZE ToolTipInfo_Medio::CalcularTam(void) {
 	else										{	_Icono = DListaIconos::AgregarIconoRecursos(IDI_CANCION2, 16, 16);	}
 
 	HDC   hDC = GetDC(NULL);
-	HFONT VFont = static_cast<HFONT>(SelectObject(hDC, Fuente21Negrita.Fuente()));
+	HFONT VFont = static_cast<HFONT>(SelectObject(hDC, _FuenteTitulo()));
 	SIZE  Ret = { 0, (TOOLTIPINFO_PADDING * 2) + 25 };
 
 	_Col1.resize(0);
@@ -367,12 +367,12 @@ SIZE ToolTipInfo_Medio::CalcularTam(void) {
 		// Si la segunda columna tiene resultado
 		// Por ejemplo un video no tiene ni grupo ni disco, y estos tendran un tamaño de 0, por lo que no hace falta añadirlos a la lista final
 		if (Col2[i].size() > 0) {
-			SelectObject(hDC, Fuente18Negrita.Fuente());
+			SelectObject(hDC, _FuenteNombreValor());
 			GetTextExtentPoint32(hDC, Col1[i], static_cast<int>(wcslen(Col1[i])), &Tam);
 			if (Tam.cx > Ancho1) Ancho1 = Tam.cx;
 			_Col1.push_back(ToolTipInfo_Celda(Col1[i], Tam.cx));
 
-			SelectObject(hDC, Fuente18Normal.Fuente());
+			SelectObject(hDC, _FuenteValor());
 			GetTextExtentPoint32(hDC, Col2[i].c_str(), static_cast<int>(Col2[i].size()), &Tam);
 			if (Tam.cx > Ancho2) Ancho2 = Tam.cx;
 			_Col2.push_back(ToolTipInfo_Celda(Col2[i], Tam.cx));
@@ -433,7 +433,7 @@ SIZE ToolTipInfo_Etiqueta::CalcularTam(void) {
 	_Titulo = Etiqueta->Texto;
 
 	HDC   hDC = GetDC(NULL);
-	HFONT VFont = static_cast<HFONT>(SelectObject(hDC, Fuente21Negrita.Fuente()));
+	HFONT VFont = static_cast<HFONT>(SelectObject(hDC, _FuenteTitulo()));
 	SIZE  Ret = { 0, (TOOLTIPINFO_PADDING * 2) + 25 };
 
 	_Col1.resize(0);
@@ -459,12 +459,12 @@ SIZE ToolTipInfo_Etiqueta::CalcularTam(void) {
 	int Ancho1 = 0, Ancho2 = static_cast<int>(Etiqueta->Nota * 16.0f);
 	// Miro el ancho de cada columna y guardo las columnas
 	for (size_t i = 0; i < NumFilas; i++) {
-		SelectObject(hDC, Fuente18Negrita.Fuente());
+		SelectObject(hDC, _FuenteNombreValor());
 		GetTextExtentPoint32(hDC, Col1[i], static_cast<int>(wcslen(Col1[i])), &Tam);
 		if (Tam.cx > Ancho1) Ancho1 = Tam.cx;
 		_Col1.push_back(ToolTipInfo_Celda(Col1[i], Tam.cx));
 
-		SelectObject(hDC, Fuente18Normal.Fuente());
+		SelectObject(hDC, _FuenteValor());
 		GetTextExtentPoint32(hDC, Col2[i].c_str(), static_cast<int>(Col2[i].size()), &Tam);
 		if (Tam.cx > Ancho2) Ancho2 = Tam.cx;
 		_Col2.push_back(ToolTipInfo_Celda(Col2[i], Tam.cx));
@@ -499,7 +499,7 @@ SIZE ToolTipInfo_Texto::CalcularTam(void) {
 	HDC	   		hDC = CreateCompatibleDC(NULL);
 	HBITMAP		Bmp = CreateCompatibleBitmap(hDC, 1, 1);
 	HBITMAP		Viejo = static_cast<HBITMAP>(SelectObject(hDC, Bmp));
-	HFONT       vFuente = static_cast<HFONT>(SelectObject(hDC, Fuente18Normal()));
+	HFONT       vFuente = static_cast<HFONT>(SelectObject(hDC, _Fuente()));
 	SIZE		Ret = { 0, 0 };
 
 	RECT Tam = { 0, 0, 0, 0 };
@@ -542,7 +542,7 @@ void ToolTipInfo_Texto::Pintar(HDC DC) {
 	// Pinto el texto
 	SetBkMode(Buffer, TRANSPARENT);
 	SetTextColor(Buffer, COLOR_TOOLTIP_TEXTO);
-	HFONT vFuente = static_cast<HFONT>(SelectObject(Buffer, Fuente18Normal()));
+	HFONT vFuente = static_cast<HFONT>(SelectObject(Buffer, _Fuente()));
 	DrawText(Buffer, _Str.c_str(), static_cast<int>(_Str.size()), &RCT, DT_CENTER);
 	SelectObject(Buffer, vFuente);
 

@@ -44,6 +44,8 @@ const BOOL ThreadAnalisis::Iniciar(HWND nhWndDest) {
 		_BotonOcultar.CrearBotonEx(this, L"Ocultar", 300, 340, 100, 30, ID_BOTONOCULTAR);
 		_BotonCancelar.CrearBotonEx(this, L"Cancelar", 410, 340, 100, 30, ID_BOTONCANCELAR);
 		_MarcaNoMostrarMas.CrearMarcaEx(this, L"No volver a mostrar esta ventana.", 10, 346, 250, 20, ID_MARCANOMOSTRARMAS, IDI_CHECK2);
+		_FuenteNormal.CrearFuente(FUENTE_NORMAL, FUENTE_NOMBRE);
+		_FuenteNegrita.CrearFuente(FUENTE_NORMAL, FUENTE_NOMBRE, TRUE);
 	}
 
 	// Iniciamos el Thread
@@ -554,7 +556,7 @@ void ThreadAnalisis::Pintar(HDC DC) {
 	HBRUSH BrochaFondo = CreateSolidBrush(COLOR_FONDO);
 	FillRect(DC, &RC, BrochaFondo);
 
-	HFONT VFuente = static_cast<HFONT>(SelectObject(DC, DhWnd::Fuente18Normal()));
+	HFONT VFuente = static_cast<HFONT>(SelectObject(DC, _FuenteNormal()));
 
 	SetBkMode(DC, TRANSPARENT);
 	PintarTexto(DC, L"Analizando los datos de los medios en segundo plano.", 10, 10);
@@ -563,12 +565,12 @@ void ThreadAnalisis::Pintar(HDC DC) {
 	COLORREF ColFase2 = (_FASE == 2) ? COLOR_TEXTO_RESALTADO : COLOR_TEXTO_DESACTIVADO;;
 	COLORREF ColFase3 = (_FASE == 3) ? COLOR_TEXTO_RESALTADO : COLOR_TEXTO_DESACTIVADO;;
 
-	SelectObject(DC, DhWnd::Fuente18Negrita());
+	SelectObject(DC, _FuenteNegrita());
 	PintarTexto(DC, L"FASE 1 :", 10, 40, ColFase1);
 	PintarTexto(DC, L"FASE 2 :", 10, 140, ColFase2);
 	PintarTexto(DC, L"FASE 3 :", 10, 240, ColFase3);
 
-	SelectObject(DC, DhWnd::Fuente18Normal());
+	SelectObject(DC, _FuenteNormal());
 	PintarTexto(DC, L"Examinar los metadatos de todos los medios para extraer : generos, grupos, discos, nombres,", 30, 60, ColFase1);
 	PintarTexto(DC, L"pistas, y tiempos.", 30, 80, ColFase1);
 

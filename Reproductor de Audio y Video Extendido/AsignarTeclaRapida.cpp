@@ -19,6 +19,7 @@ void AsignarTeclaRapida::Crear(DWL::DhWnd *nPadre, const int cX, const int cY, c
 	_Texto = nTecla->String();
 	_Boton.CrearBotonEx(this, L"Editar", RC.right - ANCHO_BOTON, 0, ANCHO_BOTON, RC.bottom, ID_BOTON_EDITAR);
 	_Boton.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str(), TRUE);
+	_Fuente.CrearFuente(FUENTE_NORMAL, FUENTE_NOMBRE);
 }
 
 void AsignarTeclaRapida::Pintar(HDC DC) {
@@ -50,7 +51,7 @@ void AsignarTeclaRapida::Pintar(HDC DC) {
 	// Pinto el texto que nos dice la tecla asignada
 	SetBkMode(Buffer, TRANSPARENT);
 	// Selecciono la fuente
-	HFONT FuenteVieja = static_cast<HFONT>(SelectObject(Buffer, Fuente18Normal()));
+	HFONT FuenteVieja = static_cast<HFONT>(SelectObject(Buffer, _Fuente()));
 
 	// Vuelvo a seleccionar la fuente inicial del DC
 	SelectObject(Buffer, FuenteVieja);

@@ -3,6 +3,7 @@
 #include "DListaIconos_Icono.h"
 #include <vector>
 #include "DAnimacion.h"
+#include "DFuente.h"
 
 namespace DWL {
 
@@ -61,8 +62,8 @@ namespace DWL {
 		inline void						MostrarExpansor(const DArbolEx_MostrarExpansor nMostrarExpansor)	{ _MostrarExpansor = nMostrarExpansor;	}
 		const DArbolEx_MostrarExpansor	MostrarExpansor(void);
 
-		inline DhWnd_Fuente			   &Fuente(void)														{ return *_Fuente; }
-		inline void						Fuente(DhWnd_Fuente &nFuente)                                       { _Fuente = &nFuente;	_AnchoTexto = _Fuente->Tam(Texto).cx;	}
+		inline DFuente			       &Fuente(void)														{ return _Fuente; }
+		inline void						Fuente(DFuente &nFuente)                                            { _Fuente = nFuente;	_AnchoTexto = _Fuente.ObtenerTamTexto(Texto).cx;	}
 
 		inline DArbolEx_Nodo           *Padre(void)															{ return _Padre;						}
 		inline DArbolEx_Nodo           *Siguiente(void)														{ return _Siguiente;					}
@@ -106,7 +107,7 @@ namespace DWL {
 		DArbolEx_Nodo			      *_Siguiente;
 		DArbolEx_Nodo			      *_Anterior;
 		std::vector<DArbolEx_Nodo *>   _Hijos;
-		DhWnd_Fuente				  *_Fuente;
+		DFuente				           _Fuente;
 		DArbolEx                      *_Arbol;
 
 		void                           _TransicionExpansor(const DArbolEx_TransicionExpansor nTransicion);

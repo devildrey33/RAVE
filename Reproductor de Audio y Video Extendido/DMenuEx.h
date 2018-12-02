@@ -3,8 +3,33 @@
 
 #include "DVentana.h"
 #include "DBarraDesplazamientoEx.h"
+#include "DFuente.h"
 
 namespace DWL {
+
+	class DMenuEx_Skin {
+	  public:
+							DMenuEx_Skin(void) { };
+
+		static COLORREF     FondoNormal;
+		static COLORREF     FondoResaltado;
+		static COLORREF     FondoPresionado;
+		static COLORREF     TextoNormal;
+		static COLORREF     TextoResaltado;
+		static COLORREF     TextoPresionado;
+		static COLORREF     TextoDesactivado;
+		static COLORREF     TextoSombra;
+		static COLORREF     Borde;
+		static COLORREF     Separador;
+
+							// Fuente
+		static int			FuenteTam;
+		static std::wstring FuenteNombre;
+		static BOOL         FuenteNegrita;
+		static BOOL         FuenteCursiva;
+		static BOOL         FuenteSubrayado;
+		static BOOL			FuenteSombraTexto;
+	};
 
 	#define DMENUEX_MOSTRARDEBUG	FALSE
 
@@ -102,6 +127,8 @@ namespace DWL {
 		inline const float		BarraValor(void) { return _Barra.Valor(); };
 
 		void                    Transicion(const DMenuEx_Transicion nTransicion);
+
+		DFuente                 Fuente;
 	  protected:
 								// Constructor menú tipo texto (interno AgregarBarra)
 								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado, const float nMinimo, const float nMaximo, const float nValor);

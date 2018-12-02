@@ -21,14 +21,14 @@ namespace DWL {
 	COLORREF		DBotonEx_Skin::TextoPresionado		= COLOR_BOTON_TEXTO_PRESIONADO;
 	COLORREF		DBotonEx_Skin::TextoDesactivado		= COLOR_TEXTO_DESACTIVADO;
 	// Tipo de fuente
-	int				DBotonEx_Skin::FuenteTam			= 21;
-	std::wstring	DBotonEx_Skin::FuenteNombre			= L"tahoma";
+	int				DBotonEx_Skin::FuenteTam			= FUENTE_GRANDE;
+	std::wstring	DBotonEx_Skin::FuenteNombre			= FUENTE_NOMBRE;
 	BOOL            DBotonEx_Skin::FuenteNegrita		= TRUE;
 	BOOL            DBotonEx_Skin::FuenteCursiva		= FALSE;
 	BOOL            DBotonEx_Skin::FuenteSubrayado		= FALSE;
 
 	// Sombra para el texto
-	BOOL	  DBotonEx_Skin::SombraTexto		= TRUE;
+	BOOL			DBotonEx_Skin::FuenteSombraTexto	= TRUE;
 
 
 	DBotonEx::DBotonEx(void) : DControlEx(), _Marcado(FALSE), _PosIconoX(-1), _PosIconoY(-1), _Icono(NULL), _ColorFondo(DBotonEx_Skin::FondoNormal), _ColorBorde(DBotonEx_Skin::BordeNormal), _ColorTexto(DBotonEx_Skin::TextoNormal), _Estado(DBotonEx_Estado_Normal) {
@@ -116,7 +116,7 @@ namespace DWL {
 		// Si tiene texto
 		if (_Texto.size() > 0) {
 			SetBkMode(Buffer, TRANSPARENT);
-			if (DBotonEx_Skin::SombraTexto == TRUE) {
+			if (DBotonEx_Skin::FuenteSombraTexto == TRUE) {
 				// Pinto la sombra del texto
 				SetTextColor(Buffer, COLOR_TEXTO_SOMBRA);
 				DrawText(Buffer, _Texto.c_str(), static_cast<int>(_Texto.size()), &RCS, DT_CENTER | DT_VCENTER | DT_SINGLELINE);

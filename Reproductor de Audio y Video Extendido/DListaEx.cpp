@@ -6,6 +6,34 @@
 
 namespace DWL {
 
+
+	// Colores para el fondo (OJO los colores del fondo y del borde del control están en DBarraSroll_Skin)
+	COLORREF     DListaEx_Skin::FondoItemNormal						= COLOR_LISTA_FONDO;
+	COLORREF     DListaEx_Skin::FondoItemResaltado					= COLOR_LISTA_FONDO_RESALTADO;
+	COLORREF     DListaEx_Skin::FondoItemSeleccionado				= COLOR_LISTA_SELECCION;
+	COLORREF     DListaEx_Skin::FondoItemSeleccionadoResaltado		= COLOR_LISTA_SELECCION_RESALTADO;
+	COLORREF     DListaEx_Skin::FondoItemPresionado					= COLOR_LISTA_SELECCION_PRESIONADO;
+	// Color para el borde del item marcado
+	COLORREF     DListaEx_Skin::BordeItemMarcado					= COLOR_LISTA_MARCA_ITEM;
+	// Colores para el texto
+	COLORREF     DListaEx_Skin::TextoItemNormal						= COLOR_LISTA_TEXTO;
+	COLORREF     DListaEx_Skin::TextoItemResaltado					= COLOR_LISTA_TEXTO_RESALTADO;
+	COLORREF     DListaEx_Skin::TextoItemSombra						= COLOR_LISTA_TEXTO_SOMBRA;
+	COLORREF     DListaEx_Skin::TextoItemSeleccionado				= COLOR_LISTA_SELECCION_TEXTO;
+	COLORREF     DListaEx_Skin::TextoItemSeleccionadoSombra			= COLOR_LISTA_SELECCION_TEXTO_SOMBRA;
+	COLORREF     DListaEx_Skin::TextoItemSeleccionadoResaltado		= COLOR_LISTA_SELECCION_TEXTO_RESALTADO;
+	COLORREF     DListaEx_Skin::TextoItemPresionado					= COLOR_LISTA_SELECCION_TEXTO_PRESIONADO;
+
+	// Fuente
+	int			 DListaEx_Skin::FuenteTam							= FUENTE_NORMAL;
+	std::wstring DListaEx_Skin::FuenteNombre						= FUENTE_NOMBRE;
+	BOOL         DListaEx_Skin::FuenteNegrita						= FALSE;		
+	BOOL         DListaEx_Skin::FuenteCursiva						= FALSE;
+	BOOL         DListaEx_Skin::FuenteSubrayado						= FALSE;
+	BOOL		 DListaEx_Skin::FuenteSombraTexto							= FALSE;
+
+
+
 	DListaEx::DListaEx(void) :  DBarraScrollEx()		, _ItemPaginaInicio(0)		, _ItemPaginaFin(0)			, _ItemPaginaVDif(0)		, _ItemPaginaHDif(0),
 								_SubItemResaltado(-1)	, _SubItemUResaltado(-1)	, _SubItemPresionado(-1)	, MostrarSeleccion(TRUE)	, MultiSeleccion(FALSE),
 								_ItemResaltado(-1)		, _ItemUResaltado(-1)		, _ItemMarcado(0)			, _PintarIconos(TRUE),
@@ -13,7 +41,6 @@ namespace DWL {
 								_TotalAnchoVisible(0)	, _TotalAltoVisible(0)		, 
 								_BufferItem(NULL)		, _BufferItemBmp(NULL)		, _BufferItemBmpViejo(NULL)	, _BufferItemFuenteViejo(NULL) {
 
-//		ColorFondoScroll = COLOR_LISTA_FONDO_SCROLL;
 	}
 
 
@@ -25,7 +52,7 @@ namespace DWL {
 	
 	HWND DListaEx::CrearListaEx(DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, const DWORD Estilos, const DWORD EstilosExtendidos) {
 //		if (hWnd()) { Debug_Escribir(L"DListaEx::CrearListaEx() Error : ya se ha creado la lista\n"); return hWnd(); }
-		Fuente = Fuente18Normal;
+		Fuente.CrearFuente(DListaEx_Skin::FuenteTam, DListaEx_Skin::FuenteNombre.c_str(), DListaEx_Skin::FuenteNegrita, DListaEx_Skin::FuenteCursiva, DListaEx_Skin::FuenteSubrayado);
 		_hWnd = CrearControlEx(nPadre, L"DListaEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, EstilosExtendidos, CS_DBLCLKS); // CS_DBLCLKS (el control recibe notificaciones de doble click)
 		_Repintar = TRUE;
 		return hWnd();
@@ -140,14 +167,6 @@ namespace DWL {
 			}
 		}
 
-		// Pinto el resto del fondo
-/*		if (DifInicioV < RCS.bottom) {
-			RECT RFondo = RCS; RFondo.top = DifInicioV;
-			HBRUSH BFondo = CreateSolidBrush(COLOR_LISTA_FONDO);
-			FillRect(Buffer, &RFondo, BFondo);
-			DeleteObject(BFondo);
-		}*/
-
 		PintarBorde(&RCB, Buffer);
 
 		// Pinto las barras de scroll en el buffer
@@ -173,39 +192,39 @@ namespace DWL {
 		// Presionado ////////////////////////////////////
 		if (bPresionado == TRUE) { 
 			if (MostrarSeleccion == TRUE) {
-				ColTexto  = COLOR_LISTA_SELECCION_TEXTO_PRESIONADO;
-				ColSombra = COLOR_LISTA_SELECCION_TEXTO_SOMBRA;
-				ColFondo  = COLOR_LISTA_SELECCION_PRESIONADO;
+				ColTexto  = DListaEx_Skin::TextoItemPresionado;
+				ColSombra = DListaEx_Skin::TextoItemSeleccionadoSombra;
+				ColFondo  = DListaEx_Skin::FondoItemPresionado;
 			}
 			else {
-				ColTexto  = COLOR_LISTA_TEXTO;
-				ColSombra = COLOR_LISTA_TEXTO_SOMBRA;
-				ColFondo  = COLOR_LISTA_FONDO_PRESIONADO;
+				ColTexto  = DListaEx_Skin::TextoItemNormal;
+				ColSombra = DListaEx_Skin::TextoItemSeleccionadoSombra;
+				ColFondo  = DListaEx_Skin::FondoItemPresionado;
 			}
 		}
 		// Seleccionado //////////////////////////////////
 		else if (_Items[static_cast<unsigned int>(nPosItem)]->Seleccionado == TRUE && MostrarSeleccion == TRUE) { 
 			if (bResaltado == FALSE) {	////////////////// Normal
-				ColTexto = COLOR_LISTA_SELECCION_TEXTO;
-				ColFondo = COLOR_LISTA_SELECCION;
+				ColTexto = DListaEx_Skin::TextoItemSeleccionado;
+				ColFondo = DListaEx_Skin::FondoItemSeleccionado;
 			}
 			else {	////////////////////////////////////// Resaltado
-				ColTexto = COLOR_LISTA_SELECCION_TEXTO_RESALTADO;
-				ColFondo = COLOR_LISTA_SELECCION_RESALTADO;
+				ColTexto = DListaEx_Skin::TextoItemSeleccionadoResaltado;
+				ColFondo = DListaEx_Skin::FondoItemSeleccionadoResaltado;
 			}
-			ColSombra = COLOR_LISTA_SELECCION_TEXTO_SOMBRA;
+			ColSombra = DListaEx_Skin::TextoItemSeleccionadoSombra;
 		}
 		// Sin selección ni presionado ///////////////////
 		else { 
 			if (bResaltado == FALSE) {	////////////////// Normal
-				ColTexto = COLOR_LISTA_TEXTO;
+				ColTexto = DListaEx_Skin::TextoItemNormal;
 				ColFondo = _ColorFondo;
 			}
 			else {  ////////////////////////////////////// Resaltado
-				ColTexto = COLOR_LISTA_TEXTO_RESALTADO;
-				ColFondo = COLOR_LISTA_FONDO_RESALTADO;
+				ColTexto = DListaEx_Skin::TextoItemResaltado;
+				ColFondo = DListaEx_Skin::FondoItemResaltado;
 			}
-			ColSombra = COLOR_LISTA_TEXTO_SOMBRA;
+			ColSombra = DListaEx_Skin::TextoItemSombra;
 		}  ///////////////////////////////////////////////
 
 		// Pinto el fondo del buffer
@@ -238,11 +257,10 @@ namespace DWL {
 			// Si hay texto lo pinto
 			if (_Items[static_cast<unsigned int>(nPosItem)]->Texto(i).size() > 0) {
 				// Pinto la sombra
-				#if LISTA_PINTAR_SOMBRA_TEXTO == TRUE
+				if (DListaEx_Skin::FuenteSombraTexto == TRUE) {
 					SetTextColor(_BufferItem, ColSombra);
 					DrawText(_BufferItem, _Items[static_cast<unsigned int>(nPosItem)]->Texto(i).c_str(), static_cast<int>(_Items[static_cast<unsigned int>(nPosItem)]->Texto(i).size()), &RCelda, _Columnas[i]->Alineacion | DT_NOPREFIX);
-				#endif
-
+				}
 				// Pinto el texto
 				SetTextColor(_BufferItem, ColTexto);
 				OffsetRect(&RCelda, -1, -1);
@@ -256,7 +274,7 @@ namespace DWL {
 
 		if (nPosItem == _ItemMarcado) {
 			// Pinto la marca del foco del teclado
-			HBRUSH BrochaMarcaItem = CreateSolidBrush(COLOR_LISTA_NODO_MARCA);
+			HBRUSH BrochaMarcaItem = CreateSolidBrush(DListaEx_Skin::BordeItemMarcado);
 			RECT RFondo = { 0, 0, Espacio.right - Espacio.left, Espacio.bottom - Espacio.top };
 			FrameRect(_BufferItem, &RFondo, BrochaMarcaItem);
 			DeleteObject(BrochaMarcaItem);

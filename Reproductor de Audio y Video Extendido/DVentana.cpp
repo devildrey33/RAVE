@@ -21,7 +21,7 @@ namespace DWL {
 		ATOM RetRgistrarClase = RegistrarClase(nNombre, reinterpret_cast<WNDPROC>(_GestorMensajes), nEstilosClase, nIconoRecursos, ColFondo);
 		_hWnd = CreateWindowEx(nEstilosExtendidos, nNombre, nTexto, nEstilos, cX, cY, cAncho, cAlto, hWndPadre, nMenu, GetModuleHandle(NULL), this);
 		Debug_MostrarUltimoError();
-		SendMessage(hWnd(), WM_SETFONT, (WPARAM)Fuente18Normal(), 0);
+//		SendMessage(hWnd(), WM_SETFONT, (WPARAM)Fuente18Normal(), 0);
 		BarraTareas._Iniciar(_hWnd);
 		return hWnd();
 	}

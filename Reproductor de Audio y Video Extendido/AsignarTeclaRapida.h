@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DBotonEx.h"
+#include "DFuente.h"
 
 class TeclaRapida {
   public:
@@ -38,6 +39,7 @@ class AsignarTeclaRapida : public DWL::DControlEx {
 	LRESULT CALLBACK	GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	
   protected:
+	DFuente            _Fuente;
 	BOOL               _Editando;
 	DWL::DBotonEx	   _Boton;
 	std::wstring       _Texto;

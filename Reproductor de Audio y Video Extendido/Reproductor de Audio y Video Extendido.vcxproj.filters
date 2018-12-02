@@ -283,9 +283,6 @@
     <ClInclude Include="DhWnd.h">
       <Filter>DWL\Ventanas\Base</Filter>
     </ClInclude>
-    <ClInclude Include="DhWnd_Fuente.h">
-      <Filter>DWL\Ventanas\Base</Filter>
-    </ClInclude>
     <ClInclude Include="DMensajesWnd.h">
       <Filter>DWL\Ventanas\Base</Filter>
     </ClInclude>

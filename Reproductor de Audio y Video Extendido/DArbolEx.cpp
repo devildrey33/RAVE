@@ -20,14 +20,49 @@
 
 namespace DWL {
 
+
+	COLORREF     DArbolEx_Skin::FondoNodoResaltado					= COLOR_ARBOL_FONDO_RESALTADO;
+	COLORREF     DArbolEx_Skin::FondoNodoSeleccionado				= COLOR_ARBOL_SELECCION;
+	COLORREF     DArbolEx_Skin::FondoNodoSeleccionadoResaltado		= COLOR_ARBOL_SELECCION_RESALTADO;
+	COLORREF     DArbolEx_Skin::FondoNodoSubSeleccionado			= COLOR_ARBOL_SUBSELECCION;
+	COLORREF     DArbolEx_Skin::FondoNodoSubSeleccionadoResaltado	= COLOR_ARBOL_SUBSELECCION_RESALTADO;
+	COLORREF     DArbolEx_Skin::FondoNodoPresionado					= COLOR_ARBOL_SELECCION_PRESIONADO;
+
+	COLORREF     DArbolEx_Skin::BordeNodoMarcado					= COLOR_ARBOL_NODO_MARCA;
+
+	COLORREF     DArbolEx_Skin::ExpansorNormal						= COLOR_ARBOL_EXPANSOR_NORMAL;
+	COLORREF     DArbolEx_Skin::ExpansorResaltado					= COLOR_ARBOL_EXPANSOR_RESALTADO;
+	COLORREF     DArbolEx_Skin::ExpansorPresionado					= COLOR_ARBOL_EXPANSOR_PRESIONADO;
+
+	COLORREF     DArbolEx_Skin::TextoNodoNormal						= COLOR_ARBOL_TEXTO;
+	COLORREF     DArbolEx_Skin::TextoNodoResaltado					= COLOR_ARBOL_TEXTO_RESALTADO;
+	COLORREF     DArbolEx_Skin::TextoNodoDesactivado				= COLOR_ARBOL_TEXTO_DESACTIVADO;
+	COLORREF     DArbolEx_Skin::TextoNodoSombra						= COLOR_ARBOL_TEXTO_SOMBRA;
+	COLORREF     DArbolEx_Skin::TextoNodoSeleccionado				= COLOR_ARBOL_SELECCION_TEXTO;
+	COLORREF     DArbolEx_Skin::TextoNodoSeleccionadoSombra			= COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
+	COLORREF     DArbolEx_Skin::TextoNodoSeleccionadoResaltado		= COLOR_ARBOL_SELECCION_TEXTO_RESALTADO;
+	COLORREF     DArbolEx_Skin::TextoNodoSubSeleccionado			= COLOR_ARBOL_SUBSELECCION_TEXTO;
+	COLORREF     DArbolEx_Skin::TextoNodoSubSeleccionadoSombra		= COLOR_ARBOL_SUBSELECCION_TEXTO_SOMBRA;
+	COLORREF     DArbolEx_Skin::TextoNodoSubSeleccionadoResaltado	= COLOR_ARBOL_SUBSELECCION_TEXTO_RESALTADO;
+	COLORREF     DArbolEx_Skin::TextoNodoPresionado					= COLOR_ARBOL_SELECCION_TEXTO_RESALTADO;
+
+	// Fuente
+	int			 DArbolEx_Skin::FuenteTam							= FUENTE_NORMAL;
+	std::wstring DArbolEx_Skin::FuenteNombre						= FUENTE_NOMBRE;
+	BOOL         DArbolEx_Skin::FuenteNegrita						= FALSE;
+	BOOL         DArbolEx_Skin::FuenteCursiva						= FALSE;
+	BOOL         DArbolEx_Skin::FuenteSubrayado						= FALSE;
+	BOOL		 DArbolEx_Skin::FuenteSombraTexto					= FALSE;
+
+
 	DArbolEx::DArbolEx(void) : DBarraScrollEx(),
   	  _NodoMarcado(NULL)		, _NodoShift(NULL)								, _PosShift(0)				, _TiempoTecladoTmp(0),			// Info nodo Marcado y Shift
 	  _NodoPresionado(NULL)		, _NodoPresionadoParte(DArbolEx_ParteNodo_Nada)	, _Repintar(FALSE)			, _NodoUltimaBusqueda(NULL),	// Info nodo presionado
-	  _NodoResaltado(NULL)		, _NodoResaltadoParte(DArbolEx_ParteNodo_Nada)	, MultiSeleccion(TRUE)		,								// Info nodo resaltado
+	  _NodoResaltado(NULL)		, _NodoResaltadoParte(DArbolEx_ParteNodo_Nada)	, MultiSeleccion(TRUE)		, _MaxAltoNodo(0),				// Info nodo resaltado
 	  _NodoUResaltado(NULL)		, _NodoUResaltadoParte(DArbolEx_ParteNodo_Nada)	, SubSeleccion(FALSE)		,								// Info ultimo nodo resaltado (para evitar repintados innecesarios en el mousemove)
 	  _TotalAnchoVisible(0)		, _TotalAltoVisible(0)							, _ExpansorPorDefecto(DArbolEx_Expansor_TrianguloLinea),	// tamaño y el expansor por defecto
 	  _NodoPaginaInicio(NULL)	, _NodoPaginaFin(NULL)							, _NodoPaginaVDif(0)		, _NodoPaginaHDif(0),			// Nodo inicial y final de la página visible
-	  _BufferNodo(NULL)			, _BufferNodoBmp(NULL)							, _BufferNodoBmpViejo(NULL)							{		// Buffer para pintar un solo nodo
+	  _BufferNodo(NULL)			, _BufferNodoBmp(NULL)							, _BufferNodoBmpViejo(NULL)								  {	// Buffer para pintar un solo nodo
 
 		_Raiz.Expandido = TRUE;
 		_Raiz._Arbol = this;
@@ -47,7 +82,7 @@ namespace DWL {
 		}
 		
 		_hWnd = CrearControlEx(nPadre, L"DArbolEx", L"", cID, cX, cY, cAncho, cAlto, nEstilos, NULL, CS_DBLCLKS);  // CS_DBLCLKS (el control recibe notificaciones de doble click)
-		Fuente = Fuente18Normal;
+		Fuente.CrearFuente(DArbolEx_Skin::FuenteTam, DArbolEx_Skin::FuenteNombre.c_str(), DArbolEx_Skin::FuenteNegrita, DArbolEx_Skin::FuenteCursiva, DArbolEx_Skin::FuenteSubrayado);
 		_Repintar = TRUE;
 		return hWnd();
 	}
@@ -91,7 +126,7 @@ namespace DWL {
 	}
 
 
-	DArbolEx_Nodo *DArbolEx::_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre, DListaIconos_Icono *nIcono, DhWnd_Fuente *nFuente, const size_t PosicionNodo) {
+	DArbolEx_Nodo *DArbolEx::_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre, DListaIconos_Icono *nIcono, DFuente *nFuente, const size_t PosicionNodo) {
 		#if DARBOLEX_MOSTRARDEBUG == TRUE
 			Debug_Escribir_Varg(L"DArbolEx::_AgregarNodo(%s)\n", nTexto);
 		#endif
@@ -108,11 +143,11 @@ namespace DWL {
 		nNodo->_Icono = nIcono;
 
 		// Compruebo la fuente (si no es NULL asigno la nueva fuente)
-		if (nFuente != NULL) nNodo->_Fuente = nFuente;
-		else                 nNodo->_Fuente = &Fuente; // no se ha especificado la fuente, asigno la fuente por defecto del arbol
+		if (nFuente != NULL) nNodo->_Fuente = *nFuente;
+		else                 nNodo->_Fuente = Fuente; // no se ha especificado la fuente, asigno la fuente por defecto del arbol
 
 														// Calculo y asigno el ancho del texto
-		nNodo->_AnchoTexto = nNodo->_Fuente->Tam(nNodo->Texto).cx;
+		nNodo->_AnchoTexto = nNodo->_Fuente.ObtenerTamTexto(nNodo->Texto).cx;
 
 		// Compruebo el padre (si es null nPadre será _Raiz)
 		if (nPadre == NULL) {
@@ -125,7 +160,7 @@ namespace DWL {
 		// Si el padre está expandido, sumo la altura de este nodo al total 
 		if (nNodo->_Padre->Expandido == TRUE) {
 			// Cuento los pixeles de todos los nodos visibles
-			_TotalAltoVisible += (nNodo->_Fuente->Alto() + (DARBOLEX_PADDING * 2));
+			_TotalAltoVisible += (nNodo->_Fuente.Alto() + (DARBOLEX_PADDING * 2));
 		}
 		DArbolEx_Nodo *nAnterior = NULL;
 		size_t nPos = 0;
@@ -260,7 +295,6 @@ namespace DWL {
 
 		// Pinto el fondo
 		HBRUSH BFondo = CreateSolidBrush(_ColorFondo);
-//		HBRUSH BFondo = CreateSolidBrush(COLOR_ARBOL_FONDO);
 		FillRect(Buffer, &RCB, BFondo);
 		DeleteObject(BFondo);
 
@@ -281,20 +315,12 @@ namespace DWL {
 
 		RECT RectaItem; // = { 0, DifInicio, RCS.right, DifInicio + nActual->_Fuente->Alto() };
 		while (nActual != NodoFin && nActual != NULL) {
-			nAlto = nActual->_Fuente->Alto() + (DARBOLEX_PADDING * 2);
+			nAlto = nActual->_Fuente.Alto() + (DARBOLEX_PADDING * 2);
 			RectaItem = { RC.left, DifInicioV, RCS.right, DifInicioV + nAlto };
 			PintarNodo(Buffer, &RectaItem, nActual, -_NodoPaginaHDif);
 			DifInicioV += nAlto;							// Sumo la altura del nodo a la diferencia inicial
 			nActual = BuscarNodoSiguiente(nActual, TRUE);
 		}
-
-		// Pinto el resto del fondo
-/*		if (DifInicioV < RCS.bottom) {
-			RECT RFondo = RCB; RFondo.top = DifInicioV;
-			HBRUSH BFondo = CreateSolidBrush(COLOR_ARBOL_FONDO);
-			FillRect(Buffer, &RFondo, BFondo);
-			DeleteObject(BFondo);
-		}*/
 
 		PintarBorde(&RCB, Buffer);
 
@@ -311,84 +337,10 @@ namespace DWL {
 	}
 
 	void DArbolEx::PintarNodo(HDC hDC, RECT *Espacio, DArbolEx_Nodo *nNodo, const int PosH) {
-		// Determino el estado del nodo (0 normal, 1 presionado, 2 resaltado, 3 seleccionado, 4 presionado, 5 resaltado, 6 sub-seleccionado, 7 presionado, 8 resaltado)
-		/*int Estado = 0;
-
-		// Normal +0, Presionado +1, Resaltado +2
-		if			(nNodo == _NodoPresionado) 			Estado = 1;
-		else if		(nNodo == _NodoResaltado)			Estado = 2;
-
-		// Activado +0, Desactivado +9
-		if			(nNodo->Activado == FALSE)			Estado += 9;
-		else {
-			// Seleccionado +3, SubSeleccionado +6
-			if		(nNodo->Seleccionado == TRUE)		Estado += 3;
-			else if (nNodo->_SubSeleccionado == TRUE)   Estado += 6;
-		}
-
-		COLORREF ColFondo = NULL, ColTexto = NULL, ColSombra = NULL;
-		switch (Estado) {
-			case 0: // Activado Normal
-				ColTexto  = COLOR_ARBOL_TEXTO;
-				ColSombra = COLOR_ARBOL_TEXTO_SOMBRA;
-				ColFondo  = COLOR_ARBOL_FONDO;
-				break;
-			case 1: // Activado Presionado
-				ColTexto  = COLOR_ARBOL_SELECCION_TEXTO_PRESIONADO;
-				ColSombra = COLOR_ARBOL_TEXTO_SOMBRA;
-				ColFondo  = COLOR_ARBOL_FONDO_PRESIONADO;
-				break;
-			case 2: // Activado Resaltado
-				ColTexto  = COLOR_ARBOL_TEXTO_RESALTADO;
-				ColSombra = COLOR_ARBOL_TEXTO_SOMBRA;
-				ColFondo  = COLOR_ARBOL_FONDO_RESALTADO;
-				break;
-			case 3: // Activado Seleccionado
-				ColTexto  = COLOR_ARBOL_SELECCION_TEXTO;
-				ColSombra = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
-				ColFondo  = COLOR_ARBOL_SELECCION;
-				break;
-			case 4: // Activado Seleccionado presionado
-				ColTexto  = COLOR_ARBOL_SELECCION_TEXTO_PRESIONADO;
-				ColSombra = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
-				ColFondo  = COLOR_ARBOL_SELECCION_PRESIONADO;
-				break;
-			case 5: // Activado Seleccionado resaltado
-				ColTexto  = COLOR_ARBOL_SELECCION_TEXTO_RESALTADO;
-				ColSombra = COLOR_ARBOL_SELECCION_TEXTO_SOMBRA;
-				ColFondo  = COLOR_ARBOL_SELECCION_RESALTADO;
-				break;
-			case 6: // Activado Sub-Seleccionado
-				ColTexto  = COLOR_ARBOL_SUBSELECCION_TEXTO;
-				ColSombra = COLOR_ARBOL_SUBSELECCION_TEXTO_SOMBRA;
-				ColFondo  = COLOR_ARBOL_SUBSELECCION;
-				break;
-			case 7: // Activado Sub-Seleccionado presionado
-				ColTexto  = COLOR_ARBOL_SELECCION_TEXTO_PRESIONADO;
-				ColSombra = COLOR_ARBOL_SUBSELECCION_TEXTO_SOMBRA;
-				ColFondo  = COLOR_ARBOL_SELECCION_PRESIONADO;
-				break;
-			case 8: // Activado Sub-Seleccionado resaltado
-				ColTexto  = COLOR_ARBOL_SUBSELECCION_TEXTO_RESALTADO;
-				ColSombra = COLOR_ARBOL_SUBSELECCION_TEXTO_SOMBRA;
-				ColFondo  = COLOR_ARBOL_SUBSELECCION_RESALTADO;
-				break;
-			case 9: // Desactivado Normal
-				ColTexto  = COLOR_ARBOL_TEXTO_DESACTIVADO;
-				ColSombra = COLOR_ARBOL_TEXTO_SOMBRA;
-				ColFondo  = COLOR_ARBOL_FONDO;
-				break;
-			case 10: // Desactivado Presionado
-			case 11: // Desactivado Resaltado
-				ColTexto  = COLOR_ARBOL_TEXTO_DESACTIVADO;
-				ColSombra = COLOR_ARBOL_TEXTO_SOMBRA;
-				ColFondo  = COLOR_ARBOL_FONDO_RESALTADO;
-				break;
-		}*/
-
+		
 		// Pinto el fondo del buffer
 		HBRUSH BrochaFondo = CreateSolidBrush(_ColorFondo);
-		RECT EspacioLocal = { Espacio->left , 0, (static_cast<LONG>(_TotalAnchoVisible) > Espacio->right) ? static_cast<LONG>(_TotalAnchoVisible) : Espacio->right, (2 * DARBOLEX_PADDING) + nNodo->_Fuente->Alto() };
+		RECT EspacioLocal = { Espacio->left , 0, (static_cast<LONG>(_TotalAnchoVisible) > Espacio->right) ? static_cast<LONG>(_TotalAnchoVisible) : Espacio->right, (2 * DARBOLEX_PADDING) + nNodo->_Fuente.Alto() };
 		FillRect(_BufferNodo, &EspacioLocal, BrochaFondo);
 		DeleteObject(BrochaFondo);
 
@@ -417,35 +369,34 @@ namespace DWL {
 		RECT RFondo = { SPresionado + (AnchoOcupado - DARBOLEX_PADDING),
 						SPresionado + (DARBOLEX_MARGEN_Y_SELECCION * 2),
 						SPresionado + (AnchoOcupado + nNodo->_AnchoTexto) + DARBOLEX_PADDING,
-						SPresionado + ((DARBOLEX_PADDING * 2) + nNodo->_Fuente->Alto()) - DARBOLEX_MARGEN_Y_SELECCION };
+						SPresionado + ((DARBOLEX_PADDING * 2) + nNodo->_Fuente.Alto()) - DARBOLEX_MARGEN_Y_SELECCION };
 
 		// Pinto el fondo del texto del nodo (si no es del mismo color que el fondo normal / resaltado)
-		if (nNodo->_ColorFondo != COLOR_FONDO_CLARO && nNodo->_ColorFondo != COLOR_FONDO_CLARO_RESALTADO) {
-
+		if (nNodo->_ColorFondo != DBarraScrollEx_Skin::FondoNormal && nNodo->_ColorFondo != DBarraScrollEx_Skin::FondoResaltado) {
 			HBRUSH BrochaFondoTexto = CreateSolidBrush(nNodo->_ColorFondo);
 			FillRect(_BufferNodo, &RFondo, BrochaFondoTexto);
 			DeleteObject(BrochaFondoTexto);
 		}
 
 		// Seleciono la fuente del nodo
-		HFONT FuenteVieja = static_cast<HFONT>(SelectObject(_BufferNodo, nNodo->_Fuente->Fuente()));
+		HFONT FuenteVieja = static_cast<HFONT>(SelectObject(_BufferNodo, nNodo->_Fuente()));
 
 		// Defino la recta para el texto
 		RECT RTexto = { SPresionado + AnchoOcupado								+1,
 						SPresionado + DARBOLEX_PADDING							+1,
 						SPresionado + AnchoOcupado + nNodo->_AnchoTexto			+1,
-						SPresionado + DARBOLEX_PADDING + nNodo->_Fuente->Alto()	+1 };
+						SPresionado + DARBOLEX_PADDING + nNodo->_Fuente.Alto()	+1 };
 		// Pinto la sombra del texto
-		#if ARBOL_PINTAR_SOMBRA_TEXTO == TRUE
+		if (DArbolEx_Skin::FuenteSombraTexto == TRUE) {
 			SetTextColor(_BufferNodo, nNodo->_ColorTextoSombra);
 			DrawText(_BufferNodo, nNodo->Texto.c_str(), static_cast<int>(nNodo->Texto.size()), &RTexto, DT_LEFT | DT_NOPREFIX);
-		#endif
+		}
 		// Pinto el texto del nodo
 		SetTextColor(_BufferNodo, nNodo->_ColorTexto);
 		RTexto = {	SPresionado + AnchoOcupado,
 					SPresionado + DARBOLEX_PADDING,
 					SPresionado + AnchoOcupado + nNodo->_AnchoTexto,
-					SPresionado + DARBOLEX_PADDING + nNodo->_Fuente->Alto() };
+					SPresionado + DARBOLEX_PADDING + nNodo->_Fuente.Alto() };
 		DrawText(_BufferNodo, nNodo->Texto.c_str(), static_cast<int>(nNodo->Texto.size()), &RTexto, DT_LEFT | DT_NOPREFIX);
 
 		// Vuelvo a seleccionar la fuente inicial del DC
@@ -454,14 +405,13 @@ namespace DWL {
 		// Pinto la marca del nodo (si es el _NodoMarcado) 
 		if (_NodoMarcado == nNodo) {
 			//int AnchoExpansorIcono = ARBOLEX_PADDING + ARBOLEX_TAMEXPANSOR + ARBOLEX_PADDING + ARBOLEX_TAMICONO + ARBOLEX_PADDING;
-			HBRUSH BrochaMarcaNodo = CreateSolidBrush(COLOR_ARBOL_NODO_MARCA);
-//			HBRUSH BrochaMarcaNodo = CreateSolidBrush((_NodoMarcado->Seleccionado == TRUE) ? COLOR_ARBOL_NODO_MARCA_SELECCIONADO : COLOR_ARBOL_NODO_MARCA);
+			HBRUSH BrochaMarcaNodo = CreateSolidBrush(DArbolEx_Skin::BordeNodoMarcado);
 			FrameRect(_BufferNodo, &RFondo, BrochaMarcaNodo);
 			DeleteObject(BrochaMarcaNodo);
 		}
 
 		// Pinto el resultado del buffer al DC de la función pintar
-		BitBlt(hDC, Espacio->left, Espacio->top, Espacio->right, (DARBOLEX_PADDING * 2) + nNodo->_Fuente->Alto(), _BufferNodo, PosH + Espacio->left, 0, SRCCOPY);
+		BitBlt(hDC, Espacio->left, Espacio->top, Espacio->right, (DARBOLEX_PADDING * 2) + nNodo->_Fuente.Alto(), _BufferNodo, PosH + Espacio->left, 0, SRCCOPY);
 	}
 
 
@@ -476,27 +426,7 @@ namespace DWL {
 								EPresionado + PosExpansorY,
 								EPresionado + AnchoOcupado + DARBOLEX_TAMEXPANSOR,
 								EPresionado + PosExpansorY + DARBOLEX_TAMEXPANSOR };
-		// Expansor presionado
-/*		if (_NodoPresionado == nNodo && _NodoResaltadoParte == DArbolEx_ParteNodo_Expansor) {
-			HBRUSH	BrochaExpansorPresionado = CreateSolidBrush(COLOR_ARBOL_SELECCION_PRESIONADO);
-			FillRect(_BufferNodo, &MarcoExpansor, BrochaExpansorPresionado);
-			DeleteObject(BrochaExpansorPresionado);
-			BrochaBordeExpansor = CreateSolidBrush(COLOR_ARBOL_EXPANSOR_PRESIONADO);
-			PlumaExpansor = CreatePen(PS_SOLID, 1, COLOR_ARBOL_SELECCION_TEXTO_PRESIONADO);
-		}
-		// Expansor resaltado
-		else if (_NodoResaltado == nNodo && _NodoResaltadoParte == DArbolEx_ParteNodo_Expansor) {
-			HBRUSH	BrochaExpansorResaltado = CreateSolidBrush(COLOR_ARBOL_SELECCION_RESALTADO);
-			FillRect(_BufferNodo, &MarcoExpansor, BrochaExpansorResaltado);
-			DeleteObject(BrochaExpansorResaltado);
-			BrochaBordeExpansor = CreateSolidBrush(COLOR_ARBOL_EXPANSOR_RESALTADO);
-			PlumaExpansor = CreatePen(PS_SOLID, 1, COLOR_ARBOL_SELECCION_TEXTO_RESALTADO);
-		}
-		// Expansor normal
-		else {
-			BrochaBordeExpansor = CreateSolidBrush(COLOR_ARBOL_EXPANSOR_NORMAL);
-			PlumaExpansor = CreatePen(PS_SOLID, 1, COLOR_ARBOL_TEXTO);
-		}*/
+		
 		BrochaBordeExpansor = CreateSolidBrush(nNodo->_ColorExpansor);
 		PlumaExpansor = CreatePen(PS_SOLID, 1, nNodo->_ColorExpansor);
 		FrameRect(_BufferNodo, &MarcoExpansor, BrochaBordeExpansor);
@@ -575,7 +505,7 @@ namespace DWL {
 		int AltoNodo = 0;
 		// Busco el nodo que está en la misma altura que cY
 		while (Tmp != _NodoPaginaFin) {
-			AltoNodo = Tmp->_Fuente->Alto() + (DARBOLEX_PADDING * 2);
+			AltoNodo = Tmp->_Fuente.Alto() + (DARBOLEX_PADDING * 2);
 			if (PixelesContados <= cY && PixelesContados + AltoNodo >= cY) {
 				break;
 			}
@@ -594,7 +524,7 @@ namespace DWL {
 			if (Tmp->MostrarExpansor() != DArbolEx_MostrarExpansor_Ocultar) {
 				// Compruebo si el mouse está en el expansor del nodo
 				int inicioexpansorX = 2 + static_cast<int>((Tmp->_Ancestros - 1) * DARBOLEX_TAMICONO) + DARBOLEX_PADDING + _NodoPaginaHDif;
-				int inicioexpansorY = ((Tmp->_Fuente->Alto() + (DARBOLEX_PADDING * 2)) - DARBOLEX_TAMEXPANSOR) / 2;							// ((Altura del nodo + (padding * 2)) - altura del expansor) / 2
+				int inicioexpansorY = ((Tmp->_Fuente.Alto() + (DARBOLEX_PADDING * 2)) - DARBOLEX_TAMEXPANSOR) / 2;							// ((Altura del nodo + (padding * 2)) - altura del expansor) / 2
 				iniciotodoX = 2 + static_cast<int>((Tmp->_Ancestros - 1) * DARBOLEX_TAMICONO) + DARBOLEX_PADDING + _NodoPaginaHDif;
 				tamtodoX = DARBOLEX_TAMEXPANSOR + DARBOLEX_PADDING + DARBOLEX_TAMICONO + 2 + (DARBOLEX_PADDING * 2) + Tmp->_AnchoTexto + DARBOLEX_PADDING;
 				RECT RectaExpansor = {  inicioexpansorX,							PixelesContados + inicioexpansorY,
@@ -613,7 +543,7 @@ namespace DWL {
 			}
 			// Compruebo si el mouse está en el icono del nodo
 			int inicioiconoX = 2 + static_cast<int>((Tmp->_Ancestros - 1) * DARBOLEX_TAMICONO) + DARBOLEX_PADDING + DARBOLEX_TAMEXPANSOR + DARBOLEX_PADDING + _NodoPaginaHDif;
-			int inicioiconoY = ((Tmp->_Fuente->Alto() + (DARBOLEX_PADDING * 2)) - DARBOLEX_TAMICONO) / 2;
+			int inicioiconoY = ((Tmp->_Fuente.Alto() + (DARBOLEX_PADDING * 2)) - DARBOLEX_TAMICONO) / 2;
 			RECT RectaIcono = {  inicioiconoX,										PixelesContados + inicioiconoY,
 								 inicioiconoX + DARBOLEX_TAMICONO,					PixelesContados + inicioiconoY + DARBOLEX_TAMICONO };
 			if (PtInRect(&RectaIcono, Pt) != 0) {
@@ -626,7 +556,7 @@ namespace DWL {
 			int iniciotexto = 2 + static_cast<int>((Tmp->_Ancestros - 1) * DARBOLEX_TAMICONO) + DARBOLEX_PADDING + DARBOLEX_TAMEXPANSOR + DARBOLEX_PADDING + DARBOLEX_TAMICONO + DARBOLEX_PADDING + 2 + _NodoPaginaHDif;
 			// Compruebo si el mouse está en el texto del nodo
 			RECT RectaTexto = { iniciotexto,										PixelesContados + DARBOLEX_PADDING,
-								iniciotexto + Tmp->_AnchoTexto + DARBOLEX_PADDING,	PixelesContados + (DARBOLEX_PADDING * 2) + Tmp->_Fuente->Alto() };
+								iniciotexto + Tmp->_AnchoTexto + DARBOLEX_PADDING,	PixelesContados + (DARBOLEX_PADDING * 2) + Tmp->_Fuente.Alto() };
 			if (PtInRect(&RectaTexto, Pt) != 0) {
 				Parte = DArbolEx_ParteNodo_Texto;
 				#if DARBOLEX_MOSTRARDEBUG == TRUE
@@ -636,7 +566,7 @@ namespace DWL {
 			}
 			// Compruebo si el mouse está dentro del nodo (hay partes del nodo que no pertenecen ni al texto ni al icono ni al expansor)
 			RECT RectaNodo = { iniciotodoX,										PixelesContados + DARBOLEX_PADDING,
-							   iniciotodoX + tamtodoX,							PixelesContados + (DARBOLEX_PADDING * 2) + Tmp->_Fuente->Alto() };
+							   iniciotodoX + tamtodoX,							PixelesContados + (DARBOLEX_PADDING * 2) + Tmp->_Fuente.Alto() };
 			if (PtInRect(&RectaNodo, Pt) != 0) {
 				Parte = DArbolEx_ParteNodo_Nodo;
 				#if DARBOLEX_MOSTRARDEBUG == TRUE
@@ -780,10 +710,10 @@ namespace DWL {
 			if (Tmp == rNodo) {
 				rRecta.left		= 2 + static_cast<LONG>((Tmp->_Ancestros - 1) * DARBOLEX_TAMICONO);
 				rRecta.right    = rRecta.left + DARBOLEX_PADDING + DARBOLEX_TAMEXPANSOR + DARBOLEX_PADDING + DARBOLEX_TAMICONO + 2 + (DARBOLEX_PADDING * 2) + Tmp->_AnchoTexto + DARBOLEX_PADDING + 2,
-				rRecta.bottom	= rRecta.top + Tmp->_Fuente->Alto() + (DARBOLEX_PADDING * 2);
+				rRecta.bottom	= rRecta.top + Tmp->_Fuente.Alto() + (DARBOLEX_PADDING * 2);
 				return TRUE;
 			}
-			rRecta.top += Tmp->_Fuente->Alto() + (DARBOLEX_PADDING * 2);
+			rRecta.top += Tmp->_Fuente.Alto() + (DARBOLEX_PADDING * 2);
 			Tmp = BuscarNodoSiguiente(Tmp, TRUE);
 		}
 		return FALSE;
@@ -873,7 +803,7 @@ namespace DWL {
 
 		DArbolEx_Nodo *Tmp = _Raiz._Hijos[0];
 		while (Tmp != NULL) {
-			AltoNodo = (Tmp->_Fuente->Alto() + (DARBOLEX_PADDING * 2));
+			AltoNodo = (Tmp->_Fuente.Alto() + (DARBOLEX_PADDING * 2));
 			if (_NodoPaginaInicio == NULL) {
 				if (TotalPixelesContados <= PixelInicio && TotalPixelesContados + AltoNodo >= PixelInicio) {
 					_NodoPaginaVDif = static_cast<LONG>(TotalPixelesContados - PixelInicio);
@@ -920,7 +850,7 @@ namespace DWL {
 			TmpAncho = (static_cast<int>((nNodo->_Ancestros - 1) * DARBOLEX_TAMICONO) + DARBOLEX_PADDING + DARBOLEX_TAMEXPANSOR + DARBOLEX_PADDING + DARBOLEX_TAMICONO + 2             + (DARBOLEX_PADDING * 2) + nNodo->_AnchoTexto + DARBOLEX_PADDING) + 2;
 			if (_TotalAnchoVisible < TmpAncho) _TotalAnchoVisible = TmpAncho;
 
-			TmpAlto = (nNodo->_Fuente->Alto() + (DARBOLEX_PADDING * 2));
+			TmpAlto = (nNodo->_Fuente.Alto() + (DARBOLEX_PADDING * 2));
 			if (_MaxAltoNodo < TmpAlto) _MaxAltoNodo = TmpAlto;
 
 			_TotalAltoVisible += TmpAlto;
@@ -1019,16 +949,16 @@ namespace DWL {
 		if (sNodo->Activado() == FALSE) return;
 
 		sNodo->Seleccionado = nSeleccionado;
-		if (nSeleccionado == TRUE)			{	sNodo->_AsignarColores(COLOR_ARBOL_SELECCION_TEXTO		, COLOR_ARBOL_SELECCION_TEXTO_SOMBRA	, COLOR_ARBOL_SELECCION);	}
-		else								{	sNodo->_AsignarColores(COLOR_ARBOL_TEXTO				, COLOR_ARBOL_TEXTO_SOMBRA				, COLOR_ARBOL_FONDO);		}
+		if (nSeleccionado == TRUE)			{	sNodo->_AsignarColores(DArbolEx_Skin::TextoNodoSeleccionado		, DArbolEx_Skin::TextoNodoSeleccionadoSombra	, DArbolEx_Skin::FondoNodoSeleccionado);	}
+		else								{	sNodo->_AsignarColores(DArbolEx_Skin::TextoNodoNormal			, DArbolEx_Skin::TextoNodoSombra				, DBarraScrollEx_Skin::FondoNormal);		}
 
 		if (SubSeleccion == TRUE && sNodo->_Hijos.size() > 0) {
 			DArbolEx_Nodo *Tmp = sNodo->_Hijos[0];
 			while (Tmp != NULL) {
 				if (Tmp->Activado() == TRUE) {
 					Tmp->_SubSeleccionado = nSeleccionado;
-					if (nSeleccionado == TRUE)	{ Tmp->_AsignarColores(COLOR_ARBOL_SUBSELECCION_TEXTO	, COLOR_ARBOL_SUBSELECCION_TEXTO_SOMBRA	, COLOR_ARBOL_SUBSELECCION);	}
-					else						{ Tmp->_AsignarColores(COLOR_ARBOL_TEXTO				, COLOR_ARBOL_TEXTO_SOMBRA				, COLOR_ARBOL_FONDO);  			}
+					if (nSeleccionado == TRUE)	{ Tmp->_AsignarColores(DArbolEx_Skin::TextoNodoSubSeleccionado	, DArbolEx_Skin::TextoNodoSubSeleccionadoSombra	, DArbolEx_Skin::FondoNodoSubSeleccionado);	}
+					else						{ Tmp->_AsignarColores(DArbolEx_Skin::TextoNodoNormal			, DArbolEx_Skin::TextoNodoSombra				, DBarraScrollEx_Skin::FondoNormal);  		}
 				}
 				Tmp = BuscarNodoSiguiente(Tmp, FALSE, sNodo);
 			}
@@ -1280,8 +1210,8 @@ namespace DWL {
 		while (dNodo != NULL) {
 			dNodo->Seleccionado			= FALSE;
 			dNodo->_SubSeleccionado		= FALSE;
-			if (dNodo->Activado() == TRUE)	dNodo->_AsignarColores(COLOR_ARBOL_TEXTO			, COLOR_ARBOL_TEXTO_SOMBRA, COLOR_ARBOL_FONDO);
-			else                            dNodo->_AsignarColores(COLOR_ARBOL_TEXTO_DESACTIVADO, COLOR_ARBOL_TEXTO_SOMBRA, COLOR_ARBOL_FONDO);
+			if (dNodo->Activado() == TRUE)	dNodo->_AsignarColores(DArbolEx_Skin::TextoNodoNormal	  , DArbolEx_Skin::TextoNodoSombra, DBarraScrollEx_Skin::FondoNormal);
+			else                            dNodo->_AsignarColores(DArbolEx_Skin::TextoNodoDesactivado, DArbolEx_Skin::TextoNodoSombra, DBarraScrollEx_Skin::FondoNormal);
 			dNodo = BuscarNodoSiguiente(dNodo, FALSE);
 		}
 	}
@@ -1424,7 +1354,7 @@ namespace DWL {
 		while (Tmp != NULL && PixelesContados < RA.bottom) {
 			if (Tmp != NULL) {
 				UTmp = Tmp;
-				PixelesContados += Tmp->_Fuente->Alto() + (DARBOLEX_PADDING * 2);
+				PixelesContados += Tmp->_Fuente.Alto() + (DARBOLEX_PADDING * 2);
 /*				if (TeclaShift == TRUE && MultiSeleccion == TRUE) {
 					SeleccionarNodo(Tmp, !Tmp->Seleccionado);
 				}*/
@@ -1458,7 +1388,7 @@ namespace DWL {
 		while (Tmp != NULL && PixelesContados < RA.bottom) {
 			if (Tmp != NULL) {
 				UTmp = Tmp;
-				PixelesContados += Tmp->_Fuente->Alto() + (DARBOLEX_PADDING * 2);
+				PixelesContados += Tmp->_Fuente.Alto() + (DARBOLEX_PADDING * 2);
 /*				if (TeclaShift == TRUE && MultiSeleccion == TRUE) {
 					SeleccionarNodo(Tmp, !Tmp->Seleccionado);					
 				}*/

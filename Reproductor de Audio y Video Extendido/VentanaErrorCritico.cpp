@@ -27,7 +27,7 @@ HWND VentanaErrorCritico::Crear(void) {
 	GetClientRect(hWnd(), &RC);
 
 	TextoTitulo.CrearEtiquetaEx(this, L"Error crítico!", 10, 10, RC.right - 20, 20, ID_VEC_TEXTOERROR, DEtiquetaEx_Alineacion_Centrado, WS_CHILD);
-	TextoTitulo.Fuente = Fuente21Negrita;
+	TextoTitulo.Fuente.CrearFuente(21, L"tahoma", TRUE);
 	TextoTitulo.ColorTexto = COLOR_BOTON_RESALTADO;
 	TextoTitulo.Visible(TRUE);
 
@@ -37,7 +37,7 @@ HWND VentanaErrorCritico::Crear(void) {
 						L"ayudando al desarrollo de este reproductor."
 						L"\n\nEn caso contrario pula el boton Salir. ";
 	TextoError.CrearEtiquetaEx(this, TE.c_str(), 10, 40, RC.right - 20, 150, ID_VEC_TEXTOERROR, DEtiquetaEx_Alineacion_Izquierda, WS_CHILD | WS_VISIBLE);
-	TextoError.Fuente = Fuente18Normal;
+//	TextoError.Fuente = Fuente18Normal;
 
 	BarraProgreso.CrearBarraProgresoEx(this, 10, 200, RC.right - 20, 10, ID_VEC_PROGRESO, 0.0f, 100.0f, 0.0f);
 	

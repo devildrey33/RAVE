@@ -7,36 +7,36 @@
 
 namespace DWL {
 
-	DhWnd_Fuente DhWnd::Fuente16Normal;
+/*	DhWnd_Fuente DhWnd::Fuente16Normal;
 	DhWnd_Fuente DhWnd::Fuente18Normal;
 	DhWnd_Fuente DhWnd::Fuente18Negrita;
 	DhWnd_Fuente DhWnd::Fuente21Normal;
 	DhWnd_Fuente DhWnd::Fuente21Negrita;
-	DhWnd_Fuente DhWnd::FuenteTest;
+	DhWnd_Fuente DhWnd::FuenteTest;*/
 
 //	bool         DhWnd::Teclado[256];// = { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,	false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
 	DWORD        DhWnd::TiempoAnimaciones = 400;
 
-	void DhWnd::IniciarMiembrosEstaticos(void) {
+	//void DhWnd::IniciarMiembrosEstaticos(void) {
 		// Creamos las fuentes si no existen, y limpiamos el buffer para el teclado
-		if (Fuente18Normal.Fuente() == NULL) {
+/*		if (Fuente18Normal.Fuente() == NULL) {
 //			BorrarBufferTeclado();
-			Fuente16Normal	= CreateFont(16, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
-			Fuente18Normal	= CreateFont(FUENTE_PEQUE_TAM, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
-			Fuente18Negrita	= CreateFont(FUENTE_PEQUE_TAM, 0, 0, 0, FW_BOLD, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
-			Fuente21Normal	= CreateFont(FUENTE_NORMAL_TAM, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
-			Fuente21Negrita	= CreateFont(FUENTE_NORMAL_TAM, 0, 0, 0, FW_BOLD, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
-			FuenteTest		= CreateFont(26, 0, 0, 0, FW_BOLD, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NORMAL);
-		}
-	}
+			Fuente16Normal	= CreateFont(FUENTE_PEQUE, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NOMBRE);
+			Fuente18Normal	= CreateFont(FUENTE_NORMAL, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NOMBRE);
+			Fuente18Negrita	= CreateFont(FUENTE_NORMAL, 0, 0, 0, FW_BOLD, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NOMBRE);
+			Fuente21Normal	= CreateFont(FUENTE_GRANDE, 0, 0, 0, FW_NORMAL, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NOMBRE);
+			Fuente21Negrita	= CreateFont(FUENTE_GRANDE, 0, 0, 0, FW_BOLD, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NOMBRE);
+			FuenteTest		= CreateFont(26, 0, 0, 0, FW_BOLD, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, FUENTE_NOMBRE);
+		}*/
+	//}
 
-	void DhWnd::EliminarFuentesEstaticas(void) {
+	/*void DhWnd::EliminarFuentesEstaticas(void) {
 		Fuente18Normal.Destruir();
 		Fuente18Negrita.Destruir();
 		Fuente21Normal.Destruir();
 		Fuente21Negrita.Destruir();
 		FuenteTest.Destruir();
-	}
+	}**/
 
 	ATOM DhWnd::RegistrarClase(const TCHAR *nNombre, WNDPROC WindowProcedureInicial, UINT nEstilos, const int nIconoRecursos, HBRUSH nColorFondo, HINSTANCE hInstance) {
 		
