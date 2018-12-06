@@ -68,6 +68,10 @@ namespace DWL {
 	}
 
 
+	DFuente::DFuente(const int nTam, const wchar_t *nNombre, const BOOL nNegrita, const BOOL nCursiva, const BOOL nSubrayado, const BOOL nTachado) : _Fuente(NULL) {
+		CrearFuente(nTam, nNombre, nNegrita, nCursiva, nSubrayado, nTachado);
+	}
+
 	DFuente::~DFuente(void) {
 	}
 

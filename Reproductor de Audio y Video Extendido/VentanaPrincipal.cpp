@@ -133,7 +133,7 @@ void VentanaPrincipal::AjustarControles(RECT &RC) {
 	MoveWindow(Arbol.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, TRUE);
 	MoveWindow(Video.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, TRUE);
 
-	MoveWindow(SliderTiempo.hWnd(), 10, 50, RC.right - 20, 24, TRUE);
+	MoveWindow(SliderTiempo.hWnd(), 10, 50, RC.right - 20, 20, TRUE);
 	MoveWindow(MarcoSD.hWnd(), RC.right - 260, 14, 255, 24, TRUE);
 
 	//App.VLC.RepintarVLC();

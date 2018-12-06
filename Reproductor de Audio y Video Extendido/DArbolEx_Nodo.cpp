@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "DArbolEx.h"
-#include "DListaIconos.h"
+//#include "DListaIconos.h"
 
 
 namespace DWL {
 
-	DArbolEx_Nodo::DArbolEx_Nodo(void) :	_Siguiente(NULL), _Anterior(NULL), _Icono(NULL), _Ancestros(0), _AnchoTexto(0), _Arbol(NULL), _Padre(NULL),
+	DArbolEx_Nodo::DArbolEx_Nodo(void) :	_Siguiente(NULL), _Anterior(NULL), _Ancestros(0), _AnchoTexto(0), _Arbol(NULL), _Padre(NULL),
 											_ColorExpansor(DArbolEx_Skin::ExpansorNormal), _ColorTexto(DArbolEx_Skin::TextoNodoNormal), _ColorTextoSombra(DArbolEx_Skin::TextoNodoSombra), _ColorFondo(DBarraScrollEx_Skin::FondoNormal),
 											Expandido(FALSE), Seleccionado(FALSE), _SubSeleccionado(FALSE), _MostrarExpansor(DArbolEx_MostrarExpansor_Auto), _Activado(TRUE) {
 	};
@@ -32,15 +32,15 @@ namespace DWL {
 
 
 	void DArbolEx_Nodo::Icono(const int nIconoRecursos) {
-		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
+		_Icono.CrearIconoRecursos(nIconoRecursos, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
 	}
 
 	void DArbolEx_Nodo::Icono(const GUID nIconoKnownFolder) {
-		_Icono = DListaIconos::AgregarIconoKnownFolder(nIconoKnownFolder, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
+		_Icono.CrearIconoKnownFolder(nIconoKnownFolder, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
 	}
 
 	void DArbolEx_Nodo::Icono(const wchar_t *nIconoPath, const int nIconoPos) {
-		_Icono = DListaIconos::AgregarIconoExterno(nIconoPath, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO, nIconoPos);
+		_Icono.CrearIconoExterno(nIconoPath, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO, nIconoPos);
 	}
 
 	void DArbolEx_Nodo::BorrarHijos(void) {

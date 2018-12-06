@@ -54,13 +54,13 @@ namespace DWL {
 	  public:
 									DEdicionTextoEx(void);
 		                           ~DEdicionTextoEx(void);
-		HWND						CrearEdicionTextoEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, DListaIconos_Icono *nIcono = NULL, const long Estilos = WS_CHILD | WS_VISIBLE);
+		HWND						CrearEdicionTextoEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, DIcono *nIcono = NULL, const long Estilos = WS_CHILD | WS_VISIBLE);
 		virtual void				Activado(const BOOL nActivar);
 		inline const BOOL			Activado(void) { return DhWnd::Activado(); }
 		void						Pintar(HDC hDC, const int cX = 0, const int cY = 0);
 		LRESULT CALLBACK			GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
-		inline DListaIconos_Icono  *Icono(void) { return _Icono; }
-		void                        Icono(DListaIconos_Icono *nIcono, const BOOL nRepintar = TRUE);
+		inline DIcono              &Icono(void) { return _Icono; }
+		void                        Icono(DIcono *nIcono, const BOOL nRepintar = TRUE);
 		inline const wchar_t       *Texto(void) { return _Texto.c_str(); };
 		virtual void				Texto(std::wstring &nTexto, const BOOL nRepintar = TRUE);
 		virtual void				Texto(const wchar_t *nTexto, const BOOL nRepintar = TRUE);
@@ -81,7 +81,7 @@ namespace DWL {
 		void                       _Evento_FocoAsignado(void);
 		void                       _Evento_FocoPerdido(void);
 		void					   _Evento_Temporizador(const INT_PTR tID);
-		DListaIconos_Icono        *_Icono;
+		DIcono                     _Icono;
 
 		std::wstring               _Texto;
 

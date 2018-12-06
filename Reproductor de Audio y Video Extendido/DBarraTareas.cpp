@@ -100,9 +100,11 @@ namespace DWL {
 //			int o = GetSystemMetrics(SM_CXICON);
 			THUMBBUTTON *nBotones = new THUMBBUTTON[Botones.size()];
 			for (size_t i = 0; i < Botones.size(); i++) {
+				DIcono Ico;
+				Ico.CrearIconoRecursos(Botones[i].IDIcono, GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON));
 				nBotones[i].dwMask	= THB_ICON | THB_TOOLTIP | THB_FLAGS;
 				nBotones[i].iId		= static_cast<UINT>(Botones[i].ID);
-				nBotones[i].hIcon	= DListaIconos::AgregarIconoRecursos(Botones[i].IDIcono, GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON))->Icono();
+				nBotones[i].hIcon	= Ico();
 				nBotones[i].dwFlags = THBF_ENABLED;
 				wcscpy_s(nBotones[i].szTip, 260, Botones[i].TextoToolTip.c_str());				
 			}
@@ -115,10 +117,12 @@ namespace DWL {
 
 	void DBarraTareas::Boton_Icono(const INT_PTR nID, const INT_PTR IDIconoRecursos) {
 		if (_BarraTareas != NULL) {
+			DIcono Ico;
+			Ico.CrearIconoRecursos(IDIconoRecursos, GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON));
 			THUMBBUTTON Boton;
 			Boton.dwMask	= THB_ICON;
 			Boton.iId		= static_cast<UINT>(nID);
-			Boton.hIcon		= DListaIconos::AgregarIconoRecursos(IDIconoRecursos, GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON))->Icono();
+			Boton.hIcon		= Ico();
 			HRESULT Ret		= _BarraTareas->ThumbBarUpdateButtons(_hWnd, 1, &Boton);
 		}
 	}

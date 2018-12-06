@@ -82,7 +82,7 @@ namespace DWL {
 
 								// Función para asignar un icono para el boton
 		void                    Icono(const int IDIcono, const int TamIcono, const int PosX = DBOTONEX_CENTRADO, const int PosY = DBOTONEX_CENTRADO);
-		inline const INT_PTR    IDIcono(void) { return (_Icono != NULL) ? _Icono->ID() : 0; };
+		inline const INT_PTR    IDIcono(void) { return (_Icono() != NULL) ? _Icono.ID() : 0; };
 
 								// Funciones para asignar texto a un boton
 		inline void             Texto(std::wstring &nTexto)  { _Texto = nTexto; Repintar(); };
@@ -100,7 +100,7 @@ namespace DWL {
 		std::wstring           _Texto;
 		DBotonEx_Estado		   _Estado;
 		BOOL                   _Marcado;
-		DListaIconos_Icono    *_Icono;
+		DIcono                 _Icono;
 		int                    _PosIconoX;
 		int                    _PosIconoY;
 		DAnimacion             _AniTransicion;

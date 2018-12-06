@@ -32,7 +32,7 @@ namespace DWL {
 	BOOL			DBotonEx_Skin::FuenteSombraTexto	= TRUE;
 
 
-	DBotonEx::DBotonEx(void) : DControlEx(), _Marcado(FALSE), _PosIconoX(-1), _PosIconoY(-1), _Icono(NULL), _ColorFondo(DBotonEx_Skin::FondoNormal), _ColorBorde(DBotonEx_Skin::BordeNormal), _ColorTexto(DBotonEx_Skin::TextoNormal), _Estado(DBotonEx_Estado_Normal) {
+	DBotonEx::DBotonEx(void) : DControlEx(), _Marcado(FALSE), _PosIconoX(-1), _PosIconoY(-1), _ColorFondo(DBotonEx_Skin::FondoNormal), _ColorBorde(DBotonEx_Skin::BordeNormal), _ColorTexto(DBotonEx_Skin::TextoNormal), _Estado(DBotonEx_Estado_Normal) {
 	}
 
 
@@ -64,7 +64,7 @@ namespace DWL {
 	void DBotonEx::Icono(const int IDIcono, const int TamIcono, const int PosX, const int PosY) {
 		RECT RC;
 		GetClientRect(_hWnd, &RC);
-		_Icono = DListaIconos::AgregarIconoRecursos(IDIcono, TamIcono, TamIcono);
+		_Icono.CrearIconoRecursos(IDIcono, TamIcono, TamIcono);
 		_PosIconoX = (PosX == -1) ? (RC.right - TamIcono) / 2 : PosX;
 		_PosIconoY = (PosY == -1) ? (RC.bottom - TamIcono) / 2 : PosX;
 		Repintar();
@@ -130,8 +130,8 @@ namespace DWL {
 		}
 
 		// Si tiene icono
-		if (_Icono != NULL) {
-			DrawIconEx(Buffer, bPresionado + _PosIconoX, bPresionado + _PosIconoY, _Icono->Icono(), _Icono->Ancho(), _Icono->Alto(), 0, 0, DI_NORMAL);
+		if (_Icono() != NULL) {
+			DrawIconEx(Buffer, bPresionado + _PosIconoX, bPresionado + _PosIconoY, _Icono(), _Icono.Ancho(), _Icono.Alto(), 0, 0, DI_NORMAL);
 		}
 
 		// Llamo al evento pintar virtual

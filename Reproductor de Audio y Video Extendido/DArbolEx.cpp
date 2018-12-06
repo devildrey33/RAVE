@@ -1,6 +1,6 @@
 //#pragma once
 #include "stdafx.h"
-#include "DListaIconos.h"
+//#include "DListaIconos.h"
 #include "DMensajesWnd.h"
 #include "DArbolEx.h"
 #include "DGDI.h"
@@ -126,7 +126,7 @@ namespace DWL {
 	}
 
 
-	DArbolEx_Nodo *DArbolEx::_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre, DListaIconos_Icono *nIcono, DFuente *nFuente, const size_t PosicionNodo) {
+	DArbolEx_Nodo *DArbolEx::_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre, DIcono *nIcono, DFuente *nFuente, const size_t PosicionNodo) {
 		#if DARBOLEX_MOSTRARDEBUG == TRUE
 			Debug_Escribir_Varg(L"DArbolEx::_AgregarNodo(%s)\n", nTexto);
 		#endif
@@ -140,7 +140,7 @@ namespace DWL {
 /*		if (nIcono == NULL) {
 			nNodo->_Icono = NULL;
 		}*/
-		nNodo->_Icono = nIcono;
+		if (nIcono != NULL)	nNodo->_Icono = *nIcono;
 
 		// Compruebo la fuente (si no es NULL asigno la nueva fuente)
 		if (nFuente != NULL) nNodo->_Fuente = *nFuente;
@@ -361,7 +361,7 @@ namespace DWL {
 		// Pinto el icono
 		int PosIcoY = SPresionado + (((Espacio->bottom - Espacio->top) - DARBOLEX_TAMICONO) / 2);
 		int PosIcoX = SPresionado + (AnchoOcupado + DARBOLEX_PADDING);
-		DrawIconEx(_BufferNodo, PosIcoX, PosIcoY, nNodo->_Icono->Icono(), DARBOLEX_TAMICONO, DARBOLEX_TAMICONO, 0, 0, DI_NORMAL);
+		DrawIconEx(_BufferNodo, PosIcoX, PosIcoY, nNodo->_Icono(), DARBOLEX_TAMICONO, DARBOLEX_TAMICONO, 0, 0, DI_NORMAL);
 		AnchoOcupado += DARBOLEX_TAMICONO + (DARBOLEX_PADDING * 2) + 2;
 //		AnchoOcupado += DARBOLEX_TAMICONO + DARBOLEX_PADDING + 2;
 

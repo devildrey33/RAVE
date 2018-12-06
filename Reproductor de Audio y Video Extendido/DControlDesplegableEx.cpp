@@ -21,7 +21,7 @@ namespace DWL {
 */
 
 
-	DControlDesplegableEx::DControlDesplegableEx(void) : _Icono(NULL) {
+	DControlDesplegableEx::DControlDesplegableEx(void)  {
 	}
 
 
@@ -32,10 +32,10 @@ namespace DWL {
 	void DControlDesplegableEx::CrearControlDesplegable(DhWnd *nPadre, const wchar_t *nTexto, const INT_PTR nID, const INT_PTR nIDIcono, const int cX, const int cY, const int cAncho, const int cAlto, const BOOL TextoEditable) {
 		CrearControlEx(nPadre, L"DControlDesplegable", nTexto, nID, cX, cY, cAncho, cAlto, WS_CHILD | WS_VISIBLE, NULL);
 		_Boton.CrearBotonEx(this, L"", cAncho - cAlto, 0, cAlto, cAlto, ID_BOTON);
-		_Icono = DListaIconos::AgregarIconoRecursos(nIDIcono, TAM_ICONO, TAM_ICONO);
+		_Icono.CrearIconoRecursos(nIDIcono, TAM_ICONO, TAM_ICONO);
 		_Edicion.TextoEditable = TextoEditable;
 		_Edicion.Alineacion = DEdicionTextoEx_Alineacion_Izquierda;
-		_Edicion.CrearEdicionTextoEx(this, nTexto, 0, 0, cAncho - cAlto, cAlto, ID_EDICION, _Icono);
+		_Edicion.CrearEdicionTextoEx(this, nTexto, 0, 0, cAncho - cAlto, cAlto, ID_EDICION, &_Icono);
 	}
 
 

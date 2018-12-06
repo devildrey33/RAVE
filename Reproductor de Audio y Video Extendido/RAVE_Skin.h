@@ -22,7 +22,7 @@
 	- Constantia				// ni de conya
 	- Arial						// no
 	- Arial balck				// NO
-	- Calibri					// M'agrada i els numeros tb, tot i que l'ample es queda algo reduît (comparan amb la Tahoma)					[*]
+	- Calibri					// M'agrada i els numeros tb, tot i que l'ample es queda algo reduît i la altura (comparan amb la Tahoma)		[*]
 	- Candara					// M'agrada pero els numeros no...
 	- Corbel					// M'agrada pero els numeros no...
 	- Lucida sans				// no em convenç
@@ -64,8 +64,8 @@
 #define FUENTE_PEQUE			16
 #define FUENTE_NORMAL			18
 #define FUENTE_GRANDE			20*/
-/*
-#define FUENTE_NOMBRE			L"Tahoma"
+
+/*#define FUENTE_NOMBRE			L"Tahoma"
 #define FUENTE_PEQUE			16
 #define FUENTE_NORMAL			18
 #define FUENTE_GRANDE			20*/

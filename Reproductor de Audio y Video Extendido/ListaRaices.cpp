@@ -2,7 +2,7 @@
 #include "ListaRaices.h"
 #include "resource.h"
 
-ListaRaices::ListaRaices(void) : DListaEx(), _IconoPapelera(NULL), _IconoPapeleraResaltado(NULL), _ItemRaizPresionado(-1), _SubItemRaizPresionado(-1) {
+ListaRaices::ListaRaices(void) : DListaEx(), _ItemRaizPresionado(-1), _SubItemRaizPresionado(-1) {
 
 }
 
@@ -17,8 +17,8 @@ void ListaRaices::CrearListaRaiz(DhWnd *nPadre, const int cX, const int cY, cons
 	AgregarColumna(DLISTAEX_COLUMNA_ANCHO_AUTO);										// Path
 	AgregarColumna(16 + (DLISTAEX_PADDING * 2), DListaEx_Columna_Alineacion_Centrado);	// Eliminar
 	// Icono de la papelera para borrar la raíz
-	_IconoPapeleraResaltado	= DListaIconos::AgregarIconoRecursos(IDI_BORRAR, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
-	_IconoPapelera			= DListaIconos::AgregarIconoRecursos(IDI_BORRARRESALTADO, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
+	_IconoPapeleraResaltado.CrearIconoRecursos(IDI_BORRAR, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
+	_IconoPapelera.CrearIconoRecursos(IDI_BORRARRESALTADO, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
 
 	MostrarSeleccion = FALSE;
 }
@@ -35,7 +35,7 @@ void ListaRaices::Evento_PintarSubItem(HDC hDC, const LONGLONG NumItem, const LO
 	if (NumSubItem == 1 && NumItem == _ItemResaltado) {
 		int PosY_Ico = 1 + static_cast<int>(((Espacio->bottom - Espacio->top) - DLISTAEX_TAMICONO) / 2);
 		int b_Presionado = 0;
-		HICON IPapelera = (_SubItemResaltado == 1) ? _IconoPapeleraResaltado->Icono() : _IconoPapelera->Icono();
+		HICON IPapelera = (_SubItemResaltado == 1) ? _IconoPapeleraResaltado() : _IconoPapelera();
 
 		if (_ItemPresionado == NumItem) b_Presionado = 1;
 		DrawIconEx(_BufferItem, b_Presionado + Espacio->left, b_Presionado + PosY_Ico, IPapelera, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO, 0, 0, DI_NORMAL);

@@ -235,9 +235,9 @@ void ToolTipInfo_2Columnas::Pintar(HDC hDC) {
 	SetBkMode(DC, TRANSPARENT);
 
 	int TamIcono = 0;
-	if (_Icono != NULL) {
+	if (_Icono() != NULL) {
 		TamIcono = 20;
-		DrawIconEx(DC, 10, 12, _Icono->Icono(), _Icono->Ancho(), _Icono->Alto(), 0, 0, DI_NORMAL);
+		DrawIconEx(DC, 10, 12, _Icono(), _Icono.Ancho(), _Icono.Alto(), 0, 0, DI_NORMAL);
 	}
 
 	// Pinto el titulo
@@ -276,7 +276,8 @@ void ToolTipInfo_2Columnas::_PintarNota(HDC hDC, const int cX, const int cY, con
 	float Nota = nNota;
 	int X = 0;
 //	int Ancho = 16;
-	DListaIconos_Icono *IcoNota = DWL::DListaIconos::AgregarIconoRecursos(IDI_NOTA, 16, 16);
+//	DIcono  IcoNota;
+	//IcoNota.CrearIconoRecursos(IDI_NOTA, 16, 16);
 	
 	HDC		DC = CreateCompatibleDC(NULL);
 	HBITMAP Bmp = CreateCompatibleBitmap(hDC, static_cast<int>(Nota * 16.0f), 16);
@@ -289,7 +290,7 @@ void ToolTipInfo_2Columnas::_PintarNota(HDC hDC, const int cX, const int cY, con
 	DeleteObject(BrochaFondo);
 
 	while (Nota > 0.0f) {
-		DrawIconEx(DC, X, 0, IcoNota->Icono(), 16 , 16, 0, 0, DI_NORMAL);
+		DrawIconEx(DC, X, 0, _IconoNota(), 16 , 16, 0, 0, DI_NORMAL);
 		X += 16;
 		Nota -= 1.0f;
 	}
@@ -324,8 +325,8 @@ void ToolTipInfo_Medio::MostrarFijo(BDMedio &nMedio) {
 }
 
 SIZE ToolTipInfo_Medio::CalcularTam(void) {	
-	if (Medio.TipoMedio == Tipo_Medio_Video)	{	_Icono = DListaIconos::AgregarIconoRecursos(IDI_VIDEO, 16, 16);	}
-	else										{	_Icono = DListaIconos::AgregarIconoRecursos(IDI_CANCION2, 16, 16);	}
+	if (Medio.TipoMedio == Tipo_Medio_Video)	{	_Icono.CrearIconoRecursos(IDI_VIDEO, 16, 16);	}
+	else										{	_Icono.CrearIconoRecursos(IDI_CANCION2, 16, 16);	}
 
 	HDC   hDC = GetDC(NULL);
 	HFONT VFont = static_cast<HFONT>(SelectObject(hDC, _FuenteTitulo()));
@@ -357,7 +358,7 @@ SIZE ToolTipInfo_Medio::CalcularTam(void) {
 	// Miro el ancho del titulo
 	SIZE Tam = { 0, 0 };
 	GetTextExtentPoint32(hDC, _Titulo.c_str(), static_cast<int>(_Titulo.size()), &Tam);
-	int TamIcono = (_Icono == NULL) ? 0 : 20;
+	int TamIcono = (_Icono() == NULL) ? 0 : 20;
 	Ret.cx = TamIcono + (TOOLTIPINFO_PADDING * 2) + Tam.cx;
 
 	int Ancho1 = 0;
@@ -429,7 +430,7 @@ void ToolTipInfo_Etiqueta::MostrarFijo(EtiquetaBD *nEtiqueta) {
 
 
 SIZE ToolTipInfo_Etiqueta::CalcularTam(void) {
-	_Icono = DListaIconos::AgregarIconoRecursos(IDI_DIRECTORIO, 16, 16);
+	_Icono.CrearIconoRecursos(IDI_DIRECTORIO, 16, 16);
 	_Titulo = Etiqueta->Texto;
 
 	HDC   hDC = GetDC(NULL);
@@ -453,7 +454,7 @@ SIZE ToolTipInfo_Etiqueta::CalcularTam(void) {
 	// Miro el ancho del titulo
 	SIZE Tam = { 0, 0 };
 	GetTextExtentPoint32(hDC, _Titulo.c_str(), static_cast<int>(_Titulo.size()), &Tam);
-	int TamIcono = (_Icono == NULL) ? 0 : 20;
+	int TamIcono = (_Icono() == NULL) ? 0 : 20;
 	Ret.cx = TamIcono + (TOOLTIPINFO_PADDING * 2) + Tam.cx;
 
 	int Ancho1 = 0, Ancho2 = static_cast<int>(Etiqueta->Nota * 16.0f);

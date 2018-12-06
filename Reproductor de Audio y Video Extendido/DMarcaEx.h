@@ -78,7 +78,7 @@ namespace DWL {
 		std::wstring           _Texto;
 		BOOL                   _Marcado;
 		DMarcaEx_Estado        _Estado;
-		DListaIconos_Icono    *_Icono;
+		DIcono                 _Icono;
 		DAnimacion             _AniTransicion;
 		COLORREF               _ColorFondoMarca;
 		COLORREF               _ColorFondo;

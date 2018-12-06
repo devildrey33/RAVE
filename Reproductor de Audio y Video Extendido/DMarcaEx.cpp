@@ -32,7 +32,7 @@ namespace DWL {
 
 	#define DMARCAEX_TAMICONO 16
 
-	DMarcaEx::DMarcaEx(void): _Estado(DMarcaEx_Estado_Normal), _Marcado(FALSE), _ColorFondoMarca(DMarcaEx_Skin::FondoMarcaNormal), _ColorFondo(DMarcaEx_Skin::FondoNormal), _ColorTexto(DMarcaEx_Skin::TextoNormal), _ColorBorde(DMarcaEx_Skin::BordeNormal), _Icono(NULL) {	}
+	DMarcaEx::DMarcaEx(void): _Estado(DMarcaEx_Estado_Normal), _Marcado(FALSE), _ColorFondoMarca(DMarcaEx_Skin::FondoMarcaNormal), _ColorFondo(DMarcaEx_Skin::FondoNormal), _ColorTexto(DMarcaEx_Skin::TextoNormal), _ColorBorde(DMarcaEx_Skin::BordeNormal) {	}
 
 
 	DMarcaEx::~DMarcaEx(void) {
@@ -45,7 +45,7 @@ namespace DWL {
 	
 		_hWnd = CrearControlEx(nPadre, L"DMarcaEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
 		_Texto = nTxt;
-		_Icono = DListaIconos::AgregarIconoRecursos(IDIconoMarca, DMARCAEX_TAMICONO, DMARCAEX_TAMICONO);
+		_Icono.CrearIconoRecursos(IDIconoMarca, DMARCAEX_TAMICONO, DMARCAEX_TAMICONO);
 		_MouseDentro	 = FALSE;
 		_ColorFondo		 = DMarcaEx_Skin::FondoNormal;
 		_ColorTexto		 = DMarcaEx_Skin::TextoNormal;
@@ -95,7 +95,7 @@ namespace DWL {
 
 		// Pinto la marca si es necesario
 		if (_Marcado == TRUE) {
-			DrawIconEx(Buffer, 1, YMarco + 1, _Icono->Icono(), DMARCAEX_TAMICONO, DMARCAEX_TAMICONO, 0, 0, DI_NORMAL);			
+			DrawIconEx(Buffer, 1, YMarco + 1, _Icono(), DMARCAEX_TAMICONO, DMARCAEX_TAMICONO, 0, 0, DI_NORMAL);			
 		}
 
 		// Pinto el texto

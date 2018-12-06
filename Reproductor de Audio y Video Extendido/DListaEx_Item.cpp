@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "DListaEx_Item.h"
-#include "DListaIconos.h"
+//#include "DListaIconos.h"
 
 namespace DWL {
 	/*
@@ -24,7 +24,7 @@ namespace DWL {
 	}
 
 	void DListaEx_Item::Icono(const int nIconoRecursos) {
-		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
+		_Icono.CrearIconoRecursos(nIconoRecursos, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
 	}
 
 }

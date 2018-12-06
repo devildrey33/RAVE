@@ -48,7 +48,7 @@ namespace DWL {
 		BOOL									MostrarArchivosOcultos;			// Por defecto FALSE
 
 		const wchar_t                          *PathSeleccionado(void);
-		DListaIconos_Icono                     *IconoSeleccionado(void);
+		DIcono                                 *IconoSeleccionado(void);
 		inline DExplorarDirectoriosEx_Nodo     *PathResaltado(void)				{ return static_cast<DExplorarDirectoriosEx_Nodo *>(_NodoResaltado); };
 		inline DExplorarDirectoriosEx_Nodo     *PathEscritorio(void)			{ return _NodoEscritorio; };
 		inline DExplorarDirectoriosEx_Nodo     *PathMisDocumentos(void)			{ return _NodoMisDocumentos; };

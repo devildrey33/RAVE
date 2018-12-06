@@ -277,7 +277,8 @@
 
 		V  DMenuEx
 			V  MostrarMenu i _MostrarSubMenu ha de detectar la pantalla on es mostra per sapiguer si te suficient espai per mostrar el submenu o l'ha de posar a l'altre banda
-			-  Afegir transició al mostrar (porbar ample i altura amb la bounce que vaig fer)
+			V  Afegir transició al mostrar (porbar ample i altura amb la bounce que vaig fer)
+				V  Es millor fer la opacitat, pels submenus mes que res.. (NO AFEGIR TRANSICIÓ AL OCULTAR)
 			-  Fer alphablend amb els icones quan el menu está desactivat (amb la transició de desactivat)
 
 		-  DDlgDirectorios

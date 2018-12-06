@@ -111,7 +111,7 @@ namespace DWL {
 
 					nActivar = TRUE;
 					EdicionSeleccion.Texto(Nodo->Path, FALSE);
-					EdicionSeleccion.Icono(Nodo->Icono(), TRUE);
+					EdicionSeleccion.Icono(&Nodo->Icono(), TRUE);
 				}
 			}
 		}

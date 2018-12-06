@@ -13,8 +13,8 @@ class ListaRaices : public DWL::DListaEx {
 	void                        Evento_MousePresionado(DWL::DEventoMouse &DatosMouse);
 	void                        Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse);
   protected:
-	DWL::DListaIconos_Icono	  *_IconoPapelera;
-	DWL::DListaIconos_Icono	  *_IconoPapeleraResaltado;
+	DWL::DIcono	               _IconoPapelera;
+	DWL::DIcono	               _IconoPapeleraResaltado;
 	LONGLONG                   _ItemRaizPresionado;
 	LONGLONG                   _SubItemRaizPresionado;
 };

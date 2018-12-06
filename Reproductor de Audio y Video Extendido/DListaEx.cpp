@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "DListaEx.h"
-#include "DListaIconos.h"
+//#include "DListaIconos.h"
 #include "DMensajesWnd.h"
 #include <assert.h>
 
@@ -65,7 +65,7 @@ namespace DWL {
 		return nColumna;
 	}
 	
-	DListaEx_Item *DListaEx::_AgregarItem(DListaEx_Item *nItem, DListaIconos_Icono *nIcono, const INT_PTR PosicionItem, const TCHAR *nTxt, va_list Marker) {
+	DListaEx_Item *DListaEx::_AgregarItem(DListaEx_Item *nItem, DIcono &nIcono, const INT_PTR PosicionItem, const TCHAR *nTxt, va_list Marker) {
 //		DListaEx_Item		*nItem		= new DListaEx_Item();
 		DListaEx_SubItem	*nSubItem 	= new DListaEx_SubItem(nTxt);
 		nItem->_SubItems.push_back(nSubItem);
@@ -235,9 +235,9 @@ namespace DWL {
 
 		// Pinto el icono
 		if (_PintarIconos == TRUE) {
-			if (_Items[static_cast<unsigned int>(nPosItem)]->_Icono != NULL) {
+			if (_Items[static_cast<unsigned int>(nPosItem)]->_Icono() != NULL) {
 				int PosYIco = ((Espacio.bottom - Espacio.top) - DLISTAEX_TAMICONO) / 2;
-				DrawIconEx(_BufferItem, bPresionado + DLISTAEX_PADDING, bPresionado + PosYIco, _Items[static_cast<unsigned int>(nPosItem)]->_Icono->Icono(), DLISTAEX_TAMICONO, DLISTAEX_TAMICONO, 0, 0, DI_NORMAL);
+				DrawIconEx(_BufferItem, bPresionado + DLISTAEX_PADDING, bPresionado + PosYIco, _Items[static_cast<unsigned int>(nPosItem)]->_Icono(), DLISTAEX_TAMICONO, DLISTAEX_TAMICONO, 0, 0, DI_NORMAL);
 			}
 		}
 		RECT RCelda;
@@ -1055,7 +1055,7 @@ namespace DWL {
 		_PintarIconos = FALSE;
 		for (size_t i = 0; i < _Items.size(); i++) {
 			// Hay un item con icono
-			if (_Items[i]->_Icono != NULL) {
+			if (_Items[i]->_Icono() != NULL) {
 				_PintarIconos = TRUE;
 				return;	// Ya no es necesario buscar mas, salgo.
 			}

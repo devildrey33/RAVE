@@ -3,7 +3,7 @@
 #include "RAVE.h"
 #include "DBarraScrollEx.h"
 #include "DArbolEx_Nodo.h"
-#include "DListaIconos.h"
+#include "DIcono.h"
 #include "DEventoMouseRueda.h"
 #include "DEventoTeclado.h"
 //#include "DFuente.h"
@@ -111,25 +111,28 @@ namespace DWL {
 
 														// Agrega un nodo personalizado (por defecto es del tipo DArbolEx_Nodo) para iconos de los recursos
 		template <class TNodo = DArbolEx_Nodo> TNodo   *AgregarNodo(const TCHAR *nTexto, DArbolEx_Nodo *nPadre = NULL, const int nIcono = NULL, DFuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN) {
-															DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoRecursos(nIcono, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
+															DIcono Ico; Ico.CrearIconoRecursos(nIcono, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
+															//DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoRecursos(nIcono, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
 															TNodo *nNodo = new TNodo();
-															_AgregarNodo(nNodo, nTexto, nPadre, TmpIco, nFuente, PosicionNodo);
+															_AgregarNodo(nNodo, nTexto, nPadre, &Ico, nFuente, PosicionNodo);
 															return nNodo;
 														};
 
 														// Agrega un nodo personalizado (por defecto es del tipo DArbolEx_Nodo) para iconos del sistema
 		template <class TNodo = DArbolEx_Nodo> TNodo   *AgregarNodo(const TCHAR *nTexto, DArbolEx_Nodo *nPadre, const GUID &KnowFolderId, DFuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN) {
-															DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoKnownFolder(KnowFolderId, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
+															DIcono Ico; Ico.CrearIconoKnownFolder(KnowFolderId, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
+															//DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoKnownFolder(KnowFolderId, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO);
 															TNodo *nNodo = new TNodo();
-															_AgregarNodo(nNodo, nTexto, nPadre, TmpIco, nFuente, PosicionNodo);
+															_AgregarNodo(nNodo, nTexto, nPadre, &Ico, nFuente, PosicionNodo);
 															return nNodo;
 														};
 
 														// Agrega un nodo personalizado (por defecto es del tipo DArbolEx_Nodo) para iconos especificos de un path
 		template <class TNodo = DArbolEx_Nodo> TNodo   *AgregarNodo(const TCHAR *nTexto, DArbolEx_Nodo *nPadre, const wchar_t *PathIcono, const int nPosIcono = 0, DFuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN) {
-															DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoExterno(PathIcono, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO, nPosIcono);
+															DIcono Ico; Ico.CrearIconoExterno(PathIcono, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO, nPosIcono);
+															//DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoExterno(PathIcono, DARBOLEX_TAMICONO, DARBOLEX_TAMICONO, nPosIcono);
 															TNodo *nNodo = new TNodo();
-															_AgregarNodo(nNodo, nTexto, nPadre, TmpIco, nFuente, PosicionNodo);
+															_AgregarNodo(nNodo, nTexto, nPadre, &Ico, nFuente, PosicionNodo);
 															return nNodo;
 														};
 
@@ -242,7 +245,7 @@ namespace DWL {
 
 														// Agrega un nodo (se tiene que reservar memória en la variable nNodo antes de agregar. ej nNodo = new DArbolEx_Nodo)
 //		DArbolEx_Nodo                                 *_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre = NULL, const int nIcono = NULL, DhWnd_Fuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN);
-		DArbolEx_Nodo                                 *_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre = NULL, DListaIconos_Icono *nIcono = NULL, DFuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN);
+		DArbolEx_Nodo                                 *_AgregarNodo(DArbolEx_Nodo *nNodo, const TCHAR *nTexto, DArbolEx_Nodo *nPadre = NULL, DIcono *nIcono = NULL, DFuente *nFuente = NULL, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_FIN);
 
 														// Obtiene el espacio en pixeles que necesita todo el arbol tal y como están los nodos expandidos
 		void									       _CalcularTotalEspacioVisible(void);

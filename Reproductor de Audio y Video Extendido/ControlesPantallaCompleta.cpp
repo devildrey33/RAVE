@@ -154,7 +154,7 @@ void ControlesPantallaCompleta::Alinear(void) {
 			SetWindowPos(LabelTiempoTotal.hWnd()	, HWND_TOP,	Ancho - 220, 12, 0, 0				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(SliderVolumen.hWnd()		, HWND_TOP, Ancho - 145, 13, 90, 16				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
 			SetWindowPos(LabelVolumen.hWnd()		, HWND_TOP,	Ancho - 50, 12, 0, 0				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(SliderTiempo.hWnd()		, HWND_TOP, 10, 45, Ancho - 20, 24				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(SliderTiempo.hWnd()		, HWND_TOP, 10, 47, Ancho - 20, 20				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
 			SliderTiempo.Alineacion(IzquierdaDerecha);
 			break;
 		case Izquierda:

@@ -307,8 +307,8 @@ namespace DWL {
 		else						{	return NULL;							}
 	}
 
-	DListaIconos_Icono *DExplorarDirectoriosEx::IconoSeleccionado(void) {
-		if (_NodoMarcado != NULL)	{	return _NodoMarcado->Icono();	}
+	DIcono *DExplorarDirectoriosEx::IconoSeleccionado(void) {
+		if (_NodoMarcado != NULL)	{	return &_NodoMarcado->Icono();	}
 		else						{	return NULL;					}
 	}
 

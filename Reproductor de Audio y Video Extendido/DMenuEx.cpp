@@ -32,28 +32,28 @@ namespace DWL {
 	DhWnd	*DMenuEx::_hWndDest			= NULL;
 
 
-	DMenuEx::DMenuEx(void) : DWL::DVentana(), _Padre(NULL), _Tipo(DMenuEx_Tipo_Raiz), _ID(0), _Activado(TRUE), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL), _ColorFondo(DMenuEx_Skin::FondoNormal), _ColorTexto(DMenuEx_Skin::TextoNormal), _Icono(NULL), _BarraPosX(0) /*, _AnularMouseMove(NULL)*/ {
+	DMenuEx::DMenuEx(void) : DWL::DVentana(), _Padre(NULL), _Tipo(DMenuEx_Tipo_Raiz), _ID(0), _Activado(TRUE), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL), _ColorFondo(DMenuEx_Skin::FondoNormal), _ColorTexto(DMenuEx_Skin::TextoNormal), _BarraPosX(0) /*, _AnularMouseMove(NULL)*/ {
 		_Recta = { 0, 0, 0, 0 };
 		Fuente.CrearFuente(DMenuEx_Skin::FuenteTam, DMenuEx_Skin::FuenteNombre.c_str(), DMenuEx_Skin::FuenteNegrita, DMenuEx_Skin::FuenteCursiva, DMenuEx_Skin::FuenteSubrayado);
 	}
 
 	// Constructor menú tipo separador (interno AgregarSeparador)
-	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Separador), _ID(nID), _MenuResaltado(NULL), _MenuPresionado(NULL), _Activado(TRUE), _MenuDesplegado(NULL), _ColorFondo(DMenuEx_Skin::FondoNormal), _ColorTexto(DMenuEx_Skin::TextoNormal), _Icono(NULL), _BarraPosX(0)/*, _AnularMouseMove(NULL) */ {
+	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Separador), _ID(nID), _MenuResaltado(NULL), _MenuPresionado(NULL), _Activado(TRUE), _MenuDesplegado(NULL), _ColorFondo(DMenuEx_Skin::FondoNormal), _ColorTexto(DMenuEx_Skin::TextoNormal), _BarraPosX(0)/*, _AnularMouseMove(NULL) */ {
 		_Recta = { 0, 0, 0, 0 };
 		Fuente.CrearFuente(DMenuEx_Skin::FuenteTam, DMenuEx_Skin::FuenteNombre.c_str(), DMenuEx_Skin::FuenteNegrita, DMenuEx_Skin::FuenteCursiva, DMenuEx_Skin::FuenteSubrayado);
 	}
 
 	// Constructor menú tipo texto (interno AgregarMenu)
-	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Texto), _ID(nID), _Texto(nTexto), _Activado(nActivado), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL), _ColorFondo(DMenuEx_Skin::FondoNormal), _ColorTexto(DMenuEx_Skin::TextoNormal), _Icono(NULL), _BarraPosX(0)/* , _AnularMouseMove(NULL) */ {
+	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Texto), _ID(nID), _Texto(nTexto), _Activado(nActivado), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL), _ColorFondo(DMenuEx_Skin::FondoNormal), _ColorTexto(DMenuEx_Skin::TextoNormal), _BarraPosX(0)/* , _AnularMouseMove(NULL) */ {
 		_Recta = { 0, 0, 0, 0 };
-		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DMENUEX_TAMICONO, DMENUEX_TAMICONO);
+		_Icono.CrearIconoRecursos(nIconoRecursos, DMENUEX_TAMICONO, DMENUEX_TAMICONO);
 		Fuente.CrearFuente(DMenuEx_Skin::FuenteTam, DMenuEx_Skin::FuenteNombre.c_str(), DMenuEx_Skin::FuenteNegrita, DMenuEx_Skin::FuenteCursiva, DMenuEx_Skin::FuenteSubrayado);
 	}
 
 	// Constructor menú tipo texto (interno AgregarBarra)
-	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado, const float nMinimo, const float nMaximo, const float nValor) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Barra), _ID(nID), _Texto(nTexto), _Activado(nActivado), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL), _ColorFondo(DMenuEx_Skin::FondoNormal), _ColorTexto(DMenuEx_Skin::TextoNormal), _Icono(NULL), _BarraPosX(0)/* , _AnularMouseMove(NULL) */ {
+	DMenuEx::DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado, const float nMinimo, const float nMaximo, const float nValor) : DWL::DVentana(), _Padre(nPadre), _Tipo(DMenuEx_Tipo_Barra), _ID(nID), _Texto(nTexto), _Activado(nActivado), _MenuResaltado(NULL), _MenuPresionado(NULL), _MenuDesplegado(NULL), _ColorFondo(DMenuEx_Skin::FondoNormal), _ColorTexto(DMenuEx_Skin::TextoNormal), _BarraPosX(0)/* , _AnularMouseMove(NULL) */ {
 		_Recta = { 0, 0, 0, 0 };
-		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DMENUEX_TAMICONO, DMENUEX_TAMICONO);
+		_Icono.CrearIconoRecursos(nIconoRecursos, DMENUEX_TAMICONO, DMENUEX_TAMICONO);
 		_Barra._Minimo = nMinimo;
 		_Barra._Maximo = nMaximo;
 		_Barra._Valor  = nValor;
@@ -290,7 +290,7 @@ namespace DWL {
 	}
 
 	void DMenuEx::Icono(const int nIconoRecursos) {
-		_Icono = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DMENUEX_TAMICONO, DMENUEX_TAMICONO);
+		_Icono.CrearIconoRecursos(nIconoRecursos, DMENUEX_TAMICONO, DMENUEX_TAMICONO);
 		if (_Padre != NULL) {
 			if (_Padre->_hWnd != NULL) {
 				_Padre->Repintar();
@@ -386,8 +386,8 @@ namespace DWL {
 
 		// Pinto el icono
 		int YIcono = static_cast<int>((static_cast<float>(pMenu->_Recta.bottom - pMenu->_Recta.top) - static_cast<float>(DMENUEX_TAMICONO)) / 2.0f);
-		if (pMenu->_Icono != NULL) {
-			DrawIconEx(DC, bPresionado + DMENUEX_MARGEN_X, bPresionado + pMenu->_Recta.top + YIcono, pMenu->_Icono->Icono(), DMENUEX_TAMICONO, DMENUEX_TAMICONO, 0, 0, DI_NORMAL);
+		if (pMenu->_Icono() != NULL) {
+			DrawIconEx(DC, bPresionado + DMENUEX_MARGEN_X, bPresionado + pMenu->_Recta.top + YIcono, pMenu->_Icono(), DMENUEX_TAMICONO, DMENUEX_TAMICONO, 0, 0, DI_NORMAL);
 		}
 
 		HFONT	VFont = static_cast<HFONT>(SelectObject(DC, pMenu->Fuente()));

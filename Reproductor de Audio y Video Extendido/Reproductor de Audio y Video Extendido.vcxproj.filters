@@ -229,12 +229,6 @@
     <ClInclude Include="DArbolEx.h">
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
     </ClInclude>
-    <ClInclude Include="DListaIconos.h">
-      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29</Filter>
-    </ClInclude>
-    <ClInclude Include="DListaIconos_Icono.h">
-      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29</Filter>
-    </ClInclude>
     <ClInclude Include="ArbolBD.h">
       <Filter>Ventanas\Controles</Filter>
     </ClInclude>
@@ -388,6 +382,15 @@
     <ClInclude Include="RAVE_Skin.h">
       <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
+    <ClInclude Include="DIcono.h">
+      <Filter>DWL\Ventanas\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="DListaIconos %28DEPRECATED%29.h">
+      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29</Filter>
+    </ClInclude>
+    <ClInclude Include="DListaIconos_Icono %28DEPRECATED%29.h">
+      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -458,9 +461,6 @@
     </ClCompile>
     <ClCompile Include="DArbolEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
-    </ClCompile>
-    <ClCompile Include="DListaIconos.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29</Filter>
     </ClCompile>
     <ClCompile Include="DArbolEx_Nodo.cpp">
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
@@ -587,6 +587,12 @@
     </ClCompile>
     <ClCompile Include="DFuente.cpp">
       <Filter>DWL\Ventanas\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="DIcono.cpp">
+      <Filter>DWL\Ventanas\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="DListaIconos %28DEPRECATED%29.cpp">
+      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DListaIconos_Icono.h"
+#include "DIcono.h"
 #include <vector>
 #include "DAnimacion.h"
 #include "DFuente.h"
@@ -71,11 +71,11 @@ namespace DWL {
 		inline const size_t				TotalHijos(void)													{ return _Hijos.size();					}
 		inline DArbolEx_Nodo           *UltimoHijo(void)													{ return (_Hijos.size() == 0) ? NULL : _Hijos[_Hijos.size() - 1]; }
 
-		inline const INT_PTR            IDIcono(void)														{ return _Icono->ID(); }
+		inline const INT_PTR            IDIcono(void)														{ return _Icono.ID(); }
 		void                            Icono(const int nIconoRecursos);
 		void                            Icono(const GUID nIconoKnownFolder);
 		void                            Icono(const wchar_t *nIconoPath, const int nIconoPos);
-		inline DListaIconos_Icono      *Icono(void) { return _Icono; };
+		inline DIcono                  &Icono(void) { return _Icono; };
 		void                            BorrarHijos(void);
 
 		//const size_t					Posicion(void);
@@ -99,7 +99,7 @@ namespace DWL {
 		BOOL						   _SubSeleccionado;	// bits necesaris 1
 
 		int                            _AnchoTexto;
-		DListaIconos_Icono			  *_Icono;
+		DIcono			               _Icono;
 
 
 		DArbolEx_Nodo			      *_Padre;

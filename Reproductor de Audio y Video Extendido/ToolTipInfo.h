@@ -6,6 +6,7 @@
 #include "EtiquetaBD.h"
 #include "RaveBD.h"
 #include "DFuente.h"
+#include "resource.h"
 
 class ToolTipsInfo;
 
@@ -76,15 +77,17 @@ class ToolTipInfo_Celda {
 // Clase base para crear Tooltips de 2 columnas (para no repetir la función de pintado en ToolTipInfo_Medio y ToolTipInfo_Etiqueta)
 class ToolTipInfo_2Columnas : public ToolTipInfo {
   public:
-									ToolTipInfo_2Columnas(void) : ToolTipInfo(), _Icono(NULL), _AnchoCol1(0) {
+									ToolTipInfo_2Columnas(void) : ToolTipInfo(), _AnchoCol1(0) {
 										_FuenteTitulo.CrearFuente(FUENTE_GRANDE, FUENTE_NOMBRE, TRUE); 
 										_FuenteNombreValor.CrearFuente(FUENTE_NORMAL, FUENTE_NOMBRE, TRUE); 
 										_FuenteValor.CrearFuente(FUENTE_NORMAL, FUENTE_NOMBRE, FALSE);	
+										_IconoNota.CrearIconoRecursos(IDI_NOTA, 16, 16);
 									};
-									ToolTipInfo_2Columnas(std::wstring &Titulo) : ToolTipInfo(), _Titulo(Titulo), _Icono(NULL), _AnchoCol1(0) { 
+									ToolTipInfo_2Columnas(std::wstring &Titulo) : ToolTipInfo(), _Titulo(Titulo), _AnchoCol1(0) { 
 										_FuenteTitulo.CrearFuente(FUENTE_GRANDE, FUENTE_NOMBRE, TRUE);
 										_FuenteNombreValor.CrearFuente(FUENTE_NORMAL, FUENTE_NOMBRE, TRUE);
 										_FuenteValor.CrearFuente(FUENTE_NORMAL, FUENTE_NOMBRE, FALSE);
+										_IconoNota.CrearIconoRecursos(IDI_NOTA, 16, 16);
 									};
 	                               ~ToolTipInfo_2Columnas(void) { };
 	void							Pintar(HDC DC);
@@ -98,7 +101,8 @@ class ToolTipInfo_2Columnas : public ToolTipInfo {
 	std::wstring                   _Titulo;
 	std::vector<ToolTipInfo_Celda> _Col1;
 	std::vector<ToolTipInfo_Celda> _Col2;
-	DWL::DListaIconos_Icono       *_Icono;
+	DWL::DIcono                    _Icono;
+	DWL::DIcono                    _IconoNota;
 	int                            _AnchoCol1;
 };
 

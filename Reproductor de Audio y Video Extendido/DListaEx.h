@@ -5,6 +5,7 @@
 #include "DListaEx_Columna.h"
 #include "DListaEx_Item.h"
 #include "DFuente.h"
+#include "DIcono.h"
 
 namespace DWL {
 
@@ -71,12 +72,13 @@ namespace DWL {
 		void											EliminarTodasLasColumnas(void);
 
 														// Agrega un item personalizado (por defecto es del tipo DListaEx_Item) para iconos de los recursos
-		template <class TItem = DListaEx_Item> TItem   *AgregarItem(const INT_PTR nIconoRecursos = NULL, const INT_PTR PosicionFila = DLISTAEX_POSICION_FIN, const TCHAR *nTxt = NULL, ...) {
+		template <class TItem = DListaEx_Item> TItem   *AgregarItem(const INT_PTR nIconoRecursos, const INT_PTR PosicionFila = DLISTAEX_POSICION_FIN, const TCHAR *nTxt = NULL, ...) {
 															TItem  *nItem = new TItem();
-															DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
+															DWL::DIcono Ico(nIconoRecursos, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
+															//DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
 															va_list Marker;
 															va_start(Marker, nTxt);
-															_AgregarItem(nItem, TmpIco, PosicionFila, nTxt, Marker);
+															_AgregarItem(nItem, Ico, PosicionFila, nTxt, Marker);
 															va_end(Marker);
 															return nItem;
 														};
@@ -84,10 +86,11 @@ namespace DWL {
 														// Agrega un item personalizado (por defecto es del tipo DListaEx_Item) para iconos del sistema
 		template <class TItem = DListaEx_Item> TItem   *AgregarItem(const GUID nIconoKnownFolder, const INT_PTR PosicionFila = DLISTAEX_POSICION_FIN, const TCHAR *nTxt = NULL, ...) {
 															TItem  *nItem = new TItem();
-															DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoKnownFolder(nIconoKnownFolder, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
+															DWL::DIcono Ico(nIconoKnownFolder, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
+															//DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoKnownFolder(nIconoKnownFolder, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
 															va_list Marker;
 															va_start(Marker, nTxt);
-															_AgregarItem(nItem, TmpIco, PosicionFila, nTxt, Marker);
+															_AgregarItem(nItem, Ico, PosicionFila, nTxt, Marker);
 															va_end(Marker);
 															return nItem;
 														};
@@ -95,10 +98,11 @@ namespace DWL {
 														// Agrega un item personalizado (por defecto es del tipo DListaEx_Item) para iconos especificos de un path
 		template <class TItem = DListaEx_Item> TItem   *AgregarItem(const wchar_t *nPathIcono, const int nPosIcono = 0, const INT_PTR PosicionFila = DLISTAEX_POSICION_FIN, const TCHAR *nTxt = NULL, ...) {
 															TItem  *nItem = new TItem();
-															DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoExterno(nPathIcono, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO, nPosIcono);
+															DWL::DIcono Ico(nPathIcono, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO, nPosIcono);
+															//DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoExterno(nPathIcono, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO, nPosIcono);
 															va_list Marker;
 															va_start(Marker, nTxt);
-															_AgregarItem(nItem, TmpIco, PosicionFila, nTxt, Marker);
+															_AgregarItem(nItem, Ico, PosicionFila, nTxt, Marker);
 															va_end(Marker);
 															return nItem;
 														};
@@ -199,7 +203,7 @@ namespace DWL {
 		void                                           _CalcularItemsPagina(const size_t TamPagina);
 		void                                           _CalcularPintarIconos(void);
 
-		DListaEx_Item                                 *_AgregarItem(DListaEx_Item *nItem, DListaIconos_Icono *nIcono, const INT_PTR PosicionFila, const TCHAR *nTxt, va_list Marker);
+		DListaEx_Item                                 *_AgregarItem(DListaEx_Item *nItem, DIcono &nIcono, const INT_PTR PosicionFila, const TCHAR *nTxt, va_list Marker);
 		std::vector<DListaEx_Item *>                   _Items;
 		std::vector<DListaEx_Columna *>                _Columnas;
 

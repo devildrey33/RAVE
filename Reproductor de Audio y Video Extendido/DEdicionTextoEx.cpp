@@ -43,14 +43,14 @@ namespace DWL {
 	BOOL         DEdicionTextoEx_Skin::FuenteSubrayado		= FALSE;
 	BOOL		 DEdicionTextoEx_Skin::FuenteSombraTexto	= TRUE;
 
-	DEdicionTextoEx::DEdicionTextoEx(void) : DControlEx(), _Icono(NULL), TextoEditable(TRUE), Alineacion(DEdicionTextoEx_Alineacion_Izquierda), _Presionado(FALSE), _PosCursor(0), _ColorTexto(DEdicionTextoEx_Skin::TextoNormal), _ColorFondo(DEdicionTextoEx_Skin::FondoNormal), _ColorBorde(DEdicionTextoEx_Skin::BordeNormal), _ColorCursor(DEdicionTextoEx_Skin::FondoNormal) {
+	DEdicionTextoEx::DEdicionTextoEx(void) : DControlEx(), TextoEditable(TRUE), Alineacion(DEdicionTextoEx_Alineacion_Izquierda), _Presionado(FALSE), _PosCursor(0), _ColorTexto(DEdicionTextoEx_Skin::TextoNormal), _ColorFondo(DEdicionTextoEx_Skin::FondoNormal), _ColorBorde(DEdicionTextoEx_Skin::BordeNormal), _ColorCursor(DEdicionTextoEx_Skin::FondoNormal) {
 	}
 
 
 	DEdicionTextoEx::~DEdicionTextoEx(void) {
 	}
 
-	HWND DEdicionTextoEx::CrearEdicionTextoEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, DListaIconos_Icono *nIcono, const long Estilos) {
+	HWND DEdicionTextoEx::CrearEdicionTextoEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, DIcono *nIcono, const long Estilos) {
 //		if (hWnd()) { Debug_Escribir(L"DEdicionTextoEx::CrearEdicionTextoEx() Error : ya se ha creado el control...\n"); return hWnd(); }
 		_hWnd = CrearControlEx(nPadre, L"DEdicionTextoEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
 		Fuente.CrearFuente(DEdicionTextoEx_Skin::FuenteTam, DEdicionTextoEx_Skin::FuenteNombre.c_str(), DEdicionTextoEx_Skin::FuenteNegrita, DEdicionTextoEx_Skin::FuenteCursiva, DEdicionTextoEx_Skin::FuenteSubrayado);
@@ -64,8 +64,9 @@ namespace DWL {
 		return hWnd();
 	}
 
-	void DEdicionTextoEx::Icono(DListaIconos_Icono *nIcono, const BOOL nRepintar) {
-		_Icono = nIcono;		
+	void DEdicionTextoEx::Icono(DIcono *nIcono, const BOOL nRepintar) {
+		if (nIcono == NULL) return;
+		_Icono = *nIcono;		
 		if (nRepintar != FALSE) Repintar();
 	}
 
@@ -91,10 +92,10 @@ namespace DWL {
 		RECT RTexto = { DEDICIONTEXTOEX_MARGEN_X, 0, RC.right - DEDICIONTEXTOEX_MARGEN_X, RC.bottom };
 
 		// Pinto el icono (si hay icono)
-		if (_Icono != NULL) {
+		if (_Icono() != NULL) {
 			RTexto.left = DEDICIONTEXTOEX_TAMICONO + DEDICIONTEXTOEX_MARGEN_X;
 			// Pinto el icono
-			DrawIconEx(Buffer, 2, 2, _Icono->Icono(), DEDICIONTEXTOEX_TAMICONO, DEDICIONTEXTOEX_TAMICONO, 0, 0, DI_NORMAL);
+			DrawIconEx(Buffer, 2, 2, _Icono(), DEDICIONTEXTOEX_TAMICONO, DEDICIONTEXTOEX_TAMICONO, 0, 0, DI_NORMAL);
 		}
 
 		HFONT vFuente = static_cast<HFONT>(SelectObject(Buffer, Fuente()));

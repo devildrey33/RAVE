@@ -4,7 +4,7 @@
 #include <Shellapi.h>
 #include <versionhelpers.h>
 #include <Shlobj.h>
-
+#include "DIcono.h"
 
 #define MUTEX_RAVE L"Mutex_RAVE"
 
@@ -324,6 +324,7 @@ void RAVE::Terminar(void) {
 
 //	Gdiplus::GdiplusShutdown(_gdiplusToken);
 	DFuente::EliminarFuentes();
+	DIcono::EliminarIconos();
 	Debug_Escribir(L"Rave::Terminar\n");
 }
 

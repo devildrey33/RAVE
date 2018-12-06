@@ -2,7 +2,7 @@
 #define DLISTAEX_ITEM
 
 #include "DListaEx_SubItem.h"
-#include "DListaIconos_Icono.h"
+#include "DIcono.h"
 
 namespace DWL {
 
@@ -16,7 +16,7 @@ namespace DWL {
 		NOTA : Cualquier cambio que se realize en un DListaEx_Item necesitara una llamada a la función Repintar() o a la función PintarItem() para actualizar los cambios */
 	class DListaEx_Item {
 	  public:
-											DListaEx_Item(void) : _Icono(NULL), Seleccionado(FALSE)  { };
+											DListaEx_Item(void) : Seleccionado(FALSE)  { };
 										   ~DListaEx_Item(void);
 										    // Función que devuelve una referencia al std::wstring que contiene el texto del subitem especificado 
 		inline std::wstring                &Texto(const size_t nSubItem = 0) {
@@ -33,7 +33,7 @@ namespace DWL {
 		BOOL							    Seleccionado;
 	  protected : 
 		std::vector<DListaEx_SubItem *>    _SubItems;
-		DListaIconos_Icono			      *_Icono;
+		DIcono			                   _Icono;
 
 		friend class DListaEx;
 	};

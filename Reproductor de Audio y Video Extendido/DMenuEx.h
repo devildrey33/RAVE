@@ -4,6 +4,7 @@
 #include "DVentana.h"
 #include "DBarraDesplazamientoEx.h"
 #include "DFuente.h"
+#include "DIcono.h"
 
 namespace DWL {
 
@@ -85,7 +86,7 @@ namespace DWL {
 
 								// Asigna un icono a este menú 
 		void                    Icono(const int nIconoRecursos);
-		inline void             Icono(DListaIconos_Icono *nIcono)	{ _Icono = nIcono; }
+		inline void             Icono(DIcono &nIcono)	{ _Icono = nIcono; }
 
 								// Funciones para navegar entre menus
 		inline DMenuEx         *Menu(const size_t Pos)				{ return _Menus[Pos]; }
@@ -166,7 +167,7 @@ namespace DWL {
 		std::vector<DMenuEx *> _Menus;
 		INT_PTR                _ID;
 		std::wstring           _Texto;
-		DListaIconos_Icono	  *_Icono;
+		DIcono	               _Icono;
 		DMenuEx               *_Padre;
 
 		DMenuEx               *_MenuResaltado;

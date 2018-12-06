@@ -31,7 +31,7 @@ namespace DWL {
       protected:
 		DBotonDesplegable          _Boton;
 		DEdicionTextoEx            _Edicion;
-		DListaIconos_Icono        *_Icono;
+		DIcono                     _Icono;
 	};
 };
 #endif
