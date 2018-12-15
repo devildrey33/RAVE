@@ -120,6 +120,10 @@ namespace DWL {
 														// Devuelve la posición del DListaEx_Item que está dentro de esta lista
 		const LONGLONG                                  ItemPos(DListaEx_Item *pItem);
 		virtual void									Repintar(const BOOL nForzar = FALSE);
+
+		void                                            SeleccionarItem(const LONGLONG sPos, const BOOL nSeleccion);
+		void                                            SeleccionarItem(DListaEx_Item *sItem, const BOOL nSeleccion);
+
 		void											DesSeleccionarTodo(void);
 		void											MostrarItem(const LONGLONG iPos, const BOOL nRepintar = TRUE);
 		void											MostrarItem(DListaEx_Item *eItem);
@@ -167,6 +171,7 @@ namespace DWL {
 		DFuente			                                Fuente;
 
 	  protected:
+		
 														// Eventos internos
 		inline void                                    _Evento_Pintar(void);
 

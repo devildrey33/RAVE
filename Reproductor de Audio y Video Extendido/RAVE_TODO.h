@@ -263,7 +263,7 @@
 		-  DListaEx
 			V  Al fer click amb el buto dret, detectar si nomes hi ha un item seleccionat, per desseleccionar tot o no,
 			-  Drag & drop intern a la DListaEx per moure items (multiselecció inclosa)
-			-  Transicións de resaltat i presionat		
+			V  Transicións de resaltat i presionat		
 			V  Afegir borde amb transició
 			-  Resaltar texte buscat (ha de ser una capa per pintar el fondo abans de pintar el texte)
 			V  Quan no hi ha scroll la marca ha d'arribar fins al tope de la dreta
@@ -279,7 +279,10 @@
 			V  MostrarMenu i _MostrarSubMenu ha de detectar la pantalla on es mostra per sapiguer si te suficient espai per mostrar el submenu o l'ha de posar a l'altre banda
 			V  Afegir transició al mostrar (porbar ample i altura amb la bounce que vaig fer)
 				V  Es millor fer la opacitat, pels submenus mes que res.. (NO AFEGIR TRANSICIÓ AL OCULTAR)
-			-  Fer alphablend amb els icones quan el menu está desactivat (amb la transició de desactivat)
+			X  Fer alphablend amb els icones quan el menu está desactivat (amb la transició de desactivat)
+				V Sense GDI+ chungo.. i el veig molt desfasat
+			V  Retocat el calcul de la mida del menu per mirar si hi han submenus amb fills, i deixar un espai per la marca
+			-  S'ha de mirar si hi ha algun submenu amb icones, i si no n'hi ha cap treure l'espai del principi de l'icona
 
 		-  DDlgDirectorios
 			-  Captar WM_RESIZE i modificar tamany dels controls en consequencia.

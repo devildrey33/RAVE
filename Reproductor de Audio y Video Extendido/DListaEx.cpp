@@ -69,7 +69,7 @@ namespace DWL {
 //		DListaEx_Item		*nItem		= new DListaEx_Item();
 		DListaEx_SubItem	*nSubItem 	= new DListaEx_SubItem(nTxt);
 		nItem->_SubItems.push_back(nSubItem);
-
+		nItem->_Lista = this;
 		nItem->_Icono = nIcono;
 
 		// Obtengo los textos de cada columna
@@ -128,20 +128,20 @@ namespace DWL {
 	}
 
 	void DListaEx::Pintar(HDC hDC) {
-		#if DLISTAEX_MOSTRARDEBUG == TRUE
+/*		#if DLISTAEX_MOSTRARDEBUG == TRUE
 			Debug_Escribir_Varg(L"DListaEx::Pintar -> _Repintar = %d\n", _Repintar);
-		#endif
-		if (_Repintar == TRUE) {			
-			_CalcularScrolls();			
+		#endif*/
+		if (_Repintar == TRUE) {
+			_CalcularScrolls();
 		}
 
 		RECT	RC, RCS, RCB;
 		ObtenerRectaCliente(&RC, &RCS, &RCB);
-//		GetClientRect(_hWnd, &RCB);
+		//		GetClientRect(_hWnd, &RCB);
 
-		HDC		Buffer		= CreateCompatibleDC(hDC);
-		HBITMAP Bmp			= CreateCompatibleBitmap(hDC, RCB.right - RCB.left, RCB.bottom - RCB.top);
-		HBITMAP BmpViejo	= static_cast<HBITMAP>(SelectObject(Buffer, Bmp));		
+		HDC		Buffer = CreateCompatibleDC(hDC);
+		HBITMAP Bmp = CreateCompatibleBitmap(hDC, RCB.right - RCB.left, RCB.bottom - RCB.top);
+		HBITMAP BmpViejo = static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
 
 		// Pinto el fondo
 		HBRUSH BFondo = CreateSolidBrush(_ColorFondo);
@@ -184,13 +184,13 @@ namespace DWL {
 	void DListaEx::PintarItem(HDC hDC, const LONGLONG nPosItem, RECT &Espacio) {
 		if (_Items.size() == 0) return;
 
-		BOOL bResaltado		= (nPosItem == _ItemResaltado) ? TRUE : FALSE;
-		BOOL bPresionado	= (nPosItem == _ItemPresionado) ? TRUE : FALSE;
+		BOOL bResaltado = (nPosItem == _ItemResaltado) ? TRUE : FALSE;
+		BOOL bPresionado = (nPosItem == _ItemPresionado) ? TRUE : FALSE;
 		//BOOL bMarcado		= (nPosItem == _ItemMarcado) ? TRUE : FALSE;
 
-		COLORREF ColTexto, ColSombra, ColFondo;
+/*		COLORREF ColTexto, ColSombra, ColFondo;
 		// Presionado ////////////////////////////////////
-		if (bPresionado == TRUE) { 
+		if (bPresionado == TRUE) {
 			if (MostrarSeleccion == TRUE) {
 				ColTexto  = DListaEx_Skin::TextoItemPresionado;
 				ColSombra = DListaEx_Skin::TextoItemSeleccionadoSombra;
@@ -203,7 +203,7 @@ namespace DWL {
 			}
 		}
 		// Seleccionado //////////////////////////////////
-		else if (_Items[static_cast<unsigned int>(nPosItem)]->Seleccionado == TRUE && MostrarSeleccion == TRUE) { 
+		else if (_Items[static_cast<unsigned int>(nPosItem)]->Seleccionado == TRUE && MostrarSeleccion == TRUE) {
 			if (bResaltado == FALSE) {	////////////////// Normal
 				ColTexto = DListaEx_Skin::TextoItemSeleccionado;
 				ColFondo = DListaEx_Skin::FondoItemSeleccionado;
@@ -215,7 +215,7 @@ namespace DWL {
 			ColSombra = DListaEx_Skin::TextoItemSeleccionadoSombra;
 		}
 		// Sin selección ni presionado ///////////////////
-		else { 
+		else {
 			if (bResaltado == FALSE) {	////////////////// Normal
 				ColTexto = DListaEx_Skin::TextoItemNormal;
 				ColFondo = _ColorFondo;
@@ -225,10 +225,14 @@ namespace DWL {
 				ColFondo = DListaEx_Skin::FondoItemResaltado;
 			}
 			ColSombra = DListaEx_Skin::TextoItemSombra;
-		}  ///////////////////////////////////////////////
+		}  ///////////////////////////////////////////////*/
 
+		// Creo la brocha para el fondo (si el color del fondo del nodo es igual al color del fondo normal o resaltado de la barra de scroll, creo la brocha con el color del fondo del control. En caso contrario creo la brocha con el color que especifica el nodo)
+		HBRUSH BrochaFondo = NULL;
+		if (_Items[nPosItem]->_ColorFondo != DBarraScrollEx_Skin::FondoNormal && _Items[nPosItem]->_ColorFondo != DBarraScrollEx_Skin::FondoResaltado) 	BrochaFondo = CreateSolidBrush(_Items[nPosItem]->_ColorFondo);
+		else																																			BrochaFondo = CreateSolidBrush(_ColorFondo); 
+		
 		// Pinto el fondo del buffer
-		HBRUSH BrochaFondo = CreateSolidBrush(ColFondo);
 		RECT EspacioLocal = { 0 , 0, (static_cast<LONG>(_TotalAnchoVisible) > Espacio.right) ? static_cast<LONG>(_TotalAnchoVisible) : Espacio.right, (2 * DLISTAEX_PADDING) + Fuente.Alto() };
 		FillRect(_BufferItem, &EspacioLocal, BrochaFondo);
 		DeleteObject(BrochaFondo);
@@ -258,11 +262,11 @@ namespace DWL {
 			if (_Items[static_cast<unsigned int>(nPosItem)]->Texto(i).size() > 0) {
 				// Pinto la sombra
 				if (DListaEx_Skin::FuenteSombraTexto == TRUE) {
-					SetTextColor(_BufferItem, ColSombra);
+					SetTextColor(_BufferItem, _Items[nPosItem]->_ColorTextoSombra);
 					DrawText(_BufferItem, _Items[static_cast<unsigned int>(nPosItem)]->Texto(i).c_str(), static_cast<int>(_Items[static_cast<unsigned int>(nPosItem)]->Texto(i).size()), &RCelda, _Columnas[i]->Alineacion | DT_NOPREFIX);
 				}
 				// Pinto el texto
-				SetTextColor(_BufferItem, ColTexto);
+				SetTextColor(_BufferItem, _Items[nPosItem]->_ColorTexto);
 				OffsetRect(&RCelda, -1, -1);
 				DrawText(_BufferItem, _Items[static_cast<unsigned int>(nPosItem)]->Texto(i).c_str(), static_cast<int>(_Items[static_cast<unsigned int>(nPosItem)]->Texto(i).size()), &RCelda, _Columnas[i]->Alineacion | DT_NOPREFIX);
 			}
@@ -301,9 +305,9 @@ namespace DWL {
 	*/
 	const LONGLONG DListaEx::HitTest(const int cX, const int cY, LONGLONG *nPosSubItem) {
 		if (_ItemPaginaInicio == -1) {
-			#if DLISTAEX_MOSTRARDEBUG == TRUE
+/*			#if DLISTAEX_MOSTRARDEBUG == TRUE
 				Debug_Escribir_Varg(L"DListaEx::HitTest X:%d Y:%d I:-1 SI:-1\n", cX, cY);
-			#endif
+			#endif*/
 			return -1;
 		}
 
@@ -325,27 +329,27 @@ namespace DWL {
 
 						if (PixelesContadosH <= cX && PixelesContadosH + _Columnas[si]->_AnchoCalculado >= cX) {
 							*nPosSubItem = si;
-							#if DLISTAEX_MOSTRARDEBUG == TRUE
+/*							#if DLISTAEX_MOSTRARDEBUG == TRUE
 								Debug_Escribir_Varg(L"DListaEx::HitTest X:%d Y:%d I:%d SI:%d\n", cX, cY, i, si);
-							#endif
+							#endif*/
 							return i;
 						}
 						PixelesContadosH += _Columnas[si]->_AnchoCalculado;
 					}
 				}
 				else { // Solo se busca el item
-					#if DLISTAEX_MOSTRARDEBUG == TRUE
+/*					#if DLISTAEX_MOSTRARDEBUG == TRUE
 						Debug_Escribir_Varg(L"DListaEx::HitTest X:%d Y:%d I:%d\n", cX, cY, i);
-					#endif
+					#endif*/
 					return i;
 				}
 			}
 			PixelesContados += AltoItem;
 		}
 
-		#if DLISTAEX_MOSTRARDEBUG == TRUE
+/*		#if DLISTAEX_MOSTRARDEBUG == TRUE
 			Debug_Escribir_Varg(L"DListaEx::HitTest X:%d Y:%d I:-1\n", cX, cY);
-		#endif
+		#endif*/
 		return -1;
 	}
 
@@ -381,7 +385,12 @@ namespace DWL {
 		#endif
 
 		for (size_t i = 0; i < _Items.size(); i++) {
+			SeleccionarItem(_Items[i], FALSE);
+/*			_Items[i]->_AniTransicion.Terminar();
 			_Items[i]->Seleccionado = FALSE;
+			_Items[i]->_ColorFondo			= _ColorFondo;
+			_Items[i]->_ColorTexto			= DListaEx_Skin::TextoItemNormal;
+			_Items[i]->_ColorTextoSombra	= DListaEx_Skin::TextoItemSombra;*/
 		}
 	}
 
@@ -698,11 +707,17 @@ namespace DWL {
 		// Envio el evento mouseup a la ventana padre
 		SendMessage(GetParent(hWnd()), DWL_LISTAEX_MOUSEMOVIMIENTO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
 
-		// Comprueba si el item resaltado es el mismo que la ultima vez, y si no lo és repinta el control
-		if (_ItemResaltado != _ItemUResaltado || _SubItemResaltado != _SubItemUResaltado) {
-			_ItemUResaltado = _ItemResaltado;
-			_SubItemUResaltado = _SubItemResaltado;
-			Repintar();
+		if (_ItemPresionado == -1) {
+			// Comprueba si el item resaltado es el mismo que la ultima vez, y si no lo és repinta el control
+			if (_ItemResaltado != _ItemUResaltado || _SubItemResaltado != _SubItemUResaltado) {
+
+				if (_ItemUResaltado != -1) _Items[_ItemUResaltado]->_TransicionNormal();
+				if (_ItemResaltado != -1)  _Items[_ItemResaltado]->_TransicionResaltado();
+
+				_ItemUResaltado = _ItemResaltado;
+				_SubItemUResaltado = _SubItemResaltado;
+				Repintar();
+			}
 		}
 	}
 
@@ -713,6 +728,26 @@ namespace DWL {
 		}
 		return Ret;
 	}
+
+	void DListaEx::SeleccionarItem(const LONGLONG sPos, const BOOL nSeleccion) {
+		SeleccionarItem(_Items[sPos], nSeleccion);
+	}
+
+	void DListaEx::SeleccionarItem(DListaEx_Item *sItem, const BOOL nSeleccion) {
+		sItem->Seleccionado = nSeleccion;
+		sItem->_AniTransicion.Terminar();
+		if (nSeleccion == TRUE) {
+			sItem->_ColorFondo		 = DListaEx_Skin::FondoItemSeleccionado;
+			sItem->_ColorTexto		 = DListaEx_Skin::TextoItemSeleccionado;
+			sItem->_ColorTextoSombra = DListaEx_Skin::TextoItemSeleccionadoSombra;
+		}
+		else {
+			sItem->_ColorFondo		 = DListaEx_Skin::FondoItemNormal;
+			sItem->_ColorTexto		 = DListaEx_Skin::TextoItemNormal;
+			sItem->_ColorTextoSombra = DListaEx_Skin::TextoItemSombra;
+		}
+	}
+
 
 	void DListaEx::_Evento_MousePresionado(const int Boton, WPARAM wParam, LPARAM lParam) {
 		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
@@ -727,16 +762,17 @@ namespace DWL {
 			Debug_Escribir_Varg(L"DListaEx::_Evento_MousePresionado IP:%d X:%d Y:%d\n", _ItemMarcado, DatosMouse.X(), DatosMouse.Y());
 		#endif
 
-		if (_ItemPresionado != -1) {
+		if (_ItemPresionado != -1) {			
 			BOOL tShift   = DatosMouse.Shift();
 			BOOL tControl = DatosMouse.Control();
 			if (tShift == TRUE && _ItemShift != -1) {
 				DesSeleccionarTodo();
-				if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
-				else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
+				if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) SeleccionarItem(i, TRUE);	}
+				else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) SeleccionarItem(i, TRUE);	}
 			}
 			else if (tControl == TRUE) {
-				_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado = !_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado;
+				SeleccionarItem(_ItemPresionado, !_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado);
+//				_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado = !_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado;
 			}
 			else {
 				// Si no es el boton derecho del mouse (el boton derecho suele desplegar un menú)
@@ -749,8 +785,11 @@ namespace DWL {
 					if (TotalItemsSeleccionados() == 1) DesSeleccionarTodo();
 				}
 				// Selecciono el item que hay debajo del mouse
-				_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado = TRUE;
+				SeleccionarItem(_ItemPresionado, TRUE);
+				//_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado = TRUE;
 			}
+
+			_Items[_ItemPresionado]->_Transicion(DListaEx_TransicionItem::DListaEx_TransicionItem_Presionado);
 		}
 		else {
 			DesSeleccionarTodo();
@@ -768,6 +807,11 @@ namespace DWL {
 		ReleaseCapture();
 		if (Scrolls_MouseSoltado(DatosMouse) == TRUE) { return; }
 
+		LONGLONG T = HitTest(DatosMouse.X(), DatosMouse.Y(), &_SubItemPresionado);
+		if (_ItemPresionado != -1) {
+			if (T == _ItemPresionado) _Items[_ItemPresionado]->_TransicionResaltado();
+			else                      _Items[_ItemPresionado]->_TransicionNormal();
+		}
 /*		if (_ItemPresionado != -1) {
 			_Items[_ItemPresionado]->Seleccionado = TRUE;
 		}*/
@@ -809,6 +853,10 @@ namespace DWL {
 //		LONG ncX = RW.left - DatosMouse.X();
 //		LONG ncY = RW.top - DatosMouse.Y();
 		_ItemResaltado = HitTest(DatosMouse.X(), DatosMouse.Y());
+
+		if (_ItemUResaltado != -1) _Items[_ItemUResaltado]->_TransicionNormal();
+		if (_ItemResaltado != -1)  _Items[_ItemResaltado]->_TransicionResaltado();
+
 		_ItemUResaltado = _ItemResaltado;
 
 		Evento_MouseRueda(DatosMouse);
@@ -866,7 +914,8 @@ namespace DWL {
 		// Si no hay item marcado, marco el primero visible y salgo
 		if (_ItemMarcado == -1) {	
 			_ItemMarcado = _ItemPaginaInicio;
-			_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
+			SeleccionarItem(_ItemMarcado, TRUE);
+//			_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
 			MostrarItem(_ItemMarcado);
 			return;
 		}
@@ -882,8 +931,8 @@ namespace DWL {
 			if (tShift == TRUE && MultiSeleccion == TRUE) {
 				DesSeleccionarTodo();
 				if (_ItemShift != -1) {
-					if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
-					else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
+					if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) 	SeleccionarItem(i, TRUE); }
+					else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) 	SeleccionarItem(i, TRUE); }
 				}
 				#if DLISTAEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir_Varg(L"DListaEx::_Tecla_CursorArriba & Shift -> IS : %d, IM : %d\n", _ItemShift, _ItemMarcado);
@@ -898,7 +947,8 @@ namespace DWL {
 			}*/
 			else {
 				if (MultiSeleccion == FALSE || tControl == FALSE || tShift == FALSE) DesSeleccionarTodo();
-				_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
+				//_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
+				SeleccionarItem(_ItemMarcado, TRUE);
 				#if DLISTAEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir(L"DListaEx::_Tecla_CursorArriba\n");
 				#endif
@@ -915,7 +965,8 @@ namespace DWL {
 		// Si no hay item marcado, marco el primero visible y salgo
 		if (_ItemMarcado == -1) {
 			_ItemMarcado = _ItemPaginaInicio;
-			_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
+			SeleccionarItem(_ItemMarcado, TRUE);
+			//_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
 			MostrarItem(_ItemMarcado);
 			return;
 		}
@@ -931,8 +982,8 @@ namespace DWL {
 			if (tShift == TRUE && MultiSeleccion == TRUE) {
 				if (_ItemShift != -1) {
 					DesSeleccionarTodo();
-					if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
-					else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
+					if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) 	SeleccionarItem(i, TRUE); }
+					else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++)  SeleccionarItem(i, TRUE); }
 				}
 				#if DLISTAEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir_Varg(L"DListaEx::_Tecla_CursorAbajo & Shift -> IS : %d, IM : %d\n", _ItemShift, _ItemMarcado);
@@ -947,7 +998,8 @@ namespace DWL {
 			}*/
 			else {
 				if (MultiSeleccion == FALSE || tControl == FALSE || tShift == FALSE) DesSeleccionarTodo();
-				_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
+				SeleccionarItem(_ItemMarcado, TRUE);
+				//_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
 				#if DLISTAEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir(L"DListaEx::_Tecla_CursorAbajo\n");
 				#endif
@@ -963,11 +1015,12 @@ namespace DWL {
 		DesSeleccionarTodo();
 
 		if (DatosTeclado.Shift() == TRUE && MultiSeleccion == TRUE) {
-			for (LONGLONG i = 0; i <= _ItemShift; i++) _Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE;
+			for (LONGLONG i = 0; i <= _ItemShift; i++) SeleccionarItem(i, TRUE);
 		}
 
 		_ItemMarcado = 0;
-		_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
+		SeleccionarItem(_ItemMarcado, TRUE);
+		//_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
 		MostrarItem(_ItemMarcado);
 	}
 
@@ -979,10 +1032,11 @@ namespace DWL {
 		_ItemMarcado = _Items.size() - 1;
 
 		if (DatosTeclado.Shift() == TRUE && MultiSeleccion == TRUE) {
-			for (LONGLONG i = _ItemShift; i < _ItemMarcado; i++) _Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE;
+			for (LONGLONG i = _ItemShift; i < _ItemMarcado; i++) SeleccionarItem(i, TRUE);
 		}
 
-		_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
+		//_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
+		SeleccionarItem(_ItemMarcado, TRUE);
 		MostrarItem(_ItemMarcado);
 	}
 
@@ -994,13 +1048,14 @@ namespace DWL {
 		DesSeleccionarTodo();
 		if (DatosTeclado.Shift() == TRUE && MultiSeleccion == TRUE) {
 			LONGLONG ItemFin = (_ItemPaginaFin != -1) ? _ItemPaginaFin : static_cast<LONGLONG>(_Items.size());
-			if (_ItemShift < ItemFin) { for (LONGLONG i = _ItemShift; i <= ItemFin; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
-			else                      { for (LONGLONG i = ItemFin; i <= _ItemShift; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
+			if (_ItemShift < ItemFin) { for (LONGLONG i = _ItemShift; i <= ItemFin; i++) 	SeleccionarItem(i, TRUE); }
+			else                      { for (LONGLONG i = ItemFin; i <= _ItemShift; i++) 	SeleccionarItem(i, TRUE); }
 		}
 
 		MostrarItem(_ItemPaginaFin, FALSE);
 		_ItemMarcado = _ItemPaginaFin;		// Asigno el itemMarcado DESPRES de MostrarItem (que per alguna rao em cambia el _ItemPagina
-		_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
+		//_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
+		SeleccionarItem(_ItemMarcado, TRUE);
 		Repintar();
 	}
 
@@ -1013,19 +1068,24 @@ namespace DWL {
 		DesSeleccionarTodo();
 		if (DatosTeclado.Shift() == TRUE && MultiSeleccion == TRUE) {
 			LONGLONG ItemInicio = (_ItemPaginaInicio != -1) ? _ItemPaginaInicio : 0;
-			if (_ItemShift < ItemInicio) { for (LONGLONG i = _ItemShift; i <= ItemInicio; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
-			else						 { for (LONGLONG i = ItemInicio; i <= _ItemShift; i++) 	_Items[static_cast<unsigned int>(i)]->Seleccionado = TRUE; }
+			if (_ItemShift < ItemInicio) { for (LONGLONG i = _ItemShift; i <= ItemInicio; i++) 	SeleccionarItem(i, TRUE); }
+			else						 { for (LONGLONG i = ItemInicio; i <= _ItemShift; i++) 	SeleccionarItem(i, TRUE);  }
 		}
 
 		_ItemMarcado = _ItemPaginaInicio;
 		MostrarItem(_ItemMarcado, FALSE);
-		_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
+		SeleccionarItem(_ItemMarcado, TRUE);
+		//_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
 		Repintar();
 	}
 
 
 	void DListaEx::_Evento_MouseSaliendo(void) {
 		BOOL nRepintar = Scrolls_MouseSaliendo();
+
+		if (_ItemUResaltado != -1) _Items[_ItemUResaltado]->_TransicionNormal();
+		if (_ItemResaltado != -1)  _Items[_ItemResaltado]->_TransicionNormal();
+
 		_MouseDentro = FALSE;
 		_ItemResaltado = -1;
 		Evento_MouseSaliendo();

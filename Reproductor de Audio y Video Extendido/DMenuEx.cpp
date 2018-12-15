@@ -445,7 +445,7 @@ namespace DWL {
 
 					// Calculo el ancho necesario
 					// Margen + Ancho icono + Margen + Ancho texto + Margen + Acho icono + Margen
-					TmpAncho = Tam.cx + (DMENUEX_TAMICONO * 2) + (DMENUEX_MARGEN_X * 4);
+					TmpAncho = Tam.cx + DMENUEX_TAMICONO + (DMENUEX_MARGEN_X * 3);
 					// Si el ancho temporal es mas grande que el ancho final, asigno el ancho temporal al ancho final
 					if (TmpAncho > Ret.x) Ret.x = TmpAncho;
 
@@ -500,6 +500,18 @@ namespace DWL {
 		// Añado el borde
 		Ret.x += (DMENUEX_BORDE * 2);
 		Ret.y += (DMENUEX_BORDE * 2);
+
+		// Miro si hay algun submenu con hijos para dejar espacio a la marca
+		BOOL Marca = FALSE;
+		for (size_t i = 0; i < _Menus.size(); i++) {
+			if (_Menus[i]->TotalMenus() > 0) {
+				Marca = TRUE;
+				break;
+			}
+		}
+		if (Marca == TRUE) {
+			Ret.x += DMENUEX_TAMICONO + DMENUEX_MARGEN_X;
+		}
 
 		// Des-selecciono la fuente y libero el DC
 		ReleaseDC(NULL, hDC);

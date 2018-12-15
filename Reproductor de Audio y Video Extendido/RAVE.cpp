@@ -237,6 +237,10 @@ void RAVE::IniciarUI(int nCmdShow) {
 	// Menu Arbol BD	
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_AGREGARALISTA		, L"Añadir a lista"								, IDI_AGREGARLISTA);
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_AGREGARANUEVALISTA	, L"Añadir a una nueva lista"					, IDI_AGREGARNUEVALISTA);
+	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ABRIRCARPETA			, L"Abrir carpeta"								, IDI_DIRECTORIO);
+	VentanaRave.Menu_ArbolBD.AgregarBarra(ID_MENUBD_NOTA				, L"Nota"										, IDI_NOTA, 0.0f, 5.0f, 2.5f, DBarraEx_MostrarValor_ValorMaximo2Decimales);
+	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ABRIRCARPETA			, L"Propiedades");
+	VentanaRave.Menu_ArbolBD.AgregarSeparador();
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ACTUALIZAR			, L"Actualizar"									, IDI_ACTUALIZAR);
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ANALIZAR				, L"Analizar"									, IDI_ANALIZAR);
 

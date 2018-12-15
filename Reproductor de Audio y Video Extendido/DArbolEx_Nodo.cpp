@@ -227,7 +227,7 @@ namespace DWL {
 		_ColorFondo			= nColFondo;
 	}
 
-
+	// Hace la transición a resaltado
 	void DArbolEx_Nodo::_TransicionResaltado(void) {
 		_Transicion(
 			(_Activado == TRUE) ? 
@@ -240,6 +240,7 @@ namespace DWL {
 		);
 	}
 
+	// Hace la transición a normal
 	void DArbolEx_Nodo::_TransicionNormal(void) {
 		_Transicion(
 			(_Activado == TRUE) ? 
