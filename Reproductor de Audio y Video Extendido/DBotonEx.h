@@ -5,6 +5,7 @@
 #include "DAnimacion.h"
 #include "DFuente.h"
 
+
 namespace DWL {
 	enum DBotonEx_Estado {
 		DBotonEx_Estado_Normal,
@@ -22,6 +23,12 @@ namespace DWL {
 
 	#define DBOTONEX_MOSTRARDEBUG	FALSE
 	#define DBOTONEX_CENTRADO -1
+	#define DBOTONEX_GDIPLUS		FALSE
+
+	#if DBOTONEX_GDIPLUS == TRUE
+		#include "DGDIPlus.h"
+	#endif
+
 
 	// Skin por defecto del boton
 	class DBotonEx_Skin {
@@ -50,6 +57,7 @@ namespace DWL {
 		 static BOOL			FuenteSombraTexto;
 	};
 
+
 	class DBotonEx : public DControlEx {
 	  public:
 								DBotonEx(void);
@@ -64,8 +72,11 @@ namespace DWL {
 		virtual void			Activado(const BOOL nActivar);
 		inline const BOOL       Activado(void) { return DhWnd::Activado(); }
 		
+	#if DBOTONEX_GDIPLUS == FALSE
 		void					Pintar(HDC DC, const int nX = 0, const int nY = 0);
-
+	#else 
+		void					PintarP(HDC DC, const int nX = 0, const int nY = 0);
+	#endif
 		virtual void			Evento_MouseMovimiento(DEventoMouse &DatosMouse)	{ };
 		virtual void			Evento_MousePresionado(DEventoMouse &DatosMouse)	{ };
 		virtual void			Evento_MouseSoltado(DEventoMouse &DatosMouse)		{ };
@@ -74,8 +85,11 @@ namespace DWL {
 
 		LRESULT CALLBACK		GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-		DFuente			        Fuente;
-//		DhWnd_Fuente            Fuente;
+	#if DBOTONEX_GDIPLUS == FALSE
+		DWL::DFuente	        Fuente;
+	#else 
+		DWL::DFuenteP           Fuente;
+	#endif
 
 		inline const BOOL       Marcado(void) { return _Marcado; }
 		void                    Marcado(const BOOL nMarcar);
@@ -100,7 +114,11 @@ namespace DWL {
 		std::wstring           _Texto;
 		DBotonEx_Estado		   _Estado;
 		BOOL                   _Marcado;
+	#if DBOTONEX_GDIPLUS == FALSE
 		DIcono                 _Icono;
+	#else
+		DIconoP                _Icono;
+	#endif
 		int                    _PosIconoX;
 		int                    _PosIconoY;
 		DAnimacion             _AniTransicion;

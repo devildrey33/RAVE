@@ -6,34 +6,36 @@
 
 namespace DWL {
 
-	class DFuente_Datos {
-      public :
-							DFuente_Datos(void) : Tam(0), Negrita(FALSE), Cursiva(FALSE), Subrayado(FALSE), Tachado(FALSE), Fuente(NULL), Alto(0) { }
-							DFuente_Datos(const int nTam, std::wstring &nNombre, const BOOL nNegrita, const BOOL nCursiva, const BOOL nSubrayado, const BOOL nTachado, HFONT nFuente) : Tam(nTam), Nombre(nNombre), Negrita(nNegrita), Cursiva(nCursiva), Subrayado(nSubrayado), Tachado(nTachado), Fuente(nFuente), Alto(0) {
-								Alto = ObtenerTamTexto(L"W").cy;
-							}
-							// Obtiene el tamaño del texto especificado, utilizando la fuente de esta clase y su propio DC
-		const SIZE			ObtenerTamTexto(const TCHAR *nTexto);
-							// Obtiene el tamaño del string especificado, utilizando la fuente de esta clase y su propio DC
-		const SIZE			ObtenerTamTexto(std::wstring &nTexto);
-							// Obtiene el tamaño del texto especificado. El DC especificado debe tener seleccionada esta fuente.
-		const SIZE			ObtenerTamTexto(HDC DC, const TCHAR *nTexto);
-							// Obtiene el tamaño del string especificado. El DC especificado debe tener seleccionada esta fuente.
-		const SIZE			ObtenerTamTexto(HDC DC, std::wstring &nTexto);
-		
-		int					Tam;
-		std::wstring		Nombre;
-		BOOL				Negrita;
-		BOOL				Cursiva;
-		BOOL				Subrayado;
-		BOOL                Tachado;
-		HFONT				Fuente;
-		int                 Alto;
-	};
 
 	// Objeto para controlar las fuentes que se usan en la aplicación
 	// Para no tener mil fuentes iguales cargadas para distintos controles, este objeto guarda una lista con todas las fuentes creadas, y si se intenta crear una fuente que ya existia, se devuelve la existente.
 	class DFuente {
+	   protected:
+		    // Datos para una fuente
+			class DFuente_Datos {
+			  public :
+									DFuente_Datos(void) : Tam(0), Negrita(FALSE), Cursiva(FALSE), Subrayado(FALSE), Tachado(FALSE), Fuente(NULL), Alto(0) { }
+									DFuente_Datos(const int nTam, std::wstring &nNombre, const BOOL nNegrita, const BOOL nCursiva, const BOOL nSubrayado, const BOOL nTachado, HFONT nFuente) : Tam(nTam), Nombre(nNombre), Negrita(nNegrita), Cursiva(nCursiva), Subrayado(nSubrayado), Tachado(nTachado), Fuente(nFuente), Alto(0) {
+										Alto = ObtenerTamTexto(L"W").cy;
+									}
+									// Obtiene el tamaño del texto especificado, utilizando la fuente de esta clase y su propio DC
+				const SIZE			ObtenerTamTexto(const TCHAR *nTexto);
+									// Obtiene el tamaño del string especificado, utilizando la fuente de esta clase y su propio DC
+				const SIZE			ObtenerTamTexto(std::wstring &nTexto);
+									// Obtiene el tamaño del texto especificado. El DC especificado debe tener seleccionada esta fuente.
+				const SIZE			ObtenerTamTexto(HDC DC, const TCHAR *nTexto);
+									// Obtiene el tamaño del string especificado. El DC especificado debe tener seleccionada esta fuente.
+				const SIZE			ObtenerTamTexto(HDC DC, std::wstring &nTexto);
+		
+				int					Tam;
+				std::wstring		Nombre;
+				BOOL				Negrita;
+				BOOL				Cursiva;
+				BOOL				Subrayado;
+				BOOL                Tachado;
+				HFONT				Fuente;
+				int                 Alto;
+			};
 	   public:	
 												DFuente(void);										
 												DFuente(const int nTam, const wchar_t *nNombre, const BOOL nNegrita = FALSE, const BOOL nCursiva = FALSE, const BOOL nSubrayado = FALSE, const BOOL nTachado = FALSE);

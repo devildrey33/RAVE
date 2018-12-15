@@ -243,7 +243,7 @@ unsigned long  EnviarDump::_ThreadEnviar(void *pDatosDump) {
 	UINT VisualSudioVer = 2017;
 	using convert_typeX = std::codecvt_utf8<wchar_t>;
 	std::wstring_convert<convert_typeX, wchar_t> converterX;
-	sprintf_s(szMsgLine, 255, "RAVE : %f, SO : %s, Compilado con : VisualStudio %d\r\n", RAVE_VERSIONF, converterX.to_bytes(App.SO.c_str()).c_str(), VisualSudioVer);
+	sprintf_s(szMsgLine, 255, "RAVE : %f, SO : %s, Compilado con : VisualStudio %d\r\n", RAVE_VERSIONF, converterX.to_bytes(App.ObtenerSO()).c_str(), VisualSudioVer);
 	_Enviar(szMsgLine);
 
 	_Enviar("--Boundary-=_StOHgENiGNeW");

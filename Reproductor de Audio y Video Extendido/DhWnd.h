@@ -10,6 +10,10 @@
 #include <string>
 #include "RAVE_Configuracion.h"
 
+#include <objidl.h>
+#include <gdiplus.h>
+//using namespace Gdiplus;
+
 #if RAVE_SKIN == 0
 	#include "Rave_Skin.h"
 #elif RAVE_SKIN == 1
@@ -22,6 +26,7 @@
 #include "DEventoMouseRueda.h"
 #include "DEventoTeclado.h"*/
 #include "DMensajesWnd.h"
+
 
 namespace DWL {
 

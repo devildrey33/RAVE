@@ -5,6 +5,12 @@
 #include <versionhelpers.h>
 #include <Shlobj.h>
 #include "DIcono.h"
+#include "DIconoP.h"
+#include "DFuenteP.h"
+
+//#include <gdiplus.h>
+
+
 
 #define MUTEX_RAVE L"Mutex_RAVE"
 
@@ -16,7 +22,7 @@ void RAVE_Iniciar(void) {
 
 RAVE *_APLICACION = NULL;
 
-RAVE::RAVE(void) : PlayerInicial(FALSE), MutexPlayer(NULL), MenuVideoPistasDeAudio(NULL), MenuVideoProporcion(NULL), MenuVideoFiltros(NULL), MenuVideoSubtitulos(NULL) {
+RAVE::RAVE(void) : PlayerInicial(FALSE), MutexPlayer(NULL), MenuVideoPistasDeAudio(NULL), MenuVideoProporcion(NULL), MenuVideoFiltros(NULL), MenuVideoSubtitulos(NULL)/*, _gdiplusToken(0) */ {
 	// Inicio la semilla para generar números aleatórios
 //	srand(GetTickCount());
 }
@@ -81,8 +87,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 		Debug_Escribir(L"Simulando AppPath en : C:\\ProgramFiles\\Rave\\\n");
 	#endif
 	
-	ObtenerSO();
-	Debug_Escribir(SO.c_str());
+	Debug_Escribir(ObtenerSO());
 	Debug_EscribirSinMS(L"\n");
 
 	// Inicializo la librería COM (para el TaskBarList)
@@ -131,9 +136,9 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 	TeclasRapidas.push_back(TeclaRapida(VK_RIGHT, TRUE, FALSE, FALSE));
 	TeclasRapidas.push_back(TeclaRapida(VK_LEFT, TRUE, FALSE, FALSE));
 
-/*	Gdiplus::GdiplusStartupInput	gdiplusStartupInput;
+//	Gdiplus::GdiplusStartupInput	gdiplusStartupInput;
 	// Initialize GDI+.
-	Gdiplus::GdiplusStartup(&_gdiplusToken, &gdiplusStartupInput, NULL);*/
+//	Gdiplus::GdiplusStartup(&_gdiplusToken, &gdiplusStartupInput, NULL);
 
 	switch (LC) {
 		// Ejecución normal sin parámetros
@@ -177,6 +182,15 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 					}
 				#endif
 			}
+			// Hay paths, los añado a la lista
+			else {
+				for (size_t i = 0; i < Paths.size(); i++) {
+					if (Paths[i] != L"-r") {
+						MemCompartida.AgregarPath(Paths[i]);
+					}
+				}
+				VentanaRave.ExploradorAgregarMedio(TRUE);
+			}
 			
 			Ret = TRUE;
 			break;
@@ -184,7 +198,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 		// Ejecución para mostrar la ventana de error crítico
 		case LineaComando_ErrorCritico :
 			VentanaErrorCrit.Crear();
-			ReleaseMutex(MutexPlayer);
+			//ReleaseMutex(MutexPlayer);
 			Ret = TRUE;
 			break;
 
@@ -309,7 +323,6 @@ void RAVE::IniciarUI(int nCmdShow) {
 	
 	_ToolTipPlayer.Iniciar(&VentanaRave);
 	_ToolTipOpciones.Iniciar(&VentanaOpciones);
-
 }
 
 void RAVE::Terminar(void) {
@@ -322,9 +335,12 @@ void RAVE::Terminar(void) {
 	
 	CoUninitialize();
 
-//	Gdiplus::GdiplusShutdown(_gdiplusToken);
 	DFuente::EliminarFuentes();
 	DIcono::EliminarIconos();
+
+//	DFuenteP::EliminarFuentes();
+//	DIconoP::EliminarIconos();
+//	Gdiplus::GdiplusShutdown(_gdiplusToken);
 	Debug_Escribir(L"Rave::Terminar\n");
 }
 
@@ -338,15 +354,11 @@ void RAVE::Eventos_Mirar(void) {
 	}
 }
 
-/* NO ES CORRECTE.. Obte el SO minim pel SDK jo diria.. pk amb win 10 diu que es win 8 */
-void RAVE::ObtenerSO() {
-	//RtlGetVersion()
-/*	DWORD dwVersion = GetVersion();
 
-	DWORD dwMajorVersion = (DWORD)(LOBYTE(LOWORD(dwVersion)));
-	DWORD dwMinorVersion = (DWORD)(HIBYTE(LOWORD(dwVersion)));;*/
-
+// TODO : fer que retorni un TCHAR *
+const TCHAR *RAVE::ObtenerSO(void) {
 	UINT Version = 0;
+
 	if (IsWindowsXPOrGreater())			Version++;
 	if (IsWindowsXPSP1OrGreater())		Version++;
 	if (IsWindowsXPSP2OrGreater())		Version++;
@@ -361,21 +373,23 @@ void RAVE::ObtenerSO() {
 	if (IsWindows10OrGreater())			Version++;
 
 	switch (Version) {
-		case  0: SO = L"";						break;
-		case  1: SO = L"Windows XP";			break;
-		case  2: SO = L"Windows XP SP1";		break;
-		case  3: SO = L"Windows XP SP2";		break;
-		case  4: SO = L"Windows XP SP3";		break;
-		case  5: SO = L"Windows Vista";			break;
-		case  6: SO = L"Windows Vista SP1";		break;
-		case  7: SO = L"Windows Vista SP2";		break;
-		case  8: SO = L"Windows 7";				break;
-		case  9: SO = L"Windows 7 SP1";			break;
-		case 10: SO = L"Windows 8";				break;
-		case 11: SO = L"Windows 8.1";			break;
-		case 12: SO = L"Windows 10";			break;
-		default: SO = L"Windows 10 o superior";	break;
+		case  0: return L"";
+		case  1: return L"Windows XP";
+		case  2: return L"Windows XP SP1";
+		case  3: return L"Windows XP SP2";
+		case  4: return L"Windows XP SP3";
+		case  5: return L"Windows Vista";
+		case  6: return L"Windows Vista SP1";
+		case  7: return L"Windows Vista SP2";
+		case  8: return L"Windows 7";			
+		case  9: return L"Windows 7 SP1";		
+		case 10: return L"Windows 8";			
+		case 11: return L"Windows 8.1";			
+		case 12: return L"Windows 10";
+		default: return L"Windows 10 o superior";
 	}
+
+	return L"";
 }
 
 const LineaComando RAVE::ObtenerLineaComando(std::vector<std::wstring> &Paths) {

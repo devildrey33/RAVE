@@ -65,8 +65,6 @@ namespace DWL {
 			if (SUCCEEDED(Ret)) {
 				_Icono = new DIcono_Datos(sfi.hIcon, --_IDNegativa, nAncho, nAlto, Nombre, PosIco);
 				_Iconos.push_back(_Icono);
-				// Borro el PIDLIST_ABSOLUTE
-//				ILFree(npi);
 			}
 		}
 		// Borro el PIDLIST_ABSOLUTE
@@ -79,9 +77,10 @@ namespace DWL {
 		SHFILEINFO   sfi = { 0 };
 		hr = SHGetFileInfo(Path, 0, &sfi, sizeof(sfi), SHGFI_ICONLOCATION);
 		std::wstring  Nombre = sfi.szDisplayName;
+		std::transform(Nombre.begin(), Nombre.end(), Nombre.begin(), toupper); // transformo el path a mayusculas
 		int			  PosIco = sfi.iIcon;
 		// Busco el icono
-		_Icono = _BuscarIDStr(sfi.szDisplayName, sfi.iIcon);
+		_Icono = _BuscarIDStr(Nombre.c_str(), sfi.iIcon);
 		// No existe, lo creamos
 		if (_Icono == NULL) {
 			hr = SHGetFileInfo(Path, nPosicionIco, &sfi, sizeof(sfi), SHGFI_ICON);
@@ -101,7 +100,7 @@ namespace DWL {
 		}
 	}
 
-	DIcono::DIcono_Datos *DIcono::_BuscarIDStr(const wchar_t *nIDStr, const int nPosicionStr) {
+	DIcono::DIcono_Datos *DIcono::_BuscarIDStr(const wchar_t *nIDStr, const int nPosicionStr) {		
 		for (size_t i = 0; i < _Iconos.size(); i++) {
 			if (_Iconos[i]->IDStr == nIDStr && _Iconos[i]->IDStrPos == nPosicionStr) {
 				return _Iconos[i];

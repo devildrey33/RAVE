@@ -61,7 +61,7 @@ class RAVE {
 
 	void							Eventos_Mirar(void);
 
-	void							ObtenerSO(void);
+	const TCHAR 				   *ObtenerSO(void);
 
 									// Evento Tecla soltada general de todas las ventanas excepto el video del VLC
 	void                            Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado);
@@ -108,7 +108,7 @@ class RAVE {
 	HANDLE							MutexPlayer;
 
 
-	std::wstring					SO;
+//	std::wstring					SO;
 									// Directorio de la aplicación, Siempre termina con "\"
 	std::wstring					AppPath;
 
@@ -134,8 +134,9 @@ class RAVE {
 	//DToolTipEx                     _ToolTip2;
 
 	std::random_device			   _rd;
+	
 	// Token para el GDI+
-//	ULONG_PTR					   _gdiplusToken;
+	//ULONG_PTR					   _gdiplusToken;
 };
 
 

@@ -19,10 +19,7 @@
 
 
 // TODO: mencionar aquí los encabezados adicionales que el programa necesita
-// GDI +
-/*#include <objidl.h>
-#include <gdiplus.h>
-#pragma comment (lib,"Gdiplus.lib")*/
+//#pragma comment (lib,"Gdiplus.lib")		// GDI +
 
 #pragma comment (lib,"Msimg32.lib")		// Alpha blend
 
@@ -33,7 +30,7 @@
 #include <Uxtheme.h>
 
 // Estilo visual XP+
-#pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+//#pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 #pragma comment(lib, "dwmapi")			// Librería para DwmExtendFrameIntoClientArea 
 
@@ -120,7 +117,7 @@
 #define ID_MENUVIDEO_VIDEO						2151
 #define ID_MENUVIDEO_SUBTITULOS					2152
 #define ID_MENUVIDEO_PISTA_AUDIO				2153
-#define ID_MENUVIDEO_AUDIO_PISTAS_AUDIO			2160 // Inicio de las pistas de audio del VLC 
+#define ID_MENUVIDEO_AUDIO_PISTAS_AUDIO	        2160 // Inicio de las pistas de audio del VLC 
 													 // (DEJAR COMO MÍNIMO 10)
 #define ID_MENUVIDEO_AUDIO_PISTAS_AUDIO_FIN		2180
 #define ID_MENUVIDEO_PROPORCION					2181

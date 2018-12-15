@@ -15,7 +15,7 @@ namespace DWL {
 										   |______|	                          	 */
 
 	// Obtiene el tamaño del texto especificado, utilizando la fuente de esta clase
-	const SIZE DFuente_Datos::ObtenerTamTexto(const TCHAR *nTexto) {
+	const SIZE DFuente::DFuente_Datos::ObtenerTamTexto(const TCHAR *nTexto) {
 		HDC		Buffer = GetDC(NULL);
 		SIZE	nTam = { 0, 0 };
 		HFONT	VFuente = static_cast<HFONT>(SelectObject(Buffer, Fuente));
@@ -26,7 +26,7 @@ namespace DWL {
 	}
 
 	// Obtiene el tamaño del string especificado, utilizando la fuente de esta clase
-	const SIZE DFuente_Datos::ObtenerTamTexto(std::wstring &nTexto) {
+	const SIZE DFuente::DFuente_Datos::ObtenerTamTexto(std::wstring &nTexto) {
 		HDC		Buffer = GetDC(NULL);
 		SIZE	nTam = { 0, 0 };
 		HFONT	VFuente = static_cast<HFONT>(SelectObject(Buffer, Fuente));
@@ -37,14 +37,14 @@ namespace DWL {
 	}
 
 	// Obtiene el tamaño del texto especificado. El DC especificado debe tener seleccionada esta fuente.
-	const SIZE DFuente_Datos::ObtenerTamTexto(HDC DC, const TCHAR *nTexto) {
+	const SIZE DFuente::DFuente_Datos::ObtenerTamTexto(HDC DC, const TCHAR *nTexto) {
 		SIZE	nTam = { 0, 0 };
 		GetTextExtentPoint(DC, nTexto, static_cast<int>(wcslen(nTexto)), &nTam);
 		return nTam;
 	}
 
 	// Obtiene el tamaño del string especificado. El DC especificado debe tener seleccionada esta fuente.
-	const SIZE DFuente_Datos::ObtenerTamTexto(HDC DC, std::wstring &nTexto) {
+	const SIZE DFuente::DFuente_Datos::ObtenerTamTexto(HDC DC, std::wstring &nTexto) {
 		SIZE	nTam = { 0, 0 };
 		GetTextExtentPoint(DC, nTexto.c_str(), static_cast<int>(nTexto.size()), &nTam);
 		return nTam;
@@ -61,7 +61,7 @@ namespace DWL {
 
 
 	// Vector de fuentes estático
-	std::vector<DFuente_Datos *> DFuente::_Fuentes;
+	std::vector<DFuente::DFuente_Datos *> DFuente::_Fuentes;
 
 
 	DFuente::DFuente(void) : _Fuente(NULL) {
@@ -78,8 +78,7 @@ namespace DWL {
 	// Función que crea el tipo de fuente especificado, si se da el caso de que la fuente ya fue creada anteriormente, se retornará la anterior.
 	void DFuente::CrearFuente(const int nTam, const wchar_t *nNombre, const BOOL nNegrita, const BOOL nCursiva, const BOOL nSubrayado, const BOOL nTachado) {
 		std::wstring _Nombre = nNombre;
-		std::transform(_Nombre.begin(), _Nombre.end(), _Nombre.begin(), toupper);
-
+		std::transform(_Nombre.begin(), _Nombre.end(), _Nombre.begin(), toupper);		
 		DFuente_Datos *Tmp = _BuscarFuente(nTam, _Nombre, nNegrita, nCursiva, nSubrayado, nTachado);
 		if (Tmp == NULL) {
 			HFONT nFuente = CreateFont(nTam, 0, 0, 0, (nNegrita == TRUE) ? FW_BOLD : FW_NORMAL, nCursiva, nSubrayado, nTachado, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, FF_ROMAN, nNombre);
@@ -137,7 +136,7 @@ namespace DWL {
 		_Fuentes.resize(0);
 	}
 
-	DFuente_Datos *DFuente::_BuscarFuente(const int nTam, std::wstring &nNombre, const BOOL nNegrita, const BOOL nCursiva, const BOOL nSubrayado, const BOOL nTachado) {
+	DFuente::DFuente_Datos *DFuente::_BuscarFuente(const int nTam, std::wstring &nNombre, const BOOL nNegrita, const BOOL nCursiva, const BOOL nSubrayado, const BOOL nTachado) {
 //	LONG DFuente::_BuscarFuente(const int nTam, std::wstring &nNombre, const BOOL nNegrita, const BOOL nCursiva, const BOOL nSubrayado, const BOOL nTachado) {
 			for (LONG i = 0; i < _Fuentes.size(); i++) {
 			if (nTam == _Fuentes[i]->Tam && nNombre == _Fuentes[i]->Nombre && nNegrita == _Fuentes[i]->Negrita && nCursiva == _Fuentes[i]->Cursiva && nSubrayado == _Fuentes[i]->Subrayado && nTachado == _Fuentes[i]->Tachado) {
