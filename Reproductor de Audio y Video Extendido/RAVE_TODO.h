@@ -292,10 +292,10 @@
 			-  s'ha de probar desde la RELEASE quan em carregui la libvlc per primer cop
 
 		-  Afegir al MenuBD : 
-			-  Nota (per poguer modificar la nota de tots els medis d'un directori)
-			-  Abrir carpeta
-			-  Propiedades
-			-  Orden!?!?! saps el follón que suposa no? xd ja veurem... jo no el trobo a faltar...
+			V  Nota (per poguer modificar la nota de tots els medis d'un directori)
+			V  Abrir carpeta
+			V  Propiedades
+			X  Orden!?!?! saps el follón que suposa no? xd ja veurem... jo no el trobo a faltar... de moment paso
 
 		-  Buscar actualitzacións
 		-  Afegir a les etiquetes les arrels, sense medir la distancia

@@ -1402,8 +1402,16 @@ const BOOL RaveBD::Opciones_GuardarPosVentanaAnalizar(void) {
 const BOOL RaveBD::MedioReproducido(BDMedio *rMedio) {
 	if (rMedio == NULL) return FALSE;
 	std::wstring Q;
-	if (Opciones_Sumar005() == TRUE) {	Q = L"UPDATE Medios SET Reproducido=" + std::to_wstring(rMedio->Reproducido + 1) + L", Nota=" + DWL::Strings::ToStrF(rMedio->Nota + 0.05f, 2) + L" WHERE Id=" + std::to_wstring(rMedio->Id);	}
-	else                             {	Q = L"UPDATE Medios SET Reproducido=" + std::to_wstring(rMedio->Reproducido + 1) + L" WHERE Id=" + std::to_wstring(rMedio->Id);																	}
+
+	if (Opciones_Sumar005() == TRUE) {	
+		float Nota = rMedio->Nota + 0.05f;
+		// La nota no puede pasar de 5.0
+		if (Nota > 5.0f) Nota = 5.0f;		
+		Q = L"UPDATE Medios SET Reproducido=" + std::to_wstring(rMedio->Reproducido + 1) + L", Nota=" + DWL::Strings::ToStrF(Nota, 2) + L" WHERE Id=" + std::to_wstring(rMedio->Id);
+	}
+	else                             {
+		Q = L"UPDATE Medios SET Reproducido=" + std::to_wstring(rMedio->Reproducido + 1) + L" WHERE Id=" + std::to_wstring(rMedio->Id);																
+	}
 	int SqlRet = Consulta(Q);
 	if (SqlRet == SQLITE_ERROR) {
 		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
@@ -1411,9 +1419,20 @@ const BOOL RaveBD::MedioReproducido(BDMedio *rMedio) {
 	}
 	return TRUE;
 }
- 
+
 // Actualiza la nota del ItemMedio especificado
 const BOOL RaveBD::MedioNota(ItemMedio *nMedio, const float nNota) {
+	std::wstring Q = L"UPDATE Medios SET Nota=" + DWL::Strings::ToStrF(nNota, 2) + L" WHERE Id=" + std::to_wstring(nMedio->Id);
+	int SqlRet = Consulta(Q);
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+	return TRUE;
+}
+
+// Actualiza la nota del ItemMedio especificado
+const BOOL RaveBD::MedioNota(NodoBD *nMedio, const float nNota) {
 	std::wstring Q = L"UPDATE Medios SET Nota=" + DWL::Strings::ToStrF(nNota, 2) + L" WHERE Id=" + std::to_wstring(nMedio->Id);
 	int SqlRet = Consulta(Q);
 	if (SqlRet == SQLITE_ERROR) {
@@ -1558,7 +1577,6 @@ EtiquetaBD *RaveBD::ObtenerEtiqueta(std::wstring &eTexto) {
 void RaveBD::CalcularDatosEtiqueta(EtiquetaBD *Etiqueta) {
 	std::vector<std::wstring> Condiciones;
 
-
 	if (Etiqueta->EsGenero() == TRUE) {
 		Condiciones.push_back(L"(Genero =\"" + Etiqueta->Texto + L"\")");
 	}
@@ -1624,6 +1642,42 @@ void RaveBD::CalcularDatosEtiqueta(EtiquetaBD *Etiqueta) {
 	}
 
 }
+
+void RaveBD::AsignarNotaEtiqueta(const float nNota, EtiquetaBD *Etiqueta) {
+
+	std::vector<std::wstring> Condiciones;
+
+	if (Etiqueta->EsGenero() == TRUE) {
+		Condiciones.push_back(L"(Genero =\"" + Etiqueta->Texto + L"\")");
+	}
+
+	if (Etiqueta->EsGrupoPath() == TRUE) {
+		Condiciones.push_back(L"(GrupoPath =\"" + Etiqueta->Texto + L"\")");
+	}
+
+	if (Etiqueta->EsGrupoTag() == TRUE) {
+		Condiciones.push_back(L"(GrupoTag =\"" + Etiqueta->Texto + L"\")");
+	}
+
+	if (Etiqueta->EsDiscoPath() == TRUE) {
+		Condiciones.push_back(L"(DiscoPath =\"" + Etiqueta->Texto + L"\")");
+	}
+
+	if (Etiqueta->EsDiscoTag() == TRUE) {
+		Condiciones.push_back(L"(DiscoTag =\"" + Etiqueta->Texto + L"\")");
+	}
+
+//	std::wstring Q = L"UPDATE Medios SET Nota=" + DWL::Strings::ToStrF(nNota, 2) + L" WHERE Id=" + std::to_wstring(nMedio->Id);
+	std::wstring Q = L"UPDATE Medios SET Nota=" + DWL::Strings::ToStrF(nNota, 2) + L" WHERE ";
+
+	for (size_t i = 0; i < Condiciones.size(); i++) {
+		Q += Condiciones[i];
+		if (i + 1 < Condiciones.size()) Q += L" OR ";
+	}
+
+	int R = Consulta(Q);
+}
+
 
 /*
 const BOOL RaveBD::ObtenerEtiqueta(std::wstring &eTexto, EtiquetaBD &Etiqueta) {

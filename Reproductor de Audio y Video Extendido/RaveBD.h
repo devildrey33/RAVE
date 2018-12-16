@@ -146,6 +146,7 @@ enum TipoListaAleatoria {
 
 class ThreadAnalisis;
 class ItemMedio;
+class NodoBD;
 
 class RaveBD {
   public:
@@ -176,8 +177,10 @@ class RaveBD {
 
 								// Suma 1 a las veces que se ha reproducido el medio
 	const BOOL                  MedioReproducido(BDMedio *rMedio);
+								// Asigna la nota de un medio de la lista o el arbol
 	const BOOL                  MedioNota(ItemMedio *nMedio, const float nNota);
-								
+	const BOOL                  MedioNota(NodoBD *nMedio, const float nNota);
+
 								// Obtiene la etiqueta con el texto especificado
 	EtiquetaBD                 *ObtenerEtiqueta(std::wstring &eTexto);
 								// Obtiene la lista completa de etiquetas
@@ -185,6 +188,8 @@ class RaveBD {
 
 								// Calcula el total de medios, el total de bytes, el total de tiempo, y la nota media de una etiqueta
 	void						CalcularDatosEtiqueta(EtiquetaBD *Etiqueta);
+								// Asigna la nota especificada a los medios que pertenecen a la etiqueta especificada.
+	void                        AsignarNotaEtiqueta(const float nNota, EtiquetaBD *Etiqueta);
 
 //	const float                 ObtenerEtiquetaNota(EtiquetaBD *nEtiqueta);
 

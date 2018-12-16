@@ -1086,9 +1086,9 @@ namespace DWL {
 			}
 			SeleccionarNodo(_NodoPresionado, TRUE);
 		}
-		// Aseguro que se seleccionan el nodo mardado y el nodo shift
-		if (_NodoMarcado != NULL) SeleccionarNodo(_NodoMarcado, TRUE);
-		if (_NodoShift != NULL)   SeleccionarNodo(_NodoShift, TRUE);
+		// Aseguro que se seleccionan el nodo mardado y el nodo shift (Si la tecla control está presionada, el nodo marcado no debe ser seleccionado)
+		if (_NodoMarcado != NULL && (TeclaControl == FALSE || MultiSeleccion == FALSE))	SeleccionarNodo(_NodoMarcado, TRUE);
+		if (_NodoShift != NULL)															SeleccionarNodo(_NodoShift, TRUE);
 
 		if (_NodoPresionado != NULL) {
 			if (_NodoPresionado->_Activado == TRUE) {
@@ -1119,6 +1119,7 @@ namespace DWL {
 		DArbolEx_ParteNodo nParte;
 		DArbolEx_Nodo *NodoSoltado = HitTest(cX, cY, nParte);
 
+		// Si el nodo soltado no está activado salgo
 		if (NodoSoltado != NULL) {
 			if (NodoSoltado->Activado() == FALSE) return;
 		}

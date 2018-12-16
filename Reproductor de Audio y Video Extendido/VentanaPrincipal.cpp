@@ -53,13 +53,13 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	BotonStop.CrearBotonEx(&MarcoSI,	 IDI_STOP32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  80, 0, 30, 30, ID_BOTON_STOP);
 	BotonAdelante.CrearBotonEx(&MarcoSI, IDI_NEXT32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 120, 0, 30, 30, ID_BOTON_SIGUIENTE);
 
-	LabelRatio.CrearEtiquetaEx(&MarcoSI, L"x1.0", 160, 6, 40, 30, ID_LABEL_RATIO, DEtiquetaEx_Alineacion_Centrado);
+	LabelRatio.CrearEtiquetaEx(&MarcoSI, L"x1.0", 160, 5, 40, 30, ID_LABEL_RATIO, DEtiquetaEx_Alineacion_Centrado);
 
-	BotonMezclar.CrearBotonEx(&MarcoSI, L"Mezclar", 210, 0, 80, 30, ID_BOTON_MEZCLAR);
-	//BotonMezclar.Fuente.CrearFuente(21, DBotonEx_Skin::FuenteNombre.c_str(), TRUE);
+	BotonMezclar.CrearBotonEx(&MarcoSI, L"Mezclar", 210, 0, 70, 30, ID_BOTON_MEZCLAR);
+	BotonMezclar.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str(), TRUE);
 	if (App.BD.Opciones_Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
-	BotonRepetir.CrearBotonEx(&MarcoSI, L"Repetir", 300, 0, 80, 30, ID_BOTON_REPETIR);
-	//BotonRepetir.Fuente.CrearFuente(21, DBotonEx_Skin::FuenteNombre.c_str(), TRUE);
+	BotonRepetir.CrearBotonEx(&MarcoSI, L"Repetir", 290, 0, 70, 30, ID_BOTON_REPETIR);
+	BotonRepetir.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str(), TRUE);
 	if (App.BD.Opciones_Repeat() > 0) BotonRepetir.Marcado(TRUE);
 	//////////////////////////////////////////
 
@@ -72,11 +72,11 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 	SliderVolumen.CrearBarraVolumen(&MarcoSD, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.BD.Opciones_Volumen()));
 	std::wstring TxtVolumen = std::to_wstring(App.BD.Opciones_Volumen()) + L"%";
-	LabelVolumen.CrearEtiquetaEx(&MarcoSD, TxtVolumen.c_str(), 215, 2, 40, 20, ID_LABEL_VOLUMEN, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
+	LabelVolumen.CrearEtiquetaEx(&MarcoSD, TxtVolumen.c_str(), 215, 1, 40, 20, ID_LABEL_VOLUMEN, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
 
-	LabelTiempoActual.CrearEtiquetaEx(&MarcoSD, L"00:00", 0, 2, 55, 20, ID_LABEL_TIEMPOACTUAL, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
-	LabelTiempoSeparador.CrearEtiquetaEx(&MarcoSD, L"/", 55, 2, 10, 20, ID_LABEL_TIEMPOSEPARADOR, DEtiquetaEx_Alineacion_Centrado,  WS_CHILD | WS_VISIBLE);
-	LabelTiempoTotal.CrearEtiquetaEx(&MarcoSD, L"00:00", 65, 2, 55, 20, ID_LABEL_TIEMPOTOTAL, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
+	LabelTiempoActual.CrearEtiquetaEx(&MarcoSD, L"00:00", 0, 1, 55, 20, ID_LABEL_TIEMPOACTUAL, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
+	LabelTiempoSeparador.CrearEtiquetaEx(&MarcoSD, L"/", 55, 1, 10, 20, ID_LABEL_TIEMPOSEPARADOR, DEtiquetaEx_Alineacion_Centrado,  WS_CHILD | WS_VISIBLE);
+	LabelTiempoTotal.CrearEtiquetaEx(&MarcoSD, L"00:00", 65, 1, 55, 20, ID_LABEL_TIEMPOTOTAL, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
 
 	// Marco inferior izquierdo /////////////
 	MarcoII.Crear(this, 10, 80, RAVE_BOTONES_LATERALES_ANCHO, 200, ID_MARCOSI);
@@ -544,6 +544,36 @@ void VentanaPrincipal::Arbol_AgregarALista(const BOOL NuevaLista) {
 	if (App.VLC.ComprobarEstado() != EnPlay) App.VentanaRave.Lista_Play();
 }
 
+void VentanaPrincipal::Arbol_AbrirCarpeta(void) {
+	std::wstring Path;
+	NodoBD *Tmp = Arbol.MedioMarcado();
+
+	Arbol.ObtenerPathNodo(Tmp, Path);	
+
+	PIDLIST_ABSOLUTE pidl;
+	pidl = ILCreateFromPath(Path.c_str());
+	if (pidl) {
+		SHOpenFolderAndSelectItems(pidl, 0, 0, 0);
+		ILFree(pidl);
+	}
+
+}
+
+void VentanaPrincipal::Arbol_Propiedades(void) {
+	std::wstring Path;
+
+	Arbol.ObtenerPathNodo(Arbol.MedioMarcado(), Path);
+
+	SHELLEXECUTEINFO info = { 0 };
+	info.cbSize = sizeof info;
+	info.lpFile = Path.c_str();
+	info.nShow = SW_SHOW;
+	info.fMask = SEE_MASK_INVOKEIDLIST;
+	info.lpVerb = L"properties";
+
+	ShellExecuteEx(&info);
+}
+
 
 void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 	switch (cID) {
@@ -565,6 +595,9 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		// Menu BotonBD, MenuBD
 		case ID_MENUBD_ACTUALIZAR               :   ActualizarArbol();						return;
 		case ID_MENUBD_ANALIZAR					:	AnalizarBD();							return;
+		case ID_MENUBD_ABRIRCARPETA             :   Arbol_AbrirCarpeta();					return;
+//		case ID_MENUBD_NOTA                     :   AbrirCarpeta();							return;
+		case ID_MENUBD_PROPIEDADES              :   Arbol_Propiedades();					return;
 		case ID_MENUBD_AGREGARANUEVALISTA		:	Arbol_AgregarALista(TRUE);				return;
 		case ID_MENUBD_AGREGARALISTA			:	Arbol_AgregarALista(FALSE);				return;
 		// Menu Lista
@@ -622,28 +655,57 @@ void VentanaPrincipal::Evento_MenuEx_Barra_Cambiando(const UINT cID, const float
 	}
 }
 
+void VentanaPrincipal::Arbol_AsignarNota(const float nNota) {
+	NodoBD *Tmp = Arbol.MedioMarcado();
+	if (Tmp != NULL) {
+		// Es un medio
+		if (Tmp->TipoNodo == ArbolBD_TipoNodo_Video || Tmp->TipoNodo == ArbolBD_TipoNodo_Cancion) {
+			App.BD.MedioNota(Tmp, nNota);
+		}
+		// Es una etiqueta
+		else {			
+			std::wstring EtiquetaFiltrada;
+			EtiquetaBD  *Etiqueta = NULL;
+			BDMedio      Medio;
+
+			if (Tmp != NULL) RaveBD::FiltroNombre(Tmp->Texto, EtiquetaFiltrada);
+			Etiqueta = App.BD.ObtenerEtiqueta(EtiquetaFiltrada);
+			if (Etiqueta != NULL) {
+				App.BD.AsignarNotaEtiqueta(nNota, Etiqueta);
+			}
+		}
+		App.MostrarToolTipPlayer(L"Nota de '" + Tmp->Texto + L"' actualizada a " + DWL::Strings::ToStrF(nNota, 2));
+	}
+	App.VentanaRave.Menu_ArbolBD.Ocultar(TRUE);
+}
+
+void VentanaPrincipal::Lista_AsignarNota(const float nNota) {
+	std::wstring StrMedio;
+	for (LONGLONG i = 0; i < Lista.TotalItems(); i++) {
+		if (Lista.Medio(i)->Seleccionado == TRUE) {
+			App.BD.MedioNota(Lista.Medio(i), nNota);
+			StrMedio = Lista.Medio(i)->Texto(0) + L" " + Lista.Medio(i)->Texto(1);
+		}
+	}
+	App.VentanaRave.Menu_Lista.Ocultar(TRUE);
+	LONGLONG TM;
+	TM = Lista.TotalItemsSeleccionados();
+	if (TM == 1)	{ App.MostrarToolTipPlayer(StrMedio + L" ahora tiene " + DWL::Strings::ToStrF(nNota, 2) + L" de nota"); }
+	else			{ App.MostrarToolTipPlayer(L"Nota actualizada a " + DWL::Strings::ToStrF(nNota, 2));					}
+}
+
 // MouseUp en la barraEx del menú
 void VentanaPrincipal::Evento_MenuEx_Barra_Cambiado(const UINT cID, const float ValorBarra) {
+	std::wstring StrMedio;
 	switch (cID) {
 		// Barras del menu del video
 		case ID_MENUVIDEO_BRILLO				:	App.VLC.Brillo(ValorBarra);				return;
 		case ID_MENUVIDEO_CONTRASTE				:	App.VLC.Contraste(ValorBarra);			return;
 		case ID_MENUVIDEO_SATURACION			:	App.VLC.Saturacion(ValorBarra);			return;
 		// Menu Lista -> Nota
-		case ID_MENULISTA_NOTA:
-			std::wstring StrMedio;
-			for (LONGLONG i = 0; i < Lista.TotalItems(); i++) {
-				if (Lista.Medio(i)->Seleccionado == TRUE) {
-					App.BD.MedioNota(Lista.Medio(i), ValorBarra);
-					StrMedio = Lista.Medio(i)->Texto(0) + L" " + Lista.Medio(i)->Texto(1);
-				}
-			}
-			App.VentanaRave.Menu_Lista.Ocultar(TRUE);
-			LONGLONG TM;
-			TM = Lista.TotalItemsSeleccionados();
-			if (TM == 1)	{	App.MostrarToolTipPlayer(StrMedio + L" ahora tiene " + DWL::Strings::ToStrF(ValorBarra, 2) + L" de nota");			}
-			else			{	App.MostrarToolTipPlayer(L"Nota actualizada a " + DWL::Strings::ToStrF(ValorBarra, 2));								}
-			return;
+		case ID_MENULISTA_NOTA					:	Lista_AsignarNota(ValorBarra);			return;
+		// Menu BD -> Nota
+		case ID_MENUBD_NOTA						:	Arbol_AsignarNota(ValorBarra);			return;
 	}
 }
 
@@ -1012,7 +1074,7 @@ NodoBD *VentanaPrincipal::Arbol_AgregarRaiz(std::wstring *Path) {
 	NodoBD *Tmp = Arbol.BuscarHijoTxt(*Path);
 	// Si no existe la raíz la creo
 	if (Tmp == NULL) {
-		Tmp = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Raiz, NULL, Path->c_str());
+		Tmp = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Raiz, NULL, Path->c_str(), 0, 0);
 		Tmp->Expandido = TRUE;
 		Arbol.Repintar();
 	}
@@ -1044,7 +1106,7 @@ NodoBD *VentanaPrincipal::Arbol_AgregarDir(std::wstring *Path, const BOOL nRepin
 	NodoBD *Ret = Arbol.BuscarHijoTxt(Filtrado, TmpNodo);
 	// Agrego el directorio
 	if (Ret == NULL) {
-		Ret = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Directorio, TmpNodo, Filtrado.c_str());
+		Ret = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Directorio, TmpNodo, Filtrado.c_str(), 0, 0);
 	}
 	//	delete Path;
 	if (nRepintar == TRUE)	Arbol.Repintar();
@@ -1060,9 +1122,9 @@ const BOOL VentanaPrincipal::Arbol_MostrarMedio(BDMedio &mMedio) {
 	// Busco el nodo de la raíz
 	NodoBD *TmpNodo = static_cast<NodoBD *>(Arbol.BuscarHijoTxt(Raiz->Path, NULL));
 	NodoBD *TmpNodo2 = NULL;
-	// Si el noro raíz no existe lo creo
+	// Si el nodo raíz no existe lo creo
 	if (TmpNodo == NULL) {
-		TmpNodo = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Raiz, NULL, mMedio.Path.c_str());
+		TmpNodo = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Raiz, NULL, mMedio.Path.c_str(), 0, 0);
 		TmpNodo->Expandido = TRUE;
 	}
 	
@@ -1123,9 +1185,9 @@ const BOOL VentanaPrincipal::Arbol_MostrarMedio(const sqlite3_int64 Hash) {
 
 void VentanaPrincipal::AnalizarBD(void) {
 	// ya se está analizando
-	if (Menu_ArbolBD.Menu(3)->Activado() == FALSE) return;	
+	if (Menu_ArbolBD.Menu(7)->Activado() == FALSE) return;	
 	// Desactivo el menú analizar
-	Menu_ArbolBD.Menu(3)->Activado(FALSE);
+	Menu_ArbolBD.Menu(7)->Activado(FALSE);
 	Menu_BotonArbolBD.Menu(1)->Activado(FALSE);
 	// Inicio el thread del analisis
 	ThreadAnalizar.Iniciar(_hWnd);
@@ -1133,10 +1195,10 @@ void VentanaPrincipal::AnalizarBD(void) {
 
 void VentanaPrincipal::ActualizarArbol(void) {
 	// Para evitar un posible dead lock miro si el menú está activado, y si no lo está es que se acaba de llamar a esta función y se está esperando a que termine el thread del analisis
-	if (Menu_ArbolBD.Menu(2)->Activado() == FALSE) return;
+	if (Menu_ArbolBD.Menu(6)->Activado() == FALSE) return;
 
 	// Desactivo el menú actualizar
-	Menu_ArbolBD.Menu(2)->Activado(FALSE);
+	Menu_ArbolBD.Menu(6)->Activado(FALSE);
 	Menu_BotonArbolBD.Menu(0)->Activado(FALSE);
 
 	// Envio la señal para cancelar el thread del analisis
@@ -1269,7 +1331,7 @@ void VentanaPrincipal::ThreadABuscarArchivos_AgregarDirectorio(LPARAM lParam) {
 
 void VentanaPrincipal::ThreadABuscarArchivos_Terminado(const BOOL Cancelado, LPARAM lParam) {
 	ThreadActualizar.Terminar();
-	Menu_ArbolBD.Menu(2)->Activado(TRUE);
+	Menu_ArbolBD.Menu(6)->Activado(TRUE);  // Menu actualizar
 	Menu_BotonArbolBD.Menu(0)->Activado(TRUE);
 	BarraTareas.Estado_SinProgreso();
 	//			BarraTareas.Resaltar();
@@ -1290,7 +1352,7 @@ void VentanaPrincipal::ThreadAnalizar_Terminado(const BOOL Cancelado, LPARAM lPa
 
 	ThreadAnalizar.Terminar();
 	BarraTareas.Estado_SinProgreso();
-	Menu_ArbolBD.Menu(3)->Activado(TRUE);
+	Menu_ArbolBD.Menu(7)->Activado(TRUE); // Menu analizar
 	Menu_BotonArbolBD.Menu(1)->Activado(TRUE);
 
 	if (Cancelado == FALSE) {

@@ -22,11 +22,12 @@ enum ArbolBD_TipoNodo {
 
 class NodoBD : public DWL::DArbolEx_Nodo {
   public :
-							NodoBD() : DArbolEx_Nodo(), Hash(0), TipoNodo(ArbolBD_TipoNodo_Indefinido) {};
+							NodoBD() : DArbolEx_Nodo(), Id(0), Hash(0), TipoNodo(ArbolBD_TipoNodo_Indefinido) {};
 	                       ~NodoBD() {};
 
 	ArbolBD_TipoNodo		TipoNodo;
 	sqlite3_int64			Hash;
+	UINT					Id;
   private :
 };
 
@@ -37,12 +38,12 @@ class ArbolBD : public DWL::DArbolEx {
 							ArbolBD(void);
 	                       ~ArbolBD(void);
 	NodoBD		           *BuscarHash(sqlite3_int64 bHash);
-	NodoBD                 *AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre, const TCHAR *cTexto, const sqlite3_int64 nHash = 0);
+	NodoBD                 *AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre, const TCHAR *cTexto, const sqlite3_int64 nHash, const UINT Id);
 	const BOOL				AgregarNodoALista(NodoBD *nNodo);
 
-						// Busca el primer nodo hijo que tiene el texto Buscar
+							// Busca el primer nodo hijo que tiene el texto Buscar
 	NodoBD                 *BuscarHijoTxt(std::wstring &Buscar, NodoBD *Padre = NULL);
-	inline NodoBD          *BDNodo(const size_t nPos)      { return static_cast<NodoBD *>(Nodo(nPos));  }
+	inline NodoBD          *BDNodo(const size_t nPos)	{ return static_cast<NodoBD *>(Nodo(nPos)); }
 
 	void					ObtenerPath(NodoBD *nNodo, std::wstring &rPath);
 	void					ExplorarPath(NodoBD *nNodo);
@@ -56,6 +57,8 @@ class ArbolBD : public DWL::DArbolEx {
 	void					Evento_Tecla(DWL::DEventoTeclado &DatosTeclado);*/
 	inline NodoBD          *MedioMarcado(void) { return static_cast<NodoBD *>(_NodoMarcado); }
 	inline NodoBD          *MedioResaltado(void) { return static_cast<NodoBD *>(_NodoResaltado); }
+
+	void                    ObtenerPathNodo(NodoBD *pNodo, std::wstring &OUT_Path);
 
   protected:
     void                   _AgregarMedio(NodoBD *nPadre, BDMedio *nMedio);

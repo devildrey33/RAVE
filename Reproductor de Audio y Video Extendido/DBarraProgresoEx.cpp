@@ -10,7 +10,7 @@ namespace DWL {
 	COLORREF		DBarraEx_Skin::BarraNormal			= COLOR_BARRA;
 	COLORREF		DBarraEx_Skin::BarraResaltado		= COLOR_BARRA_RESALTADO;
 	COLORREF		DBarraEx_Skin::BarraPresionado		= COLOR_BARRA_PRESIONADO;
-	COLORREF		DBarraEx_Skin::BarraDesactivado		= COLOR_BARRA_PRESIONADO;
+	COLORREF		DBarraEx_Skin::BarraDesactivado		= COLOR_BARRA_DESACTIVADO;
 	// Colores del borde del control (para la transición normal / hover / presionado)
 	COLORREF		DBarraEx_Skin::BordeNormal			= COLOR_BORDE;
 	COLORREF		DBarraEx_Skin::BordeResaltado		= COLOR_BORDE_RESALTADO;

@@ -35,7 +35,7 @@ NodoBD *ArbolBD::BuscarHash(sqlite3_int64 bHash) {
 
 
 
-NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre, const TCHAR *cTexto, const sqlite3_int64 nHash) {
+NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre, const TCHAR *cTexto, const sqlite3_int64 nHash, const UINT nId) {
 
 	// Busco si existe el hash
 	if ((nTipoNodo == ArbolBD_TipoNodo_Cancion || nTipoNodo == ArbolBD_TipoNodo_Video) && _Raiz.TotalHijos() != 0) {
@@ -73,6 +73,7 @@ NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre,
 
 	NodoBD *nNodo	= AgregarNodo<NodoBD>(cTexto, nPadre, nIcono, &nFuente, DARBOLEX_POSICIONNODO_ORDENADO);
 	nNodo->Hash		= nHash;
+	nNodo->Id		= nId;
 	nNodo->TipoNodo = nTipoNodo;
 	nNodo->MostrarExpansor(nExpansor);
 	return nNodo;
@@ -165,7 +166,7 @@ void ArbolBD::_AgregarMedio(NodoBD *nPadre, BDMedio *nMedio) {
 		else { // No existe, hay que crearlo
 			if (TA < nSplit.Total() - 1) { // Directorio				
 				App.BD.FiltroPath(nSplit[TA], Filtrado);
-				TmpPadre = AgregarBDNodo(ArbolBD_TipoNodo_Directorio, TmpPadre, Filtrado.c_str());
+				TmpPadre = AgregarBDNodo(ArbolBD_TipoNodo_Directorio, TmpPadre, Filtrado.c_str(), 0, 0);
 			}
 			else { // Medio
 				std::wstring nPista;
@@ -173,7 +174,7 @@ void ArbolBD::_AgregarMedio(NodoBD *nPadre, BDMedio *nMedio) {
 				std::wstring nNombre = nPista + L" " + nMedio->Nombre();
 				App.BD.FiltroNombre(nNombre, Filtrado);
 				ArbolBD_TipoNodo Tipo = (nMedio->TipoMedio == Tipo_Medio_Audio) ? ArbolBD_TipoNodo_Cancion : ArbolBD_TipoNodo_Video;
-				Tmp = AgregarBDNodo(Tipo, TmpPadre, Filtrado.c_str(), nMedio->Hash);
+				Tmp = AgregarBDNodo(Tipo, TmpPadre, Filtrado.c_str(), nMedio->Hash, nMedio->Id);
 			}
 		}
 	}
@@ -243,7 +244,7 @@ void ArbolBD::ExplorarPath(NodoBD *nNodo) {
 		if (FindInfoPoint.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) { 
 			if (nNombre != L"." && nNombre != L"..") {
 				RaveBD::FiltroPath(nNombre, nTmpTxt);
-				AgregarBDNodo(ArbolBD_TipoNodo_Directorio, static_cast<NodoBD *>(nNodo), nTmpTxt.c_str());
+				AgregarBDNodo(ArbolBD_TipoNodo_Directorio, static_cast<NodoBD *>(nNodo), nTmpTxt.c_str(), 0, 0);
 				nEntradas++;
 			}
 		}
@@ -261,23 +262,27 @@ void ArbolBD::ExplorarPath(NodoBD *nNodo) {
 
 	// Consulta que obtiene todas las entradas que contienen el path
 	if (AgregarMedios == TRUE) {
-		std::wstring    SqlStr = L"SELECT * FROM Medios WHERE Path LIKE \"%" + nPath.substr(1) + L"%\" COLLATE NOCASE";
+		std::wstring    SqlStr = L"SELECT Id, Hash, Path, NombrePath, TipoMedio, PistaPath FROM Medios WHERE Path LIKE \"%" + nPath.substr(1) + L"%\" COLLATE NOCASE";
 		int				SqlRet = 0;
 		sqlite3_stmt   *SqlQuery = NULL;
 		
 		SqlRet = sqlite3_prepare16_v2(App.BD(), SqlStr.c_str(), -1, &SqlQuery, NULL);
-		if (SqlRet) return; // Error
+		if (SqlRet == SQLITE_ERROR) {
+			std::wstring Error = static_cast<const wchar_t *>(sqlite3_errmsg16(App.BD()));
+			return; // Error
+		}
 
 		size_t BarrasPath = DWL::Strings::ContarCaracter(nPath, L'\\'), BarrasMedio = 0; // Cuento las antibarras del path
 		int VecesBusy = 0;
 		while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
 			SqlRet = sqlite3_step(SqlQuery);
 			if (SqlRet == SQLITE_ROW) {
+				UINT             mId        = static_cast<UINT>(sqlite3_column_int(SqlQuery, 0));
 				size_t			 mHash		= static_cast<size_t>(sqlite3_column_int64(SqlQuery, 1));
 				std::wstring	 mPath		= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 2));
 				std::wstring     mNombre	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 3));
 				Tipo_Medio       mTipoMedio	= static_cast<Tipo_Medio>(sqlite3_column_int(SqlQuery, 4));
-				UINT             mPista		= static_cast<UINT>(sqlite3_column_int(SqlQuery, 13));
+				UINT             mPista		= static_cast<UINT>(sqlite3_column_int(SqlQuery, 5));
 				ArbolBD_TipoNodo mTipoNodo = ArbolBD_TipoNodo_Indefinido;
 
 				BarrasMedio = DWL::Strings::ContarCaracter(mPath, L'\\');
@@ -289,7 +294,7 @@ void ArbolBD::ExplorarPath(NodoBD *nNodo) {
 						case Tipo_Medio_Audio:		mTipoNodo = ArbolBD_TipoNodo_Cancion;	break;
 						case Tipo_Medio_Video:		mTipoNodo = ArbolBD_TipoNodo_Video;		break;
 					}
-					AgregarBDNodo(mTipoNodo, static_cast<NodoBD *>(nNodo), nTmpTxt.c_str(), mHash);
+					AgregarBDNodo(mTipoNodo, static_cast<NodoBD *>(nNodo), nTmpTxt.c_str(), mHash, mId);
 				}
 			}
 			if (SqlRet == SQLITE_BUSY) {
@@ -307,28 +312,57 @@ void ArbolBD::ExplorarPath(NodoBD *nNodo) {
 
 
 void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
+	
+	NodoBD      *NodoRes = static_cast<NodoBD *>(_NodoResaltado);
+	std::wstring EtiquetaFiltrada;
+	EtiquetaBD  *Etiqueta = NULL;
+	BDMedio      Medio;
+
+	if (NodoRes != NULL) RaveBD::FiltroNombre(NodoRes->Texto, EtiquetaFiltrada);
+
+
 	if (DatosMouse.Boton == 1) {
-		BOOL nActivar = FALSE;
+		BOOL nActivar = FALSE, nActivar2 = FALSE;
 		// Compruebo si existe el nodo resaltado
 		if (_NodoResaltado != NULL) {	
 			// Si el nodo resaltado no es una raíz
-			if (MedioResaltado()->TipoNodo != ArbolBD_TipoNodo_Raiz) 	nActivar = TRUE;
+			if (MedioResaltado()->TipoNodo != ArbolBD_TipoNodo_Raiz) { nActivar = TRUE; nActivar2 = TRUE; }
+			// Miro el tipo de nodo para obtener su nota
+			switch (NodoRes->TipoNodo) {
+				case ArbolBD_TipoNodo_Directorio:
+				case ArbolBD_TipoNodo_Genero:
+				case ArbolBD_TipoNodo_Grupo:
+				case ArbolBD_TipoNodo_Disco:
+					// Hay que buscar la etiqueta que corresponde con el nodo
+					Etiqueta = App.BD.ObtenerEtiqueta(EtiquetaFiltrada);
+					if (Etiqueta != NULL) {
+						App.BD.CalcularDatosEtiqueta(Etiqueta);
+						App.VentanaRave.Menu_ArbolBD.Menu(3)->BarraValor(Etiqueta->Nota);
+					}
+					break;
+				case ArbolBD_TipoNodo_Cancion:
+				case ArbolBD_TipoNodo_Video:
+					// Es un medio, hay que obtener su nota
+					if (App.BD.ObtenerMedio(NodoRes->Hash, Medio) == TRUE) {
+						App.VentanaRave.Menu_ArbolBD.Menu(3)->BarraValor(Medio.Nota);
+					}
+					break;
+			}
 		}
+		// Si hay mas de un nodo seleccionado desactivo los menus : Abrir carpeta, Nota, y Propiedades
+		if (TotalNodosSeleccionados() > 1) nActivar2 = FALSE;
+
 		App.VentanaRave.Menu_ArbolBD.Menu(0)->Activado(nActivar); // Agregar a lista
 		App.VentanaRave.Menu_ArbolBD.Menu(1)->Activado(nActivar); // Agregar a nueva lista
+		
+		App.VentanaRave.Menu_ArbolBD.Menu(2)->Activado(nActivar2); // Abrir carpeta
+		App.VentanaRave.Menu_ArbolBD.Menu(3)->Activado(nActivar2); // Nota
+		App.VentanaRave.Menu_ArbolBD.Menu(4)->Activado(nActivar2); // Propiedades
 
 		App.VentanaRave.Menu_ArbolBD.Mostrar(&App.VentanaRave);
 	}
 	// Muestro el nodo resaltado con un ToolTip
-	else if (DatosMouse.Boton == 2 && _NodoResaltado != NULL) {
-		NodoBD *NodoRes = static_cast<NodoBD *>(_NodoResaltado);
-
-		//App.BD.Consulta();
-		std::wstring EtiquetaFiltrada;
-		RaveBD::FiltroNombre(NodoRes->Texto, EtiquetaFiltrada);
-		EtiquetaBD *Etiqueta = NULL;
-		BDMedio     Medio;
-
+	else if (DatosMouse.Boton == 2 && _NodoResaltado != NULL) {		
 		switch (NodoRes->TipoNodo) {
 			case ArbolBD_TipoNodo_Directorio :
 			case ArbolBD_TipoNodo_Genero	 :
@@ -386,4 +420,24 @@ void ArbolBD::Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse) {
 			if (_ToolTipE.Ocultando() == FALSE) _ToolTipE.Mover();
 		}
 	}
+}
+
+
+void ArbolBD::ObtenerPathNodo(NodoBD *pNodo, std::wstring &OUT_Path) {
+	NodoBD *Tmp = pNodo;
+
+	// Si es un medio
+	if (Tmp->TipoNodo == ArbolBD_TipoNodo_Cancion || Tmp->TipoNodo == ArbolBD_TipoNodo_Video) {
+		BDMedio Medio;
+		App.BD.ObtenerMedio(Tmp->Hash, Medio);
+		OUT_Path = Medio.Path;
+	}
+	else {
+		while (Tmp != NULL) {
+			if (Tmp->TipoNodo != ArbolBD_TipoNodo_Raiz) { OUT_Path = Tmp->Texto + L"\\" + OUT_Path;					}
+			else										{ OUT_Path = Tmp->Texto + OUT_Path;					break;	}
+			Tmp = static_cast<NodoBD *>(Tmp->Padre());
+		}
+	}
+
 }

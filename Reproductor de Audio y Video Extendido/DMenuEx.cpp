@@ -236,11 +236,15 @@ namespace DWL {
 		return TmpMenu;
 	}
 
+
 	// Función para activar / desactivar el menú
 	void DMenuEx::Activado(const BOOL nActivar) {
 		_Activado = nActivar;
 		Transicion((nActivar == TRUE) ? DMenuEx_Transicion_Normal : DMenuEx_Transicion_Desactivado);
-		_Barra.Activado(nActivar);
+		
+		if (_Barra.hWnd() != NULL) 
+			_Barra.Activado(nActivar);
+
 		if (_Padre != NULL) {
 			if (_Padre->_hWnd != NULL) {
 				_Padre->Repintar();
