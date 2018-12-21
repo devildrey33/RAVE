@@ -424,17 +424,17 @@ namespace DWL {
 		OffsetRect(&RAV, XInicio, YInicio);
 
 		if (RItem.left < RAV.left) {			// Hay una parte a la izquierda del item que no es visible (lateral)
-			assert(ancho != 0.0f);
+//			assert(ancho != 0.0f);
 			_ScrollH_Posicion = (1.0f / ancho) * static_cast<float>(RItem.left);
 		}
 
 		if (RItem.top < RAV.top) {				// Hay una parte del item que no es visible (por arriba)
-			assert(alto != 0.0f);
+//			assert(alto != 0.0f);
 			_ScrollV_Posicion = (1.0f / alto) * static_cast<float>(RItem.top);
 		}
 		else if (RItem.bottom > RAV.bottom) {	// Hay una parte del item que no es visible (por abajo)
 												// Sumo la diferencia de RItem.bottom + RAV.bottom a la posición del ScrollV
-			assert(alto != 0.0f);
+//			assert(alto != 0.0f);
 			_ScrollV_Posicion += (1.0f / alto) * static_cast<float>(RItem.bottom - RAV.bottom);
 		}
 
@@ -560,7 +560,7 @@ namespace DWL {
 		}
 
 		// Altura (total de items * altura de la fuente)
-		_TotalAltoVisible = (Fuente.Alto() + (DLISTAEX_PADDING * 2)) * _Items.size();
+		_TotalAltoVisible = (Fuente.Alto() + (DLISTAEX_PADDING * (int)2)) * _Items.size();
 	}
 
 

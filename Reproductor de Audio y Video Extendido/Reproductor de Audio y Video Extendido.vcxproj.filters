@@ -181,9 +181,6 @@
     <ClInclude Include="DMouse.h">
       <Filter>DWL\Sistema\Mouse</Filter>
     </ClInclude>
-    <ClInclude Include="RaveVLC.h">
-      <Filter>VLC</Filter>
-    </ClInclude>
     <ClInclude Include="VerVideo.h">
       <Filter>Ventanas\Controles</Filter>
     </ClInclude>
@@ -391,6 +388,12 @@
     <ClInclude Include="DListaIconos_Icono %28DEPRECATED%29.h">
       <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29</Filter>
     </ClInclude>
+    <ClInclude Include="RaveVLC_Medio.h">
+      <Filter>VLC</Filter>
+    </ClInclude>
+    <ClInclude Include="RaveVLC.h">
+      <Filter>VLC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -422,9 +425,6 @@
     </ClCompile>
     <ClCompile Include="DMouse.cpp">
       <Filter>DWL\Sistema\Mouse</Filter>
-    </ClCompile>
-    <ClCompile Include="RaveVLC.cpp">
-      <Filter>VLC</Filter>
     </ClCompile>
     <ClCompile Include="VerVideo.cpp">
       <Filter>Ventanas\Controles</Filter>
@@ -593,6 +593,12 @@
     </ClCompile>
     <ClCompile Include="DListaIconos %28DEPRECATED%29.cpp">
       <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29</Filter>
+    </ClCompile>
+    <ClCompile Include="RaveVLC_Medio.cpp">
+      <Filter>VLC</Filter>
+    </ClCompile>
+    <ClCompile Include="RaveVLC.cpp">
+      <Filter>VLC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

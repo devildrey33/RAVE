@@ -110,7 +110,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 	#ifdef RAVE_SIMULAR_REPRODUCIR_VIDEO
 		LC = LineaComando_Reproducir;
 		Paths.resize(0);
-		Paths.push_back(L"G:\\Pelis i Series\\StarTrek\\Discovery\\T1\\star trek discovery 1x01.mp4");
+		Paths.push_back(RAVE_SIMULAR_REPRODUCIR_VIDEO_PATH);
 	#endif
 
 	// Muestra la ventana para alertar de un error crítico
@@ -146,7 +146,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 		case LineaComando_Path :
 		case LineaComando_Reproducir :
 			// Agrego el path a la memoria compartida, y envio un mensaje al reproductor
-			if (Paths.size() > 0) {
+			if (Paths.size() > 0 && PlayerInicial == FALSE) {
 				MemCompartida.AgregarPath(Paths[Paths.size() - 1]);					
 				PostMessage(hWndPlayer, (Paths[0] == L"-r") ? WM_REPRODUCIRMEDIO : WM_AGREGARMEDIO, 0, 0);
 			}
@@ -167,7 +167,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 			}*/
 
 			// No hay paths, creo una lista de inicio
-			if (Paths.size() == 0) {
+			if (Paths.size() == 0 && PlayerInicial == TRUE) {
 				#ifndef  RAVE_IGNORAR_LISTA_INICIO 	// No genera ninguna lista al iniciar (por el debug del VLC que es muy heavy.. y carga mucho al visual studio)
 					// Inicia la acción por defecto al empezar
 					Debug_Escribir_Varg(L"Rave::Iniciar ->  Acción de inicio : %d\n", BD.Opciones_Inicio());
@@ -192,6 +192,8 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 				VentanaRave.ExploradorAgregarMedio(TRUE);
 			}
 			
+			VentanaRave.ActualizarArbol();
+
 			Ret = TRUE;
 			break;
 
@@ -332,6 +334,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 void RAVE::Terminar(void) {
 	BD.Terminar();
 	VLC.Terminar();
+	VentanaRave.Destruir();
 
 	if (PlayerInicial == TRUE) {
 		SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, TRUE, NULL, TRUE); // activo el protector de pantalla
@@ -485,7 +488,7 @@ void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 			return;
 		case VK_F1 :
 			if (VLC.ComprobarEstado() == EnPlay || VLC.ComprobarEstado() == EnPausa) {
-				MostrarToolTipPlayer(VLC.MedioActual);
+				MostrarToolTipPlayer(VLC.MedioActual());
 			}
 			return;
 	}

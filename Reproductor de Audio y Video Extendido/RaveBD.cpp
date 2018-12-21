@@ -8,7 +8,7 @@ RaveBD::RaveBD(void) : _BD(NULL), _Opciones_Volumen(0), _Opciones_PosX(0), _Opci
 								  _Opciones_VentanaAnalizar_PosX(0), _Opciones_VentanaAnalizar_PosY(0), _Opciones_Ancho(0), _Opciones_Alto(0), _Opciones_Shufle(FALSE), _Opciones_Repeat(Tipo_Repeat_NADA), _Opciones_Inicio(Tipo_Inicio_NADA),
 								  _Opciones_Version(0.0f), _Opciones_OcultarMouseEnVideo(0), _Opciones_MostrarObtenerMetadatos(FALSE), _Opciones_MostrarAsociarArchivos(FALSE), _Opciones_AnalizarMediosPendientes(FALSE),
 								  _Opciones_BuscarActualizacion(FALSE), _Opciones_TiempoAnimaciones(0), _Opciones_TiempoToolTips(0), _Opciones_NoAgregarMedioMenos25(FALSE), _Opciones_NoGenerarListasMenos3(FALSE), 
-							 	  _Opciones_Sumar005(FALSE), _Opciones_AlineacionControlesVideo(0), _Opciones_OpacidadControlesVideo(0) {
+							 	  _Opciones_Sumar005(FALSE), _Opciones_AlineacionControlesVideo(0), _Opciones_OpacidadControlesVideo(0), _Opciones_EfectoFadeAudioMS(10000) {
 }
 
 
@@ -572,6 +572,20 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 
 const BOOL RaveBD::_CrearTablas(void) {
 
+	
+	// Creo la tabla para las teclas rápidas ///////////////////////////////////////////////////
+	std::wstring CrearTablaOpciones2 =	L"CREATE TABLE Opciones2 ("
+												L"EfectoFadeAudioMS"	L" INTEGER"
+											L")";
+	if (Consulta(CrearTablaOpciones2.c_str()) == SQLITE_ERROR) return FALSE;
+	std::wstring Q;
+	// Agrego los valores por defecto en la tabla Opciones2
+	Q = L"INSERT INTO Opciones2 (EfectoFadeAudioMS) "
+		L"VALUES(10000)";
+	if (Consulta(Q.c_str()) == SQLITE_ERROR) return FALSE;
+	////////////////////////////////////////////////////////////////////////////////////////////
+
+
 	// Creo la tabla para las teclas rápidas ///////////////////////////////////////////////////
 	std::wstring CrearTablaTeclasRapidas =	L"CREATE TABLE TeclasRapidas ("
 												L"Tecla"	L" INTEGER,"
@@ -581,19 +595,18 @@ const BOOL RaveBD::_CrearTablas(void) {
 											L")";
 	if (Consulta(CrearTablaTeclasRapidas.c_str()) == SQLITE_ERROR) return FALSE;
 	// Agrego los valores por defecto en la tabla de las teclas rápidas
-	std::wstring Q;
 	for (size_t i = 0; i < App.TeclasRapidas.size(); i++) {
 		Q = L"INSERT INTO TeclasRapidas (Tecla, Control, Alt, Shift) "
 			L"VALUES(" + std::to_wstring(App.TeclasRapidas[i].Tecla) + L"," + std::to_wstring(App.TeclasRapidas[i].Control) + L"," + std::to_wstring(App.TeclasRapidas[i].Alt) + L","+ std::to_wstring(App.TeclasRapidas[i].Shift) + L")";
 		if (Consulta(Q.c_str()) == SQLITE_ERROR) return FALSE;
 	}
-	///////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	// Creo la tabla para guardar la ultima lista reproducida ////////////////////////
 	std::wstring CrearTablaUltimaLista = L"CREATE TABLE UltimaLista (Hash BIGINT)";
 	if (Consulta(CrearTablaUltimaLista.c_str()) == SQLITE_ERROR) return FALSE;
-	//////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	// Creo la tabla para las opciones /////////////////////////////////////////////////////////////
@@ -848,6 +861,7 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 			OUT_Medio.Longitud      = Longitud;
 			OUT_Medio.Nota          = 2;
 			OUT_Medio.Tiempo        = 0;
+			//SqlStr = L"INSERT INTO Medios (Hash, Path, NombrePath, TipoMedio, Extension, PistaPath, IDDisco, Longitud, Nota, Tiempo, Subtitulos, Parseado, DiscoPath, GrupoPath) VALUES(7931991700765854209,\"G:\\Pelis i Series\\...
 			SqlStr = L"INSERT INTO Medios (Hash, Path, NombrePath, TipoMedio, Extension, PistaPath, IDDisco, Longitud, Nota, Tiempo, Subtitulos, Parseado, DiscoPath, GrupoPath)"
 								  L" VALUES(" + std::to_wstring(Hash)							+ L",\"" +				// Hash
 												PathCortado										+ L"\",\"" +			// Path
@@ -857,21 +871,23 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 												std::to_wstring(Pista)							+ L"," +				// PistaPath
 												std::to_wstring(UnidadDisco->Numero_Serie())	+ L"," +				// ID Disco Duro
 												std::to_wstring(Longitud)						+ L"," +				// Longitud en bytes
-												L"2.5," +															// Nota
-												L"0," +																// Tiempo
-												L"\"\"," +															// Subtitulos
-												L"0,\"" +															// Parseado
+												L"2.5," +																// Nota
+												L"0," +																	// Tiempo
+												L"\"\"," +																// Subtitulos
+												L"0,\"" +																// Parseado
 												OUT_Medio.DiscoPath								+ L"\",\"" +			// DiscoPath
 												OUT_Medio.GrupoPath								+ L"\")";				// GrupoPath
 			SqlRet = Consulta(SqlStr);
-			if (SqlRet == SQLITE_DONE)
+			if (SqlRet == SQLITE_DONE) {
 				return TRUE; // No existe el hash
-			else if (SqlRet == SQLITE_CONSTRAINT)
+			}
+			else if (SqlRet == SQLITE_CONSTRAINT) {
 				return 2; // Ya existe el hash
-			else  /* Error ? */
+			}
+			else {  /* Error ? */
 				_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
 				return FALSE;
-
+			}
 			break;
 		//			_AnalizarNombre(Path.substr(PosNombre + 1, (PosExtension - PosNombre) - 1), TmpNombre, static_cast<TMedioVideo *>(Medio)->Pista);
 //		break;
@@ -1241,6 +1257,12 @@ void RaveBD::Opciones_OpacidadControlesVideo(const int nOpciones_OpacidadControl
 	Ret = Ret;
 }
 
+void RaveBD::Opciones_EfectoFadeAudioMS(const UINT nOpciones_EfectoFadeAudioMS) {
+	_Opciones_EfectoFadeAudioMS = nOpciones_EfectoFadeAudioMS;
+	std::wstring Q = L"Update Opciones2 SET EfectoFadeAudioMS=" + std::to_wstring(nOpciones_EfectoFadeAudioMS) + L" WHERE Id=0";
+	int Ret = Consulta(Q.c_str());
+	Ret = Ret;
+}
 
 const BOOL RaveBD::ObtenerOpciones(void) {
 

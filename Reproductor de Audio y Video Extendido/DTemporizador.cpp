@@ -51,8 +51,9 @@ void CALLBACK DTemporizador::_TimerProcLambda(PVOID lpParameter, BOOLEAN TimerOr
 void DTemporizador::TerminarTemporizador(const UINT_PTR nID) {
 	size_t Pos = 0;
 	if (_BuscarTemporizadorPos(nID, Pos) == TRUE) {
-		DeleteTimerQueueTimer(NULL, _Temporizadores[Pos]->Timer, NULL);
-		delete _Temporizadores[Pos];
+		if (DeleteTimerQueueTimer(NULL, _Temporizadores[Pos]->Timer, NULL) != 0) {
+			delete _Temporizadores[Pos];
+		}
 		_Temporizadores.erase(_Temporizadores.begin() + Pos);
 	}
 }
@@ -60,8 +61,9 @@ void DTemporizador::TerminarTemporizador(const UINT_PTR nID) {
 void DTemporizador::TerminarTemporizadores(void) {
 //	size_t Pos = 0;
 	for (size_t i = 0; i < _Temporizadores.size(); i++) {
-		DeleteTimerQueueTimer(NULL, _Temporizadores[i]->Timer, NULL);
-		delete _Temporizadores[i];
+		if (DeleteTimerQueueTimer(NULL, _Temporizadores[i]->Timer, NULL) != 0) {
+			delete _Temporizadores[i];
+		}
 //		_Temporizadores.erase(_Temporizadores.begin() + i);
 	}
 	_Temporizadores.resize(0);

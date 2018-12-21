@@ -53,7 +53,7 @@ class ListaMedios : public DWL::DListaEx {
 	const LONGLONG              PosMedio(ItemMedio *pMedio);
    protected:
 
-	size_t                     _ItemMarcadoOriginal;
+//	size_t                     _ItemMarcadoOriginal;
 	std::vector<ItemMedio *>   _MediosOrdenados;
 	ToolTipInfo_Medio          _ToolTip;
 };

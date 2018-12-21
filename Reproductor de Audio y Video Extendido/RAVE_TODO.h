@@ -268,6 +268,7 @@
 			-  Resaltar texte buscat (ha de ser una capa per pintar el fondo abans de pintar el texte)
 			V  Quan no hi ha scroll la marca ha d'arribar fins al tope de la dreta
 			V  MouseDown y MouseUp s'han de fer amb un SetCapture
+			-  LabelEdit per editar subitems
 		-  ListaMedios
 			-  Mostrar el % del medi reproduit en el item que es el MedioActual
 				- Necesitare crear virtuals a DListaEx
@@ -339,6 +340,9 @@
 
 		-  Les llistes aleatóries per estil, grup, 50 can han d'activar el shufle
 			- Les llistes aleatóries per disc han de desactivar el shufle
+
+		- Fer efecte de fusio al acabar una canço i començar unaltre reproduint les dues a l'hora quan faltin X milisegs.
+		- Les notes menors que 2 s'han de mostrar amb una estrella gris
 
 	RAVE 0.7
 		-  Carregar subtituls

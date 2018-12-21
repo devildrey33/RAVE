@@ -100,14 +100,12 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	ShowWindow(hWnd(), nCmdShow);
 
 	// Timer que comprueba si se ha terminado la cancion
-	SetTimer(hWnd(), TIMER_LISTA, 500, NULL);
+//	SetTimer(hWnd(), TIMER_LISTA, 500, NULL);
 	// Timer para el slider del tiempo
-	SetTimer(hWnd(), TIMER_TIEMPO, 250, NULL);
+//	SetTimer(hWnd(), TIMER_TIEMPO, 250, NULL);
 
 	// Habilito el drag & drop para esta ventana
-	DragAcceptFiles(hWnd(), TRUE);
-
-	ActualizarArbol();
+	DragAcceptFiles(hWnd(), TRUE);	
 
 	return rhWnd;
 }
@@ -194,7 +192,7 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 			KillTimer(hWnd(), TIMER_REPINTARVLC);
 			break;*/
 		// Temporizador para actualizar el tiempo actual del medio que se está reproduciendo
-		case TIMER_TIEMPO :
+		/*case TIMER_TIEMPO :
 			App.VLC.ObtenerDatosParsing();
 			if (!Minimizado()) {
 				if (Estado == EnPlay || Estado == EnPausa) { // EnPlay y EnPausa
@@ -210,9 +208,10 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 					}
 					// El tiempo total solo se actualiza cuando es distinto al anterior
 					UINT64 T = App.VLC.TiempoTotalMs();
-					if (T != App.VLC.TiempoTotal) {
+					static UINT64 nTiempoTotal = 0;
+					if (T != nTiempoTotal) {
 						TiempoStr = L"";
-						App.VLC.TiempoTotal = T;
+						nTiempoTotal = T;
 						App.VLC.TiempoStr(T, TiempoStr);
 						LabelTiempoTotal.Texto(TiempoStr);
 						App.ControlesPC.LabelTiempoTotal.Texto(TiempoStr);
@@ -234,9 +233,6 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 
 			}
 			break;
-/*		case TIMER_OBTENER_TIEMPO_TOTAL :
-			Timer_ObtenerTiempoTotal();
-			break;*/
 
 		// Temporizador que detecta cuando se termina un medio y avanza al siguiente según las reglas establecidas
 		case TIMER_LISTA:
@@ -251,20 +247,20 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 			}
 
 			// Un medio de la lista ha terminado
-			if (Estado == Terminada) {			
-				App.BD.MedioReproducido(&App.VLC.MedioActual);
+			if (Estado == SinCargar) {			
+				App.BD.MedioReproducido(&App.VLC.MedioActual());
 
 				// Renombro archivos CRDOWNLOAD y OPDOWNLOAD
-				if (App.VLC.MedioActual.Extension == Extension_CRDOWNLOAD || App.VLC.MedioActual.Extension == Extension_OPDOWNLOAD) {
-					size_t PosExtension = App.VLC.MedioActual.Path.find_last_of(TEXT("."));																				// Posición donde empieza la extensión
-					std::wstring NuevoPath = App.VLC.MedioActual.Path.substr(0, PosExtension);
-					if (MoveFile(App.VLC.MedioActual.Path.c_str(), NuevoPath.c_str()) != FALSE) {
-						App.BD.ActualizarPathMedio(NuevoPath, App.VLC.MedioActual.Id);
+				if (App.VLC.MedioActual().Extension == Extension_CRDOWNLOAD || App.VLC.MedioActual().Extension == Extension_OPDOWNLOAD) {
+					size_t PosExtension = App.VLC.MedioActual().Path.find_last_of(TEXT("."));																				// Posición donde empieza la extensión
+					std::wstring NuevoPath = App.VLC.MedioActual().Path.substr(0, PosExtension);
+					if (MoveFile(App.VLC.MedioActual().Path.c_str(), NuevoPath.c_str()) != FALSE) {
+						App.BD.ActualizarPathMedio(NuevoPath, App.VLC.MedioActual().Id);
 					}
 				}
 
 
-				App.VLC.Stop();
+//				App.VLC.Stop();
 				if (Lista.PosMedio(Lista.MedioActual) == Lista.TotalItems() - 1) {
 					Repeat();
 				}
@@ -273,7 +269,7 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 				}
 			}
 
-			break;
+			break;*/
 		}	
 }
 
@@ -360,15 +356,23 @@ void VentanaPrincipal::Lista_Play(void) {
 	}
 
 	Lista.Errores = 0;
-	BDMedio NCan;
+	BDMedio NCan, NCan2;
+	ItemMedio *IMS = NULL;
 	switch (App.VLC.ComprobarEstado()) {
 		case SinCargar:
 			// Compruebo que el medio actual no sea mas grande que el total de medios
 			//if (Lista.PosMedio(Lista.MedioActual) > Lista.TotalItems() - 1) Lista.MedioActual = Lista.Medio(Lista.TotalItems() - 1);
-
 			App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
+			IMS = Lista.MedioSiguiente(Lista.MedioActual);
+			if (IMS != NULL) {
+				App.BD.ObtenerMedio(IMS->Hash, NCan2);
+				if (App.VLC.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
+			}
+			else {
+				if (App.VLC.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
+			}
 //				NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
-			if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
+			//if (App.VLC.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
 			if (App.VLC.Play() == TRUE) {
 				BotonPlay.Icono(IDI_PAUSA32, 32);
 				App.ControlesPC.BotonPlay.Icono(IDI_PAUSA32, 32);
@@ -376,14 +380,18 @@ void VentanaPrincipal::Lista_Play(void) {
 			}
 			break;
 		case Terminada:
-			App.VLC.ActualizarIconos(0);
+//			App.VLC.ActualizarIconos(0);
 			Lista.MedioActual = Lista.MedioSiguiente(Lista.MedioActual);
-/*			if (Lista.PosMedio(Lista.MedioActual) >= Lista.TotalItems()) {
-				Lista.MedioActual = 0;
-			}*/
 			App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
+			IMS = Lista.MedioSiguiente(Lista.MedioActual);
 //			NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
-			if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
+			if (IMS == NULL) {
+				if (App.VLC.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
+			}
+			else {
+				App.BD.ObtenerMedio(IMS->Hash, NCan2);
+				if (App.VLC.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
+			}
 			App.VLC.Play();
 			break;
 		case EnStop:
@@ -416,9 +424,17 @@ void VentanaPrincipal::Lista_Siguiente(void) {
 //	if (Lista.MedioActual >= Lista.TotalItems()) Lista.MedioActual = 0;
 
 
-	BDMedio NCan;
+	BDMedio NCan, NCan2;
+	App.VLC.Stop();
 	App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
-	if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
+	ItemMedio *IMS = Lista.MedioSiguiente(Lista.MedioActual);
+	if (IMS == NULL) {
+		if (App.VLC.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
+	}
+	else {
+		App.BD.ObtenerMedio(IMS->Hash, NCan2);
+		if (App.VLC.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
+	}
 	App.VLC.Play();
 }
 
@@ -432,11 +448,20 @@ void VentanaPrincipal::Lista_Anterior(void) {
 /*	if (Lista.MedioActual < 0) Lista.MedioActual = TotalItems;
 
 	if (Lista.MedioActual >= 0 && Lista.MedioActual <= TotalItems) {*/
-		BDMedio NCan;
-		App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
+	BDMedio NCan, NCan2;
+	ItemMedio *IMS = Lista.MedioSiguiente(Lista.MedioActual);
+	App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
+	App.VLC.Stop();
+	if (IMS == NULL) {
+		if (App.VLC.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
+	}
+	else {
+		App.BD.ObtenerMedio(IMS->Hash, NCan2);
+		if (App.VLC.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
+	}
 //		TablaMedios_Medio NCan(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
-		if (App.VLC.AbrirMedio(NCan) == FALSE) Lista.Errores++;
-		App.VLC.Play();
+	
+	App.VLC.Play();
 //	}
 }
 
@@ -1026,20 +1051,25 @@ void VentanaPrincipal::Evento_BorraFondo(HDC DC) {
 }
 
 void VentanaPrincipal::Evento_Cerrar(void) {
-	App.VLC.Stop();
-	Visible(FALSE);
-	App.OcultarToolTipPlayer();
-	App.OcultarToolTipOpciones();
+
+	ThreadActualizar.Cancelar(TRUE);
+	ThreadArchivosLista.Cancelar(TRUE);
+
+	App.OcultarToolTipPlayerRapido();
+	App.OcultarToolTipOpcionesRapido();
 	App.VentanaOpciones.Destruir();
+
+	Visible(FALSE);
+
+	App.VLC.StopTODO();
+
 	//	App.BD.Consulta(L"BEGIN TRANSACTION");
 	App.BD.GuardarUltimaLista();
 //	App.BD.Opciones_GuardarOpciones();
 //	App.BD.Consulta(L"COMMIT TRANSACTION");
 
-	ThreadActualizar.Cancelar(TRUE);
-	ThreadArchivosLista.Cancelar(TRUE);
 
-	Destruir();
+//	Destruir();
 	PostQuitMessage(0);
 }
 
@@ -1243,7 +1273,10 @@ void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
 	BDMedio Medio;
 	for (size_t i = 0; i < Paths.size(); i++) {
 		if (App.BD.ObtenerMedio(Paths[i], Medio) == FALSE) {
-			if (App.BD.AnalizarMedio(Paths[i], Medio, 0) == FALSE) return;
+			App.BD.AnalizarMedio(Paths[i], Medio, 0);
+			// Necesito volver a obtener el medio para que me devuelva su ID
+			App.BD.ObtenerMedio(Medio.Hash, Medio);
+//				return;
 		}
 
 		Debug_Escribir_Varg(L"VentanaPrincipal::ExploradorAgregarMedio : %s\n", Paths[i].c_str());
@@ -1396,23 +1429,28 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			break;
 
 		// Para el Thread AgregarArchivosLista, al agregar/obtener el archivo en la BD, ya se puede agregar a la lista.
-		case WM_TAAL_AGREGARMEDIO	:			ThreadAgregarArchivosLista_AgregarMedio(wParam);			return 0;
-		case WM_TAAL_TERMINADO		:			ThreadAgregarArchivosLista_Terminado();						return 0;
+		case WM_TAAL_AGREGARMEDIO	:			ThreadAgregarArchivosLista_AgregarMedio(wParam);								return 0;
+		case WM_TAAL_TERMINADO		:			ThreadAgregarArchivosLista_Terminado();											return 0;
 
 		// ThreadBuscarArchivos
-		case WM_TBA_AGREGARRAIZ		:			ThreadABuscarArchivos_AgregarRaiz(lParam);					return 0;
-		case WM_TBA_AGREGARDIR		:			ThreadABuscarArchivos_AgregarDirectorio(lParam);			return 0;
-		case WM_TBA_TERMINADO		:			ThreadABuscarArchivos_Terminado(FALSE, lParam);				return 0;
-		case WM_TBA_CANCELADO		:			ThreadABuscarArchivos_Terminado(TRUE, lParam);				return 0;
+		case WM_TBA_AGREGARRAIZ		:			ThreadABuscarArchivos_AgregarRaiz(lParam);										return 0;
+		case WM_TBA_AGREGARDIR		:			ThreadABuscarArchivos_AgregarDirectorio(lParam);								return 0;
+		case WM_TBA_TERMINADO		:			ThreadABuscarArchivos_Terminado(FALSE, lParam);									return 0;
+		case WM_TBA_CANCELADO		:			ThreadABuscarArchivos_Terminado(TRUE, lParam);									return 0;
 
 		// ThreadAnalizar
-		case WM_TOM_INICIADO2		:			ThreadAnalizar_Iniciado2(wParam);							return 0;
-		case WM_TOM_TOTALMEDIOS1	:			ThreadAnalizar_TotalMedios(wParam, lParam);					return 0;
-		case WM_TOM_TOTALMEDIOS2	:			ThreadAnalizar_TotalMedios2();								return 0;
-		case WM_TOM_TOTALMEDIOS3	:			ThreadAnalizar_TotalMedios(wParam, lParam);					return 0;
-		case WM_TOM_CANCELADO		:			ThreadAnalizar_Terminado(TRUE, lParam);						return 0;
-		case WM_TOM_TERMINADO		:			ThreadAnalizar_Terminado(FALSE, lParam);					return 0;
-		case WM_TOM_MOSTRARVENTANA	:			ThreadAnalizar_MostrarVentana();							return 0;
+		case WM_TOM_INICIADO2		:			ThreadAnalizar_Iniciado2(wParam);												return 0;
+		case WM_TOM_TOTALMEDIOS1	:			ThreadAnalizar_TotalMedios(wParam, lParam);										return 0;
+		case WM_TOM_TOTALMEDIOS2	:			ThreadAnalizar_TotalMedios2();													return 0;
+		case WM_TOM_TOTALMEDIOS3	:			ThreadAnalizar_TotalMedios(wParam, lParam);										return 0;
+		case WM_TOM_CANCELADO		:			ThreadAnalizar_Terminado(TRUE, lParam);											return 0;
+		case WM_TOM_TERMINADO		:			ThreadAnalizar_Terminado(FALSE, lParam);										return 0;
+		case WM_TOM_MOSTRARVENTANA	:			ThreadAnalizar_MostrarVentana();												return 0;
+
+		// Temporizadores con post message
+		case WM_TIMER_LISTA			:			App.VLC.Temporizador_Lista();													return 0;
+		case WM_TIMER_TIEMPO		:			App.VLC.Temporizador_Tiempo();													return 0;
+		case WM_MEDIO_TERMINADO		:           App.VLC.Evento_Medio_Terminado(reinterpret_cast<RaveVLC_Medio *>(wParam));		return 0;
 
 		case WM_DROPFILES :			
 			Evento_SoltarArchivos(wParam);

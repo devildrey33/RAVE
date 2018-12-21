@@ -11,7 +11,7 @@ namespace DWL {
 		// Objeto que engloba un unico temporizador
 		class DTemporizador_Unico {
    		  public:
-											DTemporizador_Unico(const DTemporizador_Unico &Temporizador) : ID(Temporizador.ID), Timer(Temporizador.Timer), Padre(Temporizador.Padre) { };
+											DTemporizador_Unico(const DTemporizador_Unico &Temporizador) : ID(Temporizador.ID), Timer(Temporizador.Timer), Padre(Temporizador.Padre), UnaVez(FALSE) { };
 											DTemporizador_Unico(const UINT_PTR nID, DTemporizador *nPadre, BOOL nUnaVez) : ID(nID), Timer(0), Padre(nPadre), UnaVez(nUnaVez) { };
 											DTemporizador_Unico(const UINT_PTR nID, DTemporizador *nPadre, BOOL nUnaVez, std::function<void(void)> nCallback) : ID(nID), Timer(0), Padre(nPadre), UnaVez(nUnaVez), Callback(nCallback) { };
 									       ~DTemporizador_Unico(void) { };
@@ -22,8 +22,8 @@ namespace DWL {
 			std::function<void(void)>		Callback;
 		};
 
-											DTemporizador();
-								           ~DTemporizador();
+											DTemporizador(void);
+								           ~DTemporizador(void);
 		void								CrearTemporizador(const UINT_PTR nID, const DWORD Milisegundos, const BOOL UnaVez = FALSE);
 		void                                CrearTemporizador(const DWORD Milisegundos, const BOOL UnaVez, std::function<void(void)> Callback);
 		void								TerminarTemporizador(const UINT_PTR nID);

@@ -136,8 +136,17 @@ void ListaMedios::Evento_MouseDobleClick(DWL::DEventoMouse &EventoMouse) {
 			
 			BDMedio NCan;
 			App.BD.ObtenerMedio(MedioActual->Hash, NCan);
+			BDMedio NCanS;
+			ItemMedio *IMS = MedioSiguiente(MedioActual);
+			if (IMS != NULL) {
+				App.BD.ObtenerMedio(MedioSiguiente(MedioActual)->Hash, NCanS);
+				if (App.VLC.AbrirMedio(NCan, &NCanS) == FALSE) Errores++;
+			}
+			else {
+				if (App.VLC.AbrirMedio(NCan, NULL) == FALSE) Errores++;
+			}
 
-			if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
+//			if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
 			App.VLC.Play();
 		}
 	}

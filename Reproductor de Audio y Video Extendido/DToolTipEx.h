@@ -12,6 +12,7 @@ namespace DWL {
 							DToolTipEx_Skin(void) { }
 							// Colores para el fondo (OJO los colores del fondo y del borde del control están en DBarraSroll_Skin)
 		static COLORREF     Fondo;
+		static COLORREF     FondoError;
 		static COLORREF     Texto;
 		static COLORREF     TextoSombra;
 		static COLORREF     Borde;

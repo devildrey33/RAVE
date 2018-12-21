@@ -1,159 +1,80 @@
 #pragma once
 
-//#include "..\vlc-2.2.1\Include\vlc\vlc.h"
-
-#include <vector>
-#include "RaveBD.h"
-//#include "TMedio.h"
-
+#include "RaveVLC_Medio.h"
+#include "DTemporizador.h"
 
 #ifdef _WIN64
-//	#ifdef _DEBUG
-//		#pragma comment(lib, "..\\VLCx64-Debug\\libvlc.lib")	// LibVLC x64 Depuración
-//	#else
-		#pragma comment(lib, "..\\VLCx64\\libvlc.lib")	// LibVLC x64
-//	#endif
+	#pragma comment(lib, "..\\VLCx64\\libvlc.lib")	// LibVLC x64
 #else 
 	#pragma comment(lib, "..\\VLCx86\\libvlc.lib")	// LibVLC x86
 #endif
 
 
-// Clase para crear un array de chars con los argumentos que requiera el VLC, se ha diseñado de forma que resulte facil agregar nuevos argumentos
-/*class ArgumentosVLC {
-public:
-	ArgumentosVLC(void) {
-		Argumentos = NULL;
-	};
 
-	~ArgumentosVLC(void) {
-		if (Argumentos != NULL) delete Argumentos;
-		for (size_t i = 0; i < Args.size(); i++) {
-			delete Args[i];
-		}
-	};
-
-	// Lo ideal es pasar un char a esta funcion ya que al final el vlc mira los parametros como char
-	// De todas formas se han implementado funciones para pasar los argumentos directamente con wchar_t y DWL::DWLString
-	void AgregarArgumento(const char *Argumento) {
-		char *Str = new char[512];
-		strcpy_s(Str, 512, Argumento);
-		Args.push_back(Str);
-	};
-
-	void AgregarArgumento(const wchar_t *Argumento) {
-		char *Str = new char[512];
-		int	TamRes = WideCharToMultiByte(CP_UTF8, NULL, Argumento, static_cast<int>(wcslen(Argumento)), Str, 512, NULL, NULL);
-		Str[TamRes] = 0; // Termino el string, ya que en algunas compilaciones la funcion WideCharToMultiByte no pone el terminador.
-		Args.push_back(Str);
-	};
-
-	const char **ObtenerArgumentos(void) {
-		if (Argumentos != NULL) delete Argumentos;
-		Argumentos = new const char *[Args.size()];
-		for (size_t i = 0; i < Args.size(); i++) {
-			Argumentos[i] = Args[i];
-		}
-		return Argumentos;
-	};
-
-	const char **operator () (void) {
-		return ObtenerArgumentos();
-	};
- 
-	const int TotalArgumentos(void) {
-		return static_cast<int>(Args.size());
-	}
-private:
-	const char				  **Argumentos;
-	std::vector<char *>			Args;
-};
-*/
-
-
-
-class RaveVLC {
+class RaveVLC : public DWL::DTemporizador {
   public:
-											RaveVLC(void);
-										   ~RaveVLC(void);
+								RaveVLC(void);
+							   ~RaveVLC(void);
 
-	const BOOL								Iniciar(void);
-	void									Terminar(void);
-
-//	void CALLBACK							EventosVLC(const libvlc_event_t* event, void* ptr);
-
-	const BOOL								AbrirMedio(BDMedio &Medio);
-	void									CerrarMedio(void);
-
-	const BOOL								Play(void);
-	const BOOL								Pausa(void);
-	const BOOL								Stop(void);
-
-	const int								Volumen(void);
-	void									Volumen(int nVolumen);
-
-	Estados_Medio							ComprobarEstado(void);
-
-
-	const float								TiempoActual(void);
-	void									TiempoActual(float nTiempo);
-	const UINT64							TiempoTotalMs(void);
-	const UINT64							TiempoActualMs(void);
-
-	void                                    Ratio(const float R);
-
-	static void								TiempoStr(UINT64 TMS, wchar_t *StrTiempo);
-	static void								TiempoStr(UINT64 TMS, std::wstring &StrTiempo);
-	//	void									TiempoStrL(UINT64 TMS, wchar_t *StrTiempo);
-
-	void									ActualizarIconos(int nIcono);
+	const BOOL					Iniciar(void);
+	void						Terminar(void);
 	
-	BDMedio			                        MedioActual;
+	static std::wstring        &UltimoError(void);
 
-	UINT64                                  TiempoTotal;
+	const BOOL                  AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente);
+	void                        CerrarMedio(void);
 
-	std::wstring                           &ObtenerProporcion(void);
-	void                                    AsignarProporcion(const char *Prop);
+	static void                 Eventos(const libvlc_event_t* event, void* ptr);
 
-//	void									RepintarVLC(void);
-	void									AsignarPistaAudio(int nPista);
+	const BOOL					Play(void);
+	const BOOL					Pausa(void);
+	const BOOL					Stop(void);
+	const BOOL					StopTODO(void);
 
-	static BOOL CALLBACK					EnumeracionVLC(HWND hWndWnd, LPARAM lParam);
+	const int					Volumen(void);
+	void						Volumen(int nVolumen);
 
-	HWND									hWndVLC;
+	Estados_Medio				ComprobarEstado(void);
 
-//	static void								audio_prerendercb(void* data, unsigned char** buffer, size_t size);
-//	static void								audio_postrendercb(void* data, unsigned char* buffer, unsigned int channels, unsigned int rate, unsigned int nb_samples, unsigned int bits_per_sample, size_t size, int64_t pts);
+	void						AsignarPistaAudio(int nPista);
 
-	inline const BOOL                       Parseado(void) { return _Parseado; }
-	void									ObtenerDatosParsing(void);
+	const float					TiempoActual(void);
+	void						TiempoActual(float nTiempo);
+	const UINT64				TiempoTotalMs(void);
+	const UINT64				TiempoActualMs(void);
 
-	inline libvlc_media_player_t		   *MediaPlayer(void) { return _MediaPlayer; }
-	void                                    Brillo(const float nBrillo);
-	void                                    Contraste(const float nContraste);
-	void                                    Gamma(const float nGamma);
-	void                                    Hue(const int nHue);
-	void                                    Saturacion(const float nSaturacion);
-	#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
-		float                               Oscy[2048];
-		int                                 MaxOscy;
-		int		                            TamVisualizacion;
-	#endif
-  protected:
+	void                        Ratio(const float R);
 
-    unsigned int                           _Canales;
+	//static void					TiempoStr(UINT64 TMS, wchar_t *StrTiempo);
+	static void					TiempoStr(UINT64 TMS, std::wstring &StrTiempo);
 
+	std::wstring			   &ObtenerProporcion(void);
+	void						AsignarProporcion(const char *Prop);
 
-	BOOL                                   _Parseado;
-	//libvlc_media_t                        *_Media;
-	libvlc_instance_t					  *_Instancia;
-	libvlc_media_player_t				  *_MediaPlayer;
-	#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
-		static void							CallbackAudio(void *data, const void *samples, unsigned count, int64_t pts);
-//		static void						   *CallbackVideo(void *opaque, void **planes);
-		static int							CallbackSetupAudio(void **data, char *format, unsigned *rate, unsigned *channels);
-		libvlc_media_player_t			  *_MediaPlayerOscy;
-	#endif
-//	libvlc_log_t						  *_Log;
-	libvlc_event_manager_t				  *_Eventos;
+	void                        Brillo(const float nBrillo);
+	void                        Contraste(const float nContraste);
+	void                        Gamma(const float nGamma);
+	void                        Hue(const int nHue);
+	void                        Saturacion(const float nSaturacion);
 
+	BDMedio                    &MedioActual(void);
+
+	const BOOL					ObtenerDatosParsing(void);	
+
+//	void						Evento_Temporizador(const UINT_PTR cID);
+	void                        Temporizador_Lista(void);
+	void                        Temporizador_Tiempo(void);
+
+	void                        Evento_Medio_Terminado(RaveVLC_Medio *MedioEvento);
+
+								// Necesito encontrar la ventana del VLC que se crea dentro del VerVideo para repintar el fondo negro
+	static BOOL CALLBACK		EnumeracionVLC(HWND hWndWnd, LPARAM lParam);
+	static HWND                 hWndVLC;
+  protected:	
+	static RaveVLC_Medio      *_Anterior;
+	static RaveVLC_Medio      *_Actual;
+	static RaveVLC_Medio      *_Siguiente;
+
+	libvlc_instance_t		  *_Instancia;
 };
+

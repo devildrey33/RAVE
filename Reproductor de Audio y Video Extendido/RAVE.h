@@ -70,15 +70,21 @@ class RAVE {
 
 	void							CerrarSistema(const SOCerrarSistema Forma = SOCerrarSistema_Apagar, const BOOL Forzar = FALSE);
 
-	inline void                     MostrarToolTipPlayer(const wchar_t *Texto)		{ _ToolTipPlayer.MostrarToolTip(Texto); };
-	inline void                     MostrarToolTipPlayer(std::wstring &Texto)		{ _ToolTipPlayer.MostrarToolTip(Texto); };
-	inline void                     MostrarToolTipPlayer(BDMedio &Medio)            { _ToolTipPlayer.MostrarToolTip(Medio); };
+	inline void                     MostrarToolTipPlayer(const wchar_t *Texto)			{ _ToolTipPlayer.MostrarToolTip(Texto); };
+	inline void                     MostrarToolTipPlayer(std::wstring &Texto)			{ _ToolTipPlayer.MostrarToolTip(Texto); };
+	inline void                     MostrarToolTipPlayer(BDMedio &Medio)				{ _ToolTipPlayer.MostrarToolTip(Medio); };
+	inline void                     MostrarToolTipPlayerError(const wchar_t *Texto)		{ _ToolTipPlayer.MostrarToolTipError(Texto); };
+	inline void                     MostrarToolTipPlayerError(std::wstring &Texto)		{ _ToolTipPlayer.MostrarToolTipError(Texto); };
 
-	inline void                     MostrarToolTipOpciones(const wchar_t *Texto)	{ _ToolTipOpciones.MostrarToolTip(Texto); };
-	inline void                     MostrarToolTipOpciones(std::wstring &Texto)		{ _ToolTipOpciones.MostrarToolTip(Texto); };
+	inline void                     MostrarToolTipOpciones(const wchar_t *Texto)		{ _ToolTipOpciones.MostrarToolTip(Texto); };
+	inline void                     MostrarToolTipOpciones(std::wstring &Texto)			{ _ToolTipOpciones.MostrarToolTip(Texto); };
+	inline void                     MostrarToolTipOpcionesError(const wchar_t *Texto)	{ _ToolTipOpciones.MostrarToolTipError(Texto); };
+	inline void                     MostrarToolTipOpcionesError(std::wstring &Texto)	{ _ToolTipOpciones.MostrarToolTipError(Texto); };
 
-	inline void                     OcultarToolTipPlayer(void)						{ _ToolTipPlayer.Ocultar(); }
-	inline void                     OcultarToolTipOpciones(void)					{ _ToolTipOpciones.Ocultar(); }
+	inline void                     OcultarToolTipPlayer(void)							{ _ToolTipPlayer.Ocultar(); }
+	inline void                     OcultarToolTipOpciones(void)						{ _ToolTipOpciones.Ocultar(); }
+	inline void                     OcultarToolTipPlayerRapido(void)					{ _ToolTipPlayer.OcultarRapido(); }
+	inline void                     OcultarToolTipOpcionesRapido(void)					{ _ToolTipOpciones.OcultarRapido(); }
 	//	int							Rand()
 
 	void							Terminar(void);
@@ -96,7 +102,7 @@ class RAVE {
 
 	RaveBD							BD;
 //	BaseDatos						BD;
-	RaveVLC							VLC;
+	RaveVLC 						VLC;
 	ControlesPantallaCompleta		ControlesPC;
 
 

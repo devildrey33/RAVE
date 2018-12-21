@@ -3,6 +3,7 @@
 #include <dwmapi.h>
 #include "DStringUtils.h"
 #include "resource.h"
+#include "DToolTipEx.h"
 
 #define TOOLTIPINFO_PADDING			   8
 #define ID_TEMPORIZADOR_OCULTAR		1000
@@ -223,12 +224,12 @@ void ToolTipInfo_2Columnas::Pintar(HDC hDC) {
 	HFONT	VFont		= static_cast<HFONT>(SelectObject(DC, _FuenteTitulo()));
 
 	// Pinto el fondo
-	HBRUSH BrochaFondo = CreateSolidBrush(DToolTipEx_Skin::Fondo);
+	HBRUSH BrochaFondo = CreateSolidBrush(DWL::DToolTipEx_Skin::Fondo);
 	FillRect(DC, &RC, BrochaFondo);
 	DeleteObject(BrochaFondo);
 
 	// Pinto el borde
-	HBRUSH BrochaBorde = CreateSolidBrush(DToolTipEx_Skin::Borde);
+	HBRUSH BrochaBorde = CreateSolidBrush(DWL::DToolTipEx_Skin::Borde);
 	FrameRect(DC, &RC, BrochaBorde);
 	DeleteObject(BrochaBorde);
 
@@ -285,7 +286,7 @@ void ToolTipInfo_2Columnas::_PintarNota(HDC hDC, const int cX, const int cY, con
 
 	RECT RC = { 0, 0, static_cast<int>(Nota * 16.0f), 16 };
 	// Pinto el fondo
-	HBRUSH BrochaFondo = CreateSolidBrush(DToolTipEx_Skin::Fondo);
+	HBRUSH BrochaFondo = CreateSolidBrush(DWL::DToolTipEx_Skin::Fondo);
 	FillRect(DC, &RC, BrochaFondo);
 	DeleteObject(BrochaFondo);
 
@@ -484,6 +485,11 @@ SIZE ToolTipInfo_Etiqueta::CalcularTam(void) {
 	return Ret;
 }
 
+
+
+
+
+
 /*
   _______          _ _______ _      _____        __               _______        _        
  |__   __|        | |__   __(_)    |_   _|      / _|             |__   __|      | |       
@@ -530,19 +536,17 @@ void ToolTipInfo_Texto::Pintar(HDC DC) {
 	HBITMAP Bmp = CreateCompatibleBitmap(DC, RC.right, RC.bottom);
 	HBITMAP BmpViejo = static_cast<HBITMAP>(SelectObject(Buffer, Bmp));
 	
+	// Pinto el fondo
+	_PintarFondo(Buffer, &RC);
+
 	// Pinto el borde
-	HBRUSH BrochaBorde = CreateSolidBrush(DToolTipEx_Skin::Borde);
+	HBRUSH BrochaBorde = CreateSolidBrush(DWL::DToolTipEx_Skin::Borde);
 	FrameRect(Buffer, &RC, BrochaBorde);
 	DeleteObject(BrochaBorde);
 
-	// Pinto el fondo
-	HBRUSH BrochaFondo = CreateSolidBrush(DToolTipEx_Skin::Fondo);
-	FillRect(Buffer, &RCF, BrochaFondo);
-	DeleteObject(BrochaFondo);
-
 	// Pinto el texto
 	SetBkMode(Buffer, TRANSPARENT);
-	SetTextColor(Buffer, DToolTipEx_Skin::Texto);
+	SetTextColor(Buffer, DWL::DToolTipEx_Skin::Texto);
 	HFONT vFuente = static_cast<HFONT>(SelectObject(Buffer, _Fuente()));
 	DrawText(Buffer, _Str.c_str(), static_cast<int>(_Str.size()), &RCT, DT_CENTER);
 	SelectObject(Buffer, vFuente);
@@ -556,8 +560,33 @@ void ToolTipInfo_Texto::Pintar(HDC DC) {
 	DeleteDC(Buffer);
 }
 
+void ToolTipInfo_Texto::_PintarFondo(HDC Buffer, RECT *RC) {
+	HBRUSH BrochaFondo = CreateSolidBrush(DWL::DToolTipEx_Skin::Fondo);
+	FillRect(Buffer, RC, BrochaFondo);
+	DeleteObject(BrochaFondo);
+}
 
 
+
+
+
+
+
+/*
+  _______          _ _______ _      _____        __              _______        _        ______
+ |__   __|        | |__   __(_)    |_   _|      / _|            |__   __|      | |      |  ____|
+	| | ___   ___ | |  | |   _ _ __  | |  _ __ | |_ ___            | | _____  _| |_ ___ | |__   _ __ _ __ ___  _ __
+	| |/ _ \ / _ \| |  | |  | | '_ \ | | | '_ \|  _/ _ \           | |/ _ \ \/ / __/ _ \|  __| | '__| '__/ _ \| '__|
+	| | (_) | (_) | |  | |  | | |_) || |_| | | | || (_) |          | |  __/>  <| || (_) | |____| |  | | | (_) | |
+	|_|\___/ \___/|_|  |_|  |_| .__/_____|_| |_|_| \___/  ______   |_|\___/_/\_\\__\___/|______|_|  |_|  \___/|_|
+							  | |                        |______|
+							  |_|																					  */
+
+void ToolTipInfo_TextoError::_PintarFondo(HDC Buffer, RECT *RC) {
+	HBRUSH BrochaFondo = CreateSolidBrush(DWL::DToolTipEx_Skin::FondoError);
+	FillRect(Buffer, RC, BrochaFondo);
+	DeleteObject(BrochaFondo);
+}
 
 
 
@@ -598,6 +627,15 @@ void ToolTipsInfo::MostrarToolTip(const wchar_t *Texto) {
 
 void ToolTipsInfo::MostrarToolTip(std::wstring &Texto) {
 	ToolTipInfo *TT = new ToolTipInfo_Texto(Texto);
+	_MostrarToolTip(TT);
+}
+
+void ToolTipsInfo::MostrarToolTipError(const wchar_t *Texto) {
+	MostrarToolTipError(std::wstring(Texto));
+}
+
+void ToolTipsInfo::MostrarToolTipError(std::wstring &Texto) {
+	ToolTipInfo *TT = new ToolTipInfo_TextoError(Texto);
 	_MostrarToolTip(TT);
 }
 
@@ -688,10 +726,18 @@ void ToolTipsInfo::RecolocarToolTips(void) {
 
 void ToolTipsInfo::Ocultar(void) {
 	for (size_t i = 0; i < _ToolTips.size(); i++) {
-		_ToolTips[i]->Ocultar(FALSE);		
-//		delete _ToolTips[i];
+		_ToolTips[i]->Ocultar(FALSE);
+		//		delete _ToolTips[i];
 	}
-//	_ToolTips.resize(0);
+	//	_ToolTips.resize(0);
+}
+
+void ToolTipsInfo::OcultarRapido(void) {
+	for (size_t i = 0; i < _ToolTips.size(); i++) {
+		_ToolTips[i]->Ocultar(TRUE);
+		//		delete _ToolTips[i];
+	}
+	//	_ToolTips.resize(0);
 }
 
 HWND ToolTipsInfo::Padre(void) {

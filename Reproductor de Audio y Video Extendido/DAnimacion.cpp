@@ -51,10 +51,10 @@ namespace DWL {
 		Iniciar(nDatos, Milisegundos, LambdaCallback);
 	}
 
-	void DAnimacion::Iniciar(const double Desde, const double Hasta, const DWORD Milisegundos, std::function<void(Valores &, const BOOL)> LambdaCallback, FuncionTiempo Funcion) {
+	void DAnimacion::Iniciar(const double Desde, const double Hasta, const DWORD Milisegundos, std::function<void(Valores &, const BOOL)> LambdaCallback, FuncionTiempo Funcion, const DWORD Intervalo) {
 		Datos nDatos;
 		nDatos.AgregarDecimal(Desde, Hasta, Funcion);
-		Iniciar(nDatos, Milisegundos, LambdaCallback);
+		Iniciar(nDatos, Milisegundos, LambdaCallback, Intervalo);
 	}
 
 	void DAnimacion::Iniciar(const double Desde0, const double Hasta0, const double Desde1, const double Hasta1, const DWORD Milisegundos, std::function<void(Valores &, const BOOL)> LambdaCallback, FuncionTiempo Funcion) {
@@ -64,7 +64,7 @@ namespace DWL {
 		Iniciar(nDatos, Milisegundos, LambdaCallback);
 	}
 
-	void DAnimacion::Iniciar(Datos &Datos, const DWORD Milisegundos, std::function<void(Valores &, const BOOL)> LambdaCallback) {
+	void DAnimacion::Iniciar(Datos &Datos, const DWORD Milisegundos, std::function<void(Valores &, const BOOL)> LambdaCallback, const DWORD Intervalo) {
 		// Compruebo que los valores Desde sean distintos a los valores Hasta
 		BOOL Iguales = TRUE;
 		for (size_t i = 0; i < Datos.Total(); i++) {
@@ -93,7 +93,7 @@ namespace DWL {
 		_Duracion		= Milisegundos;
 		_TickInicio     = GetTickCount();
 		_TiempoActual	= 0;
-		BOOL Ret = CreateTimerQueueTimer(&_Timer, NULL, reinterpret_cast<WAITORTIMERCALLBACK>(_TimerProc), this, 16, 16, WT_EXECUTEINTIMERTHREAD);
+		BOOL Ret = CreateTimerQueueTimer(&_Timer, NULL, reinterpret_cast<WAITORTIMERCALLBACK>(_TimerProc), this, Intervalo, Intervalo, WT_EXECUTEINTIMERTHREAD);
 		#if DANIMACION_MOSTRARDEBUG == TRUE
 			Debug_Escribir_Varg(L"DAnimacion::Iniciar %d milisegundos.\n", Milisegundos);
 		#endif

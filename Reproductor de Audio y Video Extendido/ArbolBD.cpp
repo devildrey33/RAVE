@@ -67,6 +67,14 @@ NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre,
 			break;
 		default:							// Medio dentro de una raíz o directorio
 			nIcono = (nTipoNodo == ArbolBD_TipoNodo_Cancion) ? RAVE_Iconos::RAVE_Icono_Cancion : RAVE_Iconos::RAVE_Icono_Video;
+			// Si es el medio que se está reproduciendo pongo el icono del play o de la pausa
+			if (App.VLC.MedioActual().Nombre().size() > 0) {
+				if (App.VLC.MedioActual().Hash == nHash) {
+					Estados_Medio Estado = App.VLC.ComprobarEstado();
+					if		(Estado == EnPlay)	nIcono = RAVE_Iconos::RAVE_Icono_Play;
+					else if (Estado == EnPausa)	nIcono = RAVE_Iconos::RAVE_Icono_Pausa;
+				}
+			}
 			nExpansor = DArbolEx_MostrarExpansor_Ocultar;
 			break;
 	}

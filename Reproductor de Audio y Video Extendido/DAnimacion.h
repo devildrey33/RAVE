@@ -103,6 +103,7 @@ namespace DWL {
 			inline const BYTE		G(void)																	{ return GetGValue(_Color); };
 			inline const BYTE		B(void)																	{ return GetBValue(_Color); };
 			inline const double		Decimal(void)			  												{ return _Valor; }
+			inline const long		Entero(void)			  												{ return static_cast<long>(_Valor); }
 			inline const COLORREF	Color(void)																{ return _Color; }
 			inline const Valor_Tipo Tipo(void)																{ return _Tipo; };
 		  protected:
@@ -188,7 +189,7 @@ namespace DWL {
 		                                           ~DAnimacion(void);
 
 													// Iniciar para un solo valor (desde - hasta)
-		void										Iniciar(const double Desde, const double Hasta, const DWORD Milisegundos, std::function<void(DAnimacion::Valores &, const BOOL)> LambdaCallback, FuncionTiempo Funcion = FUNCION_POR_DEFECTO);
+		void										Iniciar(const double Desde, const double Hasta, const DWORD Milisegundos, std::function<void(DAnimacion::Valores &, const BOOL)> LambdaCallback, FuncionTiempo Funcion = FUNCION_POR_DEFECTO, const DWORD Intervalo = 16);
 													// Iniciar para dos valores (desde - hasta)
 		void										Iniciar(const double Desde0, const double Hasta0, const double Desde1, const double Hasta1, const DWORD Milisegundos, std::function<void(DAnimacion::Valores &, const BOOL)> LambdaCallback, FuncionTiempo Funcion = FUNCION_POR_DEFECTO);
 													// Iniciar para 1 color
@@ -200,7 +201,7 @@ namespace DWL {
 													// Iniciar para 4 colores
 		void										Iniciar(const COLORREF Desde0, const COLORREF Hasta0, const COLORREF Desde1, const COLORREF Hasta1, const COLORREF Desde2, const COLORREF Hasta2, const COLORREF Desde3, const COLORREF Hasta3, const DWORD Milisegundos, std::function<void(Valores &, const BOOL)> LambdaCallback, FuncionTiempo Funcion = FUNCION_POR_DEFECTO);
 
-		void										Iniciar(DAnimacion::Datos &Datos, const DWORD Milisegundos, std::function<void(DAnimacion::Valores &, const BOOL)> LambdaCallback);
+		void										Iniciar(DAnimacion::Datos &Datos, const DWORD Milisegundos, std::function<void(DAnimacion::Valores &, const BOOL)> LambdaCallback, const DWORD Intervalo = 16);
 //		void                                        Invertir(void);
 		void										Terminar(void);
 		inline const BOOL                           Animando(void) { return (_Timer != NULL); }

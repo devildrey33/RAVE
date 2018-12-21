@@ -39,7 +39,7 @@ class ToolTipInfo : public DWL::DVentana {
 	virtual inline ToolTipInfo_Tipo	Tipo(void)																					{ return ToolTipInfo_Tipo_SinTipo;	};
 	int                             X;
 	int                             Y;
-protected:
+  protected:
 	void		                   _Evento_Pintar(void);
     void                           _Evento_Temporizador(INT_PTR tID);
 
@@ -59,8 +59,18 @@ class ToolTipInfo_Texto : public ToolTipInfo {
 	void						Pintar(HDC DC);
 	inline ToolTipInfo_Tipo		Tipo(void) { return ToolTipInfo_Tipo_Texto; };
   protected:
+	virtual void               _PintarFondo(HDC Buffer, RECT *RC);
 	DWL::DFuente               _Fuente;
 	std::wstring	           _Str;
+};
+
+// Clase que controla un unico tooltip informativo de texto con un fondo rojo que simboliza un error
+class ToolTipInfo_TextoError : public ToolTipInfo_Texto {
+  public:
+			ToolTipInfo_TextoError(std::wstring &nTexto) : ToolTipInfo_Texto(nTexto) { };
+	       ~ToolTipInfo_TextoError(void) { }
+  protected:
+	  void _PintarFondo(HDC Buffer, RECT *RC);
 };
 
 // Información de una celda
@@ -140,11 +150,14 @@ class ToolTipsInfo {
 	void                            Iniciar(DWL::DhWnd *Padre);
 	void                            MostrarToolTip(const wchar_t *Texto);
 	void                            MostrarToolTip(std::wstring &Texto);
+	void                            MostrarToolTipError(const wchar_t *Texto);
+	void                            MostrarToolTipError(std::wstring &Texto);
 	void                            MostrarToolTip(BDMedio &Medio);
 //	void                            EliminarToolTip(ToolTipInfo *ToolTip);
 	HWND                            Padre(void);
 	inline DWL::DhWnd              *DPadre(void) { return _Padre; };
 	void                            Ocultar(void);
+	void                            OcultarRapido(void);
 	void                            RecolocarToolTips(void);
   protected:
 	void                           _MostrarToolTip(ToolTipInfo *TT);

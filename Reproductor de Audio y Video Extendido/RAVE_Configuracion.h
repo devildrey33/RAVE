@@ -1,9 +1,9 @@
 // Configuración para compilar RAVE
 
 // Versión y titulo
-#define RAVE_VERSION			0, 5, 1, 2
-#define RAVE_VERSIONF			0.512
-#define RAVE_VERSIONSTR			L"0.512"
+#define RAVE_VERSION			0, 5, 1, 3
+#define RAVE_VERSIONF			0.513
+#define RAVE_VERSIONSTR			L"0.513b"
 #define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
 #define RAVE_VERSIONBD          L"1.0"
 
@@ -36,6 +36,8 @@
 
 // Simula los argumentos para reproducir un video nada mas iniciar
 //#define RAVE_SIMULAR_REPRODUCIR_VIDEO
+#define RAVE_SIMULAR_REPRODUCIR_VIDEO_PATH L"C:\\Users\\devildrey33\\Videos\\World of Warships\\555.mp4"
+//#define RAVE_SIMULAR_REPRODUCIR_VIDEO_PATH L"G:\\Pelis i Series\\Futurama\\Futurama dvdrip,.avi"
 
 // Utiliza un segundo media player para obtener el oscyloscopio (EXPERIMENTAL)
 // No acaba de funcionar muy bien, y hay problemas al ejecutar un video con la doble reproducción...

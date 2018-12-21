@@ -26,7 +26,10 @@
 #define WM_TOM_TERMINADO            WM_USER + 2014
 #define WM_TOM_CANCELADO            WM_USER + 2015
 #define WM_TOM_MOSTRARVENTANA		WM_USER + 2016
-
+// Temporizadores ejecutados con post message
+#define WM_TIMER_LISTA				WM_USER + 2017
+#define WM_TIMER_TIEMPO				WM_USER + 2018
+#define WM_MEDIO_TERMINADO			WM_USER + 2019
 
 enum Estados_Medio {
 	Nada      = 0,
@@ -297,6 +300,9 @@ class RaveBD {
 	inline const int			Opciones_OpacidadControlesVideo(void) { return _Opciones_OpacidadControlesVideo; }
 	void						Opciones_OpacidadControlesVideo(const int nOpciones_OpacidadControlesVideo);
 
+	inline const UINT			Opciones_EfectoFadeAudioMS(void) { return _Opciones_EfectoFadeAudioMS; }
+	void						Opciones_EfectoFadeAudioMS(const UINT nOpciones_EfectoFadeAudioMS);
+
 	DWL::DUnidadesDisco			Unidades;
 
 
@@ -355,6 +361,8 @@ protected:
 	BOOL                       _Opciones_Sumar005;                  // Sumar 0.05 a la nota al reproducir completamente un medio
 	int				           _Opciones_AlineacionControlesVideo;	// Alineación para los controles pantalla completa
 	int						   _Opciones_OpacidadControlesVideo;    // Opacidad máxima para los controles pantalla completa
+
+	UINT                       _Opciones_EfectoFadeAudioMS;			// Milisegundos para el efecto fade audio
 	friend class ThreadAnalisis;
 };
 

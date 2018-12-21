@@ -8,6 +8,7 @@
 namespace DWL {
 
 	COLORREF     DToolTipEx_Skin::Fondo				= COLOR_TOOLTIP_FONDO;
+	COLORREF     DToolTipEx_Skin::FondoError		= COLOR_TOOLTIP_FONDO_ERROR;	// SOLO SE USA EN LOS ToolTipInfo
 	COLORREF     DToolTipEx_Skin::Texto				= COLOR_TOOLTIP_TEXTO;
 	COLORREF     DToolTipEx_Skin::TextoSombra		= COLOR_TOOLTIP_TEXTO_SOMBRA;
 	COLORREF     DToolTipEx_Skin::Borde				= COLOR_TOOLTIP_BORDE;

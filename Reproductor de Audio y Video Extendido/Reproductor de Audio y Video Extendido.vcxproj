@@ -220,6 +220,8 @@
     <ClInclude Include="ListaRaices.h" />
     <ClInclude Include="MemoriaCompartida.h" />
     <ClInclude Include="RaveBD.h" />
+    <ClInclude Include="RaveVLC.h" />
+    <ClInclude Include="RaveVLC_Medio.h" />
     <ClInclude Include="RAVE_CuentaEmail.h" />
     <ClInclude Include="DBarraDesplazamientoEx.h" />
     <ClInclude Include="DBarraProgresoEx.h" />
@@ -241,7 +243,6 @@
     <ClInclude Include="ExtensionesValidas.h" />
     <ClInclude Include="MarcoControles.h" />
     <ClInclude Include="RAVE.h" />
-    <ClInclude Include="RaveVLC.h" />
     <ClInclude Include="RAVE_SkinVisualStudio.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="sqlite3.h" />
@@ -315,6 +316,7 @@
     <ClCompile Include="RAVE.cpp" />
     <ClCompile Include="RaveBD.cpp" />
     <ClCompile Include="RaveVLC.cpp" />
+    <ClCompile Include="RaveVLC_Medio.cpp" />
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp" />
     <ClCompile Include="sqlite3.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
