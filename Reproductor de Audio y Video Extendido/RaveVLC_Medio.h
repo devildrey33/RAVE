@@ -1,9 +1,17 @@
 #pragma once
 
-#include "RaveBD.h"
+#include "Rave_Medio.h"
 #include "DAnimacion.h"
 
-class RaveVLC_Medio {
+
+#ifdef _WIN64
+	#pragma comment(lib, "..\\Libs\\libvlc64.lib")	// LibVLC x64
+#else 
+	#pragma comment(lib, "..\\Libs\\libvlc.lib")	// LibVLC x86
+#endif
+
+
+class RaveVLC_Medio : public Rave_Medio {
   public :
 								RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &Medio);
 							   ~RaveVLC_Medio(void);
@@ -15,13 +23,13 @@ class RaveVLC_Medio {
 	const BOOL					Pausa(void);
 	const BOOL					Stop(void);
 								// Aumenta o disminuye el ratio de reproducción (POR DEFECTO ES 1.0)
-	void                        Ratio(const float R);
+	const BOOL                  Ratio(const float R);
 
 								// Volumen del medio
 	const int					Volumen(void);
 	void						Volumen(int nVolumen, const BOOL ActualizarUI = TRUE);
 
-	Estados_Medio				ComprobarEstado(void);
+	const Estados_Medio			ComprobarEstado(void);
 
 								// Tiempo del medio
 	const float					TiempoActual(void);
@@ -47,13 +55,15 @@ class RaveVLC_Medio {
 //	HWND                        hWndVLC;
 
 								// Actualiza los iconos de la BD i la lista
-	void						ActualizarIconos(int nIcono);
+//	void						ActualizarIconos(int nIcono);
 	const BOOL                  ObtenerDatosParsing(void);
 
-	std::wstring                TxtError;
+//	std::wstring                TxtError;
 
 	void                        FadeIn(void);
 	void                        FadeOut(void);
+
+	const Rave_Medio_Tipo		Tipo(void) { return Rave_Medio_Tipo_VLC; };
   protected :
 	libvlc_media_player_t	  *_Medio;
 	libvlc_event_manager_t    *_Eventos;

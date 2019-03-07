@@ -41,9 +41,6 @@
     <Filter Include="DWL\Sistema\Mouse">
       <UniqueIdentifier>{caf2d394-a02d-4351-8ca7-27ceecb536ac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="VLC">
-      <UniqueIdentifier>{9b9da493-5164-46a8-b89a-2dc9d5e0c4ea}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DWL\Ventanas\ControlesEx">
       <UniqueIdentifier>{dc872fa4-ea37-42c7-b902-8cec08c6cb7c}</UniqueIdentifier>
     </Filter>
@@ -142,6 +139,15 @@
     </Filter>
     <Filter Include="AsociarReproductor %28DEPRECATED%29">
       <UniqueIdentifier>{8ad9c686-8c63-4d14-b7ab-03419bb29e17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MediaPlayer">
+      <UniqueIdentifier>{df76ac1e-dce3-47ab-a6a1-d908ad48bbc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MediaPlayer\VLC">
+      <UniqueIdentifier>{9b9da493-5164-46a8-b89a-2dc9d5e0c4ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MediaPlayer\FMOD">
+      <UniqueIdentifier>{4e96608e-0c6a-48e5-84e0-31d7ee943be4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -281,7 +287,7 @@
       <Filter>DWL\Sistema\Temporizador</Filter>
     </ClInclude>
     <ClInclude Include="vlc.hpp">
-      <Filter>VLC</Filter>
+      <Filter>MediaPlayer\VLC</Filter>
     </ClInclude>
     <ClInclude Include="VentanaErrorCritico.h">
       <Filter>Ventanas</Filter>
@@ -389,10 +395,19 @@
       <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29</Filter>
     </ClInclude>
     <ClInclude Include="RaveVLC_Medio.h">
-      <Filter>VLC</Filter>
+      <Filter>MediaPlayer\VLC</Filter>
     </ClInclude>
-    <ClInclude Include="RaveVLC.h">
-      <Filter>VLC</Filter>
+    <ClInclude Include="RaveFMOD_Medio.h">
+      <Filter>MediaPlayer\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="Rave_Medio.h">
+      <Filter>MediaPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="Rave_MediaPlayer.h">
+      <Filter>MediaPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="RaveVLC %28DEPRECATED%29.h">
+      <Filter>MediaPlayer\VLC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -595,10 +610,19 @@
       <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29</Filter>
     </ClCompile>
     <ClCompile Include="RaveVLC_Medio.cpp">
-      <Filter>VLC</Filter>
+      <Filter>MediaPlayer\VLC</Filter>
     </ClCompile>
-    <ClCompile Include="RaveVLC.cpp">
-      <Filter>VLC</Filter>
+    <ClCompile Include="RaveFMOD_Medio.cpp">
+      <Filter>MediaPlayer\FMOD</Filter>
+    </ClCompile>
+    <ClCompile Include="Rave_Medio.cpp">
+      <Filter>MediaPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="Rave_MediaPlayer.cpp">
+      <Filter>MediaPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="RaveVLC %28DEPRECATED%29.cpp">
+      <Filter>MediaPlayer\VLC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

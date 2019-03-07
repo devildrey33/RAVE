@@ -1,9 +1,9 @@
 // Configuración para compilar RAVE
 
 // Versión y titulo
-#define RAVE_VERSION			0, 5, 1, 3
-#define RAVE_VERSIONF			0.513
-#define RAVE_VERSIONSTR			L"0.513b"
+#define RAVE_VERSION			0, 5, 1, 5
+#define RAVE_VERSIONF			0.515
+#define RAVE_VERSIONSTR			L"0.515"
 #define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
 #define RAVE_VERSIONBD          L"1.0"
 
@@ -41,4 +41,4 @@
 
 // Utiliza un segundo media player para obtener el oscyloscopio (EXPERIMENTAL)
 // No acaba de funcionar muy bien, y hay problemas al ejecutar un video con la doble reproducción...
-//#define RAVE_VLC_DOBLE_MEDIO_FFT
+#define RAVE_VLC_DOBLE_MEDIO_FFT

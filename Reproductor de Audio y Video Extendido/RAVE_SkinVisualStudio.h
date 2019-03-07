@@ -112,6 +112,7 @@ ____                       ______
 #define COLOR_TOOLTIP_FONDO							COLOR_BOTON //COLOR_FONDO
 #define COLOR_TOOLTIP_TEXTO							COLOR_BOTON_TEXTO
 #define COLOR_TOOLTIP_TEXTO_SOMBRA					COLOR_BOTON_TEXTO_SOMBRA
+#define COLOR_TOOLTIP_FONDO_ERROR					COLOR_ROJO_MARCADO
 
 /*
   ____                        _____                _ _ ______      

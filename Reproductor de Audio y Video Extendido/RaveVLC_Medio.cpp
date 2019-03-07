@@ -2,7 +2,8 @@
 #include "RaveVLC_Medio.h"
 #include "DStringUtils.h"
 #include "RAVE_Iconos.h"
-#include "RaveVLC.h"
+//#include "RaveVLC.h"
+#include "Rave_MediaPlayer.h"
 
 
 RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : _Medio(NULL), _Eventos(NULL),  /*TiempoTotal(0) */ _Parseado(FALSE) {
@@ -44,9 +45,9 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : _M
 	_Eventos = libvlc_media_player_event_manager(_Medio);
 	//	libvlc_event_attach(_Eventos, libvlc_MediaStateChanged, EventosVLC, this);				// no va
 	//	libvlc_event_attach(_Eventos, libvlc_MediaDurationChanged, EventosVLC, this);			// no va (igual amb streaming si...)
-	libvlc_event_attach(_Eventos, libvlc_MediaPlayerEndReached,		  RaveVLC::Eventos, this);			
-	libvlc_event_attach(_Eventos, libvlc_MediaPlayerEncounteredError, RaveVLC::Eventos, this);	// error
-	libvlc_event_attach(_Eventos, libvlc_MediaParsedChanged,		  RaveVLC::Eventos, this);	// no va
+	libvlc_event_attach(_Eventos, libvlc_MediaPlayerEndReached,		  Rave_MediaPlayer::EventosVLC, this);
+	libvlc_event_attach(_Eventos, libvlc_MediaPlayerEncounteredError, Rave_MediaPlayer::EventosVLC, this);	// error
+	libvlc_event_attach(_Eventos, libvlc_MediaParsedChanged,		  Rave_MediaPlayer::EventosVLC, this);	// no va
 	// Desactiva los eventos del mouse y del teclado dentro de la ventana del vlc 
 	libvlc_video_set_mouse_input(_Medio, false);
 	libvlc_video_set_key_input(_Medio, false);
@@ -75,9 +76,9 @@ void RaveVLC_Medio::Eliminar(void) {
 	//	hWndVLC = NULL;
 	if (_Medio != NULL) {
 		Debug_Escribir_Varg(L"RaveVLC_Medio::~RaveVLC_Medio '%s' \n", Medio.Path.c_str());
-		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEndReached, RaveVLC::Eventos, this);
-		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEncounteredError, RaveVLC::Eventos, this);
-		libvlc_event_detach(_Eventos, libvlc_MediaParsedChanged, RaveVLC::Eventos, this);
+		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEndReached, Rave_MediaPlayer::EventosVLC, this);
+		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEncounteredError, Rave_MediaPlayer::EventosVLC, this);
+		libvlc_event_detach(_Eventos, libvlc_MediaParsedChanged, Rave_MediaPlayer::EventosVLC, this);
 		Stop();
 		libvlc_media_player_release(_Medio);
 
@@ -104,11 +105,11 @@ const BOOL RaveVLC_Medio::Stop(void) {
 		ActualizarIconos(0);
 
 		// Escondo los tooltip de las barras de tiempo
-		App.VentanaRave.SliderTiempo.OcultarToolTip();
+/*		App.VentanaRave.SliderTiempo.OcultarToolTip();
 		App.ControlesPC.SliderTiempo.OcultarToolTip();
 		// Evito mostrar el tooltip si se pasa el mouse por encima del slider tiempo
 		App.VentanaRave.SliderTiempo.ToolTip(DBarraEx_ToolTip_SinToolTip);
-		App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_SinToolTip);
+		App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_SinToolTip);*/
 
 		
 		// Deadlock just despres de mostrar un DMenuEx en un video i utilitzar el stop.... SOLUCIONAT, pero s'ha d'anar amb cuidado al utilitzar SetFocus...
@@ -130,7 +131,7 @@ const BOOL RaveVLC_Medio::Stop(void) {
 		
 		// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
 //		std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" - " +  MedioActual.Nombre();
-		App.VentanaRave.Titulo(std::wstring(RAVE_TITULO));
+//		App.VentanaRave.Titulo(std::wstring(RAVE_TITULO));
 
 		return TRUE;
 	}
@@ -152,27 +153,13 @@ const BOOL RaveVLC_Medio::Pausa(void) {
 const BOOL RaveVLC_Medio::Play(void) {
 	if (_Medio != NULL) {
 		if (libvlc_media_player_play(_Medio) == 0)	{
-			App.VentanaRave.SliderTiempo.ToolTip(DBarraEx_ToolTip_Abajo);
-			// Establezco la norma del tooltip según la alineación de los controles pantalla completa
-			switch (App.ControlesPC.Alineacion) {
-				case Abajo		:	App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_Arriba);		break;
-				case Arriba		:	App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_Abajo);		break;
-				case Izquierda	:	App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_Derecha);		break;
-				case Derecha	:	App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_Izquierda);	break;
-			}
-			
-			
-//			hWndVLC = NULL;
 			ActualizarIconos(1);
-			SetTimer(App.VentanaRave.hWnd(), TIMER_OBTENERVLCWND, 100, NULL);
-//			SetTimer(App.VentanaRave.hWnd(), TIMER_OBTENER_TIEMPO_TOTAL, 250, NULL);
+
+			SetTimer(Rave_MediaPlayer::_hWndMensajes, TIMER_OBTENERVLCWND, 100, NULL);
+
 			if (Medio.TipoMedio == Tipo_Medio_Video) { // Desactivo el protector de pantalla si es un video
 				SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, FALSE, NULL, TRUE);
 			}
-
-			// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
-			std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" [" + DWL::Strings::ToStr(Medio.Pista(), 2) + L" " + Medio.Nombre() + L"]";
-			App.VentanaRave.Titulo(nTitulo);
 
 			// Muestro el tooltip con los datos
 			App.MostrarToolTipPlayer(Medio);
@@ -217,7 +204,7 @@ const int RaveVLC_Medio::Volumen(void) {
 	0 - Normal
 	1 - Play
 	2 - Pausa
-*/
+*//*
 void RaveVLC_Medio::ActualizarIconos(int nTipo) {
 	if (Medio.Hash != 0) {
 		int nIcono = 0;
@@ -247,7 +234,7 @@ void RaveVLC_Medio::ActualizarIconos(int nTipo) {
 		App.VentanaRave.Lista.Repintar();
 	}
 }
-
+*/
 
 
 std::wstring &RaveVLC_Medio::ObtenerProporcion(void) {
@@ -269,7 +256,7 @@ void RaveVLC_Medio::AsignarProporcion(const char *Prop) {
 	libvlc_audio_set_track(_MediaPlayer, nPista);
 }*/
 
-Estados_Medio RaveVLC_Medio::ComprobarEstado(void) {
+const Estados_Medio RaveVLC_Medio::ComprobarEstado(void) {
 	if (_Medio == NULL) return SinCargar;
 	libvlc_state_t Estado = libvlc_media_player_get_state(_Medio);
 	switch (Estado) {
@@ -315,7 +302,7 @@ void RaveVLC_Medio::TiempoActual(float nTiempo) {
 	}
 }
 
-void RaveVLC_Medio::Ratio(const float R) {
+const BOOL RaveVLC_Medio::Ratio(const float R) {
 	int r;
 	if (_Medio != NULL) {
 		r = libvlc_media_player_set_rate(_Medio, R);
@@ -323,6 +310,7 @@ void RaveVLC_Medio::Ratio(const float R) {
 	std::wstring Tmp = L"x" + DWL::Strings::ToStrF(R, 1);
 	App.VentanaRave.LabelRatio.Texto(Tmp);
 	App.ControlesPC.LabelRatio.Texto(Tmp);
+	return TRUE;
 }
 
 
@@ -377,12 +365,12 @@ const BOOL RaveVLC_Medio::ObtenerDatosParsing(void) {
 			for (int i = 0; i < TotalPîstas; i++) {
 				if (i != 0) {
 					DWL::Strings::AnsiToWide(Desc->psz_name, Texto);
-					App.MenuVideoPistasDeAudio->AgregarMenu((int)ID_MENUVIDEO_AUDIO_PISTAS_AUDIO + i, Texto);
+					App.MenuVideoPistasDeAudio->AgregarMenu(((int)ID_MENUVIDEO_AUDIO_PISTAS_AUDIO) + i, Texto);
 				}
 				Desc = Desc->p_next;
 			}
 			int PistaActual = libvlc_audio_get_track(_Medio);
-			DMenuEx *MenuPistaActual = App.MenuVideoPistasDeAudio->BuscarMenu((int)ID_MENUVIDEO_AUDIO_PISTAS_AUDIO + PistaActual);
+			DMenuEx *MenuPistaActual = App.MenuVideoPistasDeAudio->BuscarMenu(((int)ID_MENUVIDEO_AUDIO_PISTAS_AUDIO) + PistaActual);
 			if (MenuPistaActual != NULL) MenuPistaActual->Icono(IDI_CHECK2);
 			libvlc_track_description_list_release(Desc);
 		}

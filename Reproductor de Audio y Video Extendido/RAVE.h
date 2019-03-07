@@ -2,7 +2,7 @@
 
 #include "VentanaPrincipal.h"
 #include "DConsola.h"
-#include "RaveVLC.h"
+#include "Rave_MediaPlayer.h"
 #include "ControlesPantallaCompleta.h"
 #include "RAVE_Configuracion.h"
 #include "VentanaErrorCritico.h"
@@ -102,7 +102,7 @@ class RAVE {
 
 	RaveBD							BD;
 //	BaseDatos						BD;
-	RaveVLC 						VLC;
+	Rave_MediaPlayer				MP;
 	ControlesPantallaCompleta		ControlesPC;
 
 

@@ -137,7 +137,7 @@ ____                       ______
  |____/ \___/ \__\___/|_| |_|______/_/\_\
 
 */
-#define COLOR_BOTON									RGB( 17,  15,  20) //RGB(220, 220, 220)
+#define COLOR_BOTON									COLOR_FONDO //RGB( 17,  15,  20) //RGB(220, 220, 220)
 #define COLOR_BOTON_RESALTADO						COLOR_ROJO
 #define COLOR_BOTON_PRESIONADO						RGB(204,  50,  48)
 #define COLOR_BOTON_MARCADO							COLOR_ROJO_MARCADO
@@ -146,7 +146,7 @@ ____                       ______
 #define COLOR_BOTON_TEXTO_PRESIONADO				RGB(155, 155, 155)	//RGB( 50,  50,  50)
 #define COLOR_BOTON_TEXTO_SOMBRA					RGB(  0,   0,   0) 
 #define COLOR_BOTON_TEXTO_DESACTIVADO               RGB(100, 100, 100)
-#define COLOR_BOTON_BORDE							COLOR_BORDE
+#define COLOR_BOTON_BORDE							COLOR_FONDO //COLOR_BORDE
 #define COLOR_BOTON_BORDE_RESALTADO					COLOR_BORDE_RESALTADO
 #define COLOR_BOTON_BORDE_PRESIONADO				COLOR_BORDE_PRESIONADO
 

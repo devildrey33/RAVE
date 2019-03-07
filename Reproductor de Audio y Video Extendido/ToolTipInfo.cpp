@@ -349,7 +349,7 @@ SIZE ToolTipInfo_Medio::CalcularTam(void) {
 	Col2[0] = Medio.Genero;
 	Col2[1] = Medio.Grupo();
 	Col2[2] = Medio.Disco();
-	RaveVLC::TiempoStr(Medio.Tiempo, Col2[3]);
+	Rave_MediaPlayer::TiempoStr(Medio.Tiempo, Col2[3]);
 	Strings::FormatoBytes(Medio.Longitud, Col2[4]);
 	Col2[5] = DWL::Strings::ToStrF(Medio.Nota, 2);
 	Col2[6] = std::to_wstring(Medio.Reproducido);
@@ -448,7 +448,7 @@ SIZE ToolTipInfo_Etiqueta::CalcularTam(void) {
 
 	Col2[0] = std::to_wstring(Etiqueta->Medios);
 	Col2[1] = DWL::Strings::ToStrF(Etiqueta->Nota, 2);
-	RaveVLC::TiempoStr(Etiqueta->Tiempo, Col2[2]);
+	Rave_MediaPlayer::TiempoStr(Etiqueta->Tiempo, Col2[2]);
 	DWL::Strings::FormatoBytes(Etiqueta->Longitud, Col2[3]);
 
 

@@ -30,6 +30,7 @@
 #define WM_TIMER_LISTA				WM_USER + 2017
 #define WM_TIMER_TIEMPO				WM_USER + 2018
 #define WM_MEDIO_TERMINADO			WM_USER + 2019
+#define WM_TIMER_OBTENERHWNDVLC		WM_USER + 2020
 
 enum Estados_Medio {
 	Nada      = 0,
@@ -134,6 +135,8 @@ class BDMedio {
 		
 	void					PistaStr(std::wstring &nPistaStr);
 	void					ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
+
+	const BOOL              EsFMOD(void);
 
 	bool					operator != (const BDMedio &Comp) const { if (Comp.Hash != Hash) return true; return false; }
 };

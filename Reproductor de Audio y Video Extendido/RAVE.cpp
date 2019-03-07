@@ -333,7 +333,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 
 void RAVE::Terminar(void) {
 	BD.Terminar();
-	VLC.Terminar();
+	MP.Terminar();
 	VentanaRave.Destruir();
 
 	if (PlayerInicial == TRUE) {
@@ -487,8 +487,8 @@ void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 			App.VentanaRave.Lista_Anterior();
 			return;
 		case VK_F1 :
-			if (VLC.ComprobarEstado() == EnPlay || VLC.ComprobarEstado() == EnPausa) {
-				MostrarToolTipPlayer(VLC.MedioActual());
+			if (MP.ComprobarEstado() == EnPlay || MP.ComprobarEstado() == EnPausa) {
+				MostrarToolTipPlayer(MP.MedioActual());
 			}
 			return;
 	}
@@ -512,13 +512,13 @@ void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 				case 2: // Subir volumen
 					if (App.BD.Opciones_Volumen() + 10 > 200)	Volumen = 200;
 					else										Volumen = App.BD.Opciones_Volumen() + 10;
-					App.VLC.Volumen(Volumen);
+					App.MP.Volumen(Volumen);
 					App.BD.Opciones_Volumen(Volumen);
 					break;
 				case 3: // Bajar volumen
 					if (App.BD.Opciones_Volumen() - 10 < 0)		Volumen = 0;
 					else										Volumen = App.BD.Opciones_Volumen() - 10;
-					App.VLC.Volumen(Volumen);
+					App.MP.Volumen(Volumen);
 					App.BD.Opciones_Volumen(Volumen);
 					break;
 				case 4: // Avanzar

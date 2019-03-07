@@ -93,7 +93,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 
 	// Inicio la VLC justo antes de mostrar la ventana y de activar el thread para actualizar el arbol
-	App.VLC.Iniciar();
+	App.MP.Iniciar();
 
 
 	// Muestro la ventana principal
@@ -135,8 +135,8 @@ void VentanaPrincipal::AjustarControles(RECT &RC) {
 	MoveWindow(MarcoSD.hWnd(), RC.right - 260, 14, 255, 24, TRUE);
 
 	//App.VLC.RepintarVLC();
-	if (App.VLC.hWndVLC != NULL) {
-		InvalidateRect(App.VLC.hWndVLC, &RC, TRUE);
+	if (App.MP.hWndVLC != NULL) {
+		InvalidateRect(App.MP.hWndVLC, &RC, TRUE);
 //		App.VLC.RepintarVLC();
 	}
 //	RedrawWindow(App.VLC.hWndVLC, &RC, NULL, RDW_ERASE | RDW_INVALIDATE | RDW_NOCHILDREN);
@@ -167,14 +167,14 @@ BOOL CALLBACK VentanaPrincipal::EnumerarPantallas(HMONITOR hMonitor, HDC hdcMoni
 
 
 void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
-	static Estados_Medio Estado = SinCargar;
+//	static Estados_Medio Estado = SinCargar;
 //	static wchar_t TiempoStr[64];
 	std::wstring TiempoStr;
-	Estado = App.VLC.ComprobarEstado();
+/*	Estado = App.MP.ComprobarEstado();
 	if (EstadoMedio != Estado) {
 		EstadoMedio = Estado;
 		Debug_Escribir_Varg(L"EstadoVLC %d\n", EstadoMedio);
-	}
+	}*/
 
 	switch (cID) {
 		// Controles PantallaCompleta Inactividad
@@ -182,10 +182,10 @@ void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
 			App.ControlesPC.Ocultar();
 			break;
 		// Obtiene el hWnd de la ventana a pantalla completa del VLC
-		case TIMER_OBTENERVLCWND : 
+/*		case TIMER_OBTENERVLCWND : 
 			EnumChildWindows(Video.hWnd(), &RaveVLC::EnumeracionVLC, NULL);
 			if (App.VLC.hWndVLC != NULL) KillTimer(hWnd(), TIMER_OBTENERVLCWND);
-			break;
+			break;*/
 		// Temporizador para repintar el VLC?¿?
 /*		case TIMER_REPINTARVLC :
 			App.VLC.RepintarVLC();
@@ -344,7 +344,7 @@ void VentanaPrincipal::Lista_Pausa(void) {
 	App.ControlesPC.BotonPlay.Icono(IDI_PLAY32, 32);
 	BarraTareas.Boton_Icono(ID_BOTON_PLAY, IDI_PLAY32);
 
-	App.VLC.Pausa();
+	App.MP.Pausa();
 }
 
 
@@ -358,7 +358,7 @@ void VentanaPrincipal::Lista_Play(void) {
 	Lista.Errores = 0;
 	BDMedio NCan, NCan2;
 	ItemMedio *IMS = NULL;
-	switch (App.VLC.ComprobarEstado()) {
+	switch (App.MP.ComprobarEstado()) {
 		case SinCargar:
 			// Compruebo que el medio actual no sea mas grande que el total de medios
 			//if (Lista.PosMedio(Lista.MedioActual) > Lista.TotalItems() - 1) Lista.MedioActual = Lista.Medio(Lista.TotalItems() - 1);
@@ -366,37 +366,37 @@ void VentanaPrincipal::Lista_Play(void) {
 			IMS = Lista.MedioSiguiente(Lista.MedioActual);
 			if (IMS != NULL) {
 				App.BD.ObtenerMedio(IMS->Hash, NCan2);
-				if (App.VLC.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
+				if (App.MP.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
 			}
 			else {
-				if (App.VLC.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
+				if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
 			}
 //				NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
-			//if (App.VLC.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
-			if (App.VLC.Play() == TRUE) {
+			//if (App.MP.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
+			if (App.MP.Play() == TRUE) {
 				BotonPlay.Icono(IDI_PAUSA32, 32);
 				App.ControlesPC.BotonPlay.Icono(IDI_PAUSA32, 32);
 				BarraTareas.Boton_Icono(ID_BOTON_PLAY, IDI_PAUSA32);
 			}
 			break;
 		case Terminada:
-//			App.VLC.ActualizarIconos(0);
+//			App.MP.ActualizarIconos(0);
 			Lista.MedioActual = Lista.MedioSiguiente(Lista.MedioActual);
 			App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
 			IMS = Lista.MedioSiguiente(Lista.MedioActual);
 //			NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
 			if (IMS == NULL) {
-				if (App.VLC.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
+				if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
 			}
 			else {
 				App.BD.ObtenerMedio(IMS->Hash, NCan2);
-				if (App.VLC.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
+				if (App.MP.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
 			}
-			App.VLC.Play();
+			App.MP.Play();
 			break;
 		case EnStop:
 		case EnPausa:
-			if (App.VLC.Play() == TRUE) {
+			if (App.MP.Play() == TRUE) {
 				BotonPlay.Icono(IDI_PAUSA32, 32);
 				App.ControlesPC.BotonPlay.Icono(IDI_PAUSA32, 32);
 				BarraTareas.Boton_Icono(ID_BOTON_PLAY, IDI_PAUSA32);
@@ -413,7 +413,7 @@ void VentanaPrincipal::Lista_Stop(void) {
 	Lista.Errores = 0;
 	BotonPlay.Icono(IDI_PLAY32, 32);
 	App.ControlesPC.BotonPlay.Icono(IDI_PLAY32, 32);
-	App.VLC.Stop();
+	App.MP.Stop();
 }
 
 
@@ -425,17 +425,17 @@ void VentanaPrincipal::Lista_Siguiente(void) {
 
 
 	BDMedio NCan, NCan2;
-	App.VLC.Stop();
+	App.MP.Stop();
 	App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
 	ItemMedio *IMS = Lista.MedioSiguiente(Lista.MedioActual);
 	if (IMS == NULL) {
-		if (App.VLC.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
+		if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
 	}
 	else {
 		App.BD.ObtenerMedio(IMS->Hash, NCan2);
-		if (App.VLC.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
+		if (App.MP.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
 	}
-	App.VLC.Play();
+	App.MP.Play();
 }
 
 
@@ -451,17 +451,17 @@ void VentanaPrincipal::Lista_Anterior(void) {
 	BDMedio NCan, NCan2;
 	ItemMedio *IMS = Lista.MedioSiguiente(Lista.MedioActual);
 	App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
-	App.VLC.Stop();
+	App.MP.Stop();
 	if (IMS == NULL) {
-		if (App.VLC.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
+		if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
 	}
 	else {
 		App.BD.ObtenerMedio(IMS->Hash, NCan2);
-		if (App.VLC.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
+		if (App.MP.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
 	}
 //		TablaMedios_Medio NCan(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
 	
-	App.VLC.Play();
+	App.MP.Play();
 //	}
 }
 
@@ -482,9 +482,9 @@ void VentanaPrincipal::GenerarListaAleatoria(const TipoListaAleatoria nTipo) {
 }
 
 void VentanaPrincipal::FiltrosVideoPorDefecto(void) {
-	App.VLC.Brillo(1.0f);
-	App.VLC.Contraste(1.0f);
-	App.VLC.Saturacion(1.0f);
+	App.MP.Brillo(1.0f);
+	App.MP.Contraste(1.0f);
+	App.MP.Saturacion(1.0f);
 	App.MenuVideoFiltros->Menu(0)->BarraValor(1.0f);
 	App.MenuVideoFiltros->Menu(1)->BarraValor(1.0f);
 	App.MenuVideoFiltros->Menu(2)->BarraValor(1.0f);
@@ -526,7 +526,7 @@ void VentanaPrincipal::Lista_EliminarSeleccionados(void) {
 	for (LONGLONG i = Lista.TotalItems() - 1; i > -1; i--) {
 		if (Lista.Item(i)->Seleccionado == TRUE) {
 			if (Lista.Medio(i) == Lista.MedioActual) {
-				App.VLC.CerrarMedio();
+				App.MP.CerrarMedio();
 				MAC = TRUE;
 				// Asigno el medio anterior o NULL si no hay medio anterior
 				Lista.MedioActual = Lista.MedioAnterior(Lista.MedioActual, FALSE);
@@ -566,7 +566,7 @@ void VentanaPrincipal::Arbol_AgregarALista(const BOOL NuevaLista) {
 		Tmp = static_cast<NodoBD *>(Arbol.BuscarNodoSiguiente(Tmp, TRUE));
 	}
 
-	if (App.VLC.ComprobarEstado() != EnPlay) App.VentanaRave.Lista_Play();
+	if (App.MP.ComprobarEstado() != EnPlay) App.VentanaRave.Lista_Play();
 }
 
 void VentanaPrincipal::Arbol_AbrirCarpeta(void) {
@@ -642,7 +642,7 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		DMenuEx *MenuClick = App.MenuVideoPistasDeAudio->BuscarMenu(cID);
 		if (MenuClick != NULL) MenuClick->Icono(IDI_CHECK2);
 
-		App.VLC.AsignarPistaAudio(cID - ID_MENUVIDEO_AUDIO_PISTAS_AUDIO);
+		App.MP.AsignarPistaAudio(cID - ID_MENUVIDEO_AUDIO_PISTAS_AUDIO);
 		return;
 	}
 
@@ -654,15 +654,15 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 			App.MenuVideoProporcion->Menu(i)->Icono(0);
 		}
 		switch (cID) {
-			case ID_MENUVIDEO_PROPORCION_PREDETERMINADO	: App.VLC.AsignarProporcion(NULL);			break;
-			case ID_MENUVIDEO_PROPORCION_16A9			: App.VLC.AsignarProporcion("16:9");		break;
-			case ID_MENUVIDEO_PROPORCION_4A3			: App.VLC.AsignarProporcion("4:3");			break;
-			case ID_MENUVIDEO_PROPORCION_1A1			: App.VLC.AsignarProporcion("1:!");			break;
-			case ID_MENUVIDEO_PROPORCION_16A10			: App.VLC.AsignarProporcion("16:10");		break;
-			case ID_MENUVIDEO_PROPORCION_2P21A1			: App.VLC.AsignarProporcion("2.21:1");		break;
-			case ID_MENUVIDEO_PROPORCION_2P35A1			: App.VLC.AsignarProporcion("2.35:1");		break;
-			case ID_MENUVIDEO_PROPORCION_2P39A1			: App.VLC.AsignarProporcion("2.39:1");		break;
-			case ID_MENUVIDEO_PROPORCION_5A4			: App.VLC.AsignarProporcion("5:4");			break;
+			case ID_MENUVIDEO_PROPORCION_PREDETERMINADO	: App.MP.AsignarProporcion(NULL);			break;
+			case ID_MENUVIDEO_PROPORCION_16A9			: App.MP.AsignarProporcion("16:9");			break;
+			case ID_MENUVIDEO_PROPORCION_4A3			: App.MP.AsignarProporcion("4:3");			break;
+			case ID_MENUVIDEO_PROPORCION_1A1			: App.MP.AsignarProporcion("1:!");			break;
+			case ID_MENUVIDEO_PROPORCION_16A10			: App.MP.AsignarProporcion("16:10");		break;
+			case ID_MENUVIDEO_PROPORCION_2P21A1			: App.MP.AsignarProporcion("2.21:1");		break;
+			case ID_MENUVIDEO_PROPORCION_2P35A1			: App.MP.AsignarProporcion("2.35:1");		break;
+			case ID_MENUVIDEO_PROPORCION_2P39A1			: App.MP.AsignarProporcion("2.39:1");		break;
+			case ID_MENUVIDEO_PROPORCION_5A4			: App.MP.AsignarProporcion("5:4");			break;
 		}
 
 		App.MenuVideoProporcion->Menu(cID - ID_MENUVIDEO_PROPORCION_PREDETERMINADO)->Icono(IDI_CHECK2);
@@ -674,9 +674,9 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 void VentanaPrincipal::Evento_MenuEx_Barra_Cambiando(const UINT cID, const float ValorBarra) {
 	switch (cID) {
 		// Barras del menu del video
-		case ID_MENUVIDEO_BRILLO				:	App.VLC.Brillo(ValorBarra);				return;
-		case ID_MENUVIDEO_CONTRASTE				:	App.VLC.Contraste(ValorBarra);			return;
-		case ID_MENUVIDEO_SATURACION			:	App.VLC.Saturacion(ValorBarra);			return;
+		case ID_MENUVIDEO_BRILLO				:	App.MP.Brillo(ValorBarra);				return;
+		case ID_MENUVIDEO_CONTRASTE				:	App.MP.Contraste(ValorBarra);			return;
+		case ID_MENUVIDEO_SATURACION			:	App.MP.Saturacion(ValorBarra);			return;
 	}
 }
 
@@ -724,9 +724,9 @@ void VentanaPrincipal::Evento_MenuEx_Barra_Cambiado(const UINT cID, const float 
 	std::wstring StrMedio;
 	switch (cID) {
 		// Barras del menu del video
-		case ID_MENUVIDEO_BRILLO				:	App.VLC.Brillo(ValorBarra);				return;
-		case ID_MENUVIDEO_CONTRASTE				:	App.VLC.Contraste(ValorBarra);			return;
-		case ID_MENUVIDEO_SATURACION			:	App.VLC.Saturacion(ValorBarra);			return;
+		case ID_MENUVIDEO_BRILLO				:	App.MP.Brillo(ValorBarra);				return;
+		case ID_MENUVIDEO_CONTRASTE				:	App.MP.Contraste(ValorBarra);			return;
+		case ID_MENUVIDEO_SATURACION			:	App.MP.Saturacion(ValorBarra);			return;
 		// Menu Lista -> Nota
 		case ID_MENULISTA_NOTA					:	Lista_AsignarNota(ValorBarra);			return;
 		// Menu BD -> Nota
@@ -740,19 +740,19 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Presionado(DWL::DEventoMouse &DatosM
 	_BotonExMouseDownTick = GetTickCount();
 	switch (DatosMouse.ID()) {
 		case ID_BOTON_ANTERIOR:	
-			App.VLC.Ratio(0.5f);
+			App.MP.Ratio(0.5f);
 			break;
 		case ID_BOTON_SIGUIENTE:
-			if		(DatosMouse.Boton == 0)		App.VLC.Ratio(2.0f);
-			else if (DatosMouse.Boton == 1)     App.VLC.Ratio(4.0f);
-			else                                App.VLC.Ratio(8.0f);
+			if		(DatosMouse.Boton == 0)		App.MP.Ratio(2.0f);
+			else if (DatosMouse.Boton == 1)     App.MP.Ratio(4.0f);
+			else                                App.MP.Ratio(8.0f);
 			break;
 	}
 }
 
 void VentanaPrincipal::Evento_BotonEx_Mouse_Soltado(DWL::DEventoMouse &DatosMouse) {
 	if (DatosMouse.ID() == ID_BOTON_ANTERIOR || DatosMouse.ID() == ID_BOTON_SIGUIENTE) {
-		App.VLC.Ratio(1.0f);
+		App.MP.Ratio(1.0f);
 	}
 }
 
@@ -1013,7 +1013,7 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 //		AsignarFoco();
 	}
 
-	InvalidateRect(App.VLC.hWndVLC, NULL, TRUE);
+	InvalidateRect(App.MP.hWndVLC, NULL, TRUE);
 
 
 
@@ -1022,18 +1022,18 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 }
 
 void VentanaPrincipal::Evento_SliderTiempo_Cambiado(void) {
-	if (App.VLC.ComprobarEstado() != Estados_Medio::EnPlay && App.VLC.ComprobarEstado() != Estados_Medio::EnPausa) return;
+	if (App.MP.ComprobarEstado() != Estados_Medio::EnPlay && App.MP.ComprobarEstado() != Estados_Medio::EnPausa) return;
 	std::wstring TiempoStr;
 //	Debug_Escribir_Varg(L"Evento_SliderTiempo_Cambiado %d, %.02f\n", App.VLC.TiempoTotalMs(), SliderTiempo.Valor());
-	App.VLC.TiempoStr(static_cast<UINT64>(static_cast<double>(App.VLC.TiempoTotalMs()) * static_cast<double>(SliderTiempo.Valor())), TiempoStr);
+	App.MP.TiempoStr(static_cast<UINT64>(static_cast<double>(App.MP.TiempoTotalMs()) * static_cast<double>(SliderTiempo.Valor())), TiempoStr);
 	LabelTiempoActual.Texto(TiempoStr);
 	App.ControlesPC.LabelTiempoActual.Texto(TiempoStr);
-	App.VLC.TiempoActual(SliderTiempo.Valor());
+	App.MP.TiempoActual(SliderTiempo.Valor());
 }
 
 void VentanaPrincipal::Evento_SliderVolumen_Cambio(void) {
 	int Volumen = static_cast<int>(SliderVolumen.Valor());	
-	App.VLC.Volumen(Volumen);
+	App.MP.Volumen(Volumen);
 }
 
 // Guardo el volumen en las opciones (al soltar el slider del volumen)
@@ -1061,7 +1061,7 @@ void VentanaPrincipal::Evento_Cerrar(void) {
 
 	Visible(FALSE);
 
-	App.VLC.StopTODO();
+	App.MP.StopTODO();
 
 	//	App.BD.Consulta(L"BEGIN TRANSACTION");
 	App.BD.GuardarUltimaLista();
@@ -1296,7 +1296,7 @@ void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
 		}		*/
 		Lista.MedioActual = Lista.BuscarHash(Hash);
 		//Lista_Stop();
-		App.VLC.CerrarMedio();
+		App.MP.CerrarMedio();
 		Lista_Play();
 	}
 }
@@ -1337,7 +1337,7 @@ void VentanaPrincipal::ThreadAgregarArchivosLista_Terminado(void) {
 		App.VentanaRave.Lista.MedioActual = 0;
 	}
 	Lista.Repintar();
-	if (App.VLC.ComprobarEstado() != EnPlay)	Lista_Play();
+	if (App.MP.ComprobarEstado() != EnPlay)	Lista_Play();
 	//			Lista_Stop();
 	//			Lista_Play();			
 	if (App.BD.Opciones_AnalizarMediosPendientes() == TRUE) AnalizarBD();
@@ -1448,9 +1448,9 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 		case WM_TOM_MOSTRARVENTANA	:			ThreadAnalizar_MostrarVentana();												return 0;
 
 		// Temporizadores con post message
-		case WM_TIMER_LISTA			:			App.VLC.Temporizador_Lista();													return 0;
-		case WM_TIMER_TIEMPO		:			App.VLC.Temporizador_Tiempo();													return 0;
-		case WM_MEDIO_TERMINADO		:           App.VLC.Evento_Medio_Terminado(reinterpret_cast<RaveVLC_Medio *>(wParam));		return 0;
+//		case WM_TIMER_LISTA			:			App.MP.Temporizador_Lista();													return 0;
+//		case WM_TIMER_TIEMPO		:			App.MP.Temporizador_Tiempo();													return 0;
+//		case WM_MEDIO_TERMINADO		:           App.MP.Evento_Medio_Terminado(reinterpret_cast<RaveVLC_Medio *>(wParam));		return 0;
 
 		case WM_DROPFILES :			
 			Evento_SoltarArchivos(wParam);

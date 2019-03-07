@@ -218,9 +218,11 @@
     <ClInclude Include="EtiquetaBD.h" />
     <ClInclude Include="ListaMedios.h" />
     <ClInclude Include="ListaRaices.h" />
+    <ClInclude Include="Rave_MediaPlayer.h" />
     <ClInclude Include="MemoriaCompartida.h" />
     <ClInclude Include="RaveBD.h" />
-    <ClInclude Include="RaveVLC.h" />
+    <ClInclude Include="RaveFMOD_Medio.h" />
+    <ClInclude Include="RaveVLC %28DEPRECATED%29.h" />
     <ClInclude Include="RaveVLC_Medio.h" />
     <ClInclude Include="RAVE_CuentaEmail.h" />
     <ClInclude Include="DBarraDesplazamientoEx.h" />
@@ -229,6 +231,7 @@
     <ClInclude Include="DEtiquetaEx.h" />
     <ClInclude Include="EnviarDump.h" />
     <ClInclude Include="RAVE_Iconos.h" />
+    <ClInclude Include="Rave_Medio.h" />
     <ClInclude Include="RAVE_Skin.h" />
     <ClInclude Include="RAVE_Configuracion.h" />
     <ClInclude Include="ControlesPantallaCompleta.h" />
@@ -312,11 +315,14 @@
     <ClCompile Include="ListaMedios.cpp" />
     <ClCompile Include="ListaRaices.cpp" />
     <ClCompile Include="MarcoControles.cpp" />
+    <ClCompile Include="Rave_MediaPlayer.cpp" />
     <ClCompile Include="MemoriaCompartida.cpp" />
     <ClCompile Include="RAVE.cpp" />
     <ClCompile Include="RaveBD.cpp" />
-    <ClCompile Include="RaveVLC.cpp" />
+    <ClCompile Include="RaveFMOD_Medio.cpp" />
+    <ClCompile Include="RaveVLC %28DEPRECATED%29.cpp" />
     <ClCompile Include="RaveVLC_Medio.cpp" />
+    <ClCompile Include="Rave_Medio.cpp" />
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp" />
     <ClCompile Include="sqlite3.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>

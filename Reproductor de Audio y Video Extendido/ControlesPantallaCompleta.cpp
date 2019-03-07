@@ -248,11 +248,11 @@ void ControlesPantallaCompleta::Evento_SliderTiempo_Cambiado(void) {
 //	static wchar_t TiempoStr[64];
 	std::wstring TiempoStr;
 	static float   TmpFloat = 0.0f;
-	Debug_Escribir_Varg(L"Evento_SliderH %d, %f\n", App.VLC.TiempoTotalMs(), TmpFloat);
-	App.VLC.TiempoStr(static_cast<UINT64>(static_cast<float>(App.VLC.TiempoTotalMs()) * TmpFloat), TiempoStr);
+	Debug_Escribir_Varg(L"Evento_SliderH %d, %f\n", App.MP.TiempoTotalMs(), TmpFloat);
+	App.MP.TiempoStr(static_cast<UINT64>(static_cast<float>(App.MP.TiempoTotalMs()) * TmpFloat), TiempoStr);
 	LabelTiempoActual.Texto(TiempoStr);
 	App.VentanaRave.LabelTiempoActual.Texto(TiempoStr);
-	App.VLC.TiempoActual(SliderTiempo.Valor());
+	App.MP.TiempoActual(SliderTiempo.Valor());
 
 	KillTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD);
 //	SetTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD, App.BD.Tabla_Opciones.OcultarMouseEnVideo(), NULL);
@@ -266,7 +266,7 @@ void ControlesPantallaCompleta::Evento_SliderVolumen_Cambiado(void) {
 
 void ControlesPantallaCompleta::Evento_SliderVolumen_Cambio(void) {
 	int Volumen = static_cast<int>(SliderVolumen.Valor());
-	App.VLC.Volumen(Volumen);
+	App.MP.Volumen(Volumen);
 	//swprintf(TiempoStr, 64, L"%d%%", HIWORD(wParam));
 /*	std::wstring StrVol = std::to_wstring(Volumen) + L"%";
 	LabelVolumen.Texto(StrVol);

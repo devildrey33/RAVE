@@ -342,6 +342,7 @@
 			- Les llistes aleatóries per disc han de desactivar el shufle
 
 		- Fer efecte de fusio al acabar una canço i començar unaltre reproduint les dues a l'hora quan faltin X milisegs.
+			- AMB EL VLC IMPOSIBLE!! nomes te volum general..., lo que es un pel incomprensible perque la funció del volum demana un MediaPlayer, no la instancia. Al final tornarem al FMOD...
 		- Les notes menors que 2 s'han de mostrar amb una estrella gris
 
 	RAVE 0.7
@@ -354,4 +355,28 @@
 		-  Sistema per fer skins amb un txt que pugui utilitzar definicions de colors i funcions de colors per sumar/ restar al rgb
 			V  De moment tots els controls ex tenen un Objecte_Skin que te tots els colors i fonts per defecte.
 
+
+	REFLEXION ACERCA DE UTILIZAR 2 LIBRERIAS (FMOD [audio], LIBVLC[Video+Audio]
+		- Mi idea principal al empezar este reproductor es que por COJONES (vease mi vena española) la LibVLC tenia que ser capaz de hacer todo lo que podia hacer con el FMOD, pero cada vez lo veo mas imposible.
+			- Por la estructuración de los modulos de la LibVLC me da a entender que ni siquiera sería capaz de crear un DSP con un modulo, y obtener un array de datos co el FFT para pintar-los en el thread principal...
+			- Incluso no me importo mucho el tema de no poder hacer una visualización del DSP, que al final mas o menos consegui haciendo un streaming doble para cada medio, pero que fue un fracaso al no saber implementar el algoritmo FFT por una parte.
+				- Lo peor ha sido al darme cuenta que la libvlc solo tiene un volumen general, y eso que la función del volumen del LibVLC te pide un libvlc_media_player_t, lo que invita a pensar que el volumen es para cada medio, pero para mi sorpresa, INCLUSO creando 2 instancias distintas del VLC, comparten TODAS el mismo volumen... Lo que imposibilita crear un efecto fade IN OUT entre el medio actual y el siguiente.
+			- Por no hablar del problema de cargar medios con un thread, y hacer stop mediante otro thread... y sus deadlocks siempre tan previsibles....
+			- EN DEFINITIVA puede parecer una chapuza, pero a dia de hoy 10 años después del BubaTronik me vuelve a parecer la mejor opción...
+
+		- PROS :
+			- Gano el DSP para el audio.
+			- Supuestamente puedo modificar el volumen por canción y no de forma general como la libvlc, lo que me permitiría hacer el efecto fade IN / OUT
+		- CONTRAS :
+			- Pierdo la habilidad de modificar el ratio de una canción ya que con el FMOD no es posible....
+			- Seguire sin poder obtener el FFT para el audio de videos...
+			- A primera vista tener una libreria de audio y una de audio y video parece una chapuza... pero mis necesidades lo requieren (sobretodo despues de descubrir el tema del volumen [que solo es general] en la libvlc, cosa que me ha hecho decidirme finalmente por una solución mixta como la del bubatronik)
+
+		- CON EL FMOD : 
+			- Gano : 
+				- el analizador DSP en el audio
+				- el efecto fade in/out (ESPERO... NOT 100% SURE)
+				- la implementación del bubatronik puede ayudar, parece bastante bien pensada, aunque no es exactamente lo que busco ahora....
+			- Pierdo
+				- el ratio de reproducción en el audio.
 */

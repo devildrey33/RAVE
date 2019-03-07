@@ -1883,3 +1883,22 @@ std::wstring &BDMedio::Disco(void) {
 	}
 };
 
+// Función que devuelve true si el medio se tiene que reproducir con FMOD
+const BOOL BDMedio::EsFMOD(void) {
+	switch (Extension) {
+		case Extension_ASF :
+		case Extension_IT  :
+		case Extension_MOD :
+		case Extension_MP2 :
+		case Extension_MP3 :
+		case Extension_OGG :
+		case Extension_S3M :
+		case Extension_WAV :
+		case Extension_WMA :
+		case Extension_XM  :
+			return TRUE;
+		default :
+			return FALSE;
+	}
+	return FALSE;
+}

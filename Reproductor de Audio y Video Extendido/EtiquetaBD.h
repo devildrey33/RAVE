@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RaveVLC.h"
+#include "Rave_MediaPlayer.h"
 
 #define TIPO_GENERO			0x01 
 #define TIPO_GRUPOPATH		0x02 

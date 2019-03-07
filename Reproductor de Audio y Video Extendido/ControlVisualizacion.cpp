@@ -52,11 +52,11 @@ void ControlVisualizacion::AsignarVisualizacion(const Visualizacion nVisualizaci
 	_Visualizacion = nVisualizacion;
 	switch (nVisualizacion) {
 		case Visualizacion_Barras :			
-			App.VLC.TamVisualizacion = 32;
+			//App.MP.TamVisualizacion = 32;
 			_FuncionPintado = ControlVisualizacion::PintarBarras;
 			break;
 		case Visualizacion_Oscyloscope :
-			App.VLC.TamVisualizacion = 128;
+			//App.MP.TamVisualizacion = 128;
 			_FuncionPintado = ControlVisualizacion::PintarOscyloscope;
 			break;
 	}
@@ -82,7 +82,8 @@ void ControlVisualizacion::Pintar(HDC hDC) {
 
 
 void ControlVisualizacion::PintarBarras(HDC hDC, RECT *RC) {
-	float(&Oscy)[2048] = App.VLC.Oscy;
+	App.MP.ObtenerTTF();
+	float(&Oscy)[2048] = App.MP.TTF;
 	Complex test[32];
 	for (int n = 0; n < 32; n++) {
 		test[n] = Oscy[n];
@@ -118,7 +119,8 @@ void ControlVisualizacion::PintarBarras(HDC hDC, RECT *RC) {
 
 
 void ControlVisualizacion::PintarOscyloscope(HDC hDC, RECT *RC) {
-	float(&Oscy)[2048] = App.VLC.Oscy;
+	App.MP.ObtenerTTF();
+	float(&Oscy)[2048] = App.MP.TTF;
 
 	//BLENDFUNCTION BF = { AC_SRC_OVER, 0, 84, 0 }; // 84 esun poco menos de un tercio de 255
 	//AlphaBlend(_Buffer, 0, 0, RC.right, RC.bottom, _BufferAB, 0, 0, RC.right, RC.bottom, BF);

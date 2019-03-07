@@ -70,9 +70,9 @@ void VerVideo::_Evento_MouseRueda(WPARAM wParam, LPARAM lParam) {
 	DEventoMouseRueda DatosMouse(wParam, lParam, this);
 //	if (App.VLC.MediaPlayer() != NULL) {
 		Debug_Escribir_Varg(L"VerVideo::_Evento_MouseRueda()  DatosMouse.Delta(%d)\n", DatosMouse.Delta());
-		int Vol = App.VLC.Volumen();
+		int Vol = App.MP.Volumen();
 		Vol += (DatosMouse.Delta() > 0) ? 10 : -10;
-		App.VLC.Volumen(Vol);
+		App.MP.Volumen(Vol);
 //	}
 }
 

@@ -72,7 +72,7 @@ ItemMedio *ListaMedios::MedioSiguiente(ItemMedio *nMedio) {
 
 void ListaMedios::BorrarListaReproduccion(void) {
 //	App.VLC.Stop();
-	App.VLC.CerrarMedio();
+	App.MP.CerrarMedio();
 
 	EliminarTodosLosItems();
 	MedioActual = NULL;
@@ -108,7 +108,7 @@ ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {
 
 	// Paso el tiempo a string formateado en mm:ss
 	std::wstring StrTiempo;
-	App.VLC.TiempoStr(nMedio->Tiempo, StrTiempo);
+	App.MP.TiempoStr(nMedio->Tiempo, StrTiempo);
 
 	// Agrego el item
 	ItemMedio *TmpMedio = AgregarItem<ItemMedio>(nIcono, DLISTAEX_POSICION_FIN, Pista.c_str(), nMedio->Nombre().c_str(), StrTiempo.c_str());
@@ -133,21 +133,23 @@ void ListaMedios::Evento_MouseDobleClick(DWL::DEventoMouse &EventoMouse) {
 	if (EventoMouse.Boton == 0) {
 		if (MedioResaltado() != NULL) {
 			MedioActual = MedioResaltado();
-			
+			// Hay que parar la canción actual para que no se quede reproduciendo en el medio anterior
+			App.MP.Stop();
+
 			BDMedio NCan;
 			App.BD.ObtenerMedio(MedioActual->Hash, NCan);
 			BDMedio NCanS;
 			ItemMedio *IMS = MedioSiguiente(MedioActual);
 			if (IMS != NULL) {
 				App.BD.ObtenerMedio(MedioSiguiente(MedioActual)->Hash, NCanS);
-				if (App.VLC.AbrirMedio(NCan, &NCanS) == FALSE) Errores++;
+				if (App.MP.AbrirMedio(NCan, &NCanS) == FALSE) Errores++;
 			}
 			else {
-				if (App.VLC.AbrirMedio(NCan, NULL) == FALSE) Errores++;
+				if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Errores++;
 			}
 
 //			if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
-			App.VLC.Play();
+			App.MP.Play();
 		}
 	}
 }
