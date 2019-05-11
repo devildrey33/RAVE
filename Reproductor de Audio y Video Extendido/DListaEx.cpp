@@ -694,11 +694,10 @@ namespace DWL {
 		LONGLONG Diferencia = 0, CD = 0;
 		if (_ItemPresionado == -1) return;
 		if (_ItemPresionado == _ItemResaltado) return;
-		if (_ItemResaltado == -1) { // pot ser que sobresurti per sobre o per sota
-		}
-		else {
+		if (_ItemResaltado != -1) { // pot ser que sobresurti per sobre o per sota
 			LONGLONG       i       = 0;
 			DListaEx_Item *TmpItem = NULL;
+			BOOL           Movido = FALSE;
 			// Cuento las posiciones de diferencia
 			Diferencia = _ItemPresionado - _ItemResaltado;
 
@@ -706,35 +705,45 @@ namespace DWL {
 				Debug_Escribir_Varg(L"DListaEx::_Drag  Presionado %d, Resaltado %d, Dif %d\n", _ItemPresionado, _ItemResaltado, Diferencia);
 			#endif
 
-
+			// Hacia abajo
 			if (Diferencia <= -1) {
 				for (i = _Items.size() - 1; i > -1; i--) {
 					if (_Items[i]->Seleccionado == TRUE) {
 						for (CD = 0; CD > Diferencia; CD--) {
-							if (i + 1 < static_cast<LONGLONG>(_Items.size())) {
-								TmpItem = _Items[i - CD];
-								_Items[i - CD] = _Items[i -CD + 1];
-								_Items[i - CD + 1] = TmpItem;
+							if (i + CD + 1 < static_cast<LONGLONG>(_Items.size())) {
+								if (_Items[i - CD + 1]->Seleccionado == FALSE) {
+									TmpItem = _Items[i - CD];
+									_Items[i - CD] = _Items[i - CD + 1];
+									_Items[i - CD + 1] = TmpItem;
+									Movido = TRUE;
+								}
 							}
 						}
 					}
 				}
 			}
+			// Hacia arriba
 			else if (Diferencia >= 1) {
 				for (i = 0; i < static_cast<LONGLONG>(_Items.size()); i++) {
 					if (_Items[i]->Seleccionado == TRUE) {
 						for (CD = 0; CD < Diferencia; CD++) {
-							if (i - 1 > -1) {
-								TmpItem = _Items[i + CD];
-								_Items[i + CD] = _Items[i + CD - 1];
-								_Items[i + CD - 1] = TmpItem;
+							if (i - CD - 1 > -1) {
+								if (_Items[i - CD - 1]->Seleccionado == FALSE) {
+									TmpItem = _Items[i + CD];
+									_Items[i + CD] = _Items[i + CD - 1];
+									_Items[i + CD - 1] = TmpItem;
+									Movido = TRUE;
+								}
+								
 							}
 						}
 					}
 				}
 			}
-			_ItemPresionado = _ItemResaltado;
-			_ItemMarcado    = _ItemResaltado;
+			if (Movido == TRUE) {
+				_ItemPresionado = _ItemResaltado;
+				_ItemMarcado = _ItemResaltado;
+			}
 			Repintar();
 		}
 	}
@@ -780,52 +789,11 @@ namespace DWL {
 		#if DLISTAEX_MOSTRARDEBUG == TRUE
 			Debug_Escribir_Varg(L"DListaEx::_Evento_MousePresionado IP:%d X:%d Y:%d\n", _ItemMarcado, DatosMouse.X(), DatosMouse.Y());
 		#endif
-
-		if (_ItemPresionado != -1) {			
-			BOOL tShift   = DatosMouse.Shift();
-			BOOL tControl = DatosMouse.Control();
-			if (tShift == TRUE && _ItemShift != -1) {
-				DesSeleccionarTodo();
-				if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) SeleccionarItem(i, TRUE);	}
-				else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) SeleccionarItem(i, TRUE);	}
-			}
-			else if (tControl == TRUE) {
-				SeleccionarItem(_ItemPresionado, !_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado);
-//				_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado = !_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado;
-			}
-			else {
-				// Si no es el boton derecho del mouse (el boton derecho suele desplegar un menú)
-				if (DatosMouse.Boton != 1) {
-					// Si la multiseleccion está des-habilitada o la tecla control no está pulsada
-					if (MultiSeleccion == FALSE || tControl == FALSE || tShift == FALSE) DesSeleccionarTodo();
-				}
-				else {
-					// Si solo hay un item seleccionado, lo des-selecciono
-					if (TotalItemsSeleccionados() == 1) DesSeleccionarTodo();
-				}
-				// Selecciono el item que hay debajo del mouse
-				SeleccionarItem(_ItemPresionado, TRUE);
-				//_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado = TRUE;
-			}
-
-			_Items[_ItemPresionado]->_Transicion(DListaEx_TransicionItem::DListaEx_TransicionItem_Presionado);
+		// Pre-Selecciono el item presionado
+		if (_ItemPresionado != -1) {
+			_Items[_ItemPresionado]->Seleccionado = TRUE;
 		}
-		else {
-			DesSeleccionarTodo();
-		}
-
-		Evento_MousePresionado(DatosMouse);
-		Repintar();
-		// Envio el evento mouseup a la ventana padre
-		SendMessage(GetParent(hWnd()), DWL_LISTAEX_MOUSEPRESIONADO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
-
-	}
-
-	void DListaEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
-		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
-		_TiempoItemPresionado = 0;
-		/*
-		if (_ItemPresionado != -1) {			
+/*		if (_ItemPresionado != -1) {			
 			BOOL tShift   = DatosMouse.Shift();
 			BOOL tControl = DatosMouse.Control();
 			if (tShift == TRUE && _ItemShift != -1) {
@@ -857,6 +825,50 @@ namespace DWL {
 		else {
 			DesSeleccionarTodo();
 		}*/
+
+		Evento_MousePresionado(DatosMouse);
+		Repintar();
+		// Envio el evento mouseup a la ventana padre
+		SendMessage(GetParent(hWnd()), DWL_LISTAEX_MOUSEPRESIONADO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
+
+	}
+
+	void DListaEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
+		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
+		_TiempoItemPresionado = 0;
+		
+		if (_ItemPresionado != -1) {			
+			BOOL tShift   = DatosMouse.Shift();
+			BOOL tControl = DatosMouse.Control();
+			if (tShift == TRUE && _ItemShift != -1) {
+				DesSeleccionarTodo();
+				if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) SeleccionarItem(i, TRUE);	}
+				else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) SeleccionarItem(i, TRUE);	}
+			}
+			else if (tControl == TRUE) {
+				SeleccionarItem(_ItemPresionado, !_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado);
+//				_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado = !_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado;
+			}
+			else {
+				// Si no es el boton derecho del mouse (el boton derecho suele desplegar un menú)
+				if (DatosMouse.Boton != 1) {
+					// Si la multiseleccion está des-habilitada o la tecla control no está pulsada
+					if (MultiSeleccion == FALSE || tControl == FALSE || tShift == FALSE) DesSeleccionarTodo();
+				}
+				else {
+					// Si solo hay un item seleccionado, lo des-selecciono
+					if (TotalItemsSeleccionados() == 1) DesSeleccionarTodo();
+				}
+				// Selecciono el item que hay debajo del mouse
+				SeleccionarItem(_ItemPresionado, TRUE);
+				//_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado = TRUE;
+			}
+
+			_Items[_ItemPresionado]->_Transicion(DListaEx_TransicionItem::DListaEx_TransicionItem_Presionado);
+		}
+		else {
+			DesSeleccionarTodo();
+		}
 
 
 		ReleaseCapture();
