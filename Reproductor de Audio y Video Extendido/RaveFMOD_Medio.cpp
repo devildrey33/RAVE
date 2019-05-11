@@ -1,7 +1,11 @@
 #include "stdafx.h"
 #include "RaveFMOD_Medio.h"
+
+#ifdef RAVE_UTILIZAR_FMOD
+
 #include "DStringUtils.h"
 #include "Rave_MediaPlayer.h"
+
 
 RaveFMOD_Medio::RaveFMOD_Medio(FMOD::System *SistemaFMOD, BDMedio &nMedio) : _Stream(NULL), _Canal(NULL), _Sistema(NULL), _GrupoCanales(NULL), _Estado(SinCargar) {
 	Medio				= nMedio;
@@ -62,12 +66,17 @@ const BOOL RaveFMOD_Medio::Play(void) {
 		Volumen(static_cast<int>(App.VentanaRave.SliderVolumen.Valor()));
 		// Callback para los eventos
 		_Canal->setUserData(this);
+//#ifdef RAVE_UTILIZAR_FMOD
 		Error2 = _Canal->setCallback(Rave_MediaPlayer::EventosFMOD);		
+//#endif
 	}
 
 	if (Error == FMOD_OK && Error2 == FMOD_OK) {
 		_Estado = EnPlay;
 		ActualizarIconos(1);
+		// Muestro el tooltip con los datos
+		App.MostrarToolTipPlayer(Medio);
+
 		return TRUE;
 	}
 	else {		
@@ -120,7 +129,7 @@ void RaveFMOD_Medio::Volumen(int nVolumen, const BOOL ActualizarUI) {
 	if (nVolumen > 200) nVolumen = 200;
 	if (nVolumen < 0)	nVolumen = 0;
 
-	Debug_Escribir_Varg(L"RaveVLC_Medio::Volumen  %d\n", nVolumen);
+	Debug_Escribir_Varg(L"RaveFMOD_Medio::Volumen  %d\n", nVolumen);
 
 	if (ActualizarUI == TRUE) {
 		App.VentanaRave.SliderVolumen.Valor(static_cast<float>(nVolumen));
@@ -180,3 +189,5 @@ const UINT64 RaveFMOD_Medio::TiempoActualMs(void) {
 	}
 	return static_cast<UINT64>(Tmp);
 }
+
+#endif

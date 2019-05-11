@@ -1,7 +1,9 @@
 #pragma once
 
 #include "RaveVLC_Medio.h"
-#include "RaveFMOD_Medio.h"
+#ifdef RAVE_UTILIZAR_FMOD
+	#include "RaveFMOD_Medio.h"
+#endif
 #include "DVentana.h"
 
 class Rave_MediaPlayer : public DWL::DVentana {
@@ -38,8 +40,10 @@ class Rave_MediaPlayer : public DWL::DVentana {
 
 									// CALLBACK para los eventos de la VLC
 	static void						EventosVLC(const libvlc_event_t* event, void* ptr);
-									// CALLBACK para los eventos de la VLC
+									// CALLBACK para los eventos del FMOD
+#ifdef RAVE_UTILIZAR_FMOD
 	static FMOD_RESULT F_CALLBACK   EventosFMOD(FMOD_CHANNELCONTROL *chanControl, FMOD_CHANNELCONTROL_TYPE controlType, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbackType, void *commandData1, void *commandData2);
+#endif
 									// Formatea el tiempo especificado en el string especificado
 	static void						TiempoStr(UINT64 TMS, std::wstring &StrTiempo);
 									// Temporizadores
@@ -85,12 +89,15 @@ class Rave_MediaPlayer : public DWL::DVentana {
 	libvlc_instance_t	    	  *_InstanciaVLC;
 
 									// FMOD
+#ifdef RAVE_UTILIZAR_FMOD
 	FMOD::System                  *_SistemaFMOD;
 	FMOD::DSP                     *_DSP;
 
 	FMOD::ChannelGroup            *_CanalMaster;
 
-	friend class RaveVLC_Medio;
 	friend class RaveFMOD_Medio;
+#endif 
+
+	friend class RaveVLC_Medio;
 };
 

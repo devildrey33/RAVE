@@ -1885,6 +1885,7 @@ std::wstring &BDMedio::Disco(void) {
 
 // Función que devuelve true si el medio se tiene que reproducir con FMOD
 const BOOL BDMedio::EsFMOD(void) {
+#ifdef RAVE_UTILIZAR_FMOD
 	switch (Extension) {
 		case Extension_ASF :
 		case Extension_IT  :
@@ -1900,5 +1901,6 @@ const BOOL BDMedio::EsFMOD(void) {
 		default :
 			return FALSE;
 	}
+#endif
 	return FALSE;
 }

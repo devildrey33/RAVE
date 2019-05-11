@@ -37,6 +37,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 	Lista.CrearListaEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_LISTAMEDIOS, WS_CHILD);
 	Lista.MultiSeleccion = TRUE;
+	Lista.MoverItemsDrag = TRUE;
 	// Columnas
 	Lista.AgregarColumna(50, DListaEx_Columna_Alineacion_Derecha);								// Icono y pista
 	Lista.AgregarColumna(DLISTAEX_COLUMNA_ANCHO_AUTO, DListaEx_Columna_Alineacion_Izquierda);	// Nombre

@@ -37,7 +37,7 @@ namespace DWL {
 		static BOOL			FuenteSombraTexto;
 	};
 
-	#define DLISTAEX_MOSTRARDEBUG	FALSE
+	#define DLISTAEX_MOSTRARDEBUG	TRUE
 
 	#ifdef _WIN64
 		#define DLISTAEX_POSICION_INICIO	 0
@@ -165,6 +165,7 @@ namespace DWL {
 
 		BOOL                                            MostrarSeleccion;
 		BOOL                                            MultiSeleccion;
+		BOOL                                            MoverItemsDrag;
 
 		LRESULT CALLBACK								GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
@@ -189,6 +190,7 @@ namespace DWL {
 		void										   _Evento_FocoObtenido(HWND hWndUltimoFoco);
 		void										   _Evento_FocoPerdido(HWND hWndNuevoFoco);
 
+		void                                           _Drag(void);
 
 		// Teclas especiales
 		void										   _Tecla_CursorArriba(DEventoTeclado &DatosTeclado);
@@ -212,6 +214,7 @@ namespace DWL {
 		std::vector<DListaEx_Item *>                   _Items;
 		std::vector<DListaEx_Columna *>                _Columnas;
 
+		DWORD                                          _TiempoItemPresionado; // Tiempo que lleva presionado el item (para hacer drag)
 		LONGLONG                                       _ItemResaltado;
 		LONGLONG	                                   _ItemUResaltado;
 		LONGLONG                                       _SubItemResaltado; // es en número de columa partiendo de la _FilaRsaltada

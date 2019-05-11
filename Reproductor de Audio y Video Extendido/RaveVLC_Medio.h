@@ -51,7 +51,7 @@ class RaveVLC_Medio : public Rave_Medio {
 	void						AsignarPistaAudio(int nPista);
 
 //	UINT64                      TiempoTotal;
-	BDMedio                     Medio;		// Datos del medio
+//	BDMedio                     Medio;		// Datos del medio
 //	HWND                        hWndVLC;
 
 								// Actualiza los iconos de la BD i la lista

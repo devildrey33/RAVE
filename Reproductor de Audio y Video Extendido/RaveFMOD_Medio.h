@@ -1,5 +1,6 @@
 #pragma once
 
+#ifdef RAVE_UTILIZAR_FMOD
 
 #include "..\FMOD\fmod.hpp"
 #include "Rave_Medio.h"
@@ -47,3 +48,4 @@ class RaveFMOD_Medio : public Rave_Medio {
 	Estados_Medio              _Estado;
 };
 
+#endif

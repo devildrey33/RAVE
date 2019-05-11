@@ -93,7 +93,7 @@ void ControlesPantallaCompleta::Transicion(const CPC_Transicion nTransicion) {
 	if (_AniMostrar.Animando() == TRUE) {
 		Duracion = _AniMostrar.TiempoActual();
 		_AniMostrar.Terminar();
-		return;
+//		return;
 	}
 
 	float OpacidadHasta = 0.0f;

@@ -14,7 +14,11 @@ Rave_Medio *Rave_MediaPlayer::_Actual		= NULL;
 Rave_Medio *Rave_MediaPlayer::_Siguiente	= NULL;
 
 
-Rave_MediaPlayer::Rave_MediaPlayer(void) : _InstanciaVLC(NULL), _SistemaFMOD(NULL), _CanalMaster(NULL), _DSP(NULL) {
+Rave_MediaPlayer::Rave_MediaPlayer(void) :  _InstanciaVLC(NULL)
+#ifdef RAVE_UTILIZAR_FMOD
+											, _SistemaFMOD(NULL), _CanalMaster(NULL), _DSP(NULL) 
+#endif
+																									{
 }
 
 
@@ -55,7 +59,7 @@ const BOOL Rave_MediaPlayer::Iniciar(void) {
 
 	Precarga.Destruir();
 
-
+#ifdef RAVE_UTILIZAR_FMOD
 	// Cargo el FMOD
 	FMOD_RESULT Ret = FMOD::System_Create(&_SistemaFMOD);
 	if (Ret != FMOD_OK) {
@@ -87,10 +91,12 @@ const BOOL Rave_MediaPlayer::Iniciar(void) {
 		Debug_Escribir(L"Rave_MediaPlayer::Iniciar : ERROR añadiendo el DSP al canal master en el FMOD.\n");
 		return FALSE;
 	}
+
 	//	_CanalMaster->getDSP()
 
 	Debug_Escribir_Varg(L"Rave_MediaPlayer::Iniciar : FMOD cargado '%d'\n", _SistemaFMOD);
-	
+#endif
+
 	// Creo los temporizadores
 	SetTimer(_hWnd, ID_TEMPORIZADOR_TIEMPO, 250, NULL);
 	SetTimer(_hWnd, ID_TEMPORIZADOR_LISTA, 500, NULL);
@@ -134,6 +140,7 @@ void Rave_MediaPlayer::Terminar(void) {
 		_InstanciaVLC = NULL;
 	}
 
+#ifdef RAVE_UTILIZAR_FMOD
 	// Elimino el FMOD
 	if (_SistemaFMOD != NULL) {
 		_CanalMaster->removeDSP(_DSP);
@@ -144,6 +151,7 @@ void Rave_MediaPlayer::Terminar(void) {
 		_SistemaFMOD->release();
 		_SistemaFMOD = NULL;
 	}
+#endif
 }
 
 void Rave_MediaPlayer::Temporizador_Lista(void) {
@@ -158,8 +166,9 @@ void Rave_MediaPlayer::Temporizador_Lista(void) {
 		return;
 	}
 
-
+#ifdef RAVE_UTILIZAR_FMOD
 	_SistemaFMOD->update();
+#endif
 	// Un medio de la lista ha terminado
 	if (Estado == SinCargar) {
 		App.BD.MedioReproducido(&App.MP.MedioActual());
@@ -284,13 +293,17 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 			_EliminarRaveMedio(_Siguiente);
 			_Siguiente = NULL;
 			if (Medio.EsFMOD() == FALSE)	_Actual = new RaveVLC_Medio(_InstanciaVLC, Medio);
+#ifdef RAVE_UTILIZAR_FMOD
 			else                            _Actual = new RaveFMOD_Medio(_SistemaFMOD, Medio);
+#endif
 		}
 	}
 	// No hay un medio siguiente
 	else {
 		if (Medio.EsFMOD() == FALSE)	_Actual = new RaveVLC_Medio(_InstanciaVLC, Medio);
+#ifdef RAVE_UTILIZAR_FMOD
 		else                            _Actual = new RaveFMOD_Medio(_SistemaFMOD, Medio);
+#endif
 	}
 
 	// Si el medio actual no es un video
@@ -300,7 +313,9 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 			// Si el medio siguiente no es un video, cargo el medio siguiente.
 			if (MedioSiguiente->TipoMedio != Tipo_Medio_Video) {
 				if (Medio.EsFMOD() == FALSE)	_Siguiente = new RaveVLC_Medio(_InstanciaVLC, *MedioSiguiente);
+#ifdef RAVE_UTILIZAR_FMOD
 				else                            _Siguiente = new RaveFMOD_Medio(_SistemaFMOD, *MedioSiguiente);
+#endif
 			}
 		}
 	}
@@ -322,7 +337,9 @@ void Rave_MediaPlayer::CerrarMedio(void) {
 void Rave_MediaPlayer::_EliminarRaveMedio(Rave_Medio *eMedio) {
 	switch (eMedio->Tipo()) {
 		case Rave_Medio_Tipo_VLC  : delete static_cast<RaveVLC_Medio *>(eMedio);	break;
+#ifdef RAVE_UTILIZAR_FMOD
 		case Rave_Medio_Tipo_FMOD : delete static_cast<RaveFMOD_Medio *>(eMedio);	break;
+#endif
 		default                   : delete eMedio;									break;
 	}
 }
@@ -366,7 +383,7 @@ void Rave_MediaPlayer::EventosVLC(const libvlc_event_t *event, void *ptr) {
 	}
 }
 
-
+#ifdef RAVE_UTILIZAR_FMOD
 FMOD_RESULT F_CALLBACK Rave_MediaPlayer::EventosFMOD(FMOD_CHANNELCONTROL *chanControl, FMOD_CHANNELCONTROL_TYPE controlType, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbackType, void *commandData1, void *commandData2) {
 	if (callbackType == FMOD_CHANNELCONTROL_CALLBACK_END) {
 		FMOD::Channel  *Canal       = (FMOD::Channel *)chanControl;
@@ -379,7 +396,7 @@ FMOD_RESULT F_CALLBACK Rave_MediaPlayer::EventosFMOD(FMOD_CHANNELCONTROL *chanCo
 	}
 	return FMOD_OK;
 }
-
+#endif
 
 void Rave_MediaPlayer::_TerminarMedio(Rave_Medio *MedioEvento) {
 	if (_Anterior  == MedioEvento) _Anterior  = NULL;

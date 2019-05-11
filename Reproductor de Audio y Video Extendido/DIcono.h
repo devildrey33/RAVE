@@ -5,9 +5,10 @@
 #include <string>
 
 namespace DWL {
+	// Objeto que re-emplaza a DListaIconos 
 
-
-	// Se ha diseñado para cargar no cargar 20 veces el mismo icono de forma que guarda todos los iconos en memória, y si vamos a crear un icono que ya existe nos devuelve el existente si necesidad de crear uno nuevo.
+	// Se ha diseñado para cargar no cargar 20 veces el mismo icono de forma que guarda todos los iconos en memória, 
+	// y si vamos a crear un icono que ya existe nos devuelve el existente sin necesidad de crear uno nuevo.
 	class DIcono {
 	  protected:
 		// Datos de un icono
@@ -16,7 +17,7 @@ namespace DWL {
 									DIcono_Datos(void) : Icono(NULL), ID(0), Ancho(0), Alto(0), IDStrPos(0) { };
 									DIcono_Datos(HICON nIcono, const INT_PTR nID, const int nAncho, const int nAlto) : Icono(nIcono), ID(nID), Ancho(nAncho), Alto(nAlto), IDStrPos(0) { };
 									DIcono_Datos(HICON nIcono, const INT_PTR nID, const int nAncho, const int nAlto, std::wstring &nIDStr, const int nIDStrPos) : Icono(nIcono), ID(nID), Ancho(nAncho), Alto(nAlto), IDStrPos(nIDStrPos), IDStr(nIDStr) { };
-								   ~DIcono_Datos(void) { };
+								   ~DIcono_Datos(void) { DestroyIcon(Icono); };
 			HICON				    Icono;
 			INT_PTR			        ID;			// ID del icono (positiva si es un icono de los recursos, negativa si es un icono externo o un icono KnownFolder
 			int			            Ancho;
@@ -41,6 +42,7 @@ namespace DWL {
 		inline const int						Ancho(void)             { return (_Icono == NULL) ? 0		: _Icono->Ancho; }
 		inline const int						Alto(void)              { return (_Icono == NULL) ? 0		: _Icono->Alto;  }
 
+												// Función que elimina todos los iconos en memória
 		static void                             EliminarIconos(void);
 	  protected:
 		DIcono_Datos                          *_Icono;

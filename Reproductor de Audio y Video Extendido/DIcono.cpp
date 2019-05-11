@@ -43,7 +43,7 @@ namespace DWL {
 				return;
 			}
 		}
-
+		// No se ha encontrado el icono, lo creo
 		HICON hIcono = static_cast<HICON>(LoadImage(GetModuleHandle(0), MAKEINTRESOURCE(IDRecursos), IMAGE_ICON, nAncho, nAlto, LR_DEFAULTCOLOR));
 
 		_Icono = new DIcono_Datos(hIcono, IDRecursos, nAncho, nAlto);
