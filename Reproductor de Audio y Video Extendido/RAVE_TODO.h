@@ -352,6 +352,11 @@
 			- AMB EL VLC IMPOSIBLE!! nomes te volum general..., lo que es un pel incomprensible perque la funció del volum demana un MediaPlayer, no la instancia. Al final tornarem al FMOD...
 		- Les notes menors que 2 s'han de mostrar amb una estrella gris
 
+
+		IMPORTANT - Guardar qualsevol canvi del : brillo, contraste, saturación, proporción de cada video per poder carregar-lo despres en cuansevol reproducció futura.
+
+
+
 	RAVE 0.7
 		-  Carregar subtituls
 		-  Carregar llistes m3u
