@@ -20,7 +20,7 @@ Sistema operativo Windows 7 o superior (x86. x64)
  ![Agregar Raíz -> Análisis](http://devildrey33.github.io/RAVE/Img/Readme3.png)
 
  
- ### Proposito
+ ### Propósito
  * Reproductor diseñado para gestionar agilmente una amplia colección de música y vídeo.
  > Al tener todo registrado en una base de datos interna, puedo generar listas aleatórias agilmente, e incluso generar listas de canciones mas escuchadas, además de preservar los valores del brillo, contraste, saturación, proporción establecidos expresamente para el medio.
  
@@ -46,3 +46,9 @@ Teclas por defecto cuando el reproductor tiene le foco del teclado (excepto si e
 *-*                          | `Bajar volumen`
 *Control + Cursor derecha*   | `Reproducir siguiente` 
 *Control + Cursor izquierda* | `Reproducir anterior`
+
+### FAQ
+ * *Que es una raíz*, Una raíz es un direcotrio 'padre' desde el que el reproductor buscara medios que se puedan reproducir.
+ 
+ * *Si agrego nuevos medios a una raíz, es necesario hacer algo?* La respuesta es NO, todo esto se hace automáitcamente por lo que no debes preocuparte por ello. El reproductor escanea todas las racices agregadas previamente cada vez que se inicia para buscar nuevos medios y para comprobar que los medios registrados anteriormente existen.
+ 
