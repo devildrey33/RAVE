@@ -23,7 +23,11 @@ Descarga una de las siguiente versiones :
  
  
 ### Teclado por defecto
- Teclas | Acción
---- | --- 
-*Still* | `renders`
-1 | 2
+ Combinación de teclas       | Acción
+---------------------------- | ----------------------------
+*Espacio*                    | `play / pausa`
+*Insert*                     | `Generar lista aleatória`
+*+*                          | `Subir volumen`
+*-*                          | `Bajar volumen`
+*Control + Cursor derecha*   | `Reproducir siguiente`
+*Control + Cursor izquierda* | `Reproducir anterior`
