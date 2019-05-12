@@ -30,6 +30,7 @@ Sistema operativo Windows 7 o superior (x86. x64)
  
 ### Teclado por defecto
 Teclas por defecto cuando el reproductor tiene le foco del teclado (excepto si el foco lo tiene una caja de edición de texto)
+
  Combinación de teclas       | Acción
 ---------------------------- | ----------------------------
 *Espacio*                    | `play / pausa`
