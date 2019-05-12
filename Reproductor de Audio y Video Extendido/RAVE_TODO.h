@@ -266,9 +266,9 @@
 				V S'ha de revisar el tema amb multiselecció
 				V S'ha de poguer moure els items en multiselecció sense el control...
 				V En multiselecció haig de ignorar els items seleccionats (Selecciona 3 items, i agafa el de mes aball per mourels fins a dalt de tot : el tercer item puja cap al primer)
-				- Despres de un drag multiselecció en el mouseup no s'ha de des-seleccionar
+				V Despres de un drag multiselecció en el mouseup no s'ha de des-seleccionar
 				- Si el drag surt de la finestra i i ha mes scroll cap aquella direcció, s'ha de moure el scroll amb un timer
-				- Revisar selecció amb el control... al fer una pre-seleccio en el mouse down, em des-selecciona el item perque el seu ultim estat era seleccionat...
+				V Revisar selecció amb el control... al fer una pre-seleccio en el mouse down, em des-selecciona el item perque el seu ultim estat era seleccionat...
 
 			V  Transicións de resaltat i presionat		
 			V  Afegir borde amb transició

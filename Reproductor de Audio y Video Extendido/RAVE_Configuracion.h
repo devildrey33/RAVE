@@ -3,7 +3,7 @@
 // Versión y titulo
 #define RAVE_VERSION			0, 5, 1, 6
 #define RAVE_VERSIONF			0.516
-#define RAVE_VERSIONSTR			L"0.516b"
+#define RAVE_VERSIONSTR			L"0.516c"
 #define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
 #define RAVE_VERSIONBD          L"1.0"
 
@@ -34,7 +34,7 @@
 
 #endif
 
-// Uso de la librería FmodEx (descomentar para no utilizar FMOD [EXPERIMENTAL])
+// Uso de la librería FmodEx (descomentar para utilizar FMOD [EXPERIMENTAL])
 //#define RAVE_UTILIZAR_FMOD
 
 // Simula los argumentos para reproducir un video nada mas iniciar

@@ -1,13 +1,15 @@
 # Reproductor de Audio y Video Extendido
 Reproductor de Audio y Video basado en la [LibVlc](https://www.videolan.org/vlc/index.es.html) para uso personal.
 
-### Prequisitos
+### Requisitos
 Sistema operativo Windows 7 o superior (x86. x64)
 
 ## Empezando
- 1. Descarga una de las siguientes versiones para windows : [RAVE x86 para 32 bits](http://devildrey33.github.io/RAVE/Instaladores/Instalador%20x86/SetupRave-x86.msi) o [RAVE x64 para 64 bits](http://devildrey33.github.io/RAVE/Instaladores/Instalador%20x64/SetupRave-x64.msi) y completa su instalación.
+ 1. Descarga una de las siguientes versiones para windows : 
+   *[RAVE x86 para 32 bits](http://devildrey33.github.io/RAVE/Instaladores/Instalador%20x86/SetupRave-x86.msi) 
+   *[RAVE x64 para 64 bits](http://devildrey33.github.io/RAVE/Instaladores/Instalador%20x64/SetupRave-x64.msi)
  
- 2. Ejecuta el reproductor y abre la ventana de opciones.
+ 2. Instala y ejecuta el reproductor, luego abre la ventana de opciones.
  
  ![Reproductor -> Opciones](http://devildrey33.github.io/RAVE/Img/Readme1.png)
  

@@ -791,7 +791,9 @@ namespace DWL {
 		#endif
 		// Pre-Selecciono el item presionado
 		if (_ItemPresionado != -1) {
-			_Items[_ItemPresionado]->Seleccionado = TRUE;
+			BOOL tControl = DatosMouse.Control();
+			// Si la tecla control no está presionada Pre-Selecciono el item
+			if (tControl != TRUE) _Items[_ItemPresionado]->Seleccionado = TRUE;
 		}
 /*		if (_ItemPresionado != -1) {			
 			BOOL tShift   = DatosMouse.Shift();
