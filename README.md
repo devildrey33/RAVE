@@ -5,13 +5,13 @@ Reproductor de Audio y Video basado en la [LibVlc](https://www.videolan.org/vlc/
 Sistema operativo Windows 7 o superior (x86. x64)
 
 ## Empezando
- 1. Descarga una de las siguiente versiones para windows : [RAVE x86 para 32 bits](http://devildrey33.github.io/RAVE/Instaladores/Instalador%20x86/SetupRave-x86.msi) o [RAVE x64 para 64 bits](http://devildrey33.github.io/RAVE/Instaladores/Instalador%20x64/SetupRave-x64.msi) y completa su instalación.
+ 1. Descarga una de las siguientes versiones para windows : [RAVE x86 para 32 bits](http://devildrey33.github.io/RAVE/Instaladores/Instalador%20x86/SetupRave-x86.msi) o [RAVE x64 para 64 bits](http://devildrey33.github.io/RAVE/Instaladores/Instalador%20x64/SetupRave-x64.msi) y completa su instalación.
  
  2. Ejecuta el reproductor y abre la ventana de opciones.
  
  ![Reproductor -> Opciones](http://devildrey33.github.io/RAVE/Img/Readme1.png)
  
- 3. Pulsa en 'Agregar Raíz' y selecciona una carpeta de tu ordenador que contenga una colección de música o vídeo (Por ejemplo C:\MP3, C:\Series, etc...).
+ 3. Pulsa en 'Agregar Raíz' y selecciona una carpeta de tu ordenador que contenga una colección de música o vídeo (Por ejemplo C:\MP3, C:\Series, etc...), puede ser incluso un disco externo o de red que no este siempre disponible (en caso de no disponibilidad se omitirá).
  
  ![Opciones -> Agregar Raíz](http://devildrey33.github.io/RAVE/Img/Readme2.png)
  
@@ -22,9 +22,9 @@ Sistema operativo Windows 7 o superior (x86. x64)
  
  ### Proposito
  * Reproductor diseñado para gestionar agilmente una amplia colección de música y vídeo.
- > Al tener todo registrado en una base de datos interna, puedo generar listas aleatórias agilmente, e incluso generar listas de canciones mas escuchadas, o preservar los valores de brillo, contraste, saturación, proporción establecidos expresamente para el medio.
+ > Al tener todo registrado en una base de datos interna, puedo generar listas aleatórias agilmente, e incluso generar listas de canciones mas escuchadas, además de preservar los valores del brillo, contraste, saturación, proporción establecidos expresamente para el medio.
  
- > Al reproducir un medio completamente se le sumará una nota de 0.01 de forma que si todos los medios parten de una nota de 2.0 al reproducir-los 300 veces llegaran a una nota de 5.0, y por supuesto tienes la posibilidad de modificar la nota de cualquier medio.
+ > Al reproducir un medio completamente se le sumará una nota de 0.1 de forma que si todos los medios parten de una nota de 2.0 al reproducir-los 30 veces llegaran a una nota de 5.0, y por supuesto tienes la posibilidad de modificar la nota de cualquier medio.
  
  * Poder generar listas de música aleatória según las preferencias establecidas.
  > Con una sola tecla puedo generar una lista de canciones aleatória, que puede ser por genero, por grupo, por disco, o aleatória totalmente.
