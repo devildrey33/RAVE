@@ -5,8 +5,8 @@ Reproductor de Audio y Video basado en la [LibVlc](https://www.videolan.org/vlc/
 Sistema operativo Windows 7 o superior (x86. x64)
 
 ## Empezando
- 1. Descarga una de las siguiente versiones para windows : [RAVE x86 para 32 bits](https://raw.githubusercontent.com/devildrey33/RAVE/master/Instaladores/Instalador%20x86/SetupRave-x86.msi) o [RAVE x64 para 64 bits](https://raw.githubusercontent.com/devildrey33/RAVE/master/Instaladores/Instalador%20x64/SetupRave-x64.msi)
- 
+  1. Descarga una de las siguiente versiones para windows : [RAVE x86 para 32 bits](https://raw.githubusercontent.com/devildrey33/RAVE/master/Instaladores/Instalador%20x86/SetupRave-x86.msi) o [RAVE x64 para 64 bits](https://raw.githubusercontent.com/devildrey33/RAVE/master/Instaladores/Instalador%20x64/SetupRave-x64.msi) y completa su instalación.
+
  2. Ejecuta el reproductor
  
  3. Abre la ventana de opciones
