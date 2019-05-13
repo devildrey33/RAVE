@@ -783,5 +783,8 @@
     <None Include="Mapa de ventanas y controles.cd">
       <Filter>DWL</Filter>
     </None>
+    <None Include="..\README.md">
+      <Filter>xXx _MAIN_ xXx</Filter>
+    </None>
   </ItemGroup>
 </Project>

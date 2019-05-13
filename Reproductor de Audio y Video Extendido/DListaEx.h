@@ -190,7 +190,7 @@ namespace DWL {
 		void										   _Evento_FocoObtenido(HWND hWndUltimoFoco);
 		void										   _Evento_FocoPerdido(HWND hWndNuevoFoco);
 
-		void                                           _Drag(void);
+		void                                           _Drag(DEventoMouse &DatosMouse);
 
 		// Teclas especiales
 		void										   _Tecla_CursorArriba(DEventoTeclado &DatosTeclado);

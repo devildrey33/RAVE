@@ -353,7 +353,7 @@
 		- Les notes menors que 2 s'han de mostrar amb una estrella gris
 
 
-		IMPORTANT - Guardar qualsevol canvi del : brillo, contraste, saturación, proporción de cada video per poder carregar-lo despres en cuansevol reproducció futura.
+		V  Guardar qualsevol canvi del : brillo, contraste, saturación, proporción de cada video per poder carregar-lo despres automáticament en quansevol reproducció futura.
 
 
 

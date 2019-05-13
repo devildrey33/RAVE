@@ -327,7 +327,10 @@ namespace DWL {
 		if (ePos < static_cast<LONGLONG>(_Items.size())) {
 			delete _Items[static_cast<unsigned int>(ePos)];
 			_Items.erase(_Items.begin() + static_cast<unsigned int>(ePos));
-
+			if (_ItemResaltado >= static_cast<LONGLONG>(_Items.size())) {
+				_ItemResaltado  = -1;
+				_ItemUResaltado = -1;
+			}
 			_ItemMarcado        = -1;
 			_ItemPresionado		= -1;
 			_SubItemPresionado	= -1;
@@ -684,13 +687,13 @@ namespace DWL {
 			if (MoverItemsDrag == TRUE) {
 				// Se ha sobrepasado el tiempo para un click simple, es una operación drag
 				if (GetTickCount() > _TiempoItemPresionado + 300) {
-					_Drag();
+					_Drag(DatosMouse);
 				}
 			}
 		}
 	}
 
-	void DListaEx::_Drag(void) {
+	void DListaEx::_Drag(DEventoMouse &DatosMouse) {
 		LONGLONG Diferencia = 0, CD = 0;
 		if (_ItemPresionado == -1) return;
 		if (_ItemPresionado == _ItemResaltado) return;
@@ -710,7 +713,7 @@ namespace DWL {
 				for (i = _Items.size() - 1; i > -1; i--) {
 					if (_Items[i]->Seleccionado == TRUE) {
 						for (CD = 0; CD > Diferencia; CD--) {
-							if (i + CD + 1 < static_cast<LONGLONG>(_Items.size())) {
+							if (i - CD + 1 < static_cast<LONGLONG>(_Items.size())) {
 								if (_Items[i - CD + 1]->Seleccionado == FALSE) {
 									TmpItem = _Items[i - CD];
 									_Items[i - CD] = _Items[i - CD + 1];
