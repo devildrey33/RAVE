@@ -300,10 +300,10 @@ void RAVE::IniciarUI(int nCmdShow) {
 //	MenuPistasDeAudio->Activado(FALSE);
 																						// ID_MENUVIDEO_AUDIO_PISTAS_AUDIO <-> ID_MENUVIDEO_AUDIO_PISTAS_AUDIO_FIN (Espacio para 20 pistas de audio para no hacer corto...)
 	MenuVideoProporcion = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_PROPORCION		, L"Proporción"				, IDI_PROPORCION, -1, FALSE);
-		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_PREDETERMINADO					, L"Predeterminado");
+		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_PREDETERMINADO					, L"Predeterminado", IDI_CHECK2);
 		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_16A9							, L"16:9");
 		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_4A3							, L"4:3");
-		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_1A1							, L"1:1");
+		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_1A1							, L"1:!");
 		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_16A10							, L"16:10");
 		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_2P21A1							, L"2.21:1");
 		MenuVideoProporcion->AgregarMenu(ID_MENUVIDEO_PROPORCION_2P35A1							, L"2.35:1");

@@ -1,11 +1,11 @@
 // Configuración para compilar RAVE
 
 // Versión y titulo
-#define RAVE_VERSION			0, 5, 1, 6
-#define RAVE_VERSIONF			0.516
-#define RAVE_VERSIONSTR			L"0.516c"
+#define RAVE_VERSION			0, 5, 1, 7
+#define RAVE_VERSIONF			0.517
+#define RAVE_VERSIONSTR			L"0.517"
 #define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
-#define RAVE_VERSIONBD          L"1.0"
+#define RAVE_VERSIONBD          L"1.1"
 
 // Skin del reproductor (0 = normal, 1 = visual studio)
 #define RAVE_SKIN               RAVE_SKIN_NORMAL			// Se tiene que modificar DhWnd.h para añadir mas skins de prueba

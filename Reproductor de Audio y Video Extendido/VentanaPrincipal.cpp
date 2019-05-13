@@ -489,6 +489,7 @@ void VentanaPrincipal::FiltrosVideoPorDefecto(void) {
 	App.MenuVideoFiltros->Menu(0)->BarraValor(1.0f);
 	App.MenuVideoFiltros->Menu(1)->BarraValor(1.0f);
 	App.MenuVideoFiltros->Menu(2)->BarraValor(1.0f);
+	App.BD.ActualizarMedio(&App.MP.MedioActual());
 }
 
 void VentanaPrincipal::Lista_Propiedades(void) {
@@ -651,14 +652,14 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 	// Menu Video -> Proporción
 	if (cID >= ID_MENUVIDEO_PROPORCION_PREDETERMINADO && cID < ID_MENUVIDEO_PROPORCION_5A4 + 1) {
 		// Des-marco todas las porporciones
-		for (size_t i = 0; i < App.MenuVideoProporcion->TotalMenus(); i++) {
+/*		for (size_t i = 0; i < App.MenuVideoProporcion->TotalMenus(); i++) {
 			App.MenuVideoProporcion->Menu(i)->Icono(0);
-		}
-		switch (cID) {
+		}*/
+/*		switch (cID) {
 			case ID_MENUVIDEO_PROPORCION_PREDETERMINADO	: App.MP.AsignarProporcion(NULL);			break;
 			case ID_MENUVIDEO_PROPORCION_16A9			: App.MP.AsignarProporcion("16:9");			break;
 			case ID_MENUVIDEO_PROPORCION_4A3			: App.MP.AsignarProporcion("4:3");			break;
-			case ID_MENUVIDEO_PROPORCION_1A1			: App.MP.AsignarProporcion("1:!");			break;
+			case ID_MENUVIDEO_PROPORCION_1A1			: App.MP.AsignarProporcion("1:1");			break;
 			case ID_MENUVIDEO_PROPORCION_16A10			: App.MP.AsignarProporcion("16:10");		break;
 			case ID_MENUVIDEO_PROPORCION_2P21A1			: App.MP.AsignarProporcion("2.21:1");		break;
 			case ID_MENUVIDEO_PROPORCION_2P35A1			: App.MP.AsignarProporcion("2.35:1");		break;
@@ -666,20 +667,13 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 			case ID_MENUVIDEO_PROPORCION_5A4			: App.MP.AsignarProporcion("5:4");			break;
 		}
 
-		App.MenuVideoProporcion->Menu(cID - ID_MENUVIDEO_PROPORCION_PREDETERMINADO)->Icono(IDI_CHECK2);
+		App.MenuVideoProporcion->Menu(cID - ID_MENUVIDEO_PROPORCION_PREDETERMINADO)->Icono(IDI_CHECK2);*/
+		App.MP.AsignarProporcion(cID);
+		App.BD.ActualizarMedio(&App.MP.MedioActual());
 		return;
 	}
 }
 
-// MouseDown o MouseMove en la barraEx del menú
-void VentanaPrincipal::Evento_MenuEx_Barra_Cambiando(const UINT cID, const float ValorBarra) {
-	switch (cID) {
-		// Barras del menu del video
-		case ID_MENUVIDEO_BRILLO				:	App.MP.Brillo(ValorBarra);				return;
-		case ID_MENUVIDEO_CONTRASTE				:	App.MP.Contraste(ValorBarra);			return;
-		case ID_MENUVIDEO_SATURACION			:	App.MP.Saturacion(ValorBarra);			return;
-	}
-}
 
 void VentanaPrincipal::Arbol_AsignarNota(const float nNota) {
 	NodoBD *Tmp = Arbol.MedioMarcado();
@@ -720,14 +714,35 @@ void VentanaPrincipal::Lista_AsignarNota(const float nNota) {
 	else			{ App.MostrarToolTipPlayer(L"Nota actualizada a " + DWL::Strings::ToStrF(nNota, 2));					}
 }
 
-// MouseUp en la barraEx del menú
-void VentanaPrincipal::Evento_MenuEx_Barra_Cambiado(const UINT cID, const float ValorBarra) {
-	std::wstring StrMedio;
+
+
+// MouseDown o MouseMove en la barraEx del menú
+void VentanaPrincipal::Evento_MenuEx_Barra_Cambiando(const UINT cID, const float ValorBarra) {
 	switch (cID) {
 		// Barras del menu del video
 		case ID_MENUVIDEO_BRILLO				:	App.MP.Brillo(ValorBarra);				return;
 		case ID_MENUVIDEO_CONTRASTE				:	App.MP.Contraste(ValorBarra);			return;
 		case ID_MENUVIDEO_SATURACION			:	App.MP.Saturacion(ValorBarra);			return;
+	}
+}
+
+// MouseUp en la barraEx del menú
+void VentanaPrincipal::Evento_MenuEx_Barra_Cambiado(const UINT cID, const float ValorBarra) {
+	std::wstring StrMedio;
+	switch (cID) {
+		// Barras del menu del video
+		case ID_MENUVIDEO_BRILLO				:	
+			App.MP.Brillo(ValorBarra);
+			App.BD.ActualizarMedio(&App.MP.MedioActual());
+			return;
+		case ID_MENUVIDEO_CONTRASTE				:	
+			App.MP.Contraste(ValorBarra);		
+			App.BD.ActualizarMedio(&App.MP.MedioActual());
+			return;
+		case ID_MENUVIDEO_SATURACION			:	
+			App.MP.Saturacion(ValorBarra);			
+			App.BD.ActualizarMedio(&App.MP.MedioActual());
+			return;
 		// Menu Lista -> Nota
 		case ID_MENULISTA_NOTA					:	Lista_AsignarNota(ValorBarra);			return;
 		// Menu BD -> Nota

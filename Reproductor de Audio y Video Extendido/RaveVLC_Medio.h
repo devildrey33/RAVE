@@ -39,7 +39,8 @@ class RaveVLC_Medio : public Rave_Medio {
 	
 								// Proporción para el video
 	std::wstring               &ObtenerProporcion(void);
-	void                        AsignarProporcion(const char *Prop);
+	void                        AsignarProporcion(const char* Prop);
+	void                        AsignarProporcion(const wchar_t* Prop);
 
 								// Filtros para el vídeo
 	void                        Brillo(const float nBrillo);

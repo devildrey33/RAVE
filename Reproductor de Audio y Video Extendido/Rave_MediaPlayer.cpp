@@ -501,9 +501,26 @@ std::wstring &Rave_MediaPlayer::ObtenerProporcion(void) {
 	return _Actual->ObtenerProporcion();
 }
 
-void Rave_MediaPlayer::AsignarProporcion(const char *Prop) {
+void Rave_MediaPlayer::AsignarProporcion(const int Prop) {
 	if (_Actual == NULL) return;
-	_Actual->AsignarProporcion(Prop);
+
+	for (size_t i = 0; i < App.MenuVideoProporcion->TotalMenus(); i++) {
+		App.MenuVideoProporcion->Menu(i)->Icono(0);
+	}
+
+	App.MenuVideoProporcion->Menu(Prop - ID_MENUVIDEO_PROPORCION_PREDETERMINADO)->Icono(IDI_CHECK2);
+	
+	switch (Prop) {
+		case ID_MENUVIDEO_PROPORCION_PREDETERMINADO : _Actual->AsignarProporcion(NULL);			break;
+		case ID_MENUVIDEO_PROPORCION_16A9			: _Actual->AsignarProporcion("16:9");		break;
+		case ID_MENUVIDEO_PROPORCION_4A3			: _Actual->AsignarProporcion("4:3");		break;
+		case ID_MENUVIDEO_PROPORCION_1A1			: _Actual->AsignarProporcion("1:1");		break;
+		case ID_MENUVIDEO_PROPORCION_16A10			: _Actual->AsignarProporcion("16:10");		break;
+		case ID_MENUVIDEO_PROPORCION_2P21A1			: _Actual->AsignarProporcion("2.21:1");		break;
+		case ID_MENUVIDEO_PROPORCION_2P35A1			: _Actual->AsignarProporcion("2.35:1");		break;
+		case ID_MENUVIDEO_PROPORCION_2P39A1			: _Actual->AsignarProporcion("2.39:1");		break;
+		case ID_MENUVIDEO_PROPORCION_5A4			: _Actual->AsignarProporcion("5:4");		break;
+	}
 }
 
 void Rave_MediaPlayer::Brillo(const float nBrillo) {

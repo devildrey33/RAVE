@@ -52,7 +52,7 @@ class Rave_MediaPlayer : public DWL::DVentana {
 	void							Temporizador_ObtenerVentanaVLC(void);
 
 	std::wstring				   &ObtenerProporcion(void);
-	void							AsignarProporcion(const char *Prop);
+	void							AsignarProporcion(const int Prop);
 
 	void				            Brillo(const float nBrillo);
 	void				            Contraste(const float nContraste);

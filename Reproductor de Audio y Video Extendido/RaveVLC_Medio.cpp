@@ -9,9 +9,9 @@
 RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : _Medio(NULL), _Eventos(NULL),  /*TiempoTotal(0) */ _Parseado(FALSE) {
 	Medio		= nMedio;	
 
-	App.MenuVideoFiltros->Menu(0)->BarraValor(1.0f);	// Brillo
-	App.MenuVideoFiltros->Menu(1)->BarraValor(1.0f);	// Contraste
-	App.MenuVideoFiltros->Menu(2)->BarraValor(1.0f);	// Saturación
+	App.MenuVideoFiltros->Menu(0)->BarraValor(Medio.Brillo);		// Brillo
+	App.MenuVideoFiltros->Menu(1)->BarraValor(Medio.Contraste);		// Contraste
+	App.MenuVideoFiltros->Menu(2)->BarraValor(Medio.Saturacion);	// Saturación
 
 	//std::wstring TxtError;
 	if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(Medio.Path.c_str())) {
@@ -46,7 +46,7 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : _M
 	//	libvlc_event_attach(_Eventos, libvlc_MediaStateChanged, EventosVLC, this);				// no va
 	//	libvlc_event_attach(_Eventos, libvlc_MediaDurationChanged, EventosVLC, this);			// no va (igual amb streaming si...)
 	libvlc_event_attach(_Eventos, libvlc_MediaPlayerEndReached,		  Rave_MediaPlayer::EventosVLC, this);
-	libvlc_event_attach(_Eventos, libvlc_MediaPlayerEncounteredError, Rave_MediaPlayer::EventosVLC, this);	// error
+	libvlc_event_attach(_Eventos, libvlc_MediaPlayerEncounteredError, Rave_MediaPlayer::EventosVLC, this);	// errors
 	libvlc_event_attach(_Eventos, libvlc_MediaParsedChanged,		  Rave_MediaPlayer::EventosVLC, this);	// no va
 	// Desactiva los eventos del mouse y del teclado dentro de la ventana del vlc 
 	libvlc_video_set_mouse_input(_Medio, false);
@@ -58,6 +58,12 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : _M
 		libvlc_media_player_set_hwnd(_Medio, App.VentanaRave.Video.hWnd());
 		// Pulso el botón para mostrar el video
 		App.VentanaRave.Evento_BotonEx_Mouse_Click(DEventoMouse(0, 0, &App.VentanaRave.BotonVideo, 0));
+
+		if (Medio.Proporcion.size() != 0)	AsignarProporcion(Medio.Proporcion.c_str());
+		if (Medio.Brillo			!= 1.0)	Brillo(Medio.Brillo);
+		if (Medio.Contraste			!= 1.0)	Contraste(Medio.Contraste);
+		if (Medio.Saturacion		!= 1.0)	Saturacion(Medio.Saturacion);
+
 	}
 	else {
 		libvlc_media_player_set_hwnd(_Medio, NULL);
@@ -247,8 +253,17 @@ std::wstring &RaveVLC_Medio::ObtenerProporcion(void) {
 	return Ret;
 }
 
-void RaveVLC_Medio::AsignarProporcion(const char *Prop) {
+void RaveVLC_Medio::AsignarProporcion(const char* Prop) {
 	libvlc_video_set_aspect_ratio(_Medio, Prop);
+	if (Prop == NULL) Medio.Proporcion.resize(0);
+	else              DWL::Strings::AnsiToWide(Prop, Medio.Proporcion);
+}
+
+void RaveVLC_Medio::AsignarProporcion(const wchar_t* Prop) {
+	std::string Ansi;
+	DWL::Strings::WideToAnsi(Prop, Ansi);
+	libvlc_video_set_aspect_ratio(_Medio, Ansi.c_str());
+	Medio.Proporcion = Prop;
 }
 
 
@@ -319,12 +334,16 @@ void RaveVLC_Medio::Brillo(const float nBrillo) {
 	//	Debug_Escribir_Varg(L"RaveVLC::Brillo %02f\n", nBrillo);
 	libvlc_video_set_adjust_int(_Medio, libvlc_adjust_Enable, 1);
 	libvlc_video_set_adjust_float(_Medio, libvlc_adjust_Brightness, nBrillo);
+	Medio.Brillo = nBrillo;
+	App.MenuVideoFiltros->Menu(0)->BarraValor(nBrillo);
 }
 
 void RaveVLC_Medio::Contraste(const float nContraste) {
 	if (_Medio == NULL) return;
 	libvlc_video_set_adjust_int(_Medio, libvlc_adjust_Enable, 1);
 	libvlc_video_set_adjust_float(_Medio, libvlc_adjust_Contrast, nContraste);
+	Medio.Contraste = nContraste;
+	App.MenuVideoFiltros->Menu(1)->BarraValor(nContraste);
 }
 
 void RaveVLC_Medio::Gamma(const float nGamma) {
@@ -343,6 +362,8 @@ void RaveVLC_Medio::Saturacion(const float nSaturacion) {
 	if (_Medio == NULL) return;
 	libvlc_video_set_adjust_int(_Medio, libvlc_adjust_Enable, 1);
 	libvlc_video_set_adjust_float(_Medio, libvlc_adjust_Saturation, nSaturacion);
+	Medio.Saturacion = nSaturacion;
+	App.MenuVideoFiltros->Menu(2)->BarraValor(nSaturacion);
 }
 
 
@@ -386,11 +407,11 @@ const BOOL RaveVLC_Medio::ObtenerDatosParsing(void) {
 		App.MenuVideoSubtitulos->Activado(EsVideo);
 
 		// Obtengo el ratio de aspecto
-		std::wstring Proporcion = ObtenerProporcion();
+/*		std::wstring Proporcion = ObtenerProporcion();
 		for (size_t i = 0; i < App.MenuVideoProporcion->TotalMenus(); i++) {
 			if (App.MenuVideoProporcion->Menu(i)->Texto() == Proporcion)	App.MenuVideoProporcion->Menu(i)->Icono(IDI_CHECK2);
 			else															App.MenuVideoProporcion->Menu(i)->Icono(0);
-		}
+		}*/
 		return TRUE;
 	}
 	return FALSE;

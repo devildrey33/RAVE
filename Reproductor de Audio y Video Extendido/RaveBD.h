@@ -87,7 +87,7 @@ class BDRaiz {
 // Clase con los datos de un medio
 class BDMedio {
   public :
-							BDMedio(void) : PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0), Parseado(FALSE), Actualizar(FALSE), Nota(2.5f), PistaEleccion(0), Reproducido(0), GrupoEleccion(0), DiscoEleccion(0), NombreEleccion(0) { };
+							BDMedio(void) : PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0), Parseado(FALSE), Actualizar(FALSE), Nota(2.5f), PistaEleccion(0), Reproducido(0), GrupoEleccion(0), DiscoEleccion(0), NombreEleccion(0), Brillo(1.0f), Contraste(1.0f), Saturacion(1.0f) { };
 //							BDMedio(UINT nId, sqlite3_int64 nHash, const wchar_t *nPath, const wchar_t *nNombre, Tipo_Medio nTipoMedio, Extension_Medio nExtension, UINT nReproducido, ULONG nLongitud, DWORD nIDDisco, UINT nNota, UINT nGenero, UINT nGrupo, UINT nDisco, UINT nPista, libvlc_time_t nTiempo, const wchar_t *nSubtitulos) : Id(nId), Hash(nHash), Path(nPath), NombrePath(nNombre), TipoMedio(nTipoMedio), Extension(nExtension), Longitud(nLongitud), IDDisco(nIDDisco), Nota(nNota), Pista(nPista), Tiempo(nTiempo), Subtitulos(nSubtitulos), Parseado(FALSE) { }
 							BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
 	                       ~BDMedio(void) { };
@@ -135,6 +135,11 @@ class BDMedio {
 		
 	void					PistaStr(std::wstring &nPistaStr);
 	void					ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
+
+	std::wstring            Proporcion;
+	float					Brillo;
+	float                   Contraste;
+	float                   Saturacion;
 
 	const BOOL              EsFMOD(void);
 
@@ -234,6 +239,9 @@ class RaveBD {
 
 								// Función que obtiene las opciones de la base de datos
 	const BOOL					ObtenerOpciones(void);
+								// Función que devuelve la versión de la BD
+	const float                 ObtenerVersionBD(void);
+
 								// NOTA Esta función no guarda la posición en la BD
 	inline void					Opciones_AsignarPosVentana(const int nX, const int nY) { _Opciones_PosX = nX; _Opciones_PosY = nY; };
 								// Opciones que se guardan en la BD
@@ -331,6 +339,7 @@ protected:
 	const BOOL                 _ConsultaObtenerMedio(std::wstring &TxtConsulta, BDMedio &OUT_Medio);
 
     const BOOL                 _CrearTablas(void);
+	const BOOL                 _ModificarTablas(void);
 	std::wstring               _UltimoErrorSQL;
 	sqlite3                   *_BD;
 

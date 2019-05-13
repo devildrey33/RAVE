@@ -21,7 +21,7 @@ VentanaErrorCritico::~VentanaErrorCritico(void) {
 
 
 HWND VentanaErrorCritico::Crear(void) {
-	CrearVentana(NULL, L"Rave_ErrorCritico", L"Error crítico", 100, 100, 440, 300, WS_OVERLAPPEDWINDOW | WS_VISIBLE, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+	CrearVentana(NULL, L"Rave_ErrorCritico", L"Error crítico", 100, 100, 440, 340, WS_OVERLAPPEDWINDOW | WS_VISIBLE, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 	
 	RECT RC;
 	GetClientRect(hWnd(), &RC);
@@ -36,13 +36,13 @@ HWND VentanaErrorCritico::Crear(void) {
 						L"sea revisado pulsando el boton Enviar. De esta forma estaras \n"
 						L"ayudando al desarrollo de este reproductor."
 						L"\n\nEn caso contrario pula el boton Salir. ";
-	TextoError.CrearEtiquetaEx(this, TE.c_str(), 10, 40, RC.right - 20, 150, ID_VEC_TEXTOERROR, DEtiquetaEx_Alineacion_Izquierda, WS_CHILD | WS_VISIBLE);
+	TextoError.CrearEtiquetaEx(this, TE.c_str(), 10, 40, RC.right - 20, 180, ID_VEC_TEXTOERROR, DEtiquetaEx_Alineacion_Izquierda, WS_CHILD | WS_VISIBLE);
 //	TextoError.Fuente = Fuente18Normal;
 
-	BarraProgreso.CrearBarraProgresoEx(this, 10, 200, RC.right - 20, 10, ID_VEC_PROGRESO, 0.0f, 100.0f, 0.0f);
+	BarraProgreso.CrearBarraProgresoEx(this, 10, 220, RC.right - 20, 10, ID_VEC_PROGRESO, 0.0f, 100.0f, 0.0f);
 	
-	BotonEnviar.CrearBotonEx(this, L"Enviar", 100, 220, 100, 30, ID_VEC_ENVIAR);
-	BotonSalir.CrearBotonEx(this, L"Salir", RC.right - 200, 220, 100, 30, ID_VEC_SALIR);
+	BotonEnviar.CrearBotonEx(this, L"Enviar", 100, 250, 100, 30, ID_VEC_ENVIAR);
+	BotonSalir.CrearBotonEx(this, L"Salir", RC.right - 200, 250, 100, 30, ID_VEC_SALIR);
 
 	BarraTareas.Estado_Error();
 	BarraTareas.Valor(100, 100);
