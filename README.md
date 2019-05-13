@@ -39,7 +39,6 @@ Sistema operativo Windows 7 o superior (x86. x64)
 
  ![Listas aleatórias](http://devildrey33.github.io/RAVE/Img/Readme4.png)
 
- 
  * Capacidad de apagar el reproductor / ordenador al terminar la lista de medios.
  > Asi puedo reproducir un par o tres de mis capitulos favoritos al meterme en la cama, y que el ordenador se apague al finalizar la lista.
  
@@ -58,7 +57,10 @@ Teclas por defecto cuando el reproductor tiene le foco del teclado (excepto si e
 *Control + Cursor izquierda* | `Reproducir anterior`
 
 ### FAQ
- * *Que es una raíz*, Una raíz es un direcotrio 'padre' desde el que el reproductor buscara medios que se puedan reproducir.
+ * 'Que es una raíz?'
+ > Una raíz es un direcotrio 'padre' desde el que el reproductor buscara medios que se puedan reproducir. Puedes añadir mas de una raíz al reproductor, pero aunque es posible... no se recomienda agregar unidades de disco directamente como una raíz.
  
- * *Si agrego nuevos medios a una raíz, es necesario hacer algo?* La respuesta es NO, todo esto se hace automáitcamente por lo que no debes preocuparte por ello. El reproductor escanea todas las racices agregadas previamente cada vez que se inicia para buscar nuevos medios y para comprobar que los medios registrados anteriormente existen.
+ * 'Si agrego o elimino medios de una raíz, es necesario actualizar la base de datos?' 
+ > Si tienes el reproductor encendido mientras has realizado dichos cambios, debes desplegar el menú de la base de datos, y pulsar actualizar.
+ > Si no tienes el reproductor encendido, no te preocupes ya que la próxima vez que se inicie re-escaneara la raíz automáticamente para cerciorarse de que todos los medios existen, y de paso para detectar nuevos medios.
  
