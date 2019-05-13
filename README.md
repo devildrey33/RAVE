@@ -6,8 +6,8 @@ Sistema operativo Windows 7 o superior (x86. x64)
 
 ## Empezando
  1. Descarga una de las siguientes versiones para windows : 
-   *[RAVE x86 para 32 bits](http://devildrey33.github.io/RAVE/Instaladores/Instalador%20x86/SetupRave-x86.msi) 
-   *[RAVE x64 para 64 bits](http://devildrey33.github.io/RAVE/Instaladores/Instalador%20x64/SetupRave-x64.msi)
+   * [RAVE x86 para 32 bits](http://devildrey33.github.io/RAVE/Instaladores/Instalador%20x86/SetupRave-x86.msi) 
+   * [RAVE x64 para 64 bits](http://devildrey33.github.io/RAVE/Instaladores/Instalador%20x64/SetupRave-x64.msi)
  
  2. Instala y ejecuta el reproductor, luego abre la ventana de opciones.
  
@@ -23,19 +23,27 @@ Sistema operativo Windows 7 o superior (x86. x64)
 
  
  ### Propósito
- * Reproductor diseñado para gestionar agilmente una amplia colección de música y vídeo.
- > Al tener todo registrado en una base de datos interna, puedo generar listas aleatórias agilmente, e incluso generar listas de canciones mas escuchadas, además de preservar los valores del brillo, contraste, saturación, proporción establecidos expresamente para el medio.
+ * Reproductor diseñado para gestionar agilmente una amplia colección de música y vídeo utilizando su propia base de datos.
+ > Al tener todo registrado en una base de datos interna, puedo generar listas aleatórias agilmente, e incluso generar listas de canciones mas escuchadas.
  
- > Al reproducir un medio completamente se le sumará una nota de 0.1 de forma que si todos los medios parten de una nota de 2.0 al reproducir-los 30 veces llegaran a una nota de 5.0, y por supuesto tienes la posibilidad de modificar la nota de cualquier medio.
+ > Tambien preservara los valores del brillo, contraste, saturación, proporción establecidos expresamente para cada video.
+  
+ > Al reproducir un medio completamente se le sumará una nota de 0.05 de forma que si todos los medios parten de una nota de 2.5, y al reproducir-los 50 veces llegaran a una nota de 5.0. Por supuesto tienes la posibilidad de modificar la nota de cualquier medio o incluso de un grupo de medios a la vez.
+ 
+ ![Nota](http://devildrey33.github.io/RAVE/Img/Readme5.png)
  
  * Poder generar listas de música aleatória según las preferencias establecidas.
- > Con una sola tecla puedo generar una lista de canciones aleatória, que puede ser por genero, por grupo, por disco, o aleatória totalmente.
+ > Con una sola tecla puedo generar una lista de canciones aleatória, que puede ser por genero, por grupo, por disco, o aleatória totalmente (Por defecto es la tecla 'Insert').
  
  > Tambien puedo pulsar el boton 'Lista de medios' con el boton derecho del mouse y crear una lista personalizada.
+
+ ![Listas aleatórias](http://devildrey33.github.io/RAVE/Img/Readme4.png)
+
  
  * Capacidad de apagar el reproductor / ordenador al terminar la lista de medios.
  > Asi puedo reproducir un par o tres de mis capitulos favoritos al meterme en la cama, y que el ordenador se apague al finalizar la lista.
  
+ ![Nota](http://devildrey33.github.io/RAVE/Img/Readme6.png)
  
 ### Teclado por defecto
 Teclas por defecto cuando el reproductor tiene le foco del teclado (excepto si el foco lo tiene una caja de edición de texto)
