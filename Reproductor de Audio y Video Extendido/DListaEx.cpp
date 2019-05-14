@@ -6,6 +6,9 @@
 
 namespace DWL {
 
+	#define TIMER_LISTA_DRAG_ARRIBA 1000
+	#define TIMER_LISTA_DRAG_ABAJO  1001
+
 
 	// Colores para el fondo (OJO los colores del fondo y del borde del control están en DBarraSroll_Skin)
 	COLORREF     DListaEx_Skin::FondoItemNormal						= COLOR_LISTA_FONDO;
@@ -37,8 +40,8 @@ namespace DWL {
 	DListaEx::DListaEx(void) :  DBarraScrollEx()		, _ItemPaginaInicio(0)		, _ItemPaginaFin(0)			, _ItemPaginaVDif(0)		, _ItemPaginaHDif(0),
 								_SubItemResaltado(-1)	, _SubItemUResaltado(-1)	, _SubItemPresionado(-1)	, MostrarSeleccion(TRUE)	, MultiSeleccion(FALSE) , MoverItemsDrag(FALSE),
 								_ItemResaltado(-1)		, _ItemUResaltado(-1)		, _ItemMarcado(-1)			, _PintarIconos(TRUE),	    
-								_ItemPresionado(-1)		, _ItemShift(-1)			, _Repintar(FALSE)			,
-								_TotalAnchoVisible(0)	, _TotalAltoVisible(0)		, _TiempoItemPresionado(0)  ,
+								_ItemPresionado(-1)		, _ItemShift(-1)			, _Repintar(FALSE)			, _TimerDragArriba(0)       , _TimerDragAbajo(0),
+								_TotalAnchoVisible(0)	, _TotalAltoVisible(0)		, _TiempoItemPresionado(0)  , _PItemPresionado(NULL)    , 
 								_BufferItem(NULL)		, _BufferItemBmp(NULL)		, _BufferItemBmpViejo(NULL)	, _BufferItemFuenteViejo(NULL) {
 
 	}
@@ -693,63 +696,155 @@ namespace DWL {
 		}
 	}
 
-	void DListaEx::_Drag(DEventoMouse &DatosMouse) {
-		LONGLONG Diferencia = 0, CD = 0;
-		if (_ItemPresionado == -1) return;
-		if (_ItemPresionado == _ItemResaltado) return;
-		if (_ItemResaltado != -1) { // pot ser que sobresurti per sobre o per sota
-			LONGLONG       i       = 0;
-			DListaEx_Item *TmpItem = NULL;
-			BOOL           Movido = FALSE;
-			// Cuento las posiciones de diferencia
-			Diferencia = _ItemPresionado - _ItemResaltado;
-
-			#if DLISTAEX_MOSTRARDEBUG == TRUE
-				Debug_Escribir_Varg(L"DListaEx::_Drag  Presionado %d, Resaltado %d, Dif %d\n", _ItemPresionado, _ItemResaltado, Diferencia);
-			#endif
-
-			// Hacia abajo
-			if (Diferencia <= -1) {
-				for (i = _Items.size() - 1; i > -1; i--) {
-					if (_Items[i]->Seleccionado == TRUE) {
-						for (CD = 0; CD > Diferencia; CD--) {
-							if (i - CD + 1 < static_cast<LONGLONG>(_Items.size())) {
-								if (_Items[i - CD + 1]->Seleccionado == FALSE) {
-									TmpItem = _Items[i - CD];
-									_Items[i - CD] = _Items[i - CD + 1];
-									_Items[i - CD + 1] = TmpItem;
-									Movido = TRUE;
-								}
-							}
-						}
+	void DListaEx::_Evento_Temporizador(WPARAM wParam) {
+		LONGLONG i = 0;
+		switch(wParam) {
+			case TIMER_LISTA_DRAG_ARRIBA :
+				#if DLISTAEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DListaEx::_Evento_Temporizador  Drag hacia arriba.\n");
+				#endif
+				if (_ItemPaginaInicio > 0) {
+					_SubirItemsSeleccionados();
+					MostrarItem(_ItemPaginaInicio - 1);
+					// Busco el item presionado
+					for (i = 0; i < static_cast<LONGLONG>(_Items.size()); i++) {
+						if (_PItemPresionado == _Items[i]) break;
 					}
+					_ItemPresionado = i;
+					_ItemMarcado    = i;
 				}
-			}
-			// Hacia arriba
-			else if (Diferencia >= 1) {
-				for (i = 0; i < static_cast<LONGLONG>(_Items.size()); i++) {
-					if (_Items[i]->Seleccionado == TRUE) {
-						for (CD = 0; CD < Diferencia; CD++) {
-							if (i - CD - 1 > -1) {
-								if (_Items[i - CD - 1]->Seleccionado == FALSE) {
-									TmpItem = _Items[i + CD];
-									_Items[i + CD] = _Items[i + CD - 1];
-									_Items[i + CD - 1] = TmpItem;
-									Movido = TRUE;
-								}
-								
-							}
-						}
+				else {
+					KillTimer(_hWnd, TIMER_LISTA_DRAG_ARRIBA);
+					_TimerDragArriba = 0;
+				}
+				break;
+			case TIMER_LISTA_DRAG_ABAJO :
+				#if DLISTAEX_MOSTRARDEBUG == TRUE
+					Debug_Escribir_Varg(L"DListaEx::_Evento_Temporizador  Drag hacia abajo.\n");
+				#endif
+				if (_ItemPaginaFin < static_cast<LONGLONG>(_Items.size()) - 1) {
+					_BajarItemsSeleccionados();
+					MostrarItem(_ItemPaginaFin + 1);
+					// Busco el item presionado
+					for (i = static_cast<LONGLONG>(_Items.size()) - 1; i > -1 ; i--) {
+						if (_PItemPresionado == _Items[i]) break;
 					}
+					_ItemPresionado = i;
+					_ItemMarcado    = i;
 				}
-			}
-			if (Movido == TRUE) {
-				_ItemPresionado = _ItemResaltado;
-				_ItemMarcado = _ItemResaltado;
-			}
-			Repintar();
+				else {
+					KillTimer(_hWnd, TIMER_LISTA_DRAG_ABAJO);
+					_TimerDragAbajo = 0;
+				}
+				break;
 		}
 	}
+
+	void DListaEx::_Drag(DEventoMouse& DatosMouse) {
+		LONGLONG Diferencia = 0;
+		if (_ItemPresionado == -1)				return;
+		if (_ItemPresionado == _ItemResaltado)	return;
+		if (_ItemResaltado == -1)				return;
+
+		
+		// Cuento las posiciones de diferencia
+		Diferencia = _ItemPresionado - _ItemResaltado;
+		// Si la diferencia es mas grande que 1 salgo para evitar glitches
+		if (Diferencia != 1 && Diferencia != -1) return;
+
+		#if DLISTAEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DListaEx::_Drag  Presionado %d, Resaltado %d, Dif %d\n", _ItemPresionado, _ItemResaltado, Diferencia);
+		#endif
+
+		// Muevo los items seleccionados
+		LONGLONG i = 0;
+		// Hacia abajo		
+		if (Diferencia == -1)	{	
+			_BajarItemsSeleccionados();		
+			for (i = static_cast<LONGLONG>(_Items.size()) - 1; i > -1; i--) {
+				if (_PItemPresionado == _Items[i]) break;
+			}
+			_ItemPresionado = i;
+			_ItemMarcado    = i;
+		}
+		// Hacia arriba
+		else if (Diferencia == 1)	{
+			_SubirItemsSeleccionados();		
+			for (i = 0; i < static_cast<LONGLONG>(_Items.size()); i++) {
+				if (_PItemPresionado == _Items[i]) break;
+			}
+			_ItemPresionado = i;
+			_ItemMarcado	= i;
+
+		}	
+
+		_ItemPresionado = _ItemResaltado;
+		_ItemMarcado	= _ItemResaltado;
+
+		// Temporizador por si hay que subir el scroll
+		if (_ItemPresionado == _ItemPaginaInicio && _ItemPaginaInicio > 0) {
+			if (_TimerDragArriba == 0) 	_TimerDragArriba = SetTimer(_hWnd, TIMER_LISTA_DRAG_ARRIBA, 300, NULL);			
+		}
+		else {
+			if (_TimerDragArriba != 0) {
+				KillTimer(_hWnd, _TimerDragArriba);
+				_TimerDragArriba = 0;
+			}
+		}
+
+		// Temporizador por si hay que bajar el scroll
+		if (_ItemPresionado == _ItemPaginaFin && _ItemPaginaFin < static_cast<LONGLONG>(_Items.size()) - 1) {
+			if (_TimerDragAbajo == 0) _TimerDragAbajo = SetTimer(_hWnd, TIMER_LISTA_DRAG_ABAJO, 300, NULL);
+		}
+		else {
+			if (_TimerDragAbajo != 0) {
+				KillTimer(_hWnd, _TimerDragAbajo);
+				_TimerDragAbajo = 0;
+			}
+		}
+
+		Repintar();
+
+	}
+
+	void DListaEx::_SubirItemsSeleccionados(void) {
+		DListaEx_Item* TmpItem = NULL;
+		// De 0 al total de items
+		for (LONGLONG i = 0; i < static_cast<LONGLONG>(_Items.size()); i++) {
+			// Si el item está seleccionado
+			if (_Items[i]->Seleccionado == TRUE) {
+				// Si la posición anterior existe
+				if (static_cast<LONGLONG>(_Items.size()) > i - 1 && i - 1 > -1) {
+					// Si el item de la posición anterior no está seleccionado
+					if (_Items[i - 1]->Seleccionado == FALSE) {
+						TmpItem = _Items[i];
+						_Items[i] = _Items[i - 1];
+						_Items[i - 1] = TmpItem;
+					}
+				}
+			}
+		}
+	}
+
+	void DListaEx::_BajarItemsSeleccionados(void) {
+		DListaEx_Item* TmpItem = NULL;
+		// Del total de items hasta 0
+		for (LONGLONG i = _Items.size() - 1; i > -1; i--) {
+			// Si el item está seleccionado
+			if (_Items[i]->Seleccionado == TRUE) {
+				// Si la siguiente posición existe
+				if (static_cast<LONGLONG>(_Items.size()) > i + 1 && i + 1 > -1) {
+					// Si el item de la siguiente posición no está seleccionado
+					if (_Items[i + 1]->Seleccionado == FALSE) {
+						TmpItem = _Items[i];
+						_Items[i] = _Items[i + 1];
+						_Items[i + 1] = TmpItem;
+					}
+				}
+			}
+		}
+	}
+
 
 	const LONGLONG DListaEx::TotalItemsSeleccionados(void) {
 		LONGLONG Ret = 0;
@@ -788,15 +883,15 @@ namespace DWL {
 
 		_ItemPresionado = HitTest(DatosMouse.X(), DatosMouse.Y(), &_SubItemPresionado);
 		_ItemMarcado	= _ItemPresionado;
+		if (_ItemPresionado != -1) _PItemPresionado = _Items[_ItemPresionado];
 
 		#if DLISTAEX_MOSTRARDEBUG == TRUE
 			Debug_Escribir_Varg(L"DListaEx::_Evento_MousePresionado IP:%d X:%d Y:%d\n", _ItemMarcado, DatosMouse.X(), DatosMouse.Y());
 		#endif
 		// Pre-Selecciono el item presionado
 		if (_ItemPresionado != -1) {
-			BOOL tControl = DatosMouse.Control();
 			// Si la tecla control no está presionada Pre-Selecciono el item
-			if (tControl != TRUE) _Items[_ItemPresionado]->Seleccionado = TRUE;
+			if (DatosMouse.Control() != TRUE) SeleccionarItem(_Items[_ItemPresionado], TRUE);
 		}
 /*		if (_ItemPresionado != -1) {			
 			BOOL tShift   = DatosMouse.Shift();
@@ -832,15 +927,25 @@ namespace DWL {
 		}*/
 
 		Evento_MousePresionado(DatosMouse);
-		Repintar();
+		Repintar(TRUE);
 		// Envio el evento mouseup a la ventana padre
 		SendMessage(GetParent(hWnd()), DWL_LISTAEX_MOUSEPRESIONADO, reinterpret_cast<WPARAM>(&DatosMouse), 0);
-
 	}
 
 	void DListaEx::_Evento_MouseSoltado(const int Boton, WPARAM wParam, LPARAM lParam) {
 		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		_TiempoItemPresionado = 0;
+
+		// Elimino temporizadores del drag
+		if (_TimerDragArriba != 0) {
+			KillTimer(_hWnd, _TimerDragArriba);
+			_TimerDragArriba = 0;
+		}
+		if (_TimerDragAbajo != 0) {
+			KillTimer(_hWnd, _TimerDragAbajo);
+			_TimerDragAbajo = 0;
+		}
+
 		
 		if (_ItemPresionado != -1) {			
 			BOOL tShift   = DatosMouse.Shift();
@@ -896,6 +1001,7 @@ namespace DWL {
 		// TODO : El -1 está malament lo millor seria fer servir el objecte DListaEx_Item * directament com a l'arbre
 		_ItemPresionado = -1;
 		_SubItemPresionado = -1;
+		_PItemPresionado = NULL;
 		Repintar();
 
 	}
@@ -1220,12 +1326,16 @@ namespace DWL {
 			case WM_RBUTTONDBLCLK:	_Evento_MouseDobleClick(1, wParam, lParam);																									return 0;
 			case WM_MBUTTONDBLCLK:	_Evento_MouseDobleClick(2, wParam, lParam);																									return 0;
 
+			case WM_TIMER:          _Evento_Temporizador(wParam);                                                                                                               return 0;
+
 			// Mouse rueda
 			case WM_MOUSEWHEEL:		_Evento_MouseRueda(wParam, lParam);																											return 0;
 			// Teclado
 			case WM_KEYDOWN:		_Evento_TeclaPresionada(wParam, lParam);																									break;
 			case WM_KEYUP:			_Evento_TeclaSoltada(wParam, lParam);																										break;
 			case WM_CHAR:           _Evento_Tecla(wParam, lParam);																												break;
+
+
 		}	
 		return DControlEx::GestorMensajes(uMsg, wParam, lParam);
 	}

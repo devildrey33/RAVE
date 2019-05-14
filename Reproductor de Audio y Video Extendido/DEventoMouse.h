@@ -40,7 +40,7 @@ namespace DWL {
 											\fn		   ~DEventoMouse(void);
 											\return		No devuelve nada.
 										*/
-			                            ~DEventoMouse(void) {
+			                           ~DEventoMouse(void) {
 										};
 
 										//! Función que devuelve la coordenada X de este evento.

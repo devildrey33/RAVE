@@ -190,7 +190,14 @@ namespace DWL {
 		void										   _Evento_FocoObtenido(HWND hWndUltimoFoco);
 		void										   _Evento_FocoPerdido(HWND hWndNuevoFoco);
 
-		void                                           _Drag(DEventoMouse &DatosMouse);
+		void                                           _Evento_Temporizador(WPARAM wParam);
+
+		void                                           _Drag(DEventoMouse& DatosMouse);
+		UINT_PTR                                       _TimerDragArriba;
+		UINT_PTR                                       _TimerDragAbajo;
+
+		void                                           _SubirItemsSeleccionados(void);
+		void                                           _BajarItemsSeleccionados(void);
 
 		// Teclas especiales
 		void										   _Tecla_CursorArriba(DEventoTeclado &DatosTeclado);
@@ -220,6 +227,7 @@ namespace DWL {
 		LONGLONG                                       _SubItemResaltado; // es en número de columa partiendo de la _FilaRsaltada
 		LONGLONG									   _SubItemUResaltado;
 		LONGLONG			                           _ItemPresionado;
+		DListaEx_Item                                 *_PItemPresionado;
 		LONGLONG			                           _SubItemPresionado;
 		LONGLONG			                           _ItemMarcado;
 		LONGLONG					                   _ItemShift;

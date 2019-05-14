@@ -33,6 +33,7 @@ class VentanaPrincipal : public DWL::DVentana {
 /*	void						AgregarRaiz(void);
 	void						EliminarRaiz(std::wstring &Path);*/
 
+	void                        Evento_Comando(WPARAM wParam, LPARAM lParam);
 	void						Evento_MenuEx_Click(const UINT cID);
 	void						Evento_MenuEx_Barra_Cambiando(const UINT cID, const float ValorBarra);
 	void						Evento_MenuEx_Barra_Cambiado(const UINT cID, const float ValorBarra);

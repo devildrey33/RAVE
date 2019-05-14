@@ -266,9 +266,9 @@
 				V S'ha de revisar el tema amb multiselecció
 				V S'ha de poguer moure els items en multiselecció sense el control...
 				V En multiselecció haig de ignorar els items seleccionats (Selecciona 3 items, i agafa el de mes aball per mourels fins a dalt de tot : el tercer item puja cap al primer)
-				V Despres de un drag multiselecció en el mouseup no s'ha de des-seleccionar
-				- Si el drag surt de la finestra i i ha mes scroll cap aquella direcció, s'ha de moure el scroll amb un timer
-				V Revisar selecció amb el control... al fer una pre-seleccio en el mouse down, em des-selecciona el item perque el seu ultim estat era seleccionat...
+				V Despres de un drag multiselecció en el mouseup no s'ha de des-seleccionar			
+				V Revisar selecció amb el control.h.. al fer una pre-seleccio en el mouse down, em des-selecciona el item perque el seu ultim estat era seleccionat...
+				V Si el drag surt de la finestra i i ha mes scroll cap aquella direcció, s'ha de moure el scroll amb un timer
 
 			V  Transicións de resaltat i presionat		
 			V  Afegir borde amb transició
@@ -297,7 +297,7 @@
 				- Guardar el tamany a les opcions de la BD
 
 		V  S'ha de poder afegir medis desde l'explorador mentres es carrega la libvlc.
-			-  s'ha de probar desde la RELEASE quan em carregui la libvlc per primer cop
+			V  s'ha de probar desde la RELEASE quan em carregui la libvlc per primer cop
 
 		-  Afegir al MenuBD : 
 			V  Nota (per poguer modificar la nota de tots els medis d'un directori)
@@ -323,7 +323,7 @@
 			-  Afegir buto mis listas
 		
 		-  Crear Icona Buscar en l'arbre de la BD adal a la dreta (m'estic plantejant si el necesito també per la llista, i si l'haig d'implementar com una part del DArbolEx i la DListaEx)
-		-  Si la llista / BD (autio/video) está buida mostrar un icona que inciti a arrosegar un arxiu / directori
+		-  Si la llista / BD (audio/video) está buida mostrar un icona que inciti a arrosegar un arxiu / directori
 
 		-  La llista s'ha de poguer veure desde els ControlesPantallaCompleta
 			-  Mostrar la llista de medis al reproduir un video de forma "diferent", per exemple una liista translucida reduida (pensa que aixó nomes pasara si el reproductor no está maximitzat i está reproduint video)

@@ -782,6 +782,24 @@ void VentanaPrincipal::_MostrarMarco(const INT_PTR ID) {
 	Video.Visible((ID == ID_BOTON_VIDEO) ? TRUE : FALSE);
 }
 
+// Mensajes para los botones de la barra de tareas
+void VentanaPrincipal::Evento_Comando(WPARAM wParam, LPARAM lParam) {
+	switch (LOWORD(wParam)) {
+			case ID_BOTON_ANTERIOR:
+				Lista_Anterior();
+				break;
+			case ID_BOTON_SIGUIENTE:
+				Lista_Siguiente();
+				break;
+			case ID_BOTON_PLAY:
+				Lista_Play();
+				break;
+			case ID_BOTON_STOP:
+				Lista_Stop();
+				break;
+	}
+}
+
 void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse) {
 	if (DatosMouse.Boton == 0) {
 		switch (DatosMouse.ID()) {
@@ -1540,6 +1558,10 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			return 0;
 		case DWL_BOTONEX_MOUSEDOWN :
 			Evento_BotonEx_Mouse_Presionado(WPARAM_TO_DEVENTOMOUSE(wParam));
+			return 0;
+
+		case WM_COMMAND : // Para los botones de la barra de tareas
+			Evento_Comando(wParam, lParam);
 			return 0;
 		
 

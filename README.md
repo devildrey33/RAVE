@@ -1,5 +1,14 @@
 # Reproductor de Audio y Video Extendido
-Reproductor de Audio y Video basado en la [LibVlc](https://www.videolan.org/vlc/index.es.html) para uso personal.
+Reproductor de Audio y Video bajo windows basado en la [LibVlc](https://www.videolan.org/vlc/index.es.html).
+
+Todo lo que necesito para mi uso personal : 
+ * Listas de música aleatórias nada mas empezar.
+
+ * Apagado del ordenador al terminar una lista. 
+
+ * Personalización de valores para cada video (brillo, saturacion, contraste, proporción, etc...)
+
+ * Barra de controles vertical en videos (para ver bien los subtitulos al mover el mouse)
 
 ### Requisitos
 Sistema operativo Windows 7 o superior (x86. x64)
