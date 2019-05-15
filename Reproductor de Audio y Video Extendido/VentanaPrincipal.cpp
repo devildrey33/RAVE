@@ -443,7 +443,7 @@ void VentanaPrincipal::Lista_Siguiente(void) {
 void VentanaPrincipal::Lista_Anterior(void) {
 	if (Lista.TotalItems() == 0) return;
 
-	LONGLONG TotalItems = Lista.TotalItems() - 1;
+	LONG_PTR TotalItems = Lista.TotalItems() - 1;
 	if (TotalItems == -1) TotalItems = 0;
 	Lista.MedioActual = Lista.MedioAnterior(Lista.MedioActual);
 /*	if (Lista.MedioActual < 0) Lista.MedioActual = TotalItems;
@@ -523,9 +523,9 @@ void VentanaPrincipal::Lista_MostrarEnBaseDatos(void) {
 }
 
 void VentanaPrincipal::Lista_EliminarSeleccionados(void) {
-	LONGLONG Ret = 0;
+	LONG_PTR Ret = 0;
 	BOOL MAC = FALSE;  // Medio Actual Cerrado
-	for (LONGLONG i = Lista.TotalItems() - 1; i > -1; i--) {
+	for (LONG_PTR i = Lista.TotalItems() - 1; i > -1; i--) {
 		if (Lista.Item(i)->Seleccionado == TRUE) {
 			if (Lista.Medio(i) == Lista.MedioActual) {
 				App.MP.CerrarMedio();
@@ -548,7 +548,7 @@ void VentanaPrincipal::Lista_EliminarSeleccionados(void) {
 
 	Lista.Repintar();
 
-//	LONGLONG nItems = Lista.EliminarItemsSeleccionados();
+//	LONG_PTR nItems = Lista.EliminarItemsSeleccionados();
 }
 
 void VentanaPrincipal::Arbol_AgregarALista(const BOOL NuevaLista) {
@@ -701,14 +701,14 @@ void VentanaPrincipal::Arbol_AsignarNota(const float nNota) {
 
 void VentanaPrincipal::Lista_AsignarNota(const float nNota) {
 	std::wstring StrMedio;
-	for (LONGLONG i = 0; i < Lista.TotalItems(); i++) {
+	for (LONG_PTR i = 0; i < Lista.TotalItems(); i++) {
 		if (Lista.Medio(i)->Seleccionado == TRUE) {
 			App.BD.MedioNota(Lista.Medio(i), nNota);
 			StrMedio = Lista.Medio(i)->Texto(0) + L" " + Lista.Medio(i)->Texto(1);
 		}
 	}
 	App.VentanaRave.Menu_Lista.Ocultar(TRUE);
-	LONGLONG TM;
+	LONG_PTR TM;
 	TM = Lista.TotalItemsSeleccionados();
 	if (TM == 1)	{ App.MostrarToolTipPlayer(StrMedio + L" ahora tiene " + DWL::Strings::ToStrF(nNota, 2) + L" de nota"); }
 	else			{ App.MostrarToolTipPlayer(L"Nota actualizada a " + DWL::Strings::ToStrF(nNota, 2));					}
@@ -1322,7 +1322,7 @@ void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
 
 	if (Reproducir == TRUE) {
 /*		ItemMedio *Item = Lista.BuscarHash(Medio.Hash);
-		for (LONGLONG i = 0; i < Lista.TotalItems(); i++) {
+		for (LONG_PTR i = 0; i < Lista.TotalItems(); i++) {
 			if (Item == Lista.Medio(i)) {
 				Lista.MedioActual = i;
 				break;

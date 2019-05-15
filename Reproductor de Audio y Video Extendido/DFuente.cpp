@@ -137,14 +137,11 @@ namespace DWL {
 	}
 
 	DFuente::DFuente_Datos *DFuente::_BuscarFuente(const int nTam, std::wstring &nNombre, const BOOL nNegrita, const BOOL nCursiva, const BOOL nSubrayado, const BOOL nTachado) {
-//	LONG DFuente::_BuscarFuente(const int nTam, std::wstring &nNombre, const BOOL nNegrita, const BOOL nCursiva, const BOOL nSubrayado, const BOOL nTachado) {
-			for (LONG i = 0; i < _Fuentes.size(); i++) {
+		for (size_t i = 0; i < _Fuentes.size(); i++) {
 			if (nTam == _Fuentes[i]->Tam && nNombre == _Fuentes[i]->Nombre && nNegrita == _Fuentes[i]->Negrita && nCursiva == _Fuentes[i]->Cursiva && nSubrayado == _Fuentes[i]->Subrayado && nTachado == _Fuentes[i]->Tachado) {
-//				return i;
 				return _Fuentes[i];
 			}
 		}
-//		return -1;
 		return NULL;
 	}
 

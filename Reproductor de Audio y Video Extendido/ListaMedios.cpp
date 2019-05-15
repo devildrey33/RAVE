@@ -22,9 +22,9 @@ void ListaMedios::Evento_Tecla(DWL::DEventoTeclado &DatosTeclado) {
 	App.VentanaRave.Evento_Tecla(DatosTeclado);
 }*/
 
-const LONGLONG ListaMedios::PosMedio(ItemMedio *pMedio) {
+const LONG_PTR ListaMedios::PosMedio(ItemMedio *pMedio) {
 	if (pMedio == NULL) return -1;
-	for (LONGLONG i = 0; i < static_cast<LONGLONG>(_Items.size()); i++) {
+	for (LONG_PTR i = 0; i < static_cast<LONG_PTR>(_Items.size()); i++) {
 		if (Medio(i) == pMedio) return i;
 	}
 	return -1;
@@ -41,7 +41,7 @@ ItemMedio *ListaMedios::MedioAnterior(ItemMedio *nMedio, const BOOL SituarAlFina
 		}
 		// No es el primero de la lista, retrocedo un medio
 		else {
-			LONGLONG Pm = PosMedio(nMedio);
+			LONG_PTR Pm = PosMedio(nMedio);
 			if (Pm > 0 && SituarAlFinal == TRUE) {
 				Ret = static_cast<ItemMedio *>(_Items[Pm - 1]);
 			}
@@ -60,8 +60,8 @@ ItemMedio *ListaMedios::MedioSiguiente(ItemMedio *nMedio) {
 		}
 		// No es el ultimo de la lista
 		else {
-			LONGLONG Pm = PosMedio(nMedio);
-			if (Pm > -1 && Pm < static_cast<LONGLONG>(_Items.size())) {
+			LONG_PTR Pm = PosMedio(nMedio);
+			if (Pm > -1 && Pm < static_cast<LONG_PTR>(_Items.size())) {
 				Ret = static_cast<ItemMedio *>(_Items[Pm + 1]);
 			}
 		}
@@ -176,7 +176,7 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 		BOOL nActivar = (_ItemResaltado == -1) ? FALSE : TRUE;
 		// Miro si el medio tiene una raíz (si no tiene raíz no saldrá en la base de datos)
 		BOOL nBuscarBDActivado = nActivar;
-		if (_ItemMarcado > -1 && _ItemMarcado < static_cast<LONGLONG>(_Items.size())) {
+		if (_ItemMarcado > -1 && _ItemMarcado < static_cast<LONG_PTR>(_Items.size())) {
 			BDMedio TmpMedio;
 			App.BD.ObtenerMedio(Medio(_ItemMarcado)->Hash, TmpMedio);
 
@@ -256,7 +256,7 @@ const BOOL ListaMedios::Mezclar(const BOOL nMezclar) {
 		// Busco la posición del medio actual en la lista mezclada
 /*		for (i = 0; i < _Items.size(); i++) {
 			if (_Items[i] == _MediosOrdenados[MedioActual]) {
-				MedioActual = static_cast<LONGLONG>(i);
+				MedioActual = static_cast<LONG_PTR>(i);
 				MostrarItem(i);
 				break;
 			}
@@ -268,7 +268,7 @@ const BOOL ListaMedios::Mezclar(const BOOL nMezclar) {
 		// Busco la posición del medio actual en la lista original
 /*		for (i = 0; i < _Items.size(); i++) {
 			if (_Items[MedioActual] == _MediosOrdenados[i]) {
-				MedioActual = static_cast<LONGLONG>(i);
+				MedioActual = static_cast<LONG_PTR>(i);
 				MostrarItem(i);
 				break;
 			}

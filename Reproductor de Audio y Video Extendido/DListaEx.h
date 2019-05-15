@@ -107,40 +107,40 @@ namespace DWL {
 															return nItem;
 														};
 
-		void											EliminarItem(const LONGLONG ePosItem);
+		void											EliminarItem(const LONG_PTR ePosItem);
 		void											EliminarItem(DListaEx_Item *eItem);
-		const LONGLONG									EliminarItemsSeleccionados(void);
+		const LONG_PTR									EliminarItemsSeleccionados(void);
 		void											EliminarTodosLosItems(void);
 														// Acceso a los DListaEx_Item
-		inline DListaEx_Item                           *Item(const LONGLONG iPos) { if (iPos == -1)            { return NULL; }	return _Items[static_cast<unsigned int>(iPos)]; }
+		inline DListaEx_Item                           *Item(const LONG_PTR iPos) { if (iPos == -1)            { return NULL; }	return _Items[static_cast<unsigned int>(iPos)]; }
 		inline DListaEx_Item                           *ItemResaltado(void)	  	  { if (_ItemResaltado == -1)  { return NULL; }	return _Items[static_cast<unsigned int>(_ItemResaltado)]; };
 		inline DListaEx_Item                           *ItemPresionado(void)	  { if (_ItemPresionado == -1) { return NULL; }	return _Items[static_cast<unsigned int>(_ItemPresionado)]; };
 		inline DListaEx_Item                           *ItemMarcado(void)		  { if (_ItemMarcado == -1)    { return NULL; }	return _Items[static_cast<unsigned int>(_ItemMarcado)]; };
 		void											ItemMarcado(DListaEx_Item *NuevoItemMarcado, const BOOL nRepintar = FALSE);
 														// Devuelve la posición del DListaEx_Item que está dentro de esta lista
-		const LONGLONG                                  ItemPos(DListaEx_Item *pItem);
+		const LONG_PTR                                  ItemPos(DListaEx_Item *pItem);
 		virtual void									Repintar(const BOOL nForzar = FALSE);
 
-		void                                            SeleccionarItem(const LONGLONG sPos, const BOOL nSeleccion);
+		void                                            SeleccionarItem(const LONG_PTR sPos, const BOOL nSeleccion);
 		void                                            SeleccionarItem(DListaEx_Item *sItem, const BOOL nSeleccion);
 
 		void											DesSeleccionarTodo(void);
-		void											MostrarItem(const LONGLONG iPos, const BOOL nRepintar = TRUE);
+		void											MostrarItem(const LONG_PTR iPos, const BOOL nRepintar = TRUE);
 		void											MostrarItem(DListaEx_Item *eItem);
 
-		const BOOL                                      ObtenerRectaItem(const LONGLONG iPos, RECT &rRecta);
+		const BOOL                                      ObtenerRectaItem(const LONG_PTR iPos, RECT &rRecta);
 		inline const BOOL                               ObtenerRectaItem(DListaEx_Item *eItem, RECT &rRecta) { return ObtenerRectaItem(ItemPos(eItem), rRecta); }
 
-		inline const LONGLONG							TotalItems(void) { return static_cast<LONGLONG>(_Items.size()); }
-		const LONGLONG									TotalItemsSeleccionados(void);
+		inline const LONG_PTR							TotalItems(void) { return static_cast<LONG_PTR>(_Items.size()); }
+		const LONG_PTR									TotalItemsSeleccionados(void);
 
 		inline const size_t                             TotalColumnas(void) { return _Columnas.size();  }
-		inline DListaEx_Columna                        *Columna(const LONGLONG cPos) { return _Columnas[static_cast<unsigned int>(cPos)];  }
+		inline DListaEx_Columna                        *Columna(const LONG_PTR cPos) { return _Columnas[static_cast<unsigned int>(cPos)];  }
 
 		void											Pintar(HDC hDC);
-		void											PintarItem(HDC hDC, const LONGLONG pPosItem, RECT &Espacio);
+		void											PintarItem(HDC hDC, const LONG_PTR pPosItem, RECT &Espacio);
 
-		const LONGLONG									HitTest(const int cX, const int cY, LONGLONG *PosSubItem = NULL);
+		const LONG_PTR									HitTest(const int cX, const int cY, LONG_PTR*PosSubItem = NULL);
 
 		void											Scrolls_EventoCambioPosicion(void);
 
@@ -161,7 +161,7 @@ namespace DWL {
 		virtual void								    Evento_FocoObtenido(HWND hWndUltimoFoco)														{ };
 		virtual void								    Evento_FocoPerdido(HWND hWndNuevoFoco)															{ };
 
-		virtual void                                    Evento_PintarSubItem(HDC hDC, const LONGLONG NumItem, const LONGLONG NumSubItem, RECT *Espacio) { };
+		virtual void                                    Evento_PintarSubItem(HDC hDC, const LONG_PTR NumItem, const LONG_PTR NumSubItem, RECT *Espacio) { };
 
 		BOOL                                            MostrarSeleccion;
 		BOOL                                            MultiSeleccion;
@@ -222,22 +222,22 @@ namespace DWL {
 		std::vector<DListaEx_Columna *>                _Columnas;
 
 		DWORD                                          _TiempoItemPresionado; // Tiempo que lleva presionado el item (para hacer drag)
-		LONGLONG                                       _ItemResaltado;
-		LONGLONG	                                   _ItemUResaltado;
-		LONGLONG                                       _SubItemResaltado; // es en número de columa partiendo de la _FilaRsaltada
-		LONGLONG									   _SubItemUResaltado;
-		LONGLONG			                           _ItemPresionado;
+		LONG_PTR                                       _ItemResaltado;
+		LONG_PTR	                                   _ItemUResaltado;
+		LONG_PTR                                       _SubItemResaltado; // es en número de columa partiendo de la _FilaRsaltada
+		LONG_PTR									   _SubItemUResaltado;
+		LONG_PTR			                           _ItemPresionado;
 		DListaEx_Item                                 *_PItemPresionado;
-		LONGLONG			                           _SubItemPresionado;
-		LONGLONG			                           _ItemMarcado;
-		LONGLONG					                   _ItemShift;
+		LONG_PTR			                           _SubItemPresionado;
+		LONG_PTR			                           _ItemMarcado;
+		LONG_PTR					                   _ItemShift;
 														// Diferencia de pixeles inicial entre la _FilaInicioPagina y el inicio de la página visible
 		LONG                                           _ItemPaginaVDif;
 														// Diferencia de pixeles entre .... 
 		LONG                                           _ItemPaginaHDif;
 
-		LONGLONG                                       _ItemPaginaInicio;
-		LONGLONG                                       _ItemPaginaFin;
+		LONG_PTR                                       _ItemPaginaInicio;
+		LONG_PTR                                       _ItemPaginaFin;
 
 		size_t                                         _TotalAnchoVisible;
 		size_t										   _TotalAltoVisible;

@@ -26,7 +26,7 @@ class ListaMedios : public DWL::DListaEx {
 
 	ItemMedio                  *BuscarHash(sqlite3_int64 Hash);
 
-	inline ItemMedio           *Medio(const LONGLONG nPos)	{ return static_cast<ItemMedio *>(_Items[static_cast<unsigned int>(nPos)]); 											}
+	inline ItemMedio           *Medio(const LONG_PTR nPos)	{ return static_cast<ItemMedio *>(_Items[static_cast<unsigned int>(nPos)]); 											}
 	inline ItemMedio           *MedioMarcado(void)			{ return static_cast<ItemMedio *>(ItemMarcado());																		}
 
 	inline ItemMedio		   *MedioResaltado(void)		{ return static_cast<ItemMedio *>(ItemResaltado());																		}
@@ -50,7 +50,7 @@ class ListaMedios : public DWL::DListaEx {
 
 	int							Errores;
 								// Posición en la lista del medio especificado (puede ser -1 si no hay medio actual)
-	const LONGLONG              PosMedio(ItemMedio *pMedio);
+	const LONG_PTR              PosMedio(ItemMedio *pMedio);
    protected:
 
 //	size_t                     _ItemMarcadoOriginal;

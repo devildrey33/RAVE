@@ -28,7 +28,7 @@ namespace DWL {
 	void DListaDesplegableEx::Evento_Desplegar(void) {
 		if (_Lista.Visible() == FALSE) {
 			// Ajusto el tamaño de la lista si el (total de items * altura del item + 2 pixeles) es mas pequeño, la altura del item se mide con la altura de la fuente + el (padding * 2)
-			if (_AltoLista > (_Lista.TotalItems() * (_Lista.Fuente.Alto() + (DLISTAEX_PADDING * 2))) + 2)	// El +2 es el borde
+			if (static_cast<LONG_PTR>(_AltoLista) > (_Lista.TotalItems() * (_Lista.Fuente.Alto() + (DLISTAEX_PADDING * 2))) + 2)	// El +2 es el borde
 				_AltoLista = static_cast<UINT>((_Lista.TotalItems() * (_Lista.Fuente.Alto() + (DLISTAEX_PADDING * 2))) + 2);
 
 			RECT RV;

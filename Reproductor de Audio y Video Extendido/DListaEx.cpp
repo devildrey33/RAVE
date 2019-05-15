@@ -104,9 +104,9 @@ namespace DWL {
 		_Repintar = TRUE;
 	}
 
-	const LONGLONG DListaEx::EliminarItemsSeleccionados(void) {
-		LONGLONG Ret = 0;
-		for (LONGLONG i = _Items.size() - 1; i > 0; i--) {
+	const LONG_PTR DListaEx::EliminarItemsSeleccionados(void) {
+		LONG_PTR Ret = 0;
+		for (LONG_PTR i = _Items.size() - 1; i > 0; i--) {
 			if (_Items[i]->Seleccionado == TRUE) {
 				EliminarItem(i);
 				Ret++;
@@ -157,14 +157,14 @@ namespace DWL {
 		// Diferencia de pixeles Vertical (puede ser negativo si el primer item es parcialmente visible, o 0 si el primer item está justo al principio del área visible)
 		LONG DifInicioV = _ItemPaginaVDif;
 
-		LONGLONG nItemFin = _ItemPaginaFin;
+		LONG_PTR nItemFin = _ItemPaginaFin;
 		if (nItemFin == -1) nItemFin = _Items.size() - 1;
 
 		RECT RectaItem;
 		LONG nAlto = Fuente.Alto() + (DLISTAEX_PADDING * 2);
 		// _ItemPaginaInicio es unsigned -1 se refiere al valor máximo en una variable del tipo size_t
 		if (_ItemPaginaInicio != -1) {
-			for (LONGLONG i = _ItemPaginaInicio; i < nItemFin + 1; i++) {
+			for (LONG_PTR i = _ItemPaginaInicio; i < nItemFin + 1; i++) {
 				// Si RCS.right y RC.right son iguales, es que no hay scroll vertical, y le sumo 2 al ancho para ajustarme al borde 
 				RectaItem = { 0, DifInicioV, (RCS.right != RC.right) ? RCS.right : RCS.right + 2, DifInicioV + nAlto };
 				PintarItem(Buffer, i, RectaItem);
@@ -186,7 +186,7 @@ namespace DWL {
 		DeleteDC(Buffer);
 	}
 
-	void DListaEx::PintarItem(HDC hDC, const LONGLONG nPosItem, RECT &Espacio) {
+	void DListaEx::PintarItem(HDC hDC, const LONG_PTR nPosItem, RECT &Espacio) {
 		if (_Items.size() == 0) return;
 
 		BOOL bResaltado = (nPosItem == _ItemResaltado) ? TRUE : FALSE;
@@ -268,7 +268,7 @@ namespace DWL {
 		[in]  cY			: Coordenada Y
 		[out] nPosSubItem	: Si no es NULL devolverá la posición del SubItem
 	*/
-	const LONGLONG DListaEx::HitTest(const int cX, const int cY, LONGLONG *nPosSubItem) {
+	const LONG_PTR DListaEx::HitTest(const int cX, const int cY, LONG_PTR*nPosSubItem) {
 		if (_ItemPaginaInicio == -1) {
 /*			#if DLISTAEX_MOSTRARDEBUG == TRUE
 				Debug_Escribir_Varg(L"DListaEx::HitTest X:%d Y:%d I:-1 SI:-1\n", cX, cY);
@@ -279,11 +279,11 @@ namespace DWL {
 		int PixelesContados		= _ItemPaginaVDif; // Pixeles de altura contados hasta el nodo
 		int AltoItem			= Fuente.Alto() + (DLISTAEX_PADDING * 2);
 		int PixelesContadosH	= _ItemPaginaHDif;
-		LONGLONG PosInicio		= _ItemPaginaInicio;
-		LONGLONG PosFin			= _ItemPaginaFin + 1;
+		LONG_PTR PosInicio		= _ItemPaginaInicio;
+		LONG_PTR PosFin			= _ItemPaginaFin + 1;
 		
 		if (PosFin == 0) PosFin = _Items.size();
-		for (LONGLONG i = PosInicio; i < PosFin; i++) {
+		for (LONG_PTR i = PosInicio; i < PosFin; i++) {
 			// El item está en las coordenadas del mouse
 			if (PixelesContados <= cY && PixelesContados + AltoItem >= cY) {				
 				// Si PosSubItem no es NULL necesitamos determinar la posición del SubItem
@@ -328,11 +328,11 @@ namespace DWL {
 		}
 	}
 
-	void DListaEx::EliminarItem(const LONGLONG ePos) {
-		if (ePos < static_cast<LONGLONG>(_Items.size())) {
+	void DListaEx::EliminarItem(const LONG_PTR ePos) {
+		if (ePos < static_cast<LONG_PTR>(_Items.size())) {
 			delete _Items[static_cast<unsigned int>(ePos)];
 			_Items.erase(_Items.begin() + static_cast<unsigned int>(ePos));
-			if (_ItemResaltado >= static_cast<LONGLONG>(_Items.size())) {
+			if (_ItemResaltado >= static_cast<LONG_PTR>(_Items.size())) {
 				_ItemResaltado  = -1;
 				_ItemUResaltado = -1;
 			}
@@ -371,8 +371,8 @@ namespace DWL {
 		}
 	}
 
-	void DListaEx::MostrarItem(const LONGLONG iPos, const BOOL nRepintar) {
-		if (iPos >= static_cast<LONGLONG>(_Items.size()) || _Items.size() == 0) return;
+	void DListaEx::MostrarItem(const LONG_PTR iPos, const BOOL nRepintar) {
+		if (iPos >= static_cast<LONG_PTR>(_Items.size()) || _Items.size() == 0) return;
 
 		RECT RItem;
 		if (ObtenerRectaItem(iPos, RItem) == FALSE) return;
@@ -414,7 +414,7 @@ namespace DWL {
 		if (nRepintar == TRUE) Repintar();
 	}
 
-	const LONGLONG DListaEx::ItemPos(DListaEx_Item *pItem) {
+	const LONG_PTR DListaEx::ItemPos(DListaEx_Item *pItem) {
 		return std::find(_Items.begin(), _Items.end(), pItem) - _Items.begin();
 	}
 
@@ -437,8 +437,8 @@ namespace DWL {
 
 	
 	// Obtiene la recta absoluta del item
-	const BOOL DListaEx::ObtenerRectaItem(const LONGLONG iPos, RECT &rRecta) {
-		if (_Items.size() == 0 || iPos >= static_cast<LONGLONG>(_Items.size())) return FALSE;
+	const BOOL DListaEx::ObtenerRectaItem(const LONG_PTR iPos, RECT &rRecta) {
+		if (_Items.size() == 0 || iPos >= static_cast<LONG_PTR>(_Items.size())) return FALSE;
 		LONG nAncho = 0;
 		for (size_t i = 0; i < _Columnas.size(); i++) nAncho += _Columnas[i]->_AnchoCalculado;		
 
@@ -699,7 +699,7 @@ namespace DWL {
 	}
 
 	void DListaEx::_Evento_Temporizador(WPARAM wParam) {
-		LONGLONG i = 0;
+		LONG_PTR i = 0;
 		switch(wParam) {
 			case TIMER_LISTA_DRAG_ARRIBA :
 				#if DLISTAEX_MOSTRARDEBUG == TRUE
@@ -709,7 +709,7 @@ namespace DWL {
 					_SubirItemsSeleccionados();
 //					MostrarItem(_ItemPaginaInicio - 1);
 					// Busco el item presionado
-					for (i = 0; i < static_cast<LONGLONG>(_Items.size()); i++) {
+					for (i = 0; i < static_cast<LONG_PTR>(_Items.size()); i++) {
 						if (_PItemPresionado == _Items[i]) break;
 					}
 					_ItemPresionado = i;
@@ -725,13 +725,13 @@ namespace DWL {
 			case TIMER_LISTA_DRAG_ABAJO :
 				#if DLISTAEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir_Varg(L"DListaEx::_Evento_Temporizador  Drag hacia abajo.\n");
-				#endif
-				if (_ItemPaginaFin < static_cast<LONGLONG>(_Items.size())) {
+				#endif					
+				if (_ItemPaginaFin < static_cast<LONG_PTR>(_Items.size())) {
 					_BajarItemsSeleccionados();
 //					if (_ItemPaginaVDif == 0) MostrarItem(_ItemPaginaFin + 1);
 //					else                      MostrarItem(_ItemPaginaFin);
 					// Busco el item presionado
-					for (i = static_cast<LONGLONG>(_Items.size()) - 1; i > -1 ; i--) {
+					for (i = static_cast<LONG_PTR>(_Items.size()) - 1; i > -1 ; i--) {
 						if (_PItemPresionado == _Items[i]) break;
 					}
 					_ItemPresionado = i;
@@ -747,7 +747,7 @@ namespace DWL {
 	}
 
 	void DListaEx::_Drag(DEventoMouse& DatosMouse) {
-		LONGLONG Diferencia = 0;
+		LONG_PTR Diferencia = 0;
 		if (_ItemPresionado == -1)				return;
 		if (_ItemPresionado == _ItemResaltado)	return;
 		if (_ItemResaltado == -1)				return;
@@ -763,11 +763,11 @@ namespace DWL {
 		#endif
 
 		// Muevo los items seleccionados
-		LONGLONG i = 0;
+		LONG_PTR i = 0;
 		// Hacia abajo		
 		if (Diferencia == -1)	{	
 			_BajarItemsSeleccionados();		
-			for (i = static_cast<LONGLONG>(_Items.size()) - 1; i > -1; i--) {
+			for (i = static_cast<LONG_PTR>(_Items.size()) - 1; i > -1; i--) {
 				if (_PItemPresionado == _Items[i]) break;
 			}
 			_ItemPresionado = i;
@@ -776,7 +776,7 @@ namespace DWL {
 		// Hacia arriba
 		else if (Diferencia == 1)	{
 			_SubirItemsSeleccionados();		
-			for (i = 0; i < static_cast<LONGLONG>(_Items.size()); i++) {
+			for (i = 0; i < static_cast<LONG_PTR>(_Items.size()); i++) {
 				if (_PItemPresionado == _Items[i]) break;
 			}
 			_ItemPresionado = i;
@@ -799,7 +799,7 @@ namespace DWL {
 		}
 
 		// Temporizador por si hay que bajar el scroll
-		if (_ItemPresionado == _ItemPaginaFin && _ItemPaginaFin < static_cast<LONGLONG>(_Items.size())) {
+		if (_ItemPresionado == _ItemPaginaFin && _ItemPaginaFin < static_cast<LONG_PTR>(_Items.size())) {
 			if (_TimerDragAbajo == 0) _TimerDragAbajo = SetTimer(_hWnd, TIMER_LISTA_DRAG_ABAJO, MILISEGUNDOS_TIMER_DRAG, NULL);
 		}
 		else {
@@ -816,11 +816,11 @@ namespace DWL {
 	void DListaEx::_SubirItemsSeleccionados(void) {
 		DListaEx_Item* TmpItem = NULL;
 		// De 0 al total de items
-		for (LONGLONG i = 0; i < static_cast<LONGLONG>(_Items.size()); i++) {
+		for (LONG_PTR i = 0; i < static_cast<LONG_PTR>(_Items.size()); i++) {
 			// Si el item está seleccionado
 			if (_Items[i]->Seleccionado == TRUE) {
 				// Si la posición anterior existe
-				if (static_cast<LONGLONG>(_Items.size()) > i - 1 && i - 1 > -1) {
+				if (static_cast<LONG_PTR>(_Items.size()) > i - 1 && i - 1 > -1) {
 					// Si el item de la posición anterior no está seleccionado
 					if (_Items[i - 1]->Seleccionado == FALSE) {
 						TmpItem = _Items[i];
@@ -835,11 +835,11 @@ namespace DWL {
 	void DListaEx::_BajarItemsSeleccionados(void) {
 		DListaEx_Item* TmpItem = NULL;
 		// Del total de items hasta 0
-		for (LONGLONG i = _Items.size() - 1; i > -1; i--) {
+		for (LONG_PTR i = _Items.size() - 1; i > -1; i--) {
 			// Si el item está seleccionado
 			if (_Items[i]->Seleccionado == TRUE) {
 				// Si la siguiente posición existe
-				if (static_cast<LONGLONG>(_Items.size()) > i + 1 && i + 1 > -1) {
+				if (static_cast<LONG_PTR>(_Items.size()) > i + 1 && i + 1 > -1) {
 					// Si el item de la siguiente posición no está seleccionado
 					if (_Items[i + 1]->Seleccionado == FALSE) {
 						TmpItem = _Items[i];
@@ -852,15 +852,15 @@ namespace DWL {
 	}
 
 
-	const LONGLONG DListaEx::TotalItemsSeleccionados(void) {
-		LONGLONG Ret = 0;
+	const LONG_PTR DListaEx::TotalItemsSeleccionados(void) {
+		LONG_PTR Ret = 0;
 		for (size_t i = 0; i < _Items.size(); i++) {
 			if (_Items[i]->Seleccionado == TRUE) Ret++;
 		}
 		return Ret;
 	}
 
-	void DListaEx::SeleccionarItem(const LONGLONG sPos, const BOOL nSeleccion) {
+	void DListaEx::SeleccionarItem(const LONG_PTR sPos, const BOOL nSeleccion) {
 		SeleccionarItem(_Items[sPos], nSeleccion);
 	}
 
@@ -904,8 +904,8 @@ namespace DWL {
 			BOOL tControl = DatosMouse.Control();
 			if (tShift == TRUE && _ItemShift != -1) {
 				DesSeleccionarTodo();
-				if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) SeleccionarItem(i, TRUE);	}
-				else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) SeleccionarItem(i, TRUE);	}
+				if (_ItemShift < _ItemMarcado) { for (LONG_PTR i = _ItemShift; i <= _ItemMarcado; i++) SeleccionarItem(i, TRUE);	}
+				else                           { for (LONG_PTR i = _ItemMarcado; i <= _ItemShift; i++) SeleccionarItem(i, TRUE);	}
 			}
 			else if (tControl == TRUE) {
 				SeleccionarItem(_ItemPresionado, !_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado);
@@ -958,8 +958,8 @@ namespace DWL {
 			BOOL tControl = DatosMouse.Control();
 			if (tShift == TRUE && _ItemShift != -1) {
 				DesSeleccionarTodo();
-				if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) SeleccionarItem(i, TRUE);	}
-				else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) SeleccionarItem(i, TRUE);	}
+				if (_ItemShift < _ItemMarcado) { for (LONG_PTR i = _ItemShift; i <= _ItemMarcado; i++) SeleccionarItem(i, TRUE);	}
+				else                           { for (LONG_PTR i = _ItemMarcado; i <= _ItemShift; i++) SeleccionarItem(i, TRUE);	}
 			}
 			else if (tControl == TRUE) {
 				SeleccionarItem(_ItemPresionado, !_Items[static_cast<unsigned int>(_ItemPresionado)]->Seleccionado);
@@ -990,7 +990,7 @@ namespace DWL {
 		ReleaseCapture();
 		if (Scrolls_MouseSoltado(DatosMouse) == TRUE) { return; }
 
-		LONGLONG T = HitTest(DatosMouse.X(), DatosMouse.Y(), &_SubItemPresionado);
+		LONG_PTR T = HitTest(DatosMouse.X(), DatosMouse.Y(), &_SubItemPresionado);
 		if (_ItemPresionado != -1) {
 			if (T == _ItemPresionado) _Items[_ItemPresionado]->_TransicionResaltado();
 			else                      _Items[_ItemPresionado]->_TransicionNormal();
@@ -1115,8 +1115,8 @@ namespace DWL {
 			if (tShift == TRUE && MultiSeleccion == TRUE) {
 				DesSeleccionarTodo();
 				if (_ItemShift != -1) {
-					if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) 	SeleccionarItem(i, TRUE); }
-					else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++) 	SeleccionarItem(i, TRUE); }
+					if (_ItemShift < _ItemMarcado) { for (LONG_PTR i = _ItemShift; i <= _ItemMarcado; i++) 	SeleccionarItem(i, TRUE); }
+					else                           { for (LONG_PTR i = _ItemMarcado; i <= _ItemShift; i++) 	SeleccionarItem(i, TRUE); }
 				}
 				#if DLISTAEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir_Varg(L"DListaEx::_Tecla_CursorArriba & Shift -> IS : %d, IM : %d\n", _ItemShift, _ItemMarcado);
@@ -1166,8 +1166,8 @@ namespace DWL {
 			if (tShift == TRUE && MultiSeleccion == TRUE) {
 				if (_ItemShift != -1) {
 					DesSeleccionarTodo();
-					if (_ItemShift < _ItemMarcado) { for (LONGLONG i = _ItemShift; i <= _ItemMarcado; i++) 	SeleccionarItem(i, TRUE); }
-					else                           { for (LONGLONG i = _ItemMarcado; i <= _ItemShift; i++)  SeleccionarItem(i, TRUE); }
+					if (_ItemShift < _ItemMarcado) { for (LONG_PTR i = _ItemShift; i <= _ItemMarcado; i++) 	SeleccionarItem(i, TRUE); }
+					else                           { for (LONG_PTR i = _ItemMarcado; i <= _ItemShift; i++)  SeleccionarItem(i, TRUE); }
 				}
 				#if DLISTAEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir_Varg(L"DListaEx::_Tecla_CursorAbajo & Shift -> IS : %d, IM : %d\n", _ItemShift, _ItemMarcado);
@@ -1199,7 +1199,7 @@ namespace DWL {
 		DesSeleccionarTodo();
 
 		if (DatosTeclado.Shift() == TRUE && MultiSeleccion == TRUE) {
-			for (LONGLONG i = 0; i <= _ItemShift; i++) SeleccionarItem(i, TRUE);
+			for (LONG_PTR i = 0; i <= _ItemShift; i++) SeleccionarItem(i, TRUE);
 		}
 
 		_ItemMarcado = 0;
@@ -1216,7 +1216,7 @@ namespace DWL {
 		_ItemMarcado = _Items.size() - 1;
 
 		if (DatosTeclado.Shift() == TRUE && MultiSeleccion == TRUE) {
-			for (LONGLONG i = _ItemShift; i < _ItemMarcado; i++) SeleccionarItem(i, TRUE);
+			for (LONG_PTR i = _ItemShift; i < _ItemMarcado; i++) SeleccionarItem(i, TRUE);
 		}
 
 		//_Items[static_cast<unsigned int>(_ItemMarcado)]->Seleccionado = TRUE;
@@ -1231,9 +1231,9 @@ namespace DWL {
 
 		DesSeleccionarTodo();
 		if (DatosTeclado.Shift() == TRUE && MultiSeleccion == TRUE) {
-			LONGLONG ItemFin = (_ItemPaginaFin != -1) ? _ItemPaginaFin : static_cast<LONGLONG>(_Items.size());
-			if (_ItemShift < ItemFin) { for (LONGLONG i = _ItemShift; i <= ItemFin; i++) 	SeleccionarItem(i, TRUE); }
-			else                      { for (LONGLONG i = ItemFin; i <= _ItemShift; i++) 	SeleccionarItem(i, TRUE); }
+			LONG_PTR ItemFin = (_ItemPaginaFin != -1) ? _ItemPaginaFin : static_cast<LONG_PTR>(_Items.size());
+			if (_ItemShift < ItemFin) { for (LONG_PTR i = _ItemShift; i <= ItemFin; i++) 	SeleccionarItem(i, TRUE); }
+			else                      { for (LONG_PTR i = ItemFin; i <= _ItemShift; i++) 	SeleccionarItem(i, TRUE); }
 		}
 
 		MostrarItem(_ItemPaginaFin, FALSE);
@@ -1251,9 +1251,9 @@ namespace DWL {
 
 		DesSeleccionarTodo();
 		if (DatosTeclado.Shift() == TRUE && MultiSeleccion == TRUE) {
-			LONGLONG ItemInicio = (_ItemPaginaInicio != -1) ? _ItemPaginaInicio : 0;
-			if (_ItemShift < ItemInicio) { for (LONGLONG i = _ItemShift; i <= ItemInicio; i++) 	SeleccionarItem(i, TRUE); }
-			else						 { for (LONGLONG i = ItemInicio; i <= _ItemShift; i++) 	SeleccionarItem(i, TRUE);  }
+			LONG_PTR ItemInicio = (_ItemPaginaInicio != -1) ? _ItemPaginaInicio : 0;
+			if (_ItemShift < ItemInicio) { for (LONG_PTR i = _ItemShift; i <= ItemInicio; i++) 	SeleccionarItem(i, TRUE); }
+			else						 { for (LONG_PTR i = ItemInicio; i <= _ItemShift; i++) 	SeleccionarItem(i, TRUE);  }
 		}
 
 		_ItemMarcado = _ItemPaginaInicio;

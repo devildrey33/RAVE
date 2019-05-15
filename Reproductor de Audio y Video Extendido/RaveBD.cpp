@@ -1079,7 +1079,7 @@ const BOOL RaveBD::GuardarUltimaLista(void) {
 	Consulta(L"DELETE FROM UltimaLista");
 	std::wstring Q;
 	int          SqlRet;
-	for (LONGLONG i = 0; i < App.VentanaRave.Lista.TotalItems(); i++) {
+	for (LONG_PTR i = 0; i < App.VentanaRave.Lista.TotalItems(); i++) {
 		Q = L"INSERT INTO UltimaLista (Hash) VALUES(" + std::to_wstring(App.VentanaRave.Lista.Medio(i)->Hash) + L")";
 		SqlRet = Consulta(Q);
 		if (SqlRet != SQLITE_DONE) return FALSE;
@@ -1862,7 +1862,7 @@ const BOOL RaveBD::ObtenerEtiqueta(std::wstring &eTexto, EtiquetaBD &Etiqueta) {
 
 
 // Constructor que obtiene los datos de una fila
-BDMedio::BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades) : PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0), Parseado(FALSE), Actualizar(FALSE), Nota(2.5f), PistaEleccion(0), Reproducido(0), GrupoEleccion(0), DiscoEleccion(0), NombreEleccion(0) {
+BDMedio::BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades) : PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0), Parseado(FALSE), Actualizar(FALSE), Nota(2.5f), PistaEleccion(0), Reproducido(0), GrupoEleccion(0), DiscoEleccion(0), NombreEleccion(0), Saturacion(1.0f), Brillo(1.0f), Contraste(1.0f) {
 	ObtenerFila(SqlQuery, Unidades);
 }
 
