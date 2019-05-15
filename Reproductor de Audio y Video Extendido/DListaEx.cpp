@@ -9,6 +9,8 @@ namespace DWL {
 	#define TIMER_LISTA_DRAG_ARRIBA 1000
 	#define TIMER_LISTA_DRAG_ABAJO  1001
 
+	#define MILISEGUNDOS_TIMER_DRAG 200
+
 
 	// Colores para el fondo (OJO los colores del fondo y del borde del control están en DBarraSroll_Skin)
 	COLORREF     DListaEx_Skin::FondoItemNormal						= COLOR_LISTA_FONDO;
@@ -705,13 +707,15 @@ namespace DWL {
 				#endif
 				if (_ItemPaginaInicio > 0) {
 					_SubirItemsSeleccionados();
-					MostrarItem(_ItemPaginaInicio - 1);
+//					MostrarItem(_ItemPaginaInicio - 1);
 					// Busco el item presionado
 					for (i = 0; i < static_cast<LONGLONG>(_Items.size()); i++) {
 						if (_PItemPresionado == _Items[i]) break;
 					}
 					_ItemPresionado = i;
-					_ItemMarcado    = i;
+					_ItemMarcado = i;
+					MostrarItem(i);
+
 				}
 				else {
 					KillTimer(_hWnd, TIMER_LISTA_DRAG_ARRIBA);
@@ -722,15 +726,17 @@ namespace DWL {
 				#if DLISTAEX_MOSTRARDEBUG == TRUE
 					Debug_Escribir_Varg(L"DListaEx::_Evento_Temporizador  Drag hacia abajo.\n");
 				#endif
-				if (_ItemPaginaFin < static_cast<LONGLONG>(_Items.size()) - 1) {
+				if (_ItemPaginaFin < static_cast<LONGLONG>(_Items.size())) {
 					_BajarItemsSeleccionados();
-					MostrarItem(_ItemPaginaFin + 1);
+//					if (_ItemPaginaVDif == 0) MostrarItem(_ItemPaginaFin + 1);
+//					else                      MostrarItem(_ItemPaginaFin);
 					// Busco el item presionado
 					for (i = static_cast<LONGLONG>(_Items.size()) - 1; i > -1 ; i--) {
 						if (_PItemPresionado == _Items[i]) break;
 					}
 					_ItemPresionado = i;
-					_ItemMarcado    = i;
+					_ItemMarcado = i;
+					MostrarItem(i);
 				}
 				else {
 					KillTimer(_hWnd, TIMER_LISTA_DRAG_ABAJO);
@@ -783,7 +789,7 @@ namespace DWL {
 
 		// Temporizador por si hay que subir el scroll
 		if (_ItemPresionado == _ItemPaginaInicio && _ItemPaginaInicio > 0) {
-			if (_TimerDragArriba == 0) 	_TimerDragArriba = SetTimer(_hWnd, TIMER_LISTA_DRAG_ARRIBA, 300, NULL);			
+			if (_TimerDragArriba == 0) 	_TimerDragArriba = SetTimer(_hWnd, TIMER_LISTA_DRAG_ARRIBA, MILISEGUNDOS_TIMER_DRAG, NULL);
 		}
 		else {
 			if (_TimerDragArriba != 0) {
@@ -793,8 +799,8 @@ namespace DWL {
 		}
 
 		// Temporizador por si hay que bajar el scroll
-		if (_ItemPresionado == _ItemPaginaFin && _ItemPaginaFin < static_cast<LONGLONG>(_Items.size()) - 1) {
-			if (_TimerDragAbajo == 0) _TimerDragAbajo = SetTimer(_hWnd, TIMER_LISTA_DRAG_ABAJO, 300, NULL);
+		if (_ItemPresionado == _ItemPaginaFin && _ItemPaginaFin < static_cast<LONGLONG>(_Items.size())) {
+			if (_TimerDragAbajo == 0) _TimerDragAbajo = SetTimer(_hWnd, TIMER_LISTA_DRAG_ABAJO, MILISEGUNDOS_TIMER_DRAG, NULL);
 		}
 		else {
 			if (_TimerDragAbajo != 0) {
