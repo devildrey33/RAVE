@@ -174,6 +174,8 @@ namespace DWL {
 		DMenuEx               *_MenuDesplegado;
 		DMenuEx               *_MenuPresionado;
 
+		int                    _MargenI; // Margen izquierdo para el texto (que incluye el ancho del icono si alguno de los submenus tiene icono)
+
 		BOOL                   _Activado;
 		DMenuEx_Tipo           _Tipo;
 		static DhWnd          *_hWndDest;  // Destino para los mensajes

@@ -276,9 +276,6 @@
 			V  Quan no hi ha scroll la marca ha d'arribar fins al tope de la dreta
 			V  MouseDown y MouseUp s'han de fer amb un SetCapture
 			-  LabelEdit per editar subitems
-		-  ListaMedios
-			-  Mostrar el % del medi reproduit en el item que es el MedioActual
-				- Necesitare crear virtuals a DListaEx
 
 		V  Mostrar en la BD no funciona correctament.., proba-ho amb Simphpony X -> Prelude to the new milenium
 			V  S'ha solucionat al calculat bé la DBarraScrollEx (com ja imaginava... era per la diferencia de la barra)
@@ -290,7 +287,7 @@
 			X  Fer alphablend amb els icones quan el menu está desactivat (amb la transició de desactivat)
 				V Sense GDI+ chungo.. i el veig molt desfasat
 			V  Retocat el calcul de la mida del menu per mirar si hi han submenus amb fills, i deixar un espai per la marca
-			-  S'ha de mirar si hi ha algun submenu amb icones, i si no n'hi ha cap treure l'espai del principi de l'icona
+			V  S'ha de mirar si hi ha algun submenu amb icones, i si no n'hi ha cap treure l'espai del principi de l'icona
 
 		-  DDlgDirectorios
 			-  Captar WM_RESIZE i modificar tamany dels controls en consequencia.
@@ -358,6 +355,10 @@
 
 
 	RAVE 0.7
+		-  ListaMedios
+			-  Mostrar el % del medi reproduit en el item que es el MedioActual
+				- Necesitare crear virtuals a DListaEx
+
 		-  Carregar subtituls
 		-  Carregar llistes m3u
 		-  Carregar pistes CDAudio
@@ -366,6 +367,13 @@
 		-  Finestra de propietats per un medi o una etiqueta
 		-  Sistema per fer skins amb un txt que pugui utilitzar definicions de colors i funcions de colors per sumar/ restar al rgb
 			V  De moment tots els controls ex tenen un Objecte_Skin que te tots els colors i fonts per defecte.
+
+
+
+
+
+
+
 
 
 	REFLEXION ACERCA DE UTILIZAR 2 LIBRERIAS (FMOD [audio], LIBVLC[Video+Audio]

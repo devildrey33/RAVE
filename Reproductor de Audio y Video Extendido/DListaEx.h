@@ -37,7 +37,7 @@ namespace DWL {
 		static BOOL			FuenteSombraTexto;
 	};
 
-	#define DLISTAEX_MOSTRARDEBUG	TRUE
+	#define DLISTAEX_MOSTRARDEBUG	FALSE
 
 	#ifdef _WIN64
 		#define DLISTAEX_POSICION_INICIO	 0

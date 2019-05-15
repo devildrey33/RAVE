@@ -3,7 +3,7 @@
 // Versión y titulo
 #define RAVE_VERSION			0, 5, 1, 8
 #define RAVE_VERSIONF			0.518
-#define RAVE_VERSIONSTR			L"0.518b"
+#define RAVE_VERSIONSTR			L"0.518c"
 #define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
 #define RAVE_VERSIONBD          L"1.1"
 
