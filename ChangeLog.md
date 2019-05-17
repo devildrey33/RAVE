@@ -1,0 +1,140 @@
+# Log de cambios
+
+### Versión 0.519
+
+* Ahora se guarda la posición y el tamaño de la ventana para seleccionar directorios.
+
+### Versión 0.518
+
+* Suavizado el drag de la Lista.
+
+* Añadidos temporizadores para mover el scroll si en una operación de drag el mouse queda por encima o por debajo del control, y hay mas items por explorar.
+
+* Solucionado bug con los botones que se muestran en el preview de la barra de tareas, ahora ya funcionan todos correctamente.
+
+* Los menus que no tienen iconos en sus submenus, ahora ya no dejan el margen a la izquierda para ellos.
+
+### Versión 0.517
+
+* Retocada ventana del error critico, que no mostraba correctamente todo el texto.
+
+* Actualizada la base de datos del reproductor para poder guardar nuevos valores (v1.1)
+
+* Ahora se cargan y se guardan los valores del brillo, saturación, contraste, y proporción de cada video individualmente.
+
+* Solucionado bug a eliminar el ultimo item de la lista.
+
+### Versión 0.516
+
+* Solucionado bug con los controles de pantalla completa, que a veces no se mostraban con la opacidad correcta.
+
+* Añadida posibilidad de arrastrar medios de la Lista y de este modo modificar su posición.
+
+* Creada página sobre el reproductor en el github.
+
+### Versión 0.512
+
+* Añadidos menus para la BD : Abrir carpeta, Nota, y Propiedades(de windows) 100% funcionales.
+
+* Mejorada velocidad de exploración de los directorios al requerir menos datos de la BD para comparaciones.
+
+* Pequeños retoques visuales en la alineación de los controles.
+
+### Versión 0.511
+
+* Agregadas transiciones de resaltado y presionado para los items.
+
+* Mejoras en los calculos del espacio interno de los Menus.
+
+### Versión 0.509
+
+* Creado objeto para poder cargar y pintar iconos facilmente.
+
+### Versión 0.508
+
+* Creado sistema interno para manejar distintos tipos de fuente mas facilmente.
+
+* Añadido objeto skin para todos los controles...
+
+### Versión 0.507
+
+* Al mostrar los tooltips para carpetas ahora se calculan su tiempo total, su tamaño, y su nota media.
+
+* Solucionado bug que mientras se estába cargando el núcleo de la VLC no hacia caso a los medios que se pudieran añadir desde el explorador.
+
+* Transición de resaltado para el fondo del arbol.
+
+* Inicio de un sistema básico para poder hacer skins con relativa facilidad.
+
+### Versión 0.506
+
+* Se ha re-escrito todo el tema de multiseleccion con el shift y varias teclas (cursores, inicio, fin avpag, etc..) del Arbol.
+
+* Ahora se captura el mouse en los eventos MouseDown y MouseUp del Arbol.
+
+* Implementadas transiciones de resaltado y presionado para los nodos del Arbol
+
+* Ahora el Arbol soporta las teclas de la A a la Z para buscar nodos visibles.
+
+* Retocados varios iconos del reproductor.
+
+### Versión 0.505
+
+* Añadido borde con transición de color a los controles que heredan de la barra de scroll (Arbol y Lista).
+
+* Retocados expansores del Arbol, ahora hay 2 tipos de expansor y tienen una transición de resaltado y presionado.
+
+* Solucionado bug con los controles pantalla completa que no se mostraban mas una vez terminado el primer vídeo.
+
+* Pequeños retoques en los margenes y bordes de la barra de scroll.
+
+### Versión 0.504
+
+* Bug en la detección del sistema operativo que solo me permitia identificar hasta windows 8 solucionado. Ahora ya puedo identificar al windows 8.1 y al 10.
+
+* Bug en el orden de los tooltips que a veces podian quedar detras de la ventana principal.
+
+* Barra de scroll re-escrita, antes se podia ajustar del 0% al 100% sin contar el espacio de la página. Ahora se puede ajustar de 0.0 a 1.0 contando el tamaño de la página.
+
+* Añadidas animaciones / transiciones de color en la barra de scroll.
+
+* Retocados controles Lista y Arbol para adaptarse a los cambios de la barra de scroll.
+
+* Retocados los colores de la barra de scroll para que resalten más.
+
+* Los menús ahora comprueban que tengan suficiente espacio a la derecha para mostrar el sub-menu, y en caso contrario lo muestran por la izquierda.
+
+### Versión 0.503
+
+* Varias mejoras en el objeto que crea las animaciones de tiempo, que me ayudaran un poco mas a dar vida al reproductor.
+
+* Bug en los colores de los controles marca, solucionado.
+
+* Ahora los tooltips no desaparecen de golpe al mover la ventana, y se hace una animación.
+
+### Versión 0.502
+
+* La nota de los tooltips ahora se muestra con estrellas en vez de con un valor.
+
+* Varios retoques internos al sistema de tooltips. Entre otras cosas ahora los tooltips ya no se ocultan al pasar por encima con el mouse, puedes hacer click para ocultar-los.
+
+
+### Versión 0.501
+
+* Retocado el tamaño de la primera columna de los medios para adaptarse mejor a la pista.
+
+* Retoques internos en el manejo del medio actual.
+
+### Versión 0.5
+
+* Primera versión pública.
+
+* Base de datos y escaneo de medios.
+
+* Lista básica con shufle y repeat.
+
+* Controles básicos (play, pausa, stop, avanzar medio, retroceder medio, volumen, etc..)
+
+* Modo pantalla completa para los vídeos.
+
+* Tooltips informativos para los medios.
