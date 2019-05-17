@@ -1336,12 +1336,11 @@ namespace DWL {
 
 			// Mouse rueda
 			case WM_MOUSEWHEEL:		_Evento_MouseRueda(wParam, lParam);																											return 0;
-			// Teclado
+			
+			// Teclado (Ojo con los breaks que son necesarios)
 			case WM_KEYDOWN:		_Evento_TeclaPresionada(wParam, lParam);																									break;
 			case WM_KEYUP:			_Evento_TeclaSoltada(wParam, lParam);																										break;
 			case WM_CHAR:           _Evento_Tecla(wParam, lParam);																												break;
-
-
 		}	
 		return DControlEx::GestorMensajes(uMsg, wParam, lParam);
 	}

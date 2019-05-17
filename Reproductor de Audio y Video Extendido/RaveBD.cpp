@@ -8,7 +8,7 @@ RaveBD::RaveBD(void) : _BD(NULL), _Opciones_Volumen(0), _Opciones_PosX(0), _Opci
 								  _Opciones_VentanaAnalizar_PosX(0), _Opciones_VentanaAnalizar_PosY(0), _Opciones_Ancho(0), _Opciones_Alto(0), _Opciones_Shufle(FALSE), _Opciones_Repeat(Tipo_Repeat_NADA), _Opciones_Inicio(Tipo_Inicio_NADA),
 								  _Opciones_Version(0.0f), _Opciones_OcultarMouseEnVideo(0), _Opciones_MostrarObtenerMetadatos(FALSE), _Opciones_MostrarAsociarArchivos(FALSE), _Opciones_AnalizarMediosPendientes(FALSE),
 								  _Opciones_BuscarActualizacion(FALSE), _Opciones_TiempoAnimaciones(0), _Opciones_TiempoToolTips(0), _Opciones_NoAgregarMedioMenos25(FALSE), _Opciones_NoGenerarListasMenos3(FALSE), 
-							 	  _Opciones_Sumar005(FALSE), _Opciones_AlineacionControlesVideo(0), _Opciones_OpacidadControlesVideo(0), _Opciones_EfectoFadeAudioMS(10000) {
+							 	  _Opciones_Sumar005(FALSE), _Opciones_AlineacionControlesVideo(0), _Opciones_OpacidadControlesVideo(0), _Opciones_EfectoFadeAudioMS(10000), _Opciones_DlgDirectorios_Ancho(400), _Opciones_DlgDirectorios_Alto(600){
 }
 
 
@@ -583,15 +583,25 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 
 
 const BOOL RaveBD::_ModificarTablas(void) {
-	float Version = ObtenerVersionBD();
-	int   SqlRet  = 0;
+	float        Version = ObtenerVersionBD();
+	int          SqlRet  = 0;
+	std::wstring Q;
 
 	if (Version < 1.1) {
 		// Añado la columna EfectoFadeAudioMS en las opciones
-		std::wstring Q = L"ALTER TABLE Opciones	ADD COLUMN EfectoFadeAudioMS INTEGER AFTER OpacidadControlesVideo";
+		Q = L"ALTER TABLE Opciones	ADD COLUMN EfectoFadeAudioMS INTEGER AFTER OpacidadControlesVideo";
 		SqlRet = Consulta(Q);
+
+		// Añado la columna DlgDirectorios_Ancho en las opciones
+		Q = L"ALTER TABLE Opciones	ADD COLUMN DlgDirectorios_Ancho INTEGER AFTER EfectoFadeAudioMS";
+		SqlRet = Consulta(Q);
+
+		// Añado la columna DlgDirectorios_Alto en las opciones
+		Q = L"ALTER TABLE Opciones	ADD COLUMN DlgDirectorios_Alto INTEGER AFTER DlgDirectorios_Ancho";
+		SqlRet = Consulta(Q);
+
 		// Modifico el valor de EfectoFadeAudioMS a 10000
-		Q = L"UPDATE Opciones SET EfectoFadeAudioMS=10000 WHERE Id=0";
+		Q = L"UPDATE Opciones SET EfectoFadeAudioMS=10000, DlgDirectorios_Ancho=400, DlgDirectorios_Alto=600 WHERE Id=0";
 		SqlRet = Consulta(Q);
 
 
@@ -619,6 +629,7 @@ const BOOL RaveBD::_ModificarTablas(void) {
 		SqlRet = Consulta(Q);
 		return TRUE;
 	}
+
 	return FALSE;
 }
 
@@ -693,7 +704,9 @@ const BOOL RaveBD::_CrearTablas(void) {
 											L"Sumar005"					L" INTEGER," 
 											L"AlineacionControlesVideo"	L" INTEGER,"
 											L"OpacidadControlesVideo"	L" INTEGER,"			
-											L"EfectoFadeAudioMS"     	L" INTEGER"			
+											L"EfectoFadeAudioMS"     	L" INTEGER,"		
+											L"DlgDirectorios_Ancho"   	L" INTEGER,"		
+											L"DlgDirectorios_Alto"   	L" INTEGER"		
 									  L")";
 	if (Consulta(CrearTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1408,8 +1421,10 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 			_Opciones_NoGenerarListasMenos3		= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 25));
 			_Opciones_Sumar005					= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 26));
 			_Opciones_AlineacionControlesVideo  = static_cast<int>(sqlite3_column_int(SqlQuery, 27));
-			_Opciones_OpacidadControlesVideo    = static_cast<int>(sqlite3_column_int(SqlQuery, 28));
-			_Opciones_EfectoFadeAudioMS         = static_cast<int>(sqlite3_column_int(SqlQuery, 29));
+			_Opciones_OpacidadControlesVideo	= static_cast<int>(sqlite3_column_int(SqlQuery, 28));
+			_Opciones_EfectoFadeAudioMS			= static_cast<int>(sqlite3_column_int(SqlQuery, 29));
+			_Opciones_DlgDirectorios_Ancho		= static_cast<int>(sqlite3_column_int(SqlQuery, 30));
+			_Opciones_DlgDirectorios_Alto		= static_cast<int>(sqlite3_column_int(SqlQuery, 31));
 		}
 		if (SqlRet == SQLITE_BUSY) {
 			VecesBusy++;
@@ -1520,6 +1535,22 @@ const BOOL RaveBD::Opciones_GuardarPosVentanaAnalizar(void) {
 	}
 	return TRUE;
 }
+
+const BOOL RaveBD::Opciones_GuardarPosTamDlgDirectorios(RECT &RW) {
+	_Opciones_DlgDirectorios_PosX  = RW.left;
+	_Opciones_DlgDirectorios_PosY  = RW.top;
+	_Opciones_DlgDirectorios_Ancho = abs(RW.right - RW.left);
+	_Opciones_DlgDirectorios_Alto  = abs(RW.bottom - RW.top);
+
+	std::wstring Q = L"UPDATE Opciones SET VentanaAsociar_PosX=" + std::to_wstring(RW.left) + L", VentanaAsociar_PosY=" + std::to_wstring(RW.top) + L", DlgDirectorios_Ancho=" + std::to_wstring(_Opciones_DlgDirectorios_Ancho) + L", DlgDirectorios_Ancho=" + std::to_wstring(_Opciones_DlgDirectorios_Alto) + L" WHERE Id=0";
+	int SqlRet = Consulta(Q);
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+	return TRUE;
+}
+
 
 // Suma 1 a las reproducciones del BDMedio, y Suma 0.05 a la Nota (si la opción está activada)
 const BOOL RaveBD::MedioReproducido(BDMedio *rMedio) {

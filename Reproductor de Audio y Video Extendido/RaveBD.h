@@ -250,6 +250,7 @@ class RaveBD {
 	const BOOL					Opciones_GuardarPosVentanaOpciones(void);
 //	const BOOL					Opciones_GuardarPosVentanaAsociar(void);
 	const BOOL					Opciones_GuardarPosVentanaAnalizar(void);
+	const BOOL					Opciones_GuardarPosTamDlgDirectorios(RECT &RC);
 
 	inline const int			Opciones_Volumen(void) { return _Opciones_Volumen; }
 	void						Opciones_Volumen(const int nVolumen);
@@ -258,8 +259,10 @@ class RaveBD {
 	inline const int			Opciones_PosY(void) { return _Opciones_PosY; }
 	inline const int			Opciones_VentanaOpciones_PosX(void) { return _Opciones_VentanaOpciones_PosX; }
 	inline const int			Opciones_VentanaOpciones_PosY(void) { return _Opciones_VentanaOpciones_PosY; }
-	inline const int			Opciones_DlgDirectorios_PosX(void)  { return _Opciones_DlgDirectorios_PosX; }
-	inline const int			Opciones_DlgDirectorios_PosY(void)  { return _Opciones_DlgDirectorios_PosY; }
+	inline const int			Opciones_DlgDirectorios_PosX(void) { return _Opciones_DlgDirectorios_PosX; }
+	inline const int			Opciones_DlgDirectorios_PosY(void) { return _Opciones_DlgDirectorios_PosY; }
+	inline const int			Opciones_DlgDirectorios_Ancho(void) { return _Opciones_DlgDirectorios_Ancho; }
+	inline const int			Opciones_DlgDirectorios_Alto(void) { return _Opciones_DlgDirectorios_Alto; }
 	inline const int			Opciones_VentanaAnalizar_PosX(void) { return _Opciones_VentanaAnalizar_PosX; }
 	inline const int			Opciones_VentanaAnalizar_PosY(void) { return _Opciones_VentanaAnalizar_PosY; }
 
@@ -352,6 +355,8 @@ protected:
 	int                        _Opciones_VentanaOpciones_PosY;
 	int                        _Opciones_DlgDirectorios_PosX;
 	int                        _Opciones_DlgDirectorios_PosY;
+	int                        _Opciones_DlgDirectorios_Ancho;
+	int                        _Opciones_DlgDirectorios_Alto;
 	int                        _Opciones_VentanaAnalizar_PosX;
 	int                        _Opciones_VentanaAnalizar_PosY;
 	int                        _Opciones_Ancho;

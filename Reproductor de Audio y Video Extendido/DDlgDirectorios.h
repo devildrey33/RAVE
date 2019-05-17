@@ -24,8 +24,10 @@ namespace DWL {
 		void                        Evento_Cerrar(void);
 		void						Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse);
 		void						Evento_BorraFondo(HDC DC);
+		void                        Evento_CambiandoTam(const UINT Lado, RECT* Rectangulo);	
 		virtual LRESULT CALLBACK	GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	  protected :
+		void                       _AjustarControles(RECT &RW);
 		void                       _ActualizarAceptar(void);
 		BOOL                       _Terminado;
 	};

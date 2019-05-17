@@ -10,6 +10,9 @@ namespace DWL {
 	#define ID_BOTONACEPTAR			WM_USER + 1002
 	#define ID_BOTONCANCELAR		WM_USER + 1003
 
+	#define MIN_DLGDIRECTORIOS_ANCHO 300
+	#define MIN_DLGDIRECTORIOS_ALTO  300
+
 	DDlgDirectorios::DDlgDirectorios(void) {
 	}
 
@@ -21,7 +24,7 @@ namespace DWL {
 	const BOOL DDlgDirectorios::Mostrar(DhWnd *nPadre, std::wstring &rPath, const int cX, const int cY) {
 		_Terminado = FALSE;
 		// Creo la ventana
-		CrearVentana(nPadre, L"DDlgDirectorio", L"Selecciona un Directorio", cX, cY, 400, 600, WS_OVERLAPPEDWINDOW, WS_EX_APPWINDOW, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+		CrearVentana(nPadre, L"DDlgDirectorio", L"Selecciona un Directorio", App.BD.Opciones_DlgDirectorios_PosX(), App.BD.Opciones_DlgDirectorios_PosY(), App.BD.Opciones_DlgDirectorios_Ancho(), App.BD.Opciones_DlgDirectorios_Alto(), WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME, WS_EX_APPWINDOW, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 		// Obtengo el tamaño de la recta cliente de la ventana.
 		RECT RC;
 		GetClientRect(_hWnd, &RC);
@@ -39,6 +42,8 @@ namespace DWL {
 //		BotonAceptar.Visible(TRUE);
 		BotonAceptar.Activado(FALSE);
 //		BotonCancelar.Visible(TRUE);
+
+		_AjustarControles(RC);
 
 		// Muestro la ventana modal
 		Visible(TRUE);
@@ -120,6 +125,30 @@ namespace DWL {
 	}
 
 
+	void DDlgDirectorios::Evento_CambiandoTam(const UINT Lado, RECT* Rectangulo) {
+		// Comprobación de tamaño mínimo
+		if ((Rectangulo->right - Rectangulo->left) < MIN_DLGDIRECTORIOS_ANCHO)		Rectangulo->right  = Rectangulo->left + MIN_DLGDIRECTORIOS_ANCHO;
+		if ((Rectangulo->bottom - Rectangulo->top) < MIN_DLGDIRECTORIOS_ALTO)		Rectangulo->bottom = Rectangulo->top  + MIN_DLGDIRECTORIOS_ALTO;
+
+		RECT RC;
+		RC.left   = 0;
+		RC.top    = 0;
+		RC.right  = (Rectangulo->right - Rectangulo->left);
+		RC.bottom = (Rectangulo->bottom - Rectangulo->top);
+
+
+		Debug_Escribir_Varg(L"DDlgDirectorios::Evento_CambiandoTam %d, %d\n", RC.right, RC.bottom);
+	}
+
+
+	void DDlgDirectorios::_AjustarControles(RECT& RC) {
+		MoveWindow(ArbolDirectorios.hWnd(), 10, 10, RC.right - 20, RC.bottom - 100, TRUE);
+		MoveWindow(EdicionSeleccion.hWnd(), 10, RC.bottom - 80, RC.right - 20, 24, TRUE);
+		MoveWindow(BotonAceptar.hWnd(), (RC.right / 2) - 110, RC.bottom - 40, 100, 30, TRUE);
+		MoveWindow(BotonCancelar.hWnd(), (RC.right / 2) + 10, RC.bottom - 40, 100, 30, TRUE);
+	}
+
+
 	LRESULT CALLBACK DDlgDirectorios::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (uMsg) {
 			case WM_ERASEBKGND:
@@ -134,6 +163,23 @@ namespace DWL {
 			case DWL_ARBOLEX_CLICK: 
 				_ActualizarAceptar();
 				return 0;
+
+			case WM_EXITSIZEMOVE:
+				RECT RCWMS2;
+				GetWindowRect(hWnd(), &RCWMS2);
+				App.BD.Opciones_GuardarPosTamDlgDirectorios(RCWMS2);
+				Debug_Escribir_Varg(L"DDlgDirectorios::WM_EXITSIZEMOVE %d, %d\n", wParam, lParam);
+				return 0;
+			case WM_SIZE:
+				RECT RCWMS;
+				GetClientRect(hWnd(), &RCWMS);
+				_AjustarControles(RCWMS);
+				Debug_Escribir_Varg(L"DDlgDirectorios::WM_SIZE %d, %d\n", wParam, lParam);
+				return 0;
+			case WM_SIZING:
+				Evento_CambiandoTam(static_cast<UINT>(wParam), reinterpret_cast<RECT*>(lParam));
+				return 0;
+
 		}
 		return DefWindowProc(hWnd(), uMsg, wParam, lParam);		
 	}

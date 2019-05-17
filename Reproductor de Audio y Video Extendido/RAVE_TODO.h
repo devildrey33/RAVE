@@ -212,10 +212,10 @@
 				V Solucionar bug al reposicionar els tooltips que es posicionen uns pixels per sobre
 			V  S'ha de suavitzar el mostrar dels tooltips, ja que si es fa un doble click es talla l'animacio i torna a començar
 			V  Pintar la nota amb icones d'estrelles als ToolTipInfo_Medio i ToolTipInfo_Etiqueta
-			-  Missio compactar al máxim el tooltip
+			X  Missio compactar al máxim el tooltip
 				V Pas 1 Afegir la pista al nom, aixi trec una fila (uns 20px px d'altura)
-				- Pas 2 Si el nom + pista supera en un 140% del tamany necesari per les columnes s'ha de partir
-					- (buscar exemples)
+				X Pas 2 Si el nom + pista supera en un 140% del tamany necesari per les columnes s'ha de partir
+					X (buscar exemples)
 
 		V  Afegir funcións de temps a les DAnimacion i DAnimacion_Color
 			V Fusionat DAnimacion_Color amb DAnimacionm ara puc fer animacions decimals i de color desde el mateix objecte a l'hora.
@@ -225,7 +225,6 @@
 			X  S'ha de treure del objecte EtiquetaBD els membres : Medios, Tiempo, Longitud (i de rebot he recuperat el Nota)
 				X  També s'ha de treure de la BD
 			V  Lo millor es anar refrescant les dades al mostrar el tooltip, haig de fer un multisqlselect chachi 
-			-  No hi han etiquetes pels videos de la BD...
 		
 		V  Tractar arxius del tipus CRDOWNLOAD i OPDOWNLOAD per renombrar-los al acabar de reproduïr, OFC també s'haura de guardar el nou path a la BD.
 
@@ -289,41 +288,12 @@
 			V  Retocat el calcul de la mida del menu per mirar si hi han submenus amb fills, i deixar un espai per la marca
 			V  S'ha de mirar si hi ha algun submenu amb icones, i si no n'hi ha cap treure l'espai del principi de l'icona
 
-		-  DDlgDirectorios
-			-  Captar WM_RESIZE i modificar tamany dels controls en consequencia.
-				- Guardar el tamany a les opcions de la BD
+		V  DDlgDirectorios
+			V  Captar WM_RESIZE i modificar tamany dels controls en consequencia.
+				V Guardar el tamany a les opcions de la BD
 
 		V  S'ha de poder afegir medis desde l'explorador mentres es carrega la libvlc.
 			V  s'ha de probar desde la RELEASE quan em carregui la libvlc per primer cop
-
-		-  Afegir al MenuBD : 
-			V  Nota (per poguer modificar la nota de tots els medis d'un directori)
-			V  Abrir carpeta
-			V  Propiedades
-			X  Orden!?!?! saps el follón que suposa no? xd ja veurem... jo no el trobo a faltar... de moment paso
-
-		-  Buscar actualitzacións
-		-  Afegir a les etiquetes les arrels, sense medir la distancia
-
-		-  Afegir tecles ràpides F1, F2, F3 -> Mostrar medio actual en : Tooltip, BD, Lista
-			V  F1
-		-  Afegir menu tipo Marca, que serveixi tant com a menú, o com a marca pel seu menú pare.
-			- La idea es que el menu generar llista mostri els seus sub-menus amb una marca, la marca al presionarla no oculta el menú, i despres si presionem en el pare (generar lista) generara una llista del que estigui marcat.
-				- aixó necesitara guardar les marques en la BD, i aixi es "personalitza" el tema de generar llisters aleatories.
-			- I ja que hi som, un nou tipus de llista aleatoria podria estar basat en el jamendo... el VLC pot carregar llistes jamendo... osigui que no hauria de ser un problema imposible.
-		
-
-		-  Fer una taula Audio i una Video, i eliminar la taula Medios.... (ANALITZAR IDEA..)
-			- La idea es tenir les opcions suficients per posarles en un arbre (OJU que aixo es un canvi drástic i que a l'hora podria ordenar molt mes tot el projecte, inclus podria suposar crear una taula d'audio u una video separades i no com ara que els dos son un medio)
-				- o inclus crear una taula medios global amb un tipo (audio / video / lista / cdaudio), i despres crear una taula per cada un d'ells amb una id
-			-  Dividir Base de Datos en : Mi música , i Mis Videos, en 2 butons i en 2 arbres diferents
-			-  Afegir buto mis listas
-		
-		-  Crear Icona Buscar en l'arbre de la BD adal a la dreta (m'estic plantejant si el necesito també per la llista, i si l'haig d'implementar com una part del DArbolEx i la DListaEx)
-		-  Si la llista / BD (audio/video) está buida mostrar un icona que inciti a arrosegar un arxiu / directori
-
-		-  La llista s'ha de poguer veure desde els ControlesPantallaCompleta
-			-  Mostrar la llista de medis al reproduir un video de forma "diferent", per exemple una liista translucida reduida (pensa que aixó nomes pasara si el reproductor no está maximitzat i está reproduint video)
 
 		V  Hi ha un bug raro al afegir un medi desde l'explorador (inician el reproductor amb -r pathmedi), i encara no he aconseguit reproduir-lo..
 			V Sempre que pasa surt el thread analizar (posible solució : utilitzar la funció del drag&drop per carregar els arxius que venen en els ARGS)
@@ -332,7 +302,18 @@
 				V  Ho he estat probant en debug sense BD i ja no pasa mes :/
 				V  El problema era que asigno ? a la lletra d'unitat al afegir el medi en la BD, ara afegire la unitat corresponent, però no sera retrocompatible amb la ID del disc dur.
 
-		-  Separar el anáilisis del tag i la obtenció de dades de les etiquetes
+		V  Afegir al MenuBD : 
+			V  Nota (per poguer modificar la nota de tots els medis d'un directori)
+			V  Abrir carpeta
+			V  Propiedades
+			X  Orden!?!?! saps el follón que suposa no? xd ja veurem... jo no el trobo a faltar... de moment paso
+
+		V  Guardar qualsevol canvi del : brillo, contraste, saturación, proporción de cada video per poder carregar-lo despres automáticament en quansevol reproducció futura.
+
+		-  Buscar actualitzacións (algo simple que em doni la web per descarregar l'actualització)
+
+		-  Afegir tecles ràpides F1, F2, F3 -> Mostrar medio actual en : Tooltip, BD, Lista
+			V  F1
 
 		-  Opcions 
 			-  Llista
@@ -345,16 +326,31 @@
 		-  Les llistes aleatóries per estil, grup, 50 can han d'activar el shufle
 			- Les llistes aleatóries per disc han de desactivar el shufle
 
-		- Fer efecte de fusio al acabar una canço i començar unaltre reproduint les dues a l'hora quan faltin X milisegs.
-			- AMB EL VLC IMPOSIBLE!! nomes te volum general..., lo que es un pel incomprensible perque la funció del volum demana un MediaPlayer, no la instancia. Al final tornarem al FMOD...
 		- Les notes menors que 2 s'han de mostrar amb una estrella gris
 
 
-		V  Guardar qualsevol canvi del : brillo, contraste, saturación, proporción de cada video per poder carregar-lo despres automáticament en quansevol reproducció futura.
+		
 
 
 
 	RAVE 0.7
+		-  Afegir menu tipo CheckBox, que serveixi tant com a menú, o com a marca pel seu menú pare.
+			- La idea es que el menu generar llista mostri els seus sub-menus amb una marca, la marca al presionarla no oculta el menú, i despres si presionem en el pare (generar lista) generara una llista del que estigui marcat.
+				- aixó necesitara guardar les marques en la BD, i aixi es "personalitza" el tema de generar llisters aleatories.
+			- I ja que hi som, un nou tipus de llista aleatoria podria estar basat en el jamendo... el VLC pot carregar llistes jamendo... osigui que no hauria de ser un problema imposible.
+
+		-  Fer una taula Audio i una Video, i eliminar la taula Medios.... (ANALITZAR IDEA..)
+			- La idea es tenir les opcions suficients per posarles en un arbre (OJU que aixo es un canvi drástic i que a l'hora podria ordenar molt mes tot el projecte, inclus podria suposar crear una taula d'audio u una video separades i no com ara que els dos son un medio)
+				- o inclus crear una taula medios global amb un tipo (audio / video / lista / cdaudio), i despres crear una taula per cada un d'ells amb una id
+			-  Dividir Base de Datos en : Mi música , i Mis Videos, en 2 butons i en 2 arbres diferents
+			-  Afegir buto mis listas
+
+		-  Crear Icona Buscar en l'arbre de la BD adal a la dreta (m'estic plantejant si el necesito també per la llista, i si l'haig d'implementar com una part del DArbolEx i la DListaEx)
+		-  Si la llista / BD (audio/video) está buida mostrar un icona que inciti a arrosegar un arxiu / directori
+
+		-  La llista s'ha de poguer veure desde els ControlesPantallaCompleta
+			-  Mostrar la llista de medis al reproduir un video de forma "diferent", per exemple una liista translucida reduida (pensa que aixó nomes pasara si el reproductor no está maximitzat i está reproduint video)
+
 		-  ListaMedios
 			-  Mostrar el % del medi reproduit en el item que es el MedioActual
 				- Necesitare crear virtuals a DListaEx
@@ -368,7 +364,10 @@
 		-  Sistema per fer skins amb un txt que pugui utilitzar definicions de colors i funcions de colors per sumar/ restar al rgb
 			V  De moment tots els controls ex tenen un Objecte_Skin que te tots els colors i fonts per defecte.
 
+		-  No hi han tooltips pels directoris dels videos de la BD... (per que no es crean etiquetes d'ells)
 
+		- Fer efecte de fusio al acabar una canço i començar unaltre reproduint les dues a l'hora quan faltin X milisegs.
+			- AMB EL VLC IMPOSIBLE!! nomes te volum general..., lo que es un pel incomprensible perque la funció del volum demana un MediaPlayer, no la instancia. Al final tornarem al FMOD...
 
 
 

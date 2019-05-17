@@ -52,7 +52,7 @@ namespace DWL {
 
 	HWND DEdicionTextoEx::CrearEdicionTextoEx(DhWnd *nPadre, const TCHAR *nTxt, const int cX, const int cY, const int cAncho, const int cAlto, const int cID, DIcono *nIcono, const long Estilos) {
 //		if (hWnd()) { Debug_Escribir(L"DEdicionTextoEx::CrearEdicionTextoEx() Error : ya se ha creado el control...\n"); return hWnd(); }
-		_hWnd = CrearControlEx(nPadre, L"DEdicionTextoEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL);
+		_hWnd = CrearControlEx(nPadre, L"DEdicionTextoEx", L"", cID, cX, cY, cAncho, cAlto, Estilos, NULL, CS_HREDRAW | CS_VREDRAW);
 		Fuente.CrearFuente(DEdicionTextoEx_Skin::FuenteTam, DEdicionTextoEx_Skin::FuenteNombre.c_str(), DEdicionTextoEx_Skin::FuenteNegrita, DEdicionTextoEx_Skin::FuenteCursiva, DEdicionTextoEx_Skin::FuenteSubrayado);
 		_Texto			= nTxt;
 		_PosCursor		= _Texto.size();		
