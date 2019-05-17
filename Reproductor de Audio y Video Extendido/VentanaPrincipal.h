@@ -187,8 +187,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	int							CTW_ExtraX;
 	int							CTW_ExtraY;
 
+	void					    MostrarMarco(const INT_PTR ID);
   protected:
-    void					   _MostrarMarco(const INT_PTR ID);
 
 //	void                       _AgregarNodoALista(DArbolEx_Nodo *nNodo);
 	BOOL                       _PantallaCompleta;

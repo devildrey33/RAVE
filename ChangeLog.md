@@ -4,11 +4,15 @@
 
 * Ahora se guarda la posición y el tamaño de la ventana para seleccionar directorios.
 
+* La tecla F2 ahora muestra el medio actual en la Base de datos.
+
+* La tecla F3 ahora muestra el medio actual en la Lista.
+
 ### Versión 0.518
 
 * Suavizado el drag de la Lista.
 
-* Añadidos temporizadores para mover el scroll si en una operación de drag el mouse queda por encima o por debajo del control, y hay mas items por explorar.
+* Añadidos temporizadores para mover el scroll si en una operación de drag, si el mouse queda por encima o por debajo del control y hay mas items por explorar.
 
 * Solucionado bug con los botones que se muestran en el preview de la barra de tareas, ahora ya funcionan todos correctamente.
 
@@ -125,13 +129,15 @@
 
 * Retoques internos en el manejo del medio actual.
 
-### Versión 0.5
+### Versión 0.500
 
 * Primera versión pública.
 
 * Base de datos y escaneo de medios.
 
 * Lista básica con shufle y repeat.
+
+* Listas aleatórias.
 
 * Controles básicos (play, pausa, stop, avanzar medio, retroceder medio, volumen, etc..)
 

@@ -312,8 +312,8 @@
 
 		-  Buscar actualitzacións (algo simple que em doni la web per descarregar l'actualització)
 
-		-  Afegir tecles ràpides F1, F2, F3 -> Mostrar medio actual en : Tooltip, BD, Lista
-			V  F1
+		V  Afegir tecles ràpides F1, F2, F3 -> Mostrar medio actual en : Tooltip, BD, Lista
+			V  F1, F2, F3
 
 		-  Opcions 
 			-  Llista

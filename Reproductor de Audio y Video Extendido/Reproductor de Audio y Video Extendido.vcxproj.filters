@@ -786,5 +786,8 @@
     <None Include="..\README.md">
       <Filter>xXx _MAIN_ xXx</Filter>
     </None>
+    <None Include="..\ChangeLog.md">
+      <Filter>xXx _MAIN_ xXx</Filter>
+    </None>
   </ItemGroup>
 </Project>

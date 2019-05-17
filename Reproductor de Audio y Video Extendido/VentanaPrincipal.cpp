@@ -519,7 +519,7 @@ void VentanaPrincipal::Lista_AbrirEnExplorador(void) {
 
 void VentanaPrincipal::Lista_MostrarEnBaseDatos(void) {
 	Arbol_MostrarMedio(Lista.MedioMarcado()->Hash);
-	_MostrarMarco(ID_BOTON_BD);
+	MostrarMarco(ID_BOTON_BD);
 }
 
 void VentanaPrincipal::Lista_EliminarSeleccionados(void) {
@@ -773,7 +773,7 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Soltado(DWL::DEventoMouse &DatosMous
 }
 
 
-void VentanaPrincipal::_MostrarMarco(const INT_PTR ID) {
+void VentanaPrincipal::MostrarMarco(const INT_PTR ID) {
 	BotonBD.Marcado((ID == ID_BOTON_BD) ? TRUE: FALSE);
 	BotonLista.Marcado((ID == ID_BOTON_LISTA) ? TRUE : FALSE);
 	BotonVideo.Marcado((ID == ID_BOTON_VIDEO) ? TRUE : FALSE);
@@ -785,18 +785,10 @@ void VentanaPrincipal::_MostrarMarco(const INT_PTR ID) {
 // Mensajes para los botones de la barra de tareas
 void VentanaPrincipal::Evento_Comando(WPARAM wParam, LPARAM lParam) {
 	switch (LOWORD(wParam)) {
-			case ID_BOTON_ANTERIOR:
-				Lista_Anterior();
-				break;
-			case ID_BOTON_SIGUIENTE:
-				Lista_Siguiente();
-				break;
-			case ID_BOTON_PLAY:
-				Lista_Play();
-				break;
-			case ID_BOTON_STOP:
-				Lista_Stop();
-				break;
+		case ID_BOTON_ANTERIOR:		Lista_Anterior();		break;
+		case ID_BOTON_SIGUIENTE:	Lista_Siguiente();		break;
+		case ID_BOTON_PLAY:			Lista_Play();			break;
+		case ID_BOTON_STOP:			Lista_Stop();			break;
 	}
 }
 
@@ -810,7 +802,7 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse)
 			case ID_BOTON_BD:
 			case ID_BOTON_LISTA:
 			case ID_BOTON_VIDEO:
-				_MostrarMarco(DatosMouse.ID());
+				MostrarMarco(DatosMouse.ID());
 				break;
 /*			case ID_BOTON_AGREGARRAIZ:
 				AgregarRaiz();
