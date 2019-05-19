@@ -169,6 +169,9 @@ const BOOL RaveVLC_Medio::Play(void) {
 
 			// Muestro el tooltip con los datos
 			App.MostrarToolTipPlayer(Medio);
+
+			
+//			App.BD.AgregarMomento(&App.MP.MedioActual(), std::wstring(L"MomentoTest"), 0, 10000, FALSE); // TEST INICIAL
 			return TRUE;
 		}
 	}

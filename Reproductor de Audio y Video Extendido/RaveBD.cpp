@@ -6,7 +6,7 @@
 
 RaveBD::RaveBD(void) : _BD(NULL), _Opciones_Volumen(0), _Opciones_PosX(0), _Opciones_PosY(0), _Opciones_VentanaOpciones_PosX(0), _Opciones_VentanaOpciones_PosY(0), _Opciones_DlgDirectorios_PosX(0), _Opciones_DlgDirectorios_PosY(0), 
 								  _Opciones_VentanaAnalizar_PosX(0), _Opciones_VentanaAnalizar_PosY(0), _Opciones_Ancho(0), _Opciones_Alto(0), _Opciones_Shufle(FALSE), _Opciones_Repeat(Tipo_Repeat_NADA), _Opciones_Inicio(Tipo_Inicio_NADA),
-								  _Opciones_Version(0.0f), _Opciones_OcultarMouseEnVideo(0), _Opciones_MostrarObtenerMetadatos(FALSE), _Opciones_MostrarAsociarArchivos(FALSE), _Opciones_AnalizarMediosPendientes(FALSE),
+								  _Opciones_Version(0.0f), _Opciones_OcultarMouseEnVideo(0), _Opciones_MostrarObtenerMetadatos(FALSE), _Opciones_MostrarAsociarArchivos(FALSE), _Opciones_AnalizarMediosPendientes(FALSE), 
 								  _Opciones_BuscarActualizacion(FALSE), _Opciones_TiempoAnimaciones(0), _Opciones_TiempoToolTips(0), _Opciones_NoAgregarMedioMenos25(FALSE), _Opciones_NoGenerarListasMenos3(FALSE), 
 							 	  _Opciones_Sumar005(FALSE), _Opciones_AlineacionControlesVideo(0), _Opciones_OpacidadControlesVideo(0), _Opciones_EfectoFadeAudioMS(10000), _Opciones_DlgDirectorios_Ancho(400), _Opciones_DlgDirectorios_Alto(600){
 }
@@ -624,21 +624,55 @@ const BOOL RaveBD::_ModificarTablas(void) {
 		Q = L"UPDATE Medios SET Proporcion='', Brillo=1.0, Contraste=1.0, Saturacion=1.0";
 		SqlRet = Consulta(Q);
 
-		// Actualizo la versión de la BD
+		// Actualizo la versión de la BD (MOVER ESTE UPDATE A LA ULTIMA VERSIÓN)
 		Q = L"UPDATE Opciones SET Version=" RAVE_VERSIONBD L" WHERE Id=0";
 		SqlRet = Consulta(Q);
 		return TRUE;
+
 	}
+
+/*	if (Version < 1.2) {
+		// Añado la columna EfectoFadeAudioMS en las opciones
+		Q = L"ALTER TABLE Opciones ADD COLUMN ContadorIDSMomentos INTEGER AFTER DlgDirectorios_Alto";
+		SqlRet = Consulta(Q);
+
+		// Modifico el valor de EfectoFadeAudioMS a 10000
+		Q = L"UPDATE Opciones SET ContadorIDSMomentos=0 WHERE Id=0";
+		SqlRet = Consulta(Q);
+
+
+		// Añado la columna IDMomentos en los medios
+		Q = L"ALTER TABLE Medios ADD COLUMN IDMomentos INTEGER AFTER Saturacion";
+		SqlRet = Consulta(Q);
+
+		// Modifico el valor de IDMomentos a -1 (que significa que no hay momentos guardados para el medio)
+		Q = L"UPDATE Medios SET IDMomentos=-1";
+		SqlRet = Consulta(Q);
+
+
+
+	}*/
 
 	return FALSE;
 }
+
+/* PASOS / RECOMENDACIONES A TENER EN CUENTA A LA HORA DE AGREGAR NUEVAS TABLAS Y NUEVAS COLUMNAS A TABLAS EXISTENTES 
+	
+	* Para nuevas tablas simplemente añade el código necesario al principio de la función _CrearTablas
+
+	* Para modificar las columnas de una tabla existente, debes utilizar la función _ModificarTablas, subir la versión de RAVE_VERSIONBD, 
+	  y crear un if para la nueva versión en el que alteraremos las tablas, y rellenaremos las entradas que ya pudieram tener las tablas alteradas,
+	  para asignar los valores por defecto de las nuevas columnas.
+
+	  Por supuesto tambien tendras que añadir esas columnas en la función CrearTablas (por si se crea la base de datos desde 0)
+*/
 
 /* Si hay que modificar alguna tabla, se tiene que hacer en la función _ModificarTablas, la cual mira la versión de las opciones */
 const BOOL RaveBD::_CrearTablas(void) {
 
 	std::wstring Q;
 	// Creo la tabla para las opciones 2 ///////////////////////////////////////////////////
-/*	std::wstring CrearTablaOpciones2 =	L"CREATE TABLE Opciones2 ("
+/*	std::wstring CrarTablaMomentos =	L"CREATE TABLE Momentos ("
 												L"EfectoFadeAudioMS"	L" INTEGER"
 											L")";
 	if (Consulta(CrearTablaOpciones2.c_str()) == SQLITE_ERROR) return FALSE;
@@ -675,46 +709,47 @@ const BOOL RaveBD::_CrearTablas(void) {
 
 	// Creo la tabla para las opciones /////////////////////////////////////////////////////////////
 	std::wstring CrearTablaOpciones = L"CREATE TABLE Opciones ("
-											L"Id" 						L" INTEGER PRIMARY KEY," 
-											L"Volumen"					L" INTEGER,"             
-											L"PathAbrir"				L" VARCHAR(260),"			// NO SE USA	  
-											L"PosX"						L" INTEGER,"             
-											L"PosY"						L" INTEGER,"             
-											L"Ancho"					L" INTEGER,"             
-											L"Alto"						L" INTEGER,"             
-											L"Shufle"					L" INTEGER,"             
-											L"Repeat"					L" INTEGER,"             
-											L"Inicio"					L" INTEGER,"             
-											L"OcultarMouseEnVideo"		L" INTEGER,"             
-											L"Version"					L" DOUBLE,"				  
-											L"MostrarObtenerMetadatos"	L" INTEGER,"
-											L"MostrarAsociarArchivos"	L" INTEGER,"				// NO SE USA
-											L"AnalizarMediosPendientes" L" INTEGER,"
-											L"VentanaOpciones_PosX"		L" INTEGER,"             
-											L"VentanaOpciones_PosY"		L" INTEGER,"             
-											L"VentanaAsociar_PosX"		L" INTEGER,"				// Ahora es Opciones_DlgDirectorios_PosX
-											L"VentanaAsociar_PosY"		L" INTEGER,"				// Ahora es Opciones_DlgDirectorios_PosY
-											L"VentanaAnalizar_PosX"		L" INTEGER,"             
-											L"VentanaAnalizar_PosY"		L" INTEGER," 
-											L"BuscarActualizacion"		L" INTEGER," 
-											L"TiempoAnimaciones"		L" INTEGER," 
-											L"TiempoToolTips"			L" INTEGER," 
-											L"NoAgregarMedioMenos25"	L" INTEGER," 
-											L"NoGenerarListasMenos3"	L" INTEGER," 
-											L"Sumar005"					L" INTEGER," 
-											L"AlineacionControlesVideo"	L" INTEGER,"
-											L"OpacidadControlesVideo"	L" INTEGER,"			
-											L"EfectoFadeAudioMS"     	L" INTEGER,"		
-											L"DlgDirectorios_Ancho"   	L" INTEGER,"		
-											L"DlgDirectorios_Alto"   	L" INTEGER"		
+											L"Id" 						L" INTEGER PRIMARY KEY,"		// 00
+											L"Volumen"					L" INTEGER,"					// 01
+											L"PathAbrir"				L" VARCHAR(260),"				// 02 NO SE USA	  
+											L"PosX"						L" INTEGER,"					// 03
+											L"PosY"						L" INTEGER,"					// 04
+											L"Ancho"					L" INTEGER,"					// 05
+											L"Alto"						L" INTEGER,"					// 06
+											L"Shufle"					L" INTEGER,"					// 07
+											L"Repeat"					L" INTEGER,"					// 08
+											L"Inicio"					L" INTEGER,"					// 09
+											L"OcultarMouseEnVideo"		L" INTEGER,"					// 10
+											L"Version"					L" DOUBLE,"						// 11
+											L"MostrarObtenerMetadatos"	L" INTEGER,"					// 12
+											L"MostrarAsociarArchivos"	L" INTEGER,"					// 13 NO SE USA
+											L"AnalizarMediosPendientes" L" INTEGER,"					// 14
+											L"VentanaOpciones_PosX"		L" INTEGER,"					// 15
+											L"VentanaOpciones_PosY"		L" INTEGER,"					// 16
+											L"VentanaAsociar_PosX"		L" INTEGER,"					// 17 Ahora es Opciones_DlgDirectorios_PosX
+											L"VentanaAsociar_PosY"		L" INTEGER,"					// 18 Ahora es Opciones_DlgDirectorios_PosY
+											L"VentanaAnalizar_PosX"		L" INTEGER,"					// 19
+											L"VentanaAnalizar_PosY"		L" INTEGER,"					// 20
+											L"BuscarActualizacion"		L" INTEGER,"					// 21
+											L"TiempoAnimaciones"		L" INTEGER,"					// 22
+											L"TiempoToolTips"			L" INTEGER,"					// 23
+											L"NoAgregarMedioMenos25"	L" INTEGER,"					// 24
+											L"NoGenerarListasMenos3"	L" INTEGER,"					// 25
+											L"Sumar005"					L" INTEGER,"					// 26 Sumar 0.05 a la nota una vez finalizado el medio
+											L"AlineacionControlesVideo"	L" INTEGER,"					// 27 Alineación para los controles del video
+											L"OpacidadControlesVideo"	L" INTEGER,"					// 28 Opacidad másima para los controles del video (ControlesPantallaCompleta)
+											L"EfectoFadeAudioMS"     	L" INTEGER,"					// 29 (NO SE USA DE MOMENTO, COMO MUCHO SE USARA SI IMPLEMENTO LA FMOD)
+											L"DlgDirectorios_Ancho"   	L" INTEGER,"					// 30
+											L"DlgDirectorios_Alto"   	L" INTEGER "					// 31
+//											L"ContadorIDSMomentos"      L" INTEGER NOT NULL DEFAULT 0"	// 32 Contador de tablas para los momentos
 									  L")";
 	if (Consulta(CrearTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	// Añado los datos por defecto de las opciones ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes, VentanaOpciones_PosX, VentanaOpciones_PosY, VentanaAsociar_PosX, VentanaAsociar_PosY, VentanaAnalizar_PosX, VentanaAnalizar_PosY, BuscarActualizacion, TiempoAnimaciones, TiempoToolTips, NoAgregarMedioMenos25, NoGenerarListasMenos3, Sumar005, AlineacionControlesVideo, OpacidadControlesVideo, EfectoFadeAudioMS) "
-										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1, 1, 400, 300, 500, 400, 300, 200, 1, 400, 5500, 1, 1, 1, 0, 200, 10000)";
+	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes, VentanaOpciones_PosX, VentanaOpciones_PosY, VentanaAsociar_PosX, VentanaAsociar_PosY, VentanaAnalizar_PosX, VentanaAnalizar_PosY, BuscarActualizacion, TiempoAnimaciones, TiempoToolTips, NoAgregarMedioMenos25, NoGenerarListasMenos3, Sumar005, AlineacionControlesVideo, OpacidadControlesVideo, EfectoFadeAudioMS, DlgDirectorios_Ancho, DlgDirectorios_Alto) "
+										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1, 1, 400, 300, 500, 400, 300, 200, 1, 400, 5500, 1, 1, 1, 0, 200, 10000, 350, 400)";
 	if (Consulta(ValoresTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -725,35 +760,36 @@ const BOOL RaveBD::_CrearTablas(void) {
 	
 	/*	Tipo				Nombre			Posición		Tipo
 		---------------------------------------------------------------------- -
-		UINT				Id				    0			INTEGER PRIMARY KEY
-		sqlite_int64		Hash			    1			INT UNIQUE
-		std::wstring		Path			    2			VARCHAR(260)
-		std::wstring		NombrePath		    3			VARCHAR(128)
-		Tipo_Medio			TipoMedio		    4			INT
-		Extension_Medio		Extension		    5			INT
-		UINT				Reproducido		    6			INT
-		ULONG				Longitud		    7			INT
-		DWORD				IDDisco			    8			INT
-		float				Nota			    9			DOUBLE
-		std::wstring		Genero		       10			VARCHAR(128)
-		std::wstring		GrupoPath	       11			VARCHAR(128)
-		std::wstring		DiscoPath	       12			VARCHAR(128)
-		UINT				PistaPath	       13			INT
-		libvlc_time_t		Tiempo		       14			INT
-		std::wstring		Subtitulos	       15			VARCHAR(260)
-		BOOL				Parseado           16			TINYINT(1)
-		std::wstring		NombreTag		   17			VARCHAR(128)
-		std::wstring		GrupoTag		   18			VARCHAR(128)
-		std::wstring		DiscoTag		   19			VARCHAR(128)
-		UINT				PistaTag	       20			INT
-		BOOL				NombreEleccion     21			TINYINT(1)
-		BOOL				GrupoEleccion      22			TINYINT(1)
-		BOOL				DiscoEleccion      23			TINYINT(1)
-		BOOL				PistaEleccion      24			TINYINT(1)
-		std::wstring		Proporcion 		   25           VARCHAR(16)
-		float               Brillo 			   26			DOUBLE
-		float               Contraste		   27			DOUBLE
-		float               Saturacion 		   28			DOUBLE		*/
+		UINT				Id				     0			INTEGER PRIMARY KEY
+		sqlite_int64		Hash			     1			INT UNIQUE
+		std::wstring		Path			     2			VARCHAR(260)
+		std::wstring		NombrePath		     3			VARCHAR(128)
+		Tipo_Medio			TipoMedio		     4			INT
+		Extension_Medio		Extension		     5			INT
+		UINT				Reproducido		     6			INT
+		ULONG				Longitud		     7			INT
+		DWORD				IDDisco			     8			INT
+		float				Nota			     9			DOUBLE
+		std::wstring		Genero		        10			VARCHAR(128)
+		std::wstring		GrupoPath	        11			VARCHAR(128)
+		std::wstring		DiscoPath	        12			VARCHAR(128)
+		UINT				PistaPath	        13			INT
+		libvlc_time_t		Tiempo		        14			INT
+		std::wstring		Subtitulos	        15			VARCHAR(260)
+		BOOL				Parseado            16			TINYINT(1)
+		std::wstring		NombreTag		    17			VARCHAR(128)
+		std::wstring		GrupoTag		    18			VARCHAR(128)
+		std::wstring		DiscoTag		    19			VARCHAR(128)
+		UINT				PistaTag	        20			INT
+		BOOL				NombreEleccion      21			TINYINT(1)
+		BOOL				GrupoEleccion       22			TINYINT(1)
+		BOOL				DiscoEleccion       23			TINYINT(1)
+		BOOL				PistaEleccion       24			TINYINT(1)
+		std::wstring		Proporcion 		    25           VARCHAR(16)
+		float               Brillo 			    26			DOUBLE
+		float               Contraste			27			DOUBLE
+		float               Saturacion 			28			DOUBLE
+		*/
 	// Creo la tabla para los medios
 	std::wstring CrearTablaMedios =	L"CREATE TABLE Medios ("							
 										L"Id "				L"INTEGER PRIMARY KEY, "	//  0
@@ -785,6 +821,7 @@ const BOOL RaveBD::_CrearTablas(void) {
 										L"Brillo "			L"DOUBLE, "					// 26
 										L"Contraste "		L"DOUBLE, "					// 27
 										L"Saturacion "		L"DOUBLE"					// 28
+//										L"IDMomentos "      L"INT NOT NULL DEFAULT -1"  // 29
 									L")";
 	if (Consulta(CrearTablaMedios.c_str()) == SQLITE_ERROR)
 		return FALSE;
@@ -1259,35 +1296,30 @@ void RaveBD::Opciones_MostrarObtenerMetadatos(const BOOL nMostrarObtenerMetadato
 	_Opciones_MostrarObtenerMetadatos = nMostrarObtenerMetadatos;
 	std::wstring Q = L"Update Opciones SET MostrarObtenerMetadatos=" + std::to_wstring(nMostrarObtenerMetadatos) + L" WHERE Id=0";
 	int Ret = Consulta(Q.c_str());
-	Ret = Ret;
 }
 
 void RaveBD::Opciones_MostrarAsociarArchivos(const BOOL nMostrarAsociarArchivos) {
 	_Opciones_MostrarObtenerMetadatos = nMostrarAsociarArchivos;
 	std::wstring Q = L"Update Opciones SET MostrarAsociarArchivos=" + std::to_wstring(nMostrarAsociarArchivos) + L" WHERE Id=0";
 	int Ret = Consulta(Q.c_str());
-	Ret = Ret;
 }
 
 void RaveBD::Opciones_AnalizarMediosPendientes(const BOOL nAnalizarMediosPendientes) {
 	_Opciones_AnalizarMediosPendientes = nAnalizarMediosPendientes;
 	std::wstring Q = L"Update Opciones SET AnalizarMediosPendientes=" + std::to_wstring(nAnalizarMediosPendientes) + L" WHERE Id=0";
 	int Ret = Consulta(Q.c_str());
-	Ret = Ret;
 }
 
 void RaveBD::Opciones_BuscarActualizacion(const BOOL nBuscarActualizacion) {
 	_Opciones_BuscarActualizacion = nBuscarActualizacion;
 	std::wstring Q = L"Update Opciones SET BuscarActualizacion=" + std::to_wstring(nBuscarActualizacion) + L" WHERE Id=0";
 	int Ret = Consulta(Q.c_str());
-	Ret = Ret;
 }
 
 void RaveBD::Opciones_TiempoAnimaciones(const UINT nTiempoAnimaciones) {
 	_Opciones_TiempoAnimaciones = nTiempoAnimaciones;
 	std::wstring Q = L"Update Opciones SET TiempoAnimaciones=" + std::to_wstring(nTiempoAnimaciones) + L" WHERE Id=0";
 	int Ret = Consulta(Q.c_str());
-	Ret = Ret;
 }
 
 void RaveBD::Opciones_TiempoToolTips(const UINT nTiempoToolTips) {
@@ -1301,43 +1333,78 @@ void RaveBD::Opciones_NoAgregarMedioMenos25(const BOOL nNoAgregarMedioMenos25) {
 	_Opciones_NoAgregarMedioMenos25 = nNoAgregarMedioMenos25;
 	std::wstring Q = L"Update Opciones SET NoAgregarMedioMenos25=" + std::to_wstring(nNoAgregarMedioMenos25) + L" WHERE Id=0";
 	int Ret = Consulta(Q.c_str());
-	Ret = Ret;
 }
 
 void RaveBD::Opciones_NoGenerarListasMenos3(const BOOL nNoGenerarListasMenos3) {
 	_Opciones_NoGenerarListasMenos3 = nNoGenerarListasMenos3;
 	std::wstring Q = L"Update Opciones SET NoGenerarListasMenos3=" + std::to_wstring(nNoGenerarListasMenos3) + L" WHERE Id=0";
 	int Ret = Consulta(Q.c_str());
-	Ret = Ret;
 }
 
 void RaveBD::Opciones_Sumar005(const BOOL nSumar005) {
 	_Opciones_Sumar005 = nSumar005;
 	std::wstring Q = L"Update Opciones SET Sumar005=" + std::to_wstring(nSumar005) + L" WHERE Id=0";
 	int Ret = Consulta(Q.c_str());
-	Ret = Ret;
 }
 
 void RaveBD::Opciones_AlineacionControlesVideo(const int nOpciones_AlineacionControlesVideo) {
 	_Opciones_AlineacionControlesVideo = nOpciones_AlineacionControlesVideo;
 	std::wstring Q = L"Update Opciones SET AlineacionControlesVideo=" + std::to_wstring(nOpciones_AlineacionControlesVideo) + L" WHERE Id=0";
 	int Ret = Consulta(Q.c_str());
-	Ret = Ret;
 }
 
 void RaveBD::Opciones_OpacidadControlesVideo(const int nOpciones_OpacidadControlesVideo) {
 	_Opciones_OpacidadControlesVideo = nOpciones_OpacidadControlesVideo;
 	std::wstring Q = L"Update Opciones SET OpacidadControlesVideo=" + std::to_wstring(nOpciones_OpacidadControlesVideo) + L" WHERE Id=0";
 	int Ret = Consulta(Q.c_str());
-	Ret = Ret;
 }
 
 void RaveBD::Opciones_EfectoFadeAudioMS(const UINT nOpciones_EfectoFadeAudioMS) {
 	_Opciones_EfectoFadeAudioMS = nOpciones_EfectoFadeAudioMS;
 	std::wstring Q = L"Update Opciones SET EfectoFadeAudioMS=" + std::to_wstring(nOpciones_EfectoFadeAudioMS) + L" WHERE Id=0";
 	int Ret = Consulta(Q.c_str());
-	Ret = Ret;
 }
+/*
+void RaveBD::Opciones_ContadorIDSMomentos(const LONG nOpciones_ContadorIDSMomentos) {
+	_Opciones_ContadorIDSMomentos = nOpciones_ContadorIDSMomentos;
+	std::wstring Q = L"Update Opciones SET ContadorIDSMomentos=" + std::to_wstring(nOpciones_ContadorIDSMomentos) + L" WHERE Id=0";
+	int Ret = Consulta(Q.c_str());
+}*/
+
+// Función que agrega un momento para un medio
+const BOOL RaveBD::AgregarMomento(BDMedio* nMedio, std::wstring& nNombre, const UINT64 nTiempoInicial, const UINT64 nTiempoFinal, const BOOL EvitarReproduccion) {
+	std::wstring Q = L"SELECT * FROM Momentos" + std::to_wstring(nMedio->Id);
+	int SqlRet = Consulta(Q);
+
+	// No existen momentos para este medio, creo la tabla
+	if (SqlRet == 1 && _UltimoErrorSQL == L"no such table: Momentos" + std::to_wstring(nMedio->Id)) { // buscar el valor quan falla la primera consulta que busca la taula dels moments del medi especificat
+		// Si se hace un momento aleatório, necesitare la ID del medio, por lo que el valor del momento es la ID de su medio
+		Q = L"CREATE TABLE Momentos" + std::to_wstring(nMedio->Id) + L" ("
+			L"Nombre"			L" VARCHAR(260),"
+			L"TiempoInicio"		L" INTEGER,"
+			L"TiempoFin"		L" INTEGER,"
+			L"Excluir"			L" INTEGER"
+		")";
+		// Creo la tabla con una nueva ID
+		SqlRet = Consulta(Q);
+		// Guardo la ID del momento en el medio (no me hace falta porque es la misma id que el medio)
+//		Q = L"UPDATE Medios SET IDMomentos=" + std::to_wstring(nMedio->Id) + L"WHERE Id=" + std::to_wstring(nMedio->Id);
+
+		// Sumo 1 al contador de IDS para las tablas Momentos (en las opciones) (no me hace falta porque los momentos tienen la misma id que los medios
+//		Opciones_ContadorIDSMomentos(_Opciones_ContadorIDSMomentos + 1);
+	}
+	// Existen momentos para este medio, agrego uno nuevo
+	Q = L"INSERT INTO Momentos" + std::to_wstring(nMedio->Id) + L" (Nombre, TiempoInicio, TiempoFin, Excluir) "
+		L"VALUES(\"" +
+				nNombre + L"\", " +
+				std::to_wstring(nTiempoInicial) + L", " +
+				std::to_wstring(nTiempoFinal) + L", " +
+				std::to_wstring(EvitarReproduccion) +
+		L")";
+	SqlRet = Consulta(Q);
+	return TRUE;
+}
+
 
 // Función que devuelve la versión de la BD
 const float RaveBD::ObtenerVersionBD(void) {
@@ -1425,6 +1492,7 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 			_Opciones_EfectoFadeAudioMS			= static_cast<int>(sqlite3_column_int(SqlQuery, 29));
 			_Opciones_DlgDirectorios_Ancho		= static_cast<int>(sqlite3_column_int(SqlQuery, 30));
 			_Opciones_DlgDirectorios_Alto		= static_cast<int>(sqlite3_column_int(SqlQuery, 31));
+//			_Opciones_ContadorIDSMomentos		= static_cast<int>(sqlite3_column_int(SqlQuery, 32));
 		}
 		if (SqlRet == SQLITE_BUSY) {
 			VecesBusy++;
@@ -1897,38 +1965,39 @@ BDMedio::BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades) : PistaP
 	ObtenerFila(SqlQuery, Unidades);
 }
 
-/* Función que obtiene los datos de una fila :
-	Tipo				Nombre			Posición		Tipo
-	---------------------------------------------------------------------- -
-	UINT				Id				    0			INTEGER PRIMARY KEY
-	sqlite_int64		Hash			    1			INT UNIQUE
-	std::wstring		Path			    2			VARCHAR(260)
-	std::wstring		NombrePath		    3			VARCHAR(128)
-	Tipo_Medio			TipoMedio		    4			INT
-	Extension_Medio		Extension		    5			INT
-	UINT				Reproducido		    6			INT
-	ULONG				Longitud		    7			INT
-	DWORD				IDDisco			    8			INT
-	float				Nota			    9			DOUBLE
-	std::wstring		Genero		       10			VARCHAR(128)
-	std::wstring		GrupoPath	       11			VARCHAR(128)
-	std::wstring		DiscoPath	       12			VARCHAR(128)
-	UINT				PistaPath	       13			INT
-	libvlc_time_t		Tiempo		       14			INT
-	std::wstring		Subtitulos	       15			VARCHAR(260)
-	BOOL				Parseado           16			TINYINT(1)
-	std::wstring		NombreTag		   17			VARCHAR(128)
-	std::wstring		GrupoTag		   18			VARCHAR(128)
-	std::wstring		DiscoTag		   19			VARCHAR(128)
-	UINT				PistaTag	       20			INT
-	BOOL				NombreEleccion     21			TINYINT(1)
-	BOOL				GrupoEleccion      22			TINYINT(1)
-	BOOL				DiscoEleccion      23			TINYINT(1)
-	BOOL				PistaEleccion      24			TINYINT(1)
-	std::wstring		Proporcion 		   25           VARCHAR(16)
-	float               Brillo 			   26			DOUBLE
-	float               Contraste		   27			DOUBLE
-	float               Saturacion 		   28			DOUBLE		*/
+/*	Tipo				Nombre			Posición		Tipo
+		---------------------------------------------------------------------- -
+		UINT				Id				     0			INTEGER PRIMARY KEY
+		sqlite_int64		Hash			     1			INT UNIQUE
+		std::wstring		Path			     2			VARCHAR(260)
+		std::wstring		NombrePath		     3			VARCHAR(128)
+		Tipo_Medio			TipoMedio		     4			INT
+		Extension_Medio		Extension		     5			INT
+		UINT				Reproducido		     6			INT
+		ULONG				Longitud		     7			INT
+		DWORD				IDDisco			     8			INT
+		float				Nota			     9			DOUBLE
+		std::wstring		Genero		        10			VARCHAR(128)
+		std::wstring		GrupoPath	        11			VARCHAR(128)
+		std::wstring		DiscoPath	        12			VARCHAR(128)
+		UINT				PistaPath	        13			INT
+		libvlc_time_t		Tiempo		        14			INT
+		std::wstring		Subtitulos	        15			VARCHAR(260)
+		BOOL				Parseado            16			TINYINT(1)
+		std::wstring		NombreTag		    17			VARCHAR(128)
+		std::wstring		GrupoTag		    18			VARCHAR(128)
+		std::wstring		DiscoTag		    19			VARCHAR(128)
+		UINT				PistaTag	        20			INT
+		BOOL				NombreEleccion      21			TINYINT(1)
+		BOOL				GrupoEleccion       22			TINYINT(1)
+		BOOL				DiscoEleccion       23			TINYINT(1)
+		BOOL				PistaEleccion       24			TINYINT(1)
+		std::wstring		Proporcion 		    25           VARCHAR(16)
+		float               Brillo 			    26			DOUBLE
+		float               Contraste			27			DOUBLE
+		float               Saturacion 			28			DOUBLE
+		LONG                IDMomentos			29			INT
+*/
 void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades) {
 	Id				= static_cast<UINT>(sqlite3_column_int(SqlQuery, 0));
 	Hash			= sqlite3_column_int64(SqlQuery, 1);
@@ -1967,7 +2036,7 @@ void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades)
 	Brillo			= static_cast<float>(sqlite3_column_double(SqlQuery, 26));
 	Contraste		= static_cast<float>(sqlite3_column_double(SqlQuery, 27));
 	Saturacion		= static_cast<float>(sqlite3_column_double(SqlQuery, 28));
-
+//	IDMomentos		= static_cast<UINT>(sqlite3_column_int(SqlQuery, 29));
 
 	DWL::DUnidadDisco *Unidad = Unidades.Buscar_Numero_Serie(IDDisco);
 	if (Unidad != NULL) Path[0] = Unidad->Letra();

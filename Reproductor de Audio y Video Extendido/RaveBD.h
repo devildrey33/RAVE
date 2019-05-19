@@ -141,6 +141,8 @@ class BDMedio {
 	float                   Contraste;
 	float                   Saturacion;
 
+//	LONG                    IDMomentos;
+
 	const BOOL              EsFMOD(void);
 
 	bool					operator != (const BDMedio &Comp) const { if (Comp.Hash != Hash) return true; return false; }
@@ -174,6 +176,9 @@ class RaveBD {
 //	const int					ConsultaVarg(const wchar_t *TxtConsulta, ...);
 								// Consulta desde un std::wstring
 	inline const int			Consulta(std::wstring &TxtConsulta) { return Consulta(TxtConsulta.c_str()); };
+
+								// Función que agrega un momento para un medio
+	const BOOL                  AgregarMomento(BDMedio* nMedio, std::wstring& nNombre, const UINT64 nTiempoInicial, const UINT64 nTiempoFinal = 0, const BOOL EvitarReproduccion = FALSE);
 
 								// Función que extrae los datos del medio que nos da el path
 	const BOOL					AnalizarMedio(std::wstring &mPath, BDMedio &OUT_Medio, const ULONG Longitud = 0);
@@ -317,6 +322,9 @@ class RaveBD {
 	inline const UINT			Opciones_EfectoFadeAudioMS(void) { return _Opciones_EfectoFadeAudioMS; }
 	void						Opciones_EfectoFadeAudioMS(const UINT nOpciones_EfectoFadeAudioMS);
 
+/*	inline const LONG			Opciones_ContadorIDSMomentos(void) { return _Opciones_ContadorIDSMomentos; }
+	void						Opciones_ContadorIDSMomentos(const LONG nOpciones_ContadorIDSMomentos);*/
+
 	DWL::DUnidadesDisco			Unidades;
 
 
@@ -378,6 +386,7 @@ protected:
 	BOOL                       _Opciones_Sumar005;                  // Sumar 0.05 a la nota al reproducir completamente un medio
 	int				           _Opciones_AlineacionControlesVideo;	// Alineación para los controles pantalla completa
 	int						   _Opciones_OpacidadControlesVideo;    // Opacidad máxima para los controles pantalla completa
+//	LONG                       _Opciones_ContadorIDSMomentos;		// Contador global de las IDS para las tablas de momentos
 
 	UINT                       _Opciones_EfectoFadeAudioMS;			// Milisegundos para el efecto fade audio
 	friend class ThreadAnalisis;
