@@ -340,7 +340,8 @@
 			- Tot això prodría fins i tot derivar en llistes aleatories per moments (de audio, i de video)
 			- Tambe es podría fer una llista de moments global en la llista de medis, (i mostrar tots els moments que tenen tos els medis de la llista)
 		
-
+		- M'ha petat un parell de cops al tancar el reproductor... segons el call stack sembla que es per modificar el brillo...
+			- He actualitzat el thread analizar per que al guardar items es guardi el brillo, el contraste, i la saturació a 1.0 , ja que començaven en NULL...
 
 
 	RAVE 0.7
@@ -381,7 +382,7 @@
 
 
 
-
+		- QUAN s'acaba la llista el icona del play es queda en pausa
 
 
 

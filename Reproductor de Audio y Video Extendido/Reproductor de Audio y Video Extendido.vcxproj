@@ -258,6 +258,7 @@
     <ClInclude Include="ToolTipInfo.h" />
     <ClInclude Include="VentanaAsociarReproductor %28DEPRECATED%29.h" />
     <ClInclude Include="VentanaErrorCritico.h" />
+    <ClInclude Include="VentanaMomento.h" />
     <ClInclude Include="VentanaOpcionesRAVE.h" />
     <ClInclude Include="VentanaPrecarga.h" />
     <ClInclude Include="VentanaPrincipal.h" />
@@ -342,6 +343,7 @@
     <ClCompile Include="ToolTipInfo.cpp" />
     <ClCompile Include="VentanaAsociarReproductor %28DEPRECATED%29.cpp" />
     <ClCompile Include="VentanaErrorCritico.cpp" />
+    <ClCompile Include="VentanaMomento.cpp" />
     <ClCompile Include="VentanaOpcionesRAVE.cpp" />
     <ClCompile Include="VentanaPrecarga.cpp" />
     <ClCompile Include="VentanaPrincipal.cpp" />

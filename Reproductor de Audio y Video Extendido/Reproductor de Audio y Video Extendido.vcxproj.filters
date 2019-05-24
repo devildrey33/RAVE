@@ -409,6 +409,9 @@
     <ClInclude Include="RaveVLC %28DEPRECATED%29.h">
       <Filter>MediaPlayer\VLC</Filter>
     </ClInclude>
+    <ClInclude Include="VentanaMomento.h">
+      <Filter>Ventanas</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -623,6 +626,9 @@
     </ClCompile>
     <ClCompile Include="RaveVLC %28DEPRECATED%29.cpp">
       <Filter>MediaPlayer\VLC</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaMomento.cpp">
+      <Filter>Ventanas</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

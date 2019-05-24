@@ -125,7 +125,7 @@ const BOOL ArbolBD::AgregarNodoALista(NodoBD *nNodo) {
 	sqlite3_stmt   *SqlQuery = NULL;
 	int SqlRet = sqlite3_prepare16_v2(App.BD(), SqlStr.c_str(), -1, &SqlQuery, NULL);
 	if (SqlRet) {
-		const char *Error = sqlite3_errmsg(App.BD());
+		const char* Error = sqlite3_errmsg(App.BD());
 		return FALSE;
 	}
 

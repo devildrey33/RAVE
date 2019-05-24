@@ -928,9 +928,9 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 	// http://stackoverflow.com/questions/3505575/how-can-i-get-the-duration-of-an-mp3-file-cbr-or-vbr-with-a-very-small-library	//
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	// Recorto el path y elimino los dos primeros caracteres que representan la unidad
+	// Recorto el path y substituyo la letra de unidad por un interrogante
 	std::wstring		PathCortado = nPath;
-//	PathCortado[0] = L'?';
+	PathCortado[0] = L'?';
 	DWL::DUnidadDisco  *UnidadDisco = Unidades.Buscar_Letra(nPath[0]);
 
 
@@ -965,6 +965,7 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 			FiltroNombre(TmpNombre, NombreFinal);
 			OUT_Medio.Hash			= Hash;
 			OUT_Medio.Path			= PathCortado;
+//			OUT_Medio.Path[0]		= L'?';
 			OUT_Medio.NombrePath	= NombreFinal;
 			OUT_Medio.TipoMedio		= Tipo;
 			OUT_Medio.Extension		= Extension;
@@ -974,21 +975,25 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 			OUT_Medio.Nota          = 2;
 			OUT_Medio.Tiempo        = 0;
 			//SqlStr = L"INSERT INTO Medios (Hash, Path, NombrePath, TipoMedio, Extension, PistaPath, IDDisco, Longitud, Nota, Tiempo, Subtitulos, Parseado, DiscoPath, GrupoPath) VALUES(7931991700765854209,\"G:\\Pelis i Series\\...
-			SqlStr = L"INSERT INTO Medios (Hash, Path, NombrePath, TipoMedio, Extension, PistaPath, IDDisco, Longitud, Nota, Tiempo, Subtitulos, Parseado, DiscoPath, GrupoPath)"
-								  L" VALUES(" + std::to_wstring(Hash)							+ L",\"" +				// Hash
-												PathCortado										+ L"\",\"" +			// Path
-												NombreFinal										+ L"\", " +				// NombrePath
-												std::to_wstring(Tipo)							+ L"," +				// Tipo
-												std::to_wstring(Extension)						+ L"," +				// Extension
-												std::to_wstring(Pista)							+ L"," +				// PistaPath
-												std::to_wstring(UnidadDisco->Numero_Serie())	+ L"," +				// ID Disco Duro
-												std::to_wstring(Longitud)						+ L"," +				// Longitud en bytes
-												L"2.5," +																// Nota
-												L"0," +																	// Tiempo
-												L"\"\"," +																// Subtitulos
-												L"0,\"" +																// Parseado
-												OUT_Medio.DiscoPath								+ L"\",\"" +			// DiscoPath
-												OUT_Medio.GrupoPath								+ L"\")";				// GrupoPath
+			SqlStr = L"INSERT INTO Medios (Hash, Path, NombrePath, TipoMedio, Extension, PistaPath, IDDisco, Longitud, Nota, Tiempo, Subtitulos, Parseado, DiscoPath, GrupoPath, Brillo, Saturacion, Contraste)"
+						  L" VALUES(" + std::to_wstring(Hash)							+ L",\"" +				// Hash
+										PathCortado										+ L"\",\"" +			// Path
+										NombreFinal										+ L"\", " +				// NombrePath
+										std::to_wstring(Tipo)							+ L"," +				// Tipo
+										std::to_wstring(Extension)						+ L"," +				// Extension
+										std::to_wstring(Pista)							+ L"," +				// PistaPath
+										std::to_wstring(UnidadDisco->Numero_Serie())	+ L"," +				// ID Disco Duro
+										std::to_wstring(Longitud)						+ L"," +				// Longitud en bytes
+										L"2.5," +																// Nota
+										L"0," +																	// Tiempo
+										L"\"\"," +																// Subtitulos
+										L"0,\"" +																// Parseado
+										OUT_Medio.DiscoPath								+ L"\",\"" +			// DiscoPath
+										OUT_Medio.GrupoPath								+ L"\"," +				// GrupoPath
+										L"1.0," +                                                               // Brillo
+										L"1.0," +																// Saturación
+										L"1.0" +																// Contraste
+									L")";
 			SqlRet = Consulta(SqlStr);
 			if (SqlRet == SQLITE_DONE) {
 				return TRUE; // No existe el hash

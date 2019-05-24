@@ -19,6 +19,7 @@
 #ifdef RAVE_VLC_DOBLE_MEDIO_FFT
 	#include "ControlVisualizacion.h"
 #endif
+#include "VentanaMomento.h"
 
 using namespace DWL;
 
@@ -127,6 +128,9 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						Lista_MostrarEnBaseDatos(void);
 	void                        Lista_EliminarSeleccionados(void);
 	void                        Lista_AsignarNota(const float nNota);
+	void                        Lista_Momentos(void);
+
+	VentanaMomento              Momentos;
 
 
 	void						ExploradorAgregarMedio(const BOOL Reproducir);

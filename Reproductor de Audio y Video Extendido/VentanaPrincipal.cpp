@@ -551,6 +551,13 @@ void VentanaPrincipal::Lista_EliminarSeleccionados(void) {
 //	LONG_PTR nItems = Lista.EliminarItemsSeleccionados();
 }
 
+void VentanaPrincipal::Lista_Momentos(void) {
+	if (Lista.TotalItems() == 0) return;
+	BDMedio Medio;
+	App.BD.ObtenerMedio(Lista.MedioMarcado()->Hash, Medio);
+	Momentos.Mostrar(Medio);
+}
+
 void VentanaPrincipal::Arbol_AgregarALista(const BOOL NuevaLista) {
 	std::wstring nTexto = L"\" añadido a la lista.";
 	if (NuevaLista == TRUE) {
@@ -632,6 +639,7 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		case ID_MENULISTA_PROPIEDADES			:	Lista_Propiedades();					return;
 		case ID_MENULISTA_MOSTRARBD             :   Lista_MostrarEnBaseDatos();				return;
 		case ID_MENULISTA_ELIMINAR              :   Lista_EliminarSeleccionados();			return;
+		case ID_MENULISTA_MOMENTOS				:   Lista_Momentos();						return;
 	}
 
 	// Menu Video -> Pistas de audio
