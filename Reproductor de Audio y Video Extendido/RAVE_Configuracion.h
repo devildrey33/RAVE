@@ -1,9 +1,9 @@
 // Configuración para compilar RAVE
 
 // Versión y titulo
-#define RAVE_VERSION			0, 5, 1, 9
-#define RAVE_VERSIONF			0.519
-#define RAVE_VERSIONSTR			L"0.519e PRE RC3"
+#define RAVE_VERSION			0, 5, 2, 0
+#define RAVE_VERSIONF			0.520
+#define RAVE_VERSIONSTR			L"0.520 PRE RC4"
 #define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
 #define RAVE_VERSIONBD          L"1.1"
 

@@ -8,9 +8,6 @@
     <Filter Include="DWL">
       <UniqueIdentifier>{5aafbfd6-4b0d-4f64-a5be-fce21d582163}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Ventanas">
-      <UniqueIdentifier>{4d555157-3a23-462e-9ce5-e473bd34c533}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Base de datos">
       <UniqueIdentifier>{baed088e-06fc-4d4c-9f1c-dbf645a7fd1c}</UniqueIdentifier>
     </Filter>
@@ -19,9 +16,6 @@
     </Filter>
     <Filter Include="DWL\Ventanas">
       <UniqueIdentifier>{74eacee0-0026-4545-acb8-00698bac5642}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Ventanas\Controles">
-      <UniqueIdentifier>{86140bae-a88e-41a0-b85e-580d6aa0159f}</UniqueIdentifier>
     </Filter>
     <Filter Include="DWL\Ventanas\Consola">
       <UniqueIdentifier>{84928c74-54e6-467a-9fdd-fe4f5ce0a3db}</UniqueIdentifier>
@@ -149,6 +143,15 @@
     <Filter Include="MediaPlayer\FMOD">
       <UniqueIdentifier>{4e96608e-0c6a-48e5-84e0-31d7ee943be4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Ventanas y Controles">
+      <UniqueIdentifier>{4d555157-3a23-462e-9ce5-e473bd34c533}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ventanas y Controles\Controles">
+      <UniqueIdentifier>{86140bae-a88e-41a0-b85e-580d6aa0159f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ventanas y Controles\Ventanas">
+      <UniqueIdentifier>{45cc9b22-ca73-44eb-903b-e466183b06d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -159,9 +162,6 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>xXx _MAIN_ xXx</Filter>
-    </ClInclude>
-    <ClInclude Include="VentanaPrincipal.h">
-      <Filter>Ventanas</Filter>
     </ClInclude>
     <ClInclude Include="sqlite3.h">
       <Filter>Base de datos\SQLite</Filter>
@@ -188,22 +188,22 @@
       <Filter>DWL\Sistema\Mouse</Filter>
     </ClInclude>
     <ClInclude Include="VerVideo.h">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClInclude>
     <ClInclude Include="MarcoControles.h">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClInclude>
     <ClInclude Include="ControlesPantallaCompleta.h">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClInclude>
     <ClInclude Include="DToolTipEx.h">
       <Filter>DWL\Ventanas\ControlesEx\ToolTipEx</Filter>
     </ClInclude>
     <ClInclude Include="BarraTiempo.h">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClInclude>
     <ClInclude Include="BarraVolumen.h">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClInclude>
     <ClInclude Include="RAVE_Configuracion.h">
       <Filter>xXx _MAIN_ xXx</Filter>
@@ -233,7 +233,7 @@
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
     </ClInclude>
     <ClInclude Include="ArbolBD.h">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClInclude>
     <ClInclude Include="DListaEx.h">
       <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
@@ -248,7 +248,7 @@
       <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
     </ClInclude>
     <ClInclude Include="ListaMedios.h">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClInclude>
     <ClInclude Include="RAVE_Iconos.h">
       <Filter>xXx _MAIN_ xXx</Filter>
@@ -260,7 +260,7 @@
       <Filter>DWL\Sistema\Graficos</Filter>
     </ClInclude>
     <ClInclude Include="ListaRaices.h">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClInclude>
     <ClInclude Include="DEdicionTextoEx.h">
       <Filter>DWL\Ventanas\ControlesEx\EdicionTextoEx</Filter>
@@ -289,9 +289,6 @@
     <ClInclude Include="vlc.hpp">
       <Filter>MediaPlayer\VLC</Filter>
     </ClInclude>
-    <ClInclude Include="VentanaErrorCritico.h">
-      <Filter>Ventanas</Filter>
-    </ClInclude>
     <ClInclude Include="RaveBD.h">
       <Filter>Base de datos</Filter>
     </ClInclude>
@@ -319,12 +316,6 @@
     <ClInclude Include="MemoriaCompartida.h">
       <Filter>xXx _MAIN_ xXx\Memoria compartida</Filter>
     </ClInclude>
-    <ClInclude Include="VentanaPrecarga.h">
-      <Filter>Ventanas</Filter>
-    </ClInclude>
-    <ClInclude Include="VentanaOpcionesRAVE.h">
-      <Filter>Ventanas</Filter>
-    </ClInclude>
     <ClInclude Include="DControlEx.h">
       <Filter>DWL\Ventanas\Base</Filter>
     </ClInclude>
@@ -344,16 +335,13 @@
       <Filter>DWL\Ventanas\Base\Eventos</Filter>
     </ClInclude>
     <ClInclude Include="AsignarTeclaRapida.h">
-      <Filter>Ventanas\Controles</Filter>
-    </ClInclude>
-    <ClInclude Include="ToolTipInfo.h">
-      <Filter>Ventanas</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClInclude>
     <ClInclude Include="DAnimacion.h">
       <Filter>DWL\Sistema\Animación</Filter>
     </ClInclude>
     <ClInclude Include="ControlSeparador.h">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClInclude>
     <ClInclude Include="DControlDesplegableEx.h">
       <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
@@ -370,11 +358,8 @@
     <ClInclude Include="DDesplegableEx_ExplorarDirectoriosEx %28DEPRECATED%29.h">
       <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
     </ClInclude>
-    <ClInclude Include="VentanaAsociarReproductor %28DEPRECATED%29.h">
-      <Filter>Ventanas</Filter>
-    </ClInclude>
     <ClInclude Include="ControlVisualizacion.h">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClInclude>
     <ClInclude Include="DFuente.h">
       <Filter>DWL\Ventanas\Base</Filter>
@@ -409,8 +394,26 @@
     <ClInclude Include="RaveVLC %28DEPRECATED%29.h">
       <Filter>MediaPlayer\VLC</Filter>
     </ClInclude>
+    <ClInclude Include="VentanaPrincipal.h">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolTipInfo.h">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClInclude>
+    <ClInclude Include="VentanaAsociarReproductor %28DEPRECATED%29.h">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClInclude>
+    <ClInclude Include="VentanaErrorCritico.h">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClInclude>
     <ClInclude Include="VentanaMomento.h">
-      <Filter>Ventanas</Filter>
+      <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClInclude>
+    <ClInclude Include="VentanaOpcionesRAVE.h">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClInclude>
+    <ClInclude Include="VentanaPrecarga.h">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -419,9 +422,6 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>xXx _MAIN_ xXx</Filter>
-    </ClCompile>
-    <ClCompile Include="VentanaPrincipal.cpp">
-      <Filter>Ventanas</Filter>
     </ClCompile>
     <ClCompile Include="sqlite3.c">
       <Filter>Base de datos\SQLite</Filter>
@@ -445,22 +445,22 @@
       <Filter>DWL\Sistema\Mouse</Filter>
     </ClCompile>
     <ClCompile Include="VerVideo.cpp">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClCompile>
     <ClCompile Include="MarcoControles.cpp">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClCompile>
     <ClCompile Include="ControlesPantallaCompleta.cpp">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClCompile>
     <ClCompile Include="DToolTipEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\ToolTipEx</Filter>
     </ClCompile>
     <ClCompile Include="BarraTiempo.cpp">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClCompile>
     <ClCompile Include="BarraVolumen.cpp">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClCompile>
     <ClCompile Include="DBotonEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\BotonEx</Filter>
@@ -484,7 +484,7 @@
       <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
     </ClCompile>
     <ClCompile Include="ArbolBD.cpp">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClCompile>
     <ClCompile Include="DListaEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
@@ -499,7 +499,7 @@
       <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
     </ClCompile>
     <ClCompile Include="ListaMedios.cpp">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClCompile>
     <ClCompile Include="DExplorarDirectoriosEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\ExplorarDirectoriosEx</Filter>
@@ -508,7 +508,7 @@
       <Filter>DWL\Sistema\Graficos</Filter>
     </ClCompile>
     <ClCompile Include="ListaRaices.cpp">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClCompile>
     <ClCompile Include="DEdicionTextoEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\EdicionTextoEx</Filter>
@@ -531,9 +531,6 @@
     <ClCompile Include="DTemporizador.cpp">
       <Filter>DWL\Sistema\Temporizador</Filter>
     </ClCompile>
-    <ClCompile Include="VentanaErrorCritico.cpp">
-      <Filter>Ventanas</Filter>
-    </ClCompile>
     <ClCompile Include="RaveBD.cpp">
       <Filter>Base de datos</Filter>
     </ClCompile>
@@ -555,12 +552,6 @@
     <ClCompile Include="MemoriaCompartida.cpp">
       <Filter>xXx _MAIN_ xXx\Memoria compartida</Filter>
     </ClCompile>
-    <ClCompile Include="VentanaPrecarga.cpp">
-      <Filter>Ventanas</Filter>
-    </ClCompile>
-    <ClCompile Include="VentanaOpcionesRAVE.cpp">
-      <Filter>Ventanas</Filter>
-    </ClCompile>
     <ClCompile Include="DControlEx.cpp">
       <Filter>DWL\Ventanas\Base</Filter>
     </ClCompile>
@@ -574,16 +565,13 @@
       <Filter>DWL\Ventanas\ControlesEx\EtiquetaEx</Filter>
     </ClCompile>
     <ClCompile Include="AsignarTeclaRapida.cpp">
-      <Filter>Ventanas\Controles</Filter>
-    </ClCompile>
-    <ClCompile Include="ToolTipInfo.cpp">
-      <Filter>Ventanas</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClCompile>
     <ClCompile Include="DAnimacion.cpp">
       <Filter>DWL\Sistema\Animación</Filter>
     </ClCompile>
     <ClCompile Include="ControlSeparador.cpp">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClCompile>
     <ClCompile Include="DControlDesplegableEx.cpp">
       <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
@@ -597,11 +585,8 @@
     <ClCompile Include="DDesplegableEx_ExplorarDirectoriosEx %28DEPRECATED%29.cpp">
       <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
     </ClCompile>
-    <ClCompile Include="VentanaAsociarReproductor %28DEPRECATED%29.cpp">
-      <Filter>Ventanas</Filter>
-    </ClCompile>
     <ClCompile Include="ControlVisualizacion.cpp">
-      <Filter>Ventanas\Controles</Filter>
+      <Filter>Ventanas y Controles\Controles</Filter>
     </ClCompile>
     <ClCompile Include="DFuente.cpp">
       <Filter>DWL\Ventanas\Base</Filter>
@@ -627,8 +612,26 @@
     <ClCompile Include="RaveVLC %28DEPRECATED%29.cpp">
       <Filter>MediaPlayer\VLC</Filter>
     </ClCompile>
+    <ClCompile Include="ToolTipInfo.cpp">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaAsociarReproductor %28DEPRECATED%29.cpp">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaErrorCritico.cpp">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClCompile>
     <ClCompile Include="VentanaMomento.cpp">
-      <Filter>Ventanas</Filter>
+      <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaOpcionesRAVE.cpp">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaPrecarga.cpp">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaPrincipal.cpp">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

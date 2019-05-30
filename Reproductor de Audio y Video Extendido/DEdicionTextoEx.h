@@ -14,11 +14,14 @@ namespace DWL {
 		static COLORREF     FondoResaltado;
 		static COLORREF     FondoPresionado;
 		static COLORREF     FondoDesactivado;
-		static COLORREF     TextoNormal;
-		static COLORREF     TextoResaltado;
-		static COLORREF     TextoPresionado;
+		static COLORREF     Texto;
 		static COLORREF     TextoSombra;
+		static COLORREF     TextoResaltado;
+		static COLORREF     TextoResaltadoSombra;
+		static COLORREF     TextoPresionado;
+		static COLORREF     TextoPresionadoSombra;
 		static COLORREF     TextoDesactivado;
+		static COLORREF     TextoDesactivadoSombra;
 		static COLORREF     BordeNormal;
 		static COLORREF     BordeResaltado;
 		static COLORREF     BordePresionado;							
@@ -86,6 +89,7 @@ namespace DWL {
 		std::wstring               _Texto;
 
 		COLORREF                   _ColorTexto;
+		COLORREF                   _ColorTextoSombra;
 		COLORREF                   _ColorFondo;
 		COLORREF                   _ColorBorde;
 		COLORREF                   _ColorCursor;

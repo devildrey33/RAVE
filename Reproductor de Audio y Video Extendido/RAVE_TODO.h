@@ -345,6 +345,8 @@
 
 
 	RAVE 0.7
+		-  Control + [F / B] integrat en la llista i l'arbre, que resalti els items / nodos.
+
 		-  Afegir menu tipo CheckBox, que serveixi tant com a menú, o com a marca pel seu menú pare.
 			- La idea es que el menu generar llista mostri els seus sub-menus amb una marca, la marca al presionarla no oculta el menú, i despres si presionem en el pare (generar lista) generara una llista del que estigui marcat.
 				- aixó necesitara guardar les marques en la BD, i aixi es "personalitza" el tema de generar llisters aleatories.
@@ -377,12 +379,12 @@
 
 		-  No hi han tooltips pels directoris dels videos de la BD... (per que no es crean etiquetes d'ells)
 
-		- Fer efecte de fusio al acabar una canço i començar unaltre reproduint les dues a l'hora quan faltin X milisegs.
+		-  Fer efecte de fusio al acabar una canço i començar unaltre reproduint les dues a l'hora quan faltin X milisegs.
 			- AMB EL VLC IMPOSIBLE!! nomes te volum general..., lo que es un pel incomprensible perque la funció del volum demana un MediaPlayer, no la instancia. Al final tornarem al FMOD...
 
 
 
-		- QUAN s'acaba la llista el icona del play es queda en pausa
+		-  QUAN s'acaba la llista el icona del play es queda en pausa
 
 
 
