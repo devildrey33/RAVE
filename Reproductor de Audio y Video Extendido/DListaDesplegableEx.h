@@ -26,7 +26,7 @@ namespace DWL {
 	  public:
 										DListaDesplegableEx(void);
 		                               ~DListaDesplegableEx(void);
-		void							CrearListaDesplegable(DhWnd *nPadre, const wchar_t *nTexto, const INT_PTR nID, const INT_PTR nIDIcono, const int cX, const int cY, const int cAncho, const int cAlto, const BOOL TextoEditable, const UINT AltoLista);
+		void							CrearListaDesplegable(DhWnd *nPadre, const wchar_t *nTexto, const INT_PTR nID, const INT_PTR nIDIcono, const int cX, const int cY, const int cAncho, const int cAlto, const DEdicionTextoEx_Entrada Entrada, const UINT AltoLista);
 		void							Evento_Desplegar(void);
 		void                            AgregarItem(const wchar_t *nTexto, const INT_PTR nIcono = 0);
 		LRESULT CALLBACK				GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);

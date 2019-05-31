@@ -175,7 +175,7 @@ void VentanaOpcionesRAVE::Crear(void) {
 
 	SeparadorLista3.Crear(&MarcoListas, 0, 270, RC.right - 10);
 	EtiquetaListaInicio.CrearEtiquetaEx(&MarcoListas, L"Que tipo de lista se debe generar al iniciar?"				, 10, 280, RC.right - 205, 20, ID_ETIQUETA_LISTAINICIO);
-	DesplegableListaInicio.CrearListaDesplegable(&MarcoListas, L"", ID_DESPLEGABLE_LISTAINICIO, 0					, RC.right - 205, 280, 185, 20, FALSE, 300);
+	DesplegableListaInicio.CrearListaDesplegable(&MarcoListas, L"", ID_DESPLEGABLE_LISTAINICIO, 0					, RC.right - 205, 280, 185, 20, DEdicionTextoEx_Entrada_SinEntrada, 300);
 	ActualizarListaInicio();
 
 
@@ -199,7 +199,7 @@ void VentanaOpcionesRAVE::Crear(void) {
 		L"Arriba",
 		L"Derecha"
 	};
-	DesplegableVideoPosicion.CrearListaDesplegable(&MarcoVideo, PosVideo[App.BD.Opciones_AlineacionControlesVideo()], ID_DESPLEGABLE_VIDEOPOSICION, NULL, 425, 90, 120, 20, FALSE, 300);
+	DesplegableVideoPosicion.CrearListaDesplegable(&MarcoVideo, PosVideo[App.BD.Opciones_AlineacionControlesVideo()], ID_DESPLEGABLE_VIDEOPOSICION, NULL, 425, 90, 120, 20, DEdicionTextoEx_Entrada_SinEntrada, 300);
 	for (int i = 0; i < 4; i++) {
 		DesplegableVideoPosicion.AgregarItem(PosVideo[i]);
 	}

@@ -47,7 +47,7 @@ namespace DWL {
 	BOOL         DEdicionTextoEx_Skin::FuenteSubrayado			= FALSE;
 	BOOL		 DEdicionTextoEx_Skin::FuenteSombraTexto		= TRUE;
 
-	DEdicionTextoEx::DEdicionTextoEx(void) : DControlEx(), TextoEditable(TRUE), Alineacion(DEdicionTextoEx_Alineacion_Izquierda), _Presionado(FALSE), _PosCursor(0), _ColorTexto(DEdicionTextoEx_Skin::Texto), _ColorTextoSombra(DEdicionTextoEx_Skin::TextoSombra),  _ColorFondo(DEdicionTextoEx_Skin::FondoNormal), _ColorBorde(DEdicionTextoEx_Skin::BordeNormal), _ColorCursor(DEdicionTextoEx_Skin::FondoNormal) {
+	DEdicionTextoEx::DEdicionTextoEx(void) : DControlEx(), Entrada(DEdicionTextoEx_Entrada_Texto), Alineacion(DEdicionTextoEx_Alineacion_Izquierda), _Presionado(FALSE), _PosCursor(0), _ColorTexto(DEdicionTextoEx_Skin::Texto), _ColorTextoSombra(DEdicionTextoEx_Skin::TextoSombra),  _ColorFondo(DEdicionTextoEx_Skin::FondoNormal), _ColorBorde(DEdicionTextoEx_Skin::BordeNormal), _ColorCursor(DEdicionTextoEx_Skin::FondoNormal) {
 	}
 
 
@@ -122,7 +122,7 @@ namespace DWL {
 		DrawText(Buffer, _Texto.c_str(), static_cast<int>(_Texto.size()), &RTexto, static_cast<DWORD>(Alineacion) | DT_VCENTER | DT_SINGLELINE | DT_PATH_ELLIPSIS);
 
 		// Pinto el cursor
-		if (TextoEditable == TRUE && GetFocus() == _hWnd) {
+		if (Entrada != DEdicionTextoEx_Entrada_SinEntrada && GetFocus() == _hWnd) {
 			std::wstring TextoHastaElCursor = _Texto.substr(0, _PosCursor);
 			HPEN PlumaCursor = CreatePen(PS_SOLID, 1, _ColorCursor);
 			HPEN VPluma = static_cast<HPEN>(SelectObject(Buffer, PlumaCursor));
@@ -179,16 +179,21 @@ namespace DWL {
 		DEventoTeclado DatosTeclado(wParam, lParam, this);
 		switch (DatosTeclado.TeclaVirtual()) {
 			case VK_RETURN:
-				if (TextoEditable == FALSE) return;
+				if (Entrada == DEdicionTextoEx_Entrada_SinEntrada) return;
 				break;
 			case VK_BACK: // Borrar
-				if (TextoEditable == FALSE) return;
+				if (Entrada == DEdicionTextoEx_Entrada_SinEntrada) return;
 				if (_PosCursor > 0) _Texto.erase(--_PosCursor, 1);				
 				break;
 			case VK_ESCAPE: // Desselecciono todo
 				//_FinSeleccion = -1;
 				break;
 			default:
+				// Si el carácter presionado no es válido para el tipo de entrada actual salgo
+				if (_EntradaPermitida(DatosTeclado.TeclaVirtual()) == FALSE) {
+					return;
+				}
+
 				if (_PosCursor == _Texto.size()) {
 					_Texto += static_cast<wchar_t>(DatosTeclado.TeclaVirtual());
 				}
@@ -200,6 +205,31 @@ namespace DWL {
 		}		
 		Repintar();
 		SendMessage(GetParent(hWnd()), DWL_EDICIONTEXTOEX_CAMBIO, static_cast<WPARAM>(ID()), 0);
+	}
+
+	const BOOL DEdicionTextoEx::_EntradaPermitida(const wchar_t Caracter) {
+		switch (Entrada) {
+			case DEdicionTextoEx_Entrada_SinEntrada :
+				return FALSE;
+			case DEdicionTextoEx_Entrada_Texto :
+				return TRUE;
+			case DEdicionTextoEx_Entrada_ValoresEnteros :
+				if (Caracter == L'0' || Caracter == L'1' || Caracter == L'2' || Caracter == L'3' || Caracter == L'4' ||
+					Caracter == L'5' || Caracter == L'6' || Caracter == L'7' || Caracter == L'8' || Caracter == L'9') {
+					return TRUE;
+				}
+			case DEdicionTextoEx_Entrada_ValoresDecimales:
+				if (Caracter == L'0' || Caracter == L'1' || Caracter == L'2' || Caracter == L'3' || Caracter == L'4' ||
+					Caracter == L'5' || Caracter == L'6' || Caracter == L'7' || Caracter == L'8' || Caracter == L'9' || Caracter == L'.') {
+					return TRUE;
+				}
+			case DEdicionTextoEx_Entrada_ValoresTiempo:
+				if (Caracter == L'0' || Caracter == L'1' || Caracter == L'2' || Caracter == L'3' || Caracter == L'4' ||
+					Caracter == L'5' || Caracter == L'6' || Caracter == L'7' || Caracter == L'8' || Caracter == L'9' || Caracter == L':') {
+					return TRUE;
+				}
+		}
+		return FALSE;
 	}
 
 	void DEdicionTextoEx::_Evento_Pintar(void) {
@@ -247,7 +277,7 @@ namespace DWL {
 	}
 
 	void DEdicionTextoEx::_Evento_MousePresionado(const WPARAM wParam, const LPARAM lParam, const int Boton) {
-		if (TextoEditable == TRUE) SetFocus(_hWnd);	// REVISADO
+		if (Entrada != DEdicionTextoEx_Entrada_SinEntrada) SetFocus(_hWnd);	// REVISADO
 		SetCapture(_hWnd);
 		Transicion(DEdicionTextoEx_Transicion_Presionado);
 		_Presionado = TRUE;
@@ -277,7 +307,7 @@ namespace DWL {
 	}
 
 	void DEdicionTextoEx::_Evento_FocoAsignado(void) {
-		if (TextoEditable == TRUE) {
+		if (Entrada != DEdicionTextoEx_Entrada_SinEntrada) {
 			SetTimer(_hWnd, ID_TIMER_CURSOR, 1000, NULL);
 			_Evento_Temporizador(ID_TIMER_CURSOR);
 		}

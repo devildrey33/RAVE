@@ -227,6 +227,27 @@ void ListaMedios::Evento_TeclaSoltada(DEventoTeclado &DatosTeclado) {
 	if (DatosTeclado.TeclaVirtual() == VK_DELETE) {
 		App.VentanaRave.Lista_EliminarSeleccionados();
 	}
+	else if (DatosTeclado.TeclaVirtual() == VK_RETURN) {
+		if (MedioMarcado() == NULL) return;
+
+		MedioActual = MedioMarcado();
+		// Hay que parar la canción actual para que no se quede reproduciendo en el medio anterior
+		App.MP.Stop();
+
+		BDMedio NCan;
+		App.BD.ObtenerMedio(MedioActual->Hash, NCan);
+		BDMedio NCanS;
+		ItemMedio* IMS = MedioSiguiente(MedioActual);
+		if (IMS != NULL) {
+			App.BD.ObtenerMedio(MedioSiguiente(MedioActual)->Hash, NCanS);
+			if (App.MP.AbrirMedio(NCan, &NCanS) == FALSE) Errores++;
+		}
+		else {
+			if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Errores++;
+		}
+		//			if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
+		App.MP.Play();
+	}
 }
 
 // 	Función que mezcla las canciones de la lista (TRUE), o restaura el orden original en que se añadieron (FALSE)

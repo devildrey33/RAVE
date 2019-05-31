@@ -11,8 +11,8 @@ namespace DWL {
 	DListaDesplegableEx::~DListaDesplegableEx(void)	{
 	}
 
-	void DListaDesplegableEx::CrearListaDesplegable(DhWnd *nPadre, const wchar_t *nTexto, const INT_PTR nID, const INT_PTR nIDIcono, const int cX, const int cY, const int cAncho, const int cAlto, const BOOL TextoEditable, const UINT AltoLista) {
-		CrearControlDesplegable(nPadre, nTexto, nID, nIDIcono, cX, cY, cAncho, cAlto, TextoEditable);
+	void DListaDesplegableEx::CrearListaDesplegable(DhWnd *nPadre, const wchar_t *nTexto, const INT_PTR nID, const INT_PTR nIDIcono, const int cX, const int cY, const int cAncho, const int cAlto, const DEdicionTextoEx_Entrada Entrada, const UINT AltoLista) {
+		CrearControlDesplegable(nPadre, nTexto, nID, nIDIcono, cX, cY, cAncho, cAlto, Entrada);
 		RECT RV;
 		GetWindowRect(_hWnd, &RV);
 		_AltoLista = AltoLista;

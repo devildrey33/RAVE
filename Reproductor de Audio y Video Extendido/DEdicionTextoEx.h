@@ -53,6 +53,15 @@ namespace DWL {
 		DEdicionTextoEx_Alineacion_Derecha	 = DT_RIGHT
 	};
 
+	// Tipo de entrada que acepta por el usuario
+	enum DEdicionTextoEx_Entrada {
+		DEdicionTextoEx_Entrada_SinEntrada		 = 0, // Nada
+		DEdicionTextoEx_Entrada_Texto			 = 1, // Todo
+		DEdicionTextoEx_Entrada_ValoresEnteros	 = 2, // 0123456789
+		DEdicionTextoEx_Entrada_ValoresDecimales = 3, // 0123456789.
+		DEdicionTextoEx_Entrada_ValoresTiempo    = 4  // 0123456789:
+	};
+
 	class DEdicionTextoEx : public DControlEx {
 	  public:
 									DEdicionTextoEx(void);
@@ -70,9 +79,11 @@ namespace DWL {
 
 		void						Transicion(const DEdicionTextoEx_Transicion nTransicion);
 		DFuente						Fuente;
-		BOOL                        TextoEditable;
+//		BOOL                        TextoEditable;
+		DEdicionTextoEx_Entrada		Entrada;		// Tipo de entrada permitida para el usuario
 		DEdicionTextoEx_Alineacion	Alineacion;
 	  protected:
+		const BOOL                 _EntradaPermitida(const wchar_t Caracter); // Determina si el caracter introducido es válido para el tipo de entrada actual
 		void					   _Evento_Pintar(void);
 		void					   _Evento_MouseMovimiento(const WPARAM wParam, const LPARAM lParam);
 		void					   _Evento_MousePresionado(const WPARAM wParam, const LPARAM lParam, const int Boton);

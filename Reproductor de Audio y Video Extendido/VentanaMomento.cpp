@@ -34,13 +34,17 @@ void VentanaMomento::Mostrar(BDMedio& nMedio) {
 
 	Nombre.CrearEdicionTextoEx(this, L"Nombre del momento", 310, 10, 410, 30, ID_TXTNOMBRE);
 	Nombre.Activado(FALSE);
-	Txt_TiempoInicio.CrearEdicionTextoEx(this, L"0:00", 310, 50, 100, 20, ID_TXTINICIO);
+	Txt_TiempoInicio.CrearEdicionTextoEx(this, L"0:00", 310, 50, 50, 20, ID_TXTINICIO);
+	Txt_TiempoInicio.Entrada    = DEdicionTextoEx_Entrada_ValoresTiempo;
+	Txt_TiempoInicio.Alineacion = DEdicionTextoEx_Alineacion_Derecha;
 	Txt_TiempoInicio.Activado(FALSE);
-	Txt_TiempoFinal.CrearEdicionTextoEx(this, L"0:00", 310, 80, 100, 20, ID_TXTFINAL);
+	Txt_TiempoFinal.CrearEdicionTextoEx(this, L"0:00", 310, 80, 50, 20, ID_TXTFINAL);
+	Txt_TiempoFinal.Entrada     = DEdicionTextoEx_Entrada_ValoresTiempo;
+	Txt_TiempoFinal.Alineacion  = DEdicionTextoEx_Alineacion_Derecha;
 	Txt_TiempoFinal.Activado(FALSE);
-	Barra_TiempoInicio.CrearBarraDesplazamientoEx(this, 420, 50, 300, 20, ID_BARRAINICIO);
+	Barra_TiempoInicio.CrearBarraDesplazamientoEx(this, 370, 50, 350, 20, ID_BARRAINICIO);
 	Barra_TiempoInicio.Activado(FALSE);
-	Barra_TiempoFinal.CrearBarraDesplazamientoEx(this, 420, 80, 300, 20, ID_BARRAFINAL, 0.0f, 1.0f, 1.0f);
+	Barra_TiempoFinal.CrearBarraDesplazamientoEx(this, 370, 80, 350, 20, ID_BARRAFINAL, 0.0f, 1.0f, 1.0f);
 	Barra_TiempoFinal.Activado(FALSE);
 	Excluir.CrearMarcaEx(this, L"Momento a excluir de la reproducción (intro, creditos, etc...)", 310, 110, 413, 30, ID_EXCLUIR, IDI_CHECK2, WS_CHILD | WS_VISIBLE);
 	Excluir.Activado(FALSE);
