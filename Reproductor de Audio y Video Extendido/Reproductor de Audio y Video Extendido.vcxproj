@@ -182,6 +182,8 @@
     <ClInclude Include="AsociarReproductor.h" />
     <ClInclude Include="BarraTiempo.h" />
     <ClInclude Include="BarraVolumen.h" />
+    <ClInclude Include="BDMedio.h" />
+    <ClInclude Include="BDRaiz.h" />
     <ClInclude Include="ControlSeparador.h" />
     <ClInclude Include="ControlVisualizacion.h" />
     <ClInclude Include="DAnimacion.h" />
@@ -271,6 +273,7 @@
     <ClCompile Include="AsociarReproductor.cpp" />
     <ClCompile Include="BarraTiempo.cpp" />
     <ClCompile Include="BarraVolumen.cpp" />
+    <ClCompile Include="BDMedio.cpp" />
     <ClCompile Include="ControlesPantallaCompleta.cpp" />
     <ClCompile Include="ControlSeparador.cpp" />
     <ClCompile Include="ControlVisualizacion.cpp" />

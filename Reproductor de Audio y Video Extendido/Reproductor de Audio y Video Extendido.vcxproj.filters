@@ -415,6 +415,12 @@
     <ClInclude Include="VentanaPrecarga.h">
       <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClInclude>
+    <ClInclude Include="BDRaiz.h">
+      <Filter>Base de datos</Filter>
+    </ClInclude>
+    <ClInclude Include="BDMedio.h">
+      <Filter>Base de datos</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -632,6 +638,9 @@
     </ClCompile>
     <ClCompile Include="VentanaPrincipal.cpp">
       <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="BDMedio.cpp">
+      <Filter>Base de datos</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

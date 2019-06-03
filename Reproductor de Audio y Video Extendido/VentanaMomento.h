@@ -16,6 +16,15 @@ class VentanaMomento : public DWL::DVentana {
 								   ~VentanaMomento(void);
 
 	void                            Mostrar(BDMedio &Medio);
+	void                            ActivarControles(const BOOL nActivar);
+
+	void							Evento_BotonEx_Mouse_Click(DWL::DEventoMouse& DatosMouse);
+	void							Evento_BarraEx_Cambiando(DWL::DEventoMouse& DatosMouse);
+	void							Evento_BarraEx_Cambiado(DWL::DEventoMouse& DatosMouse);
+
+	LRESULT CALLBACK				GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+	BDMedio                         Medio;
 
 	DWL::DListaEx                   ListaMomentos;
 	BarraTiempo						Barra_TiempoInicio;
@@ -24,6 +33,7 @@ class VentanaMomento : public DWL::DVentana {
 	DWL::DEdicionTextoEx			Txt_TiempoFinal;
 	DWL::DEdicionTextoEx			Nombre;						// Nombre para el momento
 	DWL::DBotonEx					Guardar;
+	DWL::DBotonEx					Cancelar;
 	DWL::DBotonEx					CrearMomento;
 	DWL::DBotonEx					EditarMomento;
 	DWL::DBotonEx					EliminarMomento;

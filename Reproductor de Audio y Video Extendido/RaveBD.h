@@ -1,9 +1,8 @@
 #pragma once
 
-#include "DUnidadesDisco.h"
-#include "vlc.hpp"
-#include "ExtensionesValidas.h"
+#include "BDMedio.h"
 #include "EtiquetaBD.h"
+#include "BDRaiz.h"
 
 // Thread actualizar BD
 #define WM_TBA_AGREGARDIR			WM_USER + 2000
@@ -71,82 +70,6 @@ enum Tipo_Inicio {
 
 class EtiquetaBD;
 
-// clase que engloba una raíz
-class BDRaiz {
-  public:
-						BDRaiz(void)				: ID_Disco(0), Id(0), Letra('C') { };
-						BDRaiz(std::wstring &nPath) : ID_Disco(0), Id(0), Letra('C'), Path(nPath) { };
-						BDRaiz(const BDRaiz &c)		: ID_Disco(c.ID_Disco), Path(c.Path), Id(c.Id), Letra(c.Letra) { };
-	                   ~BDRaiz(void) { };
-	std::wstring        Path;
-	unsigned long		ID_Disco;	// Numero de serie de la unidad
-	unsigned long		Id;			// Id dentro de la base de datos
-	wchar_t             Letra;		// Letra de la unidad actual
-};
-
-// Clase con los datos de un medio
-class BDMedio {
-  public :
-							BDMedio(void) : PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0), Parseado(FALSE), Actualizar(FALSE), Nota(2.5f), PistaEleccion(0), Reproducido(0), GrupoEleccion(0), DiscoEleccion(0), NombreEleccion(0), Brillo(1.0f), Contraste(1.0f), Saturacion(1.0f) { };
-//							BDMedio(UINT nId, sqlite3_int64 nHash, const wchar_t *nPath, const wchar_t *nNombre, Tipo_Medio nTipoMedio, Extension_Medio nExtension, UINT nReproducido, ULONG nLongitud, DWORD nIDDisco, UINT nNota, UINT nGenero, UINT nGrupo, UINT nDisco, UINT nPista, libvlc_time_t nTiempo, const wchar_t *nSubtitulos) : Id(nId), Hash(nHash), Path(nPath), NombrePath(nNombre), TipoMedio(nTipoMedio), Extension(nExtension), Longitud(nLongitud), IDDisco(nIDDisco), Nota(nNota), Pista(nPista), Tiempo(nTiempo), Subtitulos(nSubtitulos), Parseado(FALSE) { }
-							BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
-	                       ~BDMedio(void) { };
-
-	UINT					Pista(void);
-	UINT					PistaTag;
-	UINT					PistaPath;
-	BOOL					PistaEleccion;	// Elección : TRUE Path, FALSE Tag 
-
-	std::wstring		   &Nombre(void);
-	std::wstring			NombreTag;
-	std::wstring			NombrePath;
-	BOOL					NombreEleccion;	// Elección : TRUE Path, FALSE Tag 
-
-	sqlite3_int64			Hash;
-	std::wstring			Path;
-
-	Tipo_Medio				TipoMedio;
-	Extension_Medio			Extension;
-	libvlc_time_t			Tiempo;
-	ULONG					Longitud;
-
-	UINT					Reproducido;
-	float					Nota;
-
-	UINT					Id;					// ID unica que identifica al medio (mucho mkas recomendable que el Hash)
-	DWORD					IDDisco;
-
-	std::wstring			Genero;
-
-	std::wstring	       &Grupo(void);
-	std::wstring			GrupoTag;
-	std::wstring			GrupoPath;
-	BOOL					GrupoEleccion;	// Elección : TRUE Path, FALSE Tag 
-
-	std::wstring	       &Disco(void);
-	std::wstring			DiscoTag;
-	std::wstring			DiscoPath;
-	BOOL					DiscoEleccion;	// Elección : TRUE Path, FALSE Tag 
-
-	std::wstring			Subtitulos;
-
-	BOOL					Parseado;	// Determina si se ha parseado/analizado el medio en busca de metadatos
-	BOOL                    Actualizar; // NO SE GUARDA EN LA BD, ES SOLO PARA SABER SI HAY QUE ACTUALIZAR EL MEDIO O NO:...
-		
-	void					PistaStr(std::wstring &nPistaStr);
-	void					ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
-
-	std::wstring            Proporcion;
-	float					Brillo;
-	float                   Contraste;
-	float                   Saturacion;
-
-//	LONG                    IDMomentos;
-
-	const BOOL              EsFMOD(void);
-
-	bool					operator != (const BDMedio &Comp) const { if (Comp.Hash != Hash) return true; return false; }
-};
 
 
 enum TipoListaAleatoria {
@@ -390,5 +313,6 @@ protected:
 
 	UINT                       _Opciones_EfectoFadeAudioMS;			// Milisegundos para el efecto fade audio
 	friend class ThreadAnalisis;
+	friend class BDMedio;
 };
 

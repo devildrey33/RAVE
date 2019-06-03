@@ -227,6 +227,10 @@ namespace DWL {
 			_AniTransicion.Terminar();
 		}
 
+		#if DBOTONEX_MOSTRARDEBUG == TRUE
+			Debug_Escribir_Varg(L"DBotonEx::Transicion %d\n", static_cast<int>(nTransicion));
+		#endif	
+
 		COLORREF FondoHasta = 0, BordeHasta = 0, TextoHasta = 0;
 		switch (nTransicion) {
 			case DBotonEx_Transicion_Normal:
@@ -269,12 +273,10 @@ namespace DWL {
 		#endif	
 		DEventoMouse DatosMouse(wParam, lParam, this, Boton);
 		SetCapture(hWnd());
-		//_Estado = DBotonEx_Estado_Presionado;
-		SendMessage(GetParent(hWnd()), DWL_BOTONEX_MOUSEDOWN, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
-		Evento_MousePresionado(DatosMouse);
-		//Repintar();
 		Transicion(DBotonEx_Transicion_Presionado);
 		_Estado = DBotonEx_Estado_Presionado;
+		SendMessage(GetParent(hWnd()), DWL_BOTONEX_MOUSEDOWN, DEVENTOMOUSE_TO_WPARAM(DatosMouse), 0);
+		Evento_MousePresionado(DatosMouse);
 	}
 
 	void DBotonEx::_Evento_MouseSoltado(const WPARAM wParam, const LPARAM lParam, const int Boton) {		
@@ -345,7 +347,7 @@ namespace DWL {
 			Debug_Escribir(L"DBotonEx::_Evento_MouseSaliendo\n");
 		#endif	
 		_MouseDentro = FALSE;
-		if (_Estado != DBotonEx_Estado_Presionado) {
+		if (_Estado != DBotonEx_Estado_Presionado && Activado() == TRUE) {
 			Transicion((_Marcado == FALSE) ? DBotonEx_Transicion_Normal : DBotonEx_Transicion_Marcado);
 			_Estado = DBotonEx_Estado_Normal;
 		}
