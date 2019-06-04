@@ -13,6 +13,9 @@ Todo lo que necesito para mi uso personal :
 ### Requisitos
 Sistema operativo Windows 7 o superior (x86. x64)
 
+### Log de cambios
+* [Ultima versión 0.520c PRE RC6](docs/ChangeLog.md)
+
 ## Empezando
  1. Descarga una de las siguientes versiones para windows : 
    * [RAVE x86 para 32 bits](http://devildrey33.github.io/RAVE/Instaladores/Instalador%20x86/SetupRave-x86.msi) 
