@@ -2,6 +2,14 @@
 #include "Rave_Medio.h"
 #include "Rave_Iconos.h"
 
+void Rave_Medio::ComprobarMomento(void) {
+	if (Medio.PosMomento != -1) {
+		//		float T = (1.0f / static_cast<float>(Medio.Tiempo)) * Medio.Momentos[Medio.PosMomento]->TiempoInicio;
+		TiempoActualMs(Medio.Momentos[Medio.PosMomento]->TiempoInicio);
+	}
+
+}
+
 /* nTipo :
 	0 - Normal
 	1 - Play

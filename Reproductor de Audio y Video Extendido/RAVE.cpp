@@ -253,7 +253,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 	// Menu Lista
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_ABRIRCARPETA		, L"Abrir carpeta"								, IDI_DIRECTORIO);
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_ELIMINAR			, L"Eliminar de la lista"						, IDI_ELIMINAR);
-	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_MOMENTOS			, L"Momentos"									, 0);
+	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_MOMENTOS			, L"Momentos"									, IDI_MOMENTOS);
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_MOSTRARBD			, L"Mostrar en la BD"							, IDI_BASEDATOS);
 	VentanaRave.Menu_Lista.AgregarBarra(ID_MENULISTA_NOTA				, L"Nota"										, IDI_NOTA , 0.0f, 5.0f, 2.5f, DBarraEx_MostrarValor_ValorMaximo2Decimales);
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_PROPIEDADES			, L"Propiedades");

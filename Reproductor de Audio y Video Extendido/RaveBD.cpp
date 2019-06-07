@@ -333,7 +333,7 @@ const BOOL RaveBD::ObtenerEtiquetas(void) {
 			UINT			Tipo	 = static_cast<UINT>(sqlite3_column_int(SqlQuery, 2));
 			UINT			Medios	 = static_cast<UINT>(sqlite3_column_int(SqlQuery, 3));
 			float			Nota	 = static_cast<float>(sqlite3_column_double(SqlQuery, 4));
-			libvlc_time_t	Tiempo   = static_cast<libvlc_time_t>(sqlite3_column_int64(SqlQuery, 5));
+			INT64			Tiempo   = static_cast<INT64>(sqlite3_column_int64(SqlQuery, 5));
 			ULONGLONG		Longitud = static_cast<ULONGLONG>(sqlite3_column_int64(SqlQuery, 6));
 			_Etiquetas.push_back(EtiquetaBD(Texto, Tipo, Nota, Tiempo, Longitud, Medios));
 		}
@@ -372,7 +372,7 @@ const BOOL RaveBD::ObtenerEtiquetas(void) {
 	std::wstring		GrupoPath	       11			VARCHAR(128)
 	std::wstring		DiscoPath	       12			VARCHAR(128)
 	UINT				PistaPath	       13			INT
-	libvlc_time_t		Tiempo		       14			INT
+	INT64				Tiempo		       14			INT
 	std::wstring		Subtitulos	       15			VARCHAR(260)
 	BOOL				Parseado           16			TINYINT(1)
 	std::wstring		NombreTag		   17			VARCHAR(128)
@@ -791,7 +791,7 @@ const BOOL RaveBD::_CrearTablas(void) {
 		std::wstring		GrupoPath	        11			VARCHAR(128)
 		std::wstring		DiscoPath	        12			VARCHAR(128)
 		UINT				PistaPath	        13			INT
-		libvlc_time_t		Tiempo		        14			INT
+		INT64				Tiempo		        14			INT
 		std::wstring		Subtitulos	        15			VARCHAR(260)
 		BOOL				Parseado            16			TINYINT(1)
 		std::wstring		NombreTag		    17			VARCHAR(128)
@@ -1578,7 +1578,7 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 	return (SqlRet != SQLITE_BUSY);
 }
 /*
-const BOOL RaveBD::AsignarTiempoMedio(const libvlc_time_t nTiempo, const sqlite3_int64 mHash) {
+const BOOL RaveBD::AsignarTiempoMedio(const INT64 nTiempo, const sqlite3_int64 mHash) {
 	int SqlRet = ConsultaVarg(L"UPDATE Medios SET Tiempo=%d WHERE Hash=%d", nTiempo, mHash);
 	if (SqlRet == SQLITE_ERROR) {
 		return FALSE;
@@ -1784,7 +1784,7 @@ const BOOL RaveBD::ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios) {
 			TmpMedio.PistaTag			= static_cast<UINT>(sqlite3_column_int(SqlQuery, 9));
 			TmpMedio.PistaPath			= static_cast<UINT>(sqlite3_column_int(SqlQuery, 10));
 			TmpMedio.Nota				= static_cast<float>(sqlite3_column_double(SqlQuery, 11));
-			TmpMedio.Tiempo				= static_cast<libvlc_time_t>(sqlite3_column_int64(SqlQuery, 12));
+			TmpMedio.Tiempo				= static_cast<INT64>(sqlite3_column_int64(SqlQuery, 12));
 			TmpMedio.Longitud			= static_cast<ULONG>(sqlite3_column_int64(SqlQuery, 13));
 			Medios.push_back(TmpMedio);
 		}
@@ -1931,7 +1931,7 @@ void RaveBD::CalcularDatosEtiqueta(EtiquetaBD *Etiqueta) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) { // La iD es el 0, pero no la necesito para nada.
 			Etiqueta->Longitud	+= static_cast<DWORD>(sqlite3_column_int(SqlQuery, 0));
-			Etiqueta->Tiempo	+= static_cast<libvlc_time_t>(sqlite3_column_int(SqlQuery, 1));
+			Etiqueta->Tiempo	+= static_cast<INT64>(sqlite3_column_int(SqlQuery, 1));
 			Etiqueta->Nota		+= static_cast<float>(sqlite3_column_double(SqlQuery, 2));
 			Etiqueta->Medios	++;
 		}
@@ -2006,7 +2006,7 @@ const BOOL RaveBD::ObtenerEtiqueta(std::wstring &eTexto, EtiquetaBD &Etiqueta) {
 			Etiqueta.Tipo	= static_cast<UINT>(sqlite3_column_int(SqlQuery, 2));
 			Etiqueta.Medios	= static_cast<UINT>(sqlite3_column_int(SqlQuery, 3));
 			Etiqueta.Nota	= static_cast<float>(sqlite3_column_double(SqlQuery, 4));
-			Etiqueta.Tiempo = static_cast<libvlc_time_t>(sqlite3_column_int(SqlQuery, 5));
+			Etiqueta.Tiempo = static_cast<INT64>(sqlite3_column_int(SqlQuery, 5));
 		}
 	}
 

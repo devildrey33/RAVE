@@ -193,8 +193,11 @@ namespace DWL {
 
 	// Busca un sub-menu de este menú por su ID
 	DMenuEx *DMenuEx::BuscarMenu(const INT_PTR bID) {
+		DMenuEx* TmpMenu = NULL;
 		for (size_t i = 0; i < _Menus.size(); i++) {
 			if (bID == _Menus[i]->ID()) return _Menus[i];
+			TmpMenu = _Menus[i]->BuscarMenu(bID);
+			if (TmpMenu != NULL) return TmpMenu;
 		}
 		return NULL;
 	}
@@ -965,7 +968,7 @@ namespace DWL {
 		if (MenuBarra != NULL) {
 			if (MenuBarra->Activado() == TRUE) {
 				//_ResultadoModal = MenuBarra;
-				SendMessage(_hWndDest->hWnd(), DWL_MENUEX_BARRA_CAMBIANDO, MenuBarra->ID(), static_cast<LPARAM>(MenuBarra->_Barra.Valor() * 100));
+				SendMessage(_hWndDest->hWnd(), DWL_MENUEX_BARRA_CAMBIANDO, MenuBarra->ID(), static_cast<LPARAM>(static_cast<double>(MenuBarra->_Barra.Valor()) * 100.0f));
 			}
 		}
 	}
@@ -979,7 +982,7 @@ namespace DWL {
 		if (MenuBarra != NULL) {
 			if (MenuBarra->Activado() == TRUE) {
 				_ResultadoModal = MenuBarra;
-				SendMessage(_hWndDest->hWnd(), DWL_MENUEX_BARRA_CAMBIADO, MenuBarra->ID(), static_cast<LPARAM>(MenuBarra->_Barra.Valor() * 100));
+				SendMessage(_hWndDest->hWnd(), DWL_MENUEX_BARRA_CAMBIADO, MenuBarra->ID(), static_cast<LPARAM>(static_cast<double>(MenuBarra->_Barra.Valor()) * 100.0f));
 			}
 		}
 	}

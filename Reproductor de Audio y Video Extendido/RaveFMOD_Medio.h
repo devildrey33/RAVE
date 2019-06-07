@@ -35,6 +35,7 @@ class RaveFMOD_Medio : public Rave_Medio {
 	void						TiempoActual(float nTiempo);
 	const UINT64				TiempoTotalMs(void);
 	const UINT64				TiempoActualMs(void);
+	void						TiempoActualMs(INT64 nTiempo);
 
 	
 

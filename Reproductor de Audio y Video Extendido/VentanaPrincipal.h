@@ -129,8 +129,10 @@ class VentanaPrincipal : public DWL::DVentana {
 	void                        Lista_EliminarSeleccionados(void);
 	void                        Lista_AsignarNota(const float nNota);
 	void                        Lista_Momentos(void);
+	void                        Lista_MomentosAbrir(const UINT64 IdMedio, const int PosMomento);
 
 	VentanaMomento              Momentos;
+
 
 
 	void						ExploradorAgregarMedio(const BOOL Reproducir);

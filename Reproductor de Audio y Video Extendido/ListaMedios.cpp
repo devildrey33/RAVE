@@ -128,6 +128,33 @@ ItemMedio *ListaMedios::BuscarHash(sqlite3_int64 bHash) {
 	return NULL;
 }
 
+// Reproduce un medio previamente añadido a la lista
+void ListaMedios::ReproducirMedio(BDMedio &nMedio, LONG PosMomento) {
+	// Busco el nuevo medio actual
+	for (size_t i = 0; i < _Items.size(); i++) {
+		if (Medio(i)->Hash == nMedio.Hash) {
+			MedioActual = Medio(i);
+			break;
+		}
+	}
+
+	App.MP.Stop();
+	BDMedio NCan;
+	App.BD.ObtenerMedio(MedioActual->Hash, NCan);
+	NCan.PosMomento = PosMomento;
+	BDMedio NCanS;
+	ItemMedio* IMS = MedioSiguiente(MedioActual);
+	if (IMS != NULL) {
+		App.BD.ObtenerMedio(MedioSiguiente(MedioActual)->Hash, NCanS);
+		if (App.MP.AbrirMedio(NCan, &NCanS) == FALSE) Errores++;
+	}
+	else {
+		if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Errores++;
+	}
+
+	App.MP.Play(TRUE);
+}
+
 // Reproduce el medio especificado con el ratón
 void ListaMedios::Evento_MouseDobleClick(DWL::DEventoMouse &EventoMouse) {
 	if (EventoMouse.Boton == 0) {
@@ -190,9 +217,12 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 			App.VentanaRave.Menu_Lista.Menu(4)->BarraValor(TmpMedio.Nota);
 
 			// Agrego los menus para los momentos
+			DWL::DMenuEx *TmpMenu = NULL;
 			App.VentanaRave.Menu_Lista.Menu(2)->EliminarTodosLosMenus();
 			for (size_t i = 0; i < TmpMedio.Momentos.size(); i++) {
-				App.VentanaRave.Menu_Lista.Menu(2)->AgregarMenu(ID_MENULISTA_MOMENTOS_MOMENTO + i, TmpMedio.Momentos[i]->Nombre);
+				TmpMenu = NULL;
+				TmpMenu = App.VentanaRave.Menu_Lista.Menu(2)->AgregarMenu(ID_MENULISTA_MOMENTOS_MOMENTO + i, TmpMedio.Momentos[i]->Nombre, (TmpMedio.Momentos[i]->Excluir) ? IDI_MOMENTO_EXCLUIR : IDI_MOMENTO);
+				if (TmpMenu) TmpMenu->Parametro = TmpMedio.Hash;
 			}
 		}
 

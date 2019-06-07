@@ -104,7 +104,7 @@ const BOOL Rave_MediaPlayer::Iniciar(void) {
 	return TRUE;
 }
 
-void Rave_MediaPlayer::ObtenerTTF(void) {
+//void Rave_MediaPlayer::ObtenerTTF(void) {
 /*	int NumParams = 0;
 	
 	_DSP->getNumParameters(&NumParams);
@@ -126,7 +126,7 @@ void Rave_MediaPlayer::ObtenerTTF(void) {
 			TTF[pos++] = fft->spectrum[channel][bin];
 		}
 	}*/
-}
+//}
 
 
 void Rave_MediaPlayer::Terminar(void) {
@@ -187,6 +187,20 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 	Estados_Medio Estado	= ComprobarEstado();
 	UINT64        TTotalMS	= TiempoTotalMs();
 	UINT64        TActualMS = TiempoActualMs();
+
+	
+	if (_Actual) {
+		// Compruebo si el medio actual es un momento
+		if (_Actual->Medio.PosMomento != -1) {
+			if (static_cast<INT64>(TActualMS) > _Actual->Medio.Momentos[_Actual->Medio.PosMomento]->TiempoFinal) {
+				Stop();
+				CerrarMedio();
+			}
+		}
+
+		// Compruebo si el medio actual tiene algun momento de exclusión
+	}
+
 	ObtenerDatosParsing();
 	if (!App.VentanaRave.Minimizado()) {
 		std::wstring TmpStr;
@@ -273,6 +287,7 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 
 const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente) {
 	if (_Anterior != NULL) _EliminarRaveMedio(_Anterior);
+
 	// Si no es un video el medio actual pasa a ser el anterior
 	if (Medio.TipoMedio != Tipo_Medio_Video) {
 		_Anterior = _Actual;
@@ -293,17 +308,18 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 			_EliminarRaveMedio(_Siguiente);
 			_Siguiente = NULL;
 			if (Medio.EsFMOD() == FALSE)	_Actual = new RaveVLC_Medio(_InstanciaVLC, Medio);
-#ifdef RAVE_UTILIZAR_FMOD
-			else                            _Actual = new RaveFMOD_Medio(_SistemaFMOD, Medio);
-#endif
+			#ifdef RAVE_UTILIZAR_FMOD
+				else                        _Actual = new RaveFMOD_Medio(_SistemaFMOD, Medio);
+			#endif
 		}
 	}
+
 	// No hay un medio siguiente
 	else {
 		if (Medio.EsFMOD() == FALSE)	_Actual = new RaveVLC_Medio(_InstanciaVLC, Medio);
-#ifdef RAVE_UTILIZAR_FMOD
-		else                            _Actual = new RaveFMOD_Medio(_SistemaFMOD, Medio);
-#endif
+		#ifdef RAVE_UTILIZAR_FMOD
+			else                        _Actual = new RaveFMOD_Medio(_SistemaFMOD, Medio);
+		#endif
 	}
 
 	// Si el medio actual no es un video
@@ -313,15 +329,17 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 			// Si el medio siguiente no es un video, cargo el medio siguiente.
 			if (MedioSiguiente->TipoMedio != Tipo_Medio_Video) {
 				if (Medio.EsFMOD() == FALSE)	_Siguiente = new RaveVLC_Medio(_InstanciaVLC, *MedioSiguiente);
-#ifdef RAVE_UTILIZAR_FMOD
-				else                            _Siguiente = new RaveFMOD_Medio(_SistemaFMOD, *MedioSiguiente);
-#endif
+				#ifdef RAVE_UTILIZAR_FMOD
+					else                        _Siguiente = new RaveFMOD_Medio(_SistemaFMOD, *MedioSiguiente);
+				#endif
 			}
 		}
 	}
 
-	if (_Actual->TxtError.size() == 0) return TRUE;
-	else                               return FALSE;
+	if (_Actual) {
+		if (_Actual->TxtError.size() == 0) return TRUE;		
+	}
+	return FALSE;
 }
 
 void Rave_MediaPlayer::CerrarMedio(void) {
@@ -408,7 +426,7 @@ void Rave_MediaPlayer::_TerminarMedio(Rave_Medio *MedioEvento) {
 
 
 
-const BOOL Rave_MediaPlayer::Play(void) {
+const BOOL Rave_MediaPlayer::Play(const BOOL ComprobarMomento) {
 	if (_Actual == NULL) return FALSE;
 
 	App.VentanaRave.SliderTiempo.ToolTip(DBarraEx_ToolTip_Abajo);
@@ -424,7 +442,11 @@ const BOOL Rave_MediaPlayer::Play(void) {
 	std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" [" + DWL::Strings::ToStr(_Actual->Medio.Pista(), 2) + L" " + _Actual->Medio.Nombre() + L"]";
 	App.VentanaRave.Titulo(nTitulo);
 
-	return _Actual->Play();
+	BOOL B = _Actual->Play();
+
+	if (ComprobarMomento == TRUE) _Actual->ComprobarMomento();
+
+	return B;
 }
 
 const BOOL Rave_MediaPlayer::Pausa(void) {
@@ -508,7 +530,7 @@ void Rave_MediaPlayer::AsignarProporcion(const int Prop) {
 		App.MenuVideoProporcion->Menu(i)->Icono(0);
 	}
 
-	App.MenuVideoProporcion->Menu(Prop - ID_MENUVIDEO_PROPORCION_PREDETERMINADO)->Icono(IDI_CHECK2);
+	App.MenuVideoProporcion->Menu(static_cast<size_t>(Prop) - ID_MENUVIDEO_PROPORCION_PREDETERMINADO)->Icono(IDI_CHECK2);
 	
 	switch (Prop) {
 		case ID_MENUVIDEO_PROPORCION_PREDETERMINADO : _Actual->AsignarProporcion(NULL);			break;
@@ -579,15 +601,22 @@ BOOL CALLBACK Rave_MediaPlayer::EnumeracionVLC(HWND hWndWnd, LPARAM lParam) {
 LRESULT CALLBACK Rave_MediaPlayer::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
 		case WM_TIMER :
-			switch (static_cast<UINT>(wParam)) {
+/*			switch (static_cast<UINT>(wParam)) {
 				case TIMER_OBTENERVLCWND    : PostMessage(_hWnd, WM_TIMER_OBTENERHWNDVLC, 0, 0);	return 0;
 				case ID_TEMPORIZADOR_TIEMPO : PostMessage(_hWnd, WM_TIMER_TIEMPO, 0, 0);			return 0;
 				case ID_TEMPORIZADOR_LISTA  : PostMessage(_hWnd, WM_TIMER_LISTA, 0, 0);				return 0;
+			}*/
+			switch (static_cast<UINT>(wParam)) {
+				case TIMER_OBTENERVLCWND    : Temporizador_ObtenerVentanaVLC();	return 0;
+				case ID_TEMPORIZADOR_TIEMPO : Temporizador_Tiempo();			return 0;
+				case ID_TEMPORIZADOR_LISTA  : Temporizador_Lista();				return 0;
 			}
 			break;
+
 		case WM_MEDIO_TERMINADO :
 			_TerminarMedio(reinterpret_cast<Rave_Medio *>(wParam));
 			return 0;
+		
 		case WM_TIMER_LISTA :
 			Temporizador_Lista();
 			return 0;

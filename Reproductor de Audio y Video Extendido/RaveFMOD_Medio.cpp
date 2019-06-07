@@ -7,8 +7,7 @@
 #include "Rave_MediaPlayer.h"
 
 
-RaveFMOD_Medio::RaveFMOD_Medio(FMOD::System *SistemaFMOD, BDMedio &nMedio) : _Stream(NULL), _Canal(NULL), _Sistema(NULL), _GrupoCanales(NULL), _Estado(SinCargar) {
-	Medio				= nMedio;
+RaveFMOD_Medio::RaveFMOD_Medio(FMOD::System *SistemaFMOD, BDMedio &nMedio) : Rave_Medio(nMedio), _Stream(NULL), _Canal(NULL), _Sistema(NULL), _GrupoCanales(NULL), _Estado(SinCargar) {
 	_Sistema			= SistemaFMOD;
 	FMOD_RESULT	Error	= FMOD_OK;
 
@@ -30,6 +29,8 @@ RaveFMOD_Medio::RaveFMOD_Medio(FMOD::System *SistemaFMOD, BDMedio &nMedio) : _St
 	if (Error != FMOD_OK) {
 		TxtError = L"Error al crear el grupo de canales.";
 	}	
+
+//	ComprobarMomento();
 }
 
 
@@ -173,6 +174,14 @@ void RaveFMOD_Medio::TiempoActual(float nTiempo) {
 		unsigned int tTotal = 0;
 		_Stream->getLength(&tTotal, FMOD_TIMEUNIT_MS);
 		_Canal->setPosition(static_cast<int>(static_cast<float>(tTotal) * nTiempo), FMOD_TIMEUNIT_MS);
+	}
+}
+
+void RaveFMOD_Medio::TiempoActualMs(INT64 nTiempo) {
+	if (_Stream != NULL) {
+		unsigned int tTotal = 0;
+		_Stream->getLength(&tTotal, FMOD_TIMEUNIT_MS);
+		_Canal->setPosition(nTiempo, FMOD_TIMEUNIT_MS);
 	}
 }
 

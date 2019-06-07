@@ -420,7 +420,7 @@ void ThreadAnalisis::_AgregarMedio(std::vector<CoincidenciasTexto *> &ListaMedio
 	ListaMedios.push_back(new CoincidenciasTexto(Medio, Texto));
 }
 
-void ThreadAnalisis::_AgregarEtiqueta(std::wstring &nTexto, const DWORD nTipo, const float nNota, const libvlc_time_t nTiempo, const ULONGLONG uLongitud) {
+void ThreadAnalisis::_AgregarEtiqueta(std::wstring &nTexto, const DWORD nTipo, const float nNota, const INT64 nTiempo, const ULONGLONG uLongitud) {
 	if (nTexto.size() == 0) return;
 	for (size_t i = 0; i < _Etiquetas.size(); i++) {
 		if (nTexto == _Etiquetas[i].Texto) {

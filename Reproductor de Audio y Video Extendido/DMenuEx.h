@@ -129,6 +129,9 @@ namespace DWL {
 		void                    Transicion(const DMenuEx_Transicion nTransicion);
 
 		DFuente                 Fuente;
+
+								// Variable para almacenar un parametro
+		INT64					Parametro;
 	  protected:
 								// Constructor menú tipo texto (interno AgregarBarra)
 								DMenuEx(DMenuEx *nPadre, DMenuEx_Tipo nTipo, DhWnd *nhWndPadre, const INT_PTR nID, const wchar_t *nTexto, const INT_PTR nIconoRecursos, const BOOL nActivado, const float nMinimo, const float nMaximo, const float nValor);

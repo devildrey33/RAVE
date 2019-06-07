@@ -67,10 +67,10 @@ void VentanaMomento::Mostrar(BDMedio& nMedio) {
 void VentanaMomento::Evento_BarraEx_Cambiando(DWL::DEventoMouse& DatosMouse) {
 	switch (DatosMouse.ID()) {
 		case ID_BARRAINICIO :
-			Txt_TiempoInicio.Texto(DWL::Strings::ToStr(round(static_cast<libvlc_time_t>(static_cast<double>(Medio.Tiempo) * Barra_TiempoInicio.Valor()))));
+			Txt_TiempoInicio.Texto(DWL::Strings::ToStr(round(static_cast<INT64>(static_cast<double>(Medio.Tiempo) * Barra_TiempoInicio.Valor()))));
 			break;
 		case ID_BARRAFINAL:
-			Txt_TiempoFinal.Texto(DWL::Strings::ToStr(round(static_cast<libvlc_time_t>(static_cast<double>(Medio.Tiempo) * Barra_TiempoFinal.Valor()))));
+			Txt_TiempoFinal.Texto(DWL::Strings::ToStr(round(static_cast<INT64>(static_cast<double>(Medio.Tiempo) * Barra_TiempoFinal.Valor()))));
 			break;
 	}
 }
@@ -78,10 +78,10 @@ void VentanaMomento::Evento_BarraEx_Cambiando(DWL::DEventoMouse& DatosMouse) {
 void VentanaMomento::Evento_BarraEx_Cambiado(DWL::DEventoMouse& DatosMouse) {
 	switch (DatosMouse.ID()) {
 		case ID_BARRAINICIO :
-			Txt_TiempoInicio.Texto(DWL::Strings::ToStr(round(static_cast<libvlc_time_t>(static_cast<double>(Medio.Tiempo) * Barra_TiempoInicio.Valor()))));
+			Txt_TiempoInicio.Texto(DWL::Strings::ToStr(round(static_cast<INT64>(static_cast<double>(Medio.Tiempo) * Barra_TiempoInicio.Valor()))));
 			break;
 		case ID_BARRAFINAL :
-			Txt_TiempoFinal.Texto(DWL::Strings::ToStr(round(static_cast<libvlc_time_t>(static_cast<double>(Medio.Tiempo) * Barra_TiempoFinal.Valor()))));
+			Txt_TiempoFinal.Texto(DWL::Strings::ToStr(round(static_cast<INT64>(static_cast<double>(Medio.Tiempo) * Barra_TiempoFinal.Valor()))));
 			break;
 	}
 }
@@ -163,7 +163,7 @@ void VentanaMomento::CargarMomentos(void) {
 
 	ListaMomentos.EliminarTodosLosItems();
 	for (size_t i = 0; i < Medio.Momentos.size(); i++) {
-		ListaMomentos.AgregarItem(0, DLISTAEX_POSICION_FIN, Medio.Momentos[i]->Nombre.c_str());
+		ListaMomentos.AgregarItem((Medio.Momentos[i]->Excluir) ? IDI_MOMENTO_EXCLUIR : IDI_MOMENTO, DLISTAEX_POSICION_FIN, Medio.Momentos[i]->Nombre.c_str());
 	}
 	ListaMomentos.Repintar(TRUE);
 
@@ -179,7 +179,7 @@ void VentanaMomento::GuardarMomento(void) {
 	}
 
 	// Error el momento no puede ser todo el medio
-	libvlc_time_t TiempoInicio = 0, TiempoFinal = Medio.Tiempo;
+	INT64 TiempoInicio = 0, TiempoFinal = Medio.Tiempo;
 	DWL::Strings::StrTo(Txt_TiempoInicio.Texto(), TiempoInicio);
 	DWL::Strings::StrTo(Txt_TiempoFinal.Texto(), TiempoFinal);	
 	if (TiempoInicio == 0 && TiempoFinal == Medio.Tiempo) {

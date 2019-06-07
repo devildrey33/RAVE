@@ -36,7 +36,8 @@ class RaveVLC_Medio : public Rave_Medio {
 	void						TiempoActual(float nTiempo);
 	const UINT64				TiempoTotalMs(void);
 	const UINT64				TiempoActualMs(void);
-	
+	void						TiempoActualMs(UINT64 nTiempo);
+
 								// Proporción para el video
 	std::wstring               &ObtenerProporcion(void);
 	void                        AsignarProporcion(const char* Prop);

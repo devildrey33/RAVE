@@ -796,6 +796,18 @@
     <Image Include="..\Iconos\IDI_Agregar.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
+    <Image Include="..\Iconos\IDI_Momento.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Momento_Excluir.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Momento_Excluir2.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Momentos.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="Mapa de ventanas y controles.cd">

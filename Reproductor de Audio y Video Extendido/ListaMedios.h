@@ -21,6 +21,7 @@ class ListaMedios : public DWL::DListaEx {
 
 	ItemMedio		           *AgregarMedio(BDMedio *nMedio);
 	void						BorrarListaReproduccion(void);
+	void						ReproducirMedio(BDMedio &nMedio, LONG PosMomento = -1);
 
 	const BOOL					Mezclar(const BOOL nMezclar);
 

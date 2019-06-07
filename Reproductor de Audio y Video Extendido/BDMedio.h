@@ -7,22 +7,22 @@
 class BDMomento {
   public:
 					BDMomento(void) : Id(0), IdPadre(0), TiempoInicio(0), TiempoFinal(0), Excluir(FALSE) { };
-					BDMomento(const LONG_PTR nId, const LONG_PTR nIdPadre, const TCHAR *nNombre, const libvlc_time_t nTiempoInicio, const libvlc_time_t nTiempoFinal, const BOOL nExcluir) : Id(nId), IdPadre(nIdPadre), TiempoInicio(nTiempoInicio), TiempoFinal(nTiempoFinal), Excluir(nExcluir) { };
+					BDMomento(const LONG_PTR nId, const LONG_PTR nIdPadre, const TCHAR *nNombre, const INT64 nTiempoInicio, const INT64 nTiempoFinal, const BOOL nExcluir) : Id(nId), IdPadre(nIdPadre), TiempoInicio(nTiempoInicio), TiempoFinal(nTiempoFinal), Excluir(nExcluir) { };
 					BDMomento(const BDMomento &c) : Id(c.Id), IdPadre(c.IdPadre), Nombre(c.Nombre), TiempoInicio(c.TiempoInicio), TiempoFinal(c.TiempoFinal), Excluir(c.Excluir) { };
 					BDMomento(const BDMomento *c) : Id(c->Id), IdPadre(c->IdPadre), Nombre(c->Nombre), TiempoInicio(c->TiempoInicio), TiempoFinal(c->TiempoFinal), Excluir(c->Excluir) { };
 	LONG_PTR		Id;				// ID dentro de la tabla
 	LONG_PTR        IdPadre;		// ID del medio al que pertenece este momento
 	std::wstring	Nombre;			// Nombre del momento
-	libvlc_time_t	TiempoInicio;	// Tiempo de inicio del momento
-	libvlc_time_t	TiempoFinal;	// Tiempo final del momento
+	INT64			TiempoInicio;	// Tiempo de inicio del momento
+	INT64			TiempoFinal;	// Tiempo final del momento
 	BOOL            Excluir;		// Excluir momento de la reproducción (para intros, creditos, etc...)
 };
 
 // Clase con los datos de un medio
 class BDMedio {
   public :
-							BDMedio(void) : PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0), Parseado(FALSE), Actualizar(FALSE), Nota(2.5f), PistaEleccion(0), Reproducido(0), GrupoEleccion(0), DiscoEleccion(0), NombreEleccion(0), Brillo(1.0f), Contraste(1.0f), Saturacion(1.0f) { };
-//							BDMedio(UINT nId, sqlite3_int64 nHash, const wchar_t *nPath, const wchar_t *nNombre, Tipo_Medio nTipoMedio, Extension_Medio nExtension, UINT nReproducido, ULONG nLongitud, DWORD nIDDisco, UINT nNota, UINT nGenero, UINT nGrupo, UINT nDisco, UINT nPista, libvlc_time_t nTiempo, const wchar_t *nSubtitulos) : Id(nId), Hash(nHash), Path(nPath), NombrePath(nNombre), TipoMedio(nTipoMedio), Extension(nExtension), Longitud(nLongitud), IDDisco(nIDDisco), Nota(nNota), Pista(nPista), Tiempo(nTiempo), Subtitulos(nSubtitulos), Parseado(FALSE) { }
+							BDMedio(void) : PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0), Parseado(FALSE), Actualizar(FALSE), Nota(2.5f), PistaEleccion(0), Reproducido(0), GrupoEleccion(0), DiscoEleccion(0), NombreEleccion(0), Brillo(1.0f), Contraste(1.0f), Saturacion(1.0f), PosMomento(-1) { };
+//							BDMedio(UINT nId, sqlite3_int64 nHash, const wchar_t *nPath, const wchar_t *nNombre, Tipo_Medio nTipoMedio, Extension_Medio nExtension, UINT nReproducido, ULONG nLongitud, DWORD nIDDisco, UINT nNota, UINT nGenero, UINT nGrupo, UINT nDisco, UINT nPista, INT64 nTiempo, const wchar_t *nSubtitulos) : Id(nId), Hash(nHash), Path(nPath), NombrePath(nNombre), TipoMedio(nTipoMedio), Extension(nExtension), Longitud(nLongitud), IDDisco(nIDDisco), Nota(nNota), Pista(nPista), Tiempo(nTiempo), Subtitulos(nSubtitulos), Parseado(FALSE) { }
 							BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
 							BDMedio(const BDMedio& c);
 	                       ~BDMedio(void);
@@ -43,7 +43,7 @@ class BDMedio {
 
 	Tipo_Medio				TipoMedio;
 	Extension_Medio			Extension;
-	libvlc_time_t			Tiempo;
+	INT64					Tiempo;
 	ULONG					Longitud;
 
 	UINT					Reproducido;
@@ -78,7 +78,7 @@ class BDMedio {
 	float                   Contraste;
 	float                   Saturacion;
 
-//	LONG                    IDMomentos;
+	LONG                    PosMomento; // Momento a reproducir
 
 	const BOOL              EsFMOD(void);
 

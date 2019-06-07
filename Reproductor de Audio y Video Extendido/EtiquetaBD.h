@@ -26,7 +26,7 @@ enum EtiquetaBD_Tipo {
 class EtiquetaBD {
   public:
 						EtiquetaBD(void) : Tipo(0), Nota(0.0f), Tiempo(0), Medios(0), Longitud(0)			{ };
-						EtiquetaBD(std::wstring &nTexto, const DWORD nTipo, const float nNota, const libvlc_time_t nTiempo, const ULONGLONG nLongitud, const UINT nMedios = 1) : Tipo(nTipo), Texto(nTexto), Nota(nNota), Tiempo(nTiempo), Medios(nMedios), Longitud(nLongitud) { };
+						EtiquetaBD(std::wstring &nTexto, const DWORD nTipo, const float nNota, const INT64 nTiempo, const ULONGLONG nLongitud, const UINT nMedios = 1) : Tipo(nTipo), Texto(nTexto), Nota(nNota), Tiempo(nTiempo), Medios(nMedios), Longitud(nLongitud) { };
 					   ~EtiquetaBD(void)																	{ };
 
 	inline const DWORD	AgregarTipo(const EtiquetaBD_Tipo nTipo)											{ Tipo |= nTipo;	return Tipo;			}
@@ -43,7 +43,7 @@ class EtiquetaBD {
 	DWORD				Tipo;
 	std::wstring		Texto;
 	UINT                Medios;
-	libvlc_time_t       Tiempo;
+	INT64		        Tiempo;
 	ULONGLONG           Longitud;
 	float               Nota;		// Suma de todas las notas, (para extraer la media hay que dividir la Nota por el total de Medios)
 };

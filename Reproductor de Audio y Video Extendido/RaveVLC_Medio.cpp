@@ -6,8 +6,7 @@
 #include "Rave_MediaPlayer.h"
 
 
-RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : _Medio(NULL), _Eventos(NULL),  /*TiempoTotal(0) */ _Parseado(FALSE) {
-	Medio		= nMedio;	
+RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : Rave_Medio(nMedio), _Medio(NULL), _Eventos(NULL),  /*TiempoTotal(0) */ _Parseado(FALSE) {
 
 	App.MenuVideoFiltros->Menu(0)->BarraValor(Medio.Brillo);		// Brillo
 	App.MenuVideoFiltros->Menu(1)->BarraValor(Medio.Contraste);		// Contraste
@@ -68,6 +67,8 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : _M
 	else {
 		libvlc_media_player_set_hwnd(_Medio, NULL);
 	}
+
+//	ComprobarMomento();
 
 	Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio Path '%s'\n", Medio.Path.c_str());	
 }
@@ -320,6 +321,12 @@ void RaveVLC_Medio::TiempoActual(float nTiempo) {
 	}
 }
 
+void RaveVLC_Medio::TiempoActualMs(UINT64 nTiempo) {
+	if (_Medio != NULL) {
+		libvlc_media_player_set_time(_Medio, nTiempo);
+	}
+}
+
 const BOOL RaveVLC_Medio::Ratio(const float R) {
 	int r;
 	if (_Medio != NULL) {
@@ -389,12 +396,12 @@ const BOOL RaveVLC_Medio::ObtenerDatosParsing(void) {
 			for (int i = 0; i < TotalPîstas; i++) {
 				if (i != 0) {
 					DWL::Strings::AnsiToWide(Desc->psz_name, Texto);
-					App.MenuVideoPistasDeAudio->AgregarMenu(((int)ID_MENUVIDEO_AUDIO_PISTAS_AUDIO) + i, Texto);
+					App.MenuVideoPistasDeAudio->AgregarMenu(static_cast<INT_PTR>(ID_MENUVIDEO_AUDIO_PISTAS_AUDIO) + i, Texto);
 				}
 				Desc = Desc->p_next;
 			}
 			int PistaActual = libvlc_audio_get_track(_Medio);
-			DMenuEx *MenuPistaActual = App.MenuVideoPistasDeAudio->BuscarMenu(((int)ID_MENUVIDEO_AUDIO_PISTAS_AUDIO) + PistaActual);
+			DMenuEx *MenuPistaActual = App.MenuVideoPistasDeAudio->BuscarMenu(static_cast<INT_PTR>(ID_MENUVIDEO_AUDIO_PISTAS_AUDIO) + PistaActual);
 			if (MenuPistaActual != NULL) MenuPistaActual->Icono(IDI_CHECK2);
 			libvlc_track_description_list_release(Desc);
 		}

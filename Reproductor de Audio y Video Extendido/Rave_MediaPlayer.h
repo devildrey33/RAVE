@@ -19,7 +19,7 @@ class Rave_MediaPlayer : public DWL::DVentana {
 									// Cierra todos los medios (Anterior, Actual, y Siguiente)
 	void							CerrarMedio(void);
 
-	const BOOL						Play(void);
+	const BOOL						Play(const BOOL ComprobarMomento = FALSE);
 	const BOOL						Pausa(void);
 	const BOOL						Stop(void);
 	const BOOL						StopTODO(void);
@@ -72,8 +72,8 @@ class Rave_MediaPlayer : public DWL::DVentana {
 	static BOOL CALLBACK			EnumeracionVLC(HWND hWndWnd, LPARAM lParam);
 	static HWND						hWndVLC;
 
-	void                            ObtenerTTF(void);
-	float                           TTF[2048];
+//	void                            ObtenerTTF(void);
+//	float                           TTF[2048];
   protected:
 	void                           _TerminarMedio(Rave_Medio *tMedio);
 

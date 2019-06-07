@@ -329,9 +329,9 @@ void VentanaPrincipal::Timer_ObtenerTiempoTotal(void) {
 
 //			BDMedio nMedioActual;
 //			App.BD.ObtenerMedio(rItem->Hash, nMedioActual);
-			App.BD.AsignarTiempoMedio(static_cast<libvlc_time_t>(TiempoMS), rItem->Hash);
+			App.BD.AsignarTiempoMedio(static_cast<INT64>(TiempoMS), rItem->Hash);
 
-//			nMedioActual.Tiempo = static_cast<libvlc_time_t>(TiempoMS);
+//			nMedioActual.Tiempo = static_cast<INT64>(TiempoMS);
 
 		}
 		KillTimer(_hWnd, TIMER_OBTENER_TIEMPO_TOTAL);
@@ -558,6 +558,12 @@ void VentanaPrincipal::Lista_Momentos(void) {
 	Momentos.Mostrar(Medio);
 }
 
+void VentanaPrincipal::Lista_MomentosAbrir(const UINT64 HashMedio, const int PosMomento) {
+	BDMedio Medio;
+	App.BD.ObtenerMedio(HashMedio, Medio);
+	Lista.ReproducirMedio(Medio, PosMomento);
+}
+
 void VentanaPrincipal::Arbol_AgregarALista(const BOOL NuevaLista) {
 	std::wstring nTexto = L"\" añadido a la lista.";
 	if (NuevaLista == TRUE) {
@@ -642,6 +648,13 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		case ID_MENULISTA_MOMENTOS				:   Lista_Momentos();						return;
 	}
 
+	// Menu Lista -> Momentos -> Momento
+	if (cID >= ID_MENULISTA_MOMENTOS_MOMENTO && cID < ID_MENULISTA_MOMENTOS_MOMENTO_FIN) {
+		DWL::DMenuEx* TmpMenu = App.VentanaRave.Menu_Lista.BuscarMenu(cID);
+		if (TmpMenu != NULL) Lista_MomentosAbrir(TmpMenu->Parametro, cID - ID_MENULISTA_MOMENTOS_MOMENTO);
+		return;
+	}
+
 	// Menu Video -> Pistas de audio
 	if (cID >= ID_MENUVIDEO_AUDIO_PISTAS_AUDIO && cID < ID_MENUVIDEO_AUDIO_PISTAS_AUDIO_FIN) {
 		// Des-marco todas las pistas de audio
@@ -658,24 +671,7 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 
 
 	// Menu Video -> Proporción
-	if (cID >= ID_MENUVIDEO_PROPORCION_PREDETERMINADO && cID < ID_MENUVIDEO_PROPORCION_5A4 + 1) {
-		// Des-marco todas las porporciones
-/*		for (size_t i = 0; i < App.MenuVideoProporcion->TotalMenus(); i++) {
-			App.MenuVideoProporcion->Menu(i)->Icono(0);
-		}*/
-/*		switch (cID) {
-			case ID_MENUVIDEO_PROPORCION_PREDETERMINADO	: App.MP.AsignarProporcion(NULL);			break;
-			case ID_MENUVIDEO_PROPORCION_16A9			: App.MP.AsignarProporcion("16:9");			break;
-			case ID_MENUVIDEO_PROPORCION_4A3			: App.MP.AsignarProporcion("4:3");			break;
-			case ID_MENUVIDEO_PROPORCION_1A1			: App.MP.AsignarProporcion("1:1");			break;
-			case ID_MENUVIDEO_PROPORCION_16A10			: App.MP.AsignarProporcion("16:10");		break;
-			case ID_MENUVIDEO_PROPORCION_2P21A1			: App.MP.AsignarProporcion("2.21:1");		break;
-			case ID_MENUVIDEO_PROPORCION_2P35A1			: App.MP.AsignarProporcion("2.35:1");		break;
-			case ID_MENUVIDEO_PROPORCION_2P39A1			: App.MP.AsignarProporcion("2.39:1");		break;
-			case ID_MENUVIDEO_PROPORCION_5A4			: App.MP.AsignarProporcion("5:4");			break;
-		}
-
-		App.MenuVideoProporcion->Menu(cID - ID_MENUVIDEO_PROPORCION_PREDETERMINADO)->Icono(IDI_CHECK2);*/
+	if (cID >= ID_MENUVIDEO_PROPORCION_PREDETERMINADO && cID < ID_MENUVIDEO_PROPORCION_5A4 + 1) {		
 		App.MP.AsignarProporcion(cID);
 		App.BD.ActualizarMedio(&App.MP.MedioActual());
 		return;

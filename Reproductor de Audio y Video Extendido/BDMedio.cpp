@@ -9,7 +9,7 @@ BDMedio::BDMedio(const BDMedio& c) :	PistaTag(c.PistaTag), PistaPath(c.PistaPath
 										GrupoTag(c.GrupoTag), GrupoPath(c.GrupoPath), GrupoEleccion(c.GrupoEleccion),
 										DiscoTag(c.DiscoTag), DiscoPath(c.DiscoPath), DiscoEleccion(c.DiscoEleccion),
 										Subtitulos(c.Subtitulos), Parseado(c.Parseado), Actualizar(c.Actualizar),
-										Proporcion(c.Proporcion), Brillo(c.Brillo), Contraste(c.Contraste), Saturacion(c.Saturacion) {
+										Proporcion(c.Proporcion), Brillo(c.Brillo), Contraste(c.Contraste), Saturacion(c.Saturacion), PosMomento(c.PosMomento) {
 	// Creo una copia del vector de momentos
 	for (size_t i = 0; i < c.Momentos.size(); i++) {
 		Momentos.push_back(new BDMomento(c.Momentos[i]));
@@ -91,7 +91,7 @@ BDMedio& BDMedio::operator = (const BDMedio& c) {
 		std::wstring		GrupoPath	        11			VARCHAR(128)
 		std::wstring		DiscoPath	        12			VARCHAR(128)
 		UINT				PistaPath	        13			INT
-		libvlc_time_t		Tiempo		        14			INT
+		INT64				Tiempo		        14			INT
 		std::wstring		Subtitulos	        15			VARCHAR(260)
 		BOOL				Parseado            16			TINYINT(1)
 		std::wstring		NombreTag		    17			VARCHAR(128)
@@ -127,7 +127,7 @@ void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades)
 	if (nGrupoPath != NULL)		GrupoPath = nGrupoPath;
 	if (nDiscoPath != NULL)		DiscoPath = nDiscoPath;
 	PistaPath		= static_cast<UINT>(sqlite3_column_int(SqlQuery, 13));
-	Tiempo			= static_cast<libvlc_time_t>(sqlite3_column_int(SqlQuery, 14));
+	Tiempo			= static_cast<INT64>(sqlite3_column_int(SqlQuery, 14));
 	Subtitulos		= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 15));	
 	Parseado		= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 16));
 	const wchar_t *nNombreTag	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 17));
@@ -180,8 +180,8 @@ void BDMedio::ObtenerMomentos(const UINT nId) {
 			TmpMomento->IdPadre		 = nId;			
 			TmpNombre				 = reinterpret_cast<const wchar_t*>(sqlite3_column_text16(SqlQuery, 1));
 			if (TmpNombre != NULL) TmpMomento->Nombre = TmpNombre;
-			TmpMomento->TiempoInicio = static_cast<libvlc_time_t>(sqlite3_column_int(SqlQuery, 2));
-			TmpMomento->TiempoFinal  = static_cast<libvlc_time_t>(sqlite3_column_int(SqlQuery, 3));
+			TmpMomento->TiempoInicio = static_cast<INT64>(sqlite3_column_int(SqlQuery, 2));
+			TmpMomento->TiempoFinal  = static_cast<INT64>(sqlite3_column_int(SqlQuery, 3));
 			TmpMomento->Excluir      = static_cast<BOOL>(sqlite3_column_int(SqlQuery, 4));
 			Momentos.push_back(TmpMomento);
 		}

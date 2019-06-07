@@ -74,7 +74,7 @@ class ThreadAnalisis :	public DWL::DVentana {
 	void                               _LimpiarAnomalias(void);
 	void                               _RevisarMedios(void);
 	void                               _CrearListaAnomalias(std::vector<CoincidenciasTexto *> &Coincidencias, std::vector<AnomaliasTexto *> &Anomalias, const UINT TipoCoincidencia);
-	void                               _AgregarEtiqueta(std::wstring &nTexto, const DWORD nTipo, const float nNota, const libvlc_time_t nTiempo, const ULONGLONG uLongitud);
+	void                               _AgregarEtiqueta(std::wstring &nTexto, const DWORD nTipo, const float nNota, const INT64 nTiempo, const ULONGLONG uLongitud);
 	std::vector<BDMedio>			   _Medios;
 	std::vector<CoincidenciasTexto *>  _Generos;
 //	std::vector<CoincidenciasTexto *>  _GruposPath;

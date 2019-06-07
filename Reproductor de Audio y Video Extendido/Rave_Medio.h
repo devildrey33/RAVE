@@ -11,9 +11,11 @@ enum Rave_Medio_Tipo {
 // Clase base para los medios del VLC o del FMOD
 class Rave_Medio {
   public :
-									Rave_Medio(void)										{ };
-//								   ~Rave_Medio(void)                                        { Eliminar(); };
+									Rave_Medio(BDMedio &nMedio)	: Medio(nMedio)				{ };
 
+									/////////////////////////
+									// Funciones virtuales //
+									/////////////////////////
 	  virtual void                  Eliminar(void)                                          { };
 
 									// Controles
@@ -34,6 +36,7 @@ class Rave_Medio {
 	  virtual void					TiempoActual(float nTiempo)								{ };
 	  virtual const UINT64			TiempoTotalMs(void)										{ return 0; };
 	  virtual const UINT64			TiempoActualMs(void)									{ return 0; };
+	  virtual void					TiempoActualMs(UINT64 nTiempo)							{ };
 
 									// Proporción para el video
 	  virtual std::wstring         &ObtenerProporcion(void)									{ static std::wstring Nada; return Nada; };
@@ -49,13 +52,21 @@ class Rave_Medio {
 	  virtual void					AsignarPistaAudio(int nPista)							{ };
 	  virtual const Rave_Medio_Tipo Tipo(void)												{ return Rave_Medio_Tipo_NADA; };
 
-	  BDMedio						Medio;		// Datos del medio
+	  virtual const BOOL			ObtenerDatosParsing(void) { return FALSE; };
+
+									///////////////////////
+									// Funciones propias //
+									///////////////////////
 
 									// Actualiza los iconos de la BD i la lista
 	  void							ActualizarIconos(int nIcono);
+	  void                          ComprobarMomento(void);
 
-	  virtual const BOOL			ObtenerDatosParsing(void)                               { return FALSE; };
+									///////////////
+									// Variables //
+									///////////////
 
 	  std::wstring                  TxtError;
+	  BDMedio						Medio;		// Datos del medio
 
 };
