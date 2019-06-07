@@ -612,6 +612,11 @@ BDMedio &Rave_MediaPlayer::MedioActual(void) {
 	return _Actual->Medio;
 }
 
+// Función que re-asigna los datos medio actual 
+void Rave_MediaPlayer::MedioActual(BDMedio& nMedio) {
+	_Actual->Medio = nMedio;
+}
+
 const BOOL Rave_MediaPlayer::ObtenerDatosParsing(void) {
 	if (_Actual == NULL) return FALSE;
 	return _Actual->ObtenerDatosParsing();

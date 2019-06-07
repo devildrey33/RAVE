@@ -28,7 +28,10 @@ VentanaMomento::~VentanaMomento(void) {
 
 void VentanaMomento::Mostrar(BDMedio& nMedio) {
 	Medio = nMedio;
-
+	if (_hWnd != NULL) {
+		CargarMomentos();
+		return;
+	}
 	CrearVentana(NULL, L"RAVE_Momentos", L"Momentos", App.BD.Opciones_VentanaMomentos_PosX(), App.BD.Opciones_VentanaMomentos_PosY(), 746, 240, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 
 	ListaMomentos.CrearListaEx(this, 10, 10, 250, 140, ID_LISTAMOMENTOS, WS_CHILD | WS_VISIBLE);
@@ -55,14 +58,14 @@ void VentanaMomento::Mostrar(BDMedio& nMedio) {
 	Txt_TiempoFinal.Activado(FALSE);
 
 	Boton_InicioMas.CrearBotonEx(this, L"+", 320, 50, 10, 10, ID_INICIOMAS, WS_CHILD | WS_VISIBLE);
-	Boton_InicioMas.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str());
+	Boton_InicioMas.Fuente.CrearFuente(18, L"Courier New");
 	Boton_InicioMenos.CrearBotonEx(this, L"-", 320, 60, 10, 10, ID_INICIOMENOS, WS_CHILD | WS_VISIBLE);
-	Boton_InicioMenos.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str());
+	Boton_InicioMenos.Fuente.CrearFuente(18, L"Courier New");
 
 	Boton_FinMas.CrearBotonEx(this, L"+", 320, 80, 10, 10, ID_FINMAS, WS_CHILD | WS_VISIBLE);
-	Boton_FinMas.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str());
+	Boton_FinMas.Fuente.CrearFuente(18, L"Courier New");
 	Boton_FinMenos.CrearBotonEx(this, L"-", 320, 90, 10, 10, ID_FINMENOS, WS_CHILD | WS_VISIBLE);
-	Boton_FinMenos.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str());
+	Boton_FinMenos.Fuente.CrearFuente(18, L"Courier New");
 
 
 	Barra_TiempoInicio.CrearBarraDesplazamientoEx(this, 340, 50, 380, 20, ID_BARRAINICIO);
@@ -268,6 +271,11 @@ void VentanaMomento::GuardarMomento(void) {
 		else {
 			App.MostrarToolTipMomentosError(L"Error inesperado al actualizar el momento");
 		}
+	}
+
+	// Actualizo el BDMedio actual si es el mismo que el que se está editando
+	if (Medio.Hash == App.MP.MedioActual().Hash) {
+		App.MP.MedioActual(Medio);
 	}
 
 	ActivarControles(FALSE);

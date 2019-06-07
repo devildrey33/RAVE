@@ -35,35 +35,35 @@ void BDMedio::BorrarMomentos(void) {
 }
 
 BDMedio& BDMedio::operator = (const BDMedio& c) {
-	PistaTag		= c.PistaTag;
-	PistaPath		= c.PistaPath;
-	PistaEleccion	= c.PistaEleccion;
-	NombreTag		= c.NombreTag;
-	NombrePath		= c.NombrePath;
-	NombreEleccion	= c.NombreEleccion;
-	Hash			= c.Hash;
-	Path			= c.Path;
-	TipoMedio		= c.TipoMedio;
-	Tiempo			= c.Tiempo;
-	Extension		= c.Extension;
-	Longitud		= c.Longitud;
-	Reproducido		= c.Reproducido;
-	Nota			= c.Nota;
-	Id				= c.Id;
-	IDDisco			= c.IDDisco;
-	GrupoTag		= c.GrupoTag;
-	GrupoPath		= c.GrupoPath;
-	GrupoEleccion	= c.GrupoEleccion;
-	DiscoTag		= c.DiscoTag;
-	DiscoPath		= c.DiscoPath;
-	DiscoEleccion	= c.DiscoEleccion;
-	Subtitulos		= c.Subtitulos;
-	Parseado		= c.Parseado;
-	Actualizar		= c.Actualizar;
-	Proporcion		= c.Proporcion;
-	Brillo			= c.Brillo;
-	Contraste		= c.Contraste;
-	Saturacion		= c.Saturacion;
+	PistaTag		= c.PistaTag;			//  0
+	PistaPath		= c.PistaPath;			//  1
+	PistaEleccion	= c.PistaEleccion;		//  2
+	NombreTag		= c.NombreTag;			//  3
+	NombrePath		= c.NombrePath;			//  4
+	NombreEleccion	= c.NombreEleccion;		//  5
+	Hash			= c.Hash;				//  6
+	Path			= c.Path;				//  7
+	TipoMedio		= c.TipoMedio;			//  8
+	Tiempo			= c.Tiempo;				//  9
+	Extension		= c.Extension;			// 10
+	Longitud		= c.Longitud;			// 11
+	Reproducido		= c.Reproducido;		// 12
+	Nota			= c.Nota;				// 13
+	Id				= c.Id;					// 14
+	IDDisco			= c.IDDisco;			// 15
+	GrupoTag		= c.GrupoTag;			// 16
+	GrupoPath		= c.GrupoPath;			// 17
+	GrupoEleccion	= c.GrupoEleccion;		// 18
+	DiscoTag		= c.DiscoTag;			// 19
+	DiscoPath		= c.DiscoPath;			// 20
+	DiscoEleccion	= c.DiscoEleccion;		// 21
+	Subtitulos		= c.Subtitulos;			// 22
+	Parseado		= c.Parseado;			// 23
+	Actualizar		= c.Actualizar;			// 24
+	Proporcion		= c.Proporcion;			// 25
+	Brillo			= c.Brillo;				// 26
+	Contraste		= c.Contraste;			// 27
+	Saturacion		= c.Saturacion;			// 28
 
 	BorrarMomentos();
 	// Creo una copia del vector de momentos
@@ -72,7 +72,6 @@ BDMedio& BDMedio::operator = (const BDMedio& c) {
 	}
 
 	return *this;
-
 }
 
 /*	Tipo				Nombre			Posición		Tipo
@@ -106,7 +105,6 @@ BDMedio& BDMedio::operator = (const BDMedio& c) {
 		float               Brillo 			    26			DOUBLE
 		float               Contraste			27			DOUBLE
 		float               Saturacion 			28			DOUBLE
-		LONG                IDMomentos			29			INT
 */
 void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades) {
 	Id				= static_cast<UINT>(sqlite3_column_int(SqlQuery, 0));
@@ -146,7 +144,6 @@ void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades)
 	Brillo			= static_cast<float>(sqlite3_column_double(SqlQuery, 26));
 	Contraste		= static_cast<float>(sqlite3_column_double(SqlQuery, 27));
 	Saturacion		= static_cast<float>(sqlite3_column_double(SqlQuery, 28));
-//	IDMomentos		= static_cast<UINT>(sqlite3_column_int(SqlQuery, 29));
 
 	DWL::DUnidadDisco *Unidad = Unidades.Buscar_Numero_Serie(IDDisco);
 	if (Unidad != NULL) Path[0] = Unidad->Letra();

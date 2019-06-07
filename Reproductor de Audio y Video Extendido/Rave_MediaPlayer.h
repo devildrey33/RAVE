@@ -65,6 +65,7 @@ class Rave_MediaPlayer : public DWL::DVentana {
 	void					        Saturacion(const float nSaturacion);
 
 	BDMedio					       &MedioActual(void);
+	void                            MedioActual(BDMedio& nMedio);
 
 	const BOOL						ObtenerDatosParsing(void);
 
