@@ -407,7 +407,7 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Docs\ChangeLog.md" />
+    <None Include="..\Docs\ChangeLog.txt" />
     <None Include="..\README.md" />
     <None Include="Mapa de ventanas y controles.cd" />
   </ItemGroup>

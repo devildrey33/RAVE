@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "DEdicionTextoEx.h"
+#include "DStringUtils.h"
 
 #define DEDICIONTEXTOEX_TAMICONO	16
 #define DEDICIONTEXTOEX_MARGEN_X	4
@@ -105,7 +106,20 @@ namespace DWL {
 
 		HFONT vFuente = static_cast<HFONT>(SelectObject(Buffer, Fuente()));
 		// Calculo la posición X del cursor
-		SIZE PC = Fuente.ObtenerTamTexto(Buffer, _Texto.substr(0, _PosCursor));
+/*		switch (Alineacion) {
+			case DEdicionTextoEx_Alineacion_Izquierda :
+				PC = Fuente.ObtenerTamTexto(Buffer, _Texto.substr(0, _PosCursor));
+				if (PC.cx > RTexto.right - RTexto.left) PosDifX = PC.cx - (RTexto.right - RTexto.left);
+				break;
+			case DEdicionTextoEx_Alineacion_Derecha :
+				PC = Fuente.ObtenerTamTexto(Buffer, _Texto.substr(_Texto.size()-1, _PosCursor));
+				break;
+			case DEdicionTextoEx_Alineacion_Centrado :
+				PC = Fuente.ObtenerTamTexto(Buffer, _Texto.substr(0, _PosCursor));
+				break;
+		}*/
+
+		SIZE PC = Fuente.ObtenerTamTexto(Buffer, _Texto.substr(0, _PosCursor));;
 		long PosDifX = 0;
 		if (PC.cx > RTexto.right - RTexto.left) PosDifX = PC.cx - (RTexto.right - RTexto.left);
 
@@ -254,6 +268,21 @@ namespace DWL {
 		IniciarEdicionTextoEx(RC);
 		Repintar();
 	}*/
+
+	void DEdicionTextoEx::Texto(const LONG_PTR ValorEntero, const BOOL nRepintar) {
+		_Texto = DWL::Strings::ToStrF(ValorEntero, 0);
+		_PosCursor = _Texto.size();
+
+		if (nRepintar != FALSE) Repintar();
+	}
+
+	void DEdicionTextoEx::Texto(const double ValorDecimal, const int Decimales, const BOOL nRepintar) {
+		_Texto = DWL::Strings::ToStrF(ValorDecimal, Decimales);
+		_PosCursor = _Texto.size();
+
+		if (nRepintar != FALSE) Repintar();
+	}
+
 
 	void DEdicionTextoEx::Texto(std::wstring &nTexto, const BOOL nRepintar) {
 		_Texto = nTexto;

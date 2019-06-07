@@ -1,5 +1,27 @@
 # Log de cambios
 
+### Versión 0.520
+
+* Solucionado bug visual de los DBotonEx al desactivar-los.
+
+* Ahora al presionar la tecla Intro en la lista, pondrá a reproducir el medio marcado.
+
+* Añadido modo de entrada para los controles de edición de texto, ahora puede ser : Texto, Entero, Decimal, Tiempo
+
+* Añadidos colores para la sombra en los estados (Resaltado, presionado, y desactivado)
+
+* Nueva ventana para poder crear momentos (ahora es posible marcar un momento dentro de un medio para ser recordado en futuras sesiones)
+
+* Añadido modelo de tablas de la BD para los momentos.
+
+* Añadidas nuevas columnas en las opciones para guardar la posición de los momentos.
+
+* Añadida ventana para crear / modificar / eliminar momentos (no es 100% funcional aún...)
+
+* Añadidos tooltips para la ventana de los momentos.
+
+
+
 ### Versión 0.519
 
 * Ahora se guarda la posición y el tamaño de la ventana para seleccionar directorios.
@@ -7,6 +29,8 @@
 * La tecla F2 ahora muestra el medio actual en la Base de datos.
 
 * La tecla F3 ahora muestra el medio actual en la Lista.
+
+
 
 ### Versión 0.518
 
@@ -18,6 +42,8 @@
 
 * Los menus que no tienen iconos en sus submenus, ahora ya no dejan el margen a la izquierda para ellos.
 
+
+
 ### Versión 0.517
 
 * Retocada ventana del error critico, que no mostraba correctamente todo el texto.
@@ -28,6 +54,8 @@
 
 * Solucionado bug a eliminar el ultimo item de la lista.
 
+
+
 ### Versión 0.516
 
 * Solucionado bug con los controles de pantalla completa, que a veces no se mostraban con la opacidad correcta.
@@ -35,6 +63,8 @@
 * Añadida posibilidad de arrastrar medios de la Lista y de este modo modificar su posición.
 
 * Creada página sobre el reproductor en el github.
+
+
 
 ### Versión 0.512
 
@@ -44,21 +74,29 @@
 
 * Pequeños retoques visuales en la alineación de los controles.
 
+
+
 ### Versión 0.511
 
 * Agregadas transiciones de resaltado y presionado para los items.
 
 * Mejoras en los calculos del espacio interno de los Menus.
 
+
+
 ### Versión 0.509
 
 * Creado objeto para poder cargar y pintar iconos facilmente.
+
+
 
 ### Versión 0.508
 
 * Creado sistema interno para manejar distintos tipos de fuente mas facilmente.
 
 * Añadido objeto skin para todos los controles...
+
+
 
 ### Versión 0.507
 
@@ -69,6 +107,8 @@
 * Transición de resaltado para el fondo del arbol.
 
 * Inicio de un sistema básico para poder hacer skins con relativa facilidad.
+
+
 
 ### Versión 0.506
 
@@ -82,6 +122,8 @@
 
 * Retocados varios iconos del reproductor.
 
+
+
 ### Versión 0.505
 
 * Añadido borde con transición de color a los controles que heredan de la barra de scroll (Arbol y Lista).
@@ -91,6 +133,8 @@
 * Solucionado bug con los controles pantalla completa que no se mostraban mas una vez terminado el primer vídeo.
 
 * Pequeños retoques en los margenes y bordes de la barra de scroll.
+
+
 
 ### Versión 0.504
 
@@ -108,6 +152,8 @@
 
 * Los menús ahora comprueban que tengan suficiente espacio a la derecha para mostrar el sub-menu, y en caso contrario lo muestran por la izquierda.
 
+
+
 ### Versión 0.503
 
 * Varias mejoras en el objeto que crea las animaciones de tiempo, que me ayudaran un poco mas a dar vida al reproductor.
@@ -116,6 +162,8 @@
 
 * Ahora los tooltips no desaparecen de golpe al mover la ventana, y se hace una animación.
 
+
+
 ### Versión 0.502
 
 * La nota de los tooltips ahora se muestra con estrellas en vez de con un valor.
@@ -123,11 +171,15 @@
 * Varios retoques internos al sistema de tooltips. Entre otras cosas ahora los tooltips ya no se ocultan al pasar por encima con el mouse, puedes hacer click para ocultar-los.
 
 
+
+
 ### Versión 0.501
 
 * Retocado el tamaño de la primera columna de los medios para adaptarse mejor a la pista.
 
 * Retoques internos en el manejo del medio actual.
+
+
 
 ### Versión 0.500
 

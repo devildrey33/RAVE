@@ -14,7 +14,7 @@ Todo lo que necesito para mi uso personal :
 Sistema operativo Windows 7 o superior (x86. x64)
 
 ### Log de cambios
-* [Ultima versión 0.520c PRE RC6](docs/ChangeLog.md)
+* [Ultima versión 0.520c PRE RC6](docs/ChangeLog.txt)
 
 ## Empezando
  1. Descarga una de las siguientes versiones para windows : 
@@ -54,7 +54,7 @@ Sistema operativo Windows 7 o superior (x86. x64)
  * Capacidad de apagar el reproductor / ordenador al terminar la lista de medios.
  > Asi puedo reproducir un par o tres de mis capitulos favoritos al meterme en la cama, y que el ordenador se apague al finalizar la lista.
  
- ![Nota](http://devildrey33.github.io/RAVE/Img/Readme6.png)
+ ![Repeat](http://devildrey33.github.io/RAVE/Img/Readme6.png)
  
 ### Teclado por defecto
 Teclas por defecto cuando el reproductor tiene le foco del teclado (excepto si el foco lo tiene una caja de edición de texto)
@@ -67,6 +67,9 @@ Teclas por defecto cuando el reproductor tiene le foco del teclado (excepto si e
 *-*                          | `Bajar volumen`
 *Control + Cursor derecha*   | `Reproducir siguiente` 
 *Control + Cursor izquierda* | `Reproducir anterior`
+*F1*                         | 'Mostrar info del medio actual'
+*F2*                         | 'Mostrar medio actual en la BD'
+*F3*                         | 'Mostrar medio actual en la lista'
 
 ### FAQ
  * Que es una raíz?
@@ -79,3 +82,8 @@ Teclas por defecto cuando el reproductor tiene le foco del teclado (excepto si e
 
  > Si no tienes el reproductor encendido, no te preocupes ya que la próxima vez que se inicie re-escaneara la raíz automáticamente para cerciorarse de que todos los medios existen, y de paso para detectar nuevos medios.
  
+ # He actualizado el reproductor desde una versión 0.501+ a la 0.6x y da un error crítico aleatóriamente...
+
+ > Esto puede ser debido a que la base de datos ha sido actualizada varias veces durante las versiones 0.501+, y la versión 0.6 solo es capaz de actualizar la base de datos de la versión 0.500 (ya que las versiones entre medio no se consideran estables). Para solucionar el problema debes borrar la base de datos, que está ubicada en : "C:\ProgramData\RAVE\Rave_x??.BD". 
+
+ > Si el problema persiste, no olvides enviar el informe de errores para que pueda ser analizado y solucionado en futuras versiones.

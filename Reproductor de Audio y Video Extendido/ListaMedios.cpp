@@ -155,6 +155,7 @@ void ListaMedios::Evento_MouseDobleClick(DWL::DEventoMouse &EventoMouse) {
 }
 
 void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
+	// Boton del medio
 	if (DatosMouse.Boton == 2) {		
 		if (_ItemResaltado != -1) {
 			BDMedio nMedio;
@@ -173,9 +174,29 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 
 	// Mostrar el menú
 	if (DatosMouse.Boton == 1) {
-		BOOL nActivar = (_ItemResaltado == -1) ? FALSE : TRUE;
-		// Miro si el medio tiene una raíz (si no tiene raíz no saldrá en la base de datos)
-		BOOL nBuscarBDActivado = nActivar;
+		BOOL nActivar			= (_ItemResaltado == -1) ? FALSE : TRUE;
+		BOOL nBuscarBDActivado	= nActivar;
+
+		// Si el item marcado corresponde a un medio
+		if (_ItemMarcado > -1 && _ItemMarcado < static_cast<LONG_PTR>(_Items.size())) {			
+			BDMedio TmpMedio;
+			App.BD.ObtenerMedio(Medio(_ItemMarcado)->Hash, TmpMedio);
+
+			// Miro si el medio tiene una raíz (si no tiene raíz no saldrá en la base de datos)
+			if (App.BD.BuscarRaiz(TmpMedio.Path) == NULL)
+				nBuscarBDActivado = FALSE;
+
+			// Asigno la nota al menu/barra de la nota
+			App.VentanaRave.Menu_Lista.Menu(4)->BarraValor(TmpMedio.Nota);
+
+			// Agrego los menus para los momentos
+			App.VentanaRave.Menu_Lista.Menu(2)->EliminarTodosLosMenus();
+			for (size_t i = 0; i < TmpMedio.Momentos.size(); i++) {
+				App.VentanaRave.Menu_Lista.Menu(2)->AgregarMenu(ID_MENULISTA_MOMENTOS_MOMENTO + i, TmpMedio.Momentos[i]->Nombre);
+			}
+		}
+
+		/*
 		if (_ItemMarcado > -1 && _ItemMarcado < static_cast<LONG_PTR>(_Items.size())) {
 			BDMedio TmpMedio;
 			App.BD.ObtenerMedio(Medio(_ItemMarcado)->Hash, TmpMedio);
@@ -192,8 +213,9 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 			BDMedio mItem;
 			App.BD.ObtenerMedio(Medio(_ItemResaltado)->Hash, mItem);
 			App.VentanaRave.Menu_Lista.Menu(3)->BarraValor(mItem.Nota);
-		}
+		}*/
 
+		// Activo / desactivo los menus
 		for (size_t i = 0; i < App.VentanaRave.Menu_Lista.TotalMenus(); i++) {
 			if (i == 2)	App.VentanaRave.Menu_Lista.Menu(i)->Activado(nBuscarBDActivado);
 			else        App.VentanaRave.Menu_Lista.Menu(i)->Activado(nActivar);

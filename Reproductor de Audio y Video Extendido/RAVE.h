@@ -76,16 +76,25 @@ class RAVE {
 	inline void                     MostrarToolTipPlayerError(const wchar_t *Texto)		{ _ToolTipPlayer.MostrarToolTipError(Texto); };
 	inline void                     MostrarToolTipPlayerError(std::wstring &Texto)		{ _ToolTipPlayer.MostrarToolTipError(Texto); };
 
+	inline void                     OcultarToolTipPlayer(void)							{ _ToolTipPlayer.Ocultar(); }
+	inline void                     OcultarToolTipPlayerRapido(void)					{ _ToolTipPlayer.OcultarRapido(); }
+
 	inline void                     MostrarToolTipOpciones(const wchar_t *Texto)		{ _ToolTipOpciones.MostrarToolTip(Texto); };
 	inline void                     MostrarToolTipOpciones(std::wstring &Texto)			{ _ToolTipOpciones.MostrarToolTip(Texto); };
 	inline void                     MostrarToolTipOpcionesError(const wchar_t *Texto)	{ _ToolTipOpciones.MostrarToolTipError(Texto); };
 	inline void                     MostrarToolTipOpcionesError(std::wstring &Texto)	{ _ToolTipOpciones.MostrarToolTipError(Texto); };
 
-	inline void                     OcultarToolTipPlayer(void)							{ _ToolTipPlayer.Ocultar(); }
 	inline void                     OcultarToolTipOpciones(void)						{ _ToolTipOpciones.Ocultar(); }
-	inline void                     OcultarToolTipPlayerRapido(void)					{ _ToolTipPlayer.OcultarRapido(); }
 	inline void                     OcultarToolTipOpcionesRapido(void)					{ _ToolTipOpciones.OcultarRapido(); }
-	//	int							Rand()
+
+	inline void                     MostrarToolTipMomentos(const wchar_t *Texto)		{ _ToolTipMomentos.MostrarToolTip(Texto); };
+	inline void                     MostrarToolTipMomentos(std::wstring &Texto)			{ _ToolTipMomentos.MostrarToolTip(Texto); };
+	inline void                     MostrarToolTipMomentos(BDMedio &Medio)				{ _ToolTipMomentos.MostrarToolTip(Medio); };
+	inline void                     MostrarToolTipMomentosError(const wchar_t *Texto)	{ _ToolTipMomentos.MostrarToolTipError(Texto); };
+	inline void                     MostrarToolTipMomentosError(std::wstring &Texto)	{ _ToolTipMomentos.MostrarToolTipError(Texto); };
+
+	inline void                     OcultarToolTipMomentos(void)						{ _ToolTipMomentos.Ocultar(); }
+	inline void                     OcultarToolTipMomentosRapido(void)					{ _ToolTipMomentos.OcultarRapido(); }
 
 	void							Terminar(void);
 
@@ -136,6 +145,7 @@ class RAVE {
 
 	ToolTipsInfo                  _ToolTipPlayer;
 	ToolTipsInfo                  _ToolTipOpciones;
+	ToolTipsInfo                  _ToolTipMomentos;
 //	DToolTipEx                     _ToolTip;
 	//DToolTipEx                     _ToolTip2;
 

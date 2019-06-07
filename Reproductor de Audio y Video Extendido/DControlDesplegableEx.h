@@ -25,7 +25,8 @@ namespace DWL {
 		virtual LRESULT CALLBACK	GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 //		void						Pintar(HDC DC);
 		void						CrearControlDesplegable(DhWnd *nPadre, const wchar_t *nTexto, const INT_PTR nID, const INT_PTR nIDIcono, const int cX, const int cY, const int cAncho, const int cAlto, const DEdicionTextoEx_Entrada Entrada);
-		inline const wchar_t       *Texto(void)						{ return _Edicion.Texto();	};
+//		inline const wchar_t       *Texto(void)						{ return _Edicion.Texto();	};
+		const std::wstring		   &Texto(void)                     { return _Edicion.Texto(); }
 		inline void                 Texto(std::wstring &nTexto)		{ _Edicion.Texto(nTexto);	};
 		inline void                 Texto(const wchar_t *nTexto)	{ _Edicion.Texto(nTexto);	};
       protected:

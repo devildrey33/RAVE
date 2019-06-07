@@ -8,7 +8,8 @@ RaveBD::RaveBD(void) : _BD(NULL), _Opciones_Volumen(0), _Opciones_PosX(0), _Opci
 								  _Opciones_VentanaAnalizar_PosX(0), _Opciones_VentanaAnalizar_PosY(0), _Opciones_Ancho(0), _Opciones_Alto(0), _Opciones_Shufle(FALSE), _Opciones_Repeat(Tipo_Repeat_NADA), _Opciones_Inicio(Tipo_Inicio_NADA),
 								  _Opciones_Version(0.0f), _Opciones_OcultarMouseEnVideo(0), _Opciones_MostrarObtenerMetadatos(FALSE), _Opciones_MostrarAsociarArchivos(FALSE), _Opciones_AnalizarMediosPendientes(FALSE), 
 								  _Opciones_BuscarActualizacion(FALSE), _Opciones_TiempoAnimaciones(0), _Opciones_TiempoToolTips(0), _Opciones_NoAgregarMedioMenos25(FALSE), _Opciones_NoGenerarListasMenos3(FALSE), 
-							 	  _Opciones_Sumar005(FALSE), _Opciones_AlineacionControlesVideo(0), _Opciones_OpacidadControlesVideo(0), _Opciones_EfectoFadeAudioMS(10000), _Opciones_DlgDirectorios_Ancho(400), _Opciones_DlgDirectorios_Alto(600){
+							 	  _Opciones_Sumar005(FALSE), _Opciones_AlineacionControlesVideo(0), _Opciones_OpacidadControlesVideo(0), _Opciones_EfectoFadeAudioMS(10000), _Opciones_DlgDirectorios_Ancho(400), _Opciones_DlgDirectorios_Alto(600), 
+								  _Opciones_VentanaMomentos_PosX(100), _Opciones_VentanaMomentos_PosY(100) {
 }
 
 
@@ -72,6 +73,10 @@ const int RaveBD::ConsultaVarg(const wchar_t *TxtConsulta, ...) {
 	return Consulta(Texto);
 }*/
 
+const LONG_PTR RaveBD::UltimaIdInsertada(void) {
+	return sqlite3_last_insert_rowid(_BD);
+}
+
 // Función para realizar consultas simples 
 const int RaveBD::Consulta(const wchar_t *TxtConsulta) {
 	if (_BD == NULL) return FALSE;
@@ -103,6 +108,8 @@ const int RaveBD::Consulta(const wchar_t *TxtConsulta) {
 		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
 //		Debug_Escribir_Varg(L"RaveBD::Consulta %s\n", _UltimoErrorSQL.c_str());
 	}
+
+	
 
 	return SqlRet;
 }
@@ -600,8 +607,16 @@ const BOOL RaveBD::_ModificarTablas(void) {
 		Q = L"ALTER TABLE Opciones	ADD COLUMN DlgDirectorios_Alto INTEGER AFTER DlgDirectorios_Ancho";
 		SqlRet = Consulta(Q);
 
+		// Añado la columna VentanaMomentos_PosX en las opciones
+		Q = L"ALTER TABLE Opciones	ADD COLUMN VentanaMomentos_PosX INTEGER AFTER DlgDirectorios_Alto";
+		SqlRet = Consulta(Q);
+
+		// Añado la columna VentanaMomentos_PosX en las opciones
+		Q = L"ALTER TABLE Opciones	ADD COLUMN VentanaMomentos_PosY INTEGER AFTER VentanaMomentos_PosX";
+		SqlRet = Consulta(Q);
+
 		// Modifico el valor de EfectoFadeAudioMS a 10000
-		Q = L"UPDATE Opciones SET EfectoFadeAudioMS=10000, DlgDirectorios_Ancho=400, DlgDirectorios_Alto=600 WHERE Id=0";
+		Q = L"UPDATE Opciones SET EfectoFadeAudioMS=10000, DlgDirectorios_Ancho=400, DlgDirectorios_Alto=600, VentanaMomentos_PosX=100, VentanaMomentos_PosY=100 WHERE Id=0";
 		SqlRet = Consulta(Q);
 
 
@@ -740,16 +755,18 @@ const BOOL RaveBD::_CrearTablas(void) {
 											L"OpacidadControlesVideo"	L" INTEGER,"					// 28 Opacidad másima para los controles del video (ControlesPantallaCompleta)
 											L"EfectoFadeAudioMS"     	L" INTEGER,"					// 29 (NO SE USA DE MOMENTO, COMO MUCHO SE USARA SI IMPLEMENTO LA FMOD)
 											L"DlgDirectorios_Ancho"   	L" INTEGER,"					// 30
-											L"DlgDirectorios_Alto"   	L" INTEGER "					// 31
-//											L"ContadorIDSMomentos"      L" INTEGER NOT NULL DEFAULT 0"	// 32 Contador de tablas para los momentos
+											L"DlgDirectorios_Alto"   	L" INTEGER,"					// 31
+											L"VentanaMomentos_PosX"   	L" INTEGER,"					// 32 Posición X de la ventana de los momentos
+											L"VentanaMomentos_PosY"   	L" INTEGER "					// 33 Posición Y de la ventana de los momentos
+//											L"ContadorIDSMomentos"      L" INTEGER NOT NULL DEFAULT 0"	// 34 Contador de tablas para los momentos
 									  L")";
 	if (Consulta(CrearTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	// Añado los datos por defecto de las opciones ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes, VentanaOpciones_PosX, VentanaOpciones_PosY, VentanaAsociar_PosX, VentanaAsociar_PosY, VentanaAnalizar_PosX, VentanaAnalizar_PosY, BuscarActualizacion, TiempoAnimaciones, TiempoToolTips, NoAgregarMedioMenos25, NoGenerarListasMenos3, Sumar005, AlineacionControlesVideo, OpacidadControlesVideo, EfectoFadeAudioMS, DlgDirectorios_Ancho, DlgDirectorios_Alto) "
-										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1, 1, 400, 300, 500, 400, 300, 200, 1, 400, 5500, 1, 1, 1, 0, 200, 10000, 350, 400)";
+	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes, VentanaOpciones_PosX, VentanaOpciones_PosY, VentanaAsociar_PosX, VentanaAsociar_PosY, VentanaAnalizar_PosX, VentanaAnalizar_PosY, BuscarActualizacion, TiempoAnimaciones, TiempoToolTips, NoAgregarMedioMenos25, NoGenerarListasMenos3, Sumar005, AlineacionControlesVideo, OpacidadControlesVideo, EfectoFadeAudioMS, DlgDirectorios_Ancho, DlgDirectorios_Alto, VentanaMomentos_PosX, VentanaMomentos_PosY) "
+										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1, 1, 400, 300, 500, 400, 300, 200, 1, 400, 5500, 1, 1, 1, 0, 200, 10000, 350, 400, 100, 100)";
 	if (Consulta(ValoresTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1408,9 +1425,52 @@ const BOOL RaveBD::AgregarMomento(BDMedio* nMedio, std::wstring& nNombre, const 
 				std::to_wstring(EvitarReproduccion) +
 		L")";
 	SqlRet = Consulta(Q);
-	return TRUE;
+	
+	if (SqlRet == SQLITE_DONE) {
+		// Agrego el momento al vector de momentos del medio
+		nMedio->Momentos.push_back(new BDMomento(App.BD.UltimaIdInsertada(), nMedio->Id, nNombre.c_str(), nTiempoInicial, nTiempoFinal, EvitarReproduccion));
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
+
+
+const BOOL RaveBD::ModificarMomento(BDMedio* nMedio, const LONG_PTR mID, std::wstring& nNombre, const UINT64 nTiempoInicial, const UINT64 nTiempoFinal, const BOOL EvitarReproduccion) {
+	std::wstring Q = L"UPDATE Momentos" + std::to_wstring(nMedio->Id) + L" SET Nombre=\"" + nNombre + L"\", TiempoInicio=" + std::to_wstring(nTiempoInicial) + L", TiempoFin=" + std::to_wstring(nTiempoFinal) + L", Excluir=" + std::to_wstring(EvitarReproduccion) + L" WHERE Id=" + std::to_wstring(mID);
+	int SqlRet = Consulta(Q);
+	if (SqlRet == SQLITE_DONE) {
+		for (size_t i = 0; i < nMedio->Momentos.size(); i++) {
+			if (nMedio->Momentos[i]->Id == mID) {
+				nMedio->Momentos[i]->Nombre			= nNombre;
+				nMedio->Momentos[i]->TiempoInicio	= nTiempoInicial;
+				nMedio->Momentos[i]->TiempoFinal	= nTiempoFinal;
+				nMedio->Momentos[i]->Excluir		= EvitarReproduccion;
+				return TRUE;
+			}
+		}
+		return TRUE;
+	}
+	return FALSE;
+}
+
+
+const BOOL RaveBD::EliminarMomento(BDMedio* nMedio, const LONG_PTR mID) {
+	std::wstring Q = L"DELETE FROM Momentos" + std::to_wstring(nMedio->Id) + L" WHERE Id=" + std::to_wstring(mID);
+	int SqlRet = Consulta(Q);	
+	if (SqlRet == SQLITE_DONE) {
+		for (size_t i = 0; i < nMedio->Momentos.size(); i++) {
+			if (nMedio->Momentos[i]->Id == mID) {
+				delete nMedio->Momentos[i];
+				nMedio->Momentos.erase(nMedio->Momentos.begin() + static_cast<unsigned int>(i));
+				return TRUE;
+			}
+		}
+		return TRUE;
+	}
+	return FALSE;
+}
 
 // Función que devuelve la versión de la BD
 const float RaveBD::ObtenerVersionBD(void) {
@@ -1498,7 +1558,9 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 			_Opciones_EfectoFadeAudioMS			= static_cast<int>(sqlite3_column_int(SqlQuery, 29));
 			_Opciones_DlgDirectorios_Ancho		= static_cast<int>(sqlite3_column_int(SqlQuery, 30));
 			_Opciones_DlgDirectorios_Alto		= static_cast<int>(sqlite3_column_int(SqlQuery, 31));
-//			_Opciones_ContadorIDSMomentos		= static_cast<int>(sqlite3_column_int(SqlQuery, 32));
+			_Opciones_VentanaMomentos_PosX		= static_cast<int>(sqlite3_column_int(SqlQuery, 32));
+			_Opciones_VentanaMomentos_PosY		= static_cast<int>(sqlite3_column_int(SqlQuery, 33));
+//			_Opciones_ContadorIDSMomentos		= static_cast<int>(sqlite3_column_int(SqlQuery, 34));
 		}
 		if (SqlRet == SQLITE_BUSY) {
 			VecesBusy++;
@@ -1577,6 +1639,21 @@ const BOOL RaveBD::Opciones_GuardarPosVentanaOpciones(void) {
 	int SqlRet = Consulta(Q);
 	if (SqlRet == SQLITE_ERROR) {
 		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+	return TRUE;
+}
+
+
+const BOOL RaveBD::Opciones_GuardarPosVentanaMomentos(void) {
+	RECT RV;
+	GetWindowRect(App.VentanaRave.Momentos.hWnd(), &RV);
+	_Opciones_VentanaMomentos_PosX = RV.left;
+	_Opciones_VentanaMomentos_PosY = RV.top;
+	std::wstring Q = L"UPDATE Opciones SET VentanaMomentos_PosX=" + std::to_wstring(RV.left) + L", VentanaMomentos_PosY=" + std::to_wstring(RV.top) + L" WHERE Id=0";
+	int SqlRet = Consulta(Q);
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
 		return FALSE;
 	}
 	return TRUE;

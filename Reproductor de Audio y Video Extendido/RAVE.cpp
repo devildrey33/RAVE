@@ -330,6 +330,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 	
 	_ToolTipPlayer.Iniciar(&VentanaRave);
 	_ToolTipOpciones.Iniciar(&VentanaOpciones);
+	_ToolTipMomentos.Iniciar(&VentanaRave.Momentos);
 }
 
 void RAVE::Terminar(void) {

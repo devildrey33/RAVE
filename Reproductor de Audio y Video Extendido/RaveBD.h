@@ -99,9 +99,15 @@ class RaveBD {
 //	const int					ConsultaVarg(const wchar_t *TxtConsulta, ...);
 								// Consulta desde un std::wstring
 	inline const int			Consulta(std::wstring &TxtConsulta) { return Consulta(TxtConsulta.c_str()); };
+								// Devuelve la ultima ID insertada
+	const LONG_PTR              UltimaIdInsertada(void);
 
 								// Función que agrega un momento para un medio
-	const BOOL                  AgregarMomento(BDMedio* nMedio, std::wstring& nNombre, const UINT64 nTiempoInicial, const UINT64 nTiempoFinal = 0, const BOOL EvitarReproduccion = FALSE);
+	const BOOL                  AgregarMomento(BDMedio* nMedio, std::wstring& nNombre, const UINT64 nTiempoInicial, const UINT64 nTiempoFinal, const BOOL EvitarReproduccion);
+								// Función que modifica el momento especificado de un medio
+	const BOOL                  ModificarMomento(BDMedio* nMedio, const LONG_PTR mID, std::wstring &nNombre, const UINT64 nTiempoInicial, const UINT64 nTiempoFinal, const BOOL EvitarReproduccion);
+								// Función que elimina el momento especificado de un medio
+	const BOOL                  EliminarMomento(BDMedio* nMedio, const LONG_PTR mID);
 
 								// Función que extrae los datos del medio que nos da el path
 	const BOOL					AnalizarMedio(std::wstring &mPath, BDMedio &OUT_Medio, const ULONG Longitud = 0);
@@ -179,23 +185,26 @@ class RaveBD {
 //	const BOOL					Opciones_GuardarPosVentanaAsociar(void);
 	const BOOL					Opciones_GuardarPosVentanaAnalizar(void);
 	const BOOL					Opciones_GuardarPosTamDlgDirectorios(RECT &RC);
+	const BOOL					Opciones_GuardarPosVentanaMomentos(void);
 
 	inline const int			Opciones_Volumen(void) { return _Opciones_Volumen; }
 	void						Opciones_Volumen(const int nVolumen);
 
-	inline const int			Opciones_PosX(void) { return _Opciones_PosX; }
-	inline const int			Opciones_PosY(void) { return _Opciones_PosY; }
+	inline const int			Opciones_PosX(void)                 { return _Opciones_PosX; }
+	inline const int			Opciones_PosY(void)                 { return _Opciones_PosY; }
 	inline const int			Opciones_VentanaOpciones_PosX(void) { return _Opciones_VentanaOpciones_PosX; }
 	inline const int			Opciones_VentanaOpciones_PosY(void) { return _Opciones_VentanaOpciones_PosY; }
-	inline const int			Opciones_DlgDirectorios_PosX(void) { return _Opciones_DlgDirectorios_PosX; }
-	inline const int			Opciones_DlgDirectorios_PosY(void) { return _Opciones_DlgDirectorios_PosY; }
+	inline const int			Opciones_DlgDirectorios_PosX(void)  { return _Opciones_DlgDirectorios_PosX;  }
+	inline const int			Opciones_DlgDirectorios_PosY(void)  { return _Opciones_DlgDirectorios_PosY;  }
 	inline const int			Opciones_DlgDirectorios_Ancho(void) { return _Opciones_DlgDirectorios_Ancho; }
-	inline const int			Opciones_DlgDirectorios_Alto(void) { return _Opciones_DlgDirectorios_Alto; }
+	inline const int			Opciones_DlgDirectorios_Alto(void)  { return _Opciones_DlgDirectorios_Alto;  }
 	inline const int			Opciones_VentanaAnalizar_PosX(void) { return _Opciones_VentanaAnalizar_PosX; }
 	inline const int			Opciones_VentanaAnalizar_PosY(void) { return _Opciones_VentanaAnalizar_PosY; }
+	inline const int			Opciones_VentanaMomentos_PosX(void) { return _Opciones_VentanaMomentos_PosX; }
+	inline const int			Opciones_VentanaMomentos_PosY(void) { return _Opciones_VentanaMomentos_PosY; }
 
 	inline const int			Opciones_Ancho(void) { return _Opciones_Ancho; }
-	inline const int			Opciones_Alto(void) { return _Opciones_Alto; }
+	inline const int			Opciones_Alto(void)  { return _Opciones_Alto;  }
 
 	inline const BOOL			Opciones_Shufle(void) { return _Opciones_Shufle; }
 	void						Opciones_Shufle(const BOOL nShufle);
@@ -290,6 +299,8 @@ protected:
 	int                        _Opciones_DlgDirectorios_Alto;
 	int                        _Opciones_VentanaAnalizar_PosX;
 	int                        _Opciones_VentanaAnalizar_PosY;
+	int                        _Opciones_VentanaMomentos_PosX;
+	int                        _Opciones_VentanaMomentos_PosY;
 	int                        _Opciones_Ancho;
 	int                        _Opciones_Alto;
 	BOOL                       _Opciones_Shufle;

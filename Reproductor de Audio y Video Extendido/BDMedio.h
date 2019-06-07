@@ -7,11 +7,11 @@
 class BDMomento {
   public:
 					BDMomento(void) : Id(0), IdPadre(0), TiempoInicio(0), TiempoFinal(0), Excluir(FALSE) { };
-					BDMomento(const UINT nId, const UINT nIdPadre, const TCHAR *nNombre, const libvlc_time_t nTiempoInicio, const libvlc_time_t nTiempoFinal, const BOOL nExcluir) : Id(nId), IdPadre(nIdPadre), TiempoInicio(nTiempoInicio), TiempoFinal(nTiempoFinal), Excluir(nExcluir) { };
+					BDMomento(const LONG_PTR nId, const LONG_PTR nIdPadre, const TCHAR *nNombre, const libvlc_time_t nTiempoInicio, const libvlc_time_t nTiempoFinal, const BOOL nExcluir) : Id(nId), IdPadre(nIdPadre), TiempoInicio(nTiempoInicio), TiempoFinal(nTiempoFinal), Excluir(nExcluir) { };
 					BDMomento(const BDMomento &c) : Id(c.Id), IdPadre(c.IdPadre), Nombre(c.Nombre), TiempoInicio(c.TiempoInicio), TiempoFinal(c.TiempoFinal), Excluir(c.Excluir) { };
 					BDMomento(const BDMomento *c) : Id(c->Id), IdPadre(c->IdPadre), Nombre(c->Nombre), TiempoInicio(c->TiempoInicio), TiempoFinal(c->TiempoFinal), Excluir(c->Excluir) { };
-	UINT			Id;				// ID dentro de la tabla
-	UINT            IdPadre;		// ID del medio al que pertenece este momento
+	LONG_PTR		Id;				// ID dentro de la tabla
+	LONG_PTR        IdPadre;		// ID del medio al que pertenece este momento
 	std::wstring	Nombre;			// Nombre del momento
 	libvlc_time_t	TiempoInicio;	// Tiempo de inicio del momento
 	libvlc_time_t	TiempoFinal;	// Tiempo final del momento

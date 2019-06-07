@@ -415,6 +415,7 @@ namespace DWL {
 	}
 
 	const LONG_PTR DListaEx::ItemPos(DListaEx_Item *pItem) {
+		if (pItem == NULL) return -1;
 		return std::find(_Items.begin(), _Items.end(), pItem) - _Items.begin();
 	}
 

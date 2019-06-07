@@ -804,7 +804,7 @@
     <None Include="..\README.md">
       <Filter>xXx _MAIN_ xXx</Filter>
     </None>
-    <None Include="..\Docs\ChangeLog.md">
+    <None Include="..\Docs\ChangeLog.txt">
       <Filter>xXx _MAIN_ xXx</Filter>
     </None>
   </ItemGroup>

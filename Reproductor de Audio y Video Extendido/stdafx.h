@@ -109,6 +109,7 @@
 #define ID_MENULISTA_NOTA						2136
 #define ID_MENULISTA_PROPIEDADES				2137
 #define ID_MENULISTA_MOMENTOS					2138
+#define ID_MENULISTA_MOMENTOS_MOMENTO           5000
 
 // Menu boton lista
 #define	ID_MENUBOTONLISTA_BORRAR				2140
@@ -154,3 +155,6 @@
 #define ID_VEC_SALIR							2301
 #define ID_VEC_TEXTOERROR						2302
 #define ID_VEC_PROGRESO							2303
+
+
+
