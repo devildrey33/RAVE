@@ -35,6 +35,7 @@ class Rave_MediaPlayer : public DWL::DVentana {
 	void							TiempoActual(float nTiempo);
 	const UINT64					TiempoTotalMs(void);
 	const UINT64					TiempoActualMs(void);
+	void							TiempoActualMs(UINT64 nTiempo);
 
 	void						    Ratio(const float R);
 
@@ -46,6 +47,9 @@ class Rave_MediaPlayer : public DWL::DVentana {
 #endif
 									// Formatea el tiempo especificado en el string especificado
 	static void						TiempoStr(UINT64 TMS, std::wstring &StrTiempo);
+									// Función que devuelve un string con un tiempo en milisegundos
+	static const UINT64             TiempoStr_Ms(std::wstring& StrTiempo);
+
 									// Temporizadores
 	void							Temporizador_Lista(void);
 	void							Temporizador_Tiempo(void);

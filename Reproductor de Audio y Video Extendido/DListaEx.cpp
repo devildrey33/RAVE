@@ -1268,8 +1268,12 @@ namespace DWL {
 	void DListaEx::_Evento_MouseSaliendo(void) {
 		BOOL nRepintar = Scrolls_MouseSaliendo();
 
-		if (_ItemUResaltado != -1) _Items[_ItemUResaltado]->_TransicionNormal();
-		if (_ItemResaltado != -1)  _Items[_ItemResaltado]->_TransicionNormal();
+		if (_ItemUResaltado != -1) {
+			if (static_cast<LONG_PTR>(_Items.size()) > _ItemUResaltado)	_Items[_ItemUResaltado]->_TransicionNormal();
+		}
+		if (_ItemResaltado != -1) {
+			if (static_cast<LONG_PTR>(_Items.size()) > _ItemResaltado)	_Items[_ItemResaltado]->_TransicionNormal();
+		}
 
 		_MouseDentro = FALSE;
 		_ItemResaltado = -1;

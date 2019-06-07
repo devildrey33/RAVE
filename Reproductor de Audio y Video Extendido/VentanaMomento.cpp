@@ -14,6 +14,10 @@
 #define ID_EXCLUIR          WM_USER + 1009
 #define ID_GUARDAR          WM_USER + 1010
 #define ID_CANCELAR         WM_USER + 1011
+#define ID_INICIOMAS        WM_USER + 1012
+#define ID_INICIOMENOS      WM_USER + 1013
+#define ID_FINMAS           WM_USER + 1014
+#define ID_FINMENOS         WM_USER + 1015
 
 VentanaMomento::VentanaMomento(void) : PosMomento(-1) {
 }
@@ -27,7 +31,7 @@ void VentanaMomento::Mostrar(BDMedio& nMedio) {
 
 	CrearVentana(NULL, L"RAVE_Momentos", L"Momentos", App.BD.Opciones_VentanaMomentos_PosX(), App.BD.Opciones_VentanaMomentos_PosY(), 746, 240, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 
-	ListaMomentos.CrearListaEx(this, 10, 10, 290, 140, ID_LISTAMOMENTOS, WS_CHILD | WS_VISIBLE);
+	ListaMomentos.CrearListaEx(this, 10, 10, 250, 140, ID_LISTAMOMENTOS, WS_CHILD | WS_VISIBLE);
 	ListaMomentos.AgregarColumna();
 
 	Boton_CrearMomento.CrearBotonEx(this, L"Crear", 10, 160, 70, 30, ID_CREARMOMENTO, WS_CHILD | WS_VISIBLE);
@@ -36,24 +40,39 @@ void VentanaMomento::Mostrar(BDMedio& nMedio) {
 	Boton_EliminarMomento.CrearBotonEx(this, L"Eliminar", 190, 160, 70, 30, ID_ELIMINARMOMENTO, WS_CHILD | WS_VISIBLE);
 	Boton_EliminarMomento.Activado(FALSE);
 
-	Txt_Nombre.CrearEdicionTextoEx(this, L"Nombre del momento", 310, 10, 410, 30, ID_TXTNOMBRE);
+	Txt_Nombre.CrearEdicionTextoEx(this, L"Nombre del momento", 270, 10, 450, 30, ID_TXTNOMBRE);
 	Txt_Nombre.Activado(FALSE);
-	Txt_TiempoInicio.CrearEdicionTextoEx(this, L"0", 310, 50, 90, 20, ID_TXTINICIO);
-	Txt_TiempoInicio.Entrada    = DEdicionTextoEx_Entrada_ValoresEnteros;
+	std::wstring Tiempo;
+	App.MP.TiempoStr(0, Tiempo);
+	Txt_TiempoInicio.CrearEdicionTextoEx(this, Tiempo.c_str(), 270, 50, 50, 20, ID_TXTINICIO);
+	Txt_TiempoInicio.Entrada    = DEdicionTextoEx_Entrada_SinEntrada;
 	Txt_TiempoInicio.Alineacion = DEdicionTextoEx_Alineacion_Derecha;
 	Txt_TiempoInicio.Activado(FALSE);
-	Txt_TiempoFinal.CrearEdicionTextoEx(this, std::to_wstring(nMedio.Tiempo).c_str(), 310, 80, 90, 20, ID_TXTFINAL);
-	Txt_TiempoFinal.Entrada     = DEdicionTextoEx_Entrada_ValoresEnteros;
-	Txt_TiempoFinal.Alineacion  = DEdicionTextoEx_Alineacion_Derecha;
+	App.MP.TiempoStr(nMedio.Tiempo, Tiempo);
+	Txt_TiempoFinal.CrearEdicionTextoEx(this, Tiempo.c_str(), 270, 80, 50, 20, ID_TXTFINAL);
+	Txt_TiempoFinal.Entrada     = DEdicionTextoEx_Entrada_SinEntrada;
+	Txt_TiempoFinal.Alineacion  = DEdicionTextoEx_Alineacion_Derecha;	
 	Txt_TiempoFinal.Activado(FALSE);
-	Barra_TiempoInicio.CrearBarraDesplazamientoEx(this, 410, 50, 310, 20, ID_BARRAINICIO);
+
+	Boton_InicioMas.CrearBotonEx(this, L"+", 320, 50, 10, 10, ID_INICIOMAS, WS_CHILD | WS_VISIBLE);
+	Boton_InicioMas.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str());
+	Boton_InicioMenos.CrearBotonEx(this, L"-", 320, 60, 10, 10, ID_INICIOMENOS, WS_CHILD | WS_VISIBLE);
+	Boton_InicioMenos.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str());
+
+	Boton_FinMas.CrearBotonEx(this, L"+", 320, 80, 10, 10, ID_FINMAS, WS_CHILD | WS_VISIBLE);
+	Boton_FinMas.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str());
+	Boton_FinMenos.CrearBotonEx(this, L"-", 320, 90, 10, 10, ID_FINMENOS, WS_CHILD | WS_VISIBLE);
+	Boton_FinMenos.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str());
+
+
+	Barra_TiempoInicio.CrearBarraDesplazamientoEx(this, 340, 50, 380, 20, ID_BARRAINICIO);
 	Barra_TiempoInicio.Activado(FALSE);
-	Barra_TiempoFinal.CrearBarraDesplazamientoEx(this, 410, 80, 310, 20, ID_BARRAFINAL, 0.0f, 1.0f, 1.0f);
+	Barra_TiempoFinal.CrearBarraDesplazamientoEx(this, 340, 80, 380, 20, ID_BARRAFINAL, 0.0f, 1.0f, 1.0f);
 	Barra_TiempoFinal.Activado(FALSE);
-	Check_Excluir.CrearMarcaEx(this, L"Momento a excluir de la reproducción (intro, creditos, etc...)", 310, 100, 413, 30, ID_EXCLUIR, IDI_CHECK2, WS_CHILD | WS_VISIBLE);
+	Check_Excluir.CrearMarcaEx(this, L"Momento a excluir de la reproducción (intro, creditos, etc...)", 270, 100, 413, 30, ID_EXCLUIR, IDI_CHECK2, WS_CHILD | WS_VISIBLE);
 	Check_Excluir.Activado(FALSE);
 
-	Boton_Guardar.CrearBotonEx(this, L"Guardar", 410, 135, 100, 30, ID_GUARDAR, WS_CHILD | WS_VISIBLE);
+	Boton_Guardar.CrearBotonEx(this, L"Guardar", 380, 135, 100, 30, ID_GUARDAR, WS_CHILD | WS_VISIBLE);
 	Boton_Guardar.Activado(FALSE);
 	Boton_Cancelar.CrearBotonEx(this, L"Cancelar", 520, 135, 100, 30, ID_CANCELAR, WS_CHILD | WS_VISIBLE);
 	Boton_Cancelar.Activado(FALSE);
@@ -65,23 +84,29 @@ void VentanaMomento::Mostrar(BDMedio& nMedio) {
 
 
 void VentanaMomento::Evento_BarraEx_Cambiando(DWL::DEventoMouse& DatosMouse) {
+	static std::wstring TmpStr;
 	switch (DatosMouse.ID()) {
 		case ID_BARRAINICIO :
-			Txt_TiempoInicio.Texto(DWL::Strings::ToStr(round(static_cast<INT64>(static_cast<double>(Medio.Tiempo) * Barra_TiempoInicio.Valor()))));
+			App.MP.TiempoStr(static_cast<INT64>(static_cast<double>(Medio.Tiempo) * Barra_TiempoInicio.Valor()), TmpStr);
+			Txt_TiempoInicio.Texto(TmpStr);
 			break;
 		case ID_BARRAFINAL:
-			Txt_TiempoFinal.Texto(DWL::Strings::ToStr(round(static_cast<INT64>(static_cast<double>(Medio.Tiempo) * Barra_TiempoFinal.Valor()))));
+			App.MP.TiempoStr(static_cast<INT64>(static_cast<double>(Medio.Tiempo) * Barra_TiempoFinal.Valor()), TmpStr);
+			Txt_TiempoFinal.Texto(TmpStr);
 			break;
 	}
 }
 
 void VentanaMomento::Evento_BarraEx_Cambiado(DWL::DEventoMouse& DatosMouse) {
+	static std::wstring TmpStr;
 	switch (DatosMouse.ID()) {
 		case ID_BARRAINICIO :
-			Txt_TiempoInicio.Texto(DWL::Strings::ToStr(round(static_cast<INT64>(static_cast<double>(Medio.Tiempo) * Barra_TiempoInicio.Valor()))));
+			App.MP.TiempoStr(static_cast<INT64>(static_cast<double>(Medio.Tiempo) * Barra_TiempoInicio.Valor()), TmpStr);
+			Txt_TiempoInicio.Texto(TmpStr);
 			break;
-		case ID_BARRAFINAL :
-			Txt_TiempoFinal.Texto(DWL::Strings::ToStr(round(static_cast<INT64>(static_cast<double>(Medio.Tiempo) * Barra_TiempoFinal.Valor()))));
+		case ID_BARRAFINAL:
+			App.MP.TiempoStr(static_cast<INT64>(static_cast<double>(Medio.Tiempo) * Barra_TiempoFinal.Valor()), TmpStr);
+			Txt_TiempoFinal.Texto(TmpStr);
 			break;
 	}
 }
@@ -91,20 +116,45 @@ void VentanaMomento::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse& DatosMouse) {
 		case ID_CREARMOMENTO :
 			PosMomento = -1;
 			ActivarControles(TRUE);
-			break;
+			return;
 		case ID_EDITARMOMENTO :
 			ActivarControles(TRUE);
-			break;
+			return;
 		case ID_CANCELAR:
 			ActivarControles(FALSE);
-			break;
+			return;
 		case ID_GUARDAR:
 			GuardarMomento();
-			break;
+			return;
 		case ID_ELIMINARMOMENTO:
 			EliminarMomento();
-			break;
+			return;
+		case ID_INICIOMAS:
+			Barra_TiempoInicio.Valor(AlterarTiempo(Txt_TiempoInicio, 1));
+			return;
+		case ID_INICIOMENOS:
+			Barra_TiempoInicio.Valor(AlterarTiempo(Txt_TiempoInicio, -1));
+			return;
+		case ID_FINMAS:
+			Barra_TiempoFinal.Valor(AlterarTiempo(Txt_TiempoFinal, 1));
+			return;
+		case ID_FINMENOS:
+			Barra_TiempoFinal.Valor(AlterarTiempo(Txt_TiempoFinal, -1));
+			return;
 	}
+}
+
+// Función que altera el tiempo de los editbox para sumarle o restarle 1 segundo
+const float VentanaMomento::AlterarTiempo(DWL::DEdicionTextoEx& Edicion, const UINT64 Valor) {
+	INT64 Tiempo = static_cast<INT64>(App.MP.TiempoStr_Ms(Edicion.Texto()));
+	Tiempo += (Valor * 1000);
+	if (Tiempo < 0) Tiempo = 0;
+	std::wstring TiempoStr;
+	App.MP.TiempoStr(Tiempo, TiempoStr);
+	Edicion.Texto(TiempoStr);
+	// Devuelvo el tiempo en % de 0 a 1 (para las barras)
+	float R = 1.0f / Medio.Tiempo;
+	return R * static_cast<float>(Tiempo);
 }
 
 void VentanaMomento::Evento_ListaEx_Mouse_Click(DWL::DEventoMouse& DatosMouse) {
@@ -131,9 +181,12 @@ void VentanaMomento::EliminarMomento(void) {
 
 void VentanaMomento::MostrarMomento(const size_t Pos) {
 	if (Pos < Medio.Momentos.size()) {
+		std::wstring TmpStr;
 		Txt_Nombre.Texto(Medio.Momentos[Pos]->Nombre.c_str(), TRUE);
-		Txt_TiempoInicio.Texto(Medio.Momentos[Pos]->TiempoInicio);
-		Txt_TiempoFinal.Texto(Medio.Momentos[Pos]->TiempoFinal);
+		App.MP.TiempoStr(Medio.Momentos[Pos]->TiempoInicio, TmpStr);
+		Txt_TiempoInicio.Texto(TmpStr);
+		App.MP.TiempoStr(Medio.Momentos[Pos]->TiempoFinal, TmpStr);
+		Txt_TiempoFinal.Texto(TmpStr);
 		float v = (1.0f / static_cast<float>(Medio.Tiempo)) * static_cast<float>(Medio.Momentos[Pos]->TiempoInicio);
 		Barra_TiempoInicio.Valor(v);
 		Barra_TiempoFinal.Valor((1.0f / static_cast<float>(Medio.Tiempo)) * static_cast<float>(Medio.Momentos[Pos]->TiempoFinal));
@@ -150,6 +203,10 @@ void VentanaMomento::ActivarControles(const BOOL nActivar) {
 	Check_Excluir.Activado(nActivar);
 	Boton_Guardar.Activado(nActivar);
 	Boton_Cancelar.Activado(nActivar);
+	Boton_InicioMas.Activado(nActivar);
+	Boton_InicioMenos.Activado(nActivar);
+	Boton_FinMas.Activado(nActivar);
+	Boton_FinMenos.Activado(nActivar);
 }
 
 void VentanaMomento::ActivarEditarEliminar(const BOOL nActivar) {
@@ -179,9 +236,10 @@ void VentanaMomento::GuardarMomento(void) {
 	}
 
 	// Error el momento no puede ser todo el medio
-	INT64 TiempoInicio = 0, TiempoFinal = Medio.Tiempo;
-	DWL::Strings::StrTo(Txt_TiempoInicio.Texto(), TiempoInicio);
-	DWL::Strings::StrTo(Txt_TiempoFinal.Texto(), TiempoFinal);	
+	UINT64 TiempoInicio = App.MP.TiempoStr_Ms(Txt_TiempoInicio.Texto());
+	UINT64 TiempoFinal  = App.MP.TiempoStr_Ms(Txt_TiempoFinal.Texto());
+//	DWL::Strings::StrTo(Txt_TiempoInicio.Texto(), TiempoInicio);
+//	DWL::Strings::StrTo(Txt_TiempoFinal.Texto(), TiempoFinal);	
 	if (TiempoInicio == 0 && TiempoFinal == Medio.Tiempo) {
 		App.MostrarToolTipMomentosError(L"El momento debe ser una fracción del medio, no todo el medio.");
 		return;

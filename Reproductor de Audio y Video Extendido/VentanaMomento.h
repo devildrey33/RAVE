@@ -22,6 +22,7 @@ class VentanaMomento : public DWL::DVentana {
 	void                            CargarMomentos(void);
 	void                            MostrarMomento(const size_t Pos);
 	void                            EliminarMomento(void);
+	const float                     AlterarTiempo(DWL::DEdicionTextoEx& Edicion, const UINT64 Valor);
 
 	void							Evento_BotonEx_Mouse_Click(DWL::DEventoMouse& DatosMouse);
 	void							Evento_BarraEx_Cambiando(DWL::DEventoMouse& DatosMouse);
@@ -44,6 +45,11 @@ class VentanaMomento : public DWL::DVentana {
 	DWL::DBotonEx					Boton_EditarMomento;
 	DWL::DBotonEx					Boton_EliminarMomento;
 	DWL::DMarcaEx					Check_Excluir;					// Momento para excluir (intro o creditos por ejemplo)
+
+	DWL::DBotonEx					Boton_InicioMas;
+	DWL::DBotonEx					Boton_InicioMenos;
+	DWL::DBotonEx					Boton_FinMas;
+	DWL::DBotonEx					Boton_FinMenos;
 
 	LONG_PTR                        PosMomento;
 };

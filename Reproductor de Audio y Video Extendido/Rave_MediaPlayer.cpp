@@ -98,7 +98,7 @@ const BOOL Rave_MediaPlayer::Iniciar(void) {
 #endif
 
 	// Creo los temporizadores
-	SetTimer(_hWnd, ID_TEMPORIZADOR_TIEMPO, 250, NULL);
+	SetTimer(_hWnd, ID_TEMPORIZADOR_TIEMPO, 100, NULL);
 	SetTimer(_hWnd, ID_TEMPORIZADOR_LISTA, 500, NULL);
 
 	return TRUE;
@@ -185,20 +185,33 @@ void Rave_MediaPlayer::Temporizador_Lista(void) {
 
 void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 	Estados_Medio Estado	= ComprobarEstado();
-	UINT64        TTotalMS	= TiempoTotalMs();
-	UINT64        TActualMS = TiempoActualMs();
+	INT64         TTotalMS	= static_cast<INT64>(TiempoTotalMs());
+	INT64         TActualMS = static_cast<INT64>(TiempoActualMs());
 
 	
 	if (_Actual) {
 		// Compruebo si el medio actual es un momento
 		if (_Actual->Medio.PosMomento != -1) {
-			if (static_cast<INT64>(TActualMS) > _Actual->Medio.Momentos[_Actual->Medio.PosMomento]->TiempoFinal) {
+			if (TActualMS > _Actual->Medio.Momentos[_Actual->Medio.PosMomento]->TiempoFinal) {
 				Stop();
 				CerrarMedio();
 			}
 		}
-
 		// Compruebo si el medio actual tiene algun momento de exclusión
+		else {
+			for (size_t i = 0; i < _Actual->Medio.Momentos.size(); i++) {
+				if (_Actual->Medio.Momentos[i]->Excluir == TRUE) {
+					// Si el tiempo actual esta entre el inicio y el final del momento
+/*					if (TActualMS > _Actual->Medio.Momentos[i]->TiempoInicio && TActualMS < _Actual->Medio.Momentos[i]->TiempoFinal) {
+						TiempoActualMs(_Actual->Medio.Momentos[i]->TiempoFinal);
+					}*/
+					// Si el tiempo actual esta entre el inicio y el inicio + 500 ms
+					if (TActualMS > _Actual->Medio.Momentos[i]->TiempoInicio && TActualMS < _Actual->Medio.Momentos[i]->TiempoInicio + 500) {
+						TiempoActualMs(_Actual->Medio.Momentos[i]->TiempoFinal);
+					}
+				}
+			}
+		}		
 	}
 
 	ObtenerDatosParsing();
@@ -362,7 +375,7 @@ void Rave_MediaPlayer::_EliminarRaveMedio(Rave_Medio *eMedio) {
 	}
 }
 
-
+// Formatea el tiempo especificado en el string especificado
 void Rave_MediaPlayer::TiempoStr(UINT64 TMS, std::wstring &StrTiempo) {
 	StrTiempo.resize(0);
 	unsigned int Horas    = static_cast<int>(((TMS / 1000) / 60) / 60);
@@ -375,6 +388,24 @@ void Rave_MediaPlayer::TiempoStr(UINT64 TMS, std::wstring &StrTiempo) {
 	else              StrTiempo += L"0" + std::to_wstring(Segundos);
 }
 
+// Función que devuelve un string con un tiempo en milisegundos
+const UINT64 Rave_MediaPlayer::TiempoStr_Ms(std::wstring& StrTiempo) {
+	DWL::Strings::Split Sp(StrTiempo, L':');
+	UINT64 S = 0, M = 0, H = 0;
+	UINT64 Ret = 0;
+	switch (Sp.Total()) {
+		case 1 : // solo son segundos
+			Ret = DWL::Strings::StrTo(Sp[0], S) * 1000;
+			break;
+		case 2: // minutos y segundos
+			Ret = ((DWL::Strings::StrTo(Sp[0], M) * 60) +  DWL::Strings::StrTo(Sp[1], S)) * 1000;
+			break;
+		case 3: // horas, minutos, y segundos
+			Ret = ((DWL::Strings::StrTo(Sp[0], H) * 60) + (DWL::Strings::StrTo(Sp[1], M) * 60) + DWL::Strings::StrTo(Sp[2], S)) * 1000;
+			break;
+	}
+	return Ret;	
+}
 
 
 std::wstring &Rave_MediaPlayer::UltimoErrorVLC(void) {
@@ -500,6 +531,11 @@ const float Rave_MediaPlayer::TiempoActual(void) {
 void Rave_MediaPlayer::TiempoActual(float nTiempo) {
 	if (_Actual == NULL) return;
 	_Actual->TiempoActual(nTiempo);
+}
+
+void Rave_MediaPlayer::TiempoActualMs(UINT64 nTiempo) {
+	if (_Actual == NULL) return;
+	_Actual->TiempoActualMs(nTiempo);
 }
 
 const UINT64 Rave_MediaPlayer::TiempoTotalMs(void) {
