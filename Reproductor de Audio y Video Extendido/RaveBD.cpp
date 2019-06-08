@@ -671,32 +671,89 @@ const BOOL RaveBD::_ModificarTablas(void) {
 	return FALSE;
 }
 
-/* PASOS / RECOMENDACIONES A TENER EN CUENTA A LA HORA DE AGREGAR NUEVAS TABLAS Y NUEVAS COLUMNAS A TABLAS EXISTENTES 
-	
+
+
+
+const BOOL RaveBD::AgregarMomento(BDMedio* nMedio, std::wstring& nNombre, const UINT64 nTiempoInicial, const UINT64 nTiempoFinal, const BOOL EvitarReproduccion) {
+	std::wstring Q = L"INSERT INTO Momentos (Nombre, TiempoInicio, TiempoFin, Excluir, IdMedio) VALUES(\"" +
+											 nNombre								+ L"\"," + 
+											 std::to_wstring(nTiempoInicial)		+ L"," + 
+											 std::to_wstring(nTiempoFinal)			+ L"," + 
+											 std::to_wstring(EvitarReproduccion)	+ L"," +
+											 std::to_wstring(nMedio->Id)			+ L")";
+	int SqlRet = Consulta(Q);
+
+	if (SqlRet == SQLITE_DONE) {
+		// Agrego el momento al vector de momentos del medio
+		nMedio->Momentos.push_back(new BDMomento(App.BD.UltimaIdInsertada(), nMedio->Id, nNombre.c_str(), nTiempoInicial, nTiempoFinal, EvitarReproduccion));
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+
+const BOOL RaveBD::ModificarMomento(BDMedio* nMedio, const LONG_PTR mID, std::wstring& nNombre, const UINT64 nTiempoInicial, const UINT64 nTiempoFinal, const BOOL EvitarReproduccion) {
+	std::wstring Q = L"UPDATE Momentos SET Nombre=\"" + nNombre + L"\", TiempoInicio=" + std::to_wstring(nTiempoInicial) + L", TiempoFin=" + std::to_wstring(nTiempoFinal) + L", Excluir=" + std::to_wstring(EvitarReproduccion) + L" WHERE Id=" + std::to_wstring(mID);
+	int SqlRet = Consulta(Q);
+	if (SqlRet == SQLITE_DONE) {
+		for (size_t i = 0; i < nMedio->Momentos.size(); i++) {
+			if (nMedio->Momentos[i]->Id == mID) {
+				nMedio->Momentos[i]->Nombre = nNombre;
+				nMedio->Momentos[i]->TiempoInicio = nTiempoInicial;
+				nMedio->Momentos[i]->TiempoFinal = nTiempoFinal;
+				nMedio->Momentos[i]->Excluir = EvitarReproduccion;
+				return TRUE;
+			}
+		}
+		return TRUE;
+	}
+	return FALSE;
+}
+
+
+const BOOL RaveBD::EliminarMomento(BDMedio* nMedio, const LONG_PTR mID) {
+	std::wstring Q = L"DELETE FROM Momentos WHERE Id=" + std::to_wstring(mID);
+	int SqlRet = Consulta(Q);
+	if (SqlRet == SQLITE_DONE) {
+		for (size_t i = 0; i < nMedio->Momentos.size(); i++) {
+			if (nMedio->Momentos[i]->Id == mID) {
+				delete nMedio->Momentos[i];
+				nMedio->Momentos.erase(nMedio->Momentos.begin() + static_cast<unsigned int>(i));
+				return TRUE;
+			}
+		}
+		return TRUE;
+	}
+	return FALSE;
+}
+
+
+/* PASOS / RECOMENDACIONES A TENER EN CUENTA A LA HORA DE AGREGAR NUEVAS TABLAS Y NUEVAS COLUMNAS A TABLAS EXISTENTES
+
 	* Para nuevas tablas simplemente añade el código necesario al principio de la función _CrearTablas
 
-	* Para modificar las columnas de una tabla existente, debes utilizar la función _ModificarTablas, subir la versión de RAVE_VERSIONBD, 
+	* Para modificar las columnas de una tabla existente, debes utilizar la función _ModificarTablas, subir la versión de RAVE_VERSIONBD,
 	  y crear un if para la nueva versión en el que alteraremos las tablas, y rellenaremos las entradas que ya pudieram tener las tablas alteradas,
 	  para asignar los valores por defecto de las nuevas columnas.
 
 	  Por supuesto tambien tendras que añadir esas columnas en la función CrearTablas (por si se crea la base de datos desde 0)
 */
-
-/* Si hay que modificar alguna tabla, se tiene que hacer en la función _ModificarTablas, la cual mira la versión de las opciones */
+// Si hay que modificar alguna tabla, se tiene que hacer en la función _ModificarTablas, la cual mira la versión de las opciones 
 const BOOL RaveBD::_CrearTablas(void) {
 
 	std::wstring Q;
-	// Creo la tabla para las opciones 2 ///////////////////////////////////////////////////
-/*	std::wstring CrarTablaMomentos =	L"CREATE TABLE Momentos ("
-												L"EfectoFadeAudioMS"	L" INTEGER"
-											L")";
-	if (Consulta(CrearTablaOpciones2.c_str()) == SQLITE_ERROR) return FALSE;
-	std::wstring Q;
-	// Agrego los valores por defecto en la tabla Opciones2
-	Q = L"INSERT INTO Opciones2 (EfectoFadeAudioMS) "
-		L"VALUES(10000)";
-	if (Consulta(Q.c_str()) == SQLITE_ERROR) return FALSE;*/
-	////////////////////////////////////////////////////////////////////////////////////////////
+	// Creo la tabla para los Momentos ///////////////////////////////////////////////////
+	std::wstring CrearTablaMomentos = L"CREATE TABLE Momentos ("
+											L"Id" 				L" INTEGER PRIMARY KEY,"
+											L"Nombre"			L" VARCHAR(260),"
+											L"TiempoInicio"		L" INTEGER,"
+											L"TiempoFin"		L" INTEGER,"
+											L"Excluir"			L" INTEGER,"
+											L"IdMedio"			L" INTEGER"
+										")";
+	if (Consulta(CrearTablaMomentos.c_str()) == SQLITE_ERROR) return FALSE;
+	///////////////////////////////////////////////////////////////////////////////////////
 
 
 	// Creo la tabla para las teclas rápidas ///////////////////////////////////////////////////
@@ -1393,84 +1450,6 @@ void RaveBD::Opciones_ContadorIDSMomentos(const LONG nOpciones_ContadorIDSMoment
 	int Ret = Consulta(Q.c_str());
 }*/
 
-// Función que agrega un momento para un medio
-const BOOL RaveBD::AgregarMomento(BDMedio* nMedio, std::wstring& nNombre, const UINT64 nTiempoInicial, const UINT64 nTiempoFinal, const BOOL EvitarReproduccion) {
-	std::wstring Q = L"SELECT * FROM Momentos" + std::to_wstring(nMedio->Id);
-	int SqlRet = Consulta(Q);
-
-	// No existen momentos para este medio, creo la tabla
-	if (SqlRet == 1 && _UltimoErrorSQL == L"no such table: Momentos" + std::to_wstring(nMedio->Id)) { // buscar el valor quan falla la primera consulta que busca la taula dels moments del medi especificat
-		// Si se hace un momento aleatório, necesitare la ID del medio, por lo que el valor del momento es la ID de su medio
-		Q = L"CREATE TABLE Momentos" + std::to_wstring(nMedio->Id) + L" ("
-			L"Id" 				L" INTEGER PRIMARY KEY,"
-			L"Nombre"			L" VARCHAR(260),"
-			L"TiempoInicio"		L" INTEGER,"
-			L"TiempoFin"		L" INTEGER,"
-			L"Excluir"			L" INTEGER"
-		")";
-		// Creo la tabla con una nueva ID
-		SqlRet = Consulta(Q);
-		// Guardo la ID del momento en el medio (no me hace falta porque es la misma id que el medio)
-//		Q = L"UPDATE Medios SET IDMomentos=" + std::to_wstring(nMedio->Id) + L"WHERE Id=" + std::to_wstring(nMedio->Id);
-
-		// Sumo 1 al contador de IDS para las tablas Momentos (en las opciones) (no me hace falta porque los momentos tienen la misma id que los medios
-//		Opciones_ContadorIDSMomentos(_Opciones_ContadorIDSMomentos + 1);
-	}
-	// Existen momentos para este medio, agrego uno nuevo
-	Q = L"INSERT INTO Momentos" + std::to_wstring(nMedio->Id) + L" (Nombre, TiempoInicio, TiempoFin, Excluir) "
-		L"VALUES(\"" +
-				nNombre + L"\", " +
-				std::to_wstring(nTiempoInicial) + L", " +
-				std::to_wstring(nTiempoFinal) + L", " +
-				std::to_wstring(EvitarReproduccion) +
-		L")";
-	SqlRet = Consulta(Q);
-	
-	if (SqlRet == SQLITE_DONE) {
-		// Agrego el momento al vector de momentos del medio
-		nMedio->Momentos.push_back(new BDMomento(App.BD.UltimaIdInsertada(), nMedio->Id, nNombre.c_str(), nTiempoInicial, nTiempoFinal, EvitarReproduccion));
-		return TRUE;
-	}
-
-	return FALSE;
-}
-
-
-
-const BOOL RaveBD::ModificarMomento(BDMedio* nMedio, const LONG_PTR mID, std::wstring& nNombre, const UINT64 nTiempoInicial, const UINT64 nTiempoFinal, const BOOL EvitarReproduccion) {
-	std::wstring Q = L"UPDATE Momentos" + std::to_wstring(nMedio->Id) + L" SET Nombre=\"" + nNombre + L"\", TiempoInicio=" + std::to_wstring(nTiempoInicial) + L", TiempoFin=" + std::to_wstring(nTiempoFinal) + L", Excluir=" + std::to_wstring(EvitarReproduccion) + L" WHERE Id=" + std::to_wstring(mID);
-	int SqlRet = Consulta(Q);
-	if (SqlRet == SQLITE_DONE) {
-		for (size_t i = 0; i < nMedio->Momentos.size(); i++) {
-			if (nMedio->Momentos[i]->Id == mID) {
-				nMedio->Momentos[i]->Nombre			= nNombre;
-				nMedio->Momentos[i]->TiempoInicio	= nTiempoInicial;
-				nMedio->Momentos[i]->TiempoFinal	= nTiempoFinal;
-				nMedio->Momentos[i]->Excluir		= EvitarReproduccion;
-				return TRUE;
-			}
-		}
-		return TRUE;
-	}
-	return FALSE;
-}
-
-
-const BOOL RaveBD::EliminarMomento(BDMedio* nMedio, const LONG_PTR mID) {
-	std::wstring Q = L"DELETE FROM Momentos" + std::to_wstring(nMedio->Id) + L" WHERE Id=" + std::to_wstring(mID);
-	int SqlRet = Consulta(Q);	
-	if (SqlRet == SQLITE_DONE) {
-		for (size_t i = 0; i < nMedio->Momentos.size(); i++) {
-			if (nMedio->Momentos[i]->Id == mID) {
-				delete nMedio->Momentos[i];
-				nMedio->Momentos.erase(nMedio->Momentos.begin() + static_cast<unsigned int>(i));
-				return TRUE;
-			}
-		}
-		return TRUE;
-	}
-	return FALSE;
-}
 
 // Función que devuelve la versión de la BD
 const float RaveBD::ObtenerVersionBD(void) {

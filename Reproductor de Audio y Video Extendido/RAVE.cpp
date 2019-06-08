@@ -242,7 +242,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ABRIRCARPETA			, L"Abrir carpeta"								, IDI_DIRECTORIO);
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_MOMENTOS				, L"Momentos"									, IDI_MOMENTOS);
 	VentanaRave.Menu_ArbolBD.AgregarBarra(ID_MENUBD_NOTA				, L"Nota"										, IDI_NOTA, 0.0f, 5.0f, 2.5f, DBarraEx_MostrarValor_ValorMaximo2Decimales);
-	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_PROPIEDADES			, L"Propiedades");
+	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_PROPIEDADES			, L"Propiedades"								, IDI_MOMENTO_EXCLUIR2);
 	VentanaRave.Menu_ArbolBD.AgregarSeparador();
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ACTUALIZAR			, L"Actualizar"									, IDI_ACTUALIZAR);
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ANALIZAR				, L"Analizar"									, IDI_ANALIZAR);
@@ -257,15 +257,15 @@ void RAVE::IniciarUI(int nCmdShow) {
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_MOMENTOS			, L"Momentos"									, IDI_MOMENTOS);
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_MOSTRARBD			, L"Mostrar en la BD"							, IDI_BASEDATOS);
 	VentanaRave.Menu_Lista.AgregarBarra(ID_MENULISTA_NOTA				, L"Nota"										, IDI_NOTA , 0.0f, 5.0f, 2.5f, DBarraEx_MostrarValor_ValorMaximo2Decimales);
-	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_PROPIEDADES			, L"Propiedades");
+	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_PROPIEDADES			, L"Propiedades"								, IDI_MOMENTO_EXCLUIR2);
 
 	// Menu Boton Lista
 	VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_BORRAR					, L"Borrar Lista"				, IDI_ELIMINAR);
 	DMenuEx *Menu = VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_GENERAR	, L"Lista Aleatória"			, IDI_LISTAALEATORIA);
-		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GENERO									, L"Por Genero");
-		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GRUPO									, L"Por Grupo");
-		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_DISCO									, L"Por Disco");
-		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_50MEDIOS								, L"Con 50 Medios");
+		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GENERO									, L"Por Genero"				, IDI_GENERO);
+		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GRUPO									, L"Por Grupo"				, IDI_GRUPO);
+		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_DISCO									, L"Por Disco"				, IDI_DISCO);
+		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_50MEDIOS								, L"Con 50 Medios"			, IDI_TERMINADO);
 
 	// Menu Repetir
 	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_NO					, L"Desactivado"		, IDI_NOCHECK);

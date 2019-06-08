@@ -14,7 +14,7 @@ Todo lo que necesito para mi uso personal :
 Sistema operativo Windows 7 o superior (x86. x64)
 
 ### Log de cambios
-* [Ultima versión 0.520d PRE RC7](docs/ChangeLog.txt)
+* [Ultima versión 0.522 PRE RC7](docs/ChangeLog.txt)
 
 ## Empezando
  1. Descarga una de las siguientes versiones para windows : 

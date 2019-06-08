@@ -21,9 +21,10 @@ namespace DWL {
 		DBotonEx_Transicion_Desactivado
 	};
 
-	#define DBOTONEX_MOSTRARDEBUG	TRUE
-	#define DBOTONEX_CENTRADO -1
-	#define DBOTONEX_GDIPLUS		FALSE
+	#define DBOTONEX_MOSTRARDEBUG	FALSE
+	#define DBOTONEX_CENTRADO		-1
+
+	#define DBOTONEX_GDIPLUS		FALSE	// EXPERIMENTO FALLIDO - NO ACTIVAR
 
 	#if DBOTONEX_GDIPLUS == TRUE
 		#include "DGDIPlus.h"

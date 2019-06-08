@@ -8,6 +8,10 @@
 
 * Ahora no se activará el sub-menu Momentos en el menu de la lista si hay mas de un medio seleccionado.
 
+* Se han fusionado todas las tablas de momentos en una sola, me resultará mas fácil tranajar con una sola tabla que con una por medio, en especial si hay que hacer listas aleatórias.
+
+
+
 ### Versión 0.521
 
 * Los momentos ya son funcionales con una precisión de 1000 milisegundos

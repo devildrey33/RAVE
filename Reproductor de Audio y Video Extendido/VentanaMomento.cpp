@@ -28,10 +28,10 @@ VentanaMomento::~VentanaMomento(void) {
 
 void VentanaMomento::Mostrar(BDMedio& nMedio) {
 	Medio = nMedio;
-	if (_hWnd != NULL) {
+/*	if (_hWnd != NULL) {
 		CargarMomentos();
 		return;
-	}
+	}*/
 	CrearVentana(NULL, L"RAVE_Momentos", L"Momentos", App.BD.Opciones_VentanaMomentos_PosX(), App.BD.Opciones_VentanaMomentos_PosY(), 746, 240, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 
 	ListaMomentos.CrearListaEx(this, 10, 10, 250, 140, ID_LISTAMOMENTOS, WS_CHILD | WS_VISIBLE);

@@ -261,7 +261,7 @@
 
 		-  DListaEx
 			V  Al fer click amb el buto dret, detectar si nomes hi ha un item seleccionat, per desseleccionar tot o no,
-		   +o- Drag & drop intern a la DListaEx per moure items (multiselecció inclosa)
+		    V  Drag & drop intern a la DListaEx per moure items (multiselecció inclosa)
 				V S'ha de revisar el tema amb multiselecció
 				V S'ha de poguer moure els items en multiselecció sense el control...
 				V En multiselecció haig de ignorar els items seleccionats (Selecciona 3 items, i agafa el de mes aball per mourels fins a dalt de tot : el tercer item puja cap al primer)
@@ -336,9 +336,9 @@
 						V La taula haura de tenir com a minim : Temps inici, Temps final (optatiu / null == fins al final), Nom, Momento para saltar (BOOL per saltar automaticament aquest moment durant la reproducció)
 							V La taula haura de tenir un nom dinámic ej: Momentos0, Momentos1, etc... i llavors guardar el valor/id en una nova columna dels medios (i enllaçar el medi amb la llista de moments)
 						X Necesitare una nova variable a les opcions per fer de contador de momentos
-			- Tot això prodría fins i tot derivar en llistes aleatories per moments (de audio, i de video)
-			- Tambe es podría fer una llista de moments global en la llista de medis, (i mostrar tots els moments que tenen tos els medis de la llista)
-		    - Ajuntar les taures dels momentos en una sola i posar-hi la ID del medio per poder identificar-lo.
+			X Tot això prodría fins i tot derivar en llistes aleatories per moments (de audio, i de video)													(DESCARTAT DE MOMENT)
+			X Tambe es podría fer una llista de moments global en la llista de medis, (i mostrar tots els moments que tenen tos els medis de la llista)		(DESCARTAT DE MOMENT)
+		    V Ajuntar les taures dels momentos en una sola i posar-hi la ID del medio per poder identificar-lo.
 
 		V M'ha petat un parell de cops al tancar el reproductor... segons el call stack sembla que es per modificar el brillo...
 			V He actualitzat el thread analizar per que al guardar items es guardi el brillo, el contraste, i la saturació a 1.0 , ja que començaven en NULL...

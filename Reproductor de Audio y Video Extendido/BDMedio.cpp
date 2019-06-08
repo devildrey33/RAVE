@@ -155,7 +155,7 @@ void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades)
 void BDMedio::ObtenerMomentos(const UINT nId) {
 	BorrarMomentos();
 
-	std::wstring Q = L"SELECT * FROM Momentos" + std::to_wstring(nId);
+	std::wstring Q = L"SELECT * FROM Momentos WHERE IdMedio=" + std::to_wstring(nId);
 
 	BDMomento    *TmpMomento = NULL;
 	int			  SqlRet 	 = 0;
