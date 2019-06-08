@@ -74,7 +74,7 @@ const int RaveBD::ConsultaVarg(const wchar_t *TxtConsulta, ...) {
 }*/
 
 const LONG_PTR RaveBD::UltimaIdInsertada(void) {
-	return sqlite3_last_insert_rowid(_BD);
+	return static_cast<LONG_PTR>(sqlite3_last_insert_rowid(_BD));
 }
 
 // Función para realizar consultas simples 

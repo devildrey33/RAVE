@@ -1,5 +1,23 @@
 # Log de cambios
 
+### Versión 0.522
+
+* Creado SubMenu Momentos para el menú de la base de datos, que muestra los momentos como sub-menu.
+
+* Creado SubMenu Momentos para el menú del video, que muestra los momentos como sub-menu.
+
+* Ahora no se activará el sub-menu Momentos en el menu de la lista si hay mas de un medio seleccionado.
+
+### Versión 0.521
+
+* Los momentos ya son funcionales con una precisión de 1000 milisegundos
+
+* Añadidos varios botones para poder modificar el tiempo de los momentos de una forma mas precisa.
+
+* Si creas / editas / eliminas un momento del medio que se está reproduciendo, se actualizará automáticamente.
+
+
+
 ### Versión 0.520
 
 * Solucionado bug visual de los DBotonEx al desactivar-los.

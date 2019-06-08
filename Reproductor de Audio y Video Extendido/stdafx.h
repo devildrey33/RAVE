@@ -84,6 +84,7 @@
 #define ID_MENUBD_ABRIRCARPETA					2104
 #define ID_MENUBD_NOTA							2105
 #define ID_MENUBD_PROPIEDADES					2106
+#define ID_MENUBD_MOMENTOS                      2107
 
 
 /*#define ID_MENUMEZCLAR_SI						2110
@@ -120,7 +121,7 @@
 #define ID_MENUBOTONLISTA_GENERAR_DISCO			2144
 #define ID_MENUBOTONLISTA_GENERAR_50MEDIOS		2145
 
-//#define ID_MENUVIDEO_AUDIO						2150
+// Menu pantalla video
 #define ID_MENUVIDEO_VIDEO						2151
 #define ID_MENUVIDEO_SUBTITULOS					2152
 #define ID_MENUVIDEO_PISTA_AUDIO				2153
@@ -142,6 +143,7 @@
 #define ID_MENUVIDEO_PORDEFECTO                 2193
 #define ID_MENUVIDEO_SATURACION                 2194
 #define ID_MENUVIDEO_FILTROS                    2195
+#define ID_MENUVIDEO_MOMENTOS					2196
 
 
 #define TIMER_LISTA								2200

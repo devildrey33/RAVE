@@ -330,7 +330,7 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 
 
 	if (DatosMouse.Boton == 1) {
-		BOOL nActivar = FALSE, nActivar2 = FALSE;
+		BOOL nActivar = FALSE, nActivar2 = FALSE, nActivar3 = FALSE;
 		// Compruebo si existe el nodo resaltado
 		if (_NodoResaltado != NULL) {	
 			// Si el nodo resaltado no es una raíz
@@ -345,14 +345,28 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 					Etiqueta = App.BD.ObtenerEtiqueta(EtiquetaFiltrada);
 					if (Etiqueta != NULL) {
 						App.BD.CalcularDatosEtiqueta(Etiqueta);
-						App.VentanaRave.Menu_ArbolBD.Menu(3)->BarraValor(Etiqueta->Nota);
+						App.VentanaRave.Menu_ArbolBD.Menu(4)->BarraValor(Etiqueta->Nota);
 					}
 					break;
 				case ArbolBD_TipoNodo_Cancion:
 				case ArbolBD_TipoNodo_Video:
 					// Es un medio, hay que obtener su nota
 					if (App.BD.ObtenerMedio(NodoRes->Hash, Medio) == TRUE) {
-						App.VentanaRave.Menu_ArbolBD.Menu(3)->BarraValor(Medio.Nota);
+						App.VentanaRave.Menu_ArbolBD.Menu(4)->BarraValor(Medio.Nota);
+					}
+
+					BDMedio TmpMedio;
+					App.BD.ObtenerMedio(MedioMarcado()->Hash, TmpMedio);
+
+					DWL::DMenuEx* TmpMenu = NULL;
+					App.VentanaRave.Menu_ArbolBD.Menu(3)->EliminarTodosLosMenus();
+					if (TotalNodosSeleccionados() == 1) {
+						nActivar3 = TRUE;
+						for (size_t i = 0; i < TmpMedio.Momentos.size(); i++) {
+							TmpMenu = NULL;
+							TmpMenu = App.VentanaRave.Menu_ArbolBD.Menu(3)->AgregarMenu(ID_MENULISTA_MOMENTOS_MOMENTO + i, TmpMedio.Momentos[i]->Nombre, (TmpMedio.Momentos[i]->Excluir) ? IDI_MOMENTO_EXCLUIR : IDI_MOMENTO);
+							if (TmpMenu) TmpMenu->Parametro = TmpMedio.Hash;
+						}
 					}
 					break;
 			}
@@ -364,8 +378,9 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 		App.VentanaRave.Menu_ArbolBD.Menu(1)->Activado(nActivar); // Agregar a nueva lista
 		
 		App.VentanaRave.Menu_ArbolBD.Menu(2)->Activado(nActivar2); // Abrir carpeta
-		App.VentanaRave.Menu_ArbolBD.Menu(3)->Activado(nActivar2); // Nota
-		App.VentanaRave.Menu_ArbolBD.Menu(4)->Activado(nActivar2); // Propiedades
+		App.VentanaRave.Menu_ArbolBD.Menu(3)->Activado(nActivar3); // Momentos
+		App.VentanaRave.Menu_ArbolBD.Menu(4)->Activado(nActivar2); // Nota
+		App.VentanaRave.Menu_ArbolBD.Menu(5)->Activado(nActivar2); // Propiedades
 
 		App.VentanaRave.Menu_ArbolBD.Mostrar(&App.VentanaRave);
 	}

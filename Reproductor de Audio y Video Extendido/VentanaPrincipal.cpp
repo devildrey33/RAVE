@@ -551,6 +551,7 @@ void VentanaPrincipal::Lista_EliminarSeleccionados(void) {
 //	LONG_PTR nItems = Lista.EliminarItemsSeleccionados();
 }
 
+
 void VentanaPrincipal::Lista_Momentos(void) {
 	if (Lista.TotalItems() == 0) return;
 	BDMedio Medio;
@@ -558,11 +559,21 @@ void VentanaPrincipal::Lista_Momentos(void) {
 	Momentos.Mostrar(Medio);
 }
 
+// Tambien sirve para los momentos de la BD y del vídeo
 void VentanaPrincipal::Lista_MomentosAbrir(const UINT64 HashMedio, const int PosMomento) {
 	BDMedio Medio;
 	App.BD.ObtenerMedio(HashMedio, Medio);
 	Lista.ReproducirMedio(Medio, PosMomento);
 }
+
+void VentanaPrincipal::Video_Momentos(void) {
+	Momentos.Mostrar(App.MP.MedioActual());
+}
+
+void VentanaPrincipal::Video_Subtitulos(void) {
+	App.MostrarToolTipPlayerError(L"Por implementar...");
+}
+
 
 void VentanaPrincipal::Arbol_AgregarALista(const BOOL NuevaLista) {
 	std::wstring nTexto = L"\" añadido a la lista.";
@@ -632,27 +643,48 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		case ID_BOTON_SIGUIENTE					:	Lista_Siguiente();						return;
 		case ID_BOTON_ANTERIOR					:	Lista_Anterior();						return;
 		case ID_MENUVIDEO_PORDEFECTO			:	FiltrosVideoPorDefecto();				return;
-		// Menu BotonBD, MenuBD
+		// Menú BotonBD, MenuBD
 		case ID_MENUBD_ACTUALIZAR               :   ActualizarArbol();						return;
 		case ID_MENUBD_ANALIZAR					:	AnalizarBD();							return;
 		case ID_MENUBD_ABRIRCARPETA             :   Arbol_AbrirCarpeta();					return;
-//		case ID_MENUBD_NOTA                     :   AbrirCarpeta();							return;
 		case ID_MENUBD_PROPIEDADES              :   Arbol_Propiedades();					return;
 		case ID_MENUBD_AGREGARANUEVALISTA		:	Arbol_AgregarALista(TRUE);				return;
 		case ID_MENUBD_AGREGARALISTA			:	Arbol_AgregarALista(FALSE);				return;
-		// Menu Lista
+		case ID_MENUBD_MOMENTOS					:   Arbol_Momentos();						return;
+		// Menú Lista
 		case ID_MENULISTA_ABRIRCARPETA			:	Lista_AbrirEnExplorador();				return;
 		case ID_MENULISTA_PROPIEDADES			:	Lista_Propiedades();					return;
 		case ID_MENULISTA_MOSTRARBD             :   Lista_MostrarEnBaseDatos();				return;
 		case ID_MENULISTA_ELIMINAR              :   Lista_EliminarSeleccionados();			return;
 		case ID_MENULISTA_MOMENTOS				:   Lista_Momentos();						return;
+		// Menú Video
+		case ID_MENUVIDEO_MOMENTOS              :   Video_Momentos();						return;
+		case ID_MENUVIDEO_SUBTITULOS            :	Video_Subtitulos();						return;
+
 	}
 
-	// Menu Lista -> Momentos -> Momento
+	// Menu Lista -> Momentos -> Momento. Menu BD -> Momentos -> Momento, Menu Video -> Momentos -> Momento
 	if (cID >= ID_MENULISTA_MOMENTOS_MOMENTO && cID < ID_MENULISTA_MOMENTOS_MOMENTO_FIN) {
 		DWL::DMenuEx* TmpMenu = App.VentanaRave.Menu_Lista.BuscarMenu(cID);
-		if (TmpMenu != NULL) Lista_MomentosAbrir(TmpMenu->Parametro, cID - ID_MENULISTA_MOMENTOS_MOMENTO);
-		return;
+		if (TmpMenu != NULL) {
+			Lista_MomentosAbrir(TmpMenu->Parametro, cID - ID_MENULISTA_MOMENTOS_MOMENTO);
+			return;
+		}
+		
+		TmpMenu = App.VentanaRave.Menu_ArbolBD.BuscarMenu(cID);
+		if (TmpMenu != NULL) {
+			Arbol.AgregarNodoALista(Arbol.MedioMarcado());
+			// s'ha d'agregar a la llista
+			Lista_MomentosAbrir(TmpMenu->Parametro, cID - ID_MENULISTA_MOMENTOS_MOMENTO);
+			return;
+		}
+
+		TmpMenu = App.VentanaRave.Menu_Video.BuscarMenu(cID);
+		if (TmpMenu != NULL) {
+			Lista_MomentosAbrir(TmpMenu->Parametro, cID - ID_MENULISTA_MOMENTOS_MOMENTO);
+			return;
+		}
+
 	}
 
 	// Menu Video -> Pistas de audio
@@ -702,6 +734,13 @@ void VentanaPrincipal::Arbol_AsignarNota(const float nNota) {
 	}
 	App.VentanaRave.Menu_ArbolBD.Ocultar(TRUE);
 }
+
+void VentanaPrincipal::Arbol_Momentos(void) {
+	BDMedio Medio;
+	App.BD.ObtenerMedio(Arbol.MedioMarcado()->Hash, Medio);
+	Momentos.Mostrar(Medio);
+}
+
 
 void VentanaPrincipal::Lista_AsignarNota(const float nNota) {
 	std::wstring StrMedio;

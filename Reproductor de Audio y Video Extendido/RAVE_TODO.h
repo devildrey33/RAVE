@@ -329,19 +329,19 @@
 		- Les notes menors que 2 s'han de mostrar amb una estrella gris
 
 
-		- Crear un sistema per guardar 'momentos' per cada medi (aixo implicara un array indefinit de momentos per medi.
-			- La idea consisteix en poder marcar un temps especific del medi inicial i final, per designar un moment especial. Per exemple marcar la mort d'un personatge concret en un episodi de juego de tronos.
-				- També vull que es pugui utilitzar a l'inversa, es a dir, marcar la intro i els credits del medi, i saltar-los en reproduccions normals.
-					- Caldra una nova taula per tenir una llista de moments enllaçada amb un nou membre dels medios que guardará la id de la taula.
-						- La taula haura de tenir com a minim : Temps inici, Temps final (optatiu / null == fins al final), Nom, Momento para saltar (BOOL per saltar automaticament aquest moment durant la reproducció)
-							- La taula haura de tenir un nom dinámic ej: Momentos0, Momentos1, etc... i llavors guardar el valor/id en una nova columna dels medios (i enllaçar el medi amb la llista de moments)
-						- Necesitare una nova variable a les opcions per fer de contador de momentos
-			- Pot semblar una tonteria, pero dona molt joc a l'hora de personalitzar la teva col.lecció de medis.
+		V Crear un sistema per guardar 'momentos' per cada medi (aixo implicara un array indefinit de momentos per medi.
+			V La idea consisteix en poder marcar un temps especific del medi inicial i final, per designar un moment especial. Per exemple marcar la mort d'un personatge concret en un episodi de juego de tronos.
+				V També vull que es pugui utilitzar a l'inversa, es a dir, marcar la intro i els credits del medi, i saltar-los en reproduccions normals.
+					V Caldra una nova taula per tenir una llista de moments enllaçada amb un nou membre dels medios que guardará la id de la taula.
+						V La taula haura de tenir com a minim : Temps inici, Temps final (optatiu / null == fins al final), Nom, Momento para saltar (BOOL per saltar automaticament aquest moment durant la reproducció)
+							V La taula haura de tenir un nom dinámic ej: Momentos0, Momentos1, etc... i llavors guardar el valor/id en una nova columna dels medios (i enllaçar el medi amb la llista de moments)
+						X Necesitare una nova variable a les opcions per fer de contador de momentos
 			- Tot això prodría fins i tot derivar en llistes aleatories per moments (de audio, i de video)
 			- Tambe es podría fer una llista de moments global en la llista de medis, (i mostrar tots els moments que tenen tos els medis de la llista)
-		
-		- M'ha petat un parell de cops al tancar el reproductor... segons el call stack sembla que es per modificar el brillo...
-			- He actualitzat el thread analizar per que al guardar items es guardi el brillo, el contraste, i la saturació a 1.0 , ja que començaven en NULL...
+		    - Ajuntar les taures dels momentos en una sola i posar-hi la ID del medio per poder identificar-lo.
+
+		V M'ha petat un parell de cops al tancar el reproductor... segons el call stack sembla que es per modificar el brillo...
+			V He actualitzat el thread analizar per que al guardar items es guardi el brillo, el contraste, i la saturació a 1.0 , ja que començaven en NULL...
 
 
 	RAVE 0.7

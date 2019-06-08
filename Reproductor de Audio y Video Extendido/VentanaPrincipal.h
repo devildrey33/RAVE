@@ -103,6 +103,7 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						Arbol_AbrirCarpeta(void);
 	void						Arbol_Propiedades(void);
 	void                        Arbol_AsignarNota(const float nNota);
+	void                        Arbol_Momentos(void);
 
 	ThreadActualizarArbol		ThreadActualizar;
 	ThreadAgregarArchivosLista  ThreadArchivosLista;
@@ -130,6 +131,9 @@ class VentanaPrincipal : public DWL::DVentana {
 	void                        Lista_AsignarNota(const float nNota);
 	void                        Lista_Momentos(void);
 	void                        Lista_MomentosAbrir(const UINT64 IdMedio, const int PosMomento);
+
+	void                        Video_Momentos(void);
+	void                        Video_Subtitulos(void);
 
 	VentanaMomento              Momentos;
 

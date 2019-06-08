@@ -136,6 +136,7 @@ class RAVE {
 	DMenuEx                        *MenuVideoProporcion;
 	DMenuEx                        *MenuVideoFiltros;
 	DMenuEx                        *MenuVideoSubtitulos;
+	DMenuEx                        *MenuVideoMomentos;
 /*	DMenuEx                        *MenuVideoBrillo;
 	DMenuEx                        *MenuVideoContraste;
 	DMenuEx                        *MenuVideoSaturacion;*/

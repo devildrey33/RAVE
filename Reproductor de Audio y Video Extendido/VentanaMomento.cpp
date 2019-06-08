@@ -275,6 +275,7 @@ void VentanaMomento::GuardarMomento(void) {
 
 	// Actualizo el BDMedio actual si es el mismo que el que se está editando
 	if (Medio.Hash == App.MP.MedioActual().Hash) {
+		Medio.PosMomento = -1;
 		App.MP.MedioActual(Medio);
 	}
 

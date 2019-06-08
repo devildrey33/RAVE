@@ -140,6 +140,25 @@ void VerVideo::PintarOscyloscopio(void) {
 	ReleaseDC(_hWnd, DC);
 }*/
 
+void VerVideo::MostrarMenuVideo(void) {
+	
+	App.MenuVideoMomentos->Activado(FALSE);
+	// Creo los sub menus para los momentos (si es que existe algun momento)
+	if (App.MP.MedioActual().Id != 0) {
+		App.MenuVideoMomentos->Activado(TRUE);
+		DWL::DMenuEx* TmpMenu = NULL;
+		App.MenuVideoMomentos->EliminarTodosLosMenus();
+		for (size_t i = 0; i < App.MP.MedioActual().Momentos.size(); i++) {
+			TmpMenu = NULL;
+			TmpMenu = App.MenuVideoMomentos->AgregarMenu(ID_MENULISTA_MOMENTOS_MOMENTO + i, App.MP.MedioActual().Momentos[i]->Nombre, (App.MP.MedioActual().Momentos[i]->Excluir) ? IDI_MOMENTO_EXCLUIR : IDI_MOMENTO);
+			if (TmpMenu) TmpMenu->Parametro = App.MP.MedioActual().Hash;
+		}
+	}
+
+	App.VentanaRave.Menu_Video.Mostrar(&App.VentanaRave);
+
+}
+
 LRESULT CALLBACK VerVideo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	static POINT nPos = { 0 , 0 };
 	switch (uMsg) {
@@ -177,7 +196,7 @@ LRESULT CALLBACK VerVideo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lPara
 			App.VentanaRave.PantallaCompleta(!App.VentanaRave.PantallaCompleta());
 			return 0;
 		case WM_RBUTTONUP:
-			App.VentanaRave.Menu_Video.Mostrar(&App.VentanaRave);
+			MostrarMenuVideo();
 			return 0;
 			/*		case WM_KEYUP:
 						if (wParam == VK_ESCAPE) {

@@ -192,9 +192,10 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 	if (_Actual) {
 		// Compruebo si el medio actual es un momento
 		if (_Actual->Medio.PosMomento != -1) {
+			// Compruebo si ha llegado al final del momento para parar el medio
 			if (TActualMS > _Actual->Medio.Momentos[_Actual->Medio.PosMomento]->TiempoFinal) {
 				Stop();
-				CerrarMedio();
+				CerrarMedio();				
 			}
 		}
 		// Compruebo si el medio actual tiene algun momento de exclusión

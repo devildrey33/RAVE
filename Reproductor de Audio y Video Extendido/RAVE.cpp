@@ -22,7 +22,7 @@ void RAVE_Iniciar(void) {
 
 RAVE *_APLICACION = NULL;
 
-RAVE::RAVE(void) : PlayerInicial(FALSE), MutexPlayer(NULL), MenuVideoPistasDeAudio(NULL), MenuVideoProporcion(NULL), MenuVideoFiltros(NULL), MenuVideoSubtitulos(NULL)/*, _gdiplusToken(0) */ {
+RAVE::RAVE(void) : PlayerInicial(FALSE), MutexPlayer(NULL), MenuVideoPistasDeAudio(NULL), MenuVideoProporcion(NULL), MenuVideoFiltros(NULL), MenuVideoSubtitulos(NULL), MenuVideoMomentos(NULL)/*, _gdiplusToken(0) */ {
 	// Inicio la semilla para generar números aleatórios
 //	srand(GetTickCount());
 }
@@ -240,6 +240,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_AGREGARALISTA		, L"Añadir a lista"								, IDI_AGREGARLISTA);
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_AGREGARANUEVALISTA	, L"Añadir a una nueva lista"					, IDI_AGREGARNUEVALISTA);
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ABRIRCARPETA			, L"Abrir carpeta"								, IDI_DIRECTORIO);
+	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_MOMENTOS				, L"Momentos"									, IDI_MOMENTOS);
 	VentanaRave.Menu_ArbolBD.AgregarBarra(ID_MENUBD_NOTA				, L"Nota"										, IDI_NOTA, 0.0f, 5.0f, 2.5f, DBarraEx_MostrarValor_ValorMaximo2Decimales);
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_PROPIEDADES			, L"Propiedades");
 	VentanaRave.Menu_ArbolBD.AgregarSeparador();
@@ -317,6 +318,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 	MenuVideoFiltros->AgregarBarra(ID_MENUVIDEO_SATURACION										, L"Saturación"			, NULL, 0.0f, 2.0f, 1.0f, DBarraEx_MostrarValor_Valor2Decimales);
 	MenuVideoFiltros->AgregarSeparador();
 	MenuVideoFiltros->AgregarMenu(ID_MENUVIDEO_PORDEFECTO										, L"Restaurar valores iniciales");
+	MenuVideoMomentos   = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_MOMENTOS			, L"Momentos"				, IDI_MOMENTOS);
 	MenuVideoSubtitulos = VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_SUBTITULOS		, L"Subtitulos"				, IDI_SUBTITULOS, -1, FALSE);
 
 

@@ -203,6 +203,7 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 	if (DatosMouse.Boton == 1) {
 		BOOL nActivar			= (_ItemResaltado == -1) ? FALSE : TRUE;
 		BOOL nBuscarBDActivado	= nActivar;
+		BOOL nMomentosActivado  = nActivar;
 
 		// Si el item marcado corresponde a un medio
 		if (_ItemMarcado > -1 && _ItemMarcado < static_cast<LONG_PTR>(_Items.size())) {			
@@ -219,10 +220,16 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 			// Agrego los menus para los momentos
 			DWL::DMenuEx *TmpMenu = NULL;
 			App.VentanaRave.Menu_Lista.Menu(2)->EliminarTodosLosMenus();
-			for (size_t i = 0; i < TmpMedio.Momentos.size(); i++) {
-				TmpMenu = NULL;
-				TmpMenu = App.VentanaRave.Menu_Lista.Menu(2)->AgregarMenu(ID_MENULISTA_MOMENTOS_MOMENTO + i, TmpMedio.Momentos[i]->Nombre, (TmpMedio.Momentos[i]->Excluir) ? IDI_MOMENTO_EXCLUIR : IDI_MOMENTO);
-				if (TmpMenu) TmpMenu->Parametro = TmpMedio.Hash;
+			if (TotalItemsSeleccionados() == 1) {
+				nMomentosActivado = TRUE;
+				for (size_t i = 0; i < TmpMedio.Momentos.size(); i++) {
+					TmpMenu = NULL;
+					TmpMenu = App.VentanaRave.Menu_Lista.Menu(2)->AgregarMenu(ID_MENULISTA_MOMENTOS_MOMENTO + i, TmpMedio.Momentos[i]->Nombre, (TmpMedio.Momentos[i]->Excluir) ? IDI_MOMENTO_EXCLUIR : IDI_MOMENTO);
+					if (TmpMenu) TmpMenu->Parametro = TmpMedio.Hash;
+				}
+			}
+			else {
+				nMomentosActivado = FALSE;
 			}
 		}
 
@@ -247,8 +254,9 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 
 		// Activo / desactivo los menus
 		for (size_t i = 0; i < App.VentanaRave.Menu_Lista.TotalMenus(); i++) {
-			if (i == 2)	App.VentanaRave.Menu_Lista.Menu(i)->Activado(nBuscarBDActivado);
-			else        App.VentanaRave.Menu_Lista.Menu(i)->Activado(nActivar);
+			if		(i == 2)	App.VentanaRave.Menu_Lista.Menu(i)->Activado(nMomentosActivado);
+			else if (i == 3)	App.VentanaRave.Menu_Lista.Menu(i)->Activado(nBuscarBDActivado);
+			else				App.VentanaRave.Menu_Lista.Menu(i)->Activado(nActivar);
 		}
 		App.VentanaRave.Menu_Lista.Mostrar(&App.VentanaRave);
 	}

@@ -7,6 +7,7 @@ public:
 						VerVideo(void);
 	                   ~VerVideo(void);
 	HWND				Crear(DWL::DhWnd *Padre, const int cX, const int cY, const int cAncho, const int cAlto, const UINT cID);
+	void                MostrarMenuVideo(void);
 	void				Pintar(HDC hDC);
 //	void                PintarOscyloscopio(void);
 //	void                Evento_Temporizador(const UINT cID);
