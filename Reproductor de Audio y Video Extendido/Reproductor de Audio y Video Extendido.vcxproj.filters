@@ -152,6 +152,9 @@
     <Filter Include="Ventanas y Controles\Ventanas">
       <UniqueIdentifier>{45cc9b22-ca73-44eb-903b-e466183b06d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DWL\Ventanas\Dialogos Comunes\DlgAbrir">
+      <UniqueIdentifier>{9c63ed83-45c8-4791-957d-9fc9e9211baa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -421,6 +424,9 @@
     <ClInclude Include="BDMedio.h">
       <Filter>Base de datos</Filter>
     </ClInclude>
+    <ClInclude Include="DDlgAbrir.h">
+      <Filter>DWL\Ventanas\Dialogos Comunes\DlgAbrir</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -641,6 +647,9 @@
     </ClCompile>
     <ClCompile Include="BDMedio.cpp">
       <Filter>Base de datos</Filter>
+    </ClCompile>
+    <ClCompile Include="DDlgAbrir.cpp">
+      <Filter>DWL\Ventanas\Dialogos Comunes\DlgAbrir</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

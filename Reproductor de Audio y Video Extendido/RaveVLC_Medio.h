@@ -51,6 +51,8 @@ class RaveVLC_Medio : public Rave_Medio {
 	void                        Saturacion(const float nSaturacion);
 								// Pista de audio para el video
 	void						AsignarPistaAudio(int nPista);
+	const int                   AsignarSubtitulos(const wchar_t* Path);
+	const int                   EnumerarSubtitulos(void);
 
 //	UINT64                      TiempoTotal;
 //	BDMedio                     Medio;		// Datos del medio

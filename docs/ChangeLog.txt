@@ -10,6 +10,8 @@
 
 * Se han fusionado todas las tablas de momentos en una sola, me resultará mas fácil tranajar con una sola tabla que con una por medio, en especial si hay que hacer listas aleatórias.
 
+* Añadidos nuevos iconos para los menús que no tenian icono (aun faltan un par o tres)
+
 
 
 ### Versión 0.521

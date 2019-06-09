@@ -69,7 +69,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\vlc-3.0.4\Include;$(IncludePath)</IncludePath>
+    <IncludePath>..\vlc-3.0.7\Include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</IntDir>
     <TargetName>RAVE</TargetName>
@@ -79,11 +79,11 @@
     <OutDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</IntDir>
     <TargetName>RAVE</TargetName>
-    <IncludePath>..\vlc-3.0.4\Include;$(IncludePath)</IncludePath>
+    <IncludePath>..\vlc-3.0.7\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>..\vlc-3.0.4\Include;$(IncludePath)</IncludePath>
+    <IncludePath>..\vlc-3.0.7\Include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</IntDir>
     <TargetName>RAVE</TargetName>
@@ -93,7 +93,7 @@
     <OutDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</IntDir>
     <TargetName>RAVE</TargetName>
-    <IncludePath>..\vlc-3.0.4\Include;$(IncludePath)</IncludePath>
+    <IncludePath>..\vlc-3.0.7\Include;$(IncludePath)</IncludePath>
     <EmbedManifest>true</EmbedManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -194,6 +194,7 @@
     <ClInclude Include="DControl.h" />
     <ClInclude Include="DControlDesplegableEx.h" />
     <ClInclude Include="DControlEx.h" />
+    <ClInclude Include="DDlgAbrir.h" />
     <ClInclude Include="DEventoMouse.h" />
     <ClInclude Include="DDesplegableEx %28DEPRECATED%29.h" />
     <ClInclude Include="DDesplegableEx_ExplorarDirectoriosEx %28DEPRECATED%29.h" />
@@ -291,6 +292,7 @@
     <ClCompile Include="DControlEx.cpp" />
     <ClCompile Include="DDesplegableEx %28DEPRECATED%29.cpp" />
     <ClCompile Include="DDesplegableEx_ExplorarDirectoriosEx %28DEPRECATED%29.cpp" />
+    <ClCompile Include="DDlgAbrir.cpp" />
     <ClCompile Include="DEdicionTextoEx.cpp" />
     <ClCompile Include="DExplorarDirectoriosEx.cpp" />
     <ClCompile Include="DFuente.cpp" />

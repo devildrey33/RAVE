@@ -381,6 +381,8 @@ void RaveVLC_Medio::Saturacion(const float nSaturacion) {
 const BOOL RaveVLC_Medio::ObtenerDatosParsing(void) {
 	if (_Medio == NULL) return FALSE;
 	libvlc_state_t nEstado = libvlc_media_player_get_state(_Medio);
+	std::wstring   Texto;
+
 	// Si no se ha parseado
 	if (_Parseado == FALSE && nEstado == libvlc_Playing) {
 		_Parseado = TRUE;
@@ -391,7 +393,6 @@ const BOOL RaveVLC_Medio::ObtenerDatosParsing(void) {
 
 			libvlc_track_description_t *Desc = libvlc_audio_get_track_description(_Medio);
 
-			std::wstring Texto;
 			App.MenuVideoPistasDeAudio->EliminarTodosLosMenus();
 			for (int i = 0; i < TotalPîstas; i++) {
 				if (i != 0) {
@@ -408,6 +409,9 @@ const BOOL RaveVLC_Medio::ObtenerDatosParsing(void) {
 		else {	// Si solo hay una pista de audio desactivo el menú
 			App.MenuVideoPistasDeAudio->Activado(FALSE);
 		}
+
+		// Enumero los subtitulos
+		EnumerarSubtitulos();
 
 		BOOL EsVideo = (Medio.TipoMedio == Tipo_Medio_Video);
 
@@ -427,9 +431,42 @@ const BOOL RaveVLC_Medio::ObtenerDatosParsing(void) {
 	return FALSE;
 }
 
+const int RaveVLC_Medio::EnumerarSubtitulos(void) {
+	// Enumero los subtitulos
+	int          TotalSubtitulos = libvlc_video_get_spu_count(_Medio);
+	std::wstring Texto;
+	DMenuEx     *TmpMenu = NULL;
+	libvlc_track_description_t* Desc2 = libvlc_video_get_spu_description(_Medio);
+	for (int i = 0; i < TotalSubtitulos; i++) {
+		DWL::Strings::AnsiToWide(Desc2->psz_name, Texto);
+		TmpMenu = App.MenuVideoSubtitulos->AgregarMenu(static_cast<INT_PTR>(ID_MENUVIDEO_SUBTITULOS_SUBS) + i, Texto);
+		TmpMenu->Parametro = Desc2->i_id;
+		Desc2 = Desc2->p_next;
+	}
+	libvlc_track_description_list_release(Desc2);
+	return TotalSubtitulos;
+};
+
 void RaveVLC_Medio::AsignarPistaAudio(const int nPista) {
 	libvlc_audio_set_track(_Medio, nPista);
 }
+
+const int RaveVLC_Medio::AsignarSubtitulos(const wchar_t* Path) {
+	char	Destino[2048];
+	size_t  TamnTexto = wcslen(Path);
+	int		TamRes = WideCharToMultiByte(CP_UTF8, NULL, Path, static_cast<int>(TamnTexto), Destino, 2048, NULL, NULL);
+	Destino[TamRes] = 0;
+	// Segons doc de la VLC libvlc_video_set_subtitle_file está DEPRECATED i s'ha d'utilitzar libvlc_media_player_add_slave, PERO a mi no em funciona...
+//	return libvlc_media_player_add_slave(_Medio, libvlc_media_slave_type_subtitle , Destino, true);
+//	return libvlc_video_set_spu(_Medio, 0);		
+	return libvlc_video_set_subtitle_file(_Medio, Destino);
+}
+
+
+
+
+
+
 
 // de 0 al volumen actual
 void RaveVLC_Medio::FadeIn(void) {

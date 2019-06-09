@@ -628,6 +628,16 @@ void Rave_MediaPlayer::AsignarPistaAudio(const int nPista) {
 	_Actual->AsignarPistaAudio(nPista);
 }
 
+const int Rave_MediaPlayer::AsignarSubtitulos(const wchar_t* Path) {
+	if (_Actual == NULL) return 0;
+	return _Actual->AsignarSubtitulos(Path);
+}
+
+const int Rave_MediaPlayer::EnumerarSubtitulos(void) {
+	if (_Actual == NULL) return 0;
+	return _Actual->EnumerarSubtitulos();
+}
+
 void Rave_MediaPlayer::Temporizador_ObtenerVentanaVLC(void) {
 	EnumChildWindows(App.VentanaRave.Video.hWnd(), &Rave_MediaPlayer::EnumeracionVLC, NULL);
 	if (App.MP.hWndVLC != NULL) KillTimer(hWnd(), TIMER_OBTENERVLCWND);

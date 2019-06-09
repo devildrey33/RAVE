@@ -9,6 +9,7 @@
 #include "DStringUtils.h"
 #include <versionhelpers.h>
 #include <Shlobj.h>
+#include "DDlgAbrir.h"
 
 #define RAVE_MIN_ANCHO 670
 #define RAVE_MIN_ALTO  280
@@ -571,7 +572,12 @@ void VentanaPrincipal::Video_Momentos(void) {
 }
 
 void VentanaPrincipal::Video_Subtitulos(void) {
-	App.MostrarToolTipPlayerError(L"Por implementar...");
+	DWL::DDlgAbrir Abrir(L"", L"Archivos de Subtítulos\0*.srt\0", L"Abrir subtitulo", false, _hWnd);
+	if (Abrir.Archivos.size() != 0) {
+		int Ret = App.MP.AsignarSubtitulos(Abrir[0].c_str());
+		int Ret2 = App.MP.EnumerarSubtitulos();
+		App.MostrarToolTipPlayer(L"Subtitulos cargados");
+	}	
 }
 
 

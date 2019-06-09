@@ -30,6 +30,8 @@ class Rave_MediaPlayer : public DWL::DVentana {
 	Estados_Medio					ComprobarEstado(void);
 
 	void							AsignarPistaAudio(int nPista);
+	const int				        AsignarSubtitulos(const wchar_t* Path);
+	const int                       EnumerarSubtitulos(void);
 
 	const float						TiempoActual(void);
 	void							TiempoActual(float nTiempo);
@@ -68,6 +70,7 @@ class Rave_MediaPlayer : public DWL::DVentana {
 	void                            MedioActual(BDMedio& nMedio);
 
 	const BOOL						ObtenerDatosParsing(void);
+	
 
 	static std::wstring            &UltimoErrorVLC(void);
 
