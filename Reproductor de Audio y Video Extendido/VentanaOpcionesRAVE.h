@@ -36,13 +36,13 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	DWL::DBotonEx			BotonCerrar;
 
 	DWL::DBotonEx			BotonBaseDeDatos;
-//	DWL::DBotonEx			BotonAsociacionesArchivos;
+	DWL::DBotonEx			BotonTeclado;
 	DWL::DBotonEx			BotonListas;
 	DWL::DBotonEx			BotonGeneral;
 	DWL::DBotonEx			BotonVideo;
 
 	MarcoControles			MarcoBaseDeDatos;
-	MarcoControles			MarcoAsociacionesArchivos;
+	MarcoControles          MarcoTeclado;
 	MarcoControles			MarcoListas;
 	MarcoControles			MarcoGeneral;
 	MarcoControles			MarcoVideo;
@@ -55,14 +55,16 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	DWL::DMarcaEx			MarcaMostrarAnalisis;
 	DWL::DMarcaEx			MarcaAnalizarMediosPendientes;
 
-							// General
+							// Teclado
 	DEtiquetaEx				EtiquetaTeclasRapidas;
-	AsignarTeclaRapida		TeclasRapidas[6];
-	DWL::DEtiquetaEx		EtiquetasTeclas[6];
+	AsignarTeclaRapida		TeclasRapidas[9];
+	DWL::DEtiquetaEx		EtiquetasTeclas[9];
 	ControlSeparador	    SeparadorGeneral;
 	DWL::DMarcaEx			MarcaBuscarActualizaciones;
 	DEtiquetaEx			    EtiquetaTiempoAnimaciones;
 	DEtiquetaEx             EtiquetaTiempoAnimacionesTA;
+
+							// General
 	DBarraDesplazamientoEx	BarraTiempoAnimaciones;
 	DEtiquetaEx			    EtiquetaTiempoOcultarToolTips;
 	DBarraDesplazamientoEx	BarraTiempoToolTips;

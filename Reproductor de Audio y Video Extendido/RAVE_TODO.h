@@ -3,7 +3,7 @@
 	    V  Errors critics i enviar DUPMS
 		V  Control DBoton
 		V  Control DLabel
-		V  Control DToolTip basic
+		V  Control DToolTip básic
 		V  Controls DBarraDesplazamiento, DBarraProgreso, i DBarraScroll
 		V  Poder afegir i eliminar arrels a la BD desde les opcions
 	   +o- Control DArbolEx
@@ -310,24 +310,8 @@
 
 		V  Guardar qualsevol canvi del : brillo, contraste, saturación, proporción de cada video per poder carregar-lo despres automáticament en quansevol reproducció futura.
 
-		-  Buscar actualitzacións (algo simple que em doni la web per descarregar l'actualització)
-
 		V  Afegir tecles ràpides F1, F2, F3 -> Mostrar medio actual en : Tooltip, BD, Lista
 			V  F1, F2, F3
-
-		-  Opcions 
-			-  Llista
-				-  Mezclar listas aleatoíras generadas por genero, grupo, 50 canciones.
-				-  No Mezclar listas aleatórias generadas por disco.
-			-  General 
-				- Ocultar tooltips al pasar por encima con el mouse
-				- Tamaño tooltips (fer 3 mides : petit, normal [que es la actual], gran)
-
-		-  Les llistes aleatóries per estil, grup, 50 can han d'activar el shufle
-			- Les llistes aleatóries per disc han de desactivar el shufle
-
-		- Les notes menors que 2 s'han de mostrar amb una estrella gris
-
 
 		V Crear un sistema per guardar 'momentos' per cada medi (aixo implicara un array indefinit de momentos per medi.
 			V La idea consisteix en poder marcar un temps especific del medi inicial i final, per designar un moment especial. Per exemple marcar la mort d'un personatge concret en un episodi de juego de tronos.
@@ -342,6 +326,29 @@
 
 		V M'ha petat un parell de cops al tancar el reproductor... segons el call stack sembla que es per modificar el brillo...
 			V He actualitzat el thread analizar per que al guardar items es guardi el brillo, el contraste, i la saturació a 1.0 , ja que començaven en NULL...
+
+		V  Carregar subtituls
+			V Carregar subtituls desde un common dialog
+			X Utilitzar la funció del slave ja que la funció vella dels subtituls está DEPECATED
+				No aconsegueixo fer funcionar la nova funció.... ni amb la versió 4.0.0 de la VLC...
+
+		-  Buscar actualitzacións (algo simple que em doni la web per descarregar l'actualització)
+
+		-  Opcions
+			V  Pasar les tecles personalitzades a una nova secció Teclado
+				V  Agregar F1, F2, i F3
+			-  Llista
+				-  Mezclar listas aleatoíras generadas por genero, grupo, 50 canciones.
+				-  No Mezclar listas aleatórias generadas por disco.			
+			-  General
+				-  Ocultar tooltips al pasar por encima con el mouse
+				-  Tamaño tooltips (fer 3 mides : petit, normal [que es la actual], gran)
+			-  Video
+				-  Guardar valores de brillo saturacion contraste i proporcion para cada medio
+
+		- Les notes menors que 2 s'han de mostrar amb una estrella gris
+		- Llista per nota
+		- Llista per momentos??
 
 
 	RAVE 0.7
@@ -368,7 +375,6 @@
 			-  Mostrar el % del medi reproduit en el item que es el MedioActual
 				- Necesitare crear virtuals a DListaEx
 
-		-  Carregar subtituls
 		-  Carregar llistes m3u
 		-  Carregar pistes CDAudio
 		-  Suport per dvds de video

@@ -27,7 +27,7 @@ class AsignarTeclaRapida : public DWL::DControlEx {
 	void				Crear(DWL::DhWnd *nPadre, const int cX, const int cY, const int cAncho, const int cAlto, const INT_PTR cID, TeclaRapida *nTecla);
 
 	void                EditarTecla(void);
-
+	const BOOL          ExisteTecla(const int Tecla, const BOOL Control, const BOOL Shift, const BOOL Alt);
 
 	void				Pintar(HDC DC);
 	

@@ -595,50 +595,41 @@ const BOOL RaveBD::_ModificarTablas(void) {
 	std::wstring Q;
 
 	if (Version < 1.1) {
+		// Opciones ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Añado la columna EfectoFadeAudioMS en las opciones
-		Q = L"ALTER TABLE Opciones	ADD COLUMN EfectoFadeAudioMS INTEGER AFTER OpacidadControlesVideo";
-		SqlRet = Consulta(Q);
-
+		SqlRet = Consulta(L"ALTER TABLE Opciones	ADD COLUMN EfectoFadeAudioMS INTEGER AFTER OpacidadControlesVideo");
 		// Añado la columna DlgDirectorios_Ancho en las opciones
-		Q = L"ALTER TABLE Opciones	ADD COLUMN DlgDirectorios_Ancho INTEGER AFTER EfectoFadeAudioMS";
-		SqlRet = Consulta(Q);
-
+		SqlRet = Consulta(L"ALTER TABLE Opciones	ADD COLUMN DlgDirectorios_Ancho INTEGER AFTER EfectoFadeAudioMS");
 		// Añado la columna DlgDirectorios_Alto en las opciones
-		Q = L"ALTER TABLE Opciones	ADD COLUMN DlgDirectorios_Alto INTEGER AFTER DlgDirectorios_Ancho";
-		SqlRet = Consulta(Q);
-
+		SqlRet = Consulta(L"ALTER TABLE Opciones	ADD COLUMN DlgDirectorios_Alto INTEGER AFTER DlgDirectorios_Ancho");
 		// Añado la columna VentanaMomentos_PosX en las opciones
-		Q = L"ALTER TABLE Opciones	ADD COLUMN VentanaMomentos_PosX INTEGER AFTER DlgDirectorios_Alto";
-		SqlRet = Consulta(Q);
-
+		SqlRet = Consulta(L"ALTER TABLE Opciones	ADD COLUMN VentanaMomentos_PosX INTEGER AFTER DlgDirectorios_Alto");
 		// Añado la columna VentanaMomentos_PosX en las opciones
-		Q = L"ALTER TABLE Opciones	ADD COLUMN VentanaMomentos_PosY INTEGER AFTER VentanaMomentos_PosX";
-		SqlRet = Consulta(Q);
-
+		SqlRet = Consulta(L"ALTER TABLE Opciones	ADD COLUMN VentanaMomentos_PosY INTEGER AFTER VentanaMomentos_PosX");
 		// Modifico el valor de EfectoFadeAudioMS a 10000
-		Q = L"UPDATE Opciones SET EfectoFadeAudioMS=10000, DlgDirectorios_Ancho=400, DlgDirectorios_Alto=600, VentanaMomentos_PosX=100, VentanaMomentos_PosY=100 WHERE Id=0";
-		SqlRet = Consulta(Q);
+		SqlRet = Consulta(L"UPDATE Opciones SET EfectoFadeAudioMS=10000, DlgDirectorios_Ancho=400, DlgDirectorios_Alto=600, VentanaMomentos_PosX=100, VentanaMomentos_PosY=100 WHERE Id=0");
 
-
+		// Medios /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Añado la columna Proporcion en los medios
-		Q = L"ALTER TABLE Medios ADD COLUMN Proporcion INTEGER AFTER PistaEleccion";
-		SqlRet = Consulta(Q);
+		SqlRet = Consulta(L"ALTER TABLE Medios ADD COLUMN Proporcion INTEGER AFTER PistaEleccion");
+		// Añado la columna Brillo en los medios
+		SqlRet = Consulta(L"ALTER TABLE Medios ADD COLUMN Brillo INTEGER AFTER Proporcion");
+		// Añado la columna Contraste en los medios
+		SqlRet = Consulta(L"ALTER TABLE Medios ADD COLUMN Contraste INTEGER AFTER Brillo");
+		// Añado la columna Saturacion en los medios
+		SqlRet = Consulta(L"ALTER TABLE Medios ADD COLUMN Saturacion INTEGER AFTER Contraste");
+		// Actualizo los valores de proporcion, brillo, contraste, y saturación
+		SqlRet = Consulta(L"UPDATE Medios SET Proporcion='', Brillo=1.0, Contraste=1.0, Saturacion=1.0");
 
-		// Añado la columna Proporcion en los medios
-		Q = L"ALTER TABLE Medios ADD COLUMN Brillo INTEGER AFTER Proporcion";
-		SqlRet = Consulta(Q);
+		// TeclasRapidas ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// Añado la tecla F1 a la tabla TeclasRapidas
+		SqlRet = Consulta(L"INSERT INTO TeclasRapidas (Tecla, Control, Alt, Shift) VALUES(112, 0, 0, 0)");
+		// Añado la tecla F2 a la tabla TeclasRapidas
+		SqlRet = Consulta(L"INSERT INTO TeclasRapidas (Tecla, Control, Alt, Shift) VALUES(113, 0, 0, 0)");
+		// Añado la tecla F3 a la tabla TeclasRapidas
+		SqlRet = Consulta(L"INSERT INTO TeclasRapidas (Tecla, Control, Alt, Shift) VALUES(114, 0, 0, 0)");
 
-		// Añado la columna Proporcion en los medios
-		Q = L"ALTER TABLE Medios ADD COLUMN Contraste INTEGER AFTER Brillo";
-		SqlRet = Consulta(Q);
-
-		// Añado la columna Proporcion en los medios
-		Q = L"ALTER TABLE Medios ADD COLUMN Saturacion INTEGER AFTER Contraste";
-		SqlRet = Consulta(Q);
-
-		Q = L"UPDATE Medios SET Proporcion='', Brillo=1.0, Contraste=1.0, Saturacion=1.0";
-		SqlRet = Consulta(Q);
-
+		// Versión //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Actualizo la versión de la BD (MOVER ESTE UPDATE A LA ULTIMA VERSIÓN)
 		Q = L"UPDATE Opciones SET Version=" RAVE_VERSIONBD L" WHERE Id=0";
 		SqlRet = Consulta(Q);
@@ -767,7 +758,10 @@ const BOOL RaveBD::_CrearTablas(void) {
 	// Agrego los valores por defecto en la tabla de las teclas rápidas
 	for (size_t i = 0; i < App.TeclasRapidas.size(); i++) {
 		Q = L"INSERT INTO TeclasRapidas (Tecla, Control, Alt, Shift) "
-			L"VALUES(" + std::to_wstring(App.TeclasRapidas[i].Tecla) + L"," + std::to_wstring(App.TeclasRapidas[i].Control) + L"," + std::to_wstring(App.TeclasRapidas[i].Alt) + L","+ std::to_wstring(App.TeclasRapidas[i].Shift) + L")";
+			L"VALUES(" + std::to_wstring(App.TeclasRapidas[i].Tecla) + L"," + 
+										 std::to_wstring(App.TeclasRapidas[i].Control)	+ L"," + 
+										 std::to_wstring(App.TeclasRapidas[i].Alt)		+ L"," +
+										 std::to_wstring(App.TeclasRapidas[i].Shift)	+ L")";
 		if (Consulta(Q.c_str()) == SQLITE_ERROR) return FALSE;
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////

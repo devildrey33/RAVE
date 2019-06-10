@@ -1,5 +1,23 @@
 # Log de cambios
 
+### Versión 0.523
+
+* LibVLC actualizada a la versión 3.0.7
+
+* Implementación básica para cargar subtitulos. (con algunos problemas...)
+
+* Creado objeto DDlgAbrir que permite mostrar un dialogo para abrir archivos externos.
+
+* Creada pestaña teclado en las opciones.
+
+* Ya no puedes asignar la misma tecla rápida para mas de una acción.
+
+* La ventana de opciones ya no puede ser redimensionada, que aunque lo fuera conservaba el tamaño inicial de los controles.
+
+* Añadidas teclas F1, F2 y F3 a la lista de teclas rápidas editables en las opciones.
+
+
+
 ### Versión 0.522
 
 * Creado SubMenu Momentos para el menú de la base de datos, que muestra los momentos como sub-menu.

@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "AsignarTeclaRapida.h"
 
-#define ANCHO_BOTON		 100
+#define ANCHO_BOTON		  60
 #define MARGEN            10
 #define ID_BOTON_EDITAR 1000
 
-AsignarTeclaRapida::AsignarTeclaRapida(void) : _Editando(FALSE) {
+AsignarTeclaRapida::AsignarTeclaRapida(void) : _Editando(FALSE), _TeclaRapida(NULL) {
 }
 
 AsignarTeclaRapida::~AsignarTeclaRapida(void) {
@@ -96,13 +96,28 @@ void AsignarTeclaRapida::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) 
 		BOOL Control	= ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0);
 		BOOL Alt		= ((GetAsyncKeyState(VK_MENU) & 0x8000) != 0);
 		BOOL Shift		= ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0);
-		_TeclaRapida->Asignar(DatosTeclado.TeclaVirtual(), Control, Alt, Shift);
-		_Texto = _TeclaRapida->String();
-		_Editando = FALSE;
-		Repintar();
-		App.MostrarToolTipOpciones(L"Nueva tecla rápida asignada.");
-		App.BD.GuardarTeclasRapidas();
+
+		if (ExisteTecla(DatosTeclado.TeclaVirtual(), Control, Shift, Alt) == TRUE) {
+			_TeclaRapida->Asignar(DatosTeclado.TeclaVirtual(), Control, Alt, Shift);
+			_Texto = _TeclaRapida->String();
+			_Editando = FALSE;
+			Repintar();
+			App.MostrarToolTipOpciones(L"Nueva tecla rápida asignada.");
+			App.BD.GuardarTeclasRapidas();
+		}
+		else {
+			App.MostrarToolTipOpcionesError(L"La tecla ya está asignada");
+		}
 	}
+}
+
+const BOOL AsignarTeclaRapida::ExisteTecla(const int Tecla, const BOOL Control, const BOOL Shift, const BOOL Alt) {
+	for (size_t i = 0; i < App.TeclasRapidas.size(); i++) {
+		if (App.TeclasRapidas[i].Tecla == Tecla && App.TeclasRapidas[i].Control == Control && App.TeclasRapidas[i].Alt == Alt && App.TeclasRapidas[i].Shift == Shift) {			
+			return TRUE;
+		}
+	}
+	return FALSE;
 }
 
 void AsignarTeclaRapida::Evento_Tecla(DWL::DEventoTeclado &DatosTeclado) {

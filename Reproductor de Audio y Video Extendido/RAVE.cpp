@@ -135,6 +135,9 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 	TeclasRapidas.push_back(TeclaRapida(VK_SUBTRACT, FALSE, FALSE, FALSE));
 	TeclasRapidas.push_back(TeclaRapida(VK_RIGHT, TRUE, FALSE, FALSE));
 	TeclasRapidas.push_back(TeclaRapida(VK_LEFT, TRUE, FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_F1, FALSE, FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_F2, FALSE, FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_F3, FALSE, FALSE, FALSE));
 
 //	Gdiplus::GdiplusStartupInput	gdiplusStartupInput;
 	// Initialize GDI+.
@@ -490,7 +493,7 @@ void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 		case VK_MEDIA_PREV_TRACK:
 			App.VentanaRave.Lista_Anterior();
 			return;
-		case VK_F1 : // Tecla F1 muestra el tooltip del medio actual
+/*		case VK_F1 : // Tecla F1 muestra el tooltip del medio actual
 			if (MP.ComprobarEstado() == EnPlay || MP.ComprobarEstado() == EnPausa) {
 				MostrarToolTipPlayer(MP.MedioActual());
 			}
@@ -509,7 +512,7 @@ void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 				VentanaRave.Lista.ItemMarcado(VentanaRave.Lista.MedioActual);
 				VentanaRave.MostrarMarco(ID_BOTON_LISTA);
 			}
-			return;
+			return;*/
 
 	}
 	
@@ -546,6 +549,26 @@ void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 					break;
 				case 5: // Retroceder
 					App.VentanaRave.Lista_Anterior();
+					break;
+				case 6: // Mostrar info medio
+					if (MP.ComprobarEstado() == EnPlay || MP.ComprobarEstado() == EnPausa) {
+						MostrarToolTipPlayer(MP.MedioActual());
+					}
+					break;
+				case 7: // Mostrar medio en la bd
+					if (MP.ComprobarEstado() == EnPlay || MP.ComprobarEstado() == EnPausa) {
+						VentanaRave.Arbol_MostrarMedio(MP.MedioActual().Hash);
+						VentanaRave.MostrarMarco(ID_BOTON_BD);
+					}
+					break;
+				case 8: // Mostrar medio en la lista
+					if (MP.ComprobarEstado() == EnPlay || MP.ComprobarEstado() == EnPausa) {
+						VentanaRave.Lista.MostrarItem(VentanaRave.Lista.MedioActual);
+						VentanaRave.Lista.DesSeleccionarTodo();
+						VentanaRave.Lista.MedioActual->Seleccionado = TRUE;
+						VentanaRave.Lista.ItemMarcado(VentanaRave.Lista.MedioActual, TRUE);
+						VentanaRave.MostrarMarco(ID_BOTON_LISTA);
+					}
 					break;
 			}
 		}
