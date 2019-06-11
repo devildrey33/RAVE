@@ -181,6 +181,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 						case Tipo_Inicio_Disco			:	VentanaRave.GenerarListaAleatoria(TLA_Disco);						break;
 						case Tipo_Inicio_50Medios		:	VentanaRave.GenerarListaAleatoria(TLA_50Medios);					break;
 						case Tipo_Inicio_LoQueSea		:	VentanaRave.GenerarListaAleatoria(TLA_LoQueSea);					break;
+						case Tipo_Inicio_Nota			:	VentanaRave.GenerarListaAleatoria(TLA_Nota);						break;
 						case Tipo_Inicio_UltimaLista	:	BD.ObtenerUltimaLista();											break;
 					}
 				#endif
@@ -263,12 +264,14 @@ void RAVE::IniciarUI(int nCmdShow) {
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_PROPIEDADES			, L"Propiedades"								, IDI_MOMENTO_EXCLUIR2);
 
 	// Menu Boton Lista
-	VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_BORRAR					, L"Borrar Lista"				, IDI_ELIMINAR);
-	DMenuEx *Menu = VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_GENERAR	, L"Lista Aleatória"			, IDI_LISTAALEATORIA);
-		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GENERO									, L"Por Genero"				, IDI_GENERO);
-		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GRUPO									, L"Por Grupo"				, IDI_GRUPO);
-		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_DISCO									, L"Por Disco"				, IDI_DISCO);
-		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_50MEDIOS								, L"Con 50 Medios"			, IDI_TERMINADO);
+	VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_BORRAR					, L"Borrar Lista"					, IDI_ELIMINAR);
+	DMenuEx *Menu = VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_GENERAR	, L"Generar Lista"					, IDI_LISTAALEATORIA);
+		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GENERO									, L"Aleatória por Genero"		, IDI_GENERO);
+		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GRUPO									, L"Aleatória por Grupo"		, IDI_GRUPO);
+		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_DISCO									, L"Aleatória por Disco"		, IDI_DISCO);
+		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_50MEDIOS								, L"Aleatória pon 50 Medios"	, IDI_TERMINADO);
+		Menu->AgregarSeparador();
+		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_NOTA									, L"Por Nota"					, IDI_NOTA);
 
 	// Menu Repetir
 	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_NO					, L"Desactivado"		, IDI_NOCHECK);

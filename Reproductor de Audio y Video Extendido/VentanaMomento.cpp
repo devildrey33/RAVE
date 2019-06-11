@@ -223,7 +223,7 @@ void VentanaMomento::CargarMomentos(void) {
 
 	ListaMomentos.EliminarTodosLosItems();
 	for (size_t i = 0; i < Medio.Momentos.size(); i++) {
-		ListaMomentos.AgregarItem((Medio.Momentos[i]->Excluir) ? IDI_MOMENTO_EXCLUIR : IDI_MOMENTO, DLISTAEX_POSICION_FIN, Medio.Momentos[i]->Nombre.c_str());
+		ListaMomentos.AgregarItem((Medio.Momentos[i]->Excluir) ? IDI_MOMENTO_EXCLUIR : IDI_MOMENTO, DLISTAEX_POSICION_FIN, { Medio.Momentos[i]->Nombre });
 	}
 	ListaMomentos.Repintar(TRUE);
 

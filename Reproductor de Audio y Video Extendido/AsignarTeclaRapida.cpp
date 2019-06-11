@@ -97,7 +97,7 @@ void AsignarTeclaRapida::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) 
 		BOOL Alt		= ((GetAsyncKeyState(VK_MENU) & 0x8000) != 0);
 		BOOL Shift		= ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0);
 
-		if (ExisteTecla(DatosTeclado.TeclaVirtual(), Control, Shift, Alt) == TRUE) {
+		if (ExisteTecla(DatosTeclado.TeclaVirtual(), Control, Shift, Alt) == FALSE) {
 			_TeclaRapida->Asignar(DatosTeclado.TeclaVirtual(), Control, Alt, Shift);
 			_Texto = _TeclaRapida->String();
 			_Editando = FALSE;

@@ -111,7 +111,7 @@ ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {
 	App.MP.TiempoStr(nMedio->Tiempo, StrTiempo);
 
 	// Agrego el item
-	ItemMedio *TmpMedio = AgregarItem<ItemMedio>(nIcono, DLISTAEX_POSICION_FIN, Pista.c_str(), nMedio->Nombre().c_str(), StrTiempo.c_str());
+	ItemMedio* TmpMedio = AgregarItem<ItemMedio>(nIcono, DLISTAEX_POSICION_FIN, { Pista, nMedio->Nombre(), StrTiempo });
 	// Agrego el item también en el vector MediosOrdenados (por si el shufle está activado)
 	_MediosOrdenados.push_back(TmpMedio);
 	// Asigno el hash y la Id al item
@@ -201,9 +201,10 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 
 	// Mostrar el menú
 	if (DatosMouse.Boton == 1) {
-		BOOL nActivar			= (_ItemResaltado == -1) ? FALSE : TRUE;
-		BOOL nBuscarBDActivado	= nActivar;
-		BOOL nMomentosActivado  = nActivar;
+		BOOL nActivar				= (_ItemResaltado == -1) ? FALSE : TRUE;
+		BOOL nBuscarBDActivado		= nActivar;
+		BOOL nMomentosActivado		= nActivar;
+		BOOL nPropiedadesActivado	= nActivar;
 
 		// Si el item marcado corresponde a un medio
 		if (_ItemMarcado > -1 && _ItemMarcado < static_cast<LONG_PTR>(_Items.size())) {			
@@ -229,7 +230,9 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 				}
 			}
 			else {
-				nMomentosActivado = FALSE;
+				nMomentosActivado	 = FALSE;
+				nBuscarBDActivado	 = FALSE;
+				nPropiedadesActivado = FALSE;
 			}
 		}
 
@@ -253,11 +256,18 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 		}*/
 
 		// Activo / desactivo los menus
-		for (size_t i = 0; i < App.VentanaRave.Menu_Lista.TotalMenus(); i++) {
+		App.VentanaRave.Menu_Lista.Menu(0)->Activado(nActivar);
+		App.VentanaRave.Menu_Lista.Menu(1)->Activado(nActivar);
+		App.VentanaRave.Menu_Lista.Menu(2)->Activado(nMomentosActivado);
+		App.VentanaRave.Menu_Lista.Menu(3)->Activado(nBuscarBDActivado);
+		App.VentanaRave.Menu_Lista.Menu(4)->Activado(nActivar);
+		App.VentanaRave.Menu_Lista.Menu(5)->Activado(nPropiedadesActivado);
+/*		for (size_t i = 0; i < App.VentanaRave.Menu_Lista.TotalMenus(); i++) {
 			if		(i == 2)	App.VentanaRave.Menu_Lista.Menu(i)->Activado(nMomentosActivado);
 			else if (i == 3)	App.VentanaRave.Menu_Lista.Menu(i)->Activado(nBuscarBDActivado);
+			else if (i == 5)	App.VentanaRave.Menu_Lista.Menu(i)->Activado(nPropiedadesActivado);
 			else				App.VentanaRave.Menu_Lista.Menu(i)->Activado(nActivar);
-		}
+		}*/
 		App.VentanaRave.Menu_Lista.Mostrar(&App.VentanaRave);
 	}
 }

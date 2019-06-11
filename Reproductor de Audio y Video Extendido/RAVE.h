@@ -110,20 +110,12 @@ class RAVE {
 	DConsola						ConsolaDebug;
 
 	RaveBD							BD;
-//	BaseDatos						BD;
 	Rave_MediaPlayer				MP;
 	ControlesPantallaCompleta		ControlesPC;
-
-
-
-//	DWL::DMenuEx                    Menu_Test;
-
 
 	BOOL							PlayerInicial;
 	HANDLE							MutexPlayer;
 
-
-//	std::wstring					SO;
 									// Directorio de la aplicación, Siempre termina con "\"
 	std::wstring					AppPath;
 
@@ -147,8 +139,6 @@ class RAVE {
 	ToolTipsInfo                  _ToolTipPlayer;
 	ToolTipsInfo                  _ToolTipOpciones;
 	ToolTipsInfo                  _ToolTipMomentos;
-//	DToolTipEx                     _ToolTip;
-	//DToolTipEx                     _ToolTip2;
 
 	std::random_device			   _rd;
 	

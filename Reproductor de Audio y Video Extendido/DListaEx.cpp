@@ -69,7 +69,29 @@ namespace DWL {
 		_Repintar = TRUE;
 		return nColumna;
 	}
-	
+
+
+	DListaEx_Item* DListaEx::_AgregarItem(DListaEx_Item *nItem, DIcono &nIcono, const INT_PTR PosicionItem, std::initializer_list<std::wstring> Textos) {
+		nItem->_Lista = this;
+		nItem->_Icono = nIcono;
+
+		// Agrego todos los textos de cada columna
+		DListaEx_SubItem *nSubItem = NULL;
+		for (auto Elemento : Textos) {
+			nSubItem = new DListaEx_SubItem(Elemento.c_str());
+			nItem->_SubItems.push_back(nSubItem);
+		}
+
+		if (PosicionItem == -1)	_Items.push_back(nItem);
+		else if (PosicionItem == -2)	_Items.push_back(nItem);	// TODO (-2 es ordenado)
+		else							_Items.insert(_Items.begin() + PosicionItem, nItem);
+
+		_Repintar = TRUE;
+
+		return nItem;
+	}
+
+	/*
 	DListaEx_Item *DListaEx::_AgregarItem(DListaEx_Item *nItem, DIcono &nIcono, const INT_PTR PosicionItem, const TCHAR *nTxt, va_list Marker) {
 //		DListaEx_Item		*nItem		= new DListaEx_Item();
 		DListaEx_SubItem	*nSubItem 	= new DListaEx_SubItem(nTxt);
@@ -83,7 +105,7 @@ namespace DWL {
 			nItem->_SubItems.push_back(nSubItem);
 		}
 		
-		if (PosicionItem == -1)			_Items.push_back(nItem);
+		if		(PosicionItem == -1)	_Items.push_back(nItem);
 		else if (PosicionItem == -2)	_Items.push_back(nItem);	// TODO (-2 es ordenado)
 		else							_Items.insert(_Items.begin() + PosicionItem, nItem);
 		
@@ -91,7 +113,7 @@ namespace DWL {
 //		_CalcularScrolls();
 
 		return nItem;
-	}
+	}*/
 
 	void DListaEx::EliminarTodosLosItems(void) {
 		for (size_t i = 0; i < _Items.size(); i++) {
@@ -896,7 +918,7 @@ namespace DWL {
 			Debug_Escribir_Varg(L"DListaEx::_Evento_MousePresionado IP:%d X:%d Y:%d\n", _ItemMarcado, DatosMouse.X(), DatosMouse.Y());
 		#endif
 		// Pre-Selecciono el item presionado
-		if (_ItemPresionado != -1) {
+		if (_ItemPresionado != -1 && Boton == 0) {
 			// Si la tecla control no está presionada Pre-Selecciono el item
 			if (DatosMouse.Control() != TRUE) SeleccionarItem(_Items[_ItemPresionado], TRUE);
 		}

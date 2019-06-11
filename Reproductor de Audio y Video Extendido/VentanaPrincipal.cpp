@@ -639,7 +639,8 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		case ID_MENUBOTONLISTA_GENERAR_GRUPO	:	GenerarListaAleatoria(TLA_Grupo);		return;
 		case ID_MENUBOTONLISTA_GENERAR_DISCO	:	GenerarListaAleatoria(TLA_Disco);		return;
 		case ID_MENUBOTONLISTA_GENERAR_50MEDIOS	:	GenerarListaAleatoria(TLA_50Medios);	return;
-		case ID_MENUBOTONLISTA_BORRAR			:	
+		case ID_MENUBOTONLISTA_GENERAR_NOTA		:	GenerarListaAleatoria(TLA_Nota);		return;
+		case ID_MENUBOTONLISTA_BORRAR			:
 			Lista.BorrarListaReproduccion();					
 			App.MostrarToolTipPlayer(L"Lista de reproducción borrada.");
 			return;

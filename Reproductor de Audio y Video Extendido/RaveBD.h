@@ -64,8 +64,9 @@ enum Tipo_Inicio {
 	Tipo_Inicio_Grupo		= 2,
 	Tipo_Inicio_Disco		= 3,
 	Tipo_Inicio_50Medios	= 4,
-	Tipo_Inicio_LoQueSea    = 5,
-	Tipo_Inicio_UltimaLista = 6
+	Tipo_Inicio_Nota		= 5,
+	Tipo_Inicio_LoQueSea    = 6,
+	Tipo_Inicio_UltimaLista = 7
 };
 
 class EtiquetaBD;
@@ -77,7 +78,8 @@ enum TipoListaAleatoria {
 	TLA_Grupo		= 1,
 	TLA_Disco		= 2,
 	TLA_50Medios	= 3,
-	TLA_LoQueSea	= 4
+	TLA_Nota        = 4,
+	TLA_LoQueSea	= 5
 };
 
 class ThreadAnalisis;

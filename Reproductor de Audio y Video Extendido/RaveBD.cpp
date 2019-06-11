@@ -471,7 +471,7 @@ const BOOL RaveBD::ActualizarMedioAnalisis(BDMedio *nMedio) {
 
 const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const TipoListaAleatoria nTipo) {
 	// si no hay etiquetas solo se puede generar listas aleatorias de 50 medios sin ninguna base, si el tipo especificado no se puede gemerar. salgo
-	if (_Etiquetas.size() == 0 && nTipo != TLA_50Medios && nTipo != TLA_LoQueSea) {
+	if (_Etiquetas.size() == 0 && nTipo != TLA_50Medios && nTipo != TLA_LoQueSea && nTipo != TLA_Nota) {
 		App.MostrarToolTipPlayer(L"No se pueden generar listas aleatórias hasta que no se analize la base de datos.");
 		return FALSE;
 	}
@@ -533,6 +533,10 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 			Q = L"SELECT * FROM Medios WHERE TipoMedio=1 ORDER BY RANDOM() LIMIT 50";
 			Debug_Escribir(L"RaveBD::GenerarListaAleatoria Tipo : 50 Canciones.\n");
 			break;
+		case TLA_Nota:
+			Q = L"SELECT * FROM Medios WHERE TipoMedio=1 AND Nota > 2.5 ORDER BY Nota DESC LIMIT 50";
+			Debug_Escribir(L"RaveBD::GenerarListaAleatoria Tipo : Nota.\n");
+			break;
 	}
 
 	
@@ -581,6 +585,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 		case TLA_Grupo:		ToolTip = L"Lista aleatória por Grupo \""	+ Etiquetas[Rand]->Texto + L"\" generada con " + std::to_wstring(OUT_Medios.size()) + L" canciones.";	break;
 		case TLA_Disco:		ToolTip = L"Lista aleatória por Disco \""	+ Etiquetas[Rand]->Texto + L"\" generada con " + std::to_wstring(OUT_Medios.size()) + L" canciones.";	break;
 		case TLA_50Medios:	ToolTip = L"Lista aleatória con "			+ std::to_wstring(OUT_Medios.size()) + L" canciones generada.";											break;
+		case TLA_Nota:		ToolTip = L"Lista aleatória por Nota con "  + std::to_wstring(OUT_Medios.size()) + L" canciones generada.";											break;
 	}
 	App.MostrarToolTipPlayer(ToolTip);
 
@@ -1789,7 +1794,7 @@ const int RaveBD::Distancia(std::wstring &Origen, std::wstring &Destino) {
 							 //	if (n < 3) return n; // Si origen es mas pequeño que 2 caracteres
 							 //	if (m < 3) return m; // Si destino es mas pequeño que 2 caracteres
 
-	typedef std::vector< std::vector<int> > Tmatrix;
+	typedef std::vector< std::vector<long> > Tmatrix;
 	Tmatrix matrix(n + 1);
 
 	// Size the vectors in the 2.nd dimension. Unfortunately C++ doesn't

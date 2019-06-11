@@ -72,6 +72,34 @@ namespace DWL {
 		void											EliminarTodasLasColumnas(void);
 
 														// Agrega un item personalizado (por defecto es del tipo DListaEx_Item) para iconos de los recursos
+		template <class TItem = DListaEx_Item> TItem   *AgregarItem(const INT_PTR nIconoRecursos, const INT_PTR PosicionFila, std::initializer_list<std::wstring> Textos) {
+															TItem  *nItem = new TItem();
+															DWL::DIcono Ico(nIconoRecursos, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
+															//DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoRecursos(nIconoRecursos, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
+															_AgregarItem(nItem, Ico, PosicionFila, Textos);
+															return nItem;
+														};
+
+														// Agrega un item personalizado (por defecto es del tipo DListaEx_Item) para iconos del sistema
+		template <class TItem = DListaEx_Item> TItem   *AgregarItem(const GUID nIconoKnownFolder, const INT_PTR PosicionFila, std::initializer_list<std::wstring> Textos) {
+															TItem *nItem = new TItem();
+															DWL::DIcono Ico(nIconoKnownFolder, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
+															//DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoKnownFolder(nIconoKnownFolder, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
+															_AgregarItem(nItem, Ico, PosicionFila, Textos);
+															return nItem;
+														};
+
+														// Agrega un item personalizado (por defecto es del tipo DListaEx_Item) para iconos especificos de un path
+		template <class TItem = DListaEx_Item> TItem   *AgregarItem(const wchar_t *nPathIcono, const int nPosIcono, const INT_PTR PosicionFila, std::initializer_list<std::wstring> Textos) {
+															TItem  *nItem = new TItem();
+															DWL::DIcono Ico(nPathIcono, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO, nPosIcono);
+															//DListaIconos_Icono *TmpIco = DListaIconos::AgregarIconoExterno(nPathIcono, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO, nPosIcono);
+															_AgregarItem(nItem, Ico, PosicionFila, Textos);
+															return nItem;
+														};
+
+		/*
+														// Agrega un item personalizado (por defecto es del tipo DListaEx_Item) para iconos de los recursos
 		template <class TItem = DListaEx_Item> TItem   *AgregarItem(const INT_PTR nIconoRecursos, const INT_PTR PosicionFila = DLISTAEX_POSICION_FIN, const TCHAR *nTxt = NULL, ...) {
 															TItem  *nItem = new TItem();
 															DWL::DIcono Ico(nIconoRecursos, DLISTAEX_TAMICONO, DLISTAEX_TAMICONO);
@@ -105,7 +133,7 @@ namespace DWL {
 															_AgregarItem(nItem, Ico, PosicionFila, nTxt, Marker);
 															va_end(Marker);
 															return nItem;
-														};
+														};*/
 
 		void											EliminarItem(const LONG_PTR ePosItem);
 		void											EliminarItem(DListaEx_Item *eItem);
@@ -217,7 +245,8 @@ namespace DWL {
 		void                                           _CalcularItemsPagina(const size_t TamPagina);
 		void                                           _CalcularPintarIconos(void);
 
-		DListaEx_Item                                 *_AgregarItem(DListaEx_Item *nItem, DIcono &nIcono, const INT_PTR PosicionFila, const TCHAR *nTxt, va_list Marker);
+//		DListaEx_Item                                 *_AgregarItem(DListaEx_Item *nItem, DIcono &nIcono, const INT_PTR PosicionFila, const TCHAR *nTxt, va_list Marker);
+		DListaEx_Item                                 *_AgregarItem(DListaEx_Item *nItem, DIcono &nIcono, const INT_PTR PosicionFila, std::initializer_list<std::wstring> Textos);
 		std::vector<DListaEx_Item *>                   _Items;
 		std::vector<DListaEx_Columna *>                _Columnas;
 

@@ -275,6 +275,7 @@
 			V  Quan no hi ha scroll la marca ha d'arribar fins al tope de la dreta
 			V  MouseDown y MouseUp s'han de fer amb un SetCapture
 			-  LabelEdit per editar subitems
+			V  Treure els va_list de les funcions agregar item i posar std::initializer_list<std::wstring>
 
 		V  Mostrar en la BD no funciona correctament.., proba-ho amb Simphpony X -> Prelude to the new milenium
 			V  S'ha solucionat al calculat bé la DBarraScrollEx (com ja imaginava... era per la diferencia de la barra)
@@ -330,13 +331,19 @@
 		V  Carregar subtituls
 			V Carregar subtituls desde un common dialog
 			X Utilitzar la funció del slave ja que la funció vella dels subtituls está DEPECATED
-				No aconsegueixo fer funcionar la nova funció.... ni amb la versió 4.0.0 de la VLC...
+				X	No aconsegueixo fer funcionar la nova funció.... ni amb la versió 4.0.0 de la VLC...
 
 		-  Buscar actualitzacións (algo simple que em doni la web per descarregar l'actualització)
+			- Sistema d'actualitzacións en el directori ProgramData per no requerir permisos d'administrador
+
+		-  Llista per nota
 
 		-  Opcions
 			V  Pasar les tecles personalitzades a una nova secció Teclado
 				V  Agregar F1, F2, i F3
+				-  Revisar edició de teclas i el ESC...
+			-  Base de datos
+				- Agregar buto "Eliminar Raíz"
 			-  Llista
 				-  Mezclar listas aleatoíras generadas por genero, grupo, 50 canciones.
 				-  No Mezclar listas aleatórias generadas por disco.			
@@ -347,8 +354,9 @@
 				-  Guardar valores de brillo saturacion contraste i proporcion para cada medio
 
 		- Les notes menors que 2 s'han de mostrar amb una estrella gris
-		- Llista per nota
 		- Llista per momentos??
+		- Bug al presionar F2 i F3 en pantalla completa...
+			- Decidir si treure el pantalla completa i mostrar el medi, o ignorar les tecles, o fer d'un cop la llista i la BD en modo pantalla completa
 
 
 	RAVE 0.7

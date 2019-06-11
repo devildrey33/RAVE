@@ -25,7 +25,7 @@ void ListaRaices::CrearListaRaiz(DhWnd *nPadre, const int cX, const int cY, cons
 
 
 DListaEx_Item *ListaRaices::AgregarRaiz(const wchar_t *nPath, const BOOL nRepintar) {
-	DListaEx_Item *Ret = AgregarItem(nPath, 0, DLISTAEX_POSICION_FIN, nPath, L"");
+	DListaEx_Item* Ret = AgregarItem(nPath, 0, DLISTAEX_POSICION_FIN, { nPath, L"" });
 	if (nRepintar != FALSE) Repintar();
 	return Ret;
 }

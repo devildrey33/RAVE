@@ -22,7 +22,7 @@ namespace DWL {
 	}
 
 	void DListaDesplegableEx::AgregarItem(const wchar_t *nTexto, const INT_PTR nIcono) {
-		_Lista.AgregarItem(nIcono, -1, nTexto);
+		_Lista.AgregarItem(nIcono, -1, { nTexto });
 	}
 
 	void DListaDesplegableEx::Evento_Desplegar(void) {

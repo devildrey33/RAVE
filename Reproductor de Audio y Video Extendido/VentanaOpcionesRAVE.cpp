@@ -219,20 +219,21 @@ void VentanaOpcionesRAVE::Crear(void) {
 
 
 void VentanaOpcionesRAVE::ActualizarListaInicio(void) {
-	const wchar_t *Listas[7] = {
+	const wchar_t *Listas[8] = {
 		L"Ninguna",					// 0
 		L"Genero aleatório",
 		L"Grupo aleatório",
 		L"Disco aleatório",
 		L"50 Canciones aleatórias",	// 4
+		L"Por Nota",
 		L"Lo que sea",
-		L"Ultima lista"				// 6
+		L"Ultima lista"				// 7
 	};
 	DesplegableListaInicio.Texto(Listas[static_cast<int>(App.BD.Opciones_Inicio())]);
 	DesplegableListaInicio.EliminarTodosLosItems();
 	// Si hay raices añado todas las opciones
 	if (App.BD.TotalRaices() > 0) {
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < 8; i++) {
 			DesplegableListaInicio.AgregarItem(Listas[i]);
 		}
 	}
@@ -240,7 +241,7 @@ void VentanaOpcionesRAVE::ActualizarListaInicio(void) {
 	else {
 		DesplegableListaInicio.AgregarItem(Listas[0]);
 		DesplegableListaInicio.AgregarItem(Listas[4]);
-		DesplegableListaInicio.AgregarItem(Listas[6]);
+		DesplegableListaInicio.AgregarItem(Listas[7]);
 	}
 }
 
