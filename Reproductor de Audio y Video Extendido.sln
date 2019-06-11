@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2041
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Reproductor de Audio y Video Extendido", "Reproductor de Audio y Video Extendido\Reproductor de Audio y Video Extendido.vcxproj", "{786A9BEF-4D80-4511-98AD-E6C9A61B2824}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Instalador x64", "Instalador x64.vdproj", "{3199620B-6B10-4393-946E-7B1B147198D6}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Instalador x64", "Instaladores\Instalador x64\Instalador x64.vdproj", "{3199620B-6B10-4393-946E-7B1B147198D6}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Instalador x86", "Instalador x86.vdproj", "{268C30C8-A440-4FAD-9C60-DB1FACA6942C}"
 EndProject

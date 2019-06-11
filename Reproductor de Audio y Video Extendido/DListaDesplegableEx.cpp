@@ -33,8 +33,8 @@ namespace DWL {
 
 			RECT RV;
 			GetWindowRect(_hWnd, &RV);
-			SetWindowPos(_Lista.hWnd(), HWND_TOPMOST, RV.left, RV.bottom, RV.right - RV.left, _AltoLista, SWP_SHOWWINDOW);
-			SetFocus(_Lista.hWnd()); // REVISADO
+			SetWindowPos(_Lista.hWnd(), HWND_TOPMOST, RV.left, RV.bottom, RV.right - RV.left, _AltoLista, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+//			SetFocus(_Lista.hWnd()); // REVISADO
 		}
 		else {
 			_Lista.Visible(FALSE);

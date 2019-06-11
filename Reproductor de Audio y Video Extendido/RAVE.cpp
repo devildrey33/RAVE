@@ -269,7 +269,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GENERO									, L"Aleatória por Genero"		, IDI_GENERO);
 		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GRUPO									, L"Aleatória por Grupo"		, IDI_GRUPO);
 		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_DISCO									, L"Aleatória por Disco"		, IDI_DISCO);
-		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_50MEDIOS								, L"Aleatória pon 50 Medios"	, IDI_TERMINADO);
+		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_50MEDIOS								, L"Aleatória con 50 Medios"	, IDI_TERMINADO);
 		Menu->AgregarSeparador();
 		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_NOTA									, L"Por Nota"					, IDI_NOTA);
 

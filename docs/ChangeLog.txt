@@ -1,5 +1,31 @@
 # Log de cambios
 
+### Versión 0.524
+
+* Solucionado bug al mostrar el menú de la lista, que seleccionaba 2 items si ya habia uno seleccionado.
+
+* Solucionado bug con los controles desplegables con lista que no mostraban correctamente el foco de su ventana padre.
+
+* Solucionado bug con el control para editar teclas rápidas, que no mostraba correctamente el control al pusar esc para cancelar la edición.
+
+* Agregada opción : Ocultar tooltips al mover el mouse por encima.
+
+* Agregada opción : Mostrar nombre del medio actual en la barra de título.
+
+* Agregada opción : Guardar valores de brillo, contraste, saturación, y proporción para cada medio.
+
+* Agregada opción : Mezclar listas aleatórias por genero.
+
+* Agregada opción : Mezclar listas aleatórias por grupo.
+
+* Agregada opción : Mezclar listas aleatórias por disco.
+
+* Agregada opción : Mezclar listas aleatórias con 50 canciones.
+
+* Agregada opción : Mezclar listas por nota.
+
+
+
 ### Versión 0.523
 
 * LibVLC actualizada a la versión 3.0.7
@@ -17,8 +43,6 @@
 * Añadidas teclas F1, F2 y F3 a la lista de teclas rápidas editables en las opciones.
 
 * Ahora se pueden generar listas por Nota > 2.5
-
-* Solucionado bug al mostrar el menú de la lista, que seleccionaba 2 items si ya habia uno seleccionado.
 
 
 
@@ -40,7 +64,7 @@
 
 * Los momentos ya son funcionales con una precisión de 1000 milisegundos
 
-* Añadidos varios botones para poder modificar el tiempo de los momentos de una forma mas precisa.
+* Añadidos varios botones para poder modificar el tiempo de los momentos de una forma más precisa.
 
 * Si creas / editas / eliminas un momento del medio que se está reproduciendo, se actualizará automáticamente.
 
@@ -215,7 +239,6 @@
 * La nota de los tooltips ahora se muestra con estrellas en vez de con un valor.
 
 * Varios retoques internos al sistema de tooltips. Entre otras cosas ahora los tooltips ya no se ocultan al pasar por encima con el mouse, puedes hacer click para ocultar-los.
-
 
 
 

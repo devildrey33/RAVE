@@ -12,7 +12,7 @@
 #include "DDlgAbrir.h"
 
 #define RAVE_MIN_ANCHO 670
-#define RAVE_MIN_ALTO  280
+#define RAVE_MIN_ALTO  289
 #define RAVE_BOTONES_LATERALES_ANCHO 140
 
 
@@ -84,9 +84,9 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	MarcoII.Crear(this, 10, 80, RAVE_BOTONES_LATERALES_ANCHO, 200, ID_MARCOSI);
 	BotonBD.CrearBotonEx(&MarcoII, L"Base de datos", 0, 0, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_BD);
 	BotonBD.Marcado(TRUE);
-	BotonLista.CrearBotonEx(&MarcoII, L"Lista de medios", 0, 40, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_LISTA);
-	BotonVideo.CrearBotonEx(&MarcoII, L"Ver video", 0, 80, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_VIDEO);
-	BotonOpciones.CrearBotonEx(&MarcoII, L"Opciones", 0, 120, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_OPCIONES);
+	BotonLista.CrearBotonEx(&MarcoII, L"Lista de medios", 0, 35, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_LISTA);
+	BotonVideo.CrearBotonEx(&MarcoII, L"Ver video", 0, 70, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_VIDEO);
+	BotonOpciones.CrearBotonEx(&MarcoII, L"Opciones", 0, 130, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_OPCIONES);
 	
 	#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
 		Vis.Crear(&MarcoII, 0, 160, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_VISUALIZACION);
@@ -712,7 +712,7 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 	// Menu Video -> Proporción
 	if (cID >= ID_MENUVIDEO_PROPORCION_PREDETERMINADO && cID < ID_MENUVIDEO_PROPORCION_5A4 + 1) {		
 		App.MP.AsignarProporcion(cID);
-		App.BD.ActualizarMedio(&App.MP.MedioActual());
+		if (App.BD.Opciones_GuardarBSCP() == TRUE)	App.BD.ActualizarMedio(&App.MP.MedioActual());
 		return;
 	}
 }
@@ -783,15 +783,15 @@ void VentanaPrincipal::Evento_MenuEx_Barra_Cambiado(const UINT cID, const float 
 		// Barras del menu del video
 		case ID_MENUVIDEO_BRILLO				:	
 			App.MP.Brillo(ValorBarra);
-			App.BD.ActualizarMedio(&App.MP.MedioActual());
+			if (App.BD.Opciones_GuardarBSCP() == TRUE)		App.BD.ActualizarMedio(&App.MP.MedioActual());
 			return;
 		case ID_MENUVIDEO_CONTRASTE				:	
 			App.MP.Contraste(ValorBarra);		
-			App.BD.ActualizarMedio(&App.MP.MedioActual());
+			if (App.BD.Opciones_GuardarBSCP() == TRUE)		App.BD.ActualizarMedio(&App.MP.MedioActual());
 			return;
 		case ID_MENUVIDEO_SATURACION			:	
 			App.MP.Saturacion(ValorBarra);			
-			App.BD.ActualizarMedio(&App.MP.MedioActual());
+			if (App.BD.Opciones_GuardarBSCP() == TRUE)		App.BD.ActualizarMedio(&App.MP.MedioActual());
 			return;
 		// Menu Lista -> Nota
 		case ID_MENULISTA_NOTA					:	Lista_AsignarNota(ValorBarra);			return;

@@ -256,8 +256,30 @@ class RaveBD {
 	inline const UINT			Opciones_EfectoFadeAudioMS(void) { return _Opciones_EfectoFadeAudioMS; }
 	void						Opciones_EfectoFadeAudioMS(const UINT nOpciones_EfectoFadeAudioMS);
 
-/*	inline const LONG			Opciones_ContadorIDSMomentos(void) { return _Opciones_ContadorIDSMomentos; }
-	void						Opciones_ContadorIDSMomentos(const LONG nOpciones_ContadorIDSMomentos);*/
+	inline const BOOL			Opciones_OcultarTooltipsMouse(void) { return _Opciones_OcultarTooltipsMouse; }
+	void						Opciones_OcultarTooltipsMouse(const BOOL nOpciones_OcultarTooltipsMouse);
+
+	inline const BOOL			Opciones_MostrarMedioActualTitulo(void) { return _Opciones_MostrarMedioActualTitulo; }
+	void						Opciones_MostrarMedioActualTitulo(const BOOL nOpciones_MostrarMedioActualTitulo);
+
+	inline const int 			Opciones_MezclarListaGenero(void) { return _Opciones_MezclarListaGenero; }
+	void						Opciones_MezclarListaGenero(const int nOpciones_MezclarListaGenero);
+
+	inline const int			Opciones_MezclarListaGrupo(void) { return _Opciones_MezclarListaGrupo; }
+	void						Opciones_MezclarListaGrupo(const int nOpciones_MezclarListaGrupo);
+
+	inline const int			Opciones_MezclarListaDisco(void) { return _Opciones_MezclarListaDisco; }
+	void						Opciones_MezclarListaDisco(const int nOpciones_MezclarListaDisco);
+
+	inline const int			Opciones_MezclarLista50Can(void) { return _Opciones_MezclarLista50Can; }
+	void						Opciones_MezclarLista50Can(const int nOpciones_MezclarLista50Can);
+
+	inline const int			Opciones_MezclarListaNota(void) { return _Opciones_MezclarListaNota; }
+	void						Opciones_MezclarListaNota(const int nOpciones_MezclarListaNota);
+								// Guardar brillo, contraste, saturación y proporción
+	inline const BOOL			Opciones_GuardarBSCP(void) { return _Opciones_GuardarBSCP; }
+	void						Opciones_GuardarBSCP(const BOOL nOpciones_GuardarBSCP);
+
 
 	DWL::DUnidadesDisco			Unidades;
 
@@ -325,6 +347,15 @@ protected:
 //	LONG                       _Opciones_ContadorIDSMomentos;		// Contador global de las IDS para las tablas de momentos
 
 	UINT                       _Opciones_EfectoFadeAudioMS;			// Milisegundos para el efecto fade audio
+	BOOL					   _Opciones_OcultarTooltipsMouse;      // Ocultar los tooltips al pasar encima con el mouse
+	BOOL					   _Opciones_MostrarMedioActualTitulo;  // Mostrar el nombre del medio actual en la barra de titulo
+	int                        _Opciones_MezclarListaGenero;        // Mezclar listas aleatórias por genero
+	int                        _Opciones_MezclarListaGrupo;         // Mezclar listas aleatórias por grupo
+	int                        _Opciones_MezclarListaDisco;         // Mezclar listas aleatórias por disco
+	int                        _Opciones_MezclarLista50Can;         // Mezclar listas aleatórias con 50 canciones
+	int                        _Opciones_MezclarListaNota;          // Mezclar listas por Nota
+	BOOL                       _Opciones_GuardarBSCP;				// Guardar Brillo, Saturación, Contraste y Proporción
+
 	friend class ThreadAnalisis;
 	friend class BDMedio;
 };

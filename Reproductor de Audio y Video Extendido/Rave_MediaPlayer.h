@@ -41,6 +41,8 @@ class Rave_MediaPlayer : public DWL::DVentana {
 
 	void						    Ratio(const float R);
 
+	void                            AsignarTitulo(void);
+
 									// CALLBACK para los eventos de la VLC
 	static void						EventosVLC(const libvlc_event_t* event, void* ptr);
 									// CALLBACK para los eventos del FMOD

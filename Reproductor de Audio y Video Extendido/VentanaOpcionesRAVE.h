@@ -36,15 +36,17 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	DWL::DBotonEx			BotonCerrar;
 
 	DWL::DBotonEx			BotonBaseDeDatos;
+	DWL::DBotonEx			BotonGeneral;
 	DWL::DBotonEx			BotonTeclado;
 	DWL::DBotonEx			BotonListas;
-	DWL::DBotonEx			BotonGeneral;
+	DWL::DBotonEx			BotonListas2;
 	DWL::DBotonEx			BotonVideo;
 
 	MarcoControles			MarcoBaseDeDatos;
+	MarcoControles			MarcoGeneral;
 	MarcoControles          MarcoTeclado;
 	MarcoControles			MarcoListas;
-	MarcoControles			MarcoGeneral;
+	MarcoControles			MarcoListas2;
 	MarcoControles			MarcoVideo;
 
 							// Base de datos
@@ -55,20 +57,22 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	DWL::DMarcaEx			MarcaMostrarAnalisis;
 	DWL::DMarcaEx			MarcaAnalizarMediosPendientes;
 
-							// Teclado
-	DEtiquetaEx				EtiquetaTeclasRapidas;
-	AsignarTeclaRapida		TeclasRapidas[9];
-	DWL::DEtiquetaEx		EtiquetasTeclas[9];
-	ControlSeparador	    SeparadorGeneral;
-	DWL::DMarcaEx			MarcaBuscarActualizaciones;
-	DEtiquetaEx			    EtiquetaTiempoAnimaciones;
-	DEtiquetaEx             EtiquetaTiempoAnimacionesTA;
-
 							// General
+	DWL::DMarcaEx			MarcaBuscarActualizaciones;
+	ControlSeparador        SeparadorGeneral;
 	DBarraDesplazamientoEx	BarraTiempoAnimaciones;
 	DEtiquetaEx			    EtiquetaTiempoOcultarToolTips;
 	DBarraDesplazamientoEx	BarraTiempoToolTips;
 	DEtiquetaEx			    EtiquetaTiempoOcultarToolTipsTA;
+	DWL::DMarcaEx			MarcaOcultarTooltipsMouse;
+	DWL::DMarcaEx			MarcaMostrarNombreTitulo;
+
+							// Teclado
+	DEtiquetaEx				EtiquetaTeclasRapidas;
+	AsignarTeclaRapida		TeclasRapidas[9];
+	DWL::DEtiquetaEx		EtiquetasTeclas[9];
+	DEtiquetaEx			    EtiquetaTiempoAnimaciones;
+	DEtiquetaEx             EtiquetaTiempoAnimacionesTA;
 
 							// Lista
 	DEtiquetaEx             EtiquetaListaInicio;
@@ -83,6 +87,19 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	DEtiquetaEx             EtiquetaSumar005;
 	DWL::DMarcaEx			MarcaSumar005;
 
+							// Lista2
+	DEtiquetaEx             EtiquetaListaMezclar;
+	DEtiquetaEx             EtiquetaListaGenero;
+	DListaDesplegableEx     DesplegableListaGenero;
+	DEtiquetaEx             EtiquetaListaGrupo;
+	DListaDesplegableEx     DesplegableListaGrupo;
+	DEtiquetaEx             EtiquetaListaDisco;
+	DListaDesplegableEx     DesplegableListaDisco;
+	DEtiquetaEx             EtiquetaLista50Can;
+	DListaDesplegableEx     DesplegableLista50Can;
+	DEtiquetaEx             EtiquetaListaNota;
+	DListaDesplegableEx     DesplegableListaNota;
+
 							// Video
 	DEtiquetaEx             EtiquetaVideoTiempo;
 	DBarraDesplazamientoEx	BarraVideoTiempo;
@@ -94,6 +111,8 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	ControlSeparador	    SeparadorVideo2;
 	DEtiquetaEx             EtiquetaVideoPosicion;
 	DListaDesplegableEx     DesplegableVideoPosicion;
+	ControlSeparador	    SeparadorVideo3;
+	DWL::DMarcaEx			MarcaRecordarValoresVideo;
 	//	ControlSeparador	    SeparadorVideo3;
 };
 

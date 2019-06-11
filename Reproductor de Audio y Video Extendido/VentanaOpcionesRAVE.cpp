@@ -9,17 +9,19 @@
 #define ID_BOTON_GENERAL				1001
 #define ID_BOTON_TECLADO				1002
 #define ID_BOTON_LISTAS					1003
-#define ID_BOTON_VIDEO2					1004
+#define ID_BOTON_LISTAS2				1004
+#define ID_BOTON_VIDEO2					1005
 // Botones del tab superior
-#define ID_MARCO_BASEDATOS				1005
-#define ID_MARCO_GENERAL				1006
-#define ID_MARCO_ASOCIACIONESARCHIVOS	1007
-#define ID_MARCO_LISTAS					1008
-#define ID_MARCO_VIDEO					1009
+#define ID_MARCO_BASEDATOS				1006
+#define ID_MARCO_GENERAL				1007
+#define ID_MARCO_ASOCIACIONESARCHIVOS	1008
+#define ID_MARCO_LISTAS					1009
+#define ID_MARCO_LISTAS2				1010
+#define ID_MARCO_VIDEO					1011
 // Base de datos
-#define ID_ETIQUETA_BASEDEDATOS			1010
-#define ID_MARCA_MOSTRARANALISIS		1011
-#define ID_MARCA_ANALIZARPENDIENTES		1012
+#define ID_ETIQUETA_BASEDEDATOS			1012
+#define ID_MARCA_MOSTRARANALISIS		1013
+#define ID_MARCA_ANALIZARPENDIENTES		1014
 // General
 #define ID_ETIQUETAS_TECLADO            1020
 #define ID_ASINGAR_TECLA                1040
@@ -31,6 +33,8 @@
 #define ID_ETIQUETA_TIEMPOTOOLTIP       1065
 #define ID_ETIQUETA_TIEMPOTOOLTIP2      1066
 #define ID_BARRA_TIEMPOTOOLTIP          1067
+#define ID_MARCA_OCULTARTOOLTIPS        1099 
+#define ID_MARCA_MOSTRARMEDIOTITULO     1098
 // Lista
 #define ID_ETIQUETA_LISTAINICIO			1068
 #define ID_DESPLEGABLE_LISTAINICIO		1069
@@ -49,6 +53,20 @@
 #define ID_DESPLEGABLE_VIDEOPOSICION    1081
 #define ID_ETIQUETA_VIDEOTIEMPOTA       1082
 #define ID_ETIQUETA_VIDEOOPACIDADTA		1083
+#define ID_MARCA_VIDEOGUARDARVALORES    1084
+
+// Lista2
+#define ID_ETIQUETA_LISTAMEZCLAR		1100
+#define ID_ETIQUETA_LISTAGENERO         1101
+#define ID_ETIQUETA_LISTAGRUPO          1102
+#define ID_ETIQUETA_LISTADISCO          1103
+#define ID_ETIQUETA_LISTA50CAN          1104
+#define ID_ETIQUETA_LISTANOTA           1105
+#define ID_DESPLEGABLE_LISTAGENERO		1106
+#define ID_DESPLEGABLE_LISTAGRUPO		1107
+#define ID_DESPLEGABLE_LISTADISCO		1108
+#define ID_DESPLEGABLE_LISTA50CAN		1109
+#define ID_DESPLEGABLE_LISTANOTA		1110
 
 VentanaOpcionesRAVE::VentanaOpcionesRAVE(void) {
 }
@@ -65,10 +83,11 @@ void VentanaOpcionesRAVE::Crear(void) {
 	// Creo los botones de cada pestaña
 	BotonBaseDeDatos.CrearBotonEx(this, L"Base de datos", 20, 20, 135, 30, ID_BOTON_BASEDATOS);
 	BotonBaseDeDatos.Marcado(TRUE);
-	BotonGeneral.CrearBotonEx(this, L"General", 155, 20, 90, 30, ID_BOTON_GENERAL);
-	BotonTeclado.CrearBotonEx(this, L"Teclado", 245, 20, 90, 30, ID_BOTON_TECLADO);
-	BotonListas.CrearBotonEx(this, L"Listas", 335, 20, 80, 30, ID_BOTON_LISTAS);
-	BotonVideo.CrearBotonEx(this, L"Video", 415, 20, 70, 30, ID_BOTON_VIDEO2);
+	BotonGeneral.CrearBotonEx(this, L"General", 155, 20, 85, 30, ID_BOTON_GENERAL);
+	BotonTeclado.CrearBotonEx(this, L"Teclas", 240, 20, 75, 30, ID_BOTON_TECLADO);
+	BotonListas.CrearBotonEx(this, L"Listas", 315, 20, 75, 30, ID_BOTON_LISTAS);
+	BotonListas2.CrearBotonEx(this, L"Listas2", 390, 20, 80, 30, ID_BOTON_LISTAS2);
+	BotonVideo.CrearBotonEx(this, L"Video", 470, 20, 70, 30, ID_BOTON_VIDEO2);
 	// Asigno la fuente de los botones
 /*	BotonBaseDeDatos.Fuente				= DhWnd::Fuente18Negrita;
 	BotonGeneral.Fuente					= DhWnd::Fuente18Negrita;
@@ -84,6 +103,8 @@ void VentanaOpcionesRAVE::Crear(void) {
 	MarcoTeclado.Visible(FALSE);
 	MarcoListas.Crear(this, 10, 50, RC.right - 20, RC.bottom - 100, ID_MARCO_LISTAS);
 	MarcoListas.Visible(FALSE);
+	MarcoListas2.Crear(this, 10, 50, RC.right - 20, RC.bottom - 100, ID_MARCO_LISTAS2);
+	MarcoListas2.Visible(FALSE);
 	MarcoVideo.Crear(this, 10, 50, RC.right - 20, RC.bottom - 100, ID_MARCO_VIDEO);
 	MarcoVideo.Visible(FALSE);
 
@@ -91,6 +112,7 @@ void VentanaOpcionesRAVE::Crear(void) {
 
 	//////////////////////////////////////////////////////
 	// Creo los controles dentro del marco Base de datos
+	//////////////////////////////////////////////////////
 	const wchar_t *E1 = L"Para usuarios con una colección superior a 100 canciones, es muy recomendable\n"
 						L"agregar uno o mas directorios que contengan dichas canciones para que puedan\n"
 						L"ser analizadas y añadidas a la base de datos.\n\n"
@@ -117,6 +139,7 @@ void VentanaOpcionesRAVE::Crear(void) {
 
 	////////////////////////////////////////////////
 	// Creo los controles dentro del marco Teclado
+	///////////////////////////////////////////////
 	EtiquetaTeclasRapidas.CrearEtiquetaEx(&MarcoTeclado, L"Las teclas rápidas solo se pueden utilizar cuando el reproductor tiene el foco.\n"
 														 L"Es muy recomendable configurar las teclas rápidas con una combinación de teclas\n"
 														 L"Por ejemplo : Control + tecla, Alt + Shift + Tecla, Control + Alt + tecla, etc..", 10, 10, RC.right - 40, 60, ID_ETIQUETA_TECLASRAPIDAS);
@@ -130,8 +153,8 @@ void VentanaOpcionesRAVE::Crear(void) {
 		L"Mostrar informacion del medio",
 		L"Mostrar el medio en la BD",
 		L"Mostrar el medio en la lista"
-
 	};
+
 	for (int i = 0; i < static_cast<int>(App.TeclasRapidas.size()); i++) {
 		EtiquetasTeclas[i].CrearEtiquetaEx(&MarcoTeclado, Textos[i], 10, 80 + (i * 25), 200, 20, ID_ETIQUETAS_TECLADO + i);
 //		EtiquetasTeclas[i].Fuente = Fuente18Normal;
@@ -140,28 +163,37 @@ void VentanaOpcionesRAVE::Crear(void) {
 
 	////////////////////////////////////////////////
 	// Creo los controles dentro del marco General
-	// Marca buscar actualizaciones
+	////////////////////////////////////////////////
 	MarcaBuscarActualizaciones.CrearMarcaEx(&MarcoGeneral, L"Buscar nuevas actualizaciones al iniciar el reproductor", 10, 10, 380, 20, ID_MARCA_BUSCARACTUALIZACIONES, IDI_CHECK2);
 	MarcaBuscarActualizaciones.Marcado(App.BD.Opciones_BuscarActualizacion());
 	MarcaBuscarActualizaciones.Activado(FALSE);
+	// Separador 
+	SeparadorGeneral.Crear(&MarcoGeneral, 0, 39, RC.right - 10);
+
 	// Etiquetas Tiempo de la animación
-	EtiquetaTiempoAnimaciones.CrearEtiquetaEx(&MarcoGeneral, L"Duración de las animaciones de los controles", 10, 40, 300, 20, ID_ETIQUETA_TIEMPOANIMACIONES);
+	EtiquetaTiempoAnimaciones.CrearEtiquetaEx(&MarcoGeneral, L"Duración de las animaciones de los controles", 10, 55, 300, 20, ID_ETIQUETA_TIEMPOANIMACIONES);
 	std::wstring TmpStr = std::to_wstring(App.BD.Opciones_TiempoAnimaciones()) + L" ms";
-	EtiquetaTiempoAnimacionesTA.CrearEtiquetaEx(&MarcoGeneral, TmpStr.c_str(), RC.right - 90, 40, 60, 20, ID_ETIQUETA_TIEMPOANIMACIONES2, DEtiquetaEx_Alineacion_Derecha);
+	EtiquetaTiempoAnimacionesTA.CrearEtiquetaEx(&MarcoGeneral, TmpStr.c_str(), RC.right - 90, 55, 60, 20, ID_ETIQUETA_TIEMPOANIMACIONES2, DEtiquetaEx_Alineacion_Derecha);
 	// Barra para asignar el tiempo de las animaciones
-	BarraTiempoAnimaciones.CrearBarraDesplazamientoEx(&MarcoGeneral, 350, 40, RC.right - 450, 20, ID_BARRA_TIEMPOANIMACION, 100, 1000, static_cast<float>(App.BD.Opciones_TiempoAnimaciones()));
+	BarraTiempoAnimaciones.CrearBarraDesplazamientoEx(&MarcoGeneral, 350, 55, RC.right - 450, 20, ID_BARRA_TIEMPOANIMACION, 100, 1000, static_cast<float>(App.BD.Opciones_TiempoAnimaciones()));
 //	BarraTiempoAnimaciones.MostrarValor(DBarraEx_MostrarValor_ValorInt);
 	// Etiquetas de tiempo para ocultar el tooltip
-	EtiquetaTiempoOcultarToolTips.CrearEtiquetaEx(&MarcoGeneral, L"Duración de los tooltips de la parte inferior derecha", 10, 70, 330, 20, ID_ETIQUETA_TIEMPOTOOLTIP);
+	EtiquetaTiempoOcultarToolTips.CrearEtiquetaEx(&MarcoGeneral, L"Duración de los tooltips de la parte inferior derecha", 10, 85, 340, 20, ID_ETIQUETA_TIEMPOTOOLTIP);
 	TmpStr = std::to_wstring(App.BD.Opciones_TiempoToolTips()) + L" ms";
-	EtiquetaTiempoOcultarToolTipsTA.CrearEtiquetaEx(&MarcoGeneral, TmpStr.c_str(), RC.right - 100, 70, 70, 20, ID_ETIQUETA_TIEMPOTOOLTIP2, DEtiquetaEx_Alineacion_Derecha);
+	EtiquetaTiempoOcultarToolTipsTA.CrearEtiquetaEx(&MarcoGeneral, TmpStr.c_str(), RC.right - 100, 85, 70, 20, ID_ETIQUETA_TIEMPOTOOLTIP2, DEtiquetaEx_Alineacion_Derecha);
 	// Barra para asignar el tiempo de ocultación de los tooltips
-	BarraTiempoToolTips.CrearBarraDesplazamientoEx(&MarcoGeneral, 350, 70, RC.right - 450, 20, ID_BARRA_TIEMPOTOOLTIP, 1000, 10000, static_cast<float>(App.BD.Opciones_TiempoToolTips()));
-//	BarraTiempoToolTips.MostrarValor(DBarraEx_MostrarValor_ValorInt);
+	BarraTiempoToolTips.CrearBarraDesplazamientoEx(&MarcoGeneral, 350, 85, RC.right - 450, 20, ID_BARRA_TIEMPOTOOLTIP, 1000, 10000, static_cast<float>(App.BD.Opciones_TiempoToolTips()));
+	// Marca para ocultar los tooltips al pasar con el mouse
+	MarcaOcultarTooltipsMouse.CrearMarcaEx(&MarcoGeneral, L"Ocultar tooltips al pasar por encima con el mouse", 10, 105, 350, 30, ID_MARCA_OCULTARTOOLTIPS, IDI_CHECK2);
+	MarcaOcultarTooltipsMouse.Marcado(App.BD.Opciones_OcultarTooltipsMouse());
+	// Marca para mostrar el nombre del medio actual en el titulo del reproductor
+	MarcaMostrarNombreTitulo.CrearMarcaEx(&MarcoGeneral, L"Mostrar el nombre del medio actual en el titulo del reproductor", 10, 135, 435, 30, ID_MARCA_MOSTRARMEDIOTITULO, IDI_CHECK2);
+	MarcaMostrarNombreTitulo.Marcado(App.BD.Opciones_MostrarMedioActualTitulo());
 
 	///////////////////////////////////////
 	// Creo los controles del marco Listas
-	EtiquetaCanciones25.CrearEtiquetaEx(&MarcoListas, L"Por defecto todos los medios tienen una nota de 2.5 sobre 5, si alguna canción\n" 
+	///////////////////////////////////////
+	EtiquetaCanciones25.CrearEtiquetaEx(&MarcoListas, L"Por defecto todos los medios tienen una nota de 2.5 sobre 5, si alguna canción\n"
 													  L"tiene una nota inferior a 2.5, el reproductor considerará el medio como no apto."	, 10, 10, RC.right - 20, 40, ID_ETIQUETA_CANCIONES25);		
 	MarcaCanciones25.CrearMarcaEx(&MarcoListas, L"No añadir canciones con menos de 2.5 de nota a listas aleatórias"							, 10, 60, 448, 20, ID_MARCA_CANCIONES25, IDI_CHECK2);
 	MarcaCanciones25.Marcado(App.BD.Opciones_NoAgregarMedioMenos25());
@@ -180,12 +212,49 @@ void VentanaOpcionesRAVE::Crear(void) {
 
 	SeparadorLista3.Crear(&MarcoListas, 0, 270, RC.right - 10);
 	EtiquetaListaInicio.CrearEtiquetaEx(&MarcoListas, L"Que tipo de lista se debe generar al iniciar?"				, 10, 280, RC.right - 205, 20, ID_ETIQUETA_LISTAINICIO);
-	DesplegableListaInicio.CrearListaDesplegable(&MarcoListas, L"", ID_DESPLEGABLE_LISTAINICIO, 0					, RC.right - 205, 280, 185, 20, DEdicionTextoEx_Entrada_SinEntrada, 300);
+	DesplegableListaInicio.CrearListaDesplegable(&MarcoListas, L"", ID_DESPLEGABLE_LISTAINICIO, 0					, RC.right - 215, 280, 185, 20, DEdicionTextoEx_Entrada_SinEntrada, 300);
 	ActualizarListaInicio();
+
+
+
+	///////////////////////////////////////
+	// Creo los controles del marco Listas2
+	///////////////////////////////////////
+	EtiquetaListaMezclar.CrearEtiquetaEx(&MarcoListas2, L"Elige si se deben mezclar las listas generadas aleatóriamente. Si seleccionas\n"
+														L"'Por defecto' solo se mezclara la lista si el botón mezclar ya estaba activado.", 10, 10, RC.right - 20, 40, ID_ETIQUETA_LISTAMEZCLAR);
+	const wchar_t* Mezclar[3] = {
+		L"Por defecto",
+		L"Mezclar",
+		L"No mezclar"
+	};
+
+	// Genero
+	EtiquetaListaGenero.CrearEtiquetaEx(&MarcoListas2, L"Mezclar listas aleatórias por Genero", 10, 60, RC.right - 200, 20, ID_ETIQUETA_LISTAGENERO);
+	DesplegableListaGenero.CrearListaDesplegable(&MarcoListas2, Mezclar[App.BD.Opciones_MezclarListaGenero()], ID_DESPLEGABLE_LISTAGENERO, 0, RC.right - 240, 60, 210, 20, DEdicionTextoEx_Entrada_SinEntrada, 80);
+	for (int i = 0; i < 3; i++) DesplegableListaGenero.AgregarItem(Mezclar[i]);
+	// Grupo
+	EtiquetaListaGrupo.CrearEtiquetaEx(&MarcoListas2, L"Mezclar listas aleatórias por Grupo", 10, 85, RC.right - 200, 20, ID_ETIQUETA_LISTAGRUPO);
+	DesplegableListaGrupo.CrearListaDesplegable(&MarcoListas2, Mezclar[App.BD.Opciones_MezclarListaGrupo()], ID_DESPLEGABLE_LISTAGRUPO, 0, RC.right - 240, 85, 210, 20, DEdicionTextoEx_Entrada_SinEntrada, 80);
+	for (int i = 0; i < 3; i++) DesplegableListaGrupo.AgregarItem(Mezclar[i]);
+	// Disco
+	EtiquetaListaDisco.CrearEtiquetaEx(&MarcoListas2, L"Mezclar listas aleatórias por Disco", 10, 110, RC.right - 200, 20, ID_ETIQUETA_LISTADISCO);
+	DesplegableListaDisco.CrearListaDesplegable(&MarcoListas2, Mezclar[App.BD.Opciones_MezclarListaDisco()], ID_DESPLEGABLE_LISTADISCO, 0, RC.right - 240, 110, 210, 20, DEdicionTextoEx_Entrada_SinEntrada, 80);
+	for (int i = 0; i < 3; i++) DesplegableListaDisco.AgregarItem(Mezclar[i]);
+	// 50 Can
+	EtiquetaLista50Can.CrearEtiquetaEx(&MarcoListas2, L"Mezclar listas aleatórias con 50 Canciones", 10, 135, RC.right - 200, 20, ID_ETIQUETA_LISTA50CAN);
+	DesplegableLista50Can.CrearListaDesplegable(&MarcoListas2, Mezclar[App.BD.Opciones_MezclarLista50Can()], ID_DESPLEGABLE_LISTA50CAN, 0, RC.right - 240, 135, 210, 20, DEdicionTextoEx_Entrada_SinEntrada, 80);
+	for (int i = 0; i < 3; i++) DesplegableLista50Can.AgregarItem(Mezclar[i]);
+	// Nota
+	EtiquetaListaNota.CrearEtiquetaEx(&MarcoListas2, L"Mezclar listas por Nota", 10, 160, RC.right - 200, 20, ID_ETIQUETA_LISTANOTA);
+	DesplegableListaNota.CrearListaDesplegable(&MarcoListas2, Mezclar[App.BD.Opciones_MezclarListaNota()], ID_DESPLEGABLE_LISTANOTA, 0, RC.right - 240, 160, 210, 20, DEdicionTextoEx_Entrada_SinEntrada, 80);
+	for (int i = 0; i < 3; i++) DesplegableListaNota.AgregarItem(Mezclar[i]);
+
+
 
 
 	///////////////////////////////////////
 	// Creo los controles del marco Video
+	///////////////////////////////////////
 	EtiquetaVideoTiempo.CrearEtiquetaEx(&MarcoVideo, L"Tiempo para ocultar los controles (pantalla completa)", 10, 10, 350, 20, ID_ETIQUETA_VIDEOTIEMPO);
 	BarraVideoTiempo.CrearBarraDesplazamientoEx(&MarcoVideo, 385, 10, 100, 20, ID_BARRA_VIDEOTIEMPO, 1000, 5000, static_cast<float>(App.BD.Opciones_OcultarMouseEnVideo()));
 	TmpStr = std::to_wstring(App.BD.Opciones_OcultarMouseEnVideo()) + L" ms";
@@ -197,7 +266,7 @@ void VentanaOpcionesRAVE::Crear(void) {
 	EtiquetaVideoOpacidadTA.CrearEtiquetaEx(&MarcoVideo, TmpStr.c_str(), 485, 50, 60, 20, ID_ETIQUETA_VIDEOOPACIDADTA, DEtiquetaEx_Alineacion_Derecha);
 	SeparadorVideo2.Crear(&MarcoVideo, 0, 80, RC.right - 10);
 	EtiquetaVideoPosicion.CrearEtiquetaEx(&MarcoVideo, L"Posición donde se mostrarán los controles (pantalla completa)", 10, 90, 410, 20, ID_ETIQUETA_VIDEOPOSICION);
-	
+
 	const wchar_t *PosVideo[4] = {
 		L"Abajo",
 		L"Izquierda",
@@ -208,7 +277,11 @@ void VentanaOpcionesRAVE::Crear(void) {
 	for (int i = 0; i < 4; i++) {
 		DesplegableVideoPosicion.AgregarItem(PosVideo[i]);
 	}
-	//	SeparadorVideo3;
+	
+	SeparadorVideo3.Crear(&MarcoVideo, 0, 120, RC.right - 10);
+
+	MarcaRecordarValoresVideo.CrearMarcaEx(&MarcoVideo, L"Guardar brillo, saturación, contraste, i proporción para cada medio.", 10, 130, 455, 30, ID_MARCA_VIDEOGUARDARVALORES, IDI_CHECK2);
+	MarcaRecordarValoresVideo.Marcado(App.BD.Opciones_GuardarBSCP());
 
 
 
@@ -250,11 +323,13 @@ void VentanaOpcionesRAVE::AsignarMarco(const INT_PTR Id) {
 	MarcoGeneral.Visible(FALSE);
 	MarcoTeclado.Visible(FALSE);
 	MarcoListas.Visible(FALSE);
+	MarcoListas2.Visible(FALSE);
 	MarcoVideo.Visible(FALSE);
 	BotonBaseDeDatos.Marcado(FALSE);
 	BotonGeneral.Marcado(FALSE);
 	BotonTeclado.Marcado(FALSE);
 	BotonListas.Marcado(FALSE);
+	BotonListas2.Marcado(FALSE);
 	BotonVideo.Marcado(FALSE);
 	switch (Id) {
 		case ID_BOTON_BASEDATOS:
@@ -273,6 +348,10 @@ void VentanaOpcionesRAVE::AsignarMarco(const INT_PTR Id) {
 			MarcoListas.Visible(TRUE);
 			BotonListas.Marcado(TRUE);
 			break;
+		case ID_BOTON_LISTAS2:
+			MarcoListas2.Visible(TRUE);
+			BotonListas2.Marcado(TRUE);
+			break;
 		case ID_BOTON_VIDEO2:
 			MarcoVideo.Visible(TRUE);
 			BotonVideo.Marcado(TRUE);
@@ -290,6 +369,7 @@ void VentanaOpcionesRAVE::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMou
 		case ID_BOTON_GENERAL:
 		case ID_BOTON_TECLADO:
 		case ID_BOTON_LISTAS:
+		case ID_BOTON_LISTAS2:
 		case ID_BOTON_VIDEO2:
 			AsignarMarco(DatosMouse.ID());
 			break;
@@ -361,23 +441,35 @@ void VentanaOpcionesRAVE::Evento_MarcaEx_Mouse_Click(DWL::DEventoMouse &DatosMou
 	switch (DatosMouse.ID()) {
 		case ID_MARCA_MOSTRARANALISIS :
 			App.BD.Opciones_MostrarObtenerMetadatos(MarcaMostrarAnalisis.Marcado());
-			if (MarcaMostrarAnalisis.Marcado() == TRUE)	App.MostrarToolTipOpciones(L"La ventana del análisis no se mostrará más.");
-			else                                        App.MostrarToolTipOpciones(L"La ventana del análisis se mostrará siempre.");
+			if (MarcaMostrarAnalisis.Marcado() == TRUE)				App.MostrarToolTipOpciones(L"La ventana del análisis no se mostrará más.");
+			else													App.MostrarToolTipOpciones(L"La ventana del análisis se mostrará siempre.");
 			break;
 		case ID_MARCA_ANALIZARPENDIENTES :
 			App.BD.Opciones_AnalizarMediosPendientes(MarcaAnalizarMediosPendientes.Marcado());
-			if (MarcaAnalizarMediosPendientes.Marcado() == TRUE)
-				App.MostrarToolTipOpciones(L"Los medios pendientes se analizarán automáticamente.");
-			else
-				App.MostrarToolTipOpciones(L"Los medios pendientes no se analizarán automaticamente.\n"
-										   L"Para analizar los medios pendientes, haz click derecho encima de la base de datos, y pulsa Analizar.");
+			if (MarcaAnalizarMediosPendientes.Marcado() == TRUE)	App.MostrarToolTipOpciones(L"Los medios pendientes se analizarán automáticamente.");
+			else													App.MostrarToolTipOpciones(L"Los medios pendientes no se analizarán automaticamente.\n"
+																							   L"Para analizar los medios pendientes, haz click derecho encima de la base de datos, y pulsa Analizar.");
 			break;
 		case ID_MARCA_BUSCARACTUALIZACIONES :
 			App.BD.Opciones_BuscarActualizacion(MarcaBuscarActualizaciones.Marcado());
-			if (MarcaBuscarActualizaciones.Marcado() == TRUE)
-				App.MostrarToolTipOpciones(L"Se buscarán actualizaciones automáticamente.");
-			else 
-				App.MostrarToolTipOpciones(L"No se buscarán actualizaciones automáticamente.");
+			if (MarcaBuscarActualizaciones.Marcado() == TRUE)		App.MostrarToolTipOpciones(L"Se buscarán actualizaciones automáticamente.");
+			else 													App.MostrarToolTipOpciones(L"No se buscarán actualizaciones automáticamente.");
+			break;
+		case ID_MARCA_OCULTARTOOLTIPS :
+			App.BD.Opciones_OcultarTooltipsMouse(MarcaOcultarTooltipsMouse.Marcado());
+			if (MarcaOcultarTooltipsMouse.Marcado() == TRUE)		App.MostrarToolTipOpciones(L"Se ocultaran los tooltips al pasar por encima con el mouse.");
+			else													App.MostrarToolTipOpciones(L"Los tooltips no se ocultaran al pasar por encima con el mouse.");
+			break;
+		case ID_MARCA_MOSTRARMEDIOTITULO :
+			App.BD.Opciones_MostrarMedioActualTitulo(MarcaMostrarNombreTitulo.Marcado());
+			if (MarcaMostrarNombreTitulo.Marcado() == TRUE)			App.MostrarToolTipOpciones(L"El nombre del medio se mostrará en la barra de título.");
+			else													App.MostrarToolTipOpciones(L"No se mostrará el nombre del medio en la barra de título.");
+			App.MP.AsignarTitulo();
+			break;
+		case ID_MARCA_VIDEOGUARDARVALORES :
+			App.BD.Opciones_GuardarBSCP(MarcaRecordarValoresVideo.Marcado());
+			if (MarcaRecordarValoresVideo.Marcado() == TRUE)		App.MostrarToolTipOpciones(L"Se recordaran los valores de brillo, contraste, saturación, y proporción para cada video.");
+			else													App.MostrarToolTipOpciones(L"Los valores de brillo, contraste, saturación, y proporción serán generales para todos los videos.");
 			break;
 	}
 }
@@ -421,12 +513,13 @@ void VentanaOpcionesRAVE::Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse)
 		case ID_BARRA_VIDEOOPACIDAD:
 			EtiquetaVideoOpacidadTA.Texto(DWL::Strings::ToStrF(BarraVideoOpacidad.Valor(), 0));
 			App.BD.Opciones_OpacidadControlesVideo(static_cast<int>(BarraVideoOpacidad.Valor()));
-			App.MostrarToolTipOpciones(L"La opacidad máxima de los controles del video se ha ajustado a " + DWL::Strings::ToStrF(BarraVideoTiempo.Valor(), 0));
+			App.MostrarToolTipOpciones(L"La opacidad máxima de los controles del video se ha ajustado a " + DWL::Strings::ToStrF(BarraVideoOpacidad.Valor(), 0) + L" / 255");
 			break;
 	}
 }
 
 void VentanaOpcionesRAVE::Evento_ListaDesplegable_Cambio(INT_PTR nID) {
+	// Lista de inicio
 	if (nID == ID_DESPLEGABLE_LISTAINICIO) {
 		std::wstring Opcion = DesplegableListaInicio.Texto();
 		if (Opcion == L"Nada") {
@@ -458,6 +551,7 @@ void VentanaOpcionesRAVE::Evento_ListaDesplegable_Cambio(INT_PTR nID) {
 			App.BD.Opciones_Inicio(Tipo_Inicio_UltimaLista);
 		}		
 	}
+	// Posición de la barra de controles en modo pantalla completa
 	else if (nID == ID_DESPLEGABLE_VIDEOPOSICION) {
 		std::wstring Opcion = DesplegableVideoPosicion.Texto();
 		if (Opcion == L"Abajo") {
@@ -478,7 +572,88 @@ void VentanaOpcionesRAVE::Evento_ListaDesplegable_Cambio(INT_PTR nID) {
 		}
 		App.MostrarToolTipOpciones(L"Los controles del video se mostrarán " + Opcion);
 	}
+	// Mezclar listas por genero
+	else if (nID == ID_DESPLEGABLE_LISTAGENERO) {
+		std::wstring Opcion = DesplegableListaGenero.Texto();
+		if (Opcion == L"Por defecto") {
+			App.MostrarToolTipOpciones(L"Las listas por genero solo se mezclaran si el botón Mezclar está marcado.");
+			App.BD.Opciones_MezclarListaGenero(0);
+		}
+		else if (Opcion == L"Mezclar") {
+			App.MostrarToolTipOpciones(L"Las listas por genero se mezclaran siempre.");
+			App.BD.Opciones_MezclarListaGenero(1);
+		}
+		else if (Opcion == L"No mezclar") {
+			App.MostrarToolTipOpciones(L"Las listas por genero no se mezclaran nunca.");
+			App.BD.Opciones_MezclarListaGenero(2);
+		}
+	}
+	// Mezclar listas por grupo
+	else if (nID == ID_DESPLEGABLE_LISTAGRUPO) {
+		std::wstring Opcion = DesplegableListaGrupo.Texto();
+		if (Opcion == L"Por defecto") {
+			App.MostrarToolTipOpciones(L"Las listas por grupo solo se mezclaran si el botón Mezclar está marcado.");
+			App.BD.Opciones_MezclarListaGrupo(0);
+		}
+		else if (Opcion == L"Mezclar") {
+			App.MostrarToolTipOpciones(L"Las listas por grupo se mezclaran siempre.");
+			App.BD.Opciones_MezclarListaGrupo(1);
+		}
+		else if (Opcion == L"No mezclar") {
+			App.MostrarToolTipOpciones(L"Las listas por grupo no se mezclaran nunca.");
+			App.BD.Opciones_MezclarListaGrupo(2);
+		}
+	}
+	// Mezclar listas por disco
+	else if (nID == ID_DESPLEGABLE_LISTADISCO) {
+		std::wstring Opcion = DesplegableListaDisco.Texto();
+		if (Opcion == L"Por defecto") {
+			App.MostrarToolTipOpciones(L"Las listas por disco solo se mezclaran si el botón Mezclar está marcado.");
+			App.BD.Opciones_MezclarListaDisco(0);
+		}
+		else if (Opcion == L"Mezclar") {
+			App.MostrarToolTipOpciones(L"Las listas por disco se mezclaran siempre.");
+			App.BD.Opciones_MezclarListaDisco(1);
+		}
+		else if (Opcion == L"No mezclar") {
+			App.MostrarToolTipOpciones(L"Las listas por disco no se mezclaran nunca.");
+			App.BD.Opciones_MezclarListaDisco(2);
+		}
+	}
+	// Mezclar listas por disco
+	else if (nID == ID_DESPLEGABLE_LISTA50CAN) {
+		std::wstring Opcion = DesplegableLista50Can.Texto();
+		if (Opcion == L"Por defecto") {
+			App.MostrarToolTipOpciones(L"Las listas con 50 canciones solo se mezclaran si el botón Mezclar está marcado.");
+			App.BD.Opciones_MezclarLista50Can(0);
+		}
+		else if (Opcion == L"Mezclar") {
+			App.MostrarToolTipOpciones(L"Las listas con 50 canciones se mezclaran siempre.");
+			App.BD.Opciones_MezclarLista50Can(1);
+		}
+		else if (Opcion == L"No mezclar") {
+			App.MostrarToolTipOpciones(L"Las listas con 50 canciones no se mezclaran nunca.");
+			App.BD.Opciones_MezclarLista50Can(2);
+		}
+	}
+	// Mezclar listas por nota
+	else if (nID == ID_DESPLEGABLE_LISTANOTA) {
+		std::wstring Opcion = DesplegableListaNota.Texto();
+		if (Opcion == L"Por defecto") {
+			App.MostrarToolTipOpciones(L"Las listas por nota solo se mezclaran si el botón Mezclar está marcado.");
+			App.BD.Opciones_MezclarListaNota(0);
+		}
+		else if (Opcion == L"Mezclar") {
+			App.MostrarToolTipOpciones(L"Las listas por nota se mezclaran siempre.");
+			App.BD.Opciones_MezclarListaNota(1);
+		}
+		else if (Opcion == L"No mezclar") {
+			App.MostrarToolTipOpciones(L"Las listas por nota no se mezclaran nunca.");
+			App.BD.Opciones_MezclarListaNota(2);
+		}
+	}
 }
+
 
 LRESULT CALLBACK VentanaOpcionesRAVE::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {

@@ -177,6 +177,9 @@ LRESULT CALLBACK ToolTipInfo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lP
 		case WM_MOUSEACTIVATE:
 			return MA_NOACTIVATEANDEAT;
 		// Mouse 
+		case WM_MOUSEMOVE :
+			if (App.BD.Opciones_OcultarTooltipsMouse() == TRUE) Ocultar();
+			break;
 		case WM_LBUTTONDOWN:	case WM_RBUTTONDOWN:	case WM_MBUTTONDOWN:// Mouse presionado
 		case WM_LBUTTONUP:		case WM_RBUTTONUP:		case WM_MBUTTONUP:	// Mouse soltado
 //		case WM_MOUSEMOVE:

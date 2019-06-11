@@ -9,7 +9,9 @@ RaveBD::RaveBD(void) : _BD(NULL), _Opciones_Volumen(0), _Opciones_PosX(0), _Opci
 								  _Opciones_Version(0.0f), _Opciones_OcultarMouseEnVideo(0), _Opciones_MostrarObtenerMetadatos(FALSE), _Opciones_MostrarAsociarArchivos(FALSE), _Opciones_AnalizarMediosPendientes(FALSE), 
 								  _Opciones_BuscarActualizacion(FALSE), _Opciones_TiempoAnimaciones(0), _Opciones_TiempoToolTips(0), _Opciones_NoAgregarMedioMenos25(FALSE), _Opciones_NoGenerarListasMenos3(FALSE), 
 							 	  _Opciones_Sumar005(FALSE), _Opciones_AlineacionControlesVideo(0), _Opciones_OpacidadControlesVideo(0), _Opciones_EfectoFadeAudioMS(10000), _Opciones_DlgDirectorios_Ancho(400), _Opciones_DlgDirectorios_Alto(600), 
-								  _Opciones_VentanaMomentos_PosX(100), _Opciones_VentanaMomentos_PosY(100) {
+								  _Opciones_VentanaMomentos_PosX(100), _Opciones_VentanaMomentos_PosY(100), _Opciones_OcultarTooltipsMouse(0), _Opciones_MostrarMedioActualTitulo(TRUE), 
+								  _Opciones_MezclarListaGenero(0), _Opciones_MezclarListaGrupo(0), _Opciones_MezclarListaDisco(0), _Opciones_MezclarLista50Can(0), _Opciones_MezclarListaNota(0), 
+								  _Opciones_GuardarBSCP(1) {
 }
 
 
@@ -484,11 +486,14 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 	// Si no hay etiquetas solo se puede generar una lista por TLA_50Medios
 	if (_Etiquetas.size() == 0)		Tipo = TLA_50Medios;
 
-	std::vector<EtiquetaBD *> Etiquetas;
-	std::wstring Q;
-	int Intentos = 0;
 	#define MAX_INTENTOS 20
-	size_t Rand = 0;
+
+	std::vector<EtiquetaBD *>	Etiquetas;
+	std::wstring				Q;
+	int							Intentos	= 0;
+	size_t						Rand		= 0;
+	int							Mezclar		= 0;
+
 	switch (Tipo) {
 		case TLA_Genero:
 			for (size_t i = 0; i < _Etiquetas.size(); i++) {
@@ -502,6 +507,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 			}
 			Q = L"SELECT * FROM Medios WHERE Genero=\"" + Etiquetas[Rand]->Texto + L"\"";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Genero (%s)\n", Etiquetas[Rand]->Texto.c_str());
+			Mezclar = _Opciones_MezclarListaGenero;
 			break;
 		case TLA_Grupo:
 			for (size_t i = 0; i < _Etiquetas.size(); i++) {
@@ -515,6 +521,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 			}
 			Q = L"SELECT * FROM Medios WHERE (GrupoPath=\"" + Etiquetas[Rand]->Texto + L"\") OR (GrupoTag=\"" + Etiquetas[Rand]->Texto + L"\")";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Grupo (%s)\n", Etiquetas[Rand]->Texto.c_str());
+			Mezclar = _Opciones_MezclarListaGrupo;
 			break;
 		case TLA_Disco:
 			for (size_t i = 0; i < _Etiquetas.size(); i++) {
@@ -528,14 +535,17 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 			}
 			Q = L"SELECT * FROM Medios WHERE (DiscoPath=\"" + Etiquetas[Rand]->Texto + L"\") OR (DiscoTag=\"" + Etiquetas[Rand]->Texto + L"\")";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Disco (%s)\n", Etiquetas[Rand]->Texto.c_str());
+			Mezclar = _Opciones_MezclarListaDisco;
 			break;
 		case TLA_50Medios:
 			Q = L"SELECT * FROM Medios WHERE TipoMedio=1 ORDER BY RANDOM() LIMIT 50";
 			Debug_Escribir(L"RaveBD::GenerarListaAleatoria Tipo : 50 Canciones.\n");
+			Mezclar = _Opciones_MezclarLista50Can;
 			break;
 		case TLA_Nota:
 			Q = L"SELECT * FROM Medios WHERE TipoMedio=1 AND Nota > 2.5 ORDER BY Nota DESC LIMIT 50";
 			Debug_Escribir(L"RaveBD::GenerarListaAleatoria Tipo : Nota.\n");
+			Mezclar = _Opciones_MezclarListaNota;
 			break;
 	}
 
@@ -572,6 +582,9 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 	}
 
 	sqlite3_finalize(SqlQuery);
+
+	if		(Mezclar == 1)	App.VentanaRave.BotonMezclar.Marcado(TRUE);  // Forzar mezclar
+	else if (Mezclar == 2)	App.VentanaRave.BotonMezclar.Marcado(FALSE); // Forzar sin mezclar
 
 	if (SqlRet == SQLITE_ERROR) {
 		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
@@ -611,8 +624,26 @@ const BOOL RaveBD::_ModificarTablas(void) {
 		SqlRet = Consulta(L"ALTER TABLE Opciones	ADD COLUMN VentanaMomentos_PosX INTEGER AFTER DlgDirectorios_Alto");
 		// Añado la columna VentanaMomentos_PosX en las opciones
 		SqlRet = Consulta(L"ALTER TABLE Opciones	ADD COLUMN VentanaMomentos_PosY INTEGER AFTER VentanaMomentos_PosX");
+		// Añado la columna OcultarTooltipsMouse en las opciones
+		SqlRet = Consulta(L"ALTER TABLE Opciones	ADD COLUMN OcultarTooltipsMouse INTEGER AFTER VentanaMomentos_PosY");
+		// Añado la columna MostrarMedioActualTitulo en las opciones
+		SqlRet = Consulta(L"ALTER TABLE Opciones	ADD COLUMN MostrarMedioActualTitulo INTEGER AFTER OcultarTooltipsMouse");
+		// Añado la columna MezclarListaGenero en las opciones
+		SqlRet = Consulta(L"ALTER TABLE Opciones	ADD COLUMN MezclarListaGenero INTEGER AFTER MostrarMedioActualTitulo");
+		// Añado la columna MezclarListaGrupo en las opciones
+		SqlRet = Consulta(L"ALTER TABLE Opciones	ADD COLUMN MezclarListaGrupo INTEGER AFTER MezclarListaGenero");
+		// Añado la columna MezclarListaDisco en las opciones
+		SqlRet = Consulta(L"ALTER TABLE Opciones	ADD COLUMN MezclarListaDisco INTEGER AFTER MezclarListaGrupo");
+		// Añado la columna MezclarLista50Can en las opciones
+		SqlRet = Consulta(L"ALTER TABLE Opciones	ADD COLUMN MezclarLista50Can INTEGER AFTER MezclarListaDisco");
+		// Añado la columna MezclarListaNota en las opciones
+		SqlRet = Consulta(L"ALTER TABLE Opciones	ADD COLUMN MezclarListaNota INTEGER AFTER MezclarLista50Can");
+		// Añado la columna MezclarListaNota en las opciones
+		SqlRet = Consulta(L"ALTER TABLE Opciones	ADD COLUMN GuardarBSCP INTEGER AFTER MezclarListaNota");
 		// Modifico el valor de EfectoFadeAudioMS a 10000
-		SqlRet = Consulta(L"UPDATE Opciones SET EfectoFadeAudioMS=10000, DlgDirectorios_Ancho=400, DlgDirectorios_Alto=600, VentanaMomentos_PosX=100, VentanaMomentos_PosY=100 WHERE Id=0");
+		SqlRet = Consulta(L"UPDATE Opciones SET EfectoFadeAudioMS=10000, DlgDirectorios_Ancho=400, DlgDirectorios_Alto=600, VentanaMomentos_PosX=100, VentanaMomentos_PosY=100"
+			                                  " OcultarTooltipsMouse=0, MostrarMedioActualTitulo=1, MezclarListaGenero=0, MezclarListaGrupo=0, MezclarListaDisco=0, MezclarLista50Can=0,"
+											  " MezclarListaNota=0, GuardarBSCP=1 WHERE Id=0");
 
 		// Medios /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Añado la columna Proporcion en los medios
@@ -813,16 +844,23 @@ const BOOL RaveBD::_CrearTablas(void) {
 											L"DlgDirectorios_Ancho"   	L" INTEGER,"					// 30
 											L"DlgDirectorios_Alto"   	L" INTEGER,"					// 31
 											L"VentanaMomentos_PosX"   	L" INTEGER,"					// 32 Posición X de la ventana de los momentos
-											L"VentanaMomentos_PosY"   	L" INTEGER "					// 33 Posición Y de la ventana de los momentos
-//											L"ContadorIDSMomentos"      L" INTEGER NOT NULL DEFAULT 0"	// 34 Contador de tablas para los momentos
+											L"VentanaMomentos_PosY"   	L" INTEGER,"					// 33 Posición Y de la ventana de los momentos
+											L"OcultarTooltipsMouse"     L" INTEGER,"					// 34 Ocultar tooltips al pasar por encima con el mouse
+											L"MostrarMedioActualTitulo" L" INTEGER,"					// 35 Mostrar el nombre del medio actual en la barra de titulo
+											L"MezclarListaGenero"       L" INTEGER,"					// 36 Mezclar listas por genero
+											L"MezclarListaGrupo"        L" INTEGER,"					// 37 Mezclar listas por grupo
+											L"MezclarListaDisco"        L" INTEGER,"					// 38 Mezclar listas por disco
+											L"MezclarLista50Can"        L" INTEGER,"					// 39 Mezclar listas con 50 canciones
+											L"MezclarListaNota"         L" INTEGER,"					// 40 Mezclar listas por nota
+											L"GuardarBSCP"              L" INTEGER"						// 41 guardar brillo, contraste, saturación, y proporción
 									  L")";
 	if (Consulta(CrearTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	// Añado los datos por defecto de las opciones ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes, VentanaOpciones_PosX, VentanaOpciones_PosY, VentanaAsociar_PosX, VentanaAsociar_PosY, VentanaAnalizar_PosX, VentanaAnalizar_PosY, BuscarActualizacion, TiempoAnimaciones, TiempoToolTips, NoAgregarMedioMenos25, NoGenerarListasMenos3, Sumar005, AlineacionControlesVideo, OpacidadControlesVideo, EfectoFadeAudioMS, DlgDirectorios_Ancho, DlgDirectorios_Alto, VentanaMomentos_PosX, VentanaMomentos_PosY) "
-										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1, 1, 400, 300, 500, 400, 300, 200, 1, 400, 5500, 1, 1, 1, 0, 200, 10000, 350, 400, 100, 100)";
+	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes, VentanaOpciones_PosX, VentanaOpciones_PosY, VentanaAsociar_PosX, VentanaAsociar_PosY, VentanaAnalizar_PosX, VentanaAnalizar_PosY, BuscarActualizacion, TiempoAnimaciones, TiempoToolTips, NoAgregarMedioMenos25, NoGenerarListasMenos3, Sumar005, AlineacionControlesVideo, OpacidadControlesVideo, EfectoFadeAudioMS, DlgDirectorios_Ancho, DlgDirectorios_Alto, VentanaMomentos_PosX, VentanaMomentos_PosY, OcultarTooltipsMouse, MostrarMedioActualTitulo, MezclarListaGenero, MezclarListaGrupo, MezclarListaDisco, MezclarLista50Can, MezclarListaNota, GuardarBSCP) "
+										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1, 1, 400, 300, 500, 400, 300, 200, 1, 400, 5500, 1, 1, 1, 0, 200, 10000, 350, 400, 100, 100, 0, 1, 0, 0, 0, 0, 0, 1)";
 	if (Consulta(ValoresTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -894,7 +932,6 @@ const BOOL RaveBD::_CrearTablas(void) {
 										L"Brillo "			L"DOUBLE, "					// 26
 										L"Contraste "		L"DOUBLE, "					// 27
 										L"Saturacion "		L"DOUBLE"					// 28
-//										L"IDMomentos "      L"INT NOT NULL DEFAULT -1"  // 29
 									L")";
 	if (Consulta(CrearTablaMedios.c_str()) == SQLITE_ERROR)
 		return FALSE;
@@ -1442,12 +1479,55 @@ void RaveBD::Opciones_EfectoFadeAudioMS(const UINT nOpciones_EfectoFadeAudioMS) 
 	std::wstring Q = L"Update Opciones SET EfectoFadeAudioMS=" + std::to_wstring(nOpciones_EfectoFadeAudioMS) + L" WHERE Id=0";
 	int Ret = Consulta(Q.c_str());
 }
-/*
-void RaveBD::Opciones_ContadorIDSMomentos(const LONG nOpciones_ContadorIDSMomentos) {
-	_Opciones_ContadorIDSMomentos = nOpciones_ContadorIDSMomentos;
-	std::wstring Q = L"Update Opciones SET ContadorIDSMomentos=" + std::to_wstring(nOpciones_ContadorIDSMomentos) + L" WHERE Id=0";
+
+void RaveBD::Opciones_OcultarTooltipsMouse(const BOOL nOpciones_OcultarTooltipsMouse) {
+	_Opciones_OcultarTooltipsMouse = nOpciones_OcultarTooltipsMouse;
+	std::wstring Q = L"Update Opciones SET OcultarTooltipsMouse=" + std::to_wstring(nOpciones_OcultarTooltipsMouse) + L" WHERE Id=0";
 	int Ret = Consulta(Q.c_str());
-}*/
+}
+
+void RaveBD::Opciones_MostrarMedioActualTitulo(const BOOL nOpciones_MostrarMedioActualTitulo) {
+	_Opciones_MostrarMedioActualTitulo = nOpciones_MostrarMedioActualTitulo;
+	std::wstring Q = L"Update Opciones SET MostrarMedioActualTitulo=" + std::to_wstring(nOpciones_MostrarMedioActualTitulo) + L" WHERE Id=0";
+	int Ret = Consulta(Q.c_str());
+}
+
+void RaveBD::Opciones_MezclarListaGenero(const int nOpciones_MezclarListaGenero) {
+	_Opciones_MezclarListaGenero = nOpciones_MezclarListaGenero;
+	std::wstring Q = L"Update Opciones SET MezclarListaGenero=" + std::to_wstring(nOpciones_MezclarListaGenero) + L" WHERE Id=0";
+	int Ret = Consulta(Q.c_str());
+}
+
+void RaveBD::Opciones_MezclarListaGrupo(const int nOpciones_MezclarListaGrupo) {
+	_Opciones_MezclarListaGrupo = nOpciones_MezclarListaGrupo;
+	std::wstring Q = L"Update Opciones SET MezclarListaGrupo=" + std::to_wstring(nOpciones_MezclarListaGrupo) + L" WHERE Id=0";
+	int Ret = Consulta(Q.c_str());
+}
+
+void RaveBD::Opciones_MezclarListaDisco(const int nOpciones_MezclarListaDisco) {
+	_Opciones_MezclarListaDisco = nOpciones_MezclarListaDisco;
+	std::wstring Q = L"Update Opciones SET MezclarListaDisco=" + std::to_wstring(nOpciones_MezclarListaDisco) + L" WHERE Id=0";
+	int Ret = Consulta(Q.c_str());
+}
+
+void RaveBD::Opciones_MezclarLista50Can(const int nOpciones_MezclarLista50Can) {
+	_Opciones_MezclarLista50Can = nOpciones_MezclarLista50Can;
+	std::wstring Q = L"Update Opciones SET MezclarLista50Can=" + std::to_wstring(nOpciones_MezclarLista50Can) + L" WHERE Id=0";
+	int Ret = Consulta(Q.c_str());
+}
+
+void RaveBD::Opciones_MezclarListaNota(const int nOpciones_MezclarListaNota) {
+	_Opciones_MezclarListaNota = nOpciones_MezclarListaNota;
+	std::wstring Q = L"Update Opciones SET MezclarListaNota=" + std::to_wstring(nOpciones_MezclarListaNota) + L" WHERE Id=0";
+	int Ret = Consulta(Q.c_str());
+}
+
+void RaveBD::Opciones_GuardarBSCP(const BOOL nOpciones_GuardarBSCP) {
+	_Opciones_GuardarBSCP = nOpciones_GuardarBSCP;
+	std::wstring Q = L"Update Opciones SET GuardarBSCP=" + std::to_wstring(nOpciones_GuardarBSCP) + L" WHERE Id=0";
+	int Ret = Consulta(Q.c_str());
+}
+
 
 
 // Función que devuelve la versión de la BD
@@ -1538,7 +1618,14 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 			_Opciones_DlgDirectorios_Alto		= static_cast<int>(sqlite3_column_int(SqlQuery, 31));
 			_Opciones_VentanaMomentos_PosX		= static_cast<int>(sqlite3_column_int(SqlQuery, 32));
 			_Opciones_VentanaMomentos_PosY		= static_cast<int>(sqlite3_column_int(SqlQuery, 33));
-//			_Opciones_ContadorIDSMomentos		= static_cast<int>(sqlite3_column_int(SqlQuery, 34));
+			_Opciones_OcultarTooltipsMouse		= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 34));
+			_Opciones_MostrarMedioActualTitulo  = static_cast<BOOL>(sqlite3_column_int(SqlQuery, 35));
+			_Opciones_MezclarListaGenero		= static_cast<int>(sqlite3_column_int(SqlQuery, 36));
+			_Opciones_MezclarListaGrupo			= static_cast<int>(sqlite3_column_int(SqlQuery, 37));
+			_Opciones_MezclarListaDisco			= static_cast<int>(sqlite3_column_int(SqlQuery, 38));
+			_Opciones_MezclarLista50Can			= static_cast<int>(sqlite3_column_int(SqlQuery, 39));
+			_Opciones_MezclarListaNota			= static_cast<int>(sqlite3_column_int(SqlQuery, 40));
+			_Opciones_GuardarBSCP				= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 41));
 		}
 		if (SqlRet == SQLITE_BUSY) {
 			VecesBusy++;

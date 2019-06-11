@@ -470,9 +470,7 @@ const BOOL Rave_MediaPlayer::Play(const BOOL ComprobarMomento) {
 		case Derecha	:	App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_Izquierda);	break;
 	}
 
-	// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
-	std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" [" + DWL::Strings::ToStr(_Actual->Medio.Pista(), 2) + L" " + _Actual->Medio.Nombre() + L"]";
-	App.VentanaRave.Titulo(nTitulo);
+	AsignarTitulo();
 
 	BOOL B = _Actual->Play();
 
@@ -480,6 +478,20 @@ const BOOL Rave_MediaPlayer::Play(const BOOL ComprobarMomento) {
 
 	return B;
 }
+
+void Rave_MediaPlayer::AsignarTitulo(void) {
+	std::wstring nTitulo;
+	if (App.BD.Opciones_MostrarMedioActualTitulo() == TRUE && _Actual != NULL) {
+		// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
+		nTitulo = std::wstring(RAVE_TITULO) + L" [" + DWL::Strings::ToStr(_Actual->Medio.Pista(), 2) + L" " + _Actual->Medio.Nombre() + L"]";
+	}
+	else {
+		nTitulo = std::wstring(RAVE_TITULO);
+	}
+	App.VentanaRave.Titulo(nTitulo);
+}
+
+
 
 const BOOL Rave_MediaPlayer::Pausa(void) {
 	if (_Actual == NULL) return FALSE;

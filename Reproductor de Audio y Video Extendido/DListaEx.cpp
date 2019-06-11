@@ -551,7 +551,7 @@ namespace DWL {
 		}
 
 		// Altura (total de items * altura de la fuente)
-		_TotalAltoVisible = (Fuente.Alto() + (DLISTAEX_PADDING * (int)2)) * _Items.size();
+		_TotalAltoVisible = (Fuente.Alto() + (DLISTAEX_PADDING * 2)) * _Items.size();
 	}
 
 

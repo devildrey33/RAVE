@@ -90,6 +90,7 @@ void AsignarTeclaRapida::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) 
 		if (DatosTeclado.TeclaVirtual() == VK_ESCAPE) {
 			_Editando = FALSE;
 			App.MostrarToolTipOpciones(L"Edición cancelada.");
+			Repintar();
 			return;
 		}
 
