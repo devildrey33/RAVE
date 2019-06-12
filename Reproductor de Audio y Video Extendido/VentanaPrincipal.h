@@ -25,7 +25,7 @@ using namespace DWL;
 
 class VentanaPrincipal : public DWL::DVentana {
  public:
-								VentanaPrincipal(void) : DWL::DVentana(), _PantallaCompleta(FALSE), EstadoMedio(EnStop), MousePos({ 0, 0 }), MonitorDisponible(FALSE), _MaximoTotalMedios2(0), _ValorMedios2(0), RectMonitorActual({ 0,0,0,0 }), CTW_ExtraX(0), CTW_ExtraY(0), _BotonExMouseDownTick(0) {};
+								VentanaPrincipal(void) : DWL::DVentana(), _PantallaCompleta(FALSE), EstadoMedio(EnStop), MonitorDisponible(FALSE), _MaximoTotalMedios2(0), _ValorMedios2(0), RectMonitorActual({ 0,0,0,0 }), CTW_ExtraX(0), CTW_ExtraY(0), _BotonExMouseDownTick(0) {};
 					           ~VentanaPrincipal(void) { };
 	HWND						Crear(int nCmdShow);
 
@@ -42,7 +42,7 @@ class VentanaPrincipal : public DWL::DVentana {
 	void                        Evento_BotonEx_Mouse_Presionado(DWL::DEventoMouse &DatosMouse);
 	void                        Evento_BotonEx_Mouse_Soltado(DWL::DEventoMouse &DatosMouse);
 	//	void                        Evento_BotonEx_Mouse_Up(DWL::DEventoMouse &DatosMouse);
-	void						Evento_Temporizador(const UINT cID);
+//	void						Evento_Temporizador(const UINT cID);
 	void						Evento_CambiandoTam(const UINT Lado, RECT *Rectangulo);
 	void						Evento_SliderTiempo_Cambiado(void);
 	void						Evento_SliderVolumen_Cambiado(void);
@@ -187,7 +187,7 @@ class VentanaPrincipal : public DWL::DVentana {
 
 	Estados_Medio				EstadoMedio;
 
-	POINT						MousePos;
+//	POINT						MousePos;
 
 	BOOL						MonitorDisponible;
 	RECT						RectMonitorActual;

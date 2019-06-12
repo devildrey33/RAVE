@@ -181,7 +181,19 @@ void ListaMedios::Evento_MouseDobleClick(DWL::DEventoMouse &EventoMouse) {
 	}
 }
 
-void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
+void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse& DatosMouse) {
+
+/*	if (GetCapture() == _hWnd) {
+		RECT RC;
+		GetClientRect(_hWnd, &RC);
+		POINT Pt = { DatosMouse.X(), DatosMouse.Y() };
+		if (PtInRect(&RC, Pt) == FALSE) {
+			ReleaseCapture();
+			Visible(FALSE);
+			return;
+		}
+	}*/
+
 	// Boton del medio
 	if (DatosMouse.Boton == 2) {		
 		if (_ItemResaltado != -1) {
@@ -374,3 +386,25 @@ const BOOL ListaMedios::Mezclar(const BOOL nMezclar) {
 	Repintar();
 	return Ret;
 }
+
+
+// Establece la opacidad de la ventana (0 transparente, 255 solido)
+void ListaMedios::Opacidad(const BYTE nNivel) {
+	if (App.VentanaRave.PantallaCompleta() == TRUE) {
+		SetWindowLongPtr(_hWnd, GWL_EXSTYLE, WS_EX_LAYERED | WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
+		SetLayeredWindowAttributes(_hWnd, 0, nNivel, LWA_ALPHA);
+	}
+};
+
+const BYTE ListaMedios::Opacidad(void) {
+	BYTE Ret;
+	DWORD Params = LWA_ALPHA;
+	GetLayeredWindowAttributes(_hWnd, NULL, &Ret, &Params);
+	return Ret;
+}
+
+
+/*
+void ListaMedios::Evento_FocoPerdido(HWND hWndNuevoFoco) {
+	if (App.VentanaRave.PantallaCompleta() == TRUE) Visible(FALSE);
+}*/

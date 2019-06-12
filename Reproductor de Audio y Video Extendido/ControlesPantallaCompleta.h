@@ -19,10 +19,20 @@ enum CPC_Transicion {
 	CPC_Transicion_Normal
 };
 
+class VerVideo;
+
 class ControlesPantallaCompleta :public DVentana {
   public:
-							ControlesPantallaCompleta() : DVentana(), Alineacion(Abajo), _Visible(FALSE) { };
+							ControlesPantallaCompleta() : DVentana(), Alineacion(Abajo), _Visible(FALSE), _MousePos({ 0, 0 }) { };
 	                       ~ControlesPantallaCompleta() { };
+
+	void					Crear(void);
+	void					Mostrar(void);
+	void					Ocultar(void);
+
+	void                    MostrarBD(const BOOL Forzar = FALSE);
+	void                    MostrarLista(const BOOL Forzar = FALSE);
+
 							// Se está modificando (WM_MOUSEDOWN, WM_MOUSEHOVER)
 	void					Evento_SliderTiempo_Cambio(void);
 							// Se ha modificado (WM_MOUSEUP)
@@ -36,6 +46,7 @@ class ControlesPantallaCompleta :public DVentana {
 
 	void					Evento_BotonEx_Click(DWL::DEventoMouse &DatosMouse);
 
+	void                    Evento_Temporizador(const UINT cID);
 //	void					Evento_BorraFondo(HDC DC);
 	void                    Evento_Pintar(void);
 	void					Pintar(HDC DC);
@@ -46,9 +57,6 @@ class ControlesPantallaCompleta :public DVentana {
 
 //	LRESULT					Evento_SliderH(WPARAM wParam, LPARAM lParam);
 
-	void					Crear(void);
-	void					Mostrar(void);
-	void					Ocultar(void);
 
 	DWL::DBotonEx			BotonPlay;
 //	DWL::DBotonEx			BotonPausa;
@@ -60,6 +68,9 @@ class ControlesPantallaCompleta :public DVentana {
 
 	DWL::DBotonEx			BotonMezclar;
 	DWL::DBotonEx			BotonRepetir;
+
+	DWL::DBotonEx			BotonLista;
+	DWL::DBotonEx			BotonBD;
 
 	DWL::DBotonEx           BotonRotar;
 
@@ -78,11 +89,14 @@ class ControlesPantallaCompleta :public DVentana {
 	void					RotarControles(void);
 
 	LRESULT CALLBACK		GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
-  protected :
+
 	DAnimacion             _AniMostrar;
+protected :
 
 	BOOL				   _Visible;
 
+	POINT                  _MousePos;
 
+	friend class VerVideo;
 };
 

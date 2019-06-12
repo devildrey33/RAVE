@@ -41,6 +41,7 @@ class ListaMedios : public DWL::DListaEx {
 	void						Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse);
 	void						Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse);
 	void                        Evento_MouseSaliendo(void);
+//	void						Evento_FocoPerdido(HWND hWndNuevoFoco);
 
 	void                        Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado);
 
@@ -48,6 +49,10 @@ class ListaMedios : public DWL::DListaEx {
 	ItemMedio                  *MedioAnterior(ItemMedio *nMedio, const BOOL SituarAlFinal = TRUE);
 //	ItemMedio					*MedioActualOrdenado;
 	ItemMedio				   *MedioActual;
+
+	void						Opacidad(const BYTE nNivel);
+	const BYTE                  Opacidad(void);
+
 
 	int							Errores;
 								// Posición en la lista del medio especificado (puede ser -1 si no hay medio actual)

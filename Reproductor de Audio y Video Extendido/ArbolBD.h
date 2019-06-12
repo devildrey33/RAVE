@@ -52,6 +52,8 @@ class ArbolBD : public DWL::DArbolEx {
 	void					Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse);
 	void					Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse);
 
+//	void                    Evento_FocoPerdido(HWND hWndNuevoFoco);
+
 /*	void					Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado);
 	void					Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado);
 	void					Evento_Tecla(DWL::DEventoTeclado &DatosTeclado);*/
@@ -59,6 +61,9 @@ class ArbolBD : public DWL::DArbolEx {
 	inline NodoBD          *MedioResaltado(void) { return static_cast<NodoBD *>(_NodoResaltado); }
 
 	void                    ObtenerPathNodo(NodoBD *pNodo, std::wstring &OUT_Path);
+
+	void					Opacidad(const BYTE nNivel);
+	const BYTE              Opacidad(void);
 
   protected:
     void                   _AgregarMedio(NodoBD *nPadre, BDMedio *nMedio);

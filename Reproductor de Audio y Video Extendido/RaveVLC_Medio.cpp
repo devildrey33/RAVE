@@ -56,7 +56,9 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : Ra
 	if (Medio.TipoMedio == Tipo_Medio_Video) {
 		libvlc_media_player_set_hwnd(_Medio, App.VentanaRave.Video.hWnd());
 		// Pulso el botón para mostrar el video
-		App.VentanaRave.Evento_BotonEx_Mouse_Click(DEventoMouse(0, 0, &App.VentanaRave.BotonVideo, 0));
+		if (App.VentanaRave.PantallaCompleta() == FALSE) {
+			App.VentanaRave.Evento_BotonEx_Mouse_Click(DEventoMouse(0, 0, &App.VentanaRave.BotonVideo, 0));
+		}
 
 		// Cargo los valores de brillo, proporción, contraste, y saturación
 		if (App.BD.Opciones_GuardarBSCP() == TRUE) {

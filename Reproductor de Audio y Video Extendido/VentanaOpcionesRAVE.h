@@ -28,6 +28,7 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	void					Evento_BarraEx_Cambiando(DWL::DEventoMouse &DatosMouse);
 	void					Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse);
 	void					Evento_ListaDesplegable_Cambio(INT_PTR nID);
+	void					Evento_ListaEx_Mouse_Click(DWL::DEventoMouse& DatosMouse);
 
 	void					ActualizarListaInicio(void);
 
@@ -53,6 +54,7 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	DEtiquetaEx				EtiquetaBaseDeDatos1;
 	ListaRaices				ListaRaiz;
 	DWL::DBotonEx			BotonAgregarRaiz;
+	DWL::DBotonEx			BotonEliminarRaiz;
 	ControlSeparador		SeparadorBD;
 	DWL::DMarcaEx			MarcaMostrarAnalisis;
 	DWL::DMarcaEx			MarcaAnalizarMediosPendientes;

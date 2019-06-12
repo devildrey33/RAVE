@@ -2,6 +2,10 @@
 
 ### Versión 0.524
 
+* Ahora se puede ver la lista y la base de datos desde el modo pantalla completa (con SetParent, nada de tener 2 controles de lista y arbol)
+
+* Solucionado bug con las teclas F2 y F3 en pantalla completa, que mostraban la lista o la BD a un tamaño exagerado y no dejaban ver nada.
+
 * Solucionado bug al mostrar el menú de la lista, que seleccionaba 2 items si ya habia uno seleccionado.
 
 * Solucionado bug con los controles desplegables con lista que no mostraban correctamente el foco de su ventana padre.

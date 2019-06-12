@@ -48,7 +48,9 @@ namespace DWL {
 		inline virtual const BOOL	Destruir(void)					{ if (_hWnd == NULL) { return TRUE; } BOOL R = DestroyWindow(_hWnd); _hWnd = NULL; return R; };
 		inline INT_PTR				ID(void)						{ return static_cast<INT_PTR>(GetWindowLongPtr(_hWnd, GWL_ID)); };
 		inline HWND					hWndPadre(void)					{ return GetParent(_hWnd); };
-		inline const BOOL			Visible(const BOOL nMostrar)    { return ShowWindow(_hWnd, (nMostrar != TRUE) ? SW_HIDE : SW_SHOW); };
+		inline const BOOL			Visible(const BOOL nMostrar)    { 
+			return ShowWindow(_hWnd, (nMostrar != TRUE) ? SW_HIDE : SW_SHOW); 
+		};
 		inline const BOOL			Visible(void)                   { return IsWindowVisible(_hWnd); };
 
 //		inline void					BorrarBufferTeclado(void)		{ for (size_t i = 0; i < 256; i++) Teclado[i] = false; }

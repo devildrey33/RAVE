@@ -181,8 +181,8 @@ LRESULT CALLBACK VerVideo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lPara
 			//			Debug_Escribir(L"VerView::GestorMensajes uMsg = WM_MOUSEMOVE\n");
 			DWL::DMouse::ObtenerPosicion(&nPos);
 			if (App.VentanaRave.PantallaCompleta() == TRUE) {
-				if (App.VentanaRave.MousePos.x != nPos.x || App.VentanaRave.MousePos.y != nPos.y) {
-					App.VentanaRave.MousePos = nPos;
+				if (App.ControlesPC._MousePos.x != nPos.x || App.ControlesPC._MousePos.y != nPos.y) {
+					App.ControlesPC._MousePos = nPos;
 					App.ControlesPC.Mostrar();
 				}
 			}

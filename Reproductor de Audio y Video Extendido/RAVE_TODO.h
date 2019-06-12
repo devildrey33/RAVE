@@ -334,32 +334,34 @@
 				X	No aconsegueixo fer funcionar la nova funció.... ni amb la versió 4.0.0 de la VLC...
 
 		V  Llista per nota
+		X  Llista per momentos?? (ara no es el moment...)
 
-		-  Opcions
+		V  Opcions
 			V  Pasar les tecles personalitzades a una nova secció Teclado
 				V  Agregar F1, F2, i F3
 				V  Revisar edició de teclas i el ESC...
-			-  Base de datos
-				- Agregar buto "Eliminar Raíz"
-			-  Llista
-				-  Mezclar listas aleatoíras generadas por genero, grupo, 50 canciones.
-				-  No Mezclar listas aleatórias generadas por disco.			
-			-  General
-				-  Ocultar tooltips al pasar por encima con el mouse
+			V  Base de datos
+				V Agregar buto "Eliminar Raíz"
+			V  Llista
+				X  Mezclar listas aleatoíras generadas por genero, grupo, 50 canciones.
+				X  No Mezclar listas aleatórias generadas por disco.			
+				V  He agregat 5 opcions, una per cada tipus de llista.
+			V  General
+				V  Ocultar tooltips al pasar por encima con el mouse
 				X  Tamaño tooltips (fer 3 mides : petit, normal [que es la actual], gran)
-				-  Mostrar nombre del medio en la barra de titulo
-			-  Video
-				-  Guardar valores de brillo saturacion contraste i proporcion para cada video
+				V  Mostrar nombre del medio en la barra de titulo
+			V  Video
+				V  Guardar valores de brillo saturacion contraste i proporcion para cada video
 
-		- Les notes menors que 2 s'han de mostrar amb una estrella gris
-		- Llista per momentos??
-		- Bug al presionar F2 i F3 en pantalla completa...
-			- Decidir si treure el pantalla completa i mostrar el medi, o ignorar les tecles, o fer d'un cop la llista i la BD en modo pantalla completa
+		V Bug al presionar F2 i F3 en pantalla completa...
+			V Decidir si treure el pantalla completa i mostrar el medi, o ignorar les tecles, o fer d'un cop la llista i la BD en modo pantalla completa
 
 		-  Buscar actualitzacións (algo simple que em doni la web per descarregar l'actualització)
 			- Sistema d'actualitzacións en el directori ProgramData per no requerir permisos d'administrador
 
 	RAVE 0.7
+		-  Les notes menors que 2 s'han de mostrar amb una estrella gris
+
 		-  Control + [F / B] integrat en la llista i l'arbre, que resalti els items / nodos.
 
 		-  Afegir menu tipo CheckBox, que serveixi tant com a menú, o com a marca pel seu menú pare.

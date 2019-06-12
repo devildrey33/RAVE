@@ -33,10 +33,12 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	GetClientRect(hWnd(), &RC);
 
 	Arbol.CrearArbolEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_ARBOLBD, WS_CHILD | WS_VISIBLE);
+	SetWindowLongPtr(Arbol.hWnd(), GWL_EXSTYLE, WS_EX_TOOLWINDOW);
 //	Arbol.SubSeleccion = TRUE;
 //	Arbol.Visible(TRUE);
 
 	Lista.CrearListaEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_LISTAMEDIOS, WS_CHILD);
+	SetWindowLongPtr(Lista.hWnd(), GWL_EXSTYLE, WS_EX_TOOLWINDOW);
 	Lista.MultiSeleccion = TRUE;
 	Lista.MoverItemsDrag = TRUE;
 	// Columnas
@@ -168,112 +170,6 @@ BOOL CALLBACK VentanaPrincipal::EnumerarPantallas(HMONITOR hMonitor, HDC hdcMoni
 }
 
 
-void VentanaPrincipal::Evento_Temporizador(const UINT cID) {
-//	static Estados_Medio Estado = SinCargar;
-//	static wchar_t TiempoStr[64];
-	std::wstring TiempoStr;
-/*	Estado = App.MP.ComprobarEstado();
-	if (EstadoMedio != Estado) {
-		EstadoMedio = Estado;
-		Debug_Escribir_Varg(L"EstadoVLC %d\n", EstadoMedio);
-	}*/
-
-	switch (cID) {
-		// Controles PantallaCompleta Inactividad
-		case TIMER_CPC_INACTIVIDAD:
-			App.ControlesPC.Ocultar();
-			break;
-		// Obtiene el hWnd de la ventana a pantalla completa del VLC
-/*		case TIMER_OBTENERVLCWND : 
-			EnumChildWindows(Video.hWnd(), &RaveVLC::EnumeracionVLC, NULL);
-			if (App.VLC.hWndVLC != NULL) KillTimer(hWnd(), TIMER_OBTENERVLCWND);
-			break;*/
-		// Temporizador para repintar el VLC?¿?
-/*		case TIMER_REPINTARVLC :
-			App.VLC.RepintarVLC();
-			KillTimer(hWnd(), TIMER_REPINTARVLC);
-			break;*/
-		// Temporizador para actualizar el tiempo actual del medio que se está reproduciendo
-		/*case TIMER_TIEMPO :
-			App.VLC.ObtenerDatosParsing();
-			if (!Minimizado()) {
-				if (Estado == EnPlay || Estado == EnPausa) { // EnPlay y EnPausa
-					// Si el slider del tiempo tiene la captura, es porque se esta modificando el tiempo, por lo que no hay que actualizar la posición en ese momento.
-					if (SliderTiempo.Estado() != DBarraEx_Estado_Presionado && App.ControlesPC.SliderTiempo.Estado() != DBarraEx_Estado_Presionado) {
-						SliderTiempo.Valor(App.VLC.TiempoActual());
-						//					SliderTiempo.Posicion(static_cast<UINT64>(App.VLC.TiempoActual() * 30000));
-						App.ControlesPC.SliderTiempo.Valor(App.VLC.TiempoActual());
-						// Lo mismo pasa con el tiempo actual
-						App.VLC.TiempoStr(App.VLC.TiempoActualMs(), TiempoStr);
-						LabelTiempoActual.Texto(TiempoStr);
-						App.ControlesPC.LabelTiempoActual.Texto(TiempoStr);
-					}
-					// El tiempo total solo se actualiza cuando es distinto al anterior
-					UINT64 T = App.VLC.TiempoTotalMs();
-					static UINT64 nTiempoTotal = 0;
-					if (T != nTiempoTotal) {
-						TiempoStr = L"";
-						nTiempoTotal = T;
-						App.VLC.TiempoStr(T, TiempoStr);
-						LabelTiempoTotal.Texto(TiempoStr);
-						App.ControlesPC.LabelTiempoTotal.Texto(TiempoStr);
-					}
-				}
-				else { //if (App.VLC.ComprobarEstado == EnStop || App.VLC.ComprobarEstado == SinCargar || App.VLC.ComprobarEstado == Abriendo || App.VLC.ComprobarEstado == Terminada || App.VLC.ComprobarEstado == EnError || App.VLC.ComprobarEstado == Nada) {
-					std::wstring Tiempo(L"00:00");
-					LabelTiempoActual.Texto(Tiempo);
-					LabelTiempoTotal.Texto(Tiempo);
-					App.ControlesPC.LabelTiempoActual.Texto(Tiempo);
-					App.ControlesPC.LabelTiempoTotal.Texto(Tiempo);
-					// Si se ha terminado el medio asigno las barras del tiempo al máximo
-					if (Estado == Terminada) {
-						// Asigno el valor de las barras del tiempo a su máximo
-						SliderTiempo.Valor(SliderTiempo.Maximo());
-						App.ControlesPC.SliderTiempo.Valor(SliderTiempo.Maximo());
-					}
-				}
-
-			}
-			break;
-
-		// Temporizador que detecta cuando se termina un medio y avanza al siguiente según las reglas establecidas
-		case TIMER_LISTA:
-			// Si no hay items salgo
-			if (Lista.TotalItems() == 0) return;
-
-			// Si hay 10 errores en la lista, paro
-			if (Lista.Errores > 10) {
-				Lista_Stop();
-				//Lista.Errores = 0; // ya lo hace el stop
-				return;
-			}
-
-			// Un medio de la lista ha terminado
-			if (Estado == SinCargar) {			
-				App.BD.MedioReproducido(&App.VLC.MedioActual());
-
-				// Renombro archivos CRDOWNLOAD y OPDOWNLOAD
-				if (App.VLC.MedioActual().Extension == Extension_CRDOWNLOAD || App.VLC.MedioActual().Extension == Extension_OPDOWNLOAD) {
-					size_t PosExtension = App.VLC.MedioActual().Path.find_last_of(TEXT("."));																				// Posición donde empieza la extensión
-					std::wstring NuevoPath = App.VLC.MedioActual().Path.substr(0, PosExtension);
-					if (MoveFile(App.VLC.MedioActual().Path.c_str(), NuevoPath.c_str()) != FALSE) {
-						App.BD.ActualizarPathMedio(NuevoPath, App.VLC.MedioActual().Id);
-					}
-				}
-
-
-//				App.VLC.Stop();
-				if (Lista.PosMedio(Lista.MedioActual) == Lista.TotalItems() - 1) {
-					Repeat();
-				}
-				else {
-					Lista_Siguiente();
-				}
-			}
-
-			break;*/
-		}	
-}
 
 // Función que ejecuta el repeat
 void VentanaPrincipal::Repeat(void) {
@@ -1045,7 +941,21 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 		Video.Visible(TRUE);
 		App.ControlesPC.Mostrar();
 		DWL::DMouse::Visible(TRUE);
-//		Video.AsignarFoco();
+
+
+		SetParent(Arbol.hWnd(), NULL);
+		LONG_PTR Estilos = GetWindowLongPtr(Arbol.hWnd(), GWL_STYLE);
+		Estilos &= ~WS_CHILD;
+		SetWindowLongPtr(Arbol.hWnd(), GWL_STYLE, Estilos | WS_POPUP);
+		SetWindowLongPtr(Arbol.hWnd(), GWL_EXSTYLE, WS_EX_TOOLWINDOW);
+//		ShowWindow(Arbol.hWnd(), SW_SHOW);
+
+		SetParent(Lista.hWnd(), NULL);
+		SetWindowLongPtr(Lista.hWnd(), GWL_STYLE, Estilos | WS_POPUP);
+		SetWindowLongPtr(Lista.hWnd(), GWL_EXSTYLE, WS_EX_TOOLWINDOW);
+		//		ShowWindow(Lista.hWnd(), SW_SHOW);
+
+		//		Video.AsignarFoco();
 
 //		RedrawWindow(App.VLC.hWndVLC, NULL, NULL, RDW_ERASE | RDW_INVALIDATE | RDW_ALLCHILDREN);
 
@@ -1063,12 +973,38 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 			App.BD.Opciones_AsignarPosVentana(RectMonitorActual.left + 100, RectMonitorActual.top + 100);
 		}
 
+		App.ControlesPC._AniMostrar.Terminar();
+
 		ShowWindow(hWnd(), SW_RESTORE);
 //		GetClientRect(hWnd(), &RC);
 //		BOOL R = App.VentanaRave.BarraTareas.Clip(&RC);
 		SetWindowLongPtr(hWnd(), GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
 		SetWindowPos(_hWnd, HWND_TOP, App.BD.Opciones_PosX(), App.BD.Opciones_PosY(), App.BD.Opciones_Ancho(), App.BD.Opciones_Alto(), SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 		//MoveWindow(Video.hWnd(), 120, 71, RC.right - 120, RC.bottom - 70, TRUE);
+
+		App.ControlesPC.Ocultar();
+		DWL::DMouse::Visible(TRUE);
+		KillTimer(hWnd(), TIMER_CPC_INACTIVIDAD);
+
+
+		LONG_PTR Estilos = GetWindowLongPtr(Arbol.hWnd(), GWL_STYLE);
+		Estilos &= ~WS_POPUP;
+
+		LONG_PTR EstilosEx = GetWindowLongPtr(Arbol.hWnd(), GWL_EXSTYLE);
+		EstilosEx &= ~WS_EX_LAYERED;
+
+		Arbol.Opacidad(255);
+		SetParent(Arbol.hWnd(), _hWnd);
+		SetWindowLongPtr(Arbol.hWnd(), GWL_STYLE, Estilos | WS_CHILD);
+		SetWindowLongPtr(Arbol.hWnd(), GWL_EXSTYLE, EstilosEx);
+
+		Lista.Opacidad(255);
+		SetParent(Lista.hWnd(), _hWnd);
+		SetWindowLongPtr(Lista.hWnd(), GWL_STYLE, Estilos | WS_CHILD);
+		SetWindowLongPtr(Lista.hWnd(), GWL_EXSTYLE, EstilosEx);
+
+//		EstilosEx = GetWindowLongPtr(Arbol.hWnd(), GWL_EXSTYLE);
+//		BOOL T = EstilosEx & WS_EX_LAYERED;
 
 		Arbol.Visible(FALSE);
 		Lista.Visible(FALSE);
@@ -1081,18 +1017,12 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 		MarcoSD.Visible(TRUE);
 		MarcoSI.Visible(TRUE);
 		MarcoII.Visible(TRUE);
-		App.ControlesPC.Ocultar();
-		DWL::DMouse::Visible(TRUE);
-		KillTimer(hWnd(), TIMER_CPC_INACTIVIDAD);
 		// Elimino la región de pintado en la barra de tareas
 		BOOL R = BarraTareas.Clip(&RC);
 //		AsignarFoco();
 	}
 
 	InvalidateRect(App.MP.hWndVLC, NULL, TRUE);
-
-
-
 //	SetTimer(hWnd(), TIMER_REPINTARVLC, 1000, NULL);
 //	PostMessage(Video.hWnd(), WM_PAINT, 0, 0);
 }
@@ -1545,9 +1475,9 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 
 
 
-		case WM_TIMER:	
+/*		case WM_TIMER:	
 			this->Evento_Temporizador(static_cast<UINT>(wParam));
-			return 0;
+			return 0;*/
 		case WM_CLOSE : 
 			Evento_Cerrar();
 			return 0;

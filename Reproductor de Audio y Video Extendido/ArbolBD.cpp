@@ -320,6 +320,18 @@ void ArbolBD::ExplorarPath(NodoBD *nNodo) {
 
 
 void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
+/*	HWND GC = GetCapture();
+	if (GetCapture() == _hWnd) {
+		RECT RC;
+		GetClientRect(_hWnd, &RC);
+		POINT Pt = { DatosMouse.X(), DatosMouse.Y() };
+		if (PtInRect(&RC, Pt) == FALSE) {
+			ReleaseCapture();
+			Visible(FALSE);
+			return;
+		}
+	}*/
+
 	
 	NodoBD      *NodoRes = static_cast<NodoBD *>(_NodoResaltado);
 	std::wstring EtiquetaFiltrada;
@@ -464,3 +476,23 @@ void ArbolBD::ObtenerPathNodo(NodoBD *pNodo, std::wstring &OUT_Path) {
 	}
 
 }
+
+// Establece la opacidad de la ventana (0 transparente, 255 solido)
+void ArbolBD::Opacidad(const BYTE nNivel) {
+	if (App.VentanaRave.PantallaCompleta() == TRUE) {
+		SetWindowLongPtr(_hWnd, GWL_EXSTYLE, WS_EX_LAYERED | WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
+		SetLayeredWindowAttributes(_hWnd, 0, nNivel, LWA_ALPHA);
+	}
+};
+
+const BYTE ArbolBD::Opacidad(void) {
+	BYTE Ret;
+	DWORD Params = LWA_ALPHA;
+	GetLayeredWindowAttributes(_hWnd, NULL, &Ret, &Params);
+	return Ret;
+}
+
+/*
+void ArbolBD::Evento_FocoPerdido(HWND hWndNuevoFoco) {
+	if (App.VentanaRave.PantallaCompleta() == TRUE) Visible(FALSE);
+}*/

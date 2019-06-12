@@ -2,6 +2,7 @@
 
 #include "DControlEx.h"
 
+
 class VerVideo : public DWL::DControlEx {
 public:
 						VerVideo(void);

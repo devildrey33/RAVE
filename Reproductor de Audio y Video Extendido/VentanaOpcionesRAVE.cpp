@@ -125,9 +125,15 @@ void VentanaOpcionesRAVE::Crear(void) {
 		ListaRaiz.AgregarRaiz(App.BD.Raiz(i)->Path.c_str());
 	}
 	ListaRaiz.Visible(TRUE);
-	// Boton agregar raíz
-	BotonAgregarRaiz.CrearBotonEx(&MarcoBaseDeDatos, L"Agregar Raíz", ((RC.right - 120) / 2) - 10, 230, 120, 24, ID_BOTON_AGREGARRAIZ);
+	int x = ((RC.right - 250) / 2) - 10;
+	// Botón agregar raíz
+	BotonAgregarRaiz.CrearBotonEx(&MarcoBaseDeDatos, L"Agregar Raíz", x, 230, 120, 24, ID_BOTON_AGREGARRAIZ);
 	BotonAgregarRaiz.Fuente.CrearFuente(21, DBotonEx_Skin::FuenteNombre.c_str());
+	// Botón eliminar raíz
+	BotonEliminarRaiz.CrearBotonEx(&MarcoBaseDeDatos, L"Eliminar Raiz", x + 130, 230, 120, 24, ID_BOTON_ELIMINARRAIZ);
+	BotonEliminarRaiz.Fuente.CrearFuente(21, DBotonEx_Skin::FuenteNombre.c_str());
+	BotonEliminarRaiz.Activado(FALSE);
+
 	// Separador
 	SeparadorBD.Crear(&MarcoBaseDeDatos, 0, 264, RC.right - 10);
 	// Marca Mostrar analisis en una ventana
@@ -359,11 +365,26 @@ void VentanaOpcionesRAVE::AsignarMarco(const INT_PTR Id) {
 	}
 }
 
+void VentanaOpcionesRAVE::Evento_ListaEx_Mouse_Click(DWL::DEventoMouse& DatosMouse) {
+	if (DatosMouse.ID() == ID_LISTARAIZ) {
+		if (ListaRaiz.ItemMarcado() != NULL) {
+			BotonEliminarRaiz.Activado(TRUE);
+		}
+		else {
+			BotonEliminarRaiz.Activado(FALSE);
+		}
+	}
+}
 
 void VentanaOpcionesRAVE::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse) {
 	switch (DatosMouse.ID()) {
 		case ID_BOTON_AGREGARRAIZ:
 			AgregarRaiz();
+			break;
+		case ID_BOTON_ELIMINARRAIZ:
+			if (ListaRaiz.ItemMarcado() != NULL) {
+				EliminarRaiz(ListaRaiz.ItemMarcado()->Texto(0));
+			}
 			break;
 		case ID_BOTON_BASEDATOS:
 		case ID_BOTON_GENERAL:
@@ -429,6 +450,14 @@ void VentanaOpcionesRAVE::AgregarRaiz(void) {
 
 void VentanaOpcionesRAVE::EliminarRaiz(std::wstring &Path) {
 	App.BD.EliminarRaiz(Path);
+	ListaRaiz.EliminarItem(ListaRaiz.ItemMarcado());
+	ListaRaiz.Repintar();
+	ActualizarListaInicio();
+	App.VentanaRave.ActualizarArbol();
+
+	if (ListaRaiz.ItemMarcado() == NULL) {
+		BotonEliminarRaiz.Activado(FALSE);
+	}
 }
 
 void VentanaOpcionesRAVE::Evento_Cerrar(void) {
@@ -681,6 +710,9 @@ LRESULT CALLBACK VentanaOpcionesRAVE::GestorMensajes(UINT uMsg, WPARAM wParam, L
 			return 0;
 		case DWL_DESPLEGABLEEX_CAMBIO :
 			Evento_ListaDesplegable_Cambio(static_cast<INT_PTR>(wParam));
+			return 0;
+		case DWL_LISTAEX_MOUSESOLTADO:
+			Evento_ListaEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
 
 	}

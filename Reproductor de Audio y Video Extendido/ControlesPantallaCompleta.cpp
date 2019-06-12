@@ -12,6 +12,9 @@
 #define ANCHO_CPCV	  90
 #define ALTO_CPCV	 900
 
+#define ID_BOTON_BD_PC		WM_USER + 500
+#define ID_BOTON_LISTA_PC	WM_USER + 501
+
 void ControlesPantallaCompleta::Crear(void) {	
 	DVentana::CrearVentana(NULL, L"ControlesPantallaCompleta", L"", 0, 0, 1000, 80, WS_POPUP, WS_EX_TOOLWINDOW, NULL, NULL, NULL, NULL);
 	
@@ -42,7 +45,13 @@ void ControlesPantallaCompleta::Crear(void) {
 	if (App.BD.Opciones_Repeat() > 0) BotonRepetir.Marcado(TRUE);
 
 	BotonRotar.CrearBotonEx(this, L"Rotar", 400, 10, 70, 30, ID_BOTON_ROTAR);
-	BotonRotar.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str(), TRUE);;
+	BotonRotar.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str(), TRUE);
+
+	BotonBD.CrearBotonEx(this, L"BD", 480, 10, 70, 30, ID_BOTON_BD_PC);
+	BotonBD.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str(), TRUE);
+
+	BotonLista.CrearBotonEx(this, L"Lista", 560, 10, 70, 30, ID_BOTON_LISTA_PC);
+	BotonLista.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str(), TRUE);
 
 	SliderTiempo.CrearBarraDesplazamientoEx(this, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO);
 //	SliderTiempo.Crear(hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO, WS_CHILD | TBS_NOTICKS | WS_VISIBLE, 0, 30000, 0);
@@ -72,8 +81,8 @@ void ControlesPantallaCompleta::RotarControles(void) {
 }
 
 void ControlesPantallaCompleta::Mostrar(void) {
-	KillTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD);
-	SetTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD, App.BD.Opciones_OcultarMouseEnVideo(), NULL);
+	KillTimer(hWnd(), TIMER_CPC_INACTIVIDAD);
+	SetTimer(hWnd(), TIMER_CPC_INACTIVIDAD, App.BD.Opciones_OcultarMouseEnVideo(), NULL);
 
 	// NO USAR IsWindowVisible para comprobar si están visibles los controles
 	if (_Visible == TRUE) return;
@@ -83,7 +92,7 @@ void ControlesPantallaCompleta::Mostrar(void) {
 
 	Alinear();
 
-	DMouse::ObtenerPosicion(&App.VentanaRave.MousePos);
+	DMouse::ObtenerPosicion(&_MousePos);
 	DMouse::Visible(TRUE);
 }
 
@@ -112,11 +121,17 @@ void ControlesPantallaCompleta::Transicion(const CPC_Transicion nTransicion) {
 
 	_AniMostrar.Iniciar(static_cast<float>(Opacidad()), OpacidadHasta, Duracion, [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
 		Opacidad(static_cast<BYTE>(Datos[0].Decimal()));
+		App.VentanaRave.Arbol.Opacidad(static_cast<BYTE>(Datos[0].Decimal()));
+		App.VentanaRave.Lista.Opacidad(static_cast<BYTE>(Datos[0].Decimal()));
 //		_ColorBorde = Valores[1];
 //		_ColorTexto = Valores[2];
 		// Ha terminado de ocultarse
 		if (Datos[0].Decimal() == 0.0f && Terminado == TRUE) {
 			Visible(FALSE);
+//			BotonBD.Marcado(FALSE);
+//			BotonLista.Marcado(FALSE);
+//			App.VentanaRave.Arbol.Visible(FALSE);
+//			App.VentanaRave.Lista.Visible(FALSE);
 		}
 		else {
 //			Repintar();
@@ -149,6 +164,8 @@ void ControlesPantallaCompleta::Alinear(void) {
 			SetWindowPos(BotonMezclar.hWnd()		, HWND_TOP,	220, 10, 80, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
 			SetWindowPos(BotonRepetir.hWnd()		, HWND_TOP,	310, 10, 80, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
 			SetWindowPos(BotonRotar.hWnd()			, HWND_TOP, 400, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(BotonBD.hWnd()				, HWND_TOP, 480, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(BotonLista.hWnd()			, HWND_TOP, 560, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(LabelTiempoActual.hWnd()	, HWND_TOP, Ancho - 285, 12, 0, 0				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(LabelTiempoSeparador.hWnd(), HWND_TOP, Ancho - 230, 12, 0, 0				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(LabelTiempoTotal.hWnd()	, HWND_TOP,	Ancho - 220, 12, 0, 0				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
@@ -172,9 +189,13 @@ void ControlesPantallaCompleta::Alinear(void) {
 			SetWindowPos(BotonMezclar.hWnd()		, HWND_TOP,	10, 120, 70, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
 			SetWindowPos(BotonRepetir.hWnd()		, HWND_TOP,	10, 160, 70, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
 			SetWindowPos(BotonRotar.hWnd()			, HWND_TOP, 10, 200, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(SliderVolumen.hWnd()		, HWND_TOP, 10, 240, 70, 20						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(BotonBD.hWnd()				, HWND_TOP, 10, 240, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(BotonLista.hWnd()			, HWND_TOP, 10, 280, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			
+			
+			SetWindowPos(SliderVolumen.hWnd()		, HWND_TOP, 10, 320, 70, 20						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
 //			SetWindowPos(LabelVolumen.hWnd()		, HWND_TOP,	950, 12, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | NO_MOVE);
-			SetWindowPos(SliderTiempo.hWnd()		, HWND_TOP, 30, 270, 30, Alto - 350				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(SliderTiempo.hWnd()		, HWND_TOP, 30, 350, 30, Alto - 420				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
 			SliderTiempo.Alineacion(AbajoArriba);
 			SetWindowPos(LabelTiempoActual.hWnd()	, HWND_TOP, 17, Alto - 60, 0, 0					, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 //			SetWindowPos(LabelTiempoSeparador.hWnd(), HWND_TOP, 770, 12, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
@@ -218,18 +239,30 @@ void ControlesPantallaCompleta::Ocultar(void) {
 	// Si el menú del repeat o del video estan visibles no oculto nada
 	if (App.VentanaRave.Menu_Repetir.Visible() == TRUE) return;
 	if (App.VentanaRave.Menu_Video.Visible() == TRUE) return;
+//	if (App.VentanaRave)
 
 	// Obtengo la recta de esta ventana, y la posición del mouse
-	RECT RV;
+	RECT RV, RL, RBD;
 	GetWindowRect(_hWnd, &RV);
-	DMouse::ObtenerPosicion(&App.VentanaRave.MousePos);
-	
-	// Si el mouse está dentro del control no oculto nada
-	if (PtInRect(&RV, App.VentanaRave.MousePos) == TRUE) return;
-	
+	DMouse::ObtenerPosicion(&_MousePos);
+
+	// Si el mouse está dentro de este control. No oculto nada
+	if (PtInRect(&RV, _MousePos) == TRUE) 
+		return;
+
+	// Si el mouse está dentro de la base de datos, y la base de datos está visible. No oculto nada
+	GetWindowRect(App.VentanaRave.Arbol.hWnd(), &RBD);
+	if (PtInRect(&RBD, _MousePos) == TRUE && App.VentanaRave.Arbol.Visible() == TRUE)
+		return;
+
+	// Si el mouse está dentro de la lista, y la lista está visible. No oculto nada
+	GetWindowRect(App.VentanaRave.Lista.hWnd(), &RL);
+	if (PtInRect(&RL, _MousePos) == TRUE && App.VentanaRave.Lista.Visible() == TRUE) 
+		return;
+
 
 	Debug_Escribir(L"ControlesPantallaCompleta::Ocultar\n");
-	KillTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD);
+	KillTimer(hWnd(), TIMER_CPC_INACTIVIDAD);
 
 //	Visible(FALSE);
 	Transicion(CPC_Transicion_Ocultar);
@@ -319,26 +352,81 @@ void ControlesPantallaCompleta::Evento_Pintar(void) {
 
 void ControlesPantallaCompleta::Evento_BarraEx_Cambiando(DWL::DEventoMouse &DatosMouse) {
 	switch (DatosMouse.ID()) {
-		case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambio();					break;
+		case ID_SLIDER_VOLUMEN : Evento_SliderVolumen_Cambio();								break;
 	}
 }
 
 void ControlesPantallaCompleta::Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse) {
-	switch (DatosMouse.ID()) {
-		case ID_SLIDER_TIEMPO:						Evento_SliderTiempo_Cambiado();					break;
-		case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambiado();				break;
+	switch (DatosMouse.ID()) {		
+		case ID_SLIDER_TIEMPO  : Evento_SliderTiempo_Cambiado();							break;
+		case ID_SLIDER_VOLUMEN : Evento_SliderVolumen_Cambiado();							break;
 	}
 }
 
 void ControlesPantallaCompleta::Evento_BotonEx_Click(DWL::DEventoMouse &DatosMouse) {
-	if (DatosMouse.ID() == ID_BOTON_ROTAR) {
-		RotarControles();
-	}
-	else {
-		App.VentanaRave.Evento_BotonEx_Mouse_Click(DatosMouse);
+	switch (DatosMouse.ID()) {
+		case ID_BOTON_ROTAR    : RotarControles();											break;
+		case ID_BOTON_BD_PC    : MostrarBD();												break;
+		case ID_BOTON_LISTA_PC : MostrarLista();											break;
+		default                : App.VentanaRave.Evento_BotonEx_Mouse_Click(DatosMouse);	break;
 	}
 }
 
+void ControlesPantallaCompleta::MostrarBD(const BOOL Forzar) {
+	App.VentanaRave.Lista.Visible(FALSE);
+	BotonLista.Marcado(FALSE);
+	if (App.VentanaRave.Arbol.Visible() == TRUE && Forzar == FALSE) {
+		App.VentanaRave.Arbol.Visible(FALSE);
+		BotonBD.Marcado(FALSE);
+	}
+	else {
+		BotonBD.Marcado(TRUE);
+		RECT RW;
+		GetWindowRect(BotonBD.hWnd(), &RW);
+		switch (Alineacion) {
+			case Abajo:		SetWindowPos(App.VentanaRave.Arbol.hWnd(), HWND_TOPMOST, RW.left, RW.top - 310, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+			case Arriba:	SetWindowPos(App.VentanaRave.Arbol.hWnd(), HWND_TOPMOST, RW.left, RW.bottom + 40, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+			case Izquierda:	SetWindowPos(App.VentanaRave.Arbol.hWnd(), HWND_TOPMOST, RW.right + 10, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+			case Derecha:	SetWindowPos(App.VentanaRave.Arbol.hWnd(), HWND_TOPMOST, RW.left - 410, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+		}
+
+		ShowWindow(App.VentanaRave.Arbol.hWnd(), SW_SHOW);
+	}
+//	SetFocus(App.VentanaRave.Arbol.hWnd());
+//	SetCapture(App.VentanaRave.Arbol.hWnd());
+}
+
+void ControlesPantallaCompleta::MostrarLista(const BOOL Forzar) {
+	App.VentanaRave.Arbol.Visible(FALSE);
+	BotonBD.Marcado(FALSE);
+	if (App.VentanaRave.Lista.Visible() == TRUE && Forzar == FALSE) {
+		App.VentanaRave.Lista.Visible(FALSE);
+		BotonLista.Marcado(FALSE);
+	}
+	else {
+		BotonLista.Marcado(TRUE);
+		RECT RW;
+		GetWindowRect(BotonLista.hWnd(), &RW);
+		switch (Alineacion) {
+			case Abajo:		SetWindowPos(App.VentanaRave.Lista.hWnd(), HWND_TOPMOST, RW.left, RW.top - 310, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+			case Arriba:	SetWindowPos(App.VentanaRave.Lista.hWnd(), HWND_TOPMOST, RW.left, RW.bottom + 40, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+			case Izquierda:	SetWindowPos(App.VentanaRave.Lista.hWnd(), HWND_TOPMOST, RW.right + 10, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+			case Derecha:	SetWindowPos(App.VentanaRave.Lista.hWnd(), HWND_TOPMOST, RW.left - 410, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+		}
+		ShowWindow(App.VentanaRave.Lista.hWnd(), SW_SHOW);
+	}
+//	SetFocus(App.VentanaRave.Lista.hWnd());
+//	SetCapture(App.VentanaRave.Lista.hWnd());
+}
+
+void ControlesPantallaCompleta::Evento_Temporizador(const UINT cID) {
+	switch (cID) {
+		// Controles PantallaCompleta Inactividad
+		case TIMER_CPC_INACTIVIDAD:
+			Ocultar();
+			break;
+	}
+}
 
 LRESULT CALLBACK ControlesPantallaCompleta::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	static POINT nPos = { 0, 0 };
@@ -353,10 +441,10 @@ LRESULT CALLBACK ControlesPantallaCompleta::GestorMensajes(UINT uMsg, WPARAM wPa
 
 		case WM_MOUSEMOVE :
 			DWL::DMouse::ObtenerPosicion(&nPos);
-			if (App.VentanaRave.MousePos.x != nPos.x || App.VentanaRave.MousePos.y != nPos.y) {
-				KillTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD);
-				SetTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD, App.BD.Opciones_OcultarMouseEnVideo(), NULL);
-				App.VentanaRave.MousePos = nPos;
+			if (_MousePos.x != nPos.x || _MousePos.y != nPos.y) {
+				KillTimer(_hWnd, TIMER_CPC_INACTIVIDAD);
+				SetTimer(_hWnd, TIMER_CPC_INACTIVIDAD, App.BD.Opciones_OcultarMouseEnVideo(), NULL);
+				_MousePos = nPos;
 				Mostrar();
 			}
 			return 0;
@@ -382,7 +470,9 @@ LRESULT CALLBACK ControlesPantallaCompleta::GestorMensajes(UINT uMsg, WPARAM wPa
 		case DWL_BARRAEX_CAMBIADO:  // Se ha modificado	(mouse up)
 			Evento_BarraEx_Cambiado(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
-
+		case WM_TIMER :
+			Evento_Temporizador(static_cast<UINT>(wParam));
+			return 0;
 	}
 	return DVentana::GestorMensajes(uMsg, wParam, lParam);
 }

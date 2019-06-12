@@ -2271,7 +2271,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:SetupRave-x64.msi"
+        "OutputFilename" = "8:Instaladores\\Instalador x64\\SetupRave-x64.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -2352,7 +2352,7 @@
         {
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_001F156789B048ECA7B8AC105686177B"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\misc\\libexport_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\misc\\libexport_plugin.dll"
             "TargetName" = "8:libexport_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_0F75F39393E8488DAC00A2AC221729DB"
@@ -2372,7 +2372,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_00F7031AB2434A7C98E40FB81F87227D"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libgrey_yuv_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libgrey_yuv_plugin.dll"
             "TargetName" = "8:libgrey_yuv_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -2392,7 +2392,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_010282EF8B394A19A80EBB563D967DD8"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\spu\\liblogo_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\spu\\liblogo_plugin.dll"
             "TargetName" = "8:liblogo_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_AB858FA48633480A8AC4925C070BC0D5"
@@ -2412,7 +2412,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0113C9DCBB9748AB8C090AF6121DABA5"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libi420_rgb_sse2_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libi420_rgb_sse2_plugin.dll"
             "TargetName" = "8:libi420_rgb_sse2_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -2432,7 +2432,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0128C71178AE45AD9E7E9059FD4F7D4C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_chromecast_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_chromecast_plugin.dll"
             "TargetName" = "8:libstream_out_chromecast_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -2452,7 +2452,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_01FDD2F018A24E3CBAF2D919BAA1EA8B"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libscale_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libscale_plugin.dll"
             "TargetName" = "8:libscale_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -2472,7 +2472,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_021A074BCC8247B981CF58EA5E4B6F97"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libcdda_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libcdda_plugin.dll"
             "TargetName" = "8:libcdda_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -2492,7 +2492,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0290B56D7F0341E0AC1E5C4E8DC79AF7"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libremap_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libremap_plugin.dll"
             "TargetName" = "8:libremap_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -2512,7 +2512,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_03164196DDDA43659E0BD58AF3F5820B"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libdiracsys_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libdiracsys_plugin.dll"
             "TargetName" = "8:libdiracsys_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -2532,7 +2532,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_04013FCB1FB6497C8E32BD15A5A41A1F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\plugins.dat"
+            "SourcePath" = "8:Release-x64\\plugins\\plugins.dat"
             "TargetName" = "8:plugins.dat"
             "Tag" = "8:"
             "Folder" = "8:_616C56520CC9482981D1E9E17EDCFD30"
@@ -2552,7 +2552,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_04CF0A6D2B364B229C8CB907A29EE4A3"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\keystore\\libmemory_keystore_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\keystore\\libmemory_keystore_plugin.dll"
             "TargetName" = "8:libmemory_keystore_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A3439C52D9B747F38A92197CA1496435"
@@ -2572,7 +2572,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_05CDFA750C594DA8A861F719AD241761"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libugly_resampler_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libugly_resampler_plugin.dll"
             "TargetName" = "8:libugly_resampler_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -2592,7 +2592,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_060938B70EDA4A2BA4019931A9B768C8"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access_output\\libaccess_output_shout_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access_output\\libaccess_output_shout_plugin.dll"
             "TargetName" = "8:libaccess_output_shout_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_778176FA5CD54468A29D7353083EF02F"
@@ -2612,7 +2612,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_06184016D8D04A388C74B09CB6A0B7CA"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libmagnify_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libmagnify_plugin.dll"
             "TargetName" = "8:libmagnify_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -2632,7 +2632,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_06445D1848634AFE9D539ECB443C9CD0"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libdemux_chromecast_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libdemux_chromecast_plugin.dll"
             "TargetName" = "8:libdemux_chromecast_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -2652,7 +2652,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_07085983B3F14673977DBFF077E1ECA2"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libblendbench_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libblendbench_plugin.dll"
             "TargetName" = "8:libblendbench_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -2672,7 +2672,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_07E7F96871A148FC8B96C51E36C5DF61"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\libvlccore.dll"
+            "SourcePath" = "8:Release-x64\\libvlccore.dll"
             "TargetName" = "8:libvlccore.dll"
             "Tag" = "8:"
             "Folder" = "8:_8F5C25496E10466D9DC30F2AEB7FA4AE"
@@ -2692,7 +2692,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_08787D229CFB42D0B19EF180FBCE6CA6"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\services_discovery\\libwindrive_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\services_discovery\\libwindrive_plugin.dll"
             "TargetName" = "8:libwindrive_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D4E34C0083C1494B9F2AC97D4D1EBAC2"
@@ -2712,7 +2712,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_08F0AF06BAEC45109A55510841E03904"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libi420_yuy2_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libi420_yuy2_plugin.dll"
             "TargetName" = "8:libi420_yuy2_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -2732,7 +2732,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_09424573711948C8B6F6420202046E13"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\packetizer\\libpacketizer_mlp_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\packetizer\\libpacketizer_mlp_plugin.dll"
             "TargetName" = "8:libpacketizer_mlp_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_5461DEAC95004E22A3AA6A455DFC9D54"
@@ -2752,7 +2752,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0B40A085E247486798B63D5ABEDC4B68"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libzvbi_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libzvbi_plugin.dll"
             "TargetName" = "8:libzvbi_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -2772,7 +2772,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0B76030190EC48B7890C0FC34C57E078"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libaudio_format_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libaudio_format_plugin.dll"
             "TargetName" = "8:libaudio_format_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -2792,7 +2792,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0D27544315AC468F983D5FF2F9B96860"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libdemux_cdg_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libdemux_cdg_plugin.dll"
             "TargetName" = "8:libdemux_cdg_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -2812,7 +2812,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0D3BC348C1ED459BB39B6FBACA7E6811"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libsatip_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libsatip_plugin.dll"
             "TargetName" = "8:libsatip_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -2832,7 +2832,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0E116B9D2E8B4F069795E9B7EAF45F9C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libavi_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libavi_plugin.dll"
             "TargetName" = "8:libavi_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -2852,7 +2852,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_110A92CDDAE941E4AD9F91A9DB689739"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\THANKS.txt"
+            "SourcePath" = "8:Release-x64\\THANKS.txt"
             "TargetName" = "8:THANKS.txt"
             "Tag" = "8:"
             "Folder" = "8:_8F5C25496E10466D9DC30F2AEB7FA4AE"
@@ -2872,7 +2872,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_11943E3E015A4E78829DB66FCC98B65F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libcanvas_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libcanvas_plugin.dll"
             "TargetName" = "8:libcanvas_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -2892,7 +2892,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_125FAB1C963D4E4A9061FD3D2262CE17"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\libvlc.dll"
+            "SourcePath" = "8:Release-x64\\libvlc.dll"
             "TargetName" = "8:libvlc.dll"
             "Tag" = "8:"
             "Folder" = "8:_8F5C25496E10466D9DC30F2AEB7FA4AE"
@@ -2912,7 +2912,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1398BFB9F45040C795D5F7C9E04C5D71"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libwave_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libwave_plugin.dll"
             "TargetName" = "8:libwave_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -2932,7 +2932,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_13F1CA05835A415685B43A1C36060E29"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libsamplerate_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libsamplerate_plugin.dll"
             "TargetName" = "8:libsamplerate_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -2952,7 +2952,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1430748A59CF406EA6E35EB7FF36C629"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libcroppadd_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libcroppadd_plugin.dll"
             "TargetName" = "8:libcroppadd_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -2972,7 +2972,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1488EAD9640D466E9B0B3D633A609B18"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libpostproc_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libpostproc_plugin.dll"
             "TargetName" = "8:libpostproc_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -2992,7 +2992,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_14A51F2CB31641FC9C287622880728B6"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\text_renderer\\libtdummy_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\text_renderer\\libtdummy_plugin.dll"
             "TargetName" = "8:libtdummy_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_731781829352416C9BBE8CFEFF2DC3AD"
@@ -3012,7 +3012,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_14BE5C61318B47F09623ECEC1764CAB2"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libaccess_realrtsp_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libaccess_realrtsp_plugin.dll"
             "TargetName" = "8:libaccess_realrtsp_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -3032,7 +3032,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_161F0352860F4CA68F6A24D8C31E9499"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_output\\libvdummy_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_output\\libvdummy_plugin.dll"
             "TargetName" = "8:libvdummy_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_46BBA2A7684D43C3AF555E15DF4189B4"
@@ -3052,7 +3052,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1683A6BC4BD14CC3923A9A042F398F15"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_output\\libamem_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_output\\libamem_plugin.dll"
             "TargetName" = "8:libamem_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_00C2EB6737274883B72D93167D41760C"
@@ -3072,7 +3072,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_16ECA1850CA2481591A6CD32C492EC6A"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_autodel_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_autodel_plugin.dll"
             "TargetName" = "8:libstream_out_autodel_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -3092,7 +3092,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1702352FC34A4899A14847911763D05C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\mux\\libmux_wav_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\mux\\libmux_wav_plugin.dll"
             "TargetName" = "8:libmux_wav_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_24E737EB94994C1D820C33F4F2BA8324"
@@ -3112,7 +3112,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_182A73507FFD4571A265D72A86FE2CAC"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_output\\libwgl_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_output\\libwgl_plugin.dll"
             "TargetName" = "8:libwgl_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_46BBA2A7684D43C3AF555E15DF4189B4"
@@ -3132,7 +3132,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_18E7242C473C49BFAE1F68876B3BBC29"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libdolby_surround_decoder_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libdolby_surround_decoder_plugin.dll"
             "TargetName" = "8:libdolby_surround_decoder_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -3152,7 +3152,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1A0393C107D04D5588B88985496E8C1C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_filter\\libcache_block_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_filter\\libcache_block_plugin.dll"
             "TargetName" = "8:libcache_block_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D0C4215F7B10496690BCB3EAC4CFB51E"
@@ -3172,7 +3172,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1A60CC4D32914438B4713F77835C4A02"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_setid_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_setid_plugin.dll"
             "TargetName" = "8:libstream_out_setid_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -3192,7 +3192,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1B1945DE294E4C428A7896A3E6305F2C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libjpeg_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libjpeg_plugin.dll"
             "TargetName" = "8:libjpeg_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -3212,7 +3212,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1B68E010ED29452DB072C6B610133CFA"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_record_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_record_plugin.dll"
             "TargetName" = "8:libstream_out_record_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -3232,7 +3232,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1BA4D49016C7422DB14D45E9AE40082F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libvobsub_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libvobsub_plugin.dll"
             "TargetName" = "8:libvobsub_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -3252,7 +3252,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1BADBAB93A92468FBE013C62F3ACB591"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libopus_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libopus_plugin.dll"
             "TargetName" = "8:libopus_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -3272,7 +3272,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1C57838CC15F423A8F0C9ADF07F928CC"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_mixer\\libfloat_mixer_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_mixer\\libfloat_mixer_plugin.dll"
             "TargetName" = "8:libfloat_mixer_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4E2CE94A9659498FBEE2166C5E8DB552"
@@ -3292,7 +3292,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1EE75085B4EE44A788AE71615B2593B0"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libsid_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libsid_plugin.dll"
             "TargetName" = "8:libsid_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -3312,7 +3312,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_20E40D34C83948E693759450E0B23E1A"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libmotionblur_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libmotionblur_plugin.dll"
             "TargetName" = "8:libmotionblur_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -3332,7 +3332,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_20FF3F5DD71849A8A0E1556996D19C6D"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libvhs_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libvhs_plugin.dll"
             "TargetName" = "8:libvhs_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -3352,7 +3352,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_211A901319374077AEC488BF27F8593C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\spu\\librss_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\spu\\librss_plugin.dll"
             "TargetName" = "8:librss_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_AB858FA48633480A8AC4925C070BC0D5"
@@ -3372,7 +3372,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_218CFC3AD032458490BC227735C2859D"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\librtp_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\librtp_plugin.dll"
             "TargetName" = "8:librtp_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -3392,7 +3392,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2280732A338F4FF0ACA1307E70751E9A"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\gui\\libskins2_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\gui\\libskins2_plugin.dll"
             "TargetName" = "8:libskins2_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_79EB87EA82DC459F92502FBCD79B62E5"
@@ -3412,7 +3412,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_229B05EF251E49778BB80C04EAC5B299"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libblend_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libblend_plugin.dll"
             "TargetName" = "8:libblend_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -3432,7 +3432,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_230B0C0CD55D4418ACD06AB165D8830F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libts_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libts_plugin.dll"
             "TargetName" = "8:libts_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -3452,7 +3452,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_24B0F5DB15E64681A1E9F8849792D336"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\visualization\\libvisual_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\visualization\\libvisual_plugin.dll"
             "TargetName" = "8:libvisual_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_0E055D7CB430459B8D9B4F3F1419A817"
@@ -3472,7 +3472,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_24EAD6CACF7A4C18818DCD7F168AC9AF"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libyuvp_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libyuvp_plugin.dll"
             "TargetName" = "8:libyuvp_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -3492,7 +3492,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_24EC68029BA74086894ABF5719930F05"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\NEWS.txt"
+            "SourcePath" = "8:Release-x64\\NEWS.txt"
             "TargetName" = "8:NEWS.txt"
             "Tag" = "8:"
             "Folder" = "8:_8F5C25496E10466D9DC30F2AEB7FA4AE"
@@ -3512,7 +3512,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_264B929C095D40D4BF1E6FCF51EA70DA"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_output\\libdirect3d9_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_output\\libdirect3d9_plugin.dll"
             "TargetName" = "8:libdirect3d9_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_46BBA2A7684D43C3AF555E15DF4189B4"
@@ -3532,7 +3532,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_26DB556ECB29404CBB20B70003CD2540"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libreal_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libreal_plugin.dll"
             "TargetName" = "8:libreal_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -3552,7 +3552,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_27292D9776F8422EA9F000E06A90C360"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\services_discovery\\libsap_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\services_discovery\\libsap_plugin.dll"
             "TargetName" = "8:libsap_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D4E34C0083C1494B9F2AC97D4D1EBAC2"
@@ -3572,7 +3572,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_29069A8ED3C64312978005F3BC5EC350"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\packetizer\\libpacketizer_flac_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\packetizer\\libpacketizer_flac_plugin.dll"
             "TargetName" = "8:libpacketizer_flac_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_5461DEAC95004E22A3AA6A455DFC9D54"
@@ -3592,7 +3592,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_291D7D1519B043AB99F625BCBAE9C5CD"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libi422_yuy2_mmx_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libi422_yuy2_mmx_plugin.dll"
             "TargetName" = "8:libi422_yuy2_mmx_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -3612,7 +3612,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_293068AFF9C54032B0788BB1A4F1738F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libyuy2_i420_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libyuy2_i420_plugin.dll"
             "TargetName" = "8:libyuy2_i420_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -3632,7 +3632,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_29CA9DBF92044E4E9804EF4462253DDA"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_extractor\\libarchive_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_extractor\\libarchive_plugin.dll"
             "TargetName" = "8:libarchive_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_DF49B1060A54409B9B247DB81BB167C8"
@@ -3652,7 +3652,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2BC74AC062824F388169172191848CFD"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_delay_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_delay_plugin.dll"
             "TargetName" = "8:libstream_out_delay_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -3672,7 +3672,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2BEB3A1413E84023B4E2AE7F9AA16FBD"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libi420_yuy2_sse2_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libi420_yuy2_sse2_plugin.dll"
             "TargetName" = "8:libi420_yuy2_sse2_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -3692,7 +3692,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2C4803FD41BF47218758F5ECB98691D9"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libtextst_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libtextst_plugin.dll"
             "TargetName" = "8:libtextst_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -3712,7 +3712,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2D2BDA8FC31D449F823D800CF4C461B2"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\control\\libhotkeys_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\control\\libhotkeys_plugin.dll"
             "TargetName" = "8:libhotkeys_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_C5C7F2A083094B07971DA164712F75E9"
@@ -3732,7 +3732,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2D4FF7412D094FAA94B2CA157C7CAEE0"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libi420_10_p010_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libi420_10_p010_plugin.dll"
             "TargetName" = "8:libi420_10_p010_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -3752,7 +3752,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2F3C898ACD31483CA75A320996759E47"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libscaletempo_pitch_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libscaletempo_pitch_plugin.dll"
             "TargetName" = "8:libscaletempo_pitch_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -3772,7 +3772,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_30CE0C73B48A4846BE21E42385D96B00"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libdemux_stl_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libdemux_stl_plugin.dll"
             "TargetName" = "8:libdemux_stl_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -3792,7 +3792,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3124216A02ED41DF951DC9A15032F491"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libmod_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libmod_plugin.dll"
             "TargetName" = "8:libmod_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -3812,7 +3812,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_31F79AB23A444BF18238CE5D4834D68D"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libdcp_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libdcp_plugin.dll"
             "TargetName" = "8:libdcp_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -3832,7 +3832,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_327016B9297E4C18BCE38520284F6A7A"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\COPYING.txt"
+            "SourcePath" = "8:Release-x64\\COPYING.txt"
             "TargetName" = "8:COPYING.txt"
             "Tag" = "8:"
             "Folder" = "8:_8F5C25496E10466D9DC30F2AEB7FA4AE"
@@ -3852,7 +3852,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_32A68C45479948C59C6EB583A16592FA"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libaiff_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libaiff_plugin.dll"
             "TargetName" = "8:libaiff_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -3872,7 +3872,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_32D48CA31851421497810D97ADD0B358"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libi420_yuy2_mmx_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libi420_yuy2_mmx_plugin.dll"
             "TargetName" = "8:libi420_yuy2_mmx_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -3892,7 +3892,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3317FDB1483F433A8F255C55A0B94C1E"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\text_renderer\\libfreetype_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\text_renderer\\libfreetype_plugin.dll"
             "TargetName" = "8:libfreetype_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_731781829352416C9BBE8CFEFF2DC3AD"
@@ -3912,7 +3912,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_338DDCD9890A48FDAA1473DF66FC44E0"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_output\\libwingdi_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_output\\libwingdi_plugin.dll"
             "TargetName" = "8:libwingdi_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_46BBA2A7684D43C3AF555E15DF4189B4"
@@ -3932,7 +3932,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_339327BE9AFD45EC8801CB518962CB5B"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libbluray-j2se-1.1.1.jar"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libbluray-j2se-1.1.1.jar"
             "TargetName" = "8:libbluray-j2se-1.1.1.jar"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -3952,7 +3952,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3437CD1E93694FE6B6833F538E4864E9"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libmpc_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libmpc_plugin.dll"
             "TargetName" = "8:libmpc_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -3972,7 +3972,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3507F77EC71E458AB2C85DFBD0137E9C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_output\\libyuv_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_output\\libyuv_plugin.dll"
             "TargetName" = "8:libyuv_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_46BBA2A7684D43C3AF555E15DF4189B4"
@@ -3992,7 +3992,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_35D881330D164750BB3BE6EF1F02449F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_es_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_es_plugin.dll"
             "TargetName" = "8:libstream_out_es_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -4012,7 +4012,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_37805F3CF78F45C7A0473A53B2BED559"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libwav_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libwav_plugin.dll"
             "TargetName" = "8:libwav_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -4032,7 +4032,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_381A391D581F4A6C9207ECDDB0327C78"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libgrain_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libgrain_plugin.dll"
             "TargetName" = "8:libgrain_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -4052,7 +4052,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3822F73F67F4456989B1585B8864CBCC"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_output\\libdrawable_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_output\\libdrawable_plugin.dll"
             "TargetName" = "8:libdrawable_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_46BBA2A7684D43C3AF555E15DF4189B4"
@@ -4072,7 +4072,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_383E4C3549344BE5BE76CEF0D537F5A8"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libsharpen_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libsharpen_plugin.dll"
             "TargetName" = "8:libsharpen_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -4092,7 +4092,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_39A654EC7FDA40F790083A75A3107B53"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\liblibbluray_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\liblibbluray_plugin.dll"
             "TargetName" = "8:liblibbluray_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -4112,7 +4112,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_39C3466317CB4112815137D6D94E96C8"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libpva_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libpva_plugin.dll"
             "TargetName" = "8:libpva_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -4132,7 +4132,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3AB0FB1C6D8F47018E0BA50EE9D425BD"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libequalizer_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libequalizer_plugin.dll"
             "TargetName" = "8:libequalizer_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -4152,7 +4152,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3B95AB19AB8D44E784BEC73DFB5466EB"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access_output\\libaccess_output_livehttp_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access_output\\libaccess_output_livehttp_plugin.dll"
             "TargetName" = "8:libaccess_output_livehttp_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_778176FA5CD54468A29D7353083EF02F"
@@ -4172,7 +4172,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3C5B6B71DCBD4931AC38B5A82607664A"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\mux\\libmux_ts_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\mux\\libmux_ts_plugin.dll"
             "TargetName" = "8:libmux_ts_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_24E737EB94994C1D820C33F4F2BA8324"
@@ -4192,7 +4192,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3C79538D08F642BFAE77BFFD146083E3"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_bridge_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_bridge_plugin.dll"
             "TargetName" = "8:libstream_out_bridge_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -4212,7 +4212,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3CA0DE65F75342978FE52BFF3C9D8DC4"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libwebvtt_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libwebvtt_plugin.dll"
             "TargetName" = "8:libwebvtt_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -4232,7 +4232,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3D2B7F5EE3C9493290ABB447B76837E5"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libposterize_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libposterize_plugin.dll"
             "TargetName" = "8:libposterize_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -4252,7 +4252,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3F9362EEAE6D4B76B91F2AA1FE516039"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libi420_rgb_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libi420_rgb_plugin.dll"
             "TargetName" = "8:libi420_rgb_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -4272,7 +4272,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3FA032478FE649A98CE81FF1F4B71748"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\spu\\libmarq_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\spu\\libmarq_plugin.dll"
             "TargetName" = "8:libmarq_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_AB858FA48633480A8AC4925C070BC0D5"
@@ -4292,7 +4292,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3FC4223A0DD940409E80F4E6B8045498"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libspeex_resampler_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libspeex_resampler_plugin.dll"
             "TargetName" = "8:libspeex_resampler_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -4312,7 +4312,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4196FFBBECBB4B5FB2A8F837A4639D2A"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libps_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libps_plugin.dll"
             "TargetName" = "8:libps_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -4332,7 +4332,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_422663E491E44DA899B847D9D08380C6"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libsvcdsub_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libsvcdsub_plugin.dll"
             "TargetName" = "8:libsvcdsub_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -4352,7 +4352,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4336A1A1C2004C8FA9C2BF4BB8D2DC83"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\control\\libwin_msg_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\control\\libwin_msg_plugin.dll"
             "TargetName" = "8:libwin_msg_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_C5C7F2A083094B07971DA164712F75E9"
@@ -4372,7 +4372,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_44627A3ABCEC4C8BBB57F0919A9AA40C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libscte18_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libscte18_plugin.dll"
             "TargetName" = "8:libscte18_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -4392,7 +4392,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4464009544FF4F589D0BF30F0F7D3791"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\spu\\libmosaic_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\spu\\libmosaic_plugin.dll"
             "TargetName" = "8:libmosaic_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_AB858FA48633480A8AC4925C070BC0D5"
@@ -4412,7 +4412,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_45487AB6D65B43B0808E1C9528957E03"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libvdr_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libvdr_plugin.dll"
             "TargetName" = "8:libvdr_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -4432,7 +4432,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_45C69A907E954459944D4AC26947C2B6"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\packetizer\\libpacketizer_h264_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\packetizer\\libpacketizer_h264_plugin.dll"
             "TargetName" = "8:libpacketizer_h264_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_5461DEAC95004E22A3AA6A455DFC9D54"
@@ -4452,7 +4452,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_45CEFB3B6DF24F9B870068127B98CC00"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libbluray-awt-j2se-1.1.1.jar"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libbluray-awt-j2se-1.1.1.jar"
             "TargetName" = "8:libbluray-awt-j2se-1.1.1.jar"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -4472,7 +4472,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_462407BD63A348008416A62AD71EA274"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libripple_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libripple_plugin.dll"
             "TargetName" = "8:libripple_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -4492,7 +4492,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4742F4C68F444901ADBF1D6BF6B2065F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\misc\\libgnutls_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\misc\\libgnutls_plugin.dll"
             "TargetName" = "8:libgnutls_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_0F75F39393E8488DAC00A2AC221729DB"
@@ -4512,7 +4512,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_47930B5FA35843C4BBAEAE613B1C8BB0"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libnormvol_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libnormvol_plugin.dll"
             "TargetName" = "8:libnormvol_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -4532,7 +4532,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_47F5C3DC0E294F578BBDAD6CA1F137DD"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libvcd_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libvcd_plugin.dll"
             "TargetName" = "8:libvcd_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -4552,7 +4552,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_48CC4001FFA342C6A1F921CC1611A467"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access_output\\libaccess_output_udp_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access_output\\libaccess_output_udp_plugin.dll"
             "TargetName" = "8:libaccess_output_udp_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_778176FA5CD54468A29D7353083EF02F"
@@ -4572,7 +4572,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_496A5F2F89DF47DABE15C0E4F51F4F37"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libkate_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libkate_plugin.dll"
             "TargetName" = "8:libkate_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -4592,7 +4592,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4984FFC8DFE749BC80C64FE27AC86C6A"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libaom_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libaom_plugin.dll"
             "TargetName" = "8:libaom_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -4612,7 +4612,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_49E81CE00DD645C6B89BAA89F2FC289F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\liboldmovie_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\liboldmovie_plugin.dll"
             "TargetName" = "8:liboldmovie_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -4632,7 +4632,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_50BE28C0C98744CABB838DE68650076F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\visualization\\libglspectrum_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\visualization\\libglspectrum_plugin.dll"
             "TargetName" = "8:libglspectrum_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_0E055D7CB430459B8D9B4F3F1419A817"
@@ -4652,7 +4652,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_51BCDBC411274BFB8676D0529DC826D3"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\misc\\libaudioscrobbler_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\misc\\libaudioscrobbler_plugin.dll"
             "TargetName" = "8:libaudioscrobbler_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_0F75F39393E8488DAC00A2AC221729DB"
@@ -4672,7 +4672,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_54ED1176AA544A099FCC6DF5BC530F0C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libdmo_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libdmo_plugin.dll"
             "TargetName" = "8:libdmo_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -4692,7 +4692,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_56AF34C35DEF49FBB5FD3F8648A7A39F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libswscale_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libswscale_plugin.dll"
             "TargetName" = "8:libswscale_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -4712,7 +4712,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_574F1E6786F64896A744637DEE3FA9CC"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libsdl_image_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libsdl_image_plugin.dll"
             "TargetName" = "8:libsdl_image_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -4732,7 +4732,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_57A683D26DAB4202B4916DA63D1E2994"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libnsv_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libnsv_plugin.dll"
             "TargetName" = "8:libnsv_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -4752,7 +4752,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_57B37DAD81B84B5C9F017D3865A1E854"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_filter\\librecord_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_filter\\librecord_plugin.dll"
             "TargetName" = "8:librecord_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D0C4215F7B10496690BCB3EAC4CFB51E"
@@ -4772,7 +4772,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_57EF11DAA91C476A8CD57EF90BC5BA3E"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libi422_yuy2_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libi422_yuy2_plugin.dll"
             "TargetName" = "8:libi422_yuy2_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -4792,7 +4792,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_57F658575E64445C854885F49ECD8633"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\control\\libnetsync_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\control\\libnetsync_plugin.dll"
             "TargetName" = "8:libnetsync_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_C5C7F2A083094B07971DA164712F75E9"
@@ -4812,7 +4812,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_58DE8F2560C04A7FACAFE7FFCBD54CB7"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libbluescreen_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libbluescreen_plugin.dll"
             "TargetName" = "8:libbluescreen_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -4832,7 +4832,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_59154A7411104721AB6C0478E8EBCFE6"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_stats_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_stats_plugin.dll"
             "TargetName" = "8:libstream_out_stats_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -4852,7 +4852,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5975A74FD82E44D69EFB6E770307F105"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libadjust_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libadjust_plugin.dll"
             "TargetName" = "8:libadjust_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -4872,7 +4872,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_597F1E5D12854D59ADA8EF6B6A71A00D"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libtheora_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libtheora_plugin.dll"
             "TargetName" = "8:libtheora_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -4892,7 +4892,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5A57096A753941ACA68ACBE4BF570A07"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libcolorthres_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libcolorthres_plugin.dll"
             "TargetName" = "8:libcolorthres_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -4912,7 +4912,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5A800A34255044B491590C8C98A6FD41"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libmirror_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libmirror_plugin.dll"
             "TargetName" = "8:libmirror_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -4932,7 +4932,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5BF86156185C4C27A5F86221486FC3D3"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libmpg123_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libmpg123_plugin.dll"
             "TargetName" = "8:libmpg123_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -4952,7 +4952,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5C6A74FA2BD0435AB06E206BC9AF99ED"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libanaglyph_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libanaglyph_plugin.dll"
             "TargetName" = "8:libanaglyph_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -4972,7 +4972,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5D1A903F10264E74A2F8D444B20DC2C4"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libsmf_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libsmf_plugin.dll"
             "TargetName" = "8:libsmf_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -4992,7 +4992,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5D348F25003547E79CB9916357C6E9D5"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libcdg_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libcdg_plugin.dll"
             "TargetName" = "8:libcdg_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -5012,7 +5012,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5D7FEF5B9F084F75BEBC79EF569D6FC9"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libd3d11va_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libd3d11va_plugin.dll"
             "TargetName" = "8:libd3d11va_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -5032,7 +5032,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5D98C69DACFB4D888CC515140E736ED4"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libaccess_wasapi_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libaccess_wasapi_plugin.dll"
             "TargetName" = "8:libaccess_wasapi_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -5052,7 +5052,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5E24A14AA2EE4CAAA6E0542D19B98B19"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\librtpvideo_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\librtpvideo_plugin.dll"
             "TargetName" = "8:librtpvideo_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -5072,7 +5072,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5E5DEE22E92C470B9C5115F5F25ADD14"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libscaletempo_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libscaletempo_plugin.dll"
             "TargetName" = "8:libscaletempo_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -5092,7 +5092,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5F0DA612674940B992474BDB6EB94478"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libdshow_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libdshow_plugin.dll"
             "TargetName" = "8:libdshow_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -5112,7 +5112,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5F1DA267242D4DED86F38F3927ACD6B9"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\logger\\libfile_logger_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\logger\\libfile_logger_plugin.dll"
             "TargetName" = "8:libfile_logger_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_E125C819F0CD4B5BAAFE734647F32003"
@@ -5132,7 +5132,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5F6A269B996D4F42BFF0861475295C2C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libvorbis_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libvorbis_plugin.dll"
             "TargetName" = "8:libvorbis_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -5152,7 +5152,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_600E5ED0374F4916A14D0FFC42FF33B1"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_splitter\\libwall_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_splitter\\libwall_plugin.dll"
             "TargetName" = "8:libwall_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_844EA9C12AE5462D9739BAA3F681E7EE"
@@ -5172,7 +5172,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6106CD2573334D759D8F6069D6C281BE"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access_output\\libaccess_output_srt_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access_output\\libaccess_output_srt_plugin.dll"
             "TargetName" = "8:libaccess_output_srt_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_778176FA5CD54468A29D7353083EF02F"
@@ -5192,7 +5192,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_614C49C7940441F9A2318D5358129744"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_output\\libafile_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_output\\libafile_plugin.dll"
             "TargetName" = "8:libafile_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_00C2EB6737274883B72D93167D41760C"
@@ -5212,7 +5212,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_622FFC2F8B4846BF801C87FBAD5CCDC8"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\misc\\liblogger_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\misc\\liblogger_plugin.dll"
             "TargetName" = "8:liblogger_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_0F75F39393E8488DAC00A2AC221729DB"
@@ -5232,7 +5232,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6296A8475DA3485597DA76C2A9B39458"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\misc\\libfingerprinter_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\misc\\libfingerprinter_plugin.dll"
             "TargetName" = "8:libfingerprinter_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_0F75F39393E8488DAC00A2AC221729DB"
@@ -5252,7 +5252,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6487D6E0EF8641239BE7CE3013C48B95"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libnsc_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libnsc_plugin.dll"
             "TargetName" = "8:libnsc_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -5272,7 +5272,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_64A2B9D34C2C4CF7AD0D87D66C002CCD"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libmad_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libmad_plugin.dll"
             "TargetName" = "8:libmad_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -5292,7 +5292,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_65ECF90B379143259FA1650399F6785B"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libg711_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libg711_plugin.dll"
             "TargetName" = "8:libg711_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -5312,7 +5312,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6616CC45220C4A12BF8A1DD12BE26C8F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\packetizer\\libpacketizer_mpeg4audio_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\packetizer\\libpacketizer_mpeg4audio_plugin.dll"
             "TargetName" = "8:libpacketizer_mpeg4audio_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_5461DEAC95004E22A3AA6A455DFC9D54"
@@ -5332,7 +5332,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_66C20B365FE54D688BBD7B470511C830"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libsmb_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libsmb_plugin.dll"
             "TargetName" = "8:libsmb_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -5352,7 +5352,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_67273ECAC68D48AEA678F853404C22EC"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\mux\\libmux_mpjpeg_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\mux\\libmux_mpjpeg_plugin.dll"
             "TargetName" = "8:libmux_mpjpeg_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_24E737EB94994C1D820C33F4F2BA8324"
@@ -5372,7 +5372,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_681A4C1540864E99B4581CCBA1939149"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access_output\\libaccess_output_http_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access_output\\libaccess_output_http_plugin.dll"
             "TargetName" = "8:libaccess_output_http_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_778176FA5CD54468A29D7353083EF02F"
@@ -5392,7 +5392,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_69A90E17CD62480082BFE7A753681DD2"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libaraw_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libaraw_plugin.dll"
             "TargetName" = "8:libaraw_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -5412,7 +5412,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_69AFA84DA78E443CB4BA9ED3C1091B6C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libparam_eq_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libparam_eq_plugin.dll"
             "TargetName" = "8:libparam_eq_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -5432,7 +5432,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6B0887CEBCE8464685C40FC4EE252A90"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libfps_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libfps_plugin.dll"
             "TargetName" = "8:libfps_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -5452,7 +5452,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6C92BF39342D428AB160C5D767154234"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_output\\libadummy_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_output\\libadummy_plugin.dll"
             "TargetName" = "8:libadummy_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_00C2EB6737274883B72D93167D41760C"
@@ -5472,7 +5472,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6CA1D6677ED84327B8488DEC38B0594F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libnoseek_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libnoseek_plugin.dll"
             "TargetName" = "8:libnoseek_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -5492,7 +5492,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6DD5A17592274583AEB9CCC3B70DC80C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_display_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_display_plugin.dll"
             "TargetName" = "8:libstream_out_display_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -5512,7 +5512,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6E16BDD11BE04B2EA9D7AF4149E90406"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libaccess_srt_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libaccess_srt_plugin.dll"
             "TargetName" = "8:libaccess_srt_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -5532,7 +5532,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6E2D0F0FD20F41F98CBEDFF0739EAEA0"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_output\\libcaca_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_output\\libcaca_plugin.dll"
             "TargetName" = "8:libcaca_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_46BBA2A7684D43C3AF555E15DF4189B4"
@@ -5552,7 +5552,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6E6D48F884A54ACF8A4604A8054B7D60"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libt140_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libt140_plugin.dll"
             "TargetName" = "8:libt140_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -5572,7 +5572,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6EB9C0F2C2DD4D919A4489D66BF27D20"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libspudec_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libspudec_plugin.dll"
             "TargetName" = "8:libspudec_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -5592,7 +5592,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6F5777EEDCBD430F9D066AF8E0734B54"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libaccess_imem_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libaccess_imem_plugin.dll"
             "TargetName" = "8:libaccess_imem_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -5612,7 +5612,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6F76D0684CFE49859C2CC19BC741831D"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libchain_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libchain_plugin.dll"
             "TargetName" = "8:libchain_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -5632,7 +5632,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_703FEFF9528E46E69103A8B31EA94923"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libdirectory_demux_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libdirectory_demux_plugin.dll"
             "TargetName" = "8:libdirectory_demux_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -5652,7 +5652,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_70ABA4855FBE4953A7169841B9EA70C8"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libplaylist_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libplaylist_plugin.dll"
             "TargetName" = "8:libplaylist_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -5672,7 +5672,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7158912AFC43411995C35A900802D11A"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\visualization\\libprojectm_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\visualization\\libprojectm_plugin.dll"
             "TargetName" = "8:libprojectm_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_0E055D7CB430459B8D9B4F3F1419A817"
@@ -5692,7 +5692,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_717922958DBE4FF8B5DBD55A2D1FD4AC"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libfluidsynth_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libfluidsynth_plugin.dll"
             "TargetName" = "8:libfluidsynth_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -5712,7 +5712,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_723408B55D4245B5A2F0ECD24ECB7A72"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libx26410b_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libx26410b_plugin.dll"
             "TargetName" = "8:libx26410b_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -5732,7 +5732,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_724665BA0BCB439EBFF0A4BD9EFD5AA5"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libflac_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libflac_plugin.dll"
             "TargetName" = "8:libflac_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -5752,7 +5752,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7270399BDE01473386CD623B1E2F8AE1"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libudp_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libudp_plugin.dll"
             "TargetName" = "8:libudp_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -5772,7 +5772,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_727A3B0E3F494CC08E0F7290D2BA99DD"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\control\\libgestures_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\control\\libgestures_plugin.dll"
             "TargetName" = "8:libgestures_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_C5C7F2A083094B07971DA164712F75E9"
@@ -5792,7 +5792,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7282EE249DDD49AC9B43D34106830240"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libh26x_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libh26x_plugin.dll"
             "TargetName" = "8:libh26x_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -5812,7 +5812,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_736950AED61C417F98E3A4F6AA407CD9"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libnuv_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libnuv_plugin.dll"
             "TargetName" = "8:libnuv_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -5832,7 +5832,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_741DA7C4F97B4D3AB2435CAA723A99CD"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_transcode_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_transcode_plugin.dll"
             "TargetName" = "8:libstream_out_transcode_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -5852,7 +5852,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_747A4B63F0A040DAA813313DE95F6174"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_rtp_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_rtp_plugin.dll"
             "TargetName" = "8:libstream_out_rtp_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -5872,7 +5872,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_74CEB3C4589B43EA828B32D3842F39FB"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libmpgv_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libmpgv_plugin.dll"
             "TargetName" = "8:libmpgv_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -5892,7 +5892,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7661B58F3E4B459A892637D1A2E0A7BD"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libcompressor_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libcompressor_plugin.dll"
             "TargetName" = "8:libcompressor_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -5912,7 +5912,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_76DA34ED521E403DADFA24809AEAA3D4"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libtta_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libtta_plugin.dll"
             "TargetName" = "8:libtta_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -5932,7 +5932,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7703E7D018F44E6389280023615E4E97"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_mixer\\libinteger_mixer_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_mixer\\libinteger_mixer_plugin.dll"
             "TargetName" = "8:libinteger_mixer_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4E2CE94A9659498FBEE2166C5E8DB552"
@@ -5952,7 +5952,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_77F81533FB8140FB8D498B2902D67F0B"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libstereo_widen_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libstereo_widen_plugin.dll"
             "TargetName" = "8:libstereo_widen_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -5972,7 +5972,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_78C503EDCA574878B12242713F7F8AAD"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libavcodec_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libavcodec_plugin.dll"
             "TargetName" = "8:libavcodec_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -5992,7 +5992,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_78C6B16DFF054293B7C71E59874C2B63"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libhttp_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libhttp_plugin.dll"
             "TargetName" = "8:libhttp_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -6012,7 +6012,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7994546436CA4B8890BD71F8F825EDD2"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\liberase_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\liberase_plugin.dll"
             "TargetName" = "8:liberase_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -6032,7 +6032,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7A593EDA57F845259035A64E18E269D1"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\librawaud_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\librawaud_plugin.dll"
             "TargetName" = "8:librawaud_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -6052,7 +6052,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7B0579BE73B84DC3A17DDBB88F063EE0"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\spu\\libremoteosd_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\spu\\libremoteosd_plugin.dll"
             "TargetName" = "8:libremoteosd_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_AB858FA48633480A8AC4925C070BC0D5"
@@ -6072,7 +6072,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7C3679D1169D42F0A0E1251A682A693A"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libsimple_channel_mixer_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libsimple_channel_mixer_plugin.dll"
             "TargetName" = "8:libsimple_channel_mixer_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -6092,7 +6092,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7DE24C27C0D441538244849C0298D47F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_gather_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_gather_plugin.dll"
             "TargetName" = "8:libstream_out_gather_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -6112,7 +6112,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7E0DBB0024BB4AD3890F2B762A7F30F5"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libttml_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libttml_plugin.dll"
             "TargetName" = "8:libttml_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -6132,7 +6132,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7E5F6391C82B4873A743A20BDECCFDD8"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_mosaic_bridge_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_mosaic_bridge_plugin.dll"
             "TargetName" = "8:libstream_out_mosaic_bridge_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -6152,7 +6152,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7E94B259F34F426A972624366F457916"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_output\\libdirectdraw_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_output\\libdirectdraw_plugin.dll"
             "TargetName" = "8:libdirectdraw_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_46BBA2A7684D43C3AF555E15DF4189B4"
@@ -6172,7 +6172,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7F573294D0D44CCD87BCE033D9A7635C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libgain_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libgain_plugin.dll"
             "TargetName" = "8:libgain_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -6192,7 +6192,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7F79AE5CF1064FA98FB42FDEA10FDDD1"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_duplicate_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_duplicate_plugin.dll"
             "TargetName" = "8:libstream_out_duplicate_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -6212,7 +6212,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_82EE07254B244E1F9EF881D8089A7BF0"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\librawvideo_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\librawvideo_plugin.dll"
             "TargetName" = "8:librawvideo_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -6232,7 +6232,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8334EBB4E65B427B9A79947853E5431C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libspdif_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libspdif_plugin.dll"
             "TargetName" = "8:libspdif_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -6252,7 +6252,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8470A84DAF074A569273C3E90314C130"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\text_renderer\\libsapi_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\text_renderer\\libsapi_plugin.dll"
             "TargetName" = "8:libsapi_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_731781829352416C9BBE8CFEFF2DC3AD"
@@ -6272,7 +6272,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_84D0C184596B4E0CB4D9E4552C9CEB77"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libaccess_concat_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libaccess_concat_plugin.dll"
             "TargetName" = "8:libaccess_concat_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -6292,7 +6292,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_857AA0F4BA5149179FFC5F9F7F5CC9E3"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libvnc_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libvnc_plugin.dll"
             "TargetName" = "8:libvnc_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -6312,7 +6312,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_85ADA8534CF547A589A04085D5894D92"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libtospdif_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libtospdif_plugin.dll"
             "TargetName" = "8:libtospdif_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -6332,7 +6332,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_85D20E02195B44CA8969643104FBDD84"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libdxva2_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libdxva2_plugin.dll"
             "TargetName" = "8:libdxva2_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -6352,7 +6352,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_86B3A9053FF64FCCABEC5ED6FDC8F56B"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libpsychedelic_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libpsychedelic_plugin.dll"
             "TargetName" = "8:libpsychedelic_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -6372,7 +6372,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_86F56843E7664658BD94C8686DD98286"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libdvdread_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libdvdread_plugin.dll"
             "TargetName" = "8:libdvdread_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -6392,7 +6392,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_885690A4A56F4380AA285DB5C343499E"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_output\\libglwin32_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_output\\libglwin32_plugin.dll"
             "TargetName" = "8:libglwin32_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_46BBA2A7684D43C3AF555E15DF4189B4"
@@ -6412,7 +6412,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_88DD5FE7CB264514A74B8F6A79EF48D4"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_filter\\libcache_read_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_filter\\libcache_read_plugin.dll"
             "TargetName" = "8:libcache_read_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D0C4215F7B10496690BCB3EAC4CFB51E"
@@ -6432,7 +6432,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_88F88D2EA3A04248B73DA32B525DB7E2"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\packetizer\\libpacketizer_vc1_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\packetizer\\libpacketizer_vc1_plugin.dll"
             "TargetName" = "8:libpacketizer_vc1_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_5461DEAC95004E22A3AA6A455DFC9D54"
@@ -6452,7 +6452,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_891892A4E08B45C9A3F9A138BA15AB21"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libcvdsub_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libcvdsub_plugin.dll"
             "TargetName" = "8:libcvdsub_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -6472,7 +6472,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8A7A818D5A674C37962353A89DA81D4C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\services_discovery\\libmediadirs_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\services_discovery\\libmediadirs_plugin.dll"
             "TargetName" = "8:libmediadirs_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D4E34C0083C1494B9F2AC97D4D1EBAC2"
@@ -6492,7 +6492,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8B46807934114DF9995BC738E6F2E01A"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libadaptive_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libadaptive_plugin.dll"
             "TargetName" = "8:libadaptive_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -6512,7 +6512,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8BC2C596FE964E1D83B65892CC7FF349"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_output\\libwasapi_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_output\\libwasapi_plugin.dll"
             "TargetName" = "8:libwasapi_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_00C2EB6737274883B72D93167D41760C"
@@ -6532,7 +6532,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8CFBF6EC26164F39AE9B3C7BD9903333"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libsubstx3g_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libsubstx3g_plugin.dll"
             "TargetName" = "8:libsubstx3g_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -6552,7 +6552,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8DAD79B2BF2149469648BAE592BEE12C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libpng_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libpng_plugin.dll"
             "TargetName" = "8:libpng_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -6572,7 +6572,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8F33A53342D74E3F885CBA46A56E77C6"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\services_discovery\\libmicrodns_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\services_discovery\\libmicrodns_plugin.dll"
             "TargetName" = "8:libmicrodns_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D4E34C0083C1494B9F2AC97D4D1EBAC2"
@@ -6592,7 +6592,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8F34442BEE174CBAB80EE192EA9C38D6"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libheadphone_channel_mixer_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libheadphone_channel_mixer_plugin.dll"
             "TargetName" = "8:libheadphone_channel_mixer_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -6612,7 +6612,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8F71BE554BC943A5867A9B1783137C27"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\services_discovery\\libupnp_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\services_discovery\\libupnp_plugin.dll"
             "TargetName" = "8:libupnp_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D4E34C0083C1494B9F2AC97D4D1EBAC2"
@@ -6632,7 +6632,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8F8B7E44F3A146CFAF1F4675C7E47074"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_smem_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_smem_plugin.dll"
             "TargetName" = "8:libstream_out_smem_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -6652,7 +6652,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8FA67E2F3B6B4399BFBBA65842A08204"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libhttps_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libhttps_plugin.dll"
             "TargetName" = "8:libhttps_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -6672,7 +6672,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_90200AD2789744BFB477CF44B61F6652"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libflacsys_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libflacsys_plugin.dll"
             "TargetName" = "8:libflacsys_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -6692,7 +6692,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_913EE6D4C2EF4DBD906E52EE2A45B2DB"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\librawvid_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\librawvid_plugin.dll"
             "TargetName" = "8:librawvid_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -6712,7 +6712,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_914E9A50BA8045B8B76A001D8F48D389"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libspeex_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libspeex_plugin.dll"
             "TargetName" = "8:libspeex_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -6732,7 +6732,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9185A6A7C55241489F1B45C1C45FF171"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libmkv_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libmkv_plugin.dll"
             "TargetName" = "8:libmkv_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -6752,7 +6752,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_935151E6D07B4776B02D773A2640270B"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\d3d9\\libdirect3d9_filters_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\d3d9\\libdirect3d9_filters_plugin.dll"
             "TargetName" = "8:libdirect3d9_filters_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_E327385F11E349359B26D8E66192A8AE"
@@ -6772,7 +6772,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_94C05B60763847C1A57321F0DAFDFEA7"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libschroedinger_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libschroedinger_plugin.dll"
             "TargetName" = "8:libschroedinger_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -6792,7 +6792,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_97449D0A9C624F3A9BF2FA216DCBF90D"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_filter\\libaribcam_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_filter\\libaribcam_plugin.dll"
             "TargetName" = "8:libaribcam_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D0C4215F7B10496690BCB3EAC4CFB51E"
@@ -6812,7 +6812,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9893B5EDCAA740FCA153F50FFDEBF934"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\liblibass_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\liblibass_plugin.dll"
             "TargetName" = "8:liblibass_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -6832,7 +6832,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9A738EC5CCA747CD9AFA3BD160284FE7"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\liblibmpeg2_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\liblibmpeg2_plugin.dll"
             "TargetName" = "8:liblibmpeg2_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -6852,7 +6852,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9B722FCD7C3D4D1A90AF5C407D2413FE"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_output\\libflaschen_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_output\\libflaschen_plugin.dll"
             "TargetName" = "8:libflaschen_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_46BBA2A7684D43C3AF555E15DF4189B4"
@@ -6872,7 +6872,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9BE7B5B4CD744D0CA1E2EC08522163D6"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libes_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libes_plugin.dll"
             "TargetName" = "8:libes_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -6892,7 +6892,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9C07800181A5444995BBF51CA22E9E64"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libasf_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libasf_plugin.dll"
             "TargetName" = "8:libasf_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -6912,7 +6912,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9C8BBA417D4B437F942F7DED3BA39C0C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libgme_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libgme_plugin.dll"
             "TargetName" = "8:libgme_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -6932,7 +6932,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9D252437DB3C4AE0A0A233C49CFDAFDE"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libaes3_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libaes3_plugin.dll"
             "TargetName" = "8:libaes3_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -6952,7 +6952,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9D66F51ECBDB4321B31A7285E91C2120"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libi422_yuy2_sse2_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libi422_yuy2_sse2_plugin.dll"
             "TargetName" = "8:libi422_yuy2_sse2_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -6972,7 +6972,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9DCAFFCA662846D0A487CE4BBAE7F01B"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libx264_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libx264_plugin.dll"
             "TargetName" = "8:libx264_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -6992,7 +6992,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9DF827CED7C04A2E81C30AA1DF1FC57B"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libnfs_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libnfs_plugin.dll"
             "TargetName" = "8:libnfs_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -7012,7 +7012,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9E57CB5764AD4CEE8FB9125134FA9A23"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_output\\libgl_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_output\\libgl_plugin.dll"
             "TargetName" = "8:libgl_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_46BBA2A7684D43C3AF555E15DF4189B4"
@@ -7032,7 +7032,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9E72F64072AE46538C52A064051B9584"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libtimecode_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libtimecode_plugin.dll"
             "TargetName" = "8:libtimecode_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -7052,7 +7052,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9E77C23DD05B40DCA2A93D0D4FB86864"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libimem_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libimem_plugin.dll"
             "TargetName" = "8:libimem_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -7072,7 +7072,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9E84D8510B12415CB27B3F04B98D5194"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libcaf_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libcaf_plugin.dll"
             "TargetName" = "8:libcaf_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -7092,7 +7092,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9EA634585469438A9A0C21198BFFC409"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\misc\\libstats_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\misc\\libstats_plugin.dll"
             "TargetName" = "8:libstats_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_0F75F39393E8488DAC00A2AC221729DB"
@@ -7112,7 +7112,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9FD165FFFED547139FA102214847A807"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\packetizer\\libpacketizer_mpeg4video_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\packetizer\\libpacketizer_mpeg4video_plugin.dll"
             "TargetName" = "8:libpacketizer_mpeg4video_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_5461DEAC95004E22A3AA6A455DFC9D54"
@@ -7132,7 +7132,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A05198BD51BD457FA2579CFA03358D72"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libcrystalhd_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libcrystalhd_plugin.dll"
             "TargetName" = "8:libcrystalhd_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -7152,7 +7152,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A0CABB713DB54D8095521CB39EDAB1DD"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libattachment_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libattachment_plugin.dll"
             "TargetName" = "8:libattachment_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -7172,7 +7172,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A13B62A83100455899703184F5ADF594"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libmono_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libmono_plugin.dll"
             "TargetName" = "8:libmono_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -7192,7 +7192,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A32A101CF7C244B8883D6BBEE7C1C92D"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libdeinterlace_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libdeinterlace_plugin.dll"
             "TargetName" = "8:libdeinterlace_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -7212,7 +7212,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A3D4EECA8311498E84AE254DC85DCF0E"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libyuy2_i422_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libyuy2_i422_plugin.dll"
             "TargetName" = "8:libyuy2_i422_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -7232,7 +7232,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A456DCDF1A4C49EC8DA7811AB5A0A33C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_splitter\\libpanoramix_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_splitter\\libpanoramix_plugin.dll"
             "TargetName" = "8:libpanoramix_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_844EA9C12AE5462D9739BAA3F681E7EE"
@@ -7252,7 +7252,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A4703A511E3043D89DF296DA8D8CA7FF"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libi420_nv12_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libi420_nv12_plugin.dll"
             "TargetName" = "8:libi420_nv12_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -7272,7 +7272,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A501899EF9D04D5DBD56A49FAA58B0EA"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libaccess_mms_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libaccess_mms_plugin.dll"
             "TargetName" = "8:libaccess_mms_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -7292,7 +7292,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A5555DBD4A9B44DA8A5002584BF80EBE"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libedgedetection_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libedgedetection_plugin.dll"
             "TargetName" = "8:libedgedetection_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -7312,7 +7312,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A592914525D54A5DB875FBB7F8A0C342"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\librotate_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\librotate_plugin.dll"
             "TargetName" = "8:librotate_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -7332,7 +7332,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A68E0E1B7F474A07AD3A8F16AC4FDCCA"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_output\\libmmdevice_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_output\\libmmdevice_plugin.dll"
             "TargetName" = "8:libmmdevice_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_00C2EB6737274883B72D93167D41760C"
@@ -7352,7 +7352,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A8276865AA064E0BA91FFE9279BAAA79"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_standard_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_standard_plugin.dll"
             "TargetName" = "8:libstream_out_standard_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -7372,7 +7372,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A834B449C52D48C88848CD2836B06323"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libimage_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libimage_plugin.dll"
             "TargetName" = "8:libimage_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -7392,7 +7392,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A8431D62FC104316BA6EB083647AACCC"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libdtv_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libdtv_plugin.dll"
             "TargetName" = "8:libdtv_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -7412,7 +7412,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A8612AEF4FB4465A806C3A2E57114E8A"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\meta_engine\\libtaglib_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\meta_engine\\libtaglib_plugin.dll"
             "TargetName" = "8:libtaglib_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_3D113DD9F5E54347919E71878E61BEA1"
@@ -7432,7 +7432,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A89FE8BA54DF43169C578F1477A03D1E"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\packetizer\\libpacketizer_av1_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\packetizer\\libpacketizer_av1_plugin.dll"
             "TargetName" = "8:libpacketizer_av1_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_5461DEAC95004E22A3AA6A455DFC9D54"
@@ -7452,7 +7452,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A90DF655D7C546E88A845A7F96F10A45"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\logger\\libconsole_logger_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\logger\\libconsole_logger_plugin.dll"
             "TargetName" = "8:libconsole_logger_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_E125C819F0CD4B5BAAFE734647F32003"
@@ -7472,7 +7472,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A96867922A624C44B1064DA124235DAC"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\liba52_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\liba52_plugin.dll"
             "TargetName" = "8:liba52_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -7492,7 +7492,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AA35053265D24A7B8D05C87C54952439"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\services_discovery\\libpodcast_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\services_discovery\\libpodcast_plugin.dll"
             "TargetName" = "8:libpodcast_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D4E34C0083C1494B9F2AC97D4D1EBAC2"
@@ -7512,7 +7512,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AA47777D4BBA4C6EBAF8AC692B7FF9DD"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\mux\\libmux_ps_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\mux\\libmux_ps_plugin.dll"
             "TargetName" = "8:libmux_ps_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_24E737EB94994C1D820C33F4F2BA8324"
@@ -7532,7 +7532,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AAC3C3D1B00E4EAEB67A5DBC138C3A0E"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\packetizer\\libpacketizer_dts_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\packetizer\\libpacketizer_dts_plugin.dll"
             "TargetName" = "8:libpacketizer_dts_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_5461DEAC95004E22A3AA6A455DFC9D54"
@@ -7552,7 +7552,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AB70566AF13B4F4B82ED7B61D4E89E5B"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\mux\\libmux_avi_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\mux\\libmux_avi_plugin.dll"
             "TargetName" = "8:libmux_avi_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_24E737EB94994C1D820C33F4F2BA8324"
@@ -7572,7 +7572,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_ABF439D7E1274D91A6FB0979CB835081"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\gui\\libqt_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\gui\\libqt_plugin.dll"
             "TargetName" = "8:libqt_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_79EB87EA82DC459F92502FBCD79B62E5"
@@ -7592,7 +7592,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AE082CE0C0684EA7998055B290315DEE"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libstl_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libstl_plugin.dll"
             "TargetName" = "8:libstl_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -7612,7 +7612,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AE2B8D24ABF24AA49619132B6ADF4D8D"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libvpx_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libvpx_plugin.dll"
             "TargetName" = "8:libvpx_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -7632,7 +7632,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AF7CEE7F5B704EB283AD087B34722438"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libedummy_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libedummy_plugin.dll"
             "TargetName" = "8:libedummy_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -7652,7 +7652,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B0FF62F1688F4AF386F814860CA496D1"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\packetizer\\libpacketizer_mpegvideo_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\packetizer\\libpacketizer_mpegvideo_plugin.dll"
             "TargetName" = "8:libpacketizer_mpegvideo_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_5461DEAC95004E22A3AA6A455DFC9D54"
@@ -7672,7 +7672,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B12785C81E91420586BC3AAF14BADC67"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libscte27_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libscte27_plugin.dll"
             "TargetName" = "8:libscte27_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -7692,7 +7692,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B1EF08A3088B4B5588A70ABEB240C6C7"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libtcp_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libtcp_plugin.dll"
             "TargetName" = "8:libtcp_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -7712,7 +7712,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B212421475B24453BAD3E951567B5572"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libhqdn3d_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libhqdn3d_plugin.dll"
             "TargetName" = "8:libhqdn3d_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -7732,7 +7732,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B266CE7D1ECA40168D324698D67C63A6"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\misc\\libvod_rtsp_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\misc\\libvod_rtsp_plugin.dll"
             "TargetName" = "8:libvod_rtsp_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_0F75F39393E8488DAC00A2AC221729DB"
@@ -7752,7 +7752,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B362ADA850784D96A6AE833635A2DB47"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libgradfun_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libgradfun_plugin.dll"
             "TargetName" = "8:libgradfun_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -7772,7 +7772,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B458F06D55DD4521AB79BEA06EC629A6"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libmp4_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libmp4_plugin.dll"
             "TargetName" = "8:libmp4_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -7792,7 +7792,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B5A0C1701A1549C7881E2A81BA1614A7"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\meta_engine\\libfolder_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\meta_engine\\libfolder_plugin.dll"
             "TargetName" = "8:libfolder_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_3D113DD9F5E54347919E71878E61BEA1"
@@ -7812,7 +7812,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B5A172E8727F4BD1A921BCA8527A5EA5"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libgradient_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libgradient_plugin.dll"
             "TargetName" = "8:libgradient_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -7832,7 +7832,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B7944FBA08B14624AA8B9C7B00F7BD30"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\packetizer\\libpacketizer_a52_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\packetizer\\libpacketizer_a52_plugin.dll"
             "TargetName" = "8:libpacketizer_a52_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_5461DEAC95004E22A3AA6A455DFC9D54"
@@ -7852,7 +7852,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B85F34CFBB164E038DCDFF46FA690FD0"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\lua\\liblua_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\lua\\liblua_plugin.dll"
             "TargetName" = "8:liblua_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4D705D9E172143998A7E8896413993FD"
@@ -7872,7 +7872,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B86B886E551C49F0A5386CA0B79D6B1A"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\packetizer\\libpacketizer_copy_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\packetizer\\libpacketizer_copy_plugin.dll"
             "TargetName" = "8:libpacketizer_copy_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_5461DEAC95004E22A3AA6A455DFC9D54"
@@ -7892,7 +7892,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B9132D5CFC504640BC16DC78D4E1CD4C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\mux\\libmux_ogg_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\mux\\libmux_ogg_plugin.dll"
             "TargetName" = "8:libmux_ogg_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_24E737EB94994C1D820C33F4F2BA8324"
@@ -7912,7 +7912,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BADFDE00DFA64F1DB040016E7F371385"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libfreeze_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libfreeze_plugin.dll"
             "TargetName" = "8:libfreeze_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -7932,7 +7932,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BB63321553D349E8838ABDADD2C9274E"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libddummy_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libddummy_plugin.dll"
             "TargetName" = "8:libddummy_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -7952,7 +7952,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BCFA32AB3E314119BDAF30A05FAF777E"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libinvert_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libinvert_plugin.dll"
             "TargetName" = "8:libinvert_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -7972,7 +7972,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BCFB4DB799814223AD9568AC63BC2576"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_filter\\libadf_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_filter\\libadf_plugin.dll"
             "TargetName" = "8:libadf_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D0C4215F7B10496690BCB3EAC4CFB51E"
@@ -7992,7 +7992,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C0BC3657A877459D8DBF3FFAA8A550DB"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libsubtitle_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libsubtitle_plugin.dll"
             "TargetName" = "8:libsubtitle_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -8012,7 +8012,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C1F82CF998084BDD9D2586021618B547"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_dummy_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_dummy_plugin.dll"
             "TargetName" = "8:libstream_out_dummy_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -8032,7 +8032,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C26D7CACE9854CBFBB4A7945DDB6FB50"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\spu\\libaudiobargraph_v_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\spu\\libaudiobargraph_v_plugin.dll"
             "TargetName" = "8:libaudiobargraph_v_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_AB858FA48633480A8AC4925C070BC0D5"
@@ -8052,7 +8052,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C27207C572C54A1A83C994AD9FFD5CF4"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libsdp_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libsdp_plugin.dll"
             "TargetName" = "8:libsdp_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -8072,7 +8072,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C2B1FDA13D83431CBCEBE4328EA007E6"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libidummy_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libidummy_plugin.dll"
             "TargetName" = "8:libidummy_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -8092,7 +8092,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C3995FB0625F4844ABBC3415FC728229"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libsubsusf_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libsubsusf_plugin.dll"
             "TargetName" = "8:libsubsusf_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -8112,7 +8112,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C537DD0CF0A04CDC9455AC4047A0B78A"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libdvdnav_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libdvdnav_plugin.dll"
             "TargetName" = "8:libdvdnav_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -8132,7 +8132,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C5D68AB2544049C382596BC9C1ACDA62"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\packetizer\\libpacketizer_dirac_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\packetizer\\libpacketizer_dirac_plugin.dll"
             "TargetName" = "8:libpacketizer_dirac_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_5461DEAC95004E22A3AA6A455DFC9D54"
@@ -8152,7 +8152,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C60632032FCE434194D6C6DAE34CA77F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libalphamask_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libalphamask_plugin.dll"
             "TargetName" = "8:libalphamask_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -8172,7 +8172,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C75AC7608ABA42D0827AF1436E81495C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libdemuxdump_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libdemuxdump_plugin.dll"
             "TargetName" = "8:libdemuxdump_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -8192,7 +8192,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C839B0097CF042A6BF469E7D1F5EC322"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\AUTHORS.txt"
+            "SourcePath" = "8:Release-x64\\AUTHORS.txt"
             "TargetName" = "8:AUTHORS.txt"
             "Tag" = "8:"
             "Folder" = "8:_8F5C25496E10466D9DC30F2AEB7FA4AE"
@@ -8212,7 +8212,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C8AFD0EEC02F4CEF8E9F505AC8108107"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\mux\\libmux_dummy_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\mux\\libmux_dummy_plugin.dll"
             "TargetName" = "8:libmux_dummy_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_24E737EB94994C1D820C33F4F2BA8324"
@@ -8232,7 +8232,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C8DDEBB1778348C39F8C8EC4A84A15D1"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libsepia_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libsepia_plugin.dll"
             "TargetName" = "8:libsepia_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -8252,7 +8252,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C99047EC1133488BBC00605585D67A13"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_filter\\libskiptags_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_filter\\libskiptags_plugin.dll"
             "TargetName" = "8:libskiptags_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D0C4215F7B10496690BCB3EAC4CFB51E"
@@ -8272,7 +8272,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C9B57CDB734B4F4AABFBC77761A67261"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libxa_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libxa_plugin.dll"
             "TargetName" = "8:libxa_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -8292,7 +8292,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CA63B5F1DCAE4F24B01A75895A8BEBFB"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libvc1_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libvc1_plugin.dll"
             "TargetName" = "8:libvc1_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -8312,7 +8312,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CA708A35605C476097B802234AC395AB"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\control\\libntservice_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\control\\libntservice_plugin.dll"
             "TargetName" = "8:libntservice_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_C5C7F2A083094B07971DA164712F75E9"
@@ -8332,7 +8332,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CAB338E8E27442E78B8BEB95582FEAE8"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access_output\\libaccess_output_file_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access_output\\libaccess_output_file_plugin.dll"
             "TargetName" = "8:libaccess_output_file_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_778176FA5CD54468A29D7353083EF02F"
@@ -8352,7 +8352,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CB1D84C669BB412CBF8D774E56808390"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libscene_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libscene_plugin.dll"
             "TargetName" = "8:libscene_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -8372,7 +8372,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CBA21C85C1534ADF956EF1F42F952761"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_output\\libwaveout_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_output\\libwaveout_plugin.dll"
             "TargetName" = "8:libwaveout_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_00C2EB6737274883B72D93167D41760C"
@@ -8392,7 +8392,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CBFA06EF39B9429B9D1B671D7570172A"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libi422_i420_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libi422_i420_plugin.dll"
             "TargetName" = "8:libi422_i420_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -8412,7 +8412,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CC6A9030072E4017B8008D8E049F2DA0"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\packetizer\\libpacketizer_hevc_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\packetizer\\libpacketizer_hevc_plugin.dll"
             "TargetName" = "8:libpacketizer_hevc_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_5461DEAC95004E22A3AA6A455DFC9D54"
@@ -8432,7 +8432,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CD0DD455F02E464296D290EBDE19DA45"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\liblive555_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\liblive555_plugin.dll"
             "TargetName" = "8:liblive555_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -8452,7 +8452,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CD55AFF2B30C4DDCA659E118AF35E069"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libdav1d_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libdav1d_plugin.dll"
             "TargetName" = "8:libdav1d_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -8472,7 +8472,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CDF44836ED4C457DA682A742E284458F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_filter\\libhds_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_filter\\libhds_plugin.dll"
             "TargetName" = "8:libhds_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D0C4215F7B10496690BCB3EAC4CFB51E"
@@ -8492,7 +8492,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CE0939D78FA24C4E910F02BA5B00DD72"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libextract_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libextract_plugin.dll"
             "TargetName" = "8:libextract_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -8512,7 +8512,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CF26281FBD894540B4AED231DCFFDF72"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libfaad_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libfaad_plugin.dll"
             "TargetName" = "8:libfaad_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -8532,7 +8532,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CF9F7CFBC6904622B1DD2509705AFF93"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libvoc_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libvoc_plugin.dll"
             "TargetName" = "8:libvoc_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -8552,7 +8552,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CFB6EB3446FF4FBA860D4FCB5723D69A"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\spu\\libsubsdelay_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\spu\\libsubsdelay_plugin.dll"
             "TargetName" = "8:libsubsdelay_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_AB858FA48633480A8AC4925C070BC0D5"
@@ -8572,7 +8572,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CFF4C71673C54D2CAA3C5336272AD1AF"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libspatialaudio_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libspatialaudio_plugin.dll"
             "TargetName" = "8:libspatialaudio_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -8592,7 +8592,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D2DC34B0D87D40D0B6658600750D205F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_filter\\libprefetch_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_filter\\libprefetch_plugin.dll"
             "TargetName" = "8:libprefetch_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D0C4215F7B10496690BCB3EAC4CFB51E"
@@ -8612,7 +8612,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D31E2F2C886645398CACA2C24D0E34FA"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libgaussianblur_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libgaussianblur_plugin.dll"
             "TargetName" = "8:libgaussianblur_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -8632,7 +8632,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D44CCA2DF9D044B48A728D87656BF1DC"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libmjpeg_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libmjpeg_plugin.dll"
             "TargetName" = "8:libmjpeg_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -8652,7 +8652,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D7159B7AB0324D6C808A0E78B610D572"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libdca_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libdca_plugin.dll"
             "TargetName" = "8:libdca_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -8672,7 +8672,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D831F5AB67354637B37B42D8A80EF8E7"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libfilesystem_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libfilesystem_plugin.dll"
             "TargetName" = "8:libfilesystem_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -8692,7 +8692,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D8F2906B5E68426A970E4693DAD36E0F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\README.txt"
+            "SourcePath" = "8:Release-x64\\README.txt"
             "TargetName" = "8:README.txt"
             "Tag" = "8:"
             "Folder" = "8:_8F5C25496E10466D9DC30F2AEB7FA4AE"
@@ -8712,7 +8712,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D9F6F94C70A74E798CE87520CD5A351D"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libsubsdec_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libsubsdec_plugin.dll"
             "TargetName" = "8:libsubsdec_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -8732,7 +8732,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DA1DE401883244B79680241A24372422"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libx265_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libx265_plugin.dll"
             "TargetName" = "8:libx265_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -8752,7 +8752,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DA2A9DD119F34482B8EF536A5329B0D3"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libpuzzle_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libpuzzle_plugin.dll"
             "TargetName" = "8:libpuzzle_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -8772,7 +8772,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DBAA0B51DED74A3095137FD5DA9475AA"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libtransform_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libtransform_plugin.dll"
             "TargetName" = "8:libtransform_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -8792,7 +8792,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DBDA8C39FB99408A935842C697F55DC3"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libogg_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libogg_plugin.dll"
             "TargetName" = "8:libogg_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -8812,7 +8812,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DC12A838EDBE44279896774FB8017B46"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\mux\\libmux_mp4_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\mux\\libmux_mp4_plugin.dll"
             "TargetName" = "8:libmux_mp4_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_24E737EB94994C1D820C33F4F2BA8324"
@@ -8832,7 +8832,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DC9D1FF1113C48468874269807783DCA"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\control\\libwin_hotkeys_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\control\\libwin_hotkeys_plugin.dll"
             "TargetName" = "8:libwin_hotkeys_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_C5C7F2A083094B07971DA164712F75E9"
@@ -8852,7 +8852,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DD952DF320F64BA191D2E27C1DB5939C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\mux\\libmux_asf_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\mux\\libmux_asf_plugin.dll"
             "TargetName" = "8:libmux_asf_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_24E737EB94994C1D820C33F4F2BA8324"
@@ -8872,7 +8872,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DDE80F93CED44A6E8E2E1BC6479A4201"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\control\\liboldrc_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\control\\liboldrc_plugin.dll"
             "TargetName" = "8:liboldrc_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_C5C7F2A083094B07971DA164712F75E9"
@@ -8892,7 +8892,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E0725D3DB95E4254ACA08CDD503E8AB1"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libaribsub_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libaribsub_plugin.dll"
             "TargetName" = "8:libaribsub_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -8912,7 +8912,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E22BEAAF45874A72ABFAC610462C96AD"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libaudiobargraph_a_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libaudiobargraph_a_plugin.dll"
             "TargetName" = "8:libaudiobargraph_a_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -8932,7 +8932,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E305616FDE63493DB090B7F9AC13958A"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\liboggspots_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\liboggspots_plugin.dll"
             "TargetName" = "8:liboggspots_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -8952,7 +8952,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E33D5005FD714D459182ADEA3EF2E37D"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\libi420_rgb_mmx_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\libi420_rgb_mmx_plugin.dll"
             "TargetName" = "8:libi420_rgb_mmx_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -8972,7 +8972,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E41093C680F141599087210699C65956"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libty_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libty_plugin.dll"
             "TargetName" = "8:libty_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -8992,7 +8992,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E583EEABB17C4A49B490EA68D58046A7"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\npvlc.dll"
+            "SourcePath" = "8:Release-x64\\npvlc.dll"
             "TargetName" = "8:npvlc.dll"
             "Tag" = "8:"
             "Folder" = "8:_8F5C25496E10466D9DC30F2AEB7FA4AE"
@@ -9012,7 +9012,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E58802BE968A401D8F8C9DD9969F117B"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\misc\\libxml_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\misc\\libxml_plugin.dll"
             "TargetName" = "8:libxml_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_0F75F39393E8488DAC00A2AC221729DB"
@@ -9032,7 +9032,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E5B74747DFDB4117BA5C32BC3DA809D0"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_description_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_description_plugin.dll"
             "TargetName" = "8:libstream_out_description_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -9052,7 +9052,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E60B1E26BCFC48858977390A2D35162F"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\packetizer\\libpacketizer_mpegaudio_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\packetizer\\libpacketizer_mpegaudio_plugin.dll"
             "TargetName" = "8:libpacketizer_mpegaudio_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_5461DEAC95004E22A3AA6A455DFC9D54"
@@ -9072,7 +9072,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E6E8564D299F4014B3045DF6EB2448DE"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\libau_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\libau_plugin.dll"
             "TargetName" = "8:libau_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -9092,7 +9092,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E7D98F9C666942B4AE93D9294903B5FF"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_output\\libvmem_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_output\\libvmem_plugin.dll"
             "TargetName" = "8:libvmem_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_46BBA2A7684D43C3AF555E15DF4189B4"
@@ -9112,7 +9112,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E9B1173A51E142368EF41DFFC19DA4EF"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_chroma\\librv32_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_chroma\\librv32_plugin.dll"
             "TargetName" = "8:librv32_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_70405028799547B9959AD8CA447BF1DB"
@@ -9132,7 +9132,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EA3D8F3D4FB9440DA47EA47D9C38C356"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\keystore\\libfile_keystore_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\keystore\\libfile_keystore_plugin.dll"
             "TargetName" = "8:libfile_keystore_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A3439C52D9B747F38A92197CA1496435"
@@ -9152,7 +9152,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EA5AB36C612A4961B00227F900F00E3B"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_output\\libdirectsound_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_output\\libdirectsound_plugin.dll"
             "TargetName" = "8:libdirectsound_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_00C2EB6737274883B72D93167D41760C"
@@ -9172,7 +9172,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EAFD1C20C88A4B07838EBCCCB89FE993"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libftp_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libftp_plugin.dll"
             "TargetName" = "8:libftp_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -9192,7 +9192,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EB874B31E6154C999ECDBD7F489379DC"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libqsv_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libqsv_plugin.dll"
             "TargetName" = "8:libqsv_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -9212,7 +9212,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EC4C90A684764F4291D769815DFC5B74"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\RAVE.exe"
+            "SourcePath" = "8:Release-x64\\RAVE.exe"
             "TargetName" = "8:RAVE.exe"
             "Tag" = "8:"
             "Folder" = "8:_8F5C25496E10466D9DC30F2AEB7FA4AE"
@@ -9232,7 +9232,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_ECE80CF550A349DE91E4270FE0FB9B23"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_splitter\\libclone_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_splitter\\libclone_plugin.dll"
             "TargetName" = "8:libclone_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_844EA9C12AE5462D9739BAA3F681E7EE"
@@ -9252,7 +9252,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EE51AE51E0F847CC93E628E667AF4F69"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\axvlc.dll"
+            "SourcePath" = "8:Release-x64\\axvlc.dll"
             "TargetName" = "8:axvlc.dll"
             "Tag" = "8:"
             "Folder" = "8:_8F5C25496E10466D9DC30F2AEB7FA4AE"
@@ -9272,7 +9272,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EFD67F12F3EF4A7CBA74020FF923E847"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\visualization\\libgoom_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\visualization\\libgoom_plugin.dll"
             "TargetName" = "8:libgoom_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_0E055D7CB430459B8D9B4F3F1419A817"
@@ -9292,7 +9292,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EFF355D69B6940889BE596835A4A7344"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access_output\\libaccess_output_dummy_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access_output\\libaccess_output_dummy_plugin.dll"
             "TargetName" = "8:libaccess_output_dummy_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_778176FA5CD54468A29D7353083EF02F"
@@ -9312,7 +9312,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F05AF67DD30C4FE6BC1D906FBD2026FD"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libscreen_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libscreen_plugin.dll"
             "TargetName" = "8:libscreen_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -9332,7 +9332,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F0884FA05D11400C9674B0A6D7CB8DEE"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libuleaddvaudio_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libuleaddvaudio_plugin.dll"
             "TargetName" = "8:libuleaddvaudio_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -9352,7 +9352,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F0F67376082F4488924058DD1CB11227"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\d3d11\\libdirect3d11_filters_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\d3d11\\libdirect3d11_filters_plugin.dll"
             "TargetName" = "8:libdirect3d11_filters_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_0F9E46C764524BC6920EC325EE697218"
@@ -9372,7 +9372,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F1234ECFA57A48E59E5E6AADED7E9CC5"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_output\\libdirect3d11_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_output\\libdirect3d11_plugin.dll"
             "TargetName" = "8:libdirect3d11_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_46BBA2A7684D43C3AF555E15DF4189B4"
@@ -9392,7 +9392,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F22D39D45805480CB45BB9C34EF7ECA4"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libtrivial_channel_mixer_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libtrivial_channel_mixer_plugin.dll"
             "TargetName" = "8:libtrivial_channel_mixer_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -9412,7 +9412,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F2D0413FEDED4E8F82DD6F68D21ABE21"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\liblpcm_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\liblpcm_plugin.dll"
             "TargetName" = "8:liblpcm_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -9432,7 +9432,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F41DAFFB71DC44559F4CCAF317E05D02"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libball_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libball_plugin.dll"
             "TargetName" = "8:libball_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -9452,7 +9452,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F4C58E72009E4802876867215322E9DE"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\demux\\librawdv_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\demux\\librawdv_plugin.dll"
             "TargetName" = "8:librawdv_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_BC5A95DD871D4CA3B76D8517EE098D89"
@@ -9472,7 +9472,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F5006F3F21A94173B8CE56552A43B63E"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libantiflicker_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libantiflicker_plugin.dll"
             "TargetName" = "8:libantiflicker_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -9492,7 +9492,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F55AAB2ED4454CF4AEC8034BDD5455A9"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libcc_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libcc_plugin.dll"
             "TargetName" = "8:libcc_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -9512,7 +9512,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F62BC0895AF04420B03C516EEFF4024C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_output\\libwinhibit_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_output\\libwinhibit_plugin.dll"
             "TargetName" = "8:libwinhibit_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_46BBA2A7684D43C3AF555E15DF4189B4"
@@ -9532,7 +9532,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F704100B84CF45E3AF8BB3CDBD802896"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libsftp_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libsftp_plugin.dll"
             "TargetName" = "8:libsftp_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -9552,7 +9552,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F7FC204372B240D4BD648BE69286FA25"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\video_filter\\libmotiondetect_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\video_filter\\libmotiondetect_plugin.dll"
             "TargetName" = "8:libmotiondetect_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_4B6C74E6914048A4AB4B9BF1FDAA80CA"
@@ -9572,7 +9572,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F92C178AEA6C469FB15CBDB5BEBA7ED3"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\misc\\libaddonsfsstorage_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\misc\\libaddonsfsstorage_plugin.dll"
             "TargetName" = "8:libaddonsfsstorage_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_0F75F39393E8488DAC00A2AC221729DB"
@@ -9592,7 +9592,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F93F9B244D794D30B567FAC7F9C58C5C"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_cycle_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_cycle_plugin.dll"
             "TargetName" = "8:libstream_out_cycle_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -9612,7 +9612,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FA198346F6C344AA834F703BED88F768"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_out\\libstream_out_chromaprint_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_out\\libstream_out_chromaprint_plugin.dll"
             "TargetName" = "8:libstream_out_chromaprint_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_1FE445973CAF4216AF197E03A9A89DFA"
@@ -9632,7 +9632,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FA55D51AEB9C44FFB88FBFAE26806533"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\stream_filter\\libinflate_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\stream_filter\\libinflate_plugin.dll"
             "TargetName" = "8:libinflate_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D0C4215F7B10496690BCB3EAC4CFB51E"
@@ -9652,7 +9652,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FA868BF7A26948AB987072ECE1D6DA52"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libspatializer_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libspatializer_plugin.dll"
             "TargetName" = "8:libspatializer_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -9672,7 +9672,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FAA21641DA1D4FC28D7B57FF24066DD4"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libkaraoke_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libkaraoke_plugin.dll"
             "TargetName" = "8:libkaraoke_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
@@ -9692,7 +9692,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FB0F3C767B544366AD65900E6CD29331"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libmft_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libmft_plugin.dll"
             "TargetName" = "8:libmft_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -9712,7 +9712,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FBF7F7D47C68431682A0AE7B92E25F66"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\access\\libshm_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\access\\libshm_plugin.dll"
             "TargetName" = "8:libshm_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
@@ -9732,7 +9732,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FCC259459EB8495F9C077D8EA1A62C05"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libdvbsub_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libdvbsub_plugin.dll"
             "TargetName" = "8:libdvbsub_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -9752,7 +9752,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FE06047B63384D24A88A1547C577BFF4"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\misc\\libaddonsvorepository_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\misc\\libaddonsvorepository_plugin.dll"
             "TargetName" = "8:libaddonsvorepository_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_0F75F39393E8488DAC00A2AC221729DB"
@@ -9772,7 +9772,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FE109FAEB1E542C48A077A9E05B3F69B"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libadpcm_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libadpcm_plugin.dll"
             "TargetName" = "8:libadpcm_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -9792,7 +9792,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FED035D5A91740D99929BD704293E181"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\control\\libdummy_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\control\\libdummy_plugin.dll"
             "TargetName" = "8:libdummy_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_C5C7F2A083094B07971DA164712F75E9"
@@ -9812,7 +9812,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FF1E3F80B9534BE9823C982EAE7262E8"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\codec\\libtwolame_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\codec\\libtwolame_plugin.dll"
             "TargetName" = "8:libtwolame_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_A41920CC539246C3B01879F0A5BEF8C1"
@@ -9832,7 +9832,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FF4B365A4E154D18BF0274BD66F34A29"
             {
-            "SourcePath" = "8:..\\..\\Release-x64\\plugins\\audio_filter\\libchorus_flanger_plugin.dll"
+            "SourcePath" = "8:Release-x64\\plugins\\audio_filter\\libchorus_flanger_plugin.dll"
             "TargetName" = "8:libchorus_flanger_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_D1B41D3413D849CA8E7E691166BD62F0"
