@@ -83,12 +83,13 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	LabelTiempoTotal.CrearEtiquetaEx(&MarcoSD, L"00:00", 65, 1, 55, 20, ID_LABEL_TIEMPOTOTAL, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
 
 	// Marco inferior izquierdo /////////////
-	MarcoII.Crear(this, 10, 80, RAVE_BOTONES_LATERALES_ANCHO, 200, ID_MARCOSI);
+	MarcoII.Crear(this, 10, 80, RAVE_BOTONES_LATERALES_ANCHO, 2000, ID_MARCOSI);
 	BotonBD.CrearBotonEx(&MarcoII, L"Base de datos", 0, 0, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_BD);
 	BotonBD.Marcado(TRUE);
 	BotonLista.CrearBotonEx(&MarcoII, L"Lista de medios", 0, 35, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_LISTA);
 	BotonVideo.CrearBotonEx(&MarcoII, L"Ver video", 0, 70, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_VIDEO);
-	BotonOpciones.CrearBotonEx(&MarcoII, L"Opciones", 0, 130, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_OPCIONES);
+	
+	BotonOpciones.CrearBotonEx(&MarcoII, L"Opciones", 0, RC.bottom - 120, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_OPCIONES);
 	
 	#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
 		Vis.Crear(&MarcoII, 0, 160, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_VISUALIZACION);
@@ -137,6 +138,8 @@ void VentanaPrincipal::AjustarControles(RECT &RC) {
 
 	MoveWindow(SliderTiempo.hWnd(), 10, 50, RC.right - 20, 20, TRUE);
 	MoveWindow(MarcoSD.hWnd(), RC.right - 260, 14, 255, 24, TRUE);
+
+	MoveWindow(BotonOpciones.hWnd(), 0, RC.bottom - 120, RAVE_BOTONES_LATERALES_ANCHO, 30, TRUE);
 
 	//App.VLC.RepintarVLC();
 	if (App.MP.hWndVLC != NULL) {

@@ -78,6 +78,9 @@ void ControlesPantallaCompleta::RotarControles(void) {
 		case Derecha	:	Alineacion = Abajo;			break;
 	}
 	Alinear();
+
+	if (BotonBD.Marcado() == TRUE)		MostrarBD(TRUE);
+	if (BotonLista.Marcado() == TRUE)	MostrarLista(TRUE);
 }
 
 void ControlesPantallaCompleta::Mostrar(void) {
@@ -384,10 +387,10 @@ void ControlesPantallaCompleta::MostrarBD(const BOOL Forzar) {
 		RECT RW;
 		GetWindowRect(BotonBD.hWnd(), &RW);
 		switch (Alineacion) {
-			case Abajo:		SetWindowPos(App.VentanaRave.Arbol.hWnd(), HWND_TOPMOST, RW.left, RW.top - 310, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
-			case Arriba:	SetWindowPos(App.VentanaRave.Arbol.hWnd(), HWND_TOPMOST, RW.left, RW.bottom + 40, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
-			case Izquierda:	SetWindowPos(App.VentanaRave.Arbol.hWnd(), HWND_TOPMOST, RW.right + 10, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
-			case Derecha:	SetWindowPos(App.VentanaRave.Arbol.hWnd(), HWND_TOPMOST, RW.left - 410, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+			case Abajo:		SetWindowPos(App.VentanaRave.Arbol.hWnd(), HWND_TOPMOST, RW.left, RW.top - 320, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+			case Arriba:	SetWindowPos(App.VentanaRave.Arbol.hWnd(), HWND_TOPMOST, RW.left, RW.bottom + 50, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+			case Izquierda:	SetWindowPos(App.VentanaRave.Arbol.hWnd(), HWND_TOPMOST, RW.right + 20, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+			case Derecha:	SetWindowPos(App.VentanaRave.Arbol.hWnd(), HWND_TOPMOST, RW.left - 420, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
 		}
 
 		ShowWindow(App.VentanaRave.Arbol.hWnd(), SW_SHOW);
@@ -408,10 +411,10 @@ void ControlesPantallaCompleta::MostrarLista(const BOOL Forzar) {
 		RECT RW;
 		GetWindowRect(BotonLista.hWnd(), &RW);
 		switch (Alineacion) {
-			case Abajo:		SetWindowPos(App.VentanaRave.Lista.hWnd(), HWND_TOPMOST, RW.left, RW.top - 310, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
-			case Arriba:	SetWindowPos(App.VentanaRave.Lista.hWnd(), HWND_TOPMOST, RW.left, RW.bottom + 40, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
-			case Izquierda:	SetWindowPos(App.VentanaRave.Lista.hWnd(), HWND_TOPMOST, RW.right + 10, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
-			case Derecha:	SetWindowPos(App.VentanaRave.Lista.hWnd(), HWND_TOPMOST, RW.left - 410, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+			case Abajo:		SetWindowPos(App.VentanaRave.Lista.hWnd(), HWND_TOPMOST, RW.left, RW.top - 320, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+			case Arriba:	SetWindowPos(App.VentanaRave.Lista.hWnd(), HWND_TOPMOST, RW.left, RW.bottom + 50, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+			case Izquierda:	SetWindowPos(App.VentanaRave.Lista.hWnd(), HWND_TOPMOST, RW.right + 20, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+			case Derecha:	SetWindowPos(App.VentanaRave.Lista.hWnd(), HWND_TOPMOST, RW.left - 420, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
 		}
 		ShowWindow(App.VentanaRave.Lista.hWnd(), SW_SHOW);
 	}

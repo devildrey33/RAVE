@@ -2,6 +2,8 @@
 
 ### Versión 0.524
 
+* Botón de las opciones fijado al borde inferior del reproductor.
+
 * Ahora se puede ver la lista y la base de datos desde el modo pantalla completa (con SetParent, nada de tener 2 controles de lista y arbol)
 
 * Solucionado bug con las teclas F2 y F3 en pantalla completa, que mostraban la lista o la BD a un tamaño exagerado y no dejaban ver nada.
