@@ -87,3 +87,12 @@ Teclas por defecto cuando el reproductor tiene le foco del teclado (excepto si e
  > Esto puede ser debido a que la base de datos ha sido actualizada varias veces durante las versiones 0.516+, y la versión 0.6 solo es capaz de actualizar la base de datos de la versión 0.500 (ya que las versiones entre medio no se consideran estables). Para solucionar el problema debes borrar la base de datos, que está ubicada en : "C:\ProgramData\RAVE\Rave_x??.BD". 
 
  > Si el problema persiste, no olvides enviar el informe de errores para que pueda ser analizado y solucionado en futuras versiones.
+
+
+ ### Notas para compilar el proyecto
+
+ * La LibVLC y SQLite vienen en este repositorio
+ 
+ * Hace falta la [DWL3](https://github.com/devildrey33/DWL3) Devildrey33 Windows Library.
+
+ * Debes crear un archivo llamado RAVE_CuentaEmail.h y definir las siguientes macros con un string vacio : EMAIL_SMTP, EMAIL_LOGIN, EMAIL_PASS, EMAIL_ORIGEN, EMAIL_DESTINO 

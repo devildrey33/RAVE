@@ -927,6 +927,9 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 	if (nActivar == TRUE) {
 		App.OcultarToolTipPlayer();
 		App.OcultarToolTipOpciones();
+		// Desmarco los botones de BD y lista (ya que podian haber quedado marcados anteriormente)
+		App.ControlesPC.BotonBD.Marcado(FALSE);
+		App.ControlesPC.BotonLista.Marcado(FALSE);
 
 		SetWindowLongPtr(hWnd(), GWL_STYLE, WS_POPUP | WS_SYSMENU | WS_VISIBLE);
 		ShowWindow(hWnd(), SW_MAXIMIZE);
@@ -976,7 +979,7 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 			App.BD.Opciones_AsignarPosVentana(RectMonitorActual.left + 100, RectMonitorActual.top + 100);
 		}
 
-		App.ControlesPC._AniMostrar.Terminar();
+//		App.ControlesPC._AniMostrar.Terminar();
 
 		ShowWindow(hWnd(), SW_RESTORE);
 //		GetClientRect(hWnd(), &RC);

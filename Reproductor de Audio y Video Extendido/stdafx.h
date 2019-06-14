@@ -34,9 +34,29 @@
 
 #pragma comment(lib, "dwmapi")			// Librería para DwmExtendFrameIntoClientArea 
 
+#ifdef _DEBUG
+	#if _WIN32 || _WIN64
+		#if _WIN64
+			#pragma comment(lib, "..\\Build\\x64\\Debug\\DWL3.lib")
+		#else
+			#pragma comment(lib, "..\\Build\\x86\\Debug\\DWL3.lib")
+		#endif
+	#endif
+#else
+	#if _WIN32 || _WIN64
+		#if _WIN64
+			#pragma comment(lib, "..\\Build\\x64\\Release\\DWL3.lib")
+		#else
+			#pragma comment(lib, "..\\Build\\x86\\Release\\DWL3.lib")
+		#endif
+	#endif
+#endif
+
 #define VLC_API
 #define VLC_USED
 #include "RAVE.h"
+
+
 
 
 // Controles de VentanaPrincipal

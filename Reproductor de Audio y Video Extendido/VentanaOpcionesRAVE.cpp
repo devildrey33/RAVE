@@ -408,7 +408,7 @@ void VentanaOpcionesRAVE::AgregarRaiz(void) {
 	App.VentanaRave.ThreadActualizar.Cancelar(TRUE);
 	App.VentanaRave.ThreadAnalizar.Cancelar(TRUE);
 
-	BOOL Ret = DialogoDirectorios.Mostrar(this, Path, App.BD.Opciones_DlgDirectorios_PosX(), App.BD.Opciones_DlgDirectorios_PosY());
+	BOOL Ret = DialogoDirectorios.Mostrar(this, Path, App.BD.Opciones_DlgDirectorios_PosX(), App.BD.Opciones_DlgDirectorios_PosY(), App.BD.Opciones_DlgDirectorios_Ancho(), App.BD.Opciones_DlgDirectorios_Alto(), IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 	//	SetFocus(_hWnd);
 	if (Ret == TRUE) {
 		// Agrego la raíz a la BD.

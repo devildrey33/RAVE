@@ -5,89 +5,14 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="DWL">
-      <UniqueIdentifier>{5aafbfd6-4b0d-4f64-a5be-fce21d582163}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Base de datos">
       <UniqueIdentifier>{baed088e-06fc-4d4c-9f1c-dbf645a7fd1c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Base de datos\Tipos">
       <UniqueIdentifier>{4c5f11bd-4580-436b-b452-8a4d30892da5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas">
-      <UniqueIdentifier>{74eacee0-0026-4545-acb8-00698bac5642}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\Consola">
-      <UniqueIdentifier>{84928c74-54e6-467a-9fdd-fe4f5ce0a3db}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Sistema">
-      <UniqueIdentifier>{73610f63-b897-4ea5-b3bd-253a763c096e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Sistema\Directorios">
-      <UniqueIdentifier>{3be73d81-8253-4a99-81d0-8a7b790b3b71}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Sistema\Unidades de Disco">
-      <UniqueIdentifier>{0f4656b9-978c-42ed-8761-6ee123478428}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Sistema\String">
-      <UniqueIdentifier>{35a8c189-a8aa-475d-86b8-8d1cc62aef38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Sistema\Mouse">
-      <UniqueIdentifier>{caf2d394-a02d-4351-8ca7-27ceecb536ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx">
-      <UniqueIdentifier>{dc872fa4-ea37-42c7-b902-8cec08c6cb7c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\BotonEx">
-      <UniqueIdentifier>{387b6b9f-1344-4cff-be71-fa2d6bf42414}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\BarraProgresoEx">
-      <UniqueIdentifier>{d7c9df78-01b9-4dd2-b4df-d2c6df60cfc1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\ToolTipEx">
-      <UniqueIdentifier>{b100c2ec-d0c5-423a-bbfa-3c4a9231195e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\BarraDesplazamientoEx">
-      <UniqueIdentifier>{364bd3eb-04b0-417f-8dbb-2071ef3f324f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\BarraScrollEx">
-      <UniqueIdentifier>{5a691253-997b-48b4-aaf1-1e2adbd61707}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\ArbolEx">
-      <UniqueIdentifier>{88c21413-ab56-4b0b-bdee-4770a2f7636e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="xXx _MAIN_ xXx">
       <UniqueIdentifier>{33c10cc3-7f24-444b-9777-dac5a9b6874d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\ListaEx">
-      <UniqueIdentifier>{10c2859e-f7d4-40cd-8923-0287f6759530}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\ExplorarDirectoriosEx">
-      <UniqueIdentifier>{9c8ec836-aa61-4ed3-9265-8d6a79a9f649}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Sistema\Graficos">
-      <UniqueIdentifier>{c95287fd-0aac-4a4c-8922-d130975d3a89}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\EdicionTextoEx">
-      <UniqueIdentifier>{f2dead2b-bc03-45d3-baa2-54285f0b675d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\Dialogos Comunes">
-      <UniqueIdentifier>{c3c8176b-efbb-4943-a878-f184727d60a6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\Dialogos Comunes\DlgDirectorios">
-      <UniqueIdentifier>{e846f990-8e98-4a16-b0b6-ef3d334b3dfe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Sistema\Registro Windows">
-      <UniqueIdentifier>{827b3b63-5dbc-4db9-b634-bcf2d9c3ae66}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\BarraTareas">
-      <UniqueIdentifier>{0ca039a6-e0c6-4363-8873-3b85cf246579}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\Base">
-      <UniqueIdentifier>{ba734c0d-ef45-4156-bfd8-aade65265ef5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Sistema\Temporizador">
-      <UniqueIdentifier>{73793132-5d19-4596-a069-b872e2302e0d}</UniqueIdentifier>
     </Filter>
     <Filter Include="xXx _MAIN_ xXx\ErrorCritico">
       <UniqueIdentifier>{642c9ab7-cb7e-4500-888b-8b66e18d4f7a}</UniqueIdentifier>
@@ -104,32 +29,11 @@
     <Filter Include="Base de datos\Threads\AgregarArchivosLista">
       <UniqueIdentifier>{0dbc0e65-768e-4a1f-a201-096e4c7bafd8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\MenuEx">
-      <UniqueIdentifier>{94fe7c69-6e5c-4393-84c7-94eb74bcc7ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29">
-      <UniqueIdentifier>{48db754e-13be-43af-8b55-4b4c51d6a432}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\MarcaEx">
-      <UniqueIdentifier>{7ba7b1ff-8132-4dd0-a3e2-67094d0a6f38}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Base de datos\Threads\Analisis">
       <UniqueIdentifier>{f7230b6c-c4c1-4eae-8802-fb48e7e5de1e}</UniqueIdentifier>
     </Filter>
     <Filter Include="xXx _MAIN_ xXx\Memoria compartida">
       <UniqueIdentifier>{4f7591fc-0edf-4df2-8bc0-f189ff6b24cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\EtiquetaEx">
-      <UniqueIdentifier>{ec2f93a3-f0d3-4895-aedb-dd9521e0b5b0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\Base\Eventos">
-      <UniqueIdentifier>{89375de0-fa16-44d6-8c74-09d2f8fbd387}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Sistema\Animación">
-      <UniqueIdentifier>{238d5ecf-9ba0-4368-84d5-22e752379aa1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DWL\Ventanas\ControlesEx\DesplegableEx">
-      <UniqueIdentifier>{bd307228-6d88-4cd4-929c-4f8eec183789}</UniqueIdentifier>
     </Filter>
     <Filter Include="AsociarReproductor %28DEPRECATED%29">
       <UniqueIdentifier>{8ad9c686-8c63-4d14-b7ab-03419bb29e17}</UniqueIdentifier>
@@ -152,9 +56,6 @@
     <Filter Include="Ventanas y Controles\Ventanas">
       <UniqueIdentifier>{45cc9b22-ca73-44eb-903b-e466183b06d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DWL\Ventanas\Dialogos Comunes\DlgAbrir">
-      <UniqueIdentifier>{9c63ed83-45c8-4791-957d-9fc9e9211baa}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -172,23 +73,8 @@
     <ClInclude Include="ExtensionesValidas.h">
       <Filter>Base de datos\Tipos</Filter>
     </ClInclude>
-    <ClInclude Include="DDirectoriosWindows.h">
-      <Filter>DWL\Sistema\Directorios</Filter>
-    </ClInclude>
-    <ClInclude Include="DUnidadesDisco.h">
-      <Filter>DWL\Sistema\Unidades de Disco</Filter>
-    </ClInclude>
-    <ClInclude Include="DStringUtils.h">
-      <Filter>DWL\Sistema\String</Filter>
-    </ClInclude>
     <ClInclude Include="RAVE.h">
       <Filter>xXx _MAIN_ xXx</Filter>
-    </ClInclude>
-    <ClInclude Include="DConsola.h">
-      <Filter>DWL\Ventanas\Consola</Filter>
-    </ClInclude>
-    <ClInclude Include="DMouse.h">
-      <Filter>DWL\Sistema\Mouse</Filter>
     </ClInclude>
     <ClInclude Include="VerVideo.h">
       <Filter>Ventanas y Controles\Controles</Filter>
@@ -199,9 +85,6 @@
     <ClInclude Include="ControlesPantallaCompleta.h">
       <Filter>Ventanas y Controles\Controles</Filter>
     </ClInclude>
-    <ClInclude Include="DToolTipEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\ToolTipEx</Filter>
-    </ClInclude>
     <ClInclude Include="BarraTiempo.h">
       <Filter>Ventanas y Controles\Controles</Filter>
     </ClInclude>
@@ -211,44 +94,14 @@
     <ClInclude Include="RAVE_Configuracion.h">
       <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
-    <ClInclude Include="DBotonEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\BotonEx</Filter>
-    </ClInclude>
-    <ClInclude Include="DBarraProgresoEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\BarraProgresoEx</Filter>
-    </ClInclude>
-    <ClInclude Include="DBarraDesplazamientoEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\BarraDesplazamientoEx</Filter>
-    </ClInclude>
     <ClInclude Include="EnviarDump.h">
       <Filter>xXx _MAIN_ xXx\ErrorCritico</Filter>
     </ClInclude>
     <ClInclude Include="RAVE_CuentaEmail.h">
       <Filter>xXx _MAIN_ xXx\ErrorCritico</Filter>
     </ClInclude>
-    <ClInclude Include="DBarraScrollEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\BarraScrollEx</Filter>
-    </ClInclude>
-    <ClInclude Include="DArbolEx_Nodo.h">
-      <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
-    </ClInclude>
-    <ClInclude Include="DArbolEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
-    </ClInclude>
     <ClInclude Include="ArbolBD.h">
       <Filter>Ventanas y Controles\Controles</Filter>
-    </ClInclude>
-    <ClInclude Include="DListaEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
-    </ClInclude>
-    <ClInclude Include="DListaEx_Columna.h">
-      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
-    </ClInclude>
-    <ClInclude Include="DListaEx_SubItem.h">
-      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
-    </ClInclude>
-    <ClInclude Include="DListaEx_Item.h">
-      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
     </ClInclude>
     <ClInclude Include="ListaMedios.h">
       <Filter>Ventanas y Controles\Controles</Filter>
@@ -256,38 +109,11 @@
     <ClInclude Include="RAVE_Iconos.h">
       <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
-    <ClInclude Include="DExplorarDirectoriosEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\ExplorarDirectoriosEx</Filter>
-    </ClInclude>
-    <ClInclude Include="DGDI.h">
-      <Filter>DWL\Sistema\Graficos</Filter>
-    </ClInclude>
     <ClInclude Include="ListaRaices.h">
       <Filter>Ventanas y Controles\Controles</Filter>
     </ClInclude>
-    <ClInclude Include="DEdicionTextoEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\EdicionTextoEx</Filter>
-    </ClInclude>
-    <ClInclude Include="DDlgDirectorios.h">
-      <Filter>DWL\Ventanas\Dialogos Comunes\DlgDirectorios</Filter>
-    </ClInclude>
-    <ClInclude Include="DRegistro.h">
-      <Filter>DWL\Sistema\Registro Windows</Filter>
-    </ClInclude>
     <ClInclude Include="AsociarReproductor.h">
       <Filter>AsociarReproductor %28DEPRECATED%29</Filter>
-    </ClInclude>
-    <ClInclude Include="DhWnd.h">
-      <Filter>DWL\Ventanas\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="DMensajesWnd.h">
-      <Filter>DWL\Ventanas\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="DBarraTareas.h">
-      <Filter>DWL\Ventanas\BarraTareas</Filter>
-    </ClInclude>
-    <ClInclude Include="DTemporizador.h">
-      <Filter>DWL\Sistema\Temporizador</Filter>
     </ClInclude>
     <ClInclude Include="vlc.hpp">
       <Filter>MediaPlayer\VLC</Filter>
@@ -301,14 +127,8 @@
     <ClInclude Include="ThreadAgregarArchivosLista.h">
       <Filter>Base de datos\Threads\AgregarArchivosLista</Filter>
     </ClInclude>
-    <ClInclude Include="DEventoMouse.h">
-      <Filter>DWL\Ventanas\Base\Eventos</Filter>
-    </ClInclude>
     <ClInclude Include="RAVE_TODO.h">
       <Filter>xXx _MAIN_ xXx</Filter>
-    </ClInclude>
-    <ClInclude Include="DMarcaEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\MarcaEx</Filter>
     </ClInclude>
     <ClInclude Include="EtiquetaBD.h">
       <Filter>Base de datos</Filter>
@@ -319,68 +139,20 @@
     <ClInclude Include="MemoriaCompartida.h">
       <Filter>xXx _MAIN_ xXx\Memoria compartida</Filter>
     </ClInclude>
-    <ClInclude Include="DControlEx.h">
-      <Filter>DWL\Ventanas\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="DControl.h">
-      <Filter>DWL\Ventanas\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="DVentana.h">
-      <Filter>DWL\Ventanas\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="DEtiquetaEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\EtiquetaEx</Filter>
-    </ClInclude>
-    <ClInclude Include="DEventoTeclado.h">
-      <Filter>DWL\Ventanas\Base\Eventos</Filter>
-    </ClInclude>
-    <ClInclude Include="DEventoMouseRueda.h">
-      <Filter>DWL\Ventanas\Base\Eventos</Filter>
-    </ClInclude>
     <ClInclude Include="AsignarTeclaRapida.h">
       <Filter>Ventanas y Controles\Controles</Filter>
-    </ClInclude>
-    <ClInclude Include="DAnimacion.h">
-      <Filter>DWL\Sistema\Animación</Filter>
     </ClInclude>
     <ClInclude Include="ControlSeparador.h">
       <Filter>Ventanas y Controles\Controles</Filter>
     </ClInclude>
-    <ClInclude Include="DControlDesplegableEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
-    </ClInclude>
-    <ClInclude Include="DMenuEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\MenuEx</Filter>
-    </ClInclude>
-    <ClInclude Include="DListaDesplegableEx.h">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
-    </ClInclude>
-    <ClInclude Include="DDesplegableEx %28DEPRECATED%29.h">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
-    </ClInclude>
-    <ClInclude Include="DDesplegableEx_ExplorarDirectoriosEx %28DEPRECATED%29.h">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
-    </ClInclude>
     <ClInclude Include="ControlVisualizacion.h">
       <Filter>Ventanas y Controles\Controles</Filter>
-    </ClInclude>
-    <ClInclude Include="DFuente.h">
-      <Filter>DWL\Ventanas\Base</Filter>
     </ClInclude>
     <ClInclude Include="RAVE_SkinVisualStudio.h">
       <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
     <ClInclude Include="RAVE_Skin.h">
       <Filter>xXx _MAIN_ xXx</Filter>
-    </ClInclude>
-    <ClInclude Include="DIcono.h">
-      <Filter>DWL\Ventanas\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="DListaIconos %28DEPRECATED%29.h">
-      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29</Filter>
-    </ClInclude>
-    <ClInclude Include="DListaIconos_Icono %28DEPRECATED%29.h">
-      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29</Filter>
     </ClInclude>
     <ClInclude Include="RaveVLC_Medio.h">
       <Filter>MediaPlayer\VLC</Filter>
@@ -424,9 +196,6 @@
     <ClInclude Include="BDMedio.h">
       <Filter>Base de datos</Filter>
     </ClInclude>
-    <ClInclude Include="DDlgAbrir.h">
-      <Filter>DWL\Ventanas\Dialogos Comunes\DlgAbrir</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -441,20 +210,8 @@
     <ClCompile Include="ExtensionesValidas.cpp">
       <Filter>Base de datos\Tipos</Filter>
     </ClCompile>
-    <ClCompile Include="DUnidadesDisco.cpp">
-      <Filter>DWL\Sistema\Unidades de Disco</Filter>
-    </ClCompile>
-    <ClCompile Include="DStringUtils.cpp">
-      <Filter>DWL\Sistema\String</Filter>
-    </ClCompile>
     <ClCompile Include="RAVE.cpp">
       <Filter>xXx _MAIN_ xXx</Filter>
-    </ClCompile>
-    <ClCompile Include="DConsola.cpp">
-      <Filter>DWL\Ventanas\Consola</Filter>
-    </ClCompile>
-    <ClCompile Include="DMouse.cpp">
-      <Filter>DWL\Sistema\Mouse</Filter>
     </ClCompile>
     <ClCompile Include="VerVideo.cpp">
       <Filter>Ventanas y Controles\Controles</Filter>
@@ -465,83 +222,26 @@
     <ClCompile Include="ControlesPantallaCompleta.cpp">
       <Filter>Ventanas y Controles\Controles</Filter>
     </ClCompile>
-    <ClCompile Include="DToolTipEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\ToolTipEx</Filter>
-    </ClCompile>
     <ClCompile Include="BarraTiempo.cpp">
       <Filter>Ventanas y Controles\Controles</Filter>
     </ClCompile>
     <ClCompile Include="BarraVolumen.cpp">
       <Filter>Ventanas y Controles\Controles</Filter>
     </ClCompile>
-    <ClCompile Include="DBotonEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\BotonEx</Filter>
-    </ClCompile>
-    <ClCompile Include="DBarraProgresoEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\BarraProgresoEx</Filter>
-    </ClCompile>
-    <ClCompile Include="DBarraDesplazamientoEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\BarraDesplazamientoEx</Filter>
-    </ClCompile>
     <ClCompile Include="EnviarDump.cpp">
       <Filter>xXx _MAIN_ xXx\ErrorCritico</Filter>
-    </ClCompile>
-    <ClCompile Include="DBarraScrollEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\BarraScrollEx</Filter>
-    </ClCompile>
-    <ClCompile Include="DArbolEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
-    </ClCompile>
-    <ClCompile Include="DArbolEx_Nodo.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\ArbolEx</Filter>
     </ClCompile>
     <ClCompile Include="ArbolBD.cpp">
       <Filter>Ventanas y Controles\Controles</Filter>
     </ClCompile>
-    <ClCompile Include="DListaEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
-    </ClCompile>
-    <ClCompile Include="DListaEx_Columna.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
-    </ClCompile>
-    <ClCompile Include="DListaEx_SubItem.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
-    </ClCompile>
-    <ClCompile Include="DListaEx_Item.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\ListaEx</Filter>
-    </ClCompile>
     <ClCompile Include="ListaMedios.cpp">
       <Filter>Ventanas y Controles\Controles</Filter>
-    </ClCompile>
-    <ClCompile Include="DExplorarDirectoriosEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\ExplorarDirectoriosEx</Filter>
-    </ClCompile>
-    <ClCompile Include="DGDI.cpp">
-      <Filter>DWL\Sistema\Graficos</Filter>
     </ClCompile>
     <ClCompile Include="ListaRaices.cpp">
       <Filter>Ventanas y Controles\Controles</Filter>
     </ClCompile>
-    <ClCompile Include="DEdicionTextoEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\EdicionTextoEx</Filter>
-    </ClCompile>
-    <ClCompile Include="DDlgDirectorios.cpp">
-      <Filter>DWL\Ventanas\Dialogos Comunes\DlgDirectorios</Filter>
-    </ClCompile>
-    <ClCompile Include="DRegistro.cpp">
-      <Filter>DWL\Sistema\Registro Windows</Filter>
-    </ClCompile>
     <ClCompile Include="AsociarReproductor.cpp">
       <Filter>AsociarReproductor %28DEPRECATED%29</Filter>
-    </ClCompile>
-    <ClCompile Include="DhWnd.cpp">
-      <Filter>DWL\Ventanas\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="DBarraTareas.cpp">
-      <Filter>DWL\Ventanas\BarraTareas</Filter>
-    </ClCompile>
-    <ClCompile Include="DTemporizador.cpp">
-      <Filter>DWL\Sistema\Temporizador</Filter>
     </ClCompile>
     <ClCompile Include="RaveBD.cpp">
       <Filter>Base de datos</Filter>
@@ -552,62 +252,20 @@
     <ClCompile Include="ThreadAgregarArchivosLista.cpp">
       <Filter>Base de datos\Threads\AgregarArchivosLista</Filter>
     </ClCompile>
-    <ClCompile Include="DMenuEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\MenuEx</Filter>
-    </ClCompile>
-    <ClCompile Include="DMarcaEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\MarcaEx</Filter>
-    </ClCompile>
     <ClCompile Include="ThreadAnalisis.cpp">
       <Filter>Base de datos\Threads\Analisis</Filter>
     </ClCompile>
     <ClCompile Include="MemoriaCompartida.cpp">
       <Filter>xXx _MAIN_ xXx\Memoria compartida</Filter>
     </ClCompile>
-    <ClCompile Include="DControlEx.cpp">
-      <Filter>DWL\Ventanas\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="DControl.cpp">
-      <Filter>DWL\Ventanas\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="DVentana.cpp">
-      <Filter>DWL\Ventanas\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="DEtiquetaEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\EtiquetaEx</Filter>
-    </ClCompile>
     <ClCompile Include="AsignarTeclaRapida.cpp">
       <Filter>Ventanas y Controles\Controles</Filter>
-    </ClCompile>
-    <ClCompile Include="DAnimacion.cpp">
-      <Filter>DWL\Sistema\Animación</Filter>
     </ClCompile>
     <ClCompile Include="ControlSeparador.cpp">
       <Filter>Ventanas y Controles\Controles</Filter>
     </ClCompile>
-    <ClCompile Include="DControlDesplegableEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
-    </ClCompile>
-    <ClCompile Include="DListaDesplegableEx.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
-    </ClCompile>
-    <ClCompile Include="DDesplegableEx %28DEPRECATED%29.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
-    </ClCompile>
-    <ClCompile Include="DDesplegableEx_ExplorarDirectoriosEx %28DEPRECATED%29.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\DesplegableEx</Filter>
-    </ClCompile>
     <ClCompile Include="ControlVisualizacion.cpp">
       <Filter>Ventanas y Controles\Controles</Filter>
-    </ClCompile>
-    <ClCompile Include="DFuente.cpp">
-      <Filter>DWL\Ventanas\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="DIcono.cpp">
-      <Filter>DWL\Ventanas\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="DListaIconos %28DEPRECATED%29.cpp">
-      <Filter>DWL\Ventanas\ControlesEx\ListaIconos %28Controles extendidos DArbolEx, DListaEx, etc...%29</Filter>
     </ClCompile>
     <ClCompile Include="RaveVLC_Medio.cpp">
       <Filter>MediaPlayer\VLC</Filter>
@@ -647,9 +305,6 @@
     </ClCompile>
     <ClCompile Include="BDMedio.cpp">
       <Filter>Base de datos</Filter>
-    </ClCompile>
-    <ClCompile Include="DDlgAbrir.cpp">
-      <Filter>DWL\Ventanas\Dialogos Comunes\DlgAbrir</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -819,9 +474,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Mapa de ventanas y controles.cd">
-      <Filter>DWL</Filter>
-    </None>
     <None Include="..\README.md">
       <Filter>xXx _MAIN_ xXx</Filter>
     </None>

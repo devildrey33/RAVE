@@ -4,9 +4,7 @@
 #include <Shellapi.h>
 #include <versionhelpers.h>
 #include <Shlobj.h>
-#include "DIcono.h"
-#include "DIconoP.h"
-#include "DFuenteP.h"
+#include <DIcono.h>
 
 //#include <gdiplus.h>
 
@@ -16,11 +14,11 @@
 
 void RAVE_Iniciar(void) {
 	// Inicio la aplicación
-	_APLICACION = new RAVE;
+	_Aplicacion = new RAVE;
 }
 
 
-RAVE *_APLICACION = NULL;
+//RAVE *_APLICACION = NULL;
 
 RAVE::RAVE(void) : PlayerInicial(FALSE), MutexPlayer(NULL), MenuVideoPistasDeAudio(NULL), MenuVideoProporcion(NULL), MenuVideoFiltros(NULL), MenuVideoSubtitulos(NULL), MenuVideoMomentos(NULL)/*, _gdiplusToken(0) */ {
 	// Inicio la semilla para generar números aleatórios

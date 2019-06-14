@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <random>
 #include "ToolTipInfo.h"
+#include <DApp.h>
 
 using namespace DWL;
 
@@ -37,7 +38,7 @@ enum SOCerrarSistema {
 };
 
 
-class RAVE {
+class RAVE : public DApp {
   public:
 									RAVE(void);
 							       ~RAVE(void);
@@ -107,7 +108,7 @@ class RAVE {
 									// Ventana para mostrar las opciones
 	VentanaOpcionesRAVE             VentanaOpciones;
 									// Ventana que muestra una consola al estilo MS-DOS para depuración
-	DConsola						ConsolaDebug;
+//	DConsola						ConsolaDebug;
 
 	RaveBD							BD;
 	Rave_MediaPlayer				MP;
@@ -162,12 +163,17 @@ static void PintarTexto(HDC DC, std::wstring &sTexto, const int PosX, const int 
 	TextOut(DC, PosX, PosY, sTexto.c_str(), static_cast<int>(sTexto.size()));
 }
 
+
+void RAVE_Iniciar();
+
+#define App static_cast<RAVE &>(*_Aplicacion)
+
+/*
 extern RAVE *_APLICACION;
 
 #define App (*_APLICACION) 
 
 
-void RAVE_Iniciar(); 
 
 
 #ifdef RAVE_MOSTRAR_CONSOLA 
@@ -195,10 +201,10 @@ void RAVE_Iniciar();
 	#define Debug_MostrarUltimoError()				
 	#define Debug_UltimoError(NUM)					SetLastError(NUM);	
 #endif
-
+*/
 
 /* --- PRINTF_BYTE_TO_BINARY macro's --- */
-#define PRINTF_BINARY_PATTERN_INT8 "%c%c%c%c%c%c%c%c"
+/*#define PRINTF_BINARY_PATTERN_INT8 "%c%c%c%c%c%c%c%c"
 #define PRINTF_BYTE_TO_BINARY_INT8(i)   (((i) & 0x80ll) ? '1' : '0'), \
 										(((i) & 0x40ll) ? '1' : '0'), \
 										(((i) & 0x20ll) ? '1' : '0'), \
@@ -213,5 +219,5 @@ void RAVE_Iniciar();
 #define PRINTF_BINARY_PATTERN_INT32			PRINTF_BINARY_PATTERN_INT16             PRINTF_BINARY_PATTERN_INT16
 #define PRINTF_BYTE_TO_BINARY_INT32(i)		PRINTF_BYTE_TO_BINARY_INT16((i) >> 16), PRINTF_BYTE_TO_BINARY_INT16(i)
 #define PRINTF_BINARY_PATTERN_INT64			PRINTF_BINARY_PATTERN_INT32             PRINTF_BINARY_PATTERN_INT32
-#define PRINTF_BYTE_TO_BINARY_INT64(i)		PRINTF_BYTE_TO_BINARY_INT32((i) >> 32), PRINTF_BYTE_TO_BINARY_INT32(i)
+#define PRINTF_BYTE_TO_BINARY_INT64(i)		PRINTF_BYTE_TO_BINARY_INT32((i) >> 32), PRINTF_BYTE_TO_BINARY_INT32(i)*/
 /* --- end macros --- */
