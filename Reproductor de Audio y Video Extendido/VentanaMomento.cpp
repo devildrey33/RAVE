@@ -257,6 +257,7 @@ void VentanaMomento::GuardarMomento(void) {
 	// Si es un nuevo momento
 	if (PosMomento == -1) {
 		if (App.BD.AgregarMomento(&Medio, Txt_Nombre.Texto(), TiempoInicio, TiempoFinal, Check_Excluir.Marcado())) {
+			Medio.Momentos[PosMomento]->Nombre = Txt_Nombre.Texto();
 			App.MostrarToolTipMomentos(L"Momento creado");
 		}
 		else {
@@ -266,6 +267,7 @@ void VentanaMomento::GuardarMomento(void) {
 	// Si es un momento a editar
 	else {
 		if (App.BD.ModificarMomento(&Medio, Medio.Momentos[PosMomento]->Id, Txt_Nombre.Texto(), TiempoInicio, TiempoFinal, Check_Excluir.Marcado())) {
+			Medio.Momentos[PosMomento]->Nombre = Txt_Nombre.Texto();
 			App.MostrarToolTipMomentos(L"Momento actualizado");
 		}
 		else {

@@ -57,12 +57,13 @@ class RAVE : public DApp {
 //										T Rnd = static_cast<T>(rand()) / static_cast<T>(RAND_MAX);
 //										return Rnd * (Max - Min) + Min;
 									}
+
 									// Obtiene la linea de comando y determina que hay que hacer
 	const LineaComando				ObtenerLineaComando(std::vector<std::wstring> &Paths);
 
-	void							Eventos_Mirar(void);
+//	void							Eventos_Mirar(void);
 
-	const TCHAR 				   *ObtenerSO(void);
+//	const TCHAR 				   *ObtenerSO(void);
 
 									// Evento Tecla soltada general de todas las ventanas excepto el video del VLC
 	void                            Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado);

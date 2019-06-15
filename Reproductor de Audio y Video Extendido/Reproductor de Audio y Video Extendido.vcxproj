@@ -72,13 +72,13 @@
     <IncludePath>..\vlc-3.0.7\Include;..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
-    <TargetName>RAVE</TargetName>
+    <TargetName>Reproductor de Audio y Video Extendido</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
-    <TargetName>RAVE</TargetName>
+    <TargetName>Reproductor de Audio y Video Extendido</TargetName>
     <IncludePath>..\vlc-3.0.7\Include;..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -86,13 +86,13 @@
     <IncludePath>..\vlc-3.0.7\Include;..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
-    <TargetName>RAVE</TargetName>
+    <TargetName>Reproductor de Audio y Video Extendido</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
-    <TargetName>RAVE</TargetName>
+    <TargetName>Reproductor de Audio y Video Extendido</TargetName>
     <IncludePath>..\vlc-3.0.7\Include;..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
     <EmbedManifest>true</EmbedManifest>
   </PropertyGroup>

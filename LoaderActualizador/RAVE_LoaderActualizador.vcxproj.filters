@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Archivos de recursos">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="App">
+      <UniqueIdentifier>{db000b86-2e8f-4e09-8f4b-2a6509a0ae5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="xXx_MAIN_xXx">
+      <UniqueIdentifier>{cece711e-b7b4-451a-9028-5e2cb3b482a9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RAVE_LA.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>xXx_MAIN_xXx</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>xXx_MAIN_xXx</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>xXx_MAIN_xXx</Filter>
+    </ClInclude>
+    <ClInclude Include="RAVE_LoaderActualizador.h">
+      <Filter>xXx_MAIN_xXx</Filter>
+    </ClInclude>
+    <ClInclude Include="RAVE_LA_Configuracion.h">
+      <Filter>xXx_MAIN_xXx</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="RAVE_LA.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="RAVE_LoaderActualizador.cpp">
+      <Filter>xXx_MAIN_xXx</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="RAVE_LoaderActualizador.rc">
+      <Filter>Archivos de recursos</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="RAVE_LoaderActualizador.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

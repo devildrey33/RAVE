@@ -701,7 +701,7 @@ const BOOL RaveBD::_ModificarTablas(void) {
 
 
 
-const BOOL RaveBD::AgregarMomento(BDMedio* nMedio, std::wstring& nNombre, const UINT64 nTiempoInicial, const UINT64 nTiempoFinal, const BOOL EvitarReproduccion) {
+const BOOL RaveBD::AgregarMomento(BDMedio* nMedio, std::wstring &nNombre, const UINT64 nTiempoInicial, const UINT64 nTiempoFinal, const BOOL EvitarReproduccion) {
 	std::wstring Q = L"INSERT INTO Momentos (Nombre, TiempoInicio, TiempoFin, Excluir, IdMedio) VALUES(\"" +
 											 nNombre								+ L"\"," + 
 											 std::to_wstring(nTiempoInicial)		+ L"," + 
@@ -720,7 +720,7 @@ const BOOL RaveBD::AgregarMomento(BDMedio* nMedio, std::wstring& nNombre, const 
 }
 
 
-const BOOL RaveBD::ModificarMomento(BDMedio* nMedio, const LONG_PTR mID, std::wstring& nNombre, const UINT64 nTiempoInicial, const UINT64 nTiempoFinal, const BOOL EvitarReproduccion) {
+const BOOL RaveBD::ModificarMomento(BDMedio* nMedio, const LONG_PTR mID, std::wstring &nNombre, const UINT64 nTiempoInicial, const UINT64 nTiempoFinal, const BOOL EvitarReproduccion) {
 	std::wstring Q = L"UPDATE Momentos SET Nombre=\"" + nNombre + L"\", TiempoInicio=" + std::to_wstring(nTiempoInicial) + L", TiempoFin=" + std::to_wstring(nTiempoFinal) + L", Excluir=" + std::to_wstring(EvitarReproduccion) + L" WHERE Id=" + std::to_wstring(mID);
 	int SqlRet = Consulta(Q);
 	if (SqlRet == SQLITE_DONE) {
