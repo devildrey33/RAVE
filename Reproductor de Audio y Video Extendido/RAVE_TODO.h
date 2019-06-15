@@ -358,6 +358,13 @@
 
 		-  Buscar actualitzacións (algo simple que em doni la web per descarregar l'actualització)
 			- Sistema d'actualitzacións en el directori ProgramData per no requerir permisos d'administrador
+				V  PAS1 Separar DWL del reproductor en un nou projecte, aixi la puc utilitzar en mes d'un projecte
+				-  PAS2 veure si es necesari tenir algo al archivos de programa, o puc instalar directament a program data
+				-  PAS3 Crear un nou executable que fara de launcher i d'actualitzador
+					- Necesitara poguer descomprimir, i per que no.. comprimir
+					- Necesitara una llista d'arxius del reproductor
+					- Necesitara fer checks md5 de cada arxiu per determinar si está actualitzat
+				
 
 	RAVE 0.7
 		-  Les notes menors que 2 s'han de mostrar amb una estrella gris

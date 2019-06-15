@@ -70,28 +70,28 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>..\vlc-3.0.7\Include;..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
-    <OutDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
     <TargetName>RAVE</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
     <TargetName>RAVE</TargetName>
     <IncludePath>..\vlc-3.0.7\Include;..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>..\vlc-3.0.7\Include;..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
-    <OutDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
     <TargetName>RAVE</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
     <TargetName>RAVE</TargetName>
     <IncludePath>..\vlc-3.0.7\Include;..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
     <EmbedManifest>true</EmbedManifest>

@@ -12,10 +12,10 @@
 
 #define MUTEX_RAVE L"Mutex_RAVE"
 
-void RAVE_Iniciar(void) {
+/*void RAVE_Iniciar(void) {
 	// Inicio la aplicación
 	_Aplicacion = new RAVE;
-}
+}*/
 
 
 //RAVE *_APLICACION = NULL;

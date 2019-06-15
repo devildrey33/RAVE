@@ -164,9 +164,11 @@ static void PintarTexto(HDC DC, std::wstring &sTexto, const int PosX, const int 
 }
 
 
-void RAVE_Iniciar();
+//void RAVE_Iniciar();
 
 #define App static_cast<RAVE &>(*_Aplicacion)
+
+
 
 /*
 extern RAVE *_APLICACION;

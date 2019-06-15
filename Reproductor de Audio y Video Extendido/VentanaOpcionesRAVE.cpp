@@ -400,6 +400,12 @@ void VentanaOpcionesRAVE::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMou
 	}
 }
 
+void VentanaOpcionesRAVE::Evento_DlgDirectorios_CambioTamPos(HWND hWndDlg) {
+	RECT RCWMS2;
+	GetWindowRect(hWndDlg, &RCWMS2);
+	App.BD.Opciones_GuardarPosTamDlgDirectorios(RCWMS2);
+}
+
 
 void VentanaOpcionesRAVE::AgregarRaiz(void) {
 	DDlgDirectorios          DialogoDirectorios;
@@ -684,6 +690,7 @@ void VentanaOpcionesRAVE::Evento_ListaDesplegable_Cambio(INT_PTR nID) {
 }
 
 
+
 LRESULT CALLBACK VentanaOpcionesRAVE::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
 		case WM_CLOSE :
@@ -701,7 +708,7 @@ LRESULT CALLBACK VentanaOpcionesRAVE::GestorMensajes(UINT uMsg, WPARAM wParam, L
 		case WM_MOVING :
 			App.OcultarToolTipOpciones();
 			return 0;
-			// Barra de desplazamiento (barra de tiempo y volumen)
+		// Barra de desplazamiento (barra de tiempo y volumen)
 		case DWL_BARRAEX_CAMBIANDO:	// Se está modificando (mouse down)
 			Evento_BarraEx_Cambiando(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
@@ -714,7 +721,10 @@ LRESULT CALLBACK VentanaOpcionesRAVE::GestorMensajes(UINT uMsg, WPARAM wParam, L
 		case DWL_LISTAEX_MOUSESOLTADO:
 			Evento_ListaEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
-
+		// El DlgDirectorios ha cambiado de tamaño o posición
+		case DWL_DLGDIRECTORIOS_POSTAM_CAMBIADO :
+			Evento_DlgDirectorios_CambioTamPos(WPARAM_TO_HWND(wParam));
+			return 0;
 	}
 	return DVentana::GestorMensajes(uMsg, wParam, lParam);
 }

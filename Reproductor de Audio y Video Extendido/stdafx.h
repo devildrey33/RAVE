@@ -37,17 +37,17 @@
 #ifdef _DEBUG
 	#if _WIN32 || _WIN64
 		#if _WIN64
-			#pragma comment(lib, "..\\Build\\x64\\Debug\\DWL3.lib")
+			#pragma comment(lib, "..\\Build\\DWL\\x64\\Debug\\DWL3.lib")
 		#else
-			#pragma comment(lib, "..\\Build\\x86\\Debug\\DWL3.lib")
+			#pragma comment(lib, "..\\Build\\DWL\\x86\\Debug\\DWL3.lib")
 		#endif
 	#endif
 #else
 	#if _WIN32 || _WIN64
 		#if _WIN64
-			#pragma comment(lib, "..\\Build\\x64\\Release\\DWL3.lib")
+			#pragma comment(lib, "..\\Build\\DWL\\x64\\Release\\DWL3.lib")
 		#else
-			#pragma comment(lib, "..\\Build\\x86\\Release\\DWL3.lib")
+			#pragma comment(lib, "..\\Build\\DWL\\x86\\Release\\DWL3.lib")
 		#endif
 	#endif
 #endif

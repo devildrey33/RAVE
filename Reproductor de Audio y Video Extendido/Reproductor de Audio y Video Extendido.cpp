@@ -71,7 +71,9 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstanc
 	MSG		msg;
 	HACCEL	hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO));	
 
-	RAVE_Iniciar();
+	// Creo la clase aplicacion para la DWL
+	_Aplicacion = new RAVE;
+
 	if (App.Iniciar(nCmdShow) == TRUE) {
 		// Bucle principal de mensajes:
 		while (GetMessage(&msg, NULL, 0, 0)) {
@@ -82,6 +84,8 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstanc
 		}
 	}
 	App.Terminar();
+	// Elimino la clase aplicacion de la DWL
+	delete _Aplicacion;
 
 	return 0;
 }

@@ -29,6 +29,7 @@ class VentanaOpcionesRAVE : public DWL::DVentana {
 	void					Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse);
 	void					Evento_ListaDesplegable_Cambio(INT_PTR nID);
 	void					Evento_ListaEx_Mouse_Click(DWL::DEventoMouse& DatosMouse);
+	void                    Evento_DlgDirectorios_CambioTamPos(HWND hWndDlg);
 
 	void					ActualizarListaInicio(void);
 
