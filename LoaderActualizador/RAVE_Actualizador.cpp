@@ -1,15 +1,15 @@
-#include "RAVE_LA.h"
+#include "RAVE_Actualizador.h"
 #include <DDirectoriosWindows.h>
 
 #define MUTEX_RAVE_LA L"Mutex_RAVE_LA"
 
-void RAVE_LA::Iniciar(void) {
+void RAVE_Actualizador::Iniciar(void) {
 	// Obtengo/Creo un mutex para evitar que 2 o mas reproductores se inicien a la vez.
 	// De esta forma cuando se inicia el reproductor, este espera a que el anterior termine completamente de cargarse.
-	MutexLA = OpenMutex(NULL, FALSE, MUTEX_RAVE_LA);
-	if (MutexLA == NULL) {
+	MutexActualizacion = OpenMutex(NULL, FALSE, MUTEX_RAVE_LA);
+	if (MutexActualizacion == NULL) {
 		// Creo un mutex para ejecutar ordenadamente otras instancias de este mismo reproductor
-		MutexLA = CreateMutex(NULL, FALSE, MUTEX_RAVE_LA);
+		MutexActualizacion = CreateMutex(NULL, FALSE, MUTEX_RAVE_LA);
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ void RAVE_LA::Iniciar(void) {
 	// Obtengo la línea de comandos para poder pasarla al reproductor
 	int		     TotalArgs = 0;
 	TCHAR      **Args      = CommandLineToArgvW(GetCommandLine(), &TotalArgs);
-	std::wstring Params;
+	std::wstring Params;// = L"-d33 ";
 	for (int i = 1; i < TotalArgs; i++) {
 		Params += Args[i];
 		Params += L" ";

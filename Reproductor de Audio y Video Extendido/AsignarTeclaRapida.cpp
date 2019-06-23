@@ -18,7 +18,7 @@ void AsignarTeclaRapida::Crear(DWL::DhWnd *nPadre, const int cX, const int cY, c
 	_TeclaRapida = nTecla;
 	_Texto = nTecla->String();
 	_Boton.CrearBotonEx(this, L"Editar", RC.right - ANCHO_BOTON, 0, ANCHO_BOTON, RC.bottom, ID_BOTON_EDITAR);
-	_Boton.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str(), TRUE);
+	_Boton.Fuente.CrearFuente(18, _Boton.Skin.FuenteNombre.c_str(), TRUE);
 	_Fuente.CrearFuente(FUENTE_NORMAL, FUENTE_NOMBRE);
 }
 

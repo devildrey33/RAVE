@@ -28,7 +28,7 @@ HWND VentanaErrorCritico::Crear(void) {
 
 	TextoTitulo.CrearEtiquetaEx(this, L"Error crítico!", 10, 10, RC.right - 20, 20, ID_VEC_TEXTOERROR, DEtiquetaEx_Alineacion_Centrado, WS_CHILD);
 	TextoTitulo.Fuente.CrearFuente(21, L"tahoma", TRUE);
-	TextoTitulo.ColorTexto = COLOR_BOTON_RESALTADO;
+	TextoTitulo.Skin.Texto = COLOR_BOTON_RESALTADO;
 	TextoTitulo.Visible(TRUE);
 
 	std::wstring TE =	L"Se ha detectado un error, y el Reproductor de Audio y Video\nExtendido debe cerrarse.\n\n"

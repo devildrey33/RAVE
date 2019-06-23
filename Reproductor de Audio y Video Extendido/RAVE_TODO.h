@@ -359,6 +359,11 @@
 		-  Buscar actualitzacións (algo simple que em doni la web per descarregar l'actualització)
 			- Sistema d'actualitzacións en el directori ProgramData per no requerir permisos d'administrador
 				V  PAS1 Separar DWL del reproductor en un nou projecte, aixi la puc utilitzar en mes d'un projecte
+
+				-  PROBLEMA, si tinc el icona del loader a la barra de tasques, al executar el exe de ProgramData es mostra la APP amb un icona diferent a la barra,,,,
+					- Llavors s'ha d'executar el exe normal, el nomal ha de cridar al loader, i si el loader ha d'actualitzar tancara el exe normal i despres l'obrira (vaya pollo...)
+				-  PROBLEMA2, el chrome te tots els seus arxius a Archivos de Programa i no a ProgramData...
+
 				-  PAS2 veure si es necesari tenir algo al archivos de programa, o puc instalar directament a program data
 				-  PAS3 Crear un nou executable que fara de launcher i d'actualitzador
 					- Necesitara poguer descomprimir, i per que no.. comprimir

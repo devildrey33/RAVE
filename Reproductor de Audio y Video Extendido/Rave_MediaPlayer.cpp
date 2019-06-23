@@ -41,6 +41,7 @@ const BOOL Rave_MediaPlayer::Iniciar(void) {
 	// Inicio la VLC
 	// On Microsoft Windows, setting the default DLL directories to SYSTEM32 exclusively is strongly recommended for security reasons:
 	SetDefaultDllDirectories(LOAD_LIBRARY_SEARCH_SYSTEM32);
+
 	// Ventana de precarga
 	VentanaPrecarga Precarga;
 	Debug_Escribir(L"Rave_MediaPlayer::Iniciar : Cargando LibVLC...\n");

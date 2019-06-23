@@ -227,12 +227,12 @@ void ToolTipInfo_2Columnas::Pintar(HDC hDC) {
 	HFONT	VFont		= static_cast<HFONT>(SelectObject(DC, _FuenteTitulo()));
 
 	// Pinto el fondo
-	HBRUSH BrochaFondo = CreateSolidBrush(DWL::DToolTipEx_Skin::Fondo);
+	HBRUSH BrochaFondo = CreateSolidBrush(Skin.Fondo);
 	FillRect(DC, &RC, BrochaFondo);
 	DeleteObject(BrochaFondo);
 
 	// Pinto el borde
-	HBRUSH BrochaBorde = CreateSolidBrush(DWL::DToolTipEx_Skin::Borde);
+	HBRUSH BrochaBorde = CreateSolidBrush(Skin.Borde);
 	FrameRect(DC, &RC, BrochaBorde);
 	DeleteObject(BrochaBorde);
 
@@ -289,7 +289,7 @@ void ToolTipInfo_2Columnas::_PintarNota(HDC hDC, const int cX, const int cY, con
 
 	RECT RC = { 0, 0, static_cast<int>(Nota * 16.0f), 16 };
 	// Pinto el fondo
-	HBRUSH BrochaFondo = CreateSolidBrush(DWL::DToolTipEx_Skin::Fondo);
+	HBRUSH BrochaFondo = CreateSolidBrush(Skin.Fondo);
 	FillRect(DC, &RC, BrochaFondo);
 	DeleteObject(BrochaFondo);
 
@@ -543,13 +543,13 @@ void ToolTipInfo_Texto::Pintar(HDC DC) {
 	_PintarFondo(Buffer, &RC);
 
 	// Pinto el borde
-	HBRUSH BrochaBorde = CreateSolidBrush(DWL::DToolTipEx_Skin::Borde);
+	HBRUSH BrochaBorde = CreateSolidBrush(Skin.Borde);
 	FrameRect(Buffer, &RC, BrochaBorde);
 	DeleteObject(BrochaBorde);
 
 	// Pinto el texto
 	SetBkMode(Buffer, TRANSPARENT);
-	SetTextColor(Buffer, DWL::DToolTipEx_Skin::Texto);
+	SetTextColor(Buffer, Skin.Texto);
 	HFONT vFuente = static_cast<HFONT>(SelectObject(Buffer, _Fuente()));
 	DrawText(Buffer, _Str.c_str(), static_cast<int>(_Str.size()), &RCT, DT_CENTER);
 	SelectObject(Buffer, vFuente);
@@ -564,7 +564,7 @@ void ToolTipInfo_Texto::Pintar(HDC DC) {
 }
 
 void ToolTipInfo_Texto::_PintarFondo(HDC Buffer, RECT *RC) {
-	HBRUSH BrochaFondo = CreateSolidBrush(DWL::DToolTipEx_Skin::Fondo);
+	HBRUSH BrochaFondo = CreateSolidBrush(Skin.Fondo);
 	FillRect(Buffer, RC, BrochaFondo);
 	DeleteObject(BrochaFondo);
 }
@@ -586,7 +586,7 @@ void ToolTipInfo_Texto::_PintarFondo(HDC Buffer, RECT *RC) {
 							  |_|																					  */
 
 void ToolTipInfo_TextoError::_PintarFondo(HDC Buffer, RECT *RC) {
-	HBRUSH BrochaFondo = CreateSolidBrush(DWL::DToolTipEx_Skin::FondoError);
+	HBRUSH BrochaFondo = CreateSolidBrush(Skin.FondoError);
 	FillRect(Buffer, RC, BrochaFondo);
 	DeleteObject(BrochaFondo);
 }

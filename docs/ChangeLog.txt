@@ -1,5 +1,12 @@
 # Log de cambios
 
+### Versión 0.525
+
+* Ahora se puede cambiar el skin del arbol y la lista dinamicamente, esto me permite mostrar el arbol y la lista con una configuración oscura en el modo pantalla completa.
+
+* Creado modo oscuro para la lista, el arbol y la barra de scroll (modo pantalla completa).
+
+
 ### Versión 0.524
 
 * Botón de las opciones fijado al borde inferior del reproductor.

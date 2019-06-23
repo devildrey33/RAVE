@@ -13,9 +13,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RAVE_LA.h">
-      <Filter>App</Filter>
-    </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>xXx_MAIN_xXx</Filter>
     </ClInclude>
@@ -31,13 +28,16 @@
     <ClInclude Include="RAVE_LA_Configuracion.h">
       <Filter>xXx_MAIN_xXx</Filter>
     </ClInclude>
+    <ClInclude Include="RAVE_Actualizador.h">
+      <Filter>App</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RAVE_LA.cpp">
-      <Filter>App</Filter>
-    </ClCompile>
     <ClCompile Include="RAVE_LoaderActualizador.cpp">
       <Filter>xXx_MAIN_xXx</Filter>
+    </ClCompile>
+    <ClCompile Include="RAVE_Actualizador.cpp">
+      <Filter>App</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

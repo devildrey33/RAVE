@@ -7,6 +7,7 @@
 #include "RaveBD.h"
 #include "DFuente.h"
 #include "resource.h"
+#include "DTooltipEx.h"
 
 class ToolTipsInfo;
 
@@ -39,6 +40,8 @@ class ToolTipInfo : public DWL::DVentana {
 	virtual inline ToolTipInfo_Tipo	Tipo(void)																					{ return ToolTipInfo_Tipo_SinTipo;	};
 	int                             X;
 	int                             Y;
+	
+	DWL::DToolTipEx_Skin            Skin;
   protected:
 	void		                   _Evento_Pintar(void);
     void                           _Evento_Temporizador(INT_PTR tID);

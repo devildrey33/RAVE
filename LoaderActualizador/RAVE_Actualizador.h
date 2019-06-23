@@ -3,11 +3,11 @@
 #include <DApp.h>
 #include "RAVE_LA_Configuracion.h"
 
-class RAVE_LA : public DWL::DApp {
+class RAVE_Actualizador : public DWL::DApp {
   public:
-			RAVE_LA(void) : MutexLA(NULL) { }
+			RAVE_Actualizador(void) : MutexActualizacion(NULL) { }
 	void	Iniciar(void);
-	HANDLE	MutexLA;
+	HANDLE	MutexActualizacion;
 };
 
 

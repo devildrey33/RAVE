@@ -128,10 +128,10 @@ void VentanaOpcionesRAVE::Crear(void) {
 	int x = ((RC.right - 250) / 2) - 10;
 	// Botón agregar raíz
 	BotonAgregarRaiz.CrearBotonEx(&MarcoBaseDeDatos, L"Agregar Raíz", x, 230, 120, 24, ID_BOTON_AGREGARRAIZ);
-	BotonAgregarRaiz.Fuente.CrearFuente(21, DBotonEx_Skin::FuenteNombre.c_str());
+	BotonAgregarRaiz.Fuente.CrearFuente(21, BotonAgregarRaiz.Skin.FuenteNombre.c_str());
 	// Botón eliminar raíz
 	BotonEliminarRaiz.CrearBotonEx(&MarcoBaseDeDatos, L"Eliminar Raiz", x + 130, 230, 120, 24, ID_BOTON_ELIMINARRAIZ);
-	BotonEliminarRaiz.Fuente.CrearFuente(21, DBotonEx_Skin::FuenteNombre.c_str());
+	BotonEliminarRaiz.Fuente.CrearFuente(21, BotonEliminarRaiz.Skin.FuenteNombre.c_str());
 	BotonEliminarRaiz.Activado(FALSE);
 
 	// Separador

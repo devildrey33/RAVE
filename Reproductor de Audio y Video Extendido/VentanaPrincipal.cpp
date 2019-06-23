@@ -19,6 +19,8 @@
 
 /* TODO : Moure els butons de l'esquerra a la dreta, y fer que la llista / bd / opcions / video quedin ajustats a l'esquerra per evitar els flickerings dels scrolls de la llista i l'arbre */
 HWND VentanaPrincipal::Crear(int nCmdShow) {
+	CrearSkins();
+
 	// Detección de monitores
 	EnumDisplayMonitors(NULL, NULL, VentanaPrincipal::EnumerarPantallas, NULL);
 	// Si el monitor donde se guardo la ultima posición no está disponible busco una nueva posición
@@ -60,10 +62,10 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	LabelRatio.CrearEtiquetaEx(&MarcoSI, L"x1.0", 160, 5, 40, 30, ID_LABEL_RATIO, DEtiquetaEx_Alineacion_Centrado);
 
 	BotonMezclar.CrearBotonEx(&MarcoSI, L"Mezclar", 210, 0, 70, 30, ID_BOTON_MEZCLAR);
-	BotonMezclar.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str(), TRUE);
+	BotonMezclar.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
 	if (App.BD.Opciones_Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
 	BotonRepetir.CrearBotonEx(&MarcoSI, L"Repetir", 290, 0, 70, 30, ID_BOTON_REPETIR);
-	BotonRepetir.Fuente.CrearFuente(18, DBotonEx_Skin::FuenteNombre.c_str(), TRUE);
+	BotonRepetir.Fuente.CrearFuente(18, BotonRepetir.Skin.FuenteNombre.c_str(), TRUE);
 	if (App.BD.Opciones_Repeat() > 0) BotonRepetir.Marcado(TRUE);
 	//////////////////////////////////////////
 
@@ -114,6 +116,69 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 	return rhWnd;
 }
+
+void VentanaPrincipal::CrearSkins(void) {
+	// Colores para el fondo (OJO los colores del fondo y del borde del control están en DBarraSroll_Skin)
+	ListaSkinOscuro.FondoItemNormal					= COLOR_LISTA_OSCURA_FONDO;
+	ListaSkinOscuro.FondoItemResaltado				= COLOR_LISTA_OSCURA_FONDO_RESALTADO;
+	ListaSkinOscuro.FondoItemSeleccionado			= COLOR_LISTA_OSCURA_SELECCION;
+	ListaSkinOscuro.FondoItemSeleccionadoResaltado	= COLOR_LISTA_OSCURA_SELECCION_RESALTADO;
+	ListaSkinOscuro.FondoItemPresionado				= COLOR_LISTA_OSCURA_SELECCION_PRESIONADO;
+	// Color para el borde del item marcado
+	ListaSkinOscuro.BordeItemMarcado				= COLOR_LISTA_OSCURA_MARCA_ITEM;
+	// Colores para el texto
+	ListaSkinOscuro.TextoItemNormal					= COLOR_LISTA_OSCURA_TEXTO;
+	ListaSkinOscuro.TextoItemResaltado				= COLOR_LISTA_OSCURA_TEXTO_RESALTADO;
+	ListaSkinOscuro.TextoItemSombra					= COLOR_LISTA_OSCURA_TEXTO_SOMBRA;
+	ListaSkinOscuro.TextoItemSeleccionado			= COLOR_LISTA_OSCURA_SELECCION_TEXTO;
+	ListaSkinOscuro.TextoItemSeleccionadoSombra		= COLOR_LISTA_OSCURA_SELECCION_TEXTO_SOMBRA;
+	ListaSkinOscuro.TextoItemSeleccionadoResaltado	= COLOR_LISTA_OSCURA_SELECCION_TEXTO_RESALTADO;
+	ListaSkinOscuro.TextoItemPresionado				= COLOR_LISTA_OSCURA_SELECCION_TEXTO_PRESIONADO;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Colores para el fondo de los nodos
+	ArbolSkinOscuro.FondoNodoResaltado					= COLOR_ARBOL_OSCURO_FONDO_RESALTADO;
+	ArbolSkinOscuro.FondoNodoSeleccionado				= COLOR_ARBOL_OSCURO_SELECCION;
+	ArbolSkinOscuro.FondoNodoSeleccionadoResaltado		= COLOR_ARBOL_OSCURO_SELECCION_RESALTADO;
+	ArbolSkinOscuro.FondoNodoSubSeleccionado			= COLOR_ARBOL_OSCURO_SUBSELECCION;
+	ArbolSkinOscuro.FondoNodoSubSeleccionadoResaltado	= COLOR_ARBOL_OSCURO_SUBSELECCION_RESALTADO;
+	ArbolSkinOscuro.FondoNodoPresionado					= COLOR_ARBOL_OSCURO_SELECCION_PRESIONADO;
+	// Marca de selección
+	ArbolSkinOscuro.BordeNodoMarcado					= COLOR_ARBOL_OSCURO_NODO_MARCA;
+	// colores para el Expansor
+	ArbolSkinOscuro.ExpansorNormal						= COLOR_ARBOL_OSCURO_EXPANSOR_NORMAL;
+	ArbolSkinOscuro.ExpansorResaltado					= COLOR_ARBOL_OSCURO_EXPANSOR_RESALTADO;
+	ArbolSkinOscuro.ExpansorPresionado					= COLOR_ARBOL_OSCURO_EXPANSOR_PRESIONADO;
+	// colores para el Texto
+	ArbolSkinOscuro.TextoNodoNormal						= COLOR_ARBOL_OSCURO_TEXTO;
+	ArbolSkinOscuro.TextoNodoResaltado					= COLOR_ARBOL_OSCURO_TEXTO_RESALTADO;
+	ArbolSkinOscuro.TextoNodoDesactivado				= COLOR_ARBOL_OSCURO_TEXTO_DESACTIVADO;
+	ArbolSkinOscuro.TextoNodoSombra						= COLOR_ARBOL_OSCURO_TEXTO_SOMBRA;
+	ArbolSkinOscuro.TextoNodoSeleccionado				= COLOR_ARBOL_OSCURO_SELECCION_TEXTO;
+	ArbolSkinOscuro.TextoNodoSeleccionadoSombra			= COLOR_ARBOL_OSCURO_SELECCION_TEXTO_SOMBRA;
+	ArbolSkinOscuro.TextoNodoSeleccionadoResaltado		= COLOR_ARBOL_OSCURO_SELECCION_TEXTO_RESALTADO;
+	ArbolSkinOscuro.TextoNodoSubSeleccionado			= COLOR_ARBOL_OSCURO_SUBSELECCION_TEXTO;
+	ArbolSkinOscuro.TextoNodoSubSeleccionadoSombra		= COLOR_ARBOL_OSCURO_SUBSELECCION_TEXTO_SOMBRA;
+	ArbolSkinOscuro.TextoNodoSubSeleccionadoResaltado	= COLOR_ARBOL_OSCURO_SUBSELECCION_TEXTO_RESALTADO;
+	ArbolSkinOscuro.TextoNodoPresionado					= COLOR_ARBOL_OSCURO_SELECCION_TEXTO_RESALTADO;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Colores para le fondo del scroll
+	ScrollSkinOscuro.FondoScrollNormal		= COLOR_SCROLL_OSCURO_FONDO;
+	ScrollSkinOscuro.FondoScrollResaltado	= COLOR_SCROLL_OSCURO_FONDO_RESALTADO;
+	ScrollSkinOscuro.FondoScrollPresionado	= COLOR_SCROLL_OSCURO_FONDO_PRESIONADO;
+	ScrollSkinOscuro.BarraScrollNormal		= COLOR_SCROLL_OSCURO_BARRA;
+	ScrollSkinOscuro.BarraScrollResaltado	= COLOR_SCROLL_OSCURO_BARRA_RESALTADO;
+	ScrollSkinOscuro.BarraScrollPresionado	= COLOR_SCROLL_OSCURO_BARRA_PRESIONADO;
+	// Colores del orde del control (donde no hay nodos ni items)
+	ScrollSkinOscuro.BordeNormal			= COLOR_SCROLL_OSCURO_BORDE;
+	ScrollSkinOscuro.BordeResaltado			= COLOR_SCROLL_OSCURO_BORDE_RESALTADO;
+	// Colores del fondo del control (donde no hay nodos ni items)
+	ScrollSkinOscuro.FondoNormal			= COLOR_SCROLL_OSCURO_CONTROL_FONDO;
+	ScrollSkinOscuro.FondoResaltado			= COLOR_SCROLL_OSCURO_CONTROL_FONDO_RESALTADO;
+
+}
+
 
 
 void VentanaPrincipal::CrearBotonesThumb(void) {
@@ -959,6 +1024,14 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 		SetParent(Lista.hWnd(), NULL);
 		SetWindowLongPtr(Lista.hWnd(), GWL_STYLE, Estilos | WS_POPUP);
 		SetWindowLongPtr(Lista.hWnd(), GWL_EXSTYLE, WS_EX_TOOLWINDOW);
+
+
+		Lista.SkinScroll = ScrollSkinOscuro;
+		Lista.Skin       = ListaSkinOscuro;
+		Lista.ActualizarSkin();
+		Arbol.SkinScroll = ScrollSkinOscuro;
+		Arbol.Skin       = ArbolSkinOscuro;
+		Arbol.ActualizarSkin();
 		//		ShowWindow(Lista.hWnd(), SW_SHOW);
 
 		//		Video.AsignarFoco();
@@ -1025,6 +1098,14 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 		MarcoII.Visible(TRUE);
 		// Elimino la región de pintado en la barra de tareas
 		BOOL R = BarraTareas.Clip(&RC);
+
+		Lista.SkinScroll = ScrollSkinClaro;
+		Lista.Skin       = ListaSkinClaro;
+		Lista.ActualizarSkin();
+		Arbol.SkinScroll = ScrollSkinClaro;
+		Arbol.Skin       = ArbolSkinClaro;
+		Arbol.ActualizarSkin();
+
 //		AsignarFoco();
 	}
 

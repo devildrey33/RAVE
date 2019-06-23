@@ -24,7 +24,7 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>RAVELoaderActualizador</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Loader Actualizador</ProjectName>
+    <ProjectName>Actualizador</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -75,28 +75,28 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Build\LoaderActualizador\$(PlatformShortName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Build\LoaderActualizador\$(PlatformShortName)\$(Configuration)\</IntDir>
-    <TargetName>RAVE.exe</TargetName>
+    <TargetName>Actualizador</TargetName>
     <IncludePath>..\..\DWL3\DWL3;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Build\LoaderActualizador\$(PlatformShortName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Build\LoaderActualizador\$(PlatformShortName)\$(Configuration)\</IntDir>
-    <TargetName>RAVE.exe</TargetName>
+    <TargetName>Actualizador</TargetName>
     <IncludePath>..\..\DWL3\DWL3;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Build\LoaderActualizador\$(PlatformShortName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Build\LoaderActualizador\$(PlatformShortName)\$(Configuration)\</IntDir>
-    <TargetName>RAVE.exe</TargetName>
+    <TargetName>Actualizador</TargetName>
     <IncludePath>..\..\DWL3\DWL3;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Build\LoaderActualizador\$(PlatformShortName)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Build\LoaderActualizador\$(PlatformShortName)\$(Configuration)\</IntDir>
-    <TargetName>RAVE.exe</TargetName>
+    <TargetName>Actualizador</TargetName>
     <IncludePath>..\..\DWL3\DWL3;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -169,14 +169,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
-    <ClInclude Include="RAVE_LA.h" />
+    <ClInclude Include="RAVE_Actualizador.h" />
     <ClInclude Include="RAVE_LA_Configuracion.h" />
     <ClInclude Include="RAVE_LoaderActualizador.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RAVE_LA.cpp" />
+    <ClCompile Include="RAVE_Actualizador.cpp" />
     <ClCompile Include="RAVE_LoaderActualizador.cpp" />
   </ItemGroup>
   <ItemGroup>

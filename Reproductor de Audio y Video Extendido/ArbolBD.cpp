@@ -59,7 +59,7 @@ NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre,
 //	size_t			nPos = 0;
 	switch (nTipoNodo) {
 		case ArbolBD_TipoNodo_Raiz:			// Raíz añadida por el usuario
-			nFuente.CrearFuente(DArbolEx_Skin::FuenteTam + 2, DArbolEx_Skin::FuenteNombre.c_str(), TRUE, FALSE, FALSE);
+			nFuente.CrearFuente(Skin.FuenteTam + 2, Skin.FuenteNombre.c_str(), TRUE, FALSE, FALSE);
 			nIcono = RAVE_Iconos::RAVE_Icono_Raiz;
 			break;
 		case ArbolBD_TipoNodo_Directorio:	// Directorio dentro de una raíz

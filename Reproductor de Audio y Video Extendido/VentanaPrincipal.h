@@ -185,6 +185,16 @@ class VentanaPrincipal : public DWL::DVentana {
 	VerVideo					Video;
 	ArbolBD 					Arbol;
 
+	void                        CrearSkins(void);
+	DWL::DListaEx_Skin          ListaSkinClaro;
+	DWL::DListaEx_Skin          ListaSkinOscuro;
+
+	DWL::DArbolEx_Skin          ArbolSkinClaro;
+	DWL::DArbolEx_Skin          ArbolSkinOscuro;
+
+	DWL::DBarraScrollEx_Skin    ScrollSkinClaro;
+	DWL::DBarraScrollEx_Skin    ScrollSkinOscuro;
+
 	Estados_Medio				EstadoMedio;
 
 //	POINT						MousePos;
