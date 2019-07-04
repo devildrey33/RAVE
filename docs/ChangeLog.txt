@@ -6,6 +6,13 @@
 
 * Creado modo oscuro para la lista, el arbol y la barra de scroll (modo pantalla completa).
 
+* Los controles pantalla completa no se ocultarán si estas arrastrando el scroll de la lista o del arbol de la bd.
+
+* Ahora el shufle se guardará en las opciones al crear una lista aleatória que requiera el mezclado.
+
+* Ya no se muestra la pista 0 si el medio no tiene pista (tanto en la BD como en la Lista)
+
+
 
 ### Versión 0.524
 

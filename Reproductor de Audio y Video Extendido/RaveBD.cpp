@@ -471,6 +471,7 @@ const BOOL RaveBD::ActualizarMedioAnalisis(BDMedio *nMedio) {
 	return TRUE;
 }
 
+// Función que genera una lista aleatória por el tipo especificado, y la guarda en la variable OUT_Medios 
 const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const TipoListaAleatoria nTipo) {
 	// si no hay etiquetas solo se puede generar listas aleatorias de 50 medios sin ninguna base, si el tipo especificado no se puede gemerar. salgo
 	if (_Etiquetas.size() == 0 && nTipo != TLA_50Medios && nTipo != TLA_LoQueSea && nTipo != TLA_Nota) {
@@ -583,9 +584,13 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 
 	sqlite3_finalize(SqlQuery);
 
+	// Aplico el shufle
 	if		(Mezclar == 1)	App.VentanaRave.BotonMezclar.Marcado(TRUE);  // Forzar mezclar
 	else if (Mezclar == 2)	App.VentanaRave.BotonMezclar.Marcado(FALSE); // Forzar sin mezclar
+	App.ControlesPC.BotonMezclar.Marcado(App.VentanaRave.BotonMezclar.Marcado());
+	App.BD.Opciones_Shufle(App.VentanaRave.BotonMezclar.Marcado());
 
+	// Miro si hay algun error en la consulta
 	if (SqlRet == SQLITE_ERROR) {
 		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
 		return FALSE;

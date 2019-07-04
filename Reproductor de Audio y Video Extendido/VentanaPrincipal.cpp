@@ -17,7 +17,7 @@
 
 
 
-/* TODO : Moure els butons de l'esquerra a la dreta, y fer que la llista / bd / opcions / video quedin ajustats a l'esquerra per evitar els flickerings dels scrolls de la llista i l'arbre */
+// Función que crea la ventana principal del reproductor
 HWND VentanaPrincipal::Crear(int nCmdShow) {
 	CrearSkins();
 
@@ -34,11 +34,12 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	RECT RC; // , RW;
 	GetClientRect(hWnd(), &RC);
 
+	// Creo el arbol para cargar la base de datos
 	Arbol.CrearArbolEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_ARBOLBD, WS_CHILD | WS_VISIBLE);
 	SetWindowLongPtr(Arbol.hWnd(), GWL_EXSTYLE, WS_EX_TOOLWINDOW);
 //	Arbol.SubSeleccion = TRUE;
-//	Arbol.Visible(TRUE);
 
+	// Creo la lista de reproducción
 	Lista.CrearListaEx(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_LISTAMEDIOS, WS_CHILD);
 	SetWindowLongPtr(Lista.hWnd(), GWL_EXSTYLE, WS_EX_TOOLWINDOW);
 	Lista.MultiSeleccion = TRUE;
@@ -48,14 +49,13 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	Lista.AgregarColumna(DLISTAEX_COLUMNA_ANCHO_AUTO, DListaEx_Columna_Alineacion_Izquierda);	// Nombre
 	Lista.AgregarColumna(60, DListaEx_Columna_Alineacion_Derecha);								// Tiempo
 
-	
+	// Creo el control donde se visualizará el vídeo
 	Video.Crear(this, (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, ID_VERVIDEO);
 
 	// Marco superior izquierdo /////////////
 	MarcoSI.Crear(this, 10, 10, 380, 30, ID_MARCOSI);
 	BotonAtras.CrearBotonEx(&MarcoSI,	 IDI_PREV32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,   0, 0, 30, 30, ID_BOTON_ANTERIOR);
 	BotonPlay.CrearBotonEx(&MarcoSI,	 IDI_PLAY32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  40, 0, 30, 30, ID_BOTON_PLAY);
-//	BotonPausa.CrearBotonEx(&MarcoSI,	 IDI_PAUSA32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  80, 0, 30, 30, ID_BOTON_PAUSA);
 	BotonStop.CrearBotonEx(&MarcoSI,	 IDI_STOP32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  80, 0, 30, 30, ID_BOTON_STOP);
 	BotonAdelante.CrearBotonEx(&MarcoSI, IDI_NEXT32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 120, 0, 30, 30, ID_BOTON_SIGUIENTE);
 
@@ -69,17 +69,16 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	if (App.BD.Opciones_Repeat() > 0) BotonRepetir.Marcado(TRUE);
 	//////////////////////////////////////////
 
+	// Creo el slider para mostrar / modificar el tiempo del medio actual
 	SliderTiempo.CrearBarraDesplazamientoEx(this, 10, 50, RC.right - 20, 20, ID_SLIDER_TIEMPO);
-//	SliderTiempo.Crear(hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO, WS_CHILD | TBS_NOTICKS | WS_VISIBLE, 0, 30000, 0);
-//	SliderTiempo.TamPagina(30000 / 50);
 
 	// Marco superior derecho
 	MarcoSD.Crear(this, RC.right - 260, 16, 250, 24, ID_MARCOSD);
-
+	// Creo el slider para modificar el volumen
 	SliderVolumen.CrearBarraVolumen(&MarcoSD, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.BD.Opciones_Volumen()));
 	std::wstring TxtVolumen = std::to_wstring(App.BD.Opciones_Volumen()) + L"%";
 	LabelVolumen.CrearEtiquetaEx(&MarcoSD, TxtVolumen.c_str(), 215, 1, 40, 20, ID_LABEL_VOLUMEN, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
-
+	// Creo los labels para mostrar el tiempo actual y el total
 	LabelTiempoActual.CrearEtiquetaEx(&MarcoSD, L"00:00", 0, 1, 55, 20, ID_LABEL_TIEMPOACTUAL, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
 	LabelTiempoSeparador.CrearEtiquetaEx(&MarcoSD, L"/", 55, 1, 10, 20, ID_LABEL_TIEMPOSEPARADOR, DEtiquetaEx_Alineacion_Centrado,  WS_CHILD | WS_VISIBLE);
 	LabelTiempoTotal.CrearEtiquetaEx(&MarcoSD, L"00:00", 65, 1, 55, 20, ID_LABEL_TIEMPOTOTAL, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
@@ -87,7 +86,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	// Marco inferior izquierdo /////////////
 	MarcoII.Crear(this, 10, 80, RAVE_BOTONES_LATERALES_ANCHO, 2000, ID_MARCOSI);
 	BotonBD.CrearBotonEx(&MarcoII, L"Base de datos", 0, 0, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_BD);
-	BotonBD.Marcado(TRUE);
+	BotonBD.Marcado(TRUE); // Por defecto siempre se muestra la base de datos al empezar
 	BotonLista.CrearBotonEx(&MarcoII, L"Lista de medios", 0, 35, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_LISTA);
 	BotonVideo.CrearBotonEx(&MarcoII, L"Ver video", 0, 70, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_VIDEO);
 	
@@ -102,14 +101,8 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	// Inicio la VLC justo antes de mostrar la ventana y de activar el thread para actualizar el arbol
 	App.MP.Iniciar();
 
-
 	// Muestro la ventana principal
 	ShowWindow(hWnd(), nCmdShow);
-
-	// Timer que comprueba si se ha terminado la cancion
-//	SetTimer(hWnd(), TIMER_LISTA, 500, NULL);
-	// Timer para el slider del tiempo
-//	SetTimer(hWnd(), TIMER_TIEMPO, 250, NULL);
 
 	// Habilito el drag & drop para esta ventana
 	DragAcceptFiles(hWnd(), TRUE);	
@@ -119,21 +112,21 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 void VentanaPrincipal::CrearSkins(void) {
 	// Colores para el fondo (OJO los colores del fondo y del borde del control están en DBarraSroll_Skin)
-	ListaSkinOscuro.FondoItemNormal					= COLOR_LISTA_OSCURA_FONDO;
-	ListaSkinOscuro.FondoItemResaltado				= COLOR_LISTA_OSCURA_FONDO_RESALTADO;
-	ListaSkinOscuro.FondoItemSeleccionado			= COLOR_LISTA_OSCURA_SELECCION;
-	ListaSkinOscuro.FondoItemSeleccionadoResaltado	= COLOR_LISTA_OSCURA_SELECCION_RESALTADO;
-	ListaSkinOscuro.FondoItemPresionado				= COLOR_LISTA_OSCURA_SELECCION_PRESIONADO;
+	ListaSkinOscuro.FondoItemNormal						= COLOR_LISTA_OSCURA_FONDO;
+	ListaSkinOscuro.FondoItemResaltado					= COLOR_LISTA_OSCURA_FONDO_RESALTADO;
+	ListaSkinOscuro.FondoItemSeleccionado				= COLOR_LISTA_OSCURA_SELECCION;
+	ListaSkinOscuro.FondoItemSeleccionadoResaltado		= COLOR_LISTA_OSCURA_SELECCION_RESALTADO;
+	ListaSkinOscuro.FondoItemPresionado					= COLOR_LISTA_OSCURA_SELECCION_PRESIONADO;
 	// Color para el borde del item marcado
-	ListaSkinOscuro.BordeItemMarcado				= COLOR_LISTA_OSCURA_MARCA_ITEM;
+	ListaSkinOscuro.BordeItemMarcado					= COLOR_LISTA_OSCURA_MARCA_ITEM;
 	// Colores para el texto
-	ListaSkinOscuro.TextoItemNormal					= COLOR_LISTA_OSCURA_TEXTO;
-	ListaSkinOscuro.TextoItemResaltado				= COLOR_LISTA_OSCURA_TEXTO_RESALTADO;
-	ListaSkinOscuro.TextoItemSombra					= COLOR_LISTA_OSCURA_TEXTO_SOMBRA;
-	ListaSkinOscuro.TextoItemSeleccionado			= COLOR_LISTA_OSCURA_SELECCION_TEXTO;
-	ListaSkinOscuro.TextoItemSeleccionadoSombra		= COLOR_LISTA_OSCURA_SELECCION_TEXTO_SOMBRA;
-	ListaSkinOscuro.TextoItemSeleccionadoResaltado	= COLOR_LISTA_OSCURA_SELECCION_TEXTO_RESALTADO;
-	ListaSkinOscuro.TextoItemPresionado				= COLOR_LISTA_OSCURA_SELECCION_TEXTO_PRESIONADO;
+	ListaSkinOscuro.TextoItemNormal						= COLOR_LISTA_OSCURA_TEXTO;
+	ListaSkinOscuro.TextoItemResaltado					= COLOR_LISTA_OSCURA_TEXTO_RESALTADO;
+	ListaSkinOscuro.TextoItemSombra						= COLOR_LISTA_OSCURA_TEXTO_SOMBRA;
+	ListaSkinOscuro.TextoItemSeleccionado				= COLOR_LISTA_OSCURA_SELECCION_TEXTO;
+	ListaSkinOscuro.TextoItemSeleccionadoSombra			= COLOR_LISTA_OSCURA_SELECCION_TEXTO_SOMBRA;
+	ListaSkinOscuro.TextoItemSeleccionadoResaltado		= COLOR_LISTA_OSCURA_SELECCION_TEXTO_RESALTADO;
+	ListaSkinOscuro.TextoItemPresionado					= COLOR_LISTA_OSCURA_SELECCION_TEXTO_PRESIONADO;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Colores para el fondo de los nodos
@@ -164,18 +157,18 @@ void VentanaPrincipal::CrearSkins(void) {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Colores para le fondo del scroll
-	ScrollSkinOscuro.FondoScrollNormal		= COLOR_SCROLL_OSCURO_FONDO;
-	ScrollSkinOscuro.FondoScrollResaltado	= COLOR_SCROLL_OSCURO_FONDO_RESALTADO;
-	ScrollSkinOscuro.FondoScrollPresionado	= COLOR_SCROLL_OSCURO_FONDO_PRESIONADO;
-	ScrollSkinOscuro.BarraScrollNormal		= COLOR_SCROLL_OSCURO_BARRA;
-	ScrollSkinOscuro.BarraScrollResaltado	= COLOR_SCROLL_OSCURO_BARRA_RESALTADO;
-	ScrollSkinOscuro.BarraScrollPresionado	= COLOR_SCROLL_OSCURO_BARRA_PRESIONADO;
+	ScrollSkinOscuro.FondoScrollNormal					= COLOR_SCROLL_OSCURO_FONDO;
+	ScrollSkinOscuro.FondoScrollResaltado				= COLOR_SCROLL_OSCURO_FONDO_RESALTADO;
+	ScrollSkinOscuro.FondoScrollPresionado				= COLOR_SCROLL_OSCURO_FONDO_PRESIONADO;
+	ScrollSkinOscuro.BarraScrollNormal					= COLOR_SCROLL_OSCURO_BARRA;
+	ScrollSkinOscuro.BarraScrollResaltado				= COLOR_SCROLL_OSCURO_BARRA_RESALTADO;
+	ScrollSkinOscuro.BarraScrollPresionado				= COLOR_SCROLL_OSCURO_BARRA_PRESIONADO;
 	// Colores del orde del control (donde no hay nodos ni items)
-	ScrollSkinOscuro.BordeNormal			= COLOR_SCROLL_OSCURO_BORDE;
-	ScrollSkinOscuro.BordeResaltado			= COLOR_SCROLL_OSCURO_BORDE_RESALTADO;
+	ScrollSkinOscuro.BordeNormal						= COLOR_SCROLL_OSCURO_BORDE;
+	ScrollSkinOscuro.BordeResaltado						= COLOR_SCROLL_OSCURO_BORDE_RESALTADO;
 	// Colores del fondo del control (donde no hay nodos ni items)
-	ScrollSkinOscuro.FondoNormal			= COLOR_SCROLL_OSCURO_CONTROL_FONDO;
-	ScrollSkinOscuro.FondoResaltado			= COLOR_SCROLL_OSCURO_CONTROL_FONDO_RESALTADO;
+	ScrollSkinOscuro.FondoNormal						= COLOR_SCROLL_OSCURO_CONTROL_FONDO;
+	ScrollSkinOscuro.FondoResaltado						= COLOR_SCROLL_OSCURO_CONTROL_FONDO_RESALTADO;
 
 }
 
@@ -195,8 +188,6 @@ void VentanaPrincipal::CrearBotonesThumb(void) {
 
 
 void VentanaPrincipal::AjustarControles(RECT &RC) {
-	// 50 ?? 60
-
 	MoveWindow(Lista.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, TRUE);
 	MoveWindow(Arbol.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, TRUE);
 	MoveWindow(Video.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, TRUE);
@@ -206,21 +197,9 @@ void VentanaPrincipal::AjustarControles(RECT &RC) {
 
 	MoveWindow(BotonOpciones.hWnd(), 0, RC.bottom - 120, RAVE_BOTONES_LATERALES_ANCHO, 30, TRUE);
 
-	//App.VLC.RepintarVLC();
 	if (App.MP.hWndVLC != NULL) {
 		InvalidateRect(App.MP.hWndVLC, &RC, TRUE);
-//		App.VLC.RepintarVLC();
 	}
-//	RedrawWindow(App.VLC.hWndVLC, &RC, NULL, RDW_ERASE | RDW_INVALIDATE | RDW_NOCHILDREN);
-
-//	RedrawWindow(hWnd(), NULL, NULL, RDW_ALLCHILDREN | RDW_UPDATENOW);
-	
-	/*	MoveWindow(SliderVolumen.hWnd(),	RC.right - 160, 10, 100, 24, TRUE);
-	
-	MoveWindow(LabelVolumen.hWnd(),			RC.right - 50, 12, 40, 20, TRUE);
-	MoveWindow(LabelTiempoActual.hWnd(),	RC.right - 260, 12, 50, 20, TRUE);
-	MoveWindow(LabelTiempoSeparador.hWnd(), RC.right - 210, 12, 10, 20, TRUE);
-	MoveWindow(LabelTiempoTotal.hWnd(),		RC.right - 200, 12, 50, 20, TRUE);*/
 }
 
 
@@ -280,36 +259,12 @@ void VentanaPrincipal::Repeat(void) {
 			break;
 	}
 }
-/*
-void VentanaPrincipal::Timer_ObtenerTiempoTotal(void) {
-	// Actualizo el tiempo del medio actual si es 00:00
-	ItemMedio * rItem = Lista.Medio(Lista.MedioActual);
-	UINT64 TiempoMS = App.VLC.TiempoTotalMs();
-	if (Lista.MedioActual != -1 && Lista.TotalItems() != 0 && TiempoMS != 0) {
-		std::wstring TextoItem = Lista.Item(Lista.MedioActual)->Texto(2);
-		if (TextoItem == L"00:00") {
-			App.VLC.TiempoStr(TiempoMS, TextoItem);
-			rItem->Texto(2, TextoItem);
-			Lista.Repintar();
-
-//			BDMedio nMedioActual;
-//			App.BD.ObtenerMedio(rItem->Hash, nMedioActual);
-			App.BD.AsignarTiempoMedio(static_cast<INT64>(TiempoMS), rItem->Hash);
-
-//			nMedioActual.Tiempo = static_cast<INT64>(TiempoMS);
-
-		}
-		KillTimer(_hWnd, TIMER_OBTENER_TIEMPO_TOTAL);
-	}
-
-}*/
 
 
 void VentanaPrincipal::Lista_Pausa(void) {
 	BotonPlay.Icono(IDI_PLAY32, 32);
 	App.ControlesPC.BotonPlay.Icono(IDI_PLAY32, 32);
 	BarraTareas.Boton_Icono(ID_BOTON_PLAY, IDI_PLAY32);
-
 	App.MP.Pausa();
 }
 
@@ -326,8 +281,6 @@ void VentanaPrincipal::Lista_Play(void) {
 	ItemMedio *IMS = NULL;
 	switch (App.MP.ComprobarEstado()) {
 		case SinCargar:
-			// Compruebo que el medio actual no sea mas grande que el total de medios
-			//if (Lista.PosMedio(Lista.MedioActual) > Lista.TotalItems() - 1) Lista.MedioActual = Lista.Medio(Lista.TotalItems() - 1);
 			App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
 			IMS = Lista.MedioSiguiente(Lista.MedioActual);
 			if (IMS != NULL) {
@@ -337,8 +290,6 @@ void VentanaPrincipal::Lista_Play(void) {
 			else {
 				if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
 			}
-//				NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
-			//if (App.MP.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
 			if (App.MP.Play() == TRUE) {
 				BotonPlay.Icono(IDI_PAUSA32, 32);
 				App.ControlesPC.BotonPlay.Icono(IDI_PAUSA32, 32);
@@ -346,11 +297,9 @@ void VentanaPrincipal::Lista_Play(void) {
 			}
 			break;
 		case Terminada:
-//			App.MP.ActualizarIconos(0);
 			Lista.MedioActual = Lista.MedioSiguiente(Lista.MedioActual);
 			App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
 			IMS = Lista.MedioSiguiente(Lista.MedioActual);
-//			NCan.Obtener(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
 			if (IMS == NULL) {
 				if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
 			}
@@ -387,8 +336,6 @@ void VentanaPrincipal::Lista_Siguiente(void) {
 	if (Lista.TotalItems() == 0) return;
 
 	Lista.MedioActual = Lista.MedioSiguiente(Lista.MedioActual);
-//	if (Lista.MedioActual >= Lista.TotalItems()) Lista.MedioActual = 0;
-
 
 	BDMedio NCan, NCan2;
 	App.MP.Stop();
@@ -865,40 +812,18 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse)
 	}
 }
 
+// Click en el boton Mezclar
 void VentanaPrincipal::Mezclar_Click(void) {
-	BOOL nMezclar = !App.BD.Opciones_Shufle();
+	Mezclar(!App.BD.Opciones_Shufle());
+}
+
+// Función que mezcla / restaura el orden de la lista
+void VentanaPrincipal::Mezclar(const BOOL nMezclar) {
 	Lista.Mezclar(nMezclar);
 	App.BD.Opciones_Shufle(nMezclar);
 	BotonMezclar.Marcado(nMezclar);
 	App.ControlesPC.BotonMezclar.Marcado(nMezclar);
 }
-/*
-void VentanaPrincipal::AgregarRaiz(void) {
-	DDlgDirectorios          DialogoDirectorios;
-	std::wstring             Path;
-
-	BOOL Ret = DialogoDirectorios.Mostrar(this, Path);
-//	SetFocus(_hWnd);
-	if (Ret == TRUE) {
-		// Agrego la raíz a la BD.
-//		BDRaiz *nRaiz = NULL;
-		// Puede que esa raíz sea parte de otra raíz existente o viceversa, en ese caso no se agrega una nueva raíz a la lista, habrá que modificar la lista
-		if (App.BD.AgregarRaiz(Path) != NULL) {
-			ListaRaiz.AgregarRaiz(Path.c_str());
-			Debug_Escribir(L"VentanaPrincipal::AgregarRaiz Nueva raíz agregada.\n");
-		}
-		else { // La raiz ya existia o es un error
-			Debug_Escribir(L"VentanaPrincipal::AgregarRaiz La raíz se ha fusionado a una raíz existente.\n");
-		}
-	}
-	else {
-		Debug_Escribir(L"VentanaPrincipal::AgregarRaiz Cancelado por el usuario.\n");
-	}
-}
-
-void VentanaPrincipal::EliminarRaiz(std::wstring &Path) {
-	App.BD.EliminarRaiz(Path);
-}*/
 
 
 void VentanaPrincipal::Repetir_Click(void) {
@@ -1124,7 +1049,7 @@ void VentanaPrincipal::Evento_SliderTiempo_Cambiado(void) {
 	App.MP.TiempoActual(SliderTiempo.Valor());
 }
 
-void VentanaPrincipal::Evento_SliderVolumen_Cambio(void) {
+void VentanaPrincipal::Evento_SliderVolumen_Cambiando(void) {
 	int Volumen = static_cast<int>(SliderVolumen.Valor());	
 	App.MP.Volumen(Volumen);
 }
@@ -1408,7 +1333,7 @@ void VentanaPrincipal::Evento_Tecla(DWL::DEventoTeclado &DatosTeclado) {
 
 void VentanaPrincipal::Evento_BarraEx_Cambiando(DWL::DEventoMouse &DatosMouse) {
 	switch (DatosMouse.ID()) {
-		case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambio();					break;
+		case ID_SLIDER_VOLUMEN: 					Evento_SliderVolumen_Cambiando();				break;
 	}
 }
 

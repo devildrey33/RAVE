@@ -296,8 +296,12 @@ void ArbolBD::ExplorarPath(NodoBD *nNodo) {
 				BarrasMedio = DWL::Strings::ContarCaracter(mPath, L'\\');
 
 				if (BarrasPath == BarrasMedio) {
-					if (mPista < 10)	{ nTmpTxt = L"0" + std::to_wstring(mPista) + L" " + mNombre; }
-					else				{ nTmpTxt = std::to_wstring(mPista) + L" " + mNombre; }
+					// Si la pista es 0, no la pongo
+					if      (mPista == 0)   { nTmpTxt = mNombre;                                         }
+					// Si la pista es menor que 10, le añado un cero delante
+					else if (mPista < 10)	{ nTmpTxt = L"0" + std::to_wstring(mPista) + L" " + mNombre; }
+					// Pistas con 2 o más caracteres
+					else				    { nTmpTxt = std::to_wstring(mPista) + L" " + mNombre;        }
 					switch (mTipoMedio) {
 						case Tipo_Medio_Audio:		mTipoNodo = ArbolBD_TipoNodo_Cancion;	break;
 						case Tipo_Medio_Video:		mTipoNodo = ArbolBD_TipoNodo_Video;		break;

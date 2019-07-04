@@ -3,7 +3,7 @@
 // Versión y titulo
 #define RAVE_VERSION			0, 5, 2, 5
 #define RAVE_VERSIONF			0.525
-#define RAVE_VERSIONSTR			L"0.525 RC5"
+#define RAVE_VERSIONSTR			L"0.525c RC5"
 #define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
 #define RAVE_VERSIONBD          L"1.1"
 
@@ -27,7 +27,7 @@
 	#define RAVE_IGNORAR_LISTA_INICIO
 
 	// Muestra la ventana para alertar de un error crítico (OJO si quieres enviar el dump, requiere tener un dump creado)
-	//#define RAVE_MOSTRAR_ERRORCRITICO
+	#define RAVE_MOSTRAR_ERRORCRITICO
 
 	// Simula un error crítico y luego invoca una nueva instancia que muestra el error crítico
 	//#define RAVE_SIMULAR_ERRORCRITICO

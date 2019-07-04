@@ -4,6 +4,7 @@
 #include "ExtensionesValidas.h"
 #include "vlc.hpp"
 
+// Objeto para almacenar un momento
 class BDMomento {
   public:
 					BDMomento(void) : Id(0), IdPadre(0), TiempoInicio(0), TiempoFinal(0), Excluir(FALSE) { };
@@ -78,7 +79,7 @@ class BDMedio {
 	float                   Contraste;
 	float                   Saturacion;
 
-	LONG                    PosMomento; // Momento a reproducir
+	LONG                    PosMomento; // Momento a reproducir (si es -1 es que no hay momento a reproducir)
 
 	const BOOL              EsFMOD(void);
 

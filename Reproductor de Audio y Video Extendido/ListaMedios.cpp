@@ -103,9 +103,13 @@ ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {
 	}
 
 	// Paso la pista a string formateada a 2 digitos
-	std::wstring Pista = std::to_wstring(nMedio->Pista());
-	if (Pista.size() == 1) Pista = L"0" + Pista;
-
+	std::wstring Pista;
+	// Si la pista no es 0, creo el string para la pista
+	if (nMedio->Pista() != 0) {
+		Pista = std::to_wstring(nMedio->Pista());
+		// Si la pista solo tiene un carácter, le añado un cero delante
+		if (Pista.size() == 1) Pista = L"0" + Pista;
+	}
 	// Paso el tiempo a string formateado en mm:ss
 	std::wstring StrTiempo;
 	App.MP.TiempoStr(nMedio->Tiempo, StrTiempo);

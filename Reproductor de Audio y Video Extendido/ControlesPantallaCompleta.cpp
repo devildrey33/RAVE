@@ -242,7 +242,11 @@ void ControlesPantallaCompleta::Ocultar(void) {
 	// Si el menú del repeat o del video estan visibles no oculto nada
 	if (App.VentanaRave.Menu_Repetir.Visible() == TRUE) return;
 	if (App.VentanaRave.Menu_Video.Visible() == TRUE) return;
-//	if (App.VentanaRave)
+	// Scroll presionado en el arbol, no oculto nada
+	if (App.VentanaRave.Arbol.ScrollH_Estado() == DBarraScrollEx_Estado_Presionado || App.VentanaRave.Arbol.ScrollV_Estado() == DBarraScrollEx_Estado_Presionado) return;
+	// Scroll presionado en la lista, no oculto nada
+	if (App.VentanaRave.Lista.ScrollH_Estado() == DBarraScrollEx_Estado_Presionado || App.VentanaRave.Lista.ScrollV_Estado() == DBarraScrollEx_Estado_Presionado) return;
+
 
 	// Obtengo la recta de esta ventana, y la posición del mouse
 	RECT RV, RL, RBD;
