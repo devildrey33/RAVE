@@ -179,6 +179,7 @@ void Rave_MediaPlayer::Temporizador_Lista(void) {
 		}
 		// Siguiente medio
 		else {
+//			if (_Actual) _Actual->ActualizarIconos(0);
 			App.VentanaRave.Lista_Siguiente();
 		}
 	}
@@ -248,12 +249,6 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 			App.VentanaRave.LabelTiempoTotal.Texto(Tiempo);
 			App.ControlesPC.LabelTiempoActual.Texto(Tiempo);
 			App.ControlesPC.LabelTiempoTotal.Texto(Tiempo);
-			// Si se ha terminado el medio asigno las barras del tiempo al máximo
-			if (Estado == Terminada) {
-				// Asigno el valor de las barras del tiempo a su máximo
-				App.VentanaRave.SliderTiempo.Valor(App.VentanaRave.SliderTiempo.Maximo());
-				App.ControlesPC.SliderTiempo.Valor(App.ControlesPC.SliderTiempo.Maximo());
-			}
 		}
 	}
 
@@ -362,19 +357,27 @@ void Rave_MediaPlayer::CerrarMedio(void) {
 	if (_Actual    != NULL)	_EliminarRaveMedio(_Actual);
 	if (_Siguiente != NULL) _EliminarRaveMedio(_Siguiente);
 
+	if (_Actual) _Actual->ActualizarIconos(0);
+
 	_Anterior  = NULL;
 	_Actual    = NULL;
 	_Siguiente = NULL;
+
+	AsignarTitulo();
 }
 
 void Rave_MediaPlayer::_EliminarRaveMedio(Rave_Medio *eMedio) {
+
+	if (eMedio) eMedio->ActualizarIconos(0);
+	
+
 	switch (eMedio->Tipo()) {
 		case Rave_Medio_Tipo_VLC  : delete static_cast<RaveVLC_Medio *>(eMedio);	break;
 #ifdef RAVE_UTILIZAR_FMOD
 		case Rave_Medio_Tipo_FMOD : delete static_cast<RaveFMOD_Medio *>(eMedio);	break;
 #endif
 		default                   : delete eMedio;									break;
-	}
+	}	
 }
 
 // Formatea el tiempo especificado en el string especificado
@@ -450,11 +453,25 @@ FMOD_RESULT F_CALLBACK Rave_MediaPlayer::EventosFMOD(FMOD_CHANNELCONTROL *chanCo
 #endif
 
 void Rave_MediaPlayer::_TerminarMedio(Rave_Medio *MedioEvento) {
+
+	// Escondo los tooltip de las barras de tiempo
+	App.VentanaRave.SliderTiempo.OcultarToolTip();
+	App.ControlesPC.SliderTiempo.OcultarToolTip();
+	// Evito mostrar el tooltip si se pasa el mouse por encima del slider tiempo
+	App.VentanaRave.SliderTiempo.ToolTip(DBarraEx_ToolTip_SinToolTip);
+	App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_SinToolTip);
+	// Asigno el valor de las barras del tiempo a su máximo
+	App.VentanaRave.SliderTiempo.Valor(App.VentanaRave.SliderTiempo.Maximo());
+	App.ControlesPC.SliderTiempo.Valor(App.ControlesPC.SliderTiempo.Maximo());
+
+
 	if (_Anterior  == MedioEvento) _Anterior  = NULL;
 	if (_Actual    == MedioEvento) _Actual	  = NULL; 
 	if (_Siguiente == MedioEvento) _Siguiente = NULL; 
 	MedioEvento->Eliminar();
 	_EliminarRaveMedio(MedioEvento);
+
+	AsignarTitulo();
 }
 
 
@@ -471,20 +488,29 @@ const BOOL Rave_MediaPlayer::Play(const BOOL ComprobarMomento) {
 		case Derecha	:	App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_Izquierda);	break;
 	}
 
-	AsignarTitulo();
 
 	BOOL B = _Actual->Play();
+	if (B == TRUE) {
+		// Actualizo los iconos de la lista y la BD
+		_Actual->ActualizarIconos(1);
+		// Muestro el tooltip con los datos
+		App.MostrarToolTipPlayer(_Actual->Medio);
+		// Compruebo si es un momento
+		if (ComprobarMomento == TRUE) _Actual->ComprobarMomento();
+	}
 
-	if (ComprobarMomento == TRUE) _Actual->ComprobarMomento();
+	AsignarTitulo();
+
 
 	return B;
 }
 
 void Rave_MediaPlayer::AsignarTitulo(void) {
 	std::wstring nTitulo;
-	if (App.BD.Opciones_MostrarMedioActualTitulo() == TRUE && _Actual != NULL) {
+	if (App.BD.Opciones_MostrarMedioActualTitulo() == TRUE && _Actual != NULL && ComprobarEstado() != EnStop) {
 		// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
-		nTitulo = std::wstring(RAVE_TITULO) + L" [" + DWL::Strings::ToStr(_Actual->Medio.Pista(), 2) + L" " + _Actual->Medio.Nombre() + L"]";
+		if (_Actual->Medio.Pista() == 0)  nTitulo = std::wstring(RAVE_TITULO) + L" [" + _Actual->Medio.Nombre() + L"]";																// Sin pista
+		else                              nTitulo = std::wstring(RAVE_TITULO) + L" [" + DWL::Strings::ToStr(_Actual->Medio.Pista(), 2) + L" " + _Actual->Medio.Nombre() + L"]";		// Con pista
 	}
 	else {
 		nTitulo = std::wstring(RAVE_TITULO);
@@ -496,7 +522,11 @@ void Rave_MediaPlayer::AsignarTitulo(void) {
 
 const BOOL Rave_MediaPlayer::Pausa(void) {
 	if (_Actual == NULL) return FALSE;
-	return _Actual->Pausa();
+	BOOL B = _Actual->Pausa();
+	if (B == TRUE) {
+		_Actual->ActualizarIconos(2);
+	}
+	return B;
 }
 
 const BOOL Rave_MediaPlayer::Stop(void) {
@@ -508,10 +538,20 @@ const BOOL Rave_MediaPlayer::Stop(void) {
 	// Evito mostrar el tooltip si se pasa el mouse por encima del slider tiempo
 	App.VentanaRave.SliderTiempo.ToolTip(DBarraEx_ToolTip_SinToolTip);
 	App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_SinToolTip);
+	// Asigno el valor de las barras del tiempo a su máximo
+	App.VentanaRave.SliderTiempo.Valor(0.0f);
+	App.ControlesPC.SliderTiempo.Valor(0.0f);
+
 	// Elimino el nombre del medio en el titulo
 	App.VentanaRave.Titulo(std::wstring(RAVE_TITULO));
 
-	return _Actual->Stop();
+	BOOL B = _Actual->Stop();
+	if (B == TRUE) {
+		_Actual->ActualizarIconos(0);
+	}
+	AsignarTitulo();
+
+	return B;
 }
 
 const BOOL Rave_MediaPlayer::StopTODO(void) {

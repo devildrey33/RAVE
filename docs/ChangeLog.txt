@@ -12,6 +12,12 @@
 
 * Ya no se muestra la pista 0 si el medio no tiene pista (tanto en la BD como en la Lista)
 
+* Solucionado bug, que al acabar la lista dejaba los iconos del ultimo medio como si estuviera en pausa.
+
+* Solucionado bug, que al hacer stop seguia mostrando el nombre del medio en la barra del titulo (siempre que la opcion esté activa)
+
+* Retocado comportamiento de los slider del tiempo, ahora al hacer stop su valor será 0, y al terminar el medio su valor será el máximo.
+
 
 
 ### Versión 0.524

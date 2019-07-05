@@ -370,6 +370,8 @@
 					- Necesitara una llista d'arxius del reproductor
 					- Necesitara fer checks md5 de cada arxiu per determinar si está actualitzat
 				
+		V  QUAN s'acaba la llista el icona del play es queda en pausa
+
 
 	RAVE 0.7
 		-  Les notes menors que 2 s'han de mostrar amb una estrella gris
@@ -412,7 +414,6 @@
 
 
 
-		-  QUAN s'acaba la llista el icona del play es queda en pausa
 
 
 

@@ -74,9 +74,9 @@ const BOOL RaveFMOD_Medio::Play(void) {
 
 	if (Error == FMOD_OK && Error2 == FMOD_OK) {
 		_Estado = EnPlay;
-		ActualizarIconos(1);
+//		ActualizarIconos(1);
 		// Muestro el tooltip con los datos
-		App.MostrarToolTipPlayer(Medio);
+//		App.MostrarToolTipPlayer(Medio);
 
 		return TRUE;
 	}
@@ -93,7 +93,7 @@ const BOOL RaveFMOD_Medio::Pausa(void) {
 	}
 
 	if (Error == FMOD_OK) {
-		ActualizarIconos(2);
+//		ActualizarIconos(2);
 		_Estado = EnPausa;
 		return TRUE;
 	}
@@ -112,7 +112,7 @@ const BOOL RaveFMOD_Medio::Stop(void) {
 	}
 
 	if (Error == FMOD_OK && Error2 == FMOD_OK) {
-		ActualizarIconos(0);
+//		ActualizarIconos(0);
 		_Estado = EnStop;
 		return TRUE;
 	}

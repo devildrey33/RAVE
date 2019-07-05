@@ -114,7 +114,7 @@ const BOOL RaveVLC_Medio::Stop(void) {
 
 		_AniVolumen.Terminar();
 
-		ActualizarIconos(0);
+//		ActualizarIconos(0);
 
 		// Escondo los tooltip de las barras de tiempo
 /*		App.VentanaRave.SliderTiempo.OcultarToolTip();
@@ -154,7 +154,7 @@ const BOOL RaveVLC_Medio::Pausa(void) {
 
 	if (_Medio != NULL) {
 		if (ComprobarEstado() == EnPlay) {
-			ActualizarIconos(2);
+//			ActualizarIconos(2);
 			libvlc_media_player_pause(_Medio);
 		}
 		return TRUE;
@@ -165,16 +165,16 @@ const BOOL RaveVLC_Medio::Pausa(void) {
 const BOOL RaveVLC_Medio::Play(void) {
 	if (_Medio != NULL) {
 		if (libvlc_media_player_play(_Medio) == 0)	{
-			ActualizarIconos(1);
+//			ActualizarIconos(1);
 
-			SetTimer(Rave_MediaPlayer::_hWndMensajes, TIMER_OBTENERVLCWND, 100, NULL);
 
 			if (Medio.TipoMedio == Tipo_Medio_Video) { // Desactivo el protector de pantalla si es un video
+				SetTimer(Rave_MediaPlayer::_hWndMensajes, TIMER_OBTENERVLCWND, 100, NULL);
 				SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, FALSE, NULL, TRUE);
 			}
 
 			// Muestro el tooltip con los datos
-			App.MostrarToolTipPlayer(Medio);
+//			App.MostrarToolTipPlayer(Medio);
 
 			
 //			App.BD.AgregarMomento(&App.MP.MedioActual(), std::wstring(L"MomentoTest"), 0, 10000, FALSE); // TEST INICIAL
