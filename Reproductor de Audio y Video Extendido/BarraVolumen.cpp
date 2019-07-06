@@ -29,32 +29,33 @@ void BarraVolumen::Transicion(const DBarraEx_Transicion nTransicion) {
 		Duracion = _AniTransicion.TiempoActual();
 		_AniTransicion.Terminar();
 	}
-
-	COLORREF FondoHasta = NULL, BordeHasta = NULL, BarraHasta = NULL;
+	
+	COLORREF *FondoHasta = NULL, *BordeHasta = NULL/*, *BarraHasta = NULL*/;
+	static COLORREF BarraHasta = NULL;
 	switch (nTransicion) {
 		case DBarraEx_Transicion_Normal:
-			FondoHasta = COLOR_BARRA_FONDO;
-			BarraHasta = RGB(20 + static_cast<int>(_Valor), 220 - static_cast<int>(_Valor), 0);;
-			BordeHasta = COLOR_BORDE;
+			FondoHasta = &Skin.FondoNormal;
+			BarraHasta = RGB(20 + static_cast<int>(_Valor), 220 - static_cast<int>(_Valor), 0);
+			BordeHasta = &Skin.BordeNormal;
 			break;
 		case DBarraEx_Transicion_Resaltado:
-			FondoHasta = COLOR_BARRA_FONDO_RESALTADO;
+			FondoHasta = &Skin.FondoResaltado;
 			BarraHasta = RGB(40 + static_cast<int>(_Valor), 240 - static_cast<int>(_Valor), 0);
-			BordeHasta = COLOR_BORDE_RESALTADO;
+			BordeHasta = &Skin.BordeResaltado;
 			break;
 		case DBarraEx_Transicion_Presionado:
-			FondoHasta = COLOR_BARRA_FONDO_PRESIONADO;
+			FondoHasta = &Skin.FondoPresionado;
 			BarraHasta = RGB(static_cast<int>(_Valor), 200 - static_cast<int>(_Valor), 0);
-			BordeHasta = COLOR_BORDE_PRESIONADO;
+			BordeHasta = &Skin.BordePresionado;
 			break;
 		case DBarraEx_Transicion_Desactivado:
-			FondoHasta = COLOR_BARRA_FONDO_DESACTIVADO;
+			FondoHasta = &Skin.FondoDesactivado;
 			BarraHasta = RGB(static_cast<int>(_Valor), 200 - static_cast<int>(_Valor), 0);
-			BordeHasta = COLOR_BORDE;
+			BordeHasta = &Skin.BordeNormal;
 			break;
 	}
 
-	_AniTransicion.Iniciar(_ColorFondo, FondoHasta, _ColorBorde, BordeHasta, _ColorBarra, BarraHasta, Duracion, [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
+	_AniTransicion.Iniciar({ _ColorFondo, _ColorBorde, _ColorBarra }, { FondoHasta, BordeHasta, &BarraHasta }, Duracion, [=](DAnimacion::Valores& Datos, const BOOL Terminado) {
 		_ColorFondo = Datos[0].Color();
 		_ColorBorde = Datos[1].Color();
 		_ColorBarra = Datos[2].Color();

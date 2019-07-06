@@ -76,8 +76,12 @@ void ToolTipInfo::Mostrar(const int cX, const int cY, const int cAncho, const in
 	if (_Padre != NULL) {
 		SetTimer(_hWnd, ID_TEMPORIZADOR_OCULTAR, App.BD.Opciones_TiempoToolTips(), NULL);
 	}
+
+	static double Cero = 0.0f;
+	static double MaxOpacidad = MAX_OPACIDAD;
+
 	// Inicio la animación de la opacidad
-	Ani.Iniciar(0.0f, MAX_OPACIDAD, DESPLAZAMIENTOY, 0.0f, App.BD.Opciones_TiempoAnimaciones(), [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
+	Ani.Iniciar({ 0.0f, DESPLAZAMIENTOY }, { &MaxOpacidad, &Cero }, App.BD.Opciones_TiempoAnimaciones(), [=](DAnimacion::Valores& Datos, const BOOL Terminado) {
 		double Op = Datos[0].Decimal();
 		if (Op > 0.0f && Op < 255.1f) {
 			Opacidad(static_cast<BYTE>(Op));
@@ -122,12 +126,15 @@ void ToolTipInfo::Ocultar(const BOOL Rapido) {
 	X = RW.left;
 	Y = RW.top;
 
+	static double Cero		 = 0.0f;
+	static double Doscientos = 200.0f;
+
 	KillTimer(_hWnd, ID_TEMPORIZADOR_OCULTAR);
 	//	KillTimer(_hWnd, ID_TEMPORIZADOR_ANIMACION);
 	if (Rapido == FALSE) {
 		if (_hWnd != NULL) { 
 			Ani.Terminar();
-			Ani.Iniciar(MAX_OPACIDAD, 0.0f, 0.0f, 200.0f, App.BD.Opciones_TiempoAnimaciones(), [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
+			Ani.Iniciar({ MAX_OPACIDAD, 0.0f }, { &Cero, &Doscientos }, App.BD.Opciones_TiempoAnimaciones(), [=](DAnimacion::Valores& Datos, const BOOL Terminado) {
 				double Op = Datos[0].Decimal();				
 				if (Op > 0.0f && Op < 255.1f) {
 					Opacidad(static_cast<BYTE>(Op));

@@ -108,10 +108,10 @@ void ControlesPantallaCompleta::Transicion(const CPC_Transicion nTransicion) {
 //		return;
 	}
 
-	float OpacidadHasta = 0.0f;
+	static double OpacidadHasta = 0.0f;
 	switch (nTransicion) {
 		case CPC_Transicion_Mostrar:
-			OpacidadHasta = static_cast<float>(App.BD.Opciones_OpacidadControlesVideo());
+			OpacidadHasta = static_cast<double>(App.BD.Opciones_OpacidadControlesVideo());
 			break;
 		case CPC_Transicion_Ocultar:
 			OpacidadHasta = 0.0f;
@@ -122,7 +122,7 @@ void ControlesPantallaCompleta::Transicion(const CPC_Transicion nTransicion) {
 			break;
 	}
 
-	_AniMostrar.Iniciar(static_cast<float>(Opacidad()), OpacidadHasta, Duracion, [=](DAnimacion::Valores &Datos, const BOOL Terminado) {
+	_AniMostrar.Iniciar({ static_cast<double>(Opacidad()) }, { &OpacidadHasta }, Duracion, [=](DAnimacion::Valores& Datos, const BOOL Terminado) {
 		Opacidad(static_cast<BYTE>(Datos[0].Decimal()));
 		App.VentanaRave.Arbol.Opacidad(static_cast<BYTE>(Datos[0].Decimal()));
 		App.VentanaRave.Lista.Opacidad(static_cast<BYTE>(Datos[0].Decimal()));

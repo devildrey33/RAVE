@@ -18,6 +18,10 @@
 
 * Retocado comportamiento de los slider del tiempo, ahora al hacer stop su valor será 0, y al terminar el medio su valor será el máximo.
 
+* Solucionado bug, que al acabar un medio no asignaba la imagen del play al boton play / pausa.
+
+* Solucionado bug visual en el arbol y la lista, que en el mouseleave mostraba el fondo del item / nodo de un color distinto al resto del fondo del control. (DAnimacion REBUILD)
+
 
 
 ### Versión 0.524

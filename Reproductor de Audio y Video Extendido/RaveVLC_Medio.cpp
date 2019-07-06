@@ -476,16 +476,17 @@ const int RaveVLC_Medio::AsignarSubtitulos(const wchar_t* Path) {
 // de 0 al volumen actual
 void RaveVLC_Medio::FadeIn(void) {
 	_AniVolumen.Terminar();
-	_AniVolumen.Iniciar(0.0f, App.BD.Opciones_Volumen(), App.BD.Opciones_EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores &Valores, const BOOL Terminado) { 
+	_AniVolumen.Iniciar({ 0.0f }, { (double *)(&App.BD._Opciones_Volumen) }, App.BD.Opciones_EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores& Valores, const BOOL Terminado) {
 		Volumen(Valores[0].Entero(), FALSE);
-	}, DWL::DAnimacion::FuncionesTiempo::Linear, 200);
+	}, { DWL::DAnimacion::FuncionesTiempo::Linear }, 200);
 }
 
 // del volumen actual a 0
 void RaveVLC_Medio::FadeOut(void) {
+	static double NuevoVolumen = 0.0f;
 	_AniVolumen.Terminar();
-	_AniVolumen.Iniciar(App.BD.Opciones_Volumen(), 0.0f, App.BD.Opciones_EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores &Valores, const BOOL Terminado) {
+	_AniVolumen.Iniciar({ static_cast<double>(App.BD._Opciones_Volumen) }, { &NuevoVolumen }, App.BD.Opciones_EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores& Valores, const BOOL Terminado) {
 		Volumen(Valores[0].Entero(), FALSE);
-	}, DWL::DAnimacion::FuncionesTiempo::Linear, 200);
+	}, { DWL::DAnimacion::FuncionesTiempo::Linear }, 200);
 
 }

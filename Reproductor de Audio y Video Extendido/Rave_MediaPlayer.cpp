@@ -452,6 +452,7 @@ FMOD_RESULT F_CALLBACK Rave_MediaPlayer::EventosFMOD(FMOD_CHANNELCONTROL *chanCo
 }
 #endif
 
+// Función que se llama al terminar un medio
 void Rave_MediaPlayer::_TerminarMedio(Rave_Medio *MedioEvento) {
 
 	// Escondo los tooltip de las barras de tiempo
@@ -463,6 +464,9 @@ void Rave_MediaPlayer::_TerminarMedio(Rave_Medio *MedioEvento) {
 	// Asigno el valor de las barras del tiempo a su máximo
 	App.VentanaRave.SliderTiempo.Valor(App.VentanaRave.SliderTiempo.Maximo());
 	App.ControlesPC.SliderTiempo.Valor(App.ControlesPC.SliderTiempo.Maximo());
+	// Asigno las imagenes de los botones play / pausa a la del play
+	App.VentanaRave.BotonPlay.Icono(IDI_PLAY32, 32);
+	App.ControlesPC.BotonPlay.Icono(IDI_PLAY32, 32);
 
 
 	if (_Anterior  == MedioEvento) _Anterior  = NULL;

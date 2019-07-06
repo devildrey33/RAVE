@@ -1,5 +1,5 @@
 # Reproductor de Audio y Video Extendido
-Reproductor de Audio y Video bajo windows basado en la [LibVlc](https://www.videolan.org/vlc/index.es.html).
+Reproductor de Audio y Video bajo windows basado en la [LibVlc](https://www.videolan.org/vlc/index.es.html) con una base de datos [SQLite](https://www.sqlite.org/).
 
 Todo lo que necesito para mi uso personal : 
  * Listas de música aleatórias nada mas empezar.
@@ -14,7 +14,7 @@ Todo lo que necesito para mi uso personal :
 Sistema operativo Windows 7 o superior (x86. x64)
 
 ### Log de cambios
-* [Ultima versión 0.522 RC2](docs/ChangeLog.txt)
+* [Ultima versión 0.525d RC5](docs/ChangeLog.txt)
 
 ## Empezando
  1. Descarga una de las siguientes versiones para windows : 
@@ -91,8 +91,8 @@ Teclas por defecto cuando el reproductor tiene le foco del teclado (excepto si e
 
  ### Notas para compilar el proyecto
 
- * La LibVLC y SQLite vienen en este repositorio
+ * Todo lo necesario para compilar y ejecutar la LibVLC y SQLite vienen en este repositorio
  
- * Hace falta la [DWL3](https://github.com/devildrey33/DWL3) Devildrey33 Windows Library.
+ * Hace falta la [DWL3](https://github.com/devildrey33/DWL3) Devildrey33 Windows Library. Para ir bien deberías crear un directorio RAVE para el código del reproductor y un directorio DWL3 para la librería en tu directorio de proyectos. El proyecto está configurado para buscar la DWL en "..\DWL3""
 
- * Debes crear un archivo llamado RAVE_CuentaEmail.h y definir las siguientes macros con un string vacio : EMAIL_SMTP, EMAIL_LOGIN, EMAIL_PASS, EMAIL_ORIGEN, EMAIL_DESTINO 
+ * Debes crear un archivo llamado RAVE_CuentaEmail.h y definir las siguientes macros con un string vacio : EMAIL_SMTP, EMAIL_LOGIN, EMAIL_PASS, EMAIL_ORIGEN, EMAIL_DESTINO.

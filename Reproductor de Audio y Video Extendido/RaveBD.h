@@ -85,6 +85,7 @@ enum TipoListaAleatoria {
 class ThreadAnalisis;
 class ItemMedio;
 class NodoBD;
+class RaveVLC_Medio;
 
 class RaveBD {
   public:
@@ -358,5 +359,6 @@ protected:
 
 	friend class ThreadAnalisis;
 	friend class BDMedio;
+	friend class RaveVLC_Medio;
 };
 
