@@ -95,4 +95,13 @@ Teclas por defecto cuando el reproductor tiene le foco del teclado (excepto si e
  
  * Hace falta la [DWL3](https://github.com/devildrey33/DWL3) Devildrey33 Windows Library. Para ir bien deberías crear un directorio RAVE para el código del reproductor y un directorio DWL3 para la librería en tu directorio de proyectos. El proyecto está configurado para buscar la DWL en "..\DWL3""
 
- * Debes crear un archivo llamado RAVE_CuentaEmail.h y definir las siguientes macros con un string vacio : EMAIL_SMTP, EMAIL_LOGIN, EMAIL_PASS, EMAIL_ORIGEN, EMAIL_DESTINO.
+ * Debes crear un archivo llamado "RAVE_CuentaEmail.h" dentro de la carpeta "Reproductor de Audio y Video Extendido" y añadir lo siguiente : 
+ ```
+#pragma once
+
+#define EMAIL_SMTP		""	// SMTP
+#define EMAIL_DESTINO	""	// Email destino para enviar los dumps
+#define EMAIL_ORIGEN    ""	// Email origen desde donse se mandan los dumps
+#define EMAIL_LOGIN		""	// Login
+#define EMAIL_PASS      ""	// Password
+ ```

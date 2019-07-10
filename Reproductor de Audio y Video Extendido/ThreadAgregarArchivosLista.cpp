@@ -23,7 +23,7 @@ const BOOL ThreadAgregarArchivosLista::Iniciar(HWND nhWndDest, std::vector<std::
 	_VentanaPlayer = nhWndDest;
 
 	// Iniciamos el Thread
-	_Thread = CreateThread(NULL, 0, (unsigned long(__stdcall *)(void *))this->_ThreadAgregarArchivosLista, (void *)this, 0, NULL);
+	_Thread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)this->_ThreadAgregarArchivosLista, (void *)this, 0, NULL);
 	
 	Cancelar(FALSE);
 

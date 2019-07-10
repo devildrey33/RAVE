@@ -49,7 +49,7 @@ const BOOL ThreadAnalisis::Iniciar(HWND nhWndDest) {
 	}
 
 	// Iniciamos el Thread
-	_Thread = CreateThread(NULL, 0, (unsigned long(__stdcall *)(void *))this->_ThreadAnalisis, (void *)this, 0, NULL);
+	_Thread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)this->_ThreadAnalisis, (void *)this, 0, NULL);
 
 	Cancelar(FALSE);
 

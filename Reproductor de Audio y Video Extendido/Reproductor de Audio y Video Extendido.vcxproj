@@ -177,6 +177,7 @@
     </ManifestResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Actualizaciones.h" />
     <ClInclude Include="ArbolBD.h" />
     <ClInclude Include="AsignarTeclaRapida.h" />
     <ClInclude Include="AsociarReproductor.h" />
@@ -225,6 +226,7 @@
     <ClInclude Include="vlc.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Actualizaciones.cpp" />
     <ClCompile Include="ArbolBD.cpp" />
     <ClCompile Include="AsignarTeclaRapida.cpp" />
     <ClCompile Include="AsociarReproductor.cpp" />
