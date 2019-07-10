@@ -91,17 +91,21 @@ Teclas por defecto cuando el reproductor tiene le foco del teclado (excepto si e
 
  ### Notas para compilar el proyecto
 
- * Todo lo necesario para compilar y ejecutar la LibVLC y SQLite vienen en este repositorio
+ * Todo lo necesario para compilar y ejecutar la LibVLC y SQLite vienen en este repositorio.
  
- * Hace falta la [DWL3](https://github.com/devildrey33/DWL3) Devildrey33 Windows Library. Para ir bien deberías crear un directorio RAVE para el código del reproductor y un directorio DWL3 para la librería en tu directorio de proyectos. El proyecto está configurado para buscar la DWL en "..\DWL3""
+ * Hace falta la [DWL3](https://github.com/devildrey33/DWL3) Devildrey33 Windows Library. Para ir bien deberías crear un directorio RAVE para el código del reproductor y un directorio DWL3 para la librería, ambos en tu directorio de proyectos. El proyecto está configurado para buscar la DWL en "..\DWL3"
 
  * Debes crear un archivo llamado "RAVE_CuentaEmail.h" dentro de la carpeta "Reproductor de Audio y Video Extendido" y añadir lo siguiente : 
- ```
+ ```c++
 #pragma once
 
-#define EMAIL_SMTP		""	// SMTP
-#define EMAIL_DESTINO	""	// Email destino para enviar los dumps
+#define EMAIL_SMTP      ""	// SMTP
+#define EMAIL_DESTINO   ""	// Email destino para enviar los dumps
 #define EMAIL_ORIGEN    ""	// Email origen desde donse se mandan los dumps
-#define EMAIL_LOGIN		""	// Login
+#define EMAIL_LOGIN     ""	// Login
 #define EMAIL_PASS      ""	// Password
  ```
+
+ * Si consigues compilar el proyecto pero al ejecutar da un error que no se encuentra la libvlc.dll, debes hacer lo siguiente :
+	* Abrir las propiedades del Reproductor de Audio y Video Extendido en el explorador de soluciones.
+	* Ve a Depuración -> Directorio de trabajo y extablece el valor "..\Release-x86" o "..\Release-x64" segú sea la configuración de 32 o 64 bits.
