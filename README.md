@@ -107,5 +107,5 @@ Teclas por defecto cuando el reproductor tiene le foco del teclado (excepto si e
  ```
 
  * Si consigues compilar el proyecto pero al ejecutar da un error que no se encuentra la libvlc.dll, debes hacer lo siguiente :
-	* Abrir las propiedades del Reproductor de Audio y Video Extendido en el explorador de soluciones.
-	* Ve a Depuración -> Directorio de trabajo y extablece el valor "..\Release-x86" o "..\Release-x64" segú sea la configuración de 32 o 64 bits.
+	* Abre las propiedades del Reproductor de Audio y Video Extendido en el explorador de soluciones.
+	* Ve a "Depuración" -> "Directorio de trabajo" y extablece el valor a "..\Release-x86" o "..\Release-x64" según sea la configuración de 32 o 64 bits.
