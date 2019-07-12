@@ -9,7 +9,10 @@
 * Se ha restaurado el icono para borrar raices en el mismo item que representa una raíz (en las opciones)
 
 * Retocada la forma en que se guardan los medios a la BD, ahora ya no conservaran la ID del disco duro que los contiene.
+	* Lo malo es que si tienes el mismo medio en dos discos distintos con la misma ruta (solo que cambie la unidad) el reproductor solo reconocerá el primero de los dos (lo que no debería ser problema, a no ser que realmente no sean el mismo medio).
+	* Lo bueno es que los medios siguen sin necesitar la letra de unidad de su path, por lo que se puede mover el directorio a otro disco duro, y el reproductor seguirá reconociendolos (habra que añadir una nueva raíz con el nuevo disco para que se muestren en la BD)
 
+* Solucionado bug que no almacenaba las etiquetas de los generos al analizar la canción.
 
 
 

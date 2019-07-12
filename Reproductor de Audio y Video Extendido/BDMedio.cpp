@@ -8,7 +8,7 @@ BDMedio::BDMedio(const BDMedio& c) :	PistaTag(c.PistaTag), PistaPath(c.PistaPath
 										Longitud(c.Longitud), Reproducido(c.Reproducido), Nota(c.Nota), Id(c.Id), /*IDDisco(c.IDDisco),*/
 										GrupoTag(c.GrupoTag), GrupoPath(c.GrupoPath), GrupoEleccion(c.GrupoEleccion),
 										DiscoTag(c.DiscoTag), DiscoPath(c.DiscoPath), DiscoEleccion(c.DiscoEleccion),
-										Subtitulos(c.Subtitulos), Parseado(c.Parseado), Actualizar(c.Actualizar),
+										Subtitulos(c.Subtitulos), Parseado(c.Parseado), Actualizar(c.Actualizar), Genero(c.Genero),
 										Proporcion(c.Proporcion), Brillo(c.Brillo), Contraste(c.Contraste), Saturacion(c.Saturacion), PosMomento(c.PosMomento) {
 	// Creo una copia del vector de momentos
 	for (size_t i = 0; i < c.Momentos.size(); i++) {

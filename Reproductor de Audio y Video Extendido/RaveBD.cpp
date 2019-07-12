@@ -502,6 +502,10 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 			for (size_t i = 0; i < _Etiquetas.size(); i++) {
 				if (_Etiquetas[i].EsGenero() == TRUE) Etiquetas.push_back(&_Etiquetas[i]);
 			}
+			if (Etiquetas.size() == 0) {
+				App.MostrarToolTipPlayerError(L"No hay etiquetas con generos para generar una lista aleatória.");
+				return FALSE;
+			}
 			// Si la etiqueta tiene menos de 5 medios vuelvo a obtener una etiqueta aleatória			
 			if (App.BD.Opciones_NoGenerarListasMenos3() == TRUE) {
 				do {
@@ -516,6 +520,10 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 			for (size_t i = 0; i < _Etiquetas.size(); i++) {
 				if (_Etiquetas[i].EsGrupoPath() == TRUE || _Etiquetas[i].EsGrupoTag() == TRUE) Etiquetas.push_back(&_Etiquetas[i]);
 			}
+			if (Etiquetas.size() == 0) {
+				App.MostrarToolTipPlayerError(L"No hay etiquetas con grupos para generar una lista aleatória.");
+				return FALSE;
+			}
 			// Si la etiqueta tiene menos de 5 medios vuelvo a obtener una etiqueta aleatória			
 			if (App.BD.Opciones_NoGenerarListasMenos3() == TRUE) {
 				do {
@@ -529,6 +537,10 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 		case TLA_Disco:
 			for (size_t i = 0; i < _Etiquetas.size(); i++) {
 				if (_Etiquetas[i].EsDiscoPath() == TRUE || _Etiquetas[i].EsDiscoTag() == TRUE) Etiquetas.push_back(&_Etiquetas[i]);
+			}
+			if (Etiquetas.size() == 0) {
+				App.MostrarToolTipPlayerError(L"No hay etiquetas con discos para generar una lista aleatória.");
+				return FALSE;
 			}
 			// Si la etiqueta tiene menos de 5 medios vuelvo a obtener una etiqueta aleatória			
 			if (App.BD.Opciones_NoGenerarListasMenos3() == TRUE) {
