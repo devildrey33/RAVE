@@ -125,6 +125,8 @@ void VentanaOpcionesRAVE::Crear(void) {
 		ListaRaiz.AgregarRaiz(App.BD.Raiz(i)->Path.c_str());
 	}
 	ListaRaiz.Visible(TRUE);
+	ListaRaiz.MultiSeleccion = FALSE;
+
 	int x = ((RC.right - 250) / 2) - 10;
 	// Botón agregar raíz
 	BotonAgregarRaiz.CrearBotonEx(&MarcoBaseDeDatos, L"Agregar Raíz", x, 230, 120, 24, ID_BOTON_AGREGARRAIZ);

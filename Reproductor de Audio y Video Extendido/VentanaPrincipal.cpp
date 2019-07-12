@@ -107,6 +107,9 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	// Habilito el drag & drop para esta ventana
 	DragAcceptFiles(hWnd(), TRUE);	
 
+	// Busco actualizaciones
+	App.Actualizacion.Buscar();
+
 	return rhWnd;
 }
 

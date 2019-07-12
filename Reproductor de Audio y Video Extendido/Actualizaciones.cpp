@@ -106,8 +106,9 @@ unsigned long Actualizaciones::_ThreadBuscar(void* pThis) {
 	DWL::Strings::AnsiToWide(ResultadoANSI.c_str(), Resultado);
 
 	// Si la versión no coincide
-	if (Resultado.compare(RAVE_VERSIONSTR) == FALSE) {
-
+	if (Resultado.compare(RAVE_VERSIONSTR) != 0) {
+		// s'ha de treure del thread 
+		Debug_Escribir(L"Actualizaciones::_ThreadBuscar Actualizacion encontrada.\n");
 	}
 
 	return 0;

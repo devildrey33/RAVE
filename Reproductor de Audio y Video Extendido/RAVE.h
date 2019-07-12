@@ -17,6 +17,7 @@
 #include <random>
 #include "ToolTipInfo.h"
 #include <DApp.h>
+#include "Actualizaciones.h"
 
 using namespace DWL;
 
@@ -136,6 +137,8 @@ class RAVE : public DApp {
 	DMenuEx                        *MenuVideoSaturacion;*/
 
 	std::vector<TeclaRapida>       TeclasRapidas;
+
+	Actualizaciones                Actualizacion;
   protected:
 
 	ToolTipsInfo                  _ToolTipPlayer;

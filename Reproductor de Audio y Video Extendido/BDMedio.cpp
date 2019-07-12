@@ -5,7 +5,7 @@
 BDMedio::BDMedio(const BDMedio& c) :	PistaTag(c.PistaTag), PistaPath(c.PistaPath), PistaEleccion(c.PistaEleccion),
 										NombreTag(c.NombreTag), NombrePath(c.NombrePath), NombreEleccion(c.NombreEleccion),
 										Hash(c.Hash), Path(c.Path), TipoMedio(c.TipoMedio), Tiempo(c.Tiempo), Extension(c.Extension),
-										Longitud(c.Longitud), Reproducido(c.Reproducido), Nota(c.Nota), Id(c.Id), IDDisco(c.IDDisco),
+										Longitud(c.Longitud), Reproducido(c.Reproducido), Nota(c.Nota), Id(c.Id), /*IDDisco(c.IDDisco),*/
 										GrupoTag(c.GrupoTag), GrupoPath(c.GrupoPath), GrupoEleccion(c.GrupoEleccion),
 										DiscoTag(c.DiscoTag), DiscoPath(c.DiscoPath), DiscoEleccion(c.DiscoEleccion),
 										Subtitulos(c.Subtitulos), Parseado(c.Parseado), Actualizar(c.Actualizar),
@@ -17,7 +17,7 @@ BDMedio::BDMedio(const BDMedio& c) :	PistaTag(c.PistaTag), PistaPath(c.PistaPath
 }
 
 // Constructor que obtiene los datos de una fila
-BDMedio::BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades) : PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), IDDisco(0), Parseado(FALSE), Actualizar(FALSE), Nota(2.5f), PistaEleccion(0), Reproducido(0), GrupoEleccion(0), DiscoEleccion(0), NombreEleccion(0), Saturacion(1.0f), Brillo(1.0f), Contraste(1.0f) {
+BDMedio::BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades) : PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), /*IDDisco(0),*/ Parseado(FALSE), Actualizar(FALSE), Nota(2.5f), PistaEleccion(0), Reproducido(0), GrupoEleccion(0), DiscoEleccion(0), NombreEleccion(0), Saturacion(1.0f), Brillo(1.0f), Contraste(1.0f) {
 	ObtenerFila(SqlQuery, Unidades);
 }
 
@@ -50,7 +50,7 @@ BDMedio& BDMedio::operator = (const BDMedio& c) {
 	Reproducido		= c.Reproducido;		// 12
 	Nota			= c.Nota;				// 13
 	Id				= c.Id;					// 14
-	IDDisco			= c.IDDisco;			// 15
+//	IDDisco			= c.IDDisco;			// 15
 	GrupoTag		= c.GrupoTag;			// 16
 	GrupoPath		= c.GrupoPath;			// 17
 	GrupoEleccion	= c.GrupoEleccion;		// 18
@@ -74,8 +74,8 @@ BDMedio& BDMedio::operator = (const BDMedio& c) {
 	return *this;
 }
 
-/*	Tipo				Nombre			Posición		Tipo
-		---------------------------------------------------------------------- -
+/*		Tipo				Nombre			Posición		Tipo
+		------------------------------------------------------------------------
 		UINT				Id				     0			INTEGER PRIMARY KEY
 		sqlite_int64		Hash			     1			INT UNIQUE
 		std::wstring		Path			     2			VARCHAR(260)
@@ -84,7 +84,7 @@ BDMedio& BDMedio::operator = (const BDMedio& c) {
 		Extension_Medio		Extension		     5			INT
 		UINT				Reproducido		     6			INT
 		ULONG				Longitud		     7			INT
-		DWORD				IDDisco			     8			INT
+		DWORD				IDDisco			     8			INT						(DEPRECATED)
 		float				Nota			     9			DOUBLE
 		std::wstring		Genero		        10			VARCHAR(128)
 		std::wstring		GrupoPath	        11			VARCHAR(128)
@@ -116,7 +116,7 @@ void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades)
 	Extension		= static_cast<Extension_Medio>(sqlite3_column_int(SqlQuery, 5));
 	Reproducido		= static_cast<UINT>(sqlite3_column_int(SqlQuery, 6));
 	Longitud		= static_cast<DWORD>(sqlite3_column_int(SqlQuery, 7));
-	IDDisco			= static_cast<DWORD>(sqlite3_column_int(SqlQuery, 8));
+//	IDDisco			= static_cast<DWORD>(sqlite3_column_int(SqlQuery, 8));
 	Nota			= static_cast<float>(sqlite3_column_double(SqlQuery, 9));
 	const wchar_t *nGenero		= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 10));
 	const wchar_t *nGrupoPath	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 11));
@@ -145,8 +145,15 @@ void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades)
 	Contraste		= static_cast<float>(sqlite3_column_double(SqlQuery, 27));
 	Saturacion		= static_cast<float>(sqlite3_column_double(SqlQuery, 28));
 
-	DWL::DUnidadDisco *Unidad = Unidades.Buscar_Numero_Serie(IDDisco);
-	if (Unidad != NULL) Path[0] = Unidad->Letra();
+	// Busco la letra de unidad del medio
+	for (size_t i = 0; i < Unidades.TotalUnidades(); i++) {
+		Path[0] = Unidades.Unidad(i)->Letra();
+		if (GetFileAttributes(Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
+			break;
+		}
+	}
+/*	DWL::DUnidadDisco *Unidad = Unidades.Buscar_Numero_Serie(IDDisco);
+	if (Unidad != NULL) Path[0] = Unidad->Letra();*/
 
 	ObtenerMomentos(Id);
 }

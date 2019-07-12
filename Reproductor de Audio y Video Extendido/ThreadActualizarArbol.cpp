@@ -69,7 +69,9 @@ unsigned long ThreadActualizarArbol::_ThreadActualizar(void *pThis) {
 	BDRaiz *R = NULL;
 	for (i = 0; i < This->_BD.TotalRaices(); i++) {
 		R = This->_BD.Raiz(i);
-		TotalArchivos += This->_EscanearDirectorio(R->Path, R);
+		if (GetFileAttributes(R->Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
+			TotalArchivos += This->_EscanearDirectorio(R->Path, R);
+		}
 	}
 	// Termino la transaction para actualizar los datos básicos
 	This->_BD.Consulta(L"COMMIT TRANSACTION");

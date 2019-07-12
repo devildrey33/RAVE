@@ -116,14 +116,16 @@ const int RaveBD::Consulta(const wchar_t *TxtConsulta) {
 	return SqlRet;
 }
 
+// Obtiene el medio por el hash
 const BOOL RaveBD::ObtenerMedio(const sqlite3_int64 mHash, BDMedio &OUT_Medio) {
 	std::wstring    SqlStr = L"SELECT * FROM Medios WHERE Hash =" + std::to_wstring(mHash);
 	return _ConsultaObtenerMedio(SqlStr, OUT_Medio);
 }
 
+// Obtiene el medio por el path
 const BOOL RaveBD::ObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio) {
 	std::wstring TmpPath = mPath;
-	TmpPath[0] = L'%'; // Evito la letra de unidad (para raices cambiantes)
+	TmpPath[0] = L'?'; // Evito la letra de unidad (para raices cambiantes)
 	std::wstring SqlStr = L"SELECT * FROM Medios WHERE Path like \"" + TmpPath + L"\" COLLATE NOCASE"; // COLLATE NOCASE = Comparar strings case insensitive
 	return _ConsultaObtenerMedio(SqlStr, OUT_Medio);
 }
@@ -560,6 +562,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 		return FALSE;
 	}
 	int VecesBusy = 0;
+	int TotalAgregados = 0;
 	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
@@ -568,11 +571,17 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 			if (App.BD.Opciones_NoAgregarMedioMenos25() == TRUE) {
 				// si la nota es mas grande o igual que 2.5
 				if (TmpMedio.Nota >= 2.5f) {
-					OUT_Medios.push_back(TmpMedio);
+					if (GetFileAttributes(TmpMedio.Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
+						OUT_Medios.push_back(TmpMedio);
+						TotalAgregados++;
+					}
 				}
 			}
 			else {
-				OUT_Medios.push_back(TmpMedio);
+				if (GetFileAttributes(TmpMedio.Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
+					OUT_Medios.push_back(TmpMedio);
+					TotalAgregados++;
+				}
 			}
 		}
 		if (SqlRet == SQLITE_BUSY) {
@@ -599,11 +608,11 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 	// Muestro el tooltip en el player
 	std::wstring ToolTip;
 	switch (Tipo) {
-		case TLA_Genero:	ToolTip = L"Lista aleatória por Genero \""	+ Etiquetas[Rand]->Texto + L"\" generada con " + std::to_wstring(OUT_Medios.size()) + L" canciones.";	break;
-		case TLA_Grupo:		ToolTip = L"Lista aleatória por Grupo \""	+ Etiquetas[Rand]->Texto + L"\" generada con " + std::to_wstring(OUT_Medios.size()) + L" canciones.";	break;
-		case TLA_Disco:		ToolTip = L"Lista aleatória por Disco \""	+ Etiquetas[Rand]->Texto + L"\" generada con " + std::to_wstring(OUT_Medios.size()) + L" canciones.";	break;
-		case TLA_50Medios:	ToolTip = L"Lista aleatória con "			+ std::to_wstring(OUT_Medios.size()) + L" canciones generada.";											break;
-		case TLA_Nota:		ToolTip = L"Lista aleatória por Nota con "  + std::to_wstring(OUT_Medios.size()) + L" canciones generada.";											break;
+		case TLA_Genero:	ToolTip = L"Lista aleatória por Genero \""	+ Etiquetas[Rand]->Texto + L"\" generada con " + std::to_wstring(TotalAgregados) + L" canciones.";	break;
+		case TLA_Grupo:		ToolTip = L"Lista aleatória por Grupo \""	+ Etiquetas[Rand]->Texto + L"\" generada con " + std::to_wstring(TotalAgregados) + L" canciones.";	break;
+		case TLA_Disco:		ToolTip = L"Lista aleatória por Disco \""	+ Etiquetas[Rand]->Texto + L"\" generada con " + std::to_wstring(TotalAgregados) + L" canciones.";	break;
+		case TLA_50Medios:	ToolTip = L"Lista aleatória con "			+ std::to_wstring(TotalAgregados) + L" canciones generada.";										break;
+		case TLA_Nota:		ToolTip = L"Lista aleatória por Nota con "  + std::to_wstring(TotalAgregados) + L" canciones generada.";										break;
 	}
 	App.MostrarToolTipPlayer(ToolTip);
 
@@ -884,7 +893,7 @@ const BOOL RaveBD::_CrearTablas(void) {
 		Extension_Medio		Extension		     5			INT
 		UINT				Reproducido		     6			INT
 		ULONG				Longitud		     7			INT
-		DWORD				IDDisco			     8			INT
+		DWORD				IDDisco			     8			INT						(NO SE USA)
 		float				Nota			     9			DOUBLE
 		std::wstring		Genero		        10			VARCHAR(128)
 		std::wstring		GrupoPath	        11			VARCHAR(128)
@@ -1046,14 +1055,14 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 	// Recorto el path y substituyo la letra de unidad por un interrogante
 	std::wstring		PathCortado = nPath;
 	PathCortado[0] = L'?';
-	DWL::DUnidadDisco  *UnidadDisco = Unidades.Buscar_Letra(nPath[0]);
+//	DWL::DUnidadDisco  *UnidadDisco = Unidades.Buscar_Letra(nPath[0]);
 
 
 	size_t				PosNombre		= nPath.find_last_of(TEXT("\\"));																					// Posición donde empieza el nombre
 	size_t				PosExtension	= nPath.find_last_of(TEXT("."));																					// Posición donde empieza la extensión
 	Extension_Medio		Extension		= ExtensionesValidas::ObtenerExtension(nPath.substr(PosExtension + 1, (nPath.size() - PosExtension) - 1).c_str());	// Obtengo el tipo de extensión
 	Tipo_Medio			Tipo			= ExtensionesValidas::ObtenerTipoMedio(Extension);																	// Obtengo el tipo de medio
-	sqlite3_int64		Hash			= CrearHash(UnidadDisco->Numero_Serie(), PathCortado);																// Creo un hash partiendo del path y el número de serie del disco
+	sqlite3_int64		Hash			= CrearHash(PathCortado);																							// Creo un hash partiendo del path y el número de serie del disco
 	UINT				Pista			= 0;																												// Número de pista
 	std::wstring		TmpNombre;
 	std::wstring		NombreFinal;
@@ -1085,19 +1094,19 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 			OUT_Medio.TipoMedio		= Tipo;
 			OUT_Medio.Extension		= Extension;
 			OUT_Medio.PistaPath		= Pista;
-			OUT_Medio.IDDisco		= UnidadDisco->Numero_Serie();
+//			OUT_Medio.IDDisco		= UnidadDisco->Numero_Serie();
 			OUT_Medio.Longitud      = Longitud;
 			OUT_Medio.Nota          = 2;
 			OUT_Medio.Tiempo        = 0;
 			//SqlStr = L"INSERT INTO Medios (Hash, Path, NombrePath, TipoMedio, Extension, PistaPath, IDDisco, Longitud, Nota, Tiempo, Subtitulos, Parseado, DiscoPath, GrupoPath) VALUES(7931991700765854209,\"G:\\Pelis i Series\\...
-			SqlStr = L"INSERT INTO Medios (Hash, Path, NombrePath, TipoMedio, Extension, PistaPath, IDDisco, Longitud, Nota, Tiempo, Subtitulos, Parseado, DiscoPath, GrupoPath, Brillo, Saturacion, Contraste)"
+			SqlStr = L"INSERT INTO Medios (Hash, Path, NombrePath, TipoMedio, Extension, PistaPath, Longitud, Nota, Tiempo, Subtitulos, Parseado, DiscoPath, GrupoPath, Brillo, Saturacion, Contraste)"
 						  L" VALUES(" + std::to_wstring(Hash)							+ L",\"" +				// Hash
 										PathCortado										+ L"\",\"" +			// Path
 										NombreFinal										+ L"\", " +				// NombrePath
 										std::to_wstring(Tipo)							+ L"," +				// Tipo
 										std::to_wstring(Extension)						+ L"," +				// Extension
 										std::to_wstring(Pista)							+ L"," +				// PistaPath
-										std::to_wstring(UnidadDisco->Numero_Serie())	+ L"," +				// ID Disco Duro
+										//std::to_wstring(UnidadDisco->Numero_Serie())	+ L"," +				// ID Disco Duro
 										std::to_wstring(Longitud)						+ L"," +				// Longitud en bytes
 										L"2.5," +																// Nota
 										L"0," +																	// Tiempo
@@ -1134,12 +1143,12 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 }
 
 
-/* Función estatica para crear un hash a partir de un numero de serie del disco y el path de la canción */
+/* Función estatica para crear un hash a partir del path del medio */
 /* NOTA se eliminan los dos primeros carácteres del path que son los de la unidad, ya que los medios extraibles pueden cambiar de letra. */
-const sqlite3_int64 RaveBD::CrearHash(DWORD NumeroSerieDisco, std::wstring &nPath) {
+const sqlite3_int64 RaveBD::CrearHash(std::wstring &nPath) {
 	//	std::wstring PathCortado = Path.substr(2, Path.size() - 2);
 	std::hash<std::wstring> HashFunc;
-	return HashFunc(std::to_wstring(NumeroSerieDisco) + nPath.substr(2, nPath.size() - 2));
+	return HashFunc(nPath.substr(2, nPath.size() - 2));
 }
 
 
@@ -1886,7 +1895,7 @@ const int RaveBD::Distancia(std::wstring &Origen, std::wstring &Destino) {
 							 //	if (n < 3) return n; // Si origen es mas pequeño que 2 caracteres
 							 //	if (m < 3) return m; // Si destino es mas pequeño que 2 caracteres
 
-	typedef std::vector< std::vector<long> > Tmatrix;
+	typedef std::vector< std::vector<int> > Tmatrix;
 	Tmatrix matrix(n + 1);
 
 	// Size the vectors in the 2.nd dimension. Unfortunately C++ doesn't

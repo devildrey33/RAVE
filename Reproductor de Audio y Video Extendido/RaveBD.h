@@ -163,7 +163,7 @@ class RaveBD {
 	inline BDRaiz              *Raiz(const size_t Pos)  { return _Raices[Pos];   }
 
 								// Función que crea un Hash partiendo de la ID del disco y el path del medio
-	const sqlite3_int64			CrearHash(DWORD NSD, std::wstring &nPath);
+	const sqlite3_int64			CrearHash(std::wstring &nPath);
 
 								// Devuelve el puntero de la base de datos sqlite 3
 	inline sqlite3			   *operator()(void) { return _BD; }
