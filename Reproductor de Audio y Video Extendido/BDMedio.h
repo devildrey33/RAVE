@@ -71,6 +71,7 @@ class BDMedio {
 	BOOL                    Actualizar; // NO SE GUARDA EN LA BD, ES SOLO PARA SABER SI HAY QUE ACTUALIZAR EL MEDIO O NO:...
 		
 	void					PistaStr(std::wstring &nPistaStr);
+							// Función que obtiene todos los datos del medio en la BD
 	void					ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
 	void                    ObtenerMomentos(const UINT nId);
 

@@ -237,23 +237,23 @@ void VentanaOpcionesRAVE::Crear(void) {
 	};
 
 	// Genero
-	EtiquetaListaGenero.CrearEtiquetaEx(&MarcoListas2, L"Mezclar listas aleatórias por Genero", 10, 60, RC.right - 200, 20, ID_ETIQUETA_LISTAGENERO);
+	EtiquetaListaGenero.CrearEtiquetaEx(&MarcoListas2, L"Mezclar listas aleatórias por Genero", 10, 60, RC.right - 260, 20, ID_ETIQUETA_LISTAGENERO);
 	DesplegableListaGenero.CrearListaDesplegable(&MarcoListas2, Mezclar[App.BD.Opciones_MezclarListaGenero()], ID_DESPLEGABLE_LISTAGENERO, 0, RC.right - 240, 60, 210, 20, DEdicionTextoEx_Entrada_SinEntrada, 80);
 	for (int i = 0; i < 3; i++) DesplegableListaGenero.AgregarItem(Mezclar[i]);
 	// Grupo
-	EtiquetaListaGrupo.CrearEtiquetaEx(&MarcoListas2, L"Mezclar listas aleatórias por Grupo", 10, 85, RC.right - 200, 20, ID_ETIQUETA_LISTAGRUPO);
+	EtiquetaListaGrupo.CrearEtiquetaEx(&MarcoListas2, L"Mezclar listas aleatórias por Grupo", 10, 85, RC.right - 260, 20, ID_ETIQUETA_LISTAGRUPO);
 	DesplegableListaGrupo.CrearListaDesplegable(&MarcoListas2, Mezclar[App.BD.Opciones_MezclarListaGrupo()], ID_DESPLEGABLE_LISTAGRUPO, 0, RC.right - 240, 85, 210, 20, DEdicionTextoEx_Entrada_SinEntrada, 80);
 	for (int i = 0; i < 3; i++) DesplegableListaGrupo.AgregarItem(Mezclar[i]);
 	// Disco
-	EtiquetaListaDisco.CrearEtiquetaEx(&MarcoListas2, L"Mezclar listas aleatórias por Disco", 10, 110, RC.right - 200, 20, ID_ETIQUETA_LISTADISCO);
+	EtiquetaListaDisco.CrearEtiquetaEx(&MarcoListas2, L"Mezclar listas aleatórias por Disco", 10, 110, RC.right - 260, 20, ID_ETIQUETA_LISTADISCO);
 	DesplegableListaDisco.CrearListaDesplegable(&MarcoListas2, Mezclar[App.BD.Opciones_MezclarListaDisco()], ID_DESPLEGABLE_LISTADISCO, 0, RC.right - 240, 110, 210, 20, DEdicionTextoEx_Entrada_SinEntrada, 80);
 	for (int i = 0; i < 3; i++) DesplegableListaDisco.AgregarItem(Mezclar[i]);
 	// 50 Can
-	EtiquetaLista50Can.CrearEtiquetaEx(&MarcoListas2, L"Mezclar listas aleatórias con 50 Canciones", 10, 135, RC.right - 200, 20, ID_ETIQUETA_LISTA50CAN);
+	EtiquetaLista50Can.CrearEtiquetaEx(&MarcoListas2, L"Mezclar listas aleatórias con 50 Canciones", 10, 135, RC.right - 260, 20, ID_ETIQUETA_LISTA50CAN);
 	DesplegableLista50Can.CrearListaDesplegable(&MarcoListas2, Mezclar[App.BD.Opciones_MezclarLista50Can()], ID_DESPLEGABLE_LISTA50CAN, 0, RC.right - 240, 135, 210, 20, DEdicionTextoEx_Entrada_SinEntrada, 80);
 	for (int i = 0; i < 3; i++) DesplegableLista50Can.AgregarItem(Mezclar[i]);
 	// Nota
-	EtiquetaListaNota.CrearEtiquetaEx(&MarcoListas2, L"Mezclar listas por Nota", 10, 160, RC.right - 200, 20, ID_ETIQUETA_LISTANOTA);
+	EtiquetaListaNota.CrearEtiquetaEx(&MarcoListas2, L"Mezclar listas por Nota", 10, 160, RC.right - 260, 20, ID_ETIQUETA_LISTANOTA);
 	DesplegableListaNota.CrearListaDesplegable(&MarcoListas2, Mezclar[App.BD.Opciones_MezclarListaNota()], ID_DESPLEGABLE_LISTANOTA, 0, RC.right - 240, 160, 210, 20, DEdicionTextoEx_Entrada_SinEntrada, 80);
 	for (int i = 0; i < 3; i++) DesplegableListaNota.AgregarItem(Mezclar[i]);
 
@@ -457,6 +457,8 @@ void VentanaOpcionesRAVE::AgregarRaiz(void) {
 }
 
 void VentanaOpcionesRAVE::EliminarRaiz(std::wstring &Path) {
+	App.VentanaRave.ThreadActualizar.Terminar();
+	App.VentanaRave.ThreadAnalizar.Terminar();
 	App.BD.EliminarRaiz(Path);
 	ListaRaiz.EliminarItem(ListaRaiz.ItemMarcado());
 	ListaRaiz.Repintar();
@@ -478,8 +480,8 @@ void VentanaOpcionesRAVE::Evento_MarcaEx_Mouse_Click(DWL::DEventoMouse &DatosMou
 	switch (DatosMouse.ID()) {
 		case ID_MARCA_MOSTRARANALISIS :
 			App.BD.Opciones_MostrarObtenerMetadatos(MarcaMostrarAnalisis.Marcado());
-			if (MarcaMostrarAnalisis.Marcado() == TRUE)				App.MostrarToolTipOpciones(L"La ventana del análisis no se mostrará más.");
-			else													App.MostrarToolTipOpciones(L"La ventana del análisis se mostrará siempre.");
+			if (MarcaMostrarAnalisis.Marcado() == TRUE)				App.MostrarToolTipOpciones(L"La ventana del análisis se mostrará siempre.");
+			else													App.MostrarToolTipOpciones(L"La ventana del análisis no se mostrará más.");
 			break;
 		case ID_MARCA_ANALIZARPENDIENTES :
 			App.BD.Opciones_AnalizarMediosPendientes(MarcaAnalizarMediosPendientes.Marcado());

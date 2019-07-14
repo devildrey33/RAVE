@@ -1268,8 +1268,10 @@ void VentanaPrincipal::ActualizarArbol(void) {
 	NodoBD *Tmp = NULL;
 
 	for (size_t i = 0; i < App.BD.TotalRaices(); i++) {
-		Tmp = Arbol_AgregarRaiz(&App.BD.Raiz(i)->Path);
-		Arbol.ExplorarPath(Tmp);
+		if (GetFileAttributes(App.BD.Raiz(i)->Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
+			Tmp = Arbol_AgregarRaiz(&App.BD.Raiz(i)->Path);
+			Arbol.ExplorarPath(Tmp);
+		}
 	}
 
 	Arbol.Repintar();

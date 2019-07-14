@@ -667,7 +667,7 @@ const BOOL RaveBD::_ModificarTablas(void) {
 		// Añado la columna MezclarListaNota en las opciones
 		SqlRet = Consulta(L"ALTER TABLE Opciones	ADD COLUMN GuardarBSCP INTEGER AFTER MezclarListaNota");
 		// Modifico el valor de EfectoFadeAudioMS a 10000
-		SqlRet = Consulta(L"UPDATE Opciones SET EfectoFadeAudioMS=10000, DlgDirectorios_Ancho=400, DlgDirectorios_Alto=600, VentanaMomentos_PosX=100, VentanaMomentos_PosY=100"
+		SqlRet = Consulta(L"UPDATE Opciones SET EfectoFadeAudioMS=10000, DlgDirectorios_Ancho=400, DlgDirectorios_Alto=600, VentanaMomentos_PosX=100, VentanaMomentos_PosY=100,"
 			                                  " OcultarTooltipsMouse=0, MostrarMedioActualTitulo=1, MezclarListaGenero=0, MezclarListaGrupo=0, MezclarListaDisco=0, MezclarLista50Can=0,"
 											  " MezclarListaNota=0, GuardarBSCP=1 WHERE Id=0");
 
@@ -682,6 +682,8 @@ const BOOL RaveBD::_ModificarTablas(void) {
 		SqlRet = Consulta(L"ALTER TABLE Medios ADD COLUMN Saturacion INTEGER AFTER Contraste");
 		// Actualizo los valores de proporcion, brillo, contraste, y saturación
 		SqlRet = Consulta(L"UPDATE Medios SET Proporcion='', Brillo=1.0, Contraste=1.0, Saturacion=1.0");
+
+		ActualizarHashs11();
 
 		// TeclasRapidas ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Añado la tecla F1 a la tabla TeclasRapidas
@@ -1841,13 +1843,13 @@ const BOOL RaveBD::MedioNota(NodoBD *nMedio, const float nNota) {
 const BOOL RaveBD::ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios) {
 	const wchar_t  *Q = L"SELECT Id, NombrePath, Genero, GrupoPath, DiscoPath, NombreTag, GrupoTag, DiscoTag, Path, PistaTag, PistaPath, Nota, Tiempo, Longitud FROM Medios WHERE TipoMedio=1"; // Tipo_Medio_Audio
 	
-	wchar_t		   *SqlError = NULL;
 	int				SqlRet = 0;
 	sqlite3_stmt   *SqlQuery = NULL;
 	BDMedio         TmpMedio;
 
 	SqlRet = sqlite3_prepare16_v2(_BD, Q, -1, &SqlQuery, NULL);
 	if (SqlRet) {
+		sqlite3_finalize(SqlQuery);
 		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
 		return FALSE;
 	}
@@ -1895,6 +1897,65 @@ const BOOL RaveBD::ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios) {
 	return (SqlRet != SQLITE_BUSY);
 }
 
+// Funcion que actualiza los hash de los medios a la versión 1.1 de la BD
+// En la versión 1.0 los hash se basaban en el numero de serie del disco + el path del archivo
+// Ahora en la versión 1.1 se prescinde de la id del disco y solo se utiliza el path del archivo para crear el hash
+const BOOL RaveBD::ActualizarHashs11(void) {
+	Debug_Escribir(L"RaveBD::ActualizarHashs11 Actualizando los hash de todos los medios a la versión 1.1 ...\n");
+
+	std::wstring	Q			= L"SELECT Id, Path FROM Medios";
+	int				SqlRet		= 0;
+	int				SqlRetC		= 0;
+	sqlite3_stmt   *SqlQuery	= NULL;
+	sqlite3_int64	Hash		= 0;
+	UINT            Id			= 0;
+	int				VecesBusy	= 0;
+	std::wstring    Path;
+
+	// Realizar todo el trabajo en memória (es mucho mas rápido)
+	Consulta(L"BEGIN TRANSACTION");
+
+	// Ejecuto la consulta
+	SqlRet = sqlite3_prepare16_v2(_BD, Q.c_str(), -1, &SqlQuery, NULL);
+	// Compruebo errores
+	if (SqlRet) {
+		sqlite3_finalize(SqlQuery);
+		_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
+		Consulta(L"COMMIT TRANSACTION");
+		return FALSE;
+	}
+	// Recorro la consulta
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
+		SqlRet = sqlite3_step(SqlQuery);
+		if (SqlRet == SQLITE_ROW) {
+			Path = reinterpret_cast<const wchar_t*>(sqlite3_column_text16(SqlQuery, 1));
+			Id   = static_cast<UINT>(sqlite3_column_int(SqlQuery, 0));
+			SqlRetC = Consulta(L"UPDATE Medios SET Hash = " + std::to_wstring(CrearHash(Path)) + L" WHERE Id = " + std::to_wstring(Id));
+		}
+		// La base de datos parece estár bloqueada por otro proceso
+		if (SqlRet == SQLITE_BUSY) {			
+			if (++VecesBusy == 100) break;
+		}
+	}
+	// Termino la consulta
+	sqlite3_finalize(SqlQuery);
+
+	// Vuelco el resultado al disco
+	Consulta(L"COMMIT TRANSACTION");
+
+	// Compruebo errores
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+
+	return (SqlRet != SQLITE_BUSY);
+}
+
+// Función que actualiza un hash especificado en el medio que corresponda con la Id especificada
+/*const BOOL RaveBD::ActualizarHash(const UINT IdMedio, const sqlite3_int64 nHash) {
+	
+}*/
 
 
 const int RaveBD::Distancia(std::wstring &Origen, std::wstring &Destino) {

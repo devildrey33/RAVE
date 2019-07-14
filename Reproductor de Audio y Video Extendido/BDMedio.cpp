@@ -159,6 +159,8 @@ void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades)
 }
 
 
+
+
 void BDMedio::ObtenerMomentos(const UINT nId) {
 	BorrarMomentos();
 

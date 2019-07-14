@@ -123,6 +123,11 @@ class RaveBD {
 	const BOOL                  ObtenerMediosPorParsear(std::vector<std::wstring> &Paths);
 	const BOOL                  ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios);
 
+								// Funcion que actualiza los hash de los medios a la versión 1.1 de la BD
+	const BOOL                  ActualizarHashs11(void);
+								// Función que actualiza un hash especificado en el medio que corresponda con la Id especificada
+//	const BOOL                  ActualizarHash(const UINT IdMedio, const sqlite3_int64 nHash);
+
 								// Suma 1 a las veces que se ha reproducido el medio
 	const BOOL                  MedioReproducido(BDMedio *rMedio);
 								// Asigna la nota de un medio de la lista o el arbol
