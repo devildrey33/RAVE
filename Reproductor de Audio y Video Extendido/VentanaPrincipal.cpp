@@ -90,6 +90,9 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	BotonLista.CrearBotonEx(&MarcoII, L"Lista de medios", 0, 35, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_LISTA);
 	BotonVideo.CrearBotonEx(&MarcoII, L"Ver video", 0, 70, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_VIDEO);
 	
+	TestEdit.Alineacion = DEdicionTextoEx_Alineacion_Derecha;
+	TestEdit.CrearEdicionTextoEx(&MarcoII, L"Test", 0, 110, RAVE_BOTONES_LATERALES_ANCHO, 20, 0);
+
 	BotonOpciones.CrearBotonEx(&MarcoII, L"Opciones", 0, RC.bottom - 120, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_OPCIONES);
 	
 	#ifdef RAVE_VLC_DOBLE_MEDIO_FFT

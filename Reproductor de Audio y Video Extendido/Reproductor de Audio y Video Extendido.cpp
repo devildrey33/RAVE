@@ -85,7 +85,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstanc
 	}
 	App.Terminar();
 	// Elimino la clase aplicacion de la DWL
-	delete _Aplicacion;
+//	delete _Aplicacion;
 
 	return 0;
 }

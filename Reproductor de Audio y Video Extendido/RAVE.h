@@ -167,10 +167,11 @@ static void PintarTexto(HDC DC, std::wstring &sTexto, const int PosX, const int 
 	TextOut(DC, PosX, PosY, sTexto.c_str(), static_cast<int>(sTexto.size()));
 }
 
+INICIAR_DWL3(RAVE);
 
 //void RAVE_Iniciar();
 
-#define App static_cast<RAVE &>(*_Aplicacion)
+//#define App static_cast<RAVE &>(*_Aplicacion)
 
 
 

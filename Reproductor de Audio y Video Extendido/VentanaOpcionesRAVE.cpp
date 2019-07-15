@@ -416,6 +416,9 @@ void VentanaOpcionesRAVE::AgregarRaiz(void) {
 	App.VentanaRave.ThreadActualizar.Cancelar(TRUE);
 	App.VentanaRave.ThreadAnalizar.Cancelar(TRUE);
 
+	// No muestro las redes
+	DialogoDirectorios.ArbolDirectorios.MostrarRed = FALSE;
+
 	BOOL Ret = DialogoDirectorios.Mostrar(this, Path, App.BD.Opciones_DlgDirectorios_PosX(), App.BD.Opciones_DlgDirectorios_PosY(), App.BD.Opciones_DlgDirectorios_Ancho(), App.BD.Opciones_DlgDirectorios_Alto(), IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 	//	SetFocus(_hWnd);
 	if (Ret == TRUE) {
@@ -457,8 +460,8 @@ void VentanaOpcionesRAVE::AgregarRaiz(void) {
 }
 
 void VentanaOpcionesRAVE::EliminarRaiz(std::wstring &Path) {
-	App.VentanaRave.ThreadActualizar.Terminar();
-	App.VentanaRave.ThreadAnalizar.Terminar();
+	App.VentanaRave.ThreadActualizar.Cancelar(TRUE);
+	App.VentanaRave.ThreadAnalizar.Cancelar(TRUE);
 	App.BD.EliminarRaiz(Path);
 	ListaRaiz.EliminarItem(ListaRaiz.ItemMarcado());
 	ListaRaiz.Repintar();
