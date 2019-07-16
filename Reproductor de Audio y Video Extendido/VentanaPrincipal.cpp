@@ -89,10 +89,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	BotonBD.Marcado(TRUE); // Por defecto siempre se muestra la base de datos al empezar
 	BotonLista.CrearBotonEx(&MarcoII, L"Lista de medios", 0, 35, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_LISTA);
 	BotonVideo.CrearBotonEx(&MarcoII, L"Ver video", 0, 70, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_VIDEO);
-	
-	TestEdit.Alineacion = DEdicionTextoEx_Alineacion_Derecha;
-	TestEdit.CrearEdicionTextoEx(&MarcoII, L"Test", 0, 110, RAVE_BOTONES_LATERALES_ANCHO, 20, 0);
-
+	// El Boton Opciones queda siempre en la parte inferior del marco, para que quede separado de los otros (ya que es una ventana externa)
 	BotonOpciones.CrearBotonEx(&MarcoII, L"Opciones", 0, RC.bottom - 120, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_OPCIONES);
 	
 	#ifdef RAVE_VLC_DOBLE_MEDIO_FFT

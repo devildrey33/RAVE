@@ -214,8 +214,6 @@ class VentanaPrincipal : public DWL::DVentana {
 	DWL::DBotonEx				BotonVideo;
 								// Boton opciones
 	DWL::DBotonEx				BotonOpciones;
-
-	DWL::DEdicionTextoEx		TestEdit;
 								// Control para la lista de medios
 	ListaMedios					Lista;
 								// Control para el video

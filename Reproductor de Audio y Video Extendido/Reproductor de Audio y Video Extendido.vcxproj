@@ -294,6 +294,7 @@
     <Image Include="..\Iconos\IDI_CDAudio.ico" />
     <Image Include="..\Iconos\IDI_Check.ico" />
     <Image Include="..\Iconos\IDI_Check2.ico" />
+    <Image Include="..\Iconos\IDI_devildrey33.ico" />
     <Image Include="..\Iconos\IDI_Directorio.ico" />
     <Image Include="..\Iconos\IDI_Disco.ico" />
     <Image Include="..\Iconos\IDI_Eliminar.ico" />

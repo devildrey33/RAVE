@@ -219,7 +219,7 @@ void VentanaOpcionesRAVE::Crear(void) {
 	MarcaSumar005.Marcado(App.BD.Opciones_Sumar005());
 
 	SeparadorLista3.Crear(&MarcoListas, 0, 270, RC.right - 10);
-	EtiquetaListaInicio.CrearEtiquetaEx(&MarcoListas, L"Que tipo de lista se debe generar al iniciar?"				, 10, 280, RC.right - 205, 20, ID_ETIQUETA_LISTAINICIO);
+	EtiquetaListaInicio.CrearEtiquetaEx(&MarcoListas, L"Que tipo de lista se debe generar al iniciar?"				, 10, 280, RC.right - 260, 20, ID_ETIQUETA_LISTAINICIO);
 	DesplegableListaInicio.CrearListaDesplegable(&MarcoListas, L"", ID_DESPLEGABLE_LISTAINICIO, 0					, RC.right - 215, 280, 185, 20, DEdicionTextoEx_Entrada_SinEntrada, 300);
 	ActualizarListaInicio();
 
