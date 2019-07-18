@@ -43,7 +43,8 @@ void VentanaMomento::Mostrar(BDMedio& nMedio) {
 	Boton_EliminarMomento.CrearBotonEx(this, L"Eliminar", 190, 160, 70, 30, ID_ELIMINARMOMENTO, WS_CHILD | WS_VISIBLE);
 	Boton_EliminarMomento.Activado(FALSE);
 
-	Txt_Nombre.CrearEdicionTextoEx(this, L"Nombre del momento", 270, 10, 450, 30, ID_TXTNOMBRE);
+	Txt_Nombre.CrearEdicionTextoEx(this, L"", 270, 10, 450, 30, ID_TXTNOMBRE);
+	Txt_Nombre.Placeholder = L"Nombre del momento";
 	Txt_Nombre.Activado(FALSE);
 	std::wstring Tiempo;
 	App.MP.TiempoStr(0, Tiempo);
