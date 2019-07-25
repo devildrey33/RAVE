@@ -23,9 +23,16 @@ class Actualizaciones {
 	static unsigned long   _ThreadBuscar(void* pThis);
 							// Función main para el hilo de descargar la actualizacion
 	static unsigned long   _ThreadDescargar(void* pThis);
+							// Variable que determina si hay que cancelar la busqueda o la descarga
 	BOOL                   _Cancelar;
+							// Handle para el thread buscar
 	HANDLE                 _hThreadBuscar;
+							// Handle para el thread descargar
 	HANDLE                 _hThreadDescargar;
+							// Mutex para los threads buscar y descargar
 	std::mutex             _Mutex;
+							// HWND de la ventana principal del reproductor
+	static HWND            _VentanaRave;
+	static std::wstring    _Version;
 };
 

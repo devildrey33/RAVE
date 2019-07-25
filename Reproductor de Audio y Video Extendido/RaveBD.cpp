@@ -65,19 +65,11 @@ void RaveBD::Terminar(void) {
 	_BD = NULL;
 }
 
-/*
-const int RaveBD::ConsultaVarg(const wchar_t *TxtConsulta, ...) {
-	static wchar_t  Texto[4096];
-	va_list			Marker;
-	va_start(Marker, TxtConsulta);
-	vswprintf_s(Texto, 4096, TxtConsulta, Marker);
-	va_end(Marker);
-	return Consulta(Texto);
-}*/
 
 const LONG_PTR RaveBD::UltimaIdInsertada(void) {
 	return static_cast<LONG_PTR>(sqlite3_last_insert_rowid(_BD));
 }
+
 
 // Función para realizar consultas simples 
 const int RaveBD::Consulta(const wchar_t *TxtConsulta) {
@@ -1654,6 +1646,11 @@ const BOOL RaveBD::ObtenerOpciones(void) {
 			_Opciones_MezclarLista50Can			= static_cast<int>(sqlite3_column_int(SqlQuery, 39));
 			_Opciones_MezclarListaNota			= static_cast<int>(sqlite3_column_int(SqlQuery, 40));
 			_Opciones_GuardarBSCP				= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 41));
+
+			// Si hay alguna opcion de mezclar lista que no sea cero, establezco el shufle inicial a FALSE.
+			if (_Opciones_MezclarListaGenero != 0 || _Opciones_MezclarListaGrupo != 0 || _Opciones_MezclarListaDisco != 0 || _Opciones_MezclarLista50Can != 0 || _Opciones_MezclarListaNota != 0) {				
+				_Opciones_Shufle = FALSE;
+			}
 		}
 		if (SqlRet == SQLITE_BUSY) {
 			VecesBusy++;

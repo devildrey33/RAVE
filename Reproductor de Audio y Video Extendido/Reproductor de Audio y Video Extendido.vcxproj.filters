@@ -56,7 +56,7 @@
     <Filter Include="Ventanas y Controles\Ventanas">
       <UniqueIdentifier>{45cc9b22-ca73-44eb-903b-e466183b06d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Actualizaciones">
+    <Filter Include="xXx _MAIN_ xXx\Actualizaciones">
       <UniqueIdentifier>{0d931b0e-4ca4-4d58-96a6-12c77db82615}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -200,7 +200,10 @@
       <Filter>Base de datos</Filter>
     </ClInclude>
     <ClInclude Include="Actualizaciones.h">
-      <Filter>Actualizaciones</Filter>
+      <Filter>xXx _MAIN_ xXx\Actualizaciones</Filter>
+    </ClInclude>
+    <ClInclude Include="RAVE_Mensajes.h">
+      <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -313,7 +316,7 @@
       <Filter>Base de datos</Filter>
     </ClCompile>
     <ClCompile Include="Actualizaciones.cpp">
-      <Filter>Actualizaciones</Filter>
+      <Filter>xXx _MAIN_ xXx\Actualizaciones</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

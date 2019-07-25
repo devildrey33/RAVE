@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Reproductor de Audio y Video Extendido", "Reproductor de Audio y Video Extendido\Reproductor de Audio y Video Extendido.vcxproj", "{786A9BEF-4D80-4511-98AD-E6C9A61B2824}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CDEEAE52-009B-41D5-9F2F-77CF4844349E} = {CDEEAE52-009B-41D5-9F2F-77CF4844349E}
+		{FCD76E85-C105-47BB-BFDF-3E7C66569D49} = {FCD76E85-C105-47BB-BFDF-3E7C66569D49}
 	EndProjectSection
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Instalador x86", "Instalador x86.vdproj", "{268C30C8-A440-4FAD-9C60-DB1FACA6942C}"
@@ -20,7 +21,7 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Instalador x64", "Instalado
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DWL3", "..\DWL3\DWL3\DWL3.vcxproj", "{CDEEAE52-009B-41D5-9F2F-77CF4844349E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Loader Actualizador", "LoaderActualizador\RAVE_LoaderActualizador.vcxproj", "{736EE0EF-193C-46EF-BCDC-0B7DBF7725FE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CrearMD5", "CrearMD5\CrearMD5.vcxproj", "{FCD76E85-C105-47BB-BFDF-3E7C66569D49}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CDEEAE52-009B-41D5-9F2F-77CF4844349E} = {CDEEAE52-009B-41D5-9F2F-77CF4844349E}
 	EndProjectSection
@@ -65,14 +66,14 @@ Global
 		{CDEEAE52-009B-41D5-9F2F-77CF4844349E}.Release|Win32.Build.0 = Release|Win32
 		{CDEEAE52-009B-41D5-9F2F-77CF4844349E}.Release|x64.ActiveCfg = Release|x64
 		{CDEEAE52-009B-41D5-9F2F-77CF4844349E}.Release|x64.Build.0 = Release|x64
-		{736EE0EF-193C-46EF-BCDC-0B7DBF7725FE}.Debug|Win32.ActiveCfg = Debug|Win32
-		{736EE0EF-193C-46EF-BCDC-0B7DBF7725FE}.Debug|Win32.Build.0 = Debug|Win32
-		{736EE0EF-193C-46EF-BCDC-0B7DBF7725FE}.Debug|x64.ActiveCfg = Debug|x64
-		{736EE0EF-193C-46EF-BCDC-0B7DBF7725FE}.Debug|x64.Build.0 = Debug|x64
-		{736EE0EF-193C-46EF-BCDC-0B7DBF7725FE}.Release|Win32.ActiveCfg = Release|Win32
-		{736EE0EF-193C-46EF-BCDC-0B7DBF7725FE}.Release|Win32.Build.0 = Release|Win32
-		{736EE0EF-193C-46EF-BCDC-0B7DBF7725FE}.Release|x64.ActiveCfg = Release|x64
-		{736EE0EF-193C-46EF-BCDC-0B7DBF7725FE}.Release|x64.Build.0 = Release|x64
+		{FCD76E85-C105-47BB-BFDF-3E7C66569D49}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FCD76E85-C105-47BB-BFDF-3E7C66569D49}.Debug|Win32.Build.0 = Debug|Win32
+		{FCD76E85-C105-47BB-BFDF-3E7C66569D49}.Debug|x64.ActiveCfg = Debug|x64
+		{FCD76E85-C105-47BB-BFDF-3E7C66569D49}.Debug|x64.Build.0 = Debug|x64
+		{FCD76E85-C105-47BB-BFDF-3E7C66569D49}.Release|Win32.ActiveCfg = Release|Win32
+		{FCD76E85-C105-47BB-BFDF-3E7C66569D49}.Release|Win32.Build.0 = Release|Win32
+		{FCD76E85-C105-47BB-BFDF-3E7C66569D49}.Release|x64.ActiveCfg = Release|x64
+		{FCD76E85-C105-47BB-BFDF-3E7C66569D49}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

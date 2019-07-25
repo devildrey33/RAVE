@@ -4,7 +4,9 @@
 
 * Ya no se agregan medios que esten temporalmente ausentes o no existan a las listas aleatórias.
 
-* Las raices no disponibles ya no muestran un icono con una estrella en las opciones.
+* Las raices no disponibles ya no muestran un icono con una estrella en las opciones, y ahora muestran un texto (no disponible) para dejar claro que no está disponible.
+
+* Las raices no disponibles ya no muestran su carpeta vacia en la base de datos.
 
 * Se ha restaurado el icono para borrar raices en el mismo item que representa una raíz (en las opciones)
 
@@ -15,6 +17,10 @@
 * Solucionado bug que no almacenaba las etiquetas de los generos al analizar la canción.
 
 * Solucionado el ancho de las etiquetas de Opciones -> Lista2 que se solapaban con los controles desplegables y no dejaban llegar los eventos de mouse en los primeros 60 pixeles de los desplegables.
+	* Lo mismo con Opciones -> Lista, que tambien tiene un control desplegable (es el problema que tiene el copy/paste a veces...)
+
+* Añadidas funcionabilidades básicas a los controles de edición de texto : alineación, selección, control + [c x v], placeholder, control [z y] con un buffer ilimitado.
+	* No son 100% funcionales aún, pero para lo que necesita el reproductor creo que va sobrado.
 
 
 

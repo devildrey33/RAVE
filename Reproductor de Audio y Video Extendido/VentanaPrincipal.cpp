@@ -1010,8 +1010,6 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 		SetWindowLongPtr(Lista.hWnd(), GWL_STYLE, Estilos | WS_CHILD);
 		SetWindowLongPtr(Lista.hWnd(), GWL_EXSTYLE, EstilosEx);
 
-//		EstilosEx = GetWindowLongPtr(Arbol.hWnd(), GWL_EXSTYLE);
-//		BOOL T = EstilosEx & WS_EX_LAYERED;
 
 		Arbol.Visible(FALSE);
 		Lista.Visible(FALSE);
@@ -1033,13 +1031,9 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 		Arbol.SkinScroll = ScrollSkinClaro;
 		Arbol.Skin       = ArbolSkinClaro;
 		Arbol.ActualizarSkin();
-
-//		AsignarFoco();
 	}
 
 	InvalidateRect(App.MP.hWndVLC, NULL, TRUE);
-//	SetTimer(hWnd(), TIMER_REPINTARVLC, 1000, NULL);
-//	PostMessage(Video.hWnd(), WM_PAINT, 0, 0);
 }
 
 void VentanaPrincipal::Evento_SliderTiempo_Cambiado(void) {
@@ -1192,34 +1186,26 @@ const BOOL VentanaPrincipal::Arbol_MostrarMedio(BDMedio &mMedio) {
 			if (TmpNodo2 == NULL && i != nSplit.Total() - 1) {
 				TmpNodo = Arbol_AgregarDir(&PathActual);
 				Arbol.Expandir(TmpNodo, TRUE);
-//				Arbol.Evento_Nodo_Expandido(TmpNodo, TRUE);
 			}
 			// El nodo si que existe, asigno TmpNodo2 a TmpNodo
 			else {
 				TmpNodo = TmpNodo2;
 				Arbol.Expandir(TmpNodo, TRUE);
-//				Arbol.Evento_Nodo_Expandido(TmpNodo, TRUE);
 			}
 		}
 		else {
 			std::wstring FiltroNombre;
-//			RaveBD::FiltroNombre(nSplit[i], FiltroNombre);
 
 			if (mMedio.Pista() < 10)	{ FiltroNombre = L"0" + std::to_wstring(mMedio.Pista()) + L" " + mMedio.Nombre(); }
 			else						{ FiltroNombre = std::to_wstring(mMedio.Pista()) + L" " + mMedio.Nombre(); }
-
 
 			TmpNodo2 = Arbol.BuscarHijoTxt(FiltroNombre, TmpNodo);
 			Arbol.DesSeleccionarTodo();
 			Arbol.SeleccionarNodo(TmpNodo2, TRUE);
 			Arbol.NodoMarcado(TmpNodo2);
 			Arbol.MostrarNodo(TmpNodo2);
-
-//			Arbol.Evento_Nodo_Expandido(TmpNodo, TRUE);
 		}
 	}
-//	Arbol.MostrarNodo(TmpNodo);
-//	Arbol.Repintar();
 	return TRUE;
 }
 
@@ -1310,31 +1296,13 @@ void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
 	Lista.Repintar();
 
 	if (Reproducir == TRUE) {
-/*		ItemMedio *Item = Lista.BuscarHash(Medio.Hash);
-		for (LONG_PTR i = 0; i < Lista.TotalItems(); i++) {
-			if (Item == Lista.Medio(i)) {
-				Lista.MedioActual = i;
-				break;
-			}
-		}		*/
 		Lista.MedioActual = Lista.BuscarHash(Hash);
 		//Lista_Stop();
 		App.MP.CerrarMedio();
 		Lista_Play();
 	}
 }
-/*
-void VentanaPrincipal::Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado) {
-	
-}
 
-void VentanaPrincipal::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
-	//DhWnd::Teclado[DatosTeclado.TeclaVirtual()] = false;
-}
-
-void VentanaPrincipal::Evento_Tecla(DWL::DEventoTeclado &DatosTeclado) {
-
-}*/
 
 void VentanaPrincipal::Evento_BarraEx_Cambiando(DWL::DEventoMouse &DatosMouse) {
 	switch (DatosMouse.ID()) {
@@ -1405,7 +1373,6 @@ void VentanaPrincipal::ThreadABuscarArchivos_Terminado(const BOOL Cancelado, LPA
 
 
 void VentanaPrincipal::ThreadAnalizar_Terminado(const BOOL Cancelado, LPARAM lParam) {
-
 	ThreadAnalizar.Terminar();
 	BarraTareas.Estado_SinProgreso();
 	Menu_ArbolBD.Menu(7)->Activado(TRUE); // Menu analizar
@@ -1439,121 +1406,83 @@ void VentanaPrincipal::ThreadAnalizar_TotalMedios2(void) {
 	BarraTareas.Valor(++_ValorMedios2, _MaximoTotalMedios2);
 }
 
+void VentanaPrincipal::DescargarActualizacion(const wchar_t *nVersion) {
+	Debug_Escribir_Varg(L"VentanaPrincipal::DescargarActualizacion Nueva versión %s encontrada.\n", nVersion);
+	App.Actualizacion.Descargar();
+}
+
+void VentanaPrincipal::_Evento_Size(void) {
+	RECT RCWMS;
+	GetClientRect(hWnd(), &RCWMS);
+	AjustarControles(RCWMS);
+//	Debug_Escribir_Varg(L"WM_SIZE %d, %d\n", wParam, lParam);
+}
+
+void VentanaPrincipal::_Evento_ExitSizeMove(void) {
+	if (App.VentanaRave.Maximizada() == FALSE) {
+		App.BD.Opciones_GuardarPosTamVentana();
+	}
+//	Debug_Escribir_Varg(L"WM_EXITSIZEMOVE %d, %d\n", wParam, lParam);
+}
 
 LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
-//	std::wstring *TmpStr = NULL;
-//	BDMedio *Medio = NULL;
 	switch (uMsg) {
-		case WM_AGREGARMEDIO :
-			ExploradorAgregarMedio(FALSE);
-			break;
-		case WM_REPRODUCIRMEDIO :
-			ExploradorAgregarMedio(TRUE);
-			break;
+		// Mensajes desde el explorador de windows
+		case WM_AGREGARMEDIO				:	ExploradorAgregarMedio(FALSE);															return 0;
+		case WM_REPRODUCIRMEDIO				:	ExploradorAgregarMedio(TRUE);															return 0;
+
+		// Para el thread que busca las actualizaciones
+		case WM_ACTUALIZACION_ENCONTRADA	:	DescargarActualizacion(reinterpret_cast<wchar_t *>(wParam));							return 0;
 
 		// Para el Thread AgregarArchivosLista, al agregar/obtener el archivo en la BD, ya se puede agregar a la lista.
-		case WM_TAAL_AGREGARMEDIO	:			ThreadAgregarArchivosLista_AgregarMedio(wParam);								return 0;
-		case WM_TAAL_TERMINADO		:			ThreadAgregarArchivosLista_Terminado();											return 0;
+		case WM_TAAL_AGREGARMEDIO			:	ThreadAgregarArchivosLista_AgregarMedio(wParam);										return 0;
+		case WM_TAAL_TERMINADO				:	ThreadAgregarArchivosLista_Terminado();													return 0;
 
 		// ThreadBuscarArchivos
-		case WM_TBA_AGREGARRAIZ		:			ThreadABuscarArchivos_AgregarRaiz(lParam);										return 0;
-		case WM_TBA_AGREGARDIR		:			ThreadABuscarArchivos_AgregarDirectorio(lParam);								return 0;
-		case WM_TBA_TERMINADO		:			ThreadABuscarArchivos_Terminado(FALSE, lParam);									return 0;
-		case WM_TBA_CANCELADO		:			ThreadABuscarArchivos_Terminado(TRUE, lParam);									return 0;
+		case WM_TBA_AGREGARRAIZ				:	ThreadABuscarArchivos_AgregarRaiz(lParam);												return 0;
+		case WM_TBA_AGREGARDIR				:	ThreadABuscarArchivos_AgregarDirectorio(lParam);										return 0;
+		case WM_TBA_TERMINADO				:	ThreadABuscarArchivos_Terminado(FALSE, lParam);											return 0;
+		case WM_TBA_CANCELADO				:	ThreadABuscarArchivos_Terminado(TRUE, lParam);											return 0;
 
 		// ThreadAnalizar
-		case WM_TOM_INICIADO2		:			ThreadAnalizar_Iniciado2(wParam);												return 0;
-		case WM_TOM_TOTALMEDIOS1	:			ThreadAnalizar_TotalMedios(wParam, lParam);										return 0;
-		case WM_TOM_TOTALMEDIOS2	:			ThreadAnalizar_TotalMedios2();													return 0;
-		case WM_TOM_TOTALMEDIOS3	:			ThreadAnalizar_TotalMedios(wParam, lParam);										return 0;
-		case WM_TOM_CANCELADO		:			ThreadAnalizar_Terminado(TRUE, lParam);											return 0;
-		case WM_TOM_TERMINADO		:			ThreadAnalizar_Terminado(FALSE, lParam);										return 0;
-		case WM_TOM_MOSTRARVENTANA	:			ThreadAnalizar_MostrarVentana();												return 0;
+		case WM_TOM_INICIADO2				:	ThreadAnalizar_Iniciado2(wParam);														return 0;
+		case WM_TOM_TOTALMEDIOS1			:	ThreadAnalizar_TotalMedios(wParam, lParam);												return 0;
+		case WM_TOM_TOTALMEDIOS2			:	ThreadAnalizar_TotalMedios2();															return 0;
+		case WM_TOM_TOTALMEDIOS3			:	ThreadAnalizar_TotalMedios(wParam, lParam);												return 0;
+		case WM_TOM_CANCELADO				:	ThreadAnalizar_Terminado(TRUE, lParam);													return 0;
+		case WM_TOM_TERMINADO				:	ThreadAnalizar_Terminado(FALSE, lParam);												return 0;
+		case WM_TOM_MOSTRARVENTANA			:	ThreadAnalizar_MostrarVentana();														return 0;
 
-		// Temporizadores con post message
-//		case WM_TIMER_LISTA			:			App.MP.Temporizador_Lista();													return 0;
-//		case WM_TIMER_TIEMPO		:			App.MP.Temporizador_Tiempo();													return 0;
-//		case WM_MEDIO_TERMINADO		:           App.MP.Evento_Medio_Terminado(reinterpret_cast<RaveVLC_Medio *>(wParam));		return 0;
+		// Drag & Drop
+		case WM_DROPFILES					:	Evento_SoltarArchivos(wParam);															return 0;
+		// Evento cerrar ventana
+		case WM_CLOSE						:	Evento_Cerrar();																		return 0;
 
-		case WM_DROPFILES :			
-			Evento_SoltarArchivos(wParam);
-			return 0;
-
-		// Teclado
-/*		case WM_KEYDOWN:		
-			Evento_TeclaPresionada(DWL::DEventoTeclado(wParam, lParam, this));															
-			break;	// Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general
-		case WM_KEYUP:
-			Evento_TeclaSoltada(DWL::DEventoTeclado(wParam, lParam, this));
-			break;	// Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general
-		case WM_CHAR:
-			Evento_Tecla(DWL::DEventoTeclado(wParam, lParam, this));
-			break;	// Los eventos de teclado tienen que pasar a la clase super base para poder obtener el teclado general*/
-
-
-
-/*		case WM_TIMER:	
-			this->Evento_Temporizador(static_cast<UINT>(wParam));
-			return 0;*/
-		case WM_CLOSE : 
-			Evento_Cerrar();
-			return 0;
-		case DWL_MENUEX_CLICK :
-			Evento_MenuEx_Click(LOWORD(wParam));
-			return 0;
-		case DWL_MENUEX_BARRA_CAMBIADO:
-			Evento_MenuEx_Barra_Cambiado(LOWORD(wParam), static_cast<float>(lParam) / 100.0f);
-			return 0;
-		case DWL_MENUEX_BARRA_CAMBIANDO :
-			Evento_MenuEx_Barra_Cambiando(LOWORD(wParam), static_cast<float>(lParam) / 100.0f);
-			return 0;
-		case WM_EXITSIZEMOVE  :
-			if (App.VentanaRave.Maximizada() == FALSE) {
-				App.BD.Opciones_GuardarPosTamVentana();
-			}			
-			Debug_Escribir_Varg(L"WM_EXITSIZEMOVE %d, %d\n", wParam, lParam);
-			return 0;
-		case WM_SIZE :
-			RECT RCWMS;
-			GetClientRect(hWnd(), &RCWMS);
-			AjustarControles(RCWMS);
-			Debug_Escribir_Varg(L"WM_SIZE %d, %d\n", wParam, lParam);
-			return 0;
-
-		case WM_SIZING :
-			Evento_CambiandoTam(static_cast<UINT>(wParam), reinterpret_cast<RECT *>(lParam));
-			return 0;
-		case WM_MOVING :
-			App.OcultarToolTipPlayer();
-			return TRUE;
-
-		case WM_ERASEBKGND :
-			Evento_BorraFondo(reinterpret_cast<HDC>(wParam));
-			return TRUE;
-
-		// Barra de desplazamiento (barra de tiempo y volumen)
-		case DWL_BARRAEX_CAMBIANDO:	// Se está modificando (mouse down)
-			Evento_BarraEx_Cambiando(WPARAM_TO_DEVENTOMOUSE(wParam));
-			return 0;
-		case DWL_BARRAEX_CAMBIADO:  // Se ha modificado	(mouse up)
-			Evento_BarraEx_Cambiado(WPARAM_TO_DEVENTOMOUSE(wParam));
-			return 0;
-
-		case DWL_BOTONEX_CLICK :
-			Evento_BotonEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));
-			return 0;
-		case DWL_BOTONEX_MOUSEUP:
-			Evento_BotonEx_Mouse_Soltado(WPARAM_TO_DEVENTOMOUSE(wParam));
-			return 0;
-		case DWL_BOTONEX_MOUSEDOWN :
-			Evento_BotonEx_Mouse_Presionado(WPARAM_TO_DEVENTOMOUSE(wParam));
-			return 0;
-
-		case WM_COMMAND : // Para los botones de la barra de tareas
-			Evento_Comando(wParam, lParam);
-			return 0;
+		// MenuEx
+		case DWL_MENUEX_CLICK				:	Evento_MenuEx_Click(LOWORD(wParam));													return 0;
+		case DWL_MENUEX_BARRA_CAMBIADO		:	Evento_MenuEx_Barra_Cambiado(LOWORD(wParam), static_cast<float>(lParam) / 100.0f);		return 0;
+		case DWL_MENUEX_BARRA_CAMBIANDO		:	Evento_MenuEx_Barra_Cambiando(LOWORD(wParam), static_cast<float>(lParam) / 100.0f);		return 0;
 		
+		// Mover y redimensionar la ventana
+		case WM_EXITSIZEMOVE				:	_Evento_ExitSizeMove();																	return 0;
+		case WM_SIZE						:	_Evento_Size();																			return 0;
+		case WM_SIZING						:	Evento_CambiandoTam(static_cast<UINT>(wParam), reinterpret_cast<RECT *>(lParam));		return 0;
+		case WM_MOVING						:	App.OcultarToolTipPlayer();																return TRUE;
 
+		case WM_ERASEBKGND					:	Evento_BorraFondo(reinterpret_cast<HDC>(wParam));										return TRUE;
+
+		// Barra de desplazamiento (barra de tiempo y volumen) 
+		case DWL_BARRAEX_CAMBIANDO			:	Evento_BarraEx_Cambiando(WPARAM_TO_DEVENTOMOUSE(wParam));								return 0;	// Se está modificando (mouse down)		
+		case DWL_BARRAEX_CAMBIADO			:  	Evento_BarraEx_Cambiado(WPARAM_TO_DEVENTOMOUSE(wParam));								return 0;	// Se ha modificado	(mouse up)
+
+		// Mensajes para el BotonEx
+		case DWL_BOTONEX_CLICK				:	Evento_BotonEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));								return 0;
+		case DWL_BOTONEX_MOUSEUP			:	Evento_BotonEx_Mouse_Soltado(WPARAM_TO_DEVENTOMOUSE(wParam));							return 0;
+		case DWL_BOTONEX_MOUSEDOWN			:	Evento_BotonEx_Mouse_Presionado(WPARAM_TO_DEVENTOMOUSE(wParam));						return 0;
+
+		// Para los botones de la barra de tareas
+		case WM_COMMAND						: 	Evento_Comando(wParam, lParam);															return 0;
+		
 		default :
 			if (uMsg == BarraTareas.WM_TASK_BUTTON_CREATED()) {
 				CrearBotonesThumb();
@@ -1561,113 +1490,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			}
 			break;
 
-/*		case DWL_ARBOLEX_CLICK :
-			this->Evento_ArbolEx_Click(reinterpret_cast<DArbolEx_DatosClick *>(wParam), static_cast<UINT>(lParam));
-			return 0;*/
-
-/*		case DWL_TREEVIEW_CLICK:
-			this->Evento_TreeView_Mouse_Click(reinterpret_cast<DTreeView_DatosClick *>(lParam), static_cast<UINT>(wParam));
-			return 0;*/
-
-/*		case DWL_LISTVIEW_CLICK:
-			this->Evento_ListView_Mouse_Click(reinterpret_cast<DListView_DatosClick *>(lParam), static_cast<UINT>(wParam));
-			return 0;
-		case DWL_LISTVIEW_DOBLECLICK:
-			this->Evento_ListView_Mouse_DobleClick(reinterpret_cast<DListView_DatosClick *>(lParam), static_cast<UINT>(wParam));
-			return 0;*/
-
-/*		case WM_NOTIFY:
-			switch (((LPNMHDR)lParam)->code) {
-				/////////////////////////////
-				// Notificaciones Button : //
-				/////////////////////////////
-/*				case BCN_DROPDOWN:
-					return this->Evento_Button_Desplegar(((LPNMBCDROPDOWN)lParam)->rcButton, static_cast<UINT>(GetWindowLongPtr(((LPNMHDR)lParam)->hwndFrom, GWLP_ID)));
-				case BCN_HOTITEMCHANGE:
-					if (((LPNMBCHOTITEM)lParam)->dwFlags == (HICF_ENTERING | HICF_MOUSE))   return this->Evento_Button_Mouse_Entrando(static_cast<UINT>(GetWindowLongPtr(((LPNMHDR)lParam)->hwndFrom, GWLP_ID)));
-					else                                                                    return this->Evento_Button_Mouse_Saliendo(static_cast<UINT>(GetWindowLongPtr(((LPNMHDR)lParam)->hwndFrom, GWLP_ID)));
-				///////////////////////////////
-				// Notificaciones ListView : //
-				///////////////////////////////
-				case LVN_BEGINDRAG:        // Empezar Drag&Drop de un item interno (boton izquierdo)  (NMLISTVIEW iItem)
-					return this->Evento_ListView_ArrastrarSoltar_Empezar(0, ((LPNMLISTVIEW)lParam)->iItem, static_cast<UINT>(GetWindowLongPtr(((LPNMHDR)lParam)->hwndFrom, GWLP_ID)));
-				case LVN_BEGINRDRAG:       // Empezar Drag&Drop de un item interno (boton derecho)   (NMLISTVIEW iItem)
-					return this->Evento_ListView_ArrastrarSoltar_Empezar(1, ((LPNMLISTVIEW)lParam)->iItem, static_cast<UINT>(GetWindowLongPtr(((LPNMHDR)lParam)->hwndFrom, GWLP_ID)));
-				case LVN_BEGINLABELEDIT:   // Empezar labeledit del listview     (ANULAR devolver TRUE, POR HACER : probar de utilizar EmpezarEdicion del ListView)
-					return TRUE;
-				case LVN_BEGINSCROLL:      // Empieza una operacion de scroll en el listview    (NMLVSCROLL dx o dy)
-					return this->Evento_ListView_Scroll_Empezar(((LPNMLVSCROLL)lParam)->dx, ((LPNMLVSCROLL)lParam)->dy, static_cast<UINT>(GetWindowLongPtr(((LPNMHDR)lParam)->hwndFrom, GWLP_ID)));
-				case LVN_COLUMNCLICK:      // Click en una culumna  (NMLISTVIEW iSubItem)
-					return this->Evento_ListView_Columna_Click(((LPNMLISTVIEW)lParam)->iSubItem, static_cast<UINT>(GetWindowLongPtr(((LPNMHDR)lParam)->hwndFrom, GWLP_ID)));
-				case LVN_DELETEALLITEMS:   // Apunto de borrar todos los items (devolver true para recibir cuando se va a borrar cada item, false para no recibir nada)
-					return this->Evento_ListView_Item_BorrarTodos(static_cast<UINT>(GetWindowLongPtr(((LPNMHDR)lParam)->hwndFrom, GWLP_ID)));
-				case LVN_DELETEITEM:       // apunto de borrar un item (NMLISTVIEW iItem)
-					return this->Evento_ListView_Item_Borrar(((LPNMLISTVIEW)lParam)->iItem, static_cast<UINT>(GetWindowLongPtr(((LPNMHDR)lParam)->hwndFrom, GWLP_ID)));
-				case LVN_ENDSCROLL:        // termina una operacion de scroll (NMLVSCROLL dx o dy)
-					return this->Evento_ListView_Scroll_Terminar(((LPNMLVSCROLL)lParam)->dx, ((LPNMLVSCROLL)lParam)->dy, static_cast<UINT>(GetWindowLongPtr(((LPNMHDR)lParam)->hwndFrom, GWLP_ID)));
-				case LVN_HOTTRACK:         // Indica que el mouse esta encima de un item (NMLISTVIEW iItem, iSubItem, ptAction   retornar 0 para continuar con la operación, o cualquier valor para que no se seleccione el item)
-					return this->Evento_ListView_Mouse_Movimiento(((LPNMLISTVIEW)lParam)->iItem, ((LPNMLISTVIEW)lParam)->iSubItem, ((LPNMLISTVIEW)lParam)->ptAction.x, ((LPNMLISTVIEW)lParam)->ptAction.y, static_cast<UINT>(GetWindowLongPtr(((LPNMHDR)lParam)->hwndFrom, GWLP_ID)));
-				case LVN_INSERTITEM:       // Informa que se ha agregado un item (NMLISTVIEW iItem)
-					return this->Evento_ListView_Item_Agregar(((LPNMLISTVIEW)lParam)->iItem, static_cast<UINT>(GetWindowLongPtr(((LPNMHDR)lParam)->hwndFrom, GWLP_ID)));
-				case LVN_ITEMACTIVATE:     // Informa que se ha activado un item... (NMITEMACTIVATE TODA)
-					return this->Evento_ListView_Item_Activado(((LPNMITEMACTIVATE)lParam)->iItem, ((LPNMITEMACTIVATE)lParam)->iSubItem, ((LPNMITEMACTIVATE)lParam)->uNewState, ((LPNMITEMACTIVATE)lParam)->uOldState, ((LPNMITEMACTIVATE)lParam)->uChanged, ((LPNMITEMACTIVATE)lParam)->ptAction.x, ((LPNMITEMACTIVATE)lParam)->ptAction.y, ((LPNMITEMACTIVATE)lParam)->lParam, ((LPNMITEMACTIVATE)lParam)->uKeyFlags, static_cast<UINT>(GetWindowLongPtr(((LPNMHDR)lParam)->hwndFrom, GWLP_ID)));
-				case LVN_ITEMCHANGED:      // Informa que se ha cambiado un item.... (NMLISTVIEW iItem [si es -1 es que se ha realizado un cambio a todos los items])
-					return this->Evento_ListView_Item_Cambiado(((LPNMLISTVIEW)lParam)->iItem, static_cast<UINT>(GetWindowLongPtr(((LPNMHDR)lParam)->hwndFrom, GWLP_ID)));
-				case LVN_ITEMCHANGING:     // Informa que se va a cambiar un item (NMLISTVIEW que dice los atributos que se van a cambiar)
-					return this->Evento_ListView_Item_Cambiando(((LPNMLISTVIEW)lParam)->iItem, ((LPNMLISTVIEW)lParam)->iSubItem, ((LPNMLISTVIEW)lParam)->uNewState, ((LPNMLISTVIEW)lParam)->uOldState, ((LPNMLISTVIEW)lParam)->uChanged, ((LPNMLISTVIEW)lParam)->ptAction.x, ((LPNMLISTVIEW)lParam)->ptAction.y, ((LPNMLISTVIEW)lParam)->lParam, static_cast<UINT>(GetWindowLongPtr(((LPNMHDR)lParam)->hwndFrom, GWLP_ID)));
-				case LVN_KEYDOWN:          // Tecla presionada (NMLVKEYDOWN wVKey)
-					return this->Evento_ListView_TeclaPresionada(((LPNMLVKEYDOWN)lParam)->wVKey, static_cast<UINT>(GetWindowLongPtr(((LPNMHDR)lParam)->hwndFrom, GWLP_ID)));
-//		        case LVN_COLUMNDROPDOWN :         // columna desplegable??? (NMLISTVIEW iSubItem) (win vista o superior....)
-//              case LVN_COLUMNOVERFLOWCLICK :    // MSDN : Sent by a list-view control when its overflow button is clicked. :O   NMLISTVIEW iSubItem) (win vista o superior....)
-//              case LVN_ENDLABELEDIT :           // terminar labeledit (no deberia recibirse ya que anulamos el principio)
-//              case LVN_GETDISPINFO :            // obtener informacion necesaria para mostrar o ordenar un item (yo me la ahorraria....)
-//              case LVN_GETEMPTYMARKUP :         // enviada cuando no tiene items, es una peticion para saber como marcar el texto :O (windows vista o superior... yo me la saltaba tambien..)
-//              case LVN_GETINFOTIP :             // Enviada solo con el modo LARGE_ICON, y es una peticion para obtener informacion adicional para mostrar en un tooltip
-//              case LVN_INCREMENTALSEARCH :      // Notifica que se esta haciendo una busqueda incremetal? :O (WIndows vista o superior, otra que pasare...)
-//              case LVN_LINKCLICK :              // Notifica que se ha echo click en un link :O (windows vista o superior... otra que pasare...)
-//              case LVN_ODCACHEHINT :            // Enviada por un listview virtual para notificar que su contenido ha cambiado.... (pasando...)
-//              case LVN_ODFINDITEM :             // Enviada por un listview virtual para buscar un item... (pasando...)
-//              case LVN_ODSTATECHANGED :         // Enviada por un listview virtual para notificar que uno o varios items han cambiado (pasando...)
-//              case LVN_SETDISPINFO :            // Notifica que se va a actualizar la informacion que mantiene para un item??? (otra que pasare...)
-//              case NM_CUSTROMDRAW :             // Se controla en los windowprocedures de DVentana, DDialogo y DDialogoModal porque dependiendo de si es una ventana o un dialogo hay que contestar distinto......
-//              case LVN_MARQUEEBEGIN :           // MSDN : Notifies a list-view control's parent window that a bounding box (marquee) selection has begun. (To accept the notification code, return zero. To quit the bounding box selection, return nonzero.)
-//                                                //          Remarks : A bounding box selection is the process of clicking the list-view window's client area and dragging to select multiple items simultaneously.
-				*/
-				///////////////////////////////
-				// Notificaciones TreeView : // TODO hacer lista completa como en el listview y crear todos los eventos posibles
-				///////////////////////////////
-//				case TVN_DELETEITEM:		 // Borrar item del TreeView																
-//					SendMessage(((LPNMTREEVIEW)lParam)->hdr.hwndFrom, DWL_TREEVIEW_BORRARNODO, 0, ((LPNMTREEVIEW)lParam)->itemOld.lParam);
-//					break;
-				////////////////////////////////
-				// Notificaciones Estandard : //
-				////////////////////////////////
-//				case NM_RELEASEDCAPTURE:
-//					Evento_CapturaSoltada(((LPNMHDR)lParam)->idFrom);
-				/*case NM_CLICK:
-				case NM_DBLCLK:
-					//                                                            case NM_HOVER :
-				case NM_KILLFOCUS:
-				case NM_RCLICK:
-				case NM_RDBLCLK:
-				case NM_RETURN:
-				case NM_SETFOCUS:
-					// Tanto el ListView como el TreeView procesan los mensajes WM_?BUTTONUP internamente y no pasan por el WindowProcedure de estos.
-					// Segun la MSDN cuando recibe un WM_?BUTTONDOWN estos controles entran en un bucle de mensajes interno para determinar si la operación involucra un Click o un Drag&Drop....
-					// Por desgracia si quiero habilitar funcionabilidades extras como editar un SubItem con una ComboBox necesito obtener cuando se suelta el mouse...
-					// A causa de esto cuando recibo un NM_CLICK lo devuelvo a su control (que sera un TreeView o un ListView, y asi consigo saber cuando se suelta el boton del mouse).
-					SendMessage(((LPNMHDR)lParam)->hwndFrom, DWL_NOTIFICACION, wParam, lParam);
-					break;*/
-
-					// Notificación TVN_ITEMEXPANDING para recibir cuando se expande un nodo del treeview
-					// Se necesita especificamente para la clase DTreeViewDirectorios ya que al expandir un nodo hay que escanear el directorio al que hace referencia.
-/*				case TVN_ITEMEXPANDING:
-					return SendMessage(((LPNMHDR)lParam)->hwndFrom, DWL_TREEVIEW_NODO_EXPANDIENDO, wParam, lParam);
-					// Cambio de selección en el TreeView
-				case TVN_SELCHANGED:
-					return SendMessage(((LPNMHDR)lParam)->hwndFrom, DWL_TREEVIEW_NODO_CAMBIOSELECCION, wParam, lParam); */
-//			}
 	}
-//	return FALSE;
+
 	return DVentana::GestorMensajes(uMsg, wParam, lParam);
 }

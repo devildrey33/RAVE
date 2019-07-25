@@ -293,6 +293,14 @@
 			V  Captar WM_RESIZE i modificar tamany dels controls en consequencia.
 				V Guardar el tamany a les opcions de la BD
 
+		V  DEdicionTextoEx
+			V  Posibilitat de modificar l'alineació del texte
+			V  Solucionar problemes amb el cursor
+			V  Afegir Selecció amb el mouse i el teclat
+			V  Afegir teclat especial (control + ZXCVY)
+			V  Afegir membre placeholder al estil HTML
+				V Amb transició i tot
+
 		V  S'ha de poder afegir medis desde l'explorador mentres es carrega la libvlc.
 			V  s'ha de probar desde la RELEASE quan em carregui la libvlc per primer cop
 
@@ -371,6 +379,14 @@
 					- Necesitara fer checks md5 de cada arxiu per determinar si está actualitzat
 				
 		V  QUAN s'acaba la llista el icona del play es queda en pausa
+
+		V  Crear objecte a la DWL per llegir arxius binaris, i que pugui crear un hash
+
+		-  Separar opcions de la base de dades, i fer unaltre BD per les opcions o ferles en un arxiu binari. 
+
+		-  Crear finestra que mostri les dades de l'actualització.
+			- Crear control per mostrar les novetats o el changelog...
+
 
 
 	RAVE 0.7

@@ -95,6 +95,8 @@
     <TargetName>RAVE</TargetName>
     <IncludePath>..\vlc-3.0.7\Include;..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
     <EmbedManifest>true</EmbedManifest>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -150,6 +152,9 @@
     <Manifest>
       <AdditionalManifestFiles>..\RAVE.exe.manifest</AdditionalManifestFiles>
     </Manifest>
+    <PostBuildEvent>
+      <Command>"..\Bats Admin\Copiar RAVE x86 Release (EJECUTAR COMO ADMIN).bat"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -160,6 +165,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -175,6 +181,9 @@
     <ManifestResourceCompile>
       <ResourceOutputFileName>$(IntDir)$(TargetName)$(TargetExt).embed.manifest.res</ResourceOutputFileName>
     </ManifestResourceCompile>
+    <PostBuildEvent>
+      <Command>"..\Bats Admin\Copiar RAVE x64 Release (EJECUTAR COMO ADMIN).bat"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Actualizaciones.h" />
@@ -200,6 +209,7 @@
     <ClInclude Include="EnviarDump.h" />
     <ClInclude Include="RAVE_Iconos.h" />
     <ClInclude Include="Rave_Medio.h" />
+    <ClInclude Include="RAVE_Mensajes.h" />
     <ClInclude Include="RAVE_Skin.h" />
     <ClInclude Include="RAVE_Configuracion.h" />
     <ClInclude Include="ControlesPantallaCompleta.h" />

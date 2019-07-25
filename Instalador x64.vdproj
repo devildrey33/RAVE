@@ -2303,7 +2303,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:SetupRave-x64.msi"
+        "OutputFilename" = "8:Instaladores\\Instalador x64\\SetupRave-x64.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -2322,10 +2322,10 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Visual.C++.14.0.x64"
                     {
-                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    "Name" = "8:Visual C++ \"14\" Runtime Libraries (x64)"
+                    "ProductCode" = "8:Microsoft.Visual.C++.14.0.x64"
                     }
                 }
             }
@@ -10236,15 +10236,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Rave"
-        "ProductCode" = "8:{AA79CE4D-AA83-4CD1-B363-8EF95FBAC36A}"
-        "PackageCode" = "8:{4FCD365A-9014-45DD-801B-A6D07F1AE3C1}"
+        "ProductCode" = "8:{29D15B41-A566-4139-8EF6-8153A52FE1A4}"
+        "PackageCode" = "8:{9ACA2C33-F262-4106-9214-A862F9F51244}"
         "UpgradeCode" = "8:{11245546-FC7A-4C59-B595-8A181C88A3F1}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
-        "DetectNewerInstalledVersion" = "11:TRUE"
+        "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.524"
+        "ProductVersion" = "8:1.0.526"
         "Manufacturer" = "8:devildrey33"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -10260,7 +10260,7 @@
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:1"
         "PreBuildEvent" = "8:"
-        "PostBuildEvent" = "8:"
+        "PostBuildEvent" = "8:\"$(ProjectDir)Instaladores\\CrearMD5x64.exe\""
         "RunPostBuildEvent" = "3:0"
         }
         "Registry"

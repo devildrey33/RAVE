@@ -136,6 +136,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	ThreadAgregarArchivosLista  ThreadArchivosLista;
 								// Thread para analizar los medios
 	ThreadAnalisis				ThreadAnalizar;
+								// Función que descarga una nueva actualización
+	void						DescargarActualizacion(const wchar_t *nVersion);
 								// Función que agrega un directorio al arbol de la base de datos
 	NodoBD                     *Arbol_AgregarDir(std::wstring *Path, const BOOL nRepintar = FALSE);
 								// Función que agrega una raíz al arbol de la base de datos
@@ -253,6 +255,10 @@ class VentanaPrincipal : public DWL::DVentana {
 	#endif
 
   protected:
+								// Evento WM_SIZE
+	void					   _Evento_Size(void);
+								// Evento WM_EXITSIZEMOVE
+	void					   _Evento_ExitSizeMove(void);
 								// Variable que determina si se ha entrado en modo patalla completa
 	BOOL                       _PantallaCompleta;		
 								// Ultimo tick del sistema al presionar el boton del mouse

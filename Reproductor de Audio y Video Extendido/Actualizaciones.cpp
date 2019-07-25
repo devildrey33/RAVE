@@ -4,6 +4,9 @@
 #include <wincrypt.h>
 #include <DStringUtils.h>
 
+HWND			Actualizaciones::_VentanaRave = NULL;
+std::wstring	Actualizaciones::_Version;
+
 // Función que busca una nueva actualización
 const BOOL Actualizaciones::Buscar(void) {
 	// Ya se está buscando o descargando 
@@ -20,6 +23,9 @@ const BOOL Actualizaciones::Buscar(void) {
 		Debug_Escribir(L"Actualizaciones::Buscar ERROR creando el thread.\n");
 		return FALSE;
 	}
+
+	// Guardo el HWND de la ventana principal
+	_VentanaRave = App.VentanaRave.hWnd();
 	
 	// Thread creado correctamente
 	Debug_Escribir(L"Actualizaciones::Buscar thread iniciado.\n");
@@ -73,7 +79,6 @@ unsigned long Actualizaciones::_ThreadBuscar(void* pThis) {
 	DWORD			TotalBytesLeidos	= 0;
 	DWORD			MaxBuffer			= sizeof(Txt) -1;
 	std::string     ResultadoANSI;
-	std::wstring	Resultado;
 
 	// Error en la petición (provablemente no va el servidor)
 	if (Peticion == NULL) {
@@ -103,12 +108,12 @@ unsigned long Actualizaciones::_ThreadBuscar(void* pThis) {
 	}
 
 	// Paso la versión de ANSI a wchar_t
-	DWL::Strings::AnsiToWide(ResultadoANSI.c_str(), Resultado);
+	DWL::Strings::AnsiToWide(ResultadoANSI.c_str(), _Version);
 
 	// Si la versión no coincide
-	if (Resultado.compare(RAVE_VERSIONSTR) != 0) {
-		// s'ha de treure del thread 
-		Debug_Escribir(L"Actualizaciones::_ThreadBuscar Actualizacion encontrada.\n");
+	if (_Version.compare(RAVE_VERSIONSTR) != 0) {
+		// Informo a la ventana del reproductor que hay una nueva actualización
+		SendMessage(_VentanaRave, WM_ACTUALIZACION_ENCONTRADA, reinterpret_cast<WPARAM>(_Version.c_str()), 0);
 	}
 
 	return 0;
