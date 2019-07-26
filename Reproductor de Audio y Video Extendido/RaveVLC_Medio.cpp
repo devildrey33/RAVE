@@ -61,7 +61,7 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : Ra
 		}
 
 		// Cargo los valores de brillo, proporción, contraste, y saturación
-		if (App.BD.Opciones_GuardarBSCP() == TRUE) {
+		if (App.Opciones.GuardarBSCP() == TRUE) {
 			if (Medio.Proporcion.size() != 0)	AsignarProporcion(Medio.Proporcion.c_str());
 			if (Medio.Brillo != 1.0)			Brillo(Medio.Brillo);
 			if (Medio.Contraste != 1.0)			Contraste(Medio.Contraste);
@@ -476,7 +476,7 @@ const int RaveVLC_Medio::AsignarSubtitulos(const wchar_t* Path) {
 // de 0 al volumen actual
 void RaveVLC_Medio::FadeIn(void) {
 	_AniVolumen.Terminar();
-	_AniVolumen.Iniciar({ 0.0f }, { (double *)(&App.BD._Opciones_Volumen) }, App.BD.Opciones_EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores& Valores, const BOOL Terminado) {
+	_AniVolumen.Iniciar({ 0.0f }, { (double *)(&App.Opciones._Volumen) }, App.Opciones.EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores& Valores, const BOOL Terminado) {
 		Volumen(Valores[0].Entero(), FALSE);
 	}, { DWL::DAnimacion::FuncionesTiempo::Linear }, 200);
 }
@@ -485,7 +485,7 @@ void RaveVLC_Medio::FadeIn(void) {
 void RaveVLC_Medio::FadeOut(void) {
 	static double NuevoVolumen = 0.0f;
 	_AniVolumen.Terminar();
-	_AniVolumen.Iniciar({ static_cast<double>(App.BD._Opciones_Volumen) }, { &NuevoVolumen }, App.BD.Opciones_EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores& Valores, const BOOL Terminado) {
+	_AniVolumen.Iniciar({ static_cast<double>(App.Opciones.Volumen()) }, { &NuevoVolumen }, App.Opciones.EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores& Valores, const BOOL Terminado) {
 		Volumen(Valores[0].Entero(), FALSE);
 	}, { DWL::DAnimacion::FuncionesTiempo::Linear }, 200);
 

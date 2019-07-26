@@ -155,7 +155,9 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 				Ret = FALSE;
 				break;
 			}
-			// Inicio la base de datos y cargo las opciones antes de mostrar la ventana
+			// Inicio la BD de las opciones para tener los datos de la ventana principal, etc..
+			Opciones.Iniciar();
+			// Inicio la base de datos 
 			BD.Iniciar();
 
 			// Muestro la ventana principal y creo los menús
@@ -286,7 +288,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI_APAGAR_REP		, L"Apagar RAVE"		, IDI_NOCHECK);
 	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_SI_APAGAR_WIN		, L"Apagar Windows"		, IDI_NOCHECK);
 
-	switch (BD.Opciones_Repeat()) {
+	switch (Opciones.Repeat()) {
 		case Tipo_Repeat_NADA				:		VentanaRave.Menu_Repetir.Menu(0)->Icono(IDI_CHECK);		break;
 		case Tipo_Repeat_RepetirLista		:		VentanaRave.Menu_Repetir.Menu(1)->Icono(IDI_CHECK);		break;
 		case Tipo_Repeat_RepetirListaShufle	:		VentanaRave.Menu_Repetir.Menu(2)->Icono(IDI_CHECK);		break;
@@ -339,6 +341,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 }
 
 void RAVE::Terminar(void) {
+	Opciones.Terminar();
 	BD.Terminar();
 	MP.Terminar();
 	VentanaRave.Destruir();
@@ -465,16 +468,16 @@ void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 					App.VentanaRave.GenerarListaAleatoria();
 					break;
 				case 2: // Subir volumen
-					if (App.BD.Opciones_Volumen() + 10 > 200)	Volumen = 200;
-					else										Volumen = App.BD.Opciones_Volumen() + 10;
+					if (App.Opciones.Volumen() + 10 > 200)		Volumen = 200;
+					else										Volumen = App.Opciones.Volumen() + 10;
 					App.MP.Volumen(Volumen);
-					App.BD.Opciones_Volumen(Volumen);
+					App.Opciones.Volumen(Volumen);
 					break;
 				case 3: // Bajar volumen
-					if (App.BD.Opciones_Volumen() - 10 < 0)		Volumen = 0;
-					else										Volumen = App.BD.Opciones_Volumen() - 10;
+					if (App.Opciones.Volumen() - 10 < 0)		Volumen = 0;
+					else										Volumen = App.Opciones.Volumen() - 10;
 					App.MP.Volumen(Volumen);
-					App.BD.Opciones_Volumen(Volumen);
+					App.Opciones.Volumen(Volumen);
 					break;
 				case 4: // Avanzar
 					App.VentanaRave.Lista_Siguiente();

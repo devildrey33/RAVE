@@ -52,9 +52,15 @@
 	#endif
 #endif
 
+
+
+
+
 #define VLC_API
 #define VLC_USED
 #include "RAVE.h"
+
+
 
 
 

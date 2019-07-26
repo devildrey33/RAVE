@@ -32,7 +32,7 @@ void VentanaMomento::Mostrar(BDMedio& nMedio) {
 		CargarMomentos();
 		return;
 	}*/
-	CrearVentana(NULL, L"RAVE_Momentos", L"Momentos", App.BD.Opciones_VentanaMomentos_PosX(), App.BD.Opciones_VentanaMomentos_PosY(), 746, 240, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+	CrearVentana(NULL, L"RAVE_Momentos", L"Momentos", App.Opciones.VentanaMomentos_PosX(), App.Opciones.VentanaMomentos_PosY(), 746, 240, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 
 	ListaMomentos.CrearListaEx(this, 10, 10, 250, 140, ID_LISTAMOMENTOS, WS_CHILD | WS_VISIBLE);
 	ListaMomentos.AgregarColumna();
@@ -302,7 +302,7 @@ LRESULT CALLBACK VentanaMomento::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM
 			return 0;
 
 		case WM_EXITSIZEMOVE:
-			App.BD.Opciones_GuardarPosVentanaMomentos();
+			App.Opciones.GuardarPosVentanaMomentos();
 			return 0;
 
 		case WM_MOVING:

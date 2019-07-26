@@ -27,7 +27,7 @@ const BOOL ThreadAnalisis::Iniciar(HWND nhWndDest) {
 	// Asigno Ventana para los mensajes
 	_VentanaPlayer = nhWndDest;
 
-	if (App.BD.Opciones_MostrarObtenerMetadatos() == TRUE) {
+	if (App.Opciones.MostrarObtenerMetadatos() == TRUE) {
 		// Creo la ventana que mostrará el progreso
 		CrearVentana(NULL, L"RAVE_ObtenerMetadatos", L"Analizando...", 300, 200, 700, 420, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 		RECT RC;
@@ -624,9 +624,9 @@ LRESULT CALLBACK ThreadAnalisis::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM
 			return 0;
 		case WM_CLOSE			 :   Cancelar(TRUE);																					return 0;
 		case DWL_BOTONEX_CLICK   :   Evento_BotonEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));										return 0;
-		case DWL_MARCAEX_CLICK   :   App.BD.Opciones_MostrarObtenerMetadatos(!_MarcaNoMostrarMas.Marcado());							return 0;
+		case DWL_MARCAEX_CLICK   :   App.Opciones.MostrarObtenerMetadatos(!_MarcaNoMostrarMas.Marcado());								return 0;
 		case WM_KEYUP			 :	if (wParam == VK_ESCAPE) { Cancelar(TRUE); }														break;		// Los eventos de teclado tienen un break para que puedan llegar al hook global de teclado para la aplicación
-		case WM_EXITSIZEMOVE     :  App.BD.Opciones_GuardarPosVentanaAnalizar();														return 0;
+		case WM_EXITSIZEMOVE     :  App.Opciones.GuardarPosVentanaAnalizar();															return 0;
 	}
 	return DVentana::GestorMensajes(uMsg, wParam, lParam);
 }

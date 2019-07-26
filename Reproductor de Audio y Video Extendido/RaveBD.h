@@ -4,6 +4,7 @@
 #include "EtiquetaBD.h"
 #include "BDRaiz.h"
 #include "RAVE_Mensajes.h"
+#include "RaveSQLite.h"
 
 enum Estados_Medio {
 	Nada      = 0,
@@ -61,21 +62,20 @@ class ItemMedio;
 class NodoBD;
 class RaveVLC_Medio;
 
-class RaveBD {
+class RaveBD : public RaveSQLite {
   public:
 								RaveBD(void);
-	                           ~RaveBD(void);
 
 								// Inicia la base de datos
 	const BOOL					Iniciar(void);
 								// Termina la conexión a la base de datos
-	void						Terminar(void);
+//	void						Terminar(void);
 								// Consulta básica wchar_t
-	const int					Consulta(const wchar_t *TxtConsulta);
+//	const int					Consulta(const wchar_t *TxtConsulta);
 								// Consulta al estilo printf
 //	const int					ConsultaVarg(const wchar_t *TxtConsulta, ...);
 								// Consulta desde un std::wstring
-	inline const int			Consulta(std::wstring &TxtConsulta) { return Consulta(TxtConsulta.c_str()); };
+//	inline const int			Consulta(std::wstring &TxtConsulta) { return Consulta(TxtConsulta.c_str()); };
 								// Devuelve la ultima ID insertada
 	const LONG_PTR              UltimaIdInsertada(void);
 
@@ -153,7 +153,7 @@ class RaveBD {
 	const BOOL                  ObtenerUltimaLista(void);
 	const BOOL                  GuardarUltimaLista(void);
 
-								// Función que obtiene las opciones de la base de datos
+/*								// Función que obtiene las opciones de la base de datos
 	const BOOL					ObtenerOpciones(void);
 								// Función que devuelve la versión de la BD
 	const float                 ObtenerVersionBD(void);
@@ -258,7 +258,7 @@ class RaveBD {
 	void						Opciones_MezclarListaNota(const int nOpciones_MezclarListaNota);
 								// Guardar brillo, contraste, saturación y proporción
 	inline const BOOL			Opciones_GuardarBSCP(void) { return _Opciones_GuardarBSCP; }
-	void						Opciones_GuardarBSCP(const BOOL nOpciones_GuardarBSCP);
+	void						Opciones_GuardarBSCP(const BOOL nOpciones_GuardarBSCP);*/
 
 
 	DWL::DUnidadesDisco			Unidades;
@@ -287,11 +287,11 @@ protected:
 
     const BOOL                 _CrearTablas(void);
 	const BOOL                 _ModificarTablas(void);
-	std::wstring               _UltimoErrorSQL;
-	sqlite3                   *_BD;
+//	std::wstring               _UltimoErrorSQL;
+//	sqlite3                   *_BD;
 
 								// Opciones en memória
-	std::wstring               _Opciones_PathAbrir;					// Ultimo path donde se ha abierto un archivo externo
+/*	std::wstring               _Opciones_PathAbrir;					// Ultimo path donde se ha abierto un archivo externo
 	int                        _Opciones_Volumen;
 	int                        _Opciones_PosX;
 	int                        _Opciones_PosY;
@@ -334,7 +334,7 @@ protected:
 	int                        _Opciones_MezclarListaDisco;         // Mezclar listas aleatórias por disco
 	int                        _Opciones_MezclarLista50Can;         // Mezclar listas aleatórias con 50 canciones
 	int                        _Opciones_MezclarListaNota;          // Mezclar listas por Nota
-	BOOL                       _Opciones_GuardarBSCP;				// Guardar Brillo, Saturación, Contraste y Proporción
+	BOOL                       _Opciones_GuardarBSCP;				// Guardar Brillo, Saturación, Contraste y Proporción*/
 
 	friend class ThreadAnalisis;
 	friend class BDMedio;

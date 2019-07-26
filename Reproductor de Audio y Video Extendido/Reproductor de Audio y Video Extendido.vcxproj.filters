@@ -205,6 +205,12 @@
     <ClInclude Include="RAVE_Mensajes.h">
       <Filter>xXx _MAIN_ xXx</Filter>
     </ClInclude>
+    <ClInclude Include="RaveOpciones.h">
+      <Filter>Base de datos</Filter>
+    </ClInclude>
+    <ClInclude Include="RaveSQLite.h">
+      <Filter>Base de datos</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -317,6 +323,12 @@
     </ClCompile>
     <ClCompile Include="Actualizaciones.cpp">
       <Filter>xXx _MAIN_ xXx\Actualizaciones</Filter>
+    </ClCompile>
+    <ClCompile Include="RaveOpciones.cpp">
+      <Filter>Base de datos</Filter>
+    </ClCompile>
+    <ClCompile Include="RaveSQLite.cpp">
+      <Filter>Base de datos</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

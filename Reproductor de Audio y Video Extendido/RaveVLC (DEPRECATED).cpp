@@ -191,7 +191,7 @@ const BOOL RaveVLC::StopTODO(void) {
 }
 
 const int RaveVLC::Volumen(void) {
-	if (_Actual == NULL) return App.BD.Opciones_Volumen();
+	if (_Actual == NULL) return App.Opciones.Volumen();
 	return _Actual->Volumen();
 }
 
@@ -349,9 +349,9 @@ void RaveVLC::Temporizador_Lista(void) {
 		UINT64        TTotalMS  = TiempoTotalMs();
 		UINT64        TActualMS = TiempoActualMs();
 
-		if (TTotalMS < App.BD.Opciones_EfectoFadeAudioMS() || _Actual == NULL || _Siguiente == NULL) return;
+		if (TTotalMS < App.Opciones.EfectoFadeAudioMS() || _Actual == NULL || _Siguiente == NULL) return;
 
-		if (TTotalMS - App.BD.Opciones_EfectoFadeAudioMS() < TActualMS) {
+		if (TTotalMS - App.Opciones.EfectoFadeAudioMS() < TActualMS) {
 			// cambio el medio actual
 			App.VentanaRave.Lista.MedioActual = App.VentanaRave.Lista.MedioSiguiente(App.VentanaRave.Lista.MedioActual);
 

@@ -8,8 +8,8 @@
 
 VentanaPrecarga::VentanaPrecarga(void) {
 
-	int PosX = App.BD.Opciones_PosX() + (App.BD.Opciones_Ancho() - VENTANAPRECARGA_ANCHO) / 2;
-	int PosY = App.BD.Opciones_PosY() + (App.BD.Opciones_Alto() - VENTANAPRECARGA_ALTO) / 2;
+	int PosX = App.Opciones.PosX() + (App.Opciones.Ancho() - VENTANAPRECARGA_ANCHO) / 2;
+	int PosY = App.Opciones.PosY() + (App.Opciones.Alto() - VENTANAPRECARGA_ALTO) / 2;
 
 	_hWnd = DVentana::CrearVentana(NULL, L"RAVE_VentanaPrecarga", L"", PosX, PosY, VENTANAPRECARGA_ANCHO, VENTANAPRECARGA_ALTO, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
 	MARGINS Margen = { 0, 0, 0, 1 };

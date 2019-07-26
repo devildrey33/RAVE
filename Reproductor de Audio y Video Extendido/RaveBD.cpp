@@ -4,23 +4,20 @@
 #include "DStringUtils.h"
 #include "ListaMedios.h"
 
-RaveBD::RaveBD(void) : _BD(NULL), _Opciones_Volumen(0), _Opciones_PosX(0), _Opciones_PosY(0), _Opciones_VentanaOpciones_PosX(0), _Opciones_VentanaOpciones_PosY(0), _Opciones_DlgDirectorios_PosX(0), _Opciones_DlgDirectorios_PosY(0), 
+RaveBD::RaveBD(void) /*: _BD(NULL)/*, _Opciones_Volumen(0), _Opciones_PosX(0), _Opciones_PosY(0), _Opciones_VentanaOpciones_PosX(0), _Opciones_VentanaOpciones_PosY(0), _Opciones_DlgDirectorios_PosX(0), _Opciones_DlgDirectorios_PosY(0), 
 								  _Opciones_VentanaAnalizar_PosX(0), _Opciones_VentanaAnalizar_PosY(0), _Opciones_Ancho(0), _Opciones_Alto(0), _Opciones_Shufle(FALSE), _Opciones_Repeat(Tipo_Repeat_NADA), _Opciones_Inicio(Tipo_Inicio_NADA),
 								  _Opciones_Version(0.0f), _Opciones_OcultarMouseEnVideo(0), _Opciones_MostrarObtenerMetadatos(FALSE), _Opciones_MostrarAsociarArchivos(FALSE), _Opciones_AnalizarMediosPendientes(FALSE), 
 								  _Opciones_BuscarActualizacion(FALSE), _Opciones_TiempoAnimaciones(0), _Opciones_TiempoToolTips(0), _Opciones_NoAgregarMedioMenos25(FALSE), _Opciones_NoGenerarListasMenos3(FALSE), 
 							 	  _Opciones_Sumar005(FALSE), _Opciones_AlineacionControlesVideo(0), _Opciones_OpacidadControlesVideo(0), _Opciones_EfectoFadeAudioMS(10000), _Opciones_DlgDirectorios_Ancho(400), _Opciones_DlgDirectorios_Alto(600), 
 								  _Opciones_VentanaMomentos_PosX(100), _Opciones_VentanaMomentos_PosY(100), _Opciones_OcultarTooltipsMouse(0), _Opciones_MostrarMedioActualTitulo(TRUE), 
 								  _Opciones_MezclarListaGenero(0), _Opciones_MezclarListaGrupo(0), _Opciones_MezclarListaDisco(0), _Opciones_MezclarLista50Can(0), _Opciones_MezclarListaNota(0), 
-								  _Opciones_GuardarBSCP(1) {
+								  _Opciones_GuardarBSCP(1)*/ {
 }
 
 
-RaveBD::~RaveBD(void) {
-}
 
 // Crea / carga la base de datos
 const BOOL RaveBD::Iniciar(void) {
-	int Ret = 0;
 	std::wstring PathBD;
 	BOOL R = DWL::DDirectoriosWindows::Comun_AppData(PathBD);
 	PathBD += L"\\Rave\\";
@@ -34,11 +31,9 @@ const BOOL RaveBD::Iniciar(void) {
 #else
 	PathBD += L"Rave_x86.BD";
 #endif
-	// Creo / Abro la BD
-	Ret = sqlite3_open16(PathBD.c_str(), &_BD);
-	if (Ret) {
-		sqlite3_close(_BD);
-		_BD = NULL;
+
+	if (IniciarSQLite(PathBD.c_str()) == FALSE) {
+		Debug_Escribir(L"RaveBD::Iniciar ERROR\n");
 		return FALSE;
 	}
 	// Creo las tablas para la base de datos (si es necesario)
@@ -49,20 +44,15 @@ const BOOL RaveBD::Iniciar(void) {
 	// Obtengo las raices de la base de datos
 	ObtenerRaices();
 	// Obtengo las opciones de la base de datos
-	ObtenerOpciones();
+//	ObtenerOpciones();
 	// Obtengo las etiquetas
 	ObtenerEtiquetas();
 	// Obtengo las teclas rapidas
 	ObtenerTeclasRapidas();
 
-	return TRUE;
-}
+	Debug_Escribir(L"RaveBD::Iniciar\n");
 
-// Cierra la Base de datos
-void RaveBD::Terminar(void) {
-	Debug_Escribir(L"RaveBD::Terminar\n");
-	sqlite3_close_v2(_BD);
-	_BD = NULL;
+	return TRUE;
 }
 
 
@@ -70,43 +60,6 @@ const LONG_PTR RaveBD::UltimaIdInsertada(void) {
 	return static_cast<LONG_PTR>(sqlite3_last_insert_rowid(_BD));
 }
 
-
-// Función para realizar consultas simples 
-const int RaveBD::Consulta(const wchar_t *TxtConsulta) {
-	if (_BD == NULL) return FALSE;
-
-	sqlite3_stmt *SqlQuery = NULL;
-	int           SqlRet = sqlite3_prepare16_v2(_BD, TxtConsulta, -1, &SqlQuery, NULL);
-	if (SqlRet) {
-		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
-//		Debug_Escribir_Varg(L"RaveBD::Consulta %s\n", _UltimoErrorSQL.c_str());
-		return SqlRet;
-	}
-
-	/*	SQLITE_FULL		: database or disk full
-		SQLITE_IOERR	: disk I / O error
-		SQLITE_BUSY		: database in use by another process
-		SQLITE_NOMEM	:*/
-	int VecesBusy = 0;
-
-	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
-		SqlRet = sqlite3_step(SqlQuery);
-		if (SqlRet == SQLITE_BUSY) {
-			VecesBusy++;
-			if (VecesBusy == 100) break;
-		}
-	}
-	sqlite3_finalize(SqlQuery);
-	// Si hay un error lo apunto
-	if (SqlRet == SQLITE_ERROR || SqlRet == SQLITE_CONSTRAINT) {
-		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
-//		Debug_Escribir_Varg(L"RaveBD::Consulta %s\n", _UltimoErrorSQL.c_str());
-	}
-
-	
-
-	return SqlRet;
-}
 
 // Obtiene el medio por el hash
 const BOOL RaveBD::ObtenerMedio(const sqlite3_int64 mHash, BDMedio &OUT_Medio) {
@@ -499,14 +452,14 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 				return FALSE;
 			}
 			// Si la etiqueta tiene menos de 5 medios vuelvo a obtener una etiqueta aleatória			
-			if (App.BD.Opciones_NoGenerarListasMenos3() == TRUE) {
+			if (App.Opciones.NoGenerarListasMenos3() == TRUE) {
 				do {
 					Rand = App.Rand<size_t>(Etiquetas.size());
 				} while (Etiquetas[Rand]->Medios < 5 && Intentos++ < MAX_INTENTOS);
 			}
 			Q = L"SELECT * FROM Medios WHERE Genero=\"" + Etiquetas[Rand]->Texto + L"\"";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Genero (%s)\n", Etiquetas[Rand]->Texto.c_str());
-			Mezclar = _Opciones_MezclarListaGenero;
+			Mezclar = App.Opciones.MezclarListaGenero();
 			break;
 		case TLA_Grupo:
 			for (size_t i = 0; i < _Etiquetas.size(); i++) {
@@ -517,14 +470,14 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 				return FALSE;
 			}
 			// Si la etiqueta tiene menos de 5 medios vuelvo a obtener una etiqueta aleatória			
-			if (App.BD.Opciones_NoGenerarListasMenos3() == TRUE) {
+			if (App.Opciones.NoGenerarListasMenos3() == TRUE) {
 				do {
 					Rand = App.Rand<size_t>(Etiquetas.size());
 				} while (Etiquetas[Rand]->Medios < 5 && Intentos++ < MAX_INTENTOS);
 			}
 			Q = L"SELECT * FROM Medios WHERE (GrupoPath=\"" + Etiquetas[Rand]->Texto + L"\") OR (GrupoTag=\"" + Etiquetas[Rand]->Texto + L"\")";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Grupo (%s)\n", Etiquetas[Rand]->Texto.c_str());
-			Mezclar = _Opciones_MezclarListaGrupo;
+			Mezclar = App.Opciones.MezclarListaGrupo();
 			break;
 		case TLA_Disco:
 			for (size_t i = 0; i < _Etiquetas.size(); i++) {
@@ -535,24 +488,24 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 				return FALSE;
 			}
 			// Si la etiqueta tiene menos de 5 medios vuelvo a obtener una etiqueta aleatória			
-			if (App.BD.Opciones_NoGenerarListasMenos3() == TRUE) {
+			if (App.Opciones.NoGenerarListasMenos3() == TRUE) {
 				do {
 					Rand = App.Rand<size_t>(Etiquetas.size());
 				} while (Etiquetas[Rand]->Medios < 5 && Intentos++ < MAX_INTENTOS);
 			}
 			Q = L"SELECT * FROM Medios WHERE (DiscoPath=\"" + Etiquetas[Rand]->Texto + L"\") OR (DiscoTag=\"" + Etiquetas[Rand]->Texto + L"\")";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Disco (%s)\n", Etiquetas[Rand]->Texto.c_str());
-			Mezclar = _Opciones_MezclarListaDisco;
+			Mezclar = App.Opciones.MezclarListaDisco();
 			break;
 		case TLA_50Medios:
 			Q = L"SELECT * FROM Medios WHERE TipoMedio=1 ORDER BY RANDOM() LIMIT 50";
 			Debug_Escribir(L"RaveBD::GenerarListaAleatoria Tipo : 50 Canciones.\n");
-			Mezclar = _Opciones_MezclarLista50Can;
+			Mezclar = App.Opciones.MezclarLista50Can();
 			break;
 		case TLA_Nota:
 			Q = L"SELECT * FROM Medios WHERE TipoMedio=1 AND Nota > 2.5 ORDER BY Nota DESC LIMIT 50";
 			Debug_Escribir(L"RaveBD::GenerarListaAleatoria Tipo : Nota.\n");
-			Mezclar = _Opciones_MezclarListaNota;
+			Mezclar = App.Opciones.MezclarListaNota();
 			break;
 	}
 
@@ -572,7 +525,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 		if (SqlRet == SQLITE_ROW) {
 			BDMedio TmpMedio;
 			TmpMedio.ObtenerFila(SqlQuery, Unidades);
-			if (App.BD.Opciones_NoAgregarMedioMenos25() == TRUE) {
+			if (App.Opciones.NoAgregarMedioMenos25() == TRUE) {
 				// si la nota es mas grande o igual que 2.5
 				if (TmpMedio.Nota >= 2.5f) {
 					if (GetFileAttributes(TmpMedio.Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
@@ -601,7 +554,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 	if		(Mezclar == 1)	App.VentanaRave.BotonMezclar.Marcado(TRUE);  // Forzar mezclar
 	else if (Mezclar == 2)	App.VentanaRave.BotonMezclar.Marcado(FALSE); // Forzar sin mezclar
 	App.ControlesPC.BotonMezclar.Marcado(App.VentanaRave.BotonMezclar.Marcado());
-	App.BD.Opciones_Shufle(App.VentanaRave.BotonMezclar.Marcado());
+	App.Opciones.Shufle(App.VentanaRave.BotonMezclar.Marcado());
 
 	// Miro si hay algun error en la consulta
 	if (SqlRet == SQLITE_ERROR) {
@@ -626,12 +579,12 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 
 
 const BOOL RaveBD::_ModificarTablas(void) {
-	float        Version = ObtenerVersionBD();
+	float        Version = App.Opciones.ObtenerVersionBD();
 	int          SqlRet  = 0;
 	std::wstring Q;
 
 	if (Version < 1.1) {
-		// Opciones ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*		// Opciones ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Añado la columna EfectoFadeAudioMS en las opciones
 		SqlRet = Consulta(L"ALTER TABLE Opciones	ADD COLUMN EfectoFadeAudioMS INTEGER AFTER OpacidadControlesVideo");
 		// Añado la columna DlgDirectorios_Ancho en las opciones
@@ -661,7 +614,7 @@ const BOOL RaveBD::_ModificarTablas(void) {
 		// Modifico el valor de EfectoFadeAudioMS a 10000
 		SqlRet = Consulta(L"UPDATE Opciones SET EfectoFadeAudioMS=10000, DlgDirectorios_Ancho=400, DlgDirectorios_Alto=600, VentanaMomentos_PosX=100, VentanaMomentos_PosY=100,"
 			                                  " OcultarTooltipsMouse=0, MostrarMedioActualTitulo=1, MezclarListaGenero=0, MezclarListaGrupo=0, MezclarListaDisco=0, MezclarLista50Can=0,"
-											  " MezclarListaNota=0, GuardarBSCP=1 WHERE Id=0");
+											  " MezclarListaNota=0, GuardarBSCP=1 WHERE Id=0");*/
 
 		// Medios /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Añado la columna Proporcion en los medios
@@ -830,7 +783,7 @@ const BOOL RaveBD::_CrearTablas(void) {
 
 
 	// Creo la tabla para las opciones /////////////////////////////////////////////////////////////
-	std::wstring CrearTablaOpciones = L"CREATE TABLE Opciones ("
+	/*std::wstring CrearTablaOpciones = L"CREATE TABLE Opciones ("
 											L"Id" 						L" INTEGER PRIMARY KEY,"		// 00
 											L"Volumen"					L" INTEGER,"					// 01
 											L"PathAbrir"				L" VARCHAR(260),"				// 02 NO SE USA	  
@@ -883,7 +836,7 @@ const BOOL RaveBD::_CrearTablas(void) {
 										L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000," RAVE_VERSIONBD ", 1, 1, 1, 400, 300, 500, 400, 300, 200, 1, 400, 5500, 1, 1, 1, 0, 200, 10000, 350, 400, 100, 100, 0, 1, 0, 0, 0, 0, 0, 1)";
 	if (Consulta(ValoresTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+	*/
 
 	// Creo la tabla para las raices
 	std::wstring CrearTablaRaiz = L"CREATE TABLE Raiz (Id INTEGER PRIMARY KEY, Path VARCHAR(260), IdDisco INTEGER)";
@@ -1174,6 +1127,7 @@ const BOOL RaveBD::ObtenerTeclasRapidas(void) {
 	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
+			if (R == App.TeclasRapidas.size()) break;
 			App.TeclasRapidas[R].Tecla		= static_cast<int>(sqlite3_column_int(SqlQuery, 0));
 			App.TeclasRapidas[R].Control	= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 1));
 			App.TeclasRapidas[R].Alt		= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 2));
@@ -1199,7 +1153,7 @@ const BOOL RaveBD::ObtenerTeclasRapidas(void) {
 }
 
 const BOOL RaveBD::GuardarTeclasRapidas(void) {
-	// Botto todos los datos de la tabla TeclasRapidas sin borrar la tabla
+	// Borro todos los datos de la tabla TeclasRapidas sin borrar la tabla
 	Consulta(L"DELETE FROM TeclasRapidas");
 	std::wstring Q;
 	int          SqlRet;
@@ -1390,7 +1344,7 @@ void RaveBD::FiltroPath(std::wstring &In, std::wstring &Out) {
 
 
 
-
+/*
 
 void RaveBD::Opciones_Volumen(const int nVolumen) {
 	_Opciones_Volumen = nVolumen;
@@ -1408,7 +1362,7 @@ void RaveBD::Opciones_Repeat(const Tipo_Repeat nRepeat) {
 	_Opciones_Repeat = nRepeat;
 
 	// Guardo el valor del repeat en la BD, siempre que el repeat no implique apagar el reproductor o el windows
-	if (nRepeat != Tipo_Repeat_ApagarReproductor && nRepeat != Tipo_Repeat_ApagarOrdenador /*&& nRepeat != Tipo_Repeat_HibernarOrdenador*/) {
+	if (nRepeat != Tipo_Repeat_ApagarReproductor && nRepeat != Tipo_Repeat_ApagarOrdenador /*&& nRepeat != Tipo_Repeat_HibernarOrdenador*//*) {
 		std::wstring Q = L"Update Opciones SET Repeat=" + std::to_wstring(nRepeat) + L" WHERE Id=0";
 		Consulta(Q.c_str());
 	}
@@ -1699,7 +1653,7 @@ Y no viene de 15 milisegundos mas a la hora de cerrar el reproductor */
 	}
 	return TRUE;
 }*/
-
+/*
 const BOOL RaveBD::Opciones_GuardarPosTamVentana(void) {
 	if (App.VentanaRave.Maximizada() == FALSE) {
 		RECT RC;
@@ -1747,7 +1701,7 @@ const BOOL RaveBD::Opciones_GuardarPosVentanaMomentos(void) {
 		return FALSE;
 	}
 	return TRUE;
-}
+}*/
 
 /*const BOOL RaveBD::Opciones_GuardarPosVentanaAsociar(void) {
 	RECT RV;
@@ -1762,7 +1716,7 @@ const BOOL RaveBD::Opciones_GuardarPosVentanaMomentos(void) {
 	}
 	return TRUE;
 }*/
-
+/*
 const BOOL RaveBD::Opciones_GuardarPosVentanaAnalizar(void) {
 	RECT RV;
 	GetWindowRect(App.VentanaRave.ThreadAnalizar.hWnd(), &RV);
@@ -1791,14 +1745,14 @@ const BOOL RaveBD::Opciones_GuardarPosTamDlgDirectorios(RECT &RW) {
 	}
 	return TRUE;
 }
-
+*/
 
 // Suma 1 a las reproducciones del BDMedio, y Suma 0.05 a la Nota (si la opción está activada)
 const BOOL RaveBD::MedioReproducido(BDMedio *rMedio) {
 	if (rMedio == NULL) return FALSE;
 	std::wstring Q;
 
-	if (Opciones_Sumar005() == TRUE) {	
+	if (App.Opciones.Sumar005() == TRUE) {	
 		float Nota = rMedio->Nota + 0.05f;
 		// La nota no puede pasar de 5.0
 		if (Nota > 5.0f) Nota = 5.0f;		

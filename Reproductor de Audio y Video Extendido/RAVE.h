@@ -18,6 +18,7 @@
 #include "ToolTipInfo.h"
 #include <DApp.h>
 #include "Actualizaciones.h"
+#include "RaveOpciones.h"
 
 using namespace DWL;
 
@@ -113,6 +114,7 @@ class RAVE : public DApp {
 //	DConsola						ConsolaDebug;
 
 	RaveBD							BD;
+	RaveOpciones					Opciones;
 	Rave_MediaPlayer				MP;
 	ControlesPantallaCompleta		ControlesPC;
 

@@ -18,10 +18,10 @@ VentanaAsociarReproductor::~VentanaAsociarReproductor(void) {
 
 void VentanaAsociarReproductor::Mostrar(void) {
 	// Si la opción de mostrar la ventana de asociar archivos no está habilitada, salgo de la función
-	if (App.BD.Opciones_MostrarAsociarArchivos() == FALSE) return;
+	if (App.Opciones.MostrarAsociarArchivos() == FALSE) return;
 
 	// Creo la ventana que mostrará el progreso
-	CrearVentana(NULL, L"RAVE_AsociarReproductor", L"Asociar Reproductor", App.BD.Opciones_DlgDirectorios_PosX(), App.BD.Opciones_DlgDirectorios_PosY(), 510, 155, WS_CAPTION | WS_SYSMENU | WS_VISIBLE, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+	CrearVentana(NULL, L"RAVE_AsociarReproductor", L"Asociar Reproductor", App.Opciones.DlgDirectorios_PosX(), App.Opciones.DlgDirectorios_PosY(), 510, 155, WS_CAPTION | WS_SYSMENU | WS_VISIBLE, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 	RECT RC;
 	GetClientRect(_hWnd, &RC);
 
@@ -106,7 +106,7 @@ LRESULT CALLBACK VentanaAsociarReproductor::GestorMensajes(UINT uMsg, WPARAM wPa
 			Evento_BotonEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));				
 			return 0;
 		case DWL_MARCAEX_CLICK  :   
-			App.BD.Opciones_MostrarAsociarArchivos(!_MarcaNoMostrarMas.Marcado());	
+			App.Opciones.MostrarAsociarArchivos(!_MarcaNoMostrarMas.Marcado());
 			return 0;
 		case WM_KEYUP			:	
 			if (wParam == VK_ESCAPE) { 
@@ -117,7 +117,7 @@ LRESULT CALLBACK VentanaAsociarReproductor::GestorMensajes(UINT uMsg, WPARAM wPa
 			Boton_Click(ID_BOTONCANCELAR);
 			return 0;
 		case WM_EXITSIZEMOVE:
-//			App.BD.Opciones_GuardarPosVentanaAsociar();
+//			App.Opciones.GuardarPosVentanaAsociar();
 			return 0;
 
 	}

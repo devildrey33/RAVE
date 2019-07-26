@@ -25,11 +25,11 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	EnumDisplayMonitors(NULL, NULL, VentanaPrincipal::EnumerarPantallas, NULL);
 	// Si el monitor donde se guardo la ultima posición no está disponible busco una nueva posición
 	if (MonitorDisponible == FALSE) {
-		App.BD.Opciones_AsignarPosVentana(RectMonitorActual.left + 100, RectMonitorActual.top + 100);
+		App.Opciones.AsignarPosVentana(RectMonitorActual.left + 100, RectMonitorActual.top + 100);
 	}
 
-	int ancho = (App.BD.Opciones_Ancho() > RAVE_MIN_ANCHO) ? App.BD.Opciones_Ancho() : RAVE_MIN_ANCHO;
-	HWND rhWnd = DVentana::CrearVentana(NULL, L"RAVE_VentanaPrincipal", RAVE_TITULO, App.BD.Opciones_PosX(), App.BD.Opciones_PosY(), ancho, App.BD.Opciones_Alto(), WS_OVERLAPPEDWINDOW, WS_EX_APPWINDOW, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+	int ancho = (App.Opciones.Ancho() > RAVE_MIN_ANCHO) ? App.Opciones.Ancho() : RAVE_MIN_ANCHO;
+	HWND rhWnd = DVentana::CrearVentana(NULL, L"RAVE_VentanaPrincipal", RAVE_TITULO, App.Opciones.PosX(), App.Opciones.PosY(), ancho, App.Opciones.Alto(), WS_OVERLAPPEDWINDOW, WS_EX_APPWINDOW, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 	
 	RECT RC; // , RW;
 	GetClientRect(hWnd(), &RC);
@@ -63,10 +63,10 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 	BotonMezclar.CrearBotonEx(&MarcoSI, L"Mezclar", 210, 0, 70, 30, ID_BOTON_MEZCLAR);
 	BotonMezclar.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
-	if (App.BD.Opciones_Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
+	if (App.Opciones.Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
 	BotonRepetir.CrearBotonEx(&MarcoSI, L"Repetir", 290, 0, 70, 30, ID_BOTON_REPETIR);
 	BotonRepetir.Fuente.CrearFuente(18, BotonRepetir.Skin.FuenteNombre.c_str(), TRUE);
-	if (App.BD.Opciones_Repeat() > 0) BotonRepetir.Marcado(TRUE);
+	if (App.Opciones.Repeat() > 0) BotonRepetir.Marcado(TRUE);
 	//////////////////////////////////////////
 
 	// Creo el slider para mostrar / modificar el tiempo del medio actual
@@ -75,8 +75,8 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	// Marco superior derecho
 	MarcoSD.Crear(this, RC.right - 260, 16, 250, 24, ID_MARCOSD);
 	// Creo el slider para modificar el volumen
-	SliderVolumen.CrearBarraVolumen(&MarcoSD, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.BD.Opciones_Volumen()));
-	std::wstring TxtVolumen = std::to_wstring(App.BD.Opciones_Volumen()) + L"%";
+	SliderVolumen.CrearBarraVolumen(&MarcoSD, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.Opciones.Volumen()));
+	std::wstring TxtVolumen = std::to_wstring(App.Opciones.Volumen()) + L"%";
 	LabelVolumen.CrearEtiquetaEx(&MarcoSD, TxtVolumen.c_str(), 215, 1, 40, 20, ID_LABEL_VOLUMEN, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
 	// Creo los labels para mostrar el tiempo actual y el total
 	LabelTiempoActual.CrearEtiquetaEx(&MarcoSD, L"00:00", 0, 1, 55, 20, ID_LABEL_TIEMPOACTUAL, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
@@ -207,7 +207,7 @@ void VentanaPrincipal::AjustarControles(RECT &RC) {
 
 
 BOOL CALLBACK VentanaPrincipal::EnumerarPantallas(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData) {
-	POINT Pt = { App.BD.Opciones_PosX(), App.BD.Opciones_PosY() };
+	POINT Pt = { App.Opciones.PosX(), App.Opciones.PosY() };
 	if (PtInRect(lprcMonitor, Pt) != 0) {
 		// El monitor está disponible, no hace falta seguir buscando
 		App.VentanaRave.RectMonitorActual	= *lprcMonitor;
@@ -223,7 +223,7 @@ BOOL CALLBACK VentanaPrincipal::EnumerarPantallas(HMONITOR hMonitor, HDC hdcMoni
 
 // Función que ejecuta el repeat
 void VentanaPrincipal::Repeat(void) {
-	switch (App.BD.Opciones_Repeat()) {
+	switch (App.Opciones.Repeat()) {
 		case Tipo_Repeat_NADA :
 			break;
 		case Tipo_Repeat_RepetirLista :
@@ -626,7 +626,7 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 	// Menu Video -> Proporción
 	if (cID >= ID_MENUVIDEO_PROPORCION_PREDETERMINADO && cID < ID_MENUVIDEO_PROPORCION_5A4 + 1) {		
 		App.MP.AsignarProporcion(cID);
-		if (App.BD.Opciones_GuardarBSCP() == TRUE)	App.BD.ActualizarMedio(&App.MP.MedioActual());
+		if (App.Opciones.GuardarBSCP() == TRUE)	App.BD.ActualizarMedio(&App.MP.MedioActual());
 		return;
 	}
 }
@@ -697,15 +697,15 @@ void VentanaPrincipal::Evento_MenuEx_Barra_Cambiado(const UINT cID, const float 
 		// Barras del menu del video
 		case ID_MENUVIDEO_BRILLO				:	
 			App.MP.Brillo(ValorBarra);
-			if (App.BD.Opciones_GuardarBSCP() == TRUE)		App.BD.ActualizarMedio(&App.MP.MedioActual());
+			if (App.Opciones.GuardarBSCP() == TRUE)		App.BD.ActualizarMedio(&App.MP.MedioActual());
 			return;
 		case ID_MENUVIDEO_CONTRASTE				:	
 			App.MP.Contraste(ValorBarra);		
-			if (App.BD.Opciones_GuardarBSCP() == TRUE)		App.BD.ActualizarMedio(&App.MP.MedioActual());
+			if (App.Opciones.GuardarBSCP() == TRUE)		App.BD.ActualizarMedio(&App.MP.MedioActual());
 			return;
 		case ID_MENUVIDEO_SATURACION			:	
 			App.MP.Saturacion(ValorBarra);			
-			if (App.BD.Opciones_GuardarBSCP() == TRUE)		App.BD.ActualizarMedio(&App.MP.MedioActual());
+			if (App.Opciones.GuardarBSCP() == TRUE)		App.BD.ActualizarMedio(&App.MP.MedioActual());
 			return;
 		// Menu Lista -> Nota
 		case ID_MENULISTA_NOTA					:	Lista_AsignarNota(ValorBarra);			return;
@@ -817,13 +817,13 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse)
 
 // Click en el boton Mezclar
 void VentanaPrincipal::Mezclar_Click(void) {
-	Mezclar(!App.BD.Opciones_Shufle());
+	Mezclar(!App.Opciones.Shufle());
 }
 
 // Función que mezcla / restaura el orden de la lista
 void VentanaPrincipal::Mezclar(const BOOL nMezclar) {
 	Lista.Mezclar(nMezclar);
-	App.BD.Opciones_Shufle(nMezclar);
+	App.Opciones.Shufle(nMezclar);
 	BotonMezclar.Marcado(nMezclar);
 	App.ControlesPC.BotonMezclar.Marcado(nMezclar);
 }
@@ -869,17 +869,17 @@ void VentanaPrincipal::Repetir_Click(void) {
 		
 		// Asigno el tipo de repeat 
 		switch (Ret->ID()) {
-			case ID_REPETIR_NO				:	App.BD.Opciones_Repeat(Tipo_Repeat_NADA);					break;
-			case ID_REPETIR_SI				:	App.BD.Opciones_Repeat(Tipo_Repeat_RepetirLista);			break;
-			case ID_REPETIR_SI_MEZCLAR		:	App.BD.Opciones_Repeat(Tipo_Repeat_RepetirListaShufle);		break;
-			case ID_REPETIR_SI_APAGAR_REP	:	App.BD.Opciones_Repeat(Tipo_Repeat_ApagarReproductor);		break;	// No se guarda en la BD
-			case ID_REPETIR_SI_APAGAR_WIN	:	App.BD.Opciones_Repeat(Tipo_Repeat_ApagarOrdenador);		break;	// No se guarda en la BD
+			case ID_REPETIR_NO				:	App.Opciones.Repeat(Tipo_Repeat_NADA);					break;
+			case ID_REPETIR_SI				:	App.Opciones.Repeat(Tipo_Repeat_RepetirLista);			break;
+			case ID_REPETIR_SI_MEZCLAR		:	App.Opciones.Repeat(Tipo_Repeat_RepetirListaShufle);	break;
+			case ID_REPETIR_SI_APAGAR_REP	:	App.Opciones.Repeat(Tipo_Repeat_ApagarReproductor);		break;	// No se guarda en la BD
+			case ID_REPETIR_SI_APAGAR_WIN	:	App.Opciones.Repeat(Tipo_Repeat_ApagarOrdenador);		break;	// No se guarda en la BD
 			case ID_REPETIR_GENERAR         :
-			case ID_REPETIR_LOQUESEA        :	App.BD.Opciones_Repeat(Tipo_Repeat_GenerarLoQueSea);		break;
-			case ID_REPETIR_GENERO			:	App.BD.Opciones_Repeat(Tipo_Repeat_GenerarGenero);			break;
-			case ID_REPETIR_GRUPO			:	App.BD.Opciones_Repeat(Tipo_Repeat_GenerarGrupo);			break;
-			case ID_REPETIR_DISCO			:	App.BD.Opciones_Repeat(Tipo_Repeat_GenerarDisco);			break;
-			case ID_REPETIR_50CANCIONES     :   App.BD.Opciones_Repeat(Tipo_Repeat_Generar50Canciones);		break;
+			case ID_REPETIR_LOQUESEA        :	App.Opciones.Repeat(Tipo_Repeat_GenerarLoQueSea);		break;
+			case ID_REPETIR_GENERO			:	App.Opciones.Repeat(Tipo_Repeat_GenerarGenero);			break;
+			case ID_REPETIR_GRUPO			:	App.Opciones.Repeat(Tipo_Repeat_GenerarGrupo);			break;
+			case ID_REPETIR_DISCO			:	App.Opciones.Repeat(Tipo_Repeat_GenerarDisco);			break;
+			case ID_REPETIR_50CANCIONES     :   App.Opciones.Repeat(Tipo_Repeat_Generar50Canciones);	break;
 		}
 		
 		// Marco / desmarco el boton del repeat según la ID
@@ -977,7 +977,7 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 		EnumDisplayMonitors(NULL, NULL, VentanaPrincipal::EnumerarPantallas, NULL);
 		// Si el monitor donde se guardo la ultima posición no está disponible busco una nueva posición
 		if (MonitorDisponible == FALSE) {
-			App.BD.Opciones_AsignarPosVentana(RectMonitorActual.left + 100, RectMonitorActual.top + 100);
+			App.Opciones.AsignarPosVentana(RectMonitorActual.left + 100, RectMonitorActual.top + 100);
 		}
 
 //		App.ControlesPC._AniMostrar.Terminar();
@@ -986,7 +986,7 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 //		GetClientRect(hWnd(), &RC);
 //		BOOL R = App.VentanaRave.BarraTareas.Clip(&RC);
 		SetWindowLongPtr(hWnd(), GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
-		SetWindowPos(_hWnd, HWND_TOP, App.BD.Opciones_PosX(), App.BD.Opciones_PosY(), App.BD.Opciones_Ancho(), App.BD.Opciones_Alto(), SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+		SetWindowPos(_hWnd, HWND_TOP, App.Opciones.PosX(), App.Opciones.PosY(), App.Opciones.Ancho(), App.Opciones.Alto(), SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 		//MoveWindow(Video.hWnd(), 120, 71, RC.right - 120, RC.bottom - 70, TRUE);
 
 		App.ControlesPC.Ocultar();
@@ -1053,7 +1053,7 @@ void VentanaPrincipal::Evento_SliderVolumen_Cambiando(void) {
 
 // Guardo el volumen en las opciones (al soltar el slider del volumen)
 void VentanaPrincipal::Evento_SliderVolumen_Cambiado(void) {
-	App.BD.Opciones_Volumen(static_cast<int>(SliderVolumen.Valor()));
+	App.Opciones.Volumen(static_cast<int>(SliderVolumen.Valor()));
 }
 
 void VentanaPrincipal::Evento_BorraFondo(HDC DC) {
@@ -1080,7 +1080,7 @@ void VentanaPrincipal::Evento_Cerrar(void) {
 
 	//	App.BD.Consulta(L"BEGIN TRANSACTION");
 	App.BD.GuardarUltimaLista();
-//	App.BD.Opciones_GuardarOpciones();
+//	App.Opciones.GuardarOpciones();
 //	App.BD.Consulta(L"COMMIT TRANSACTION");
 
 
@@ -1323,7 +1323,7 @@ void VentanaPrincipal::ThreadAgregarArchivosLista_Terminado(void) {
 	BarraTareas.Estado_SinProgreso();
 	//			BarraTareas.Resaltar();
 	// Ejecuto el shufle si es necesario
-	if (App.BD.Opciones_Shufle() == TRUE) {
+	if (App.Opciones.Shufle() == TRUE) {
 		App.VentanaRave.Lista.Mezclar(TRUE);
 		App.VentanaRave.Lista.MedioActual = 0;
 	}
@@ -1331,7 +1331,7 @@ void VentanaPrincipal::ThreadAgregarArchivosLista_Terminado(void) {
 	if (App.MP.ComprobarEstado() != EnPlay)	Lista_Play();
 	//			Lista_Stop();
 	//			Lista_Play();			
-	if (App.BD.Opciones_AnalizarMediosPendientes() == TRUE) AnalizarBD();
+	if (App.Opciones.AnalizarMediosPendientes() == TRUE) AnalizarBD();
 }
 
 void VentanaPrincipal::ThreadAgregarArchivosLista_AgregarMedio(WPARAM wParam) {
@@ -1363,7 +1363,7 @@ void VentanaPrincipal::ThreadABuscarArchivos_Terminado(const BOOL Cancelado, LPA
 		Debug_Escribir_Varg(L"ThreadActualizarArbol::Terminado %d archivos encontrados.\n", lParam);
 		App.MostrarToolTipPlayer(L"Arbol actualizado.");
 		// Si la opción de analizar medios pendientes está activa
-		if (App.BD.Opciones_AnalizarMediosPendientes() == TRUE) AnalizarBD();
+		if (App.Opciones.AnalizarMediosPendientes() == TRUE) AnalizarBD();
 	}
 	else {
 		Debug_Escribir_Varg(L"ThreadActualizarArbol::Cancelado %d archivos encontrados.\n", lParam);
@@ -1420,7 +1420,7 @@ void VentanaPrincipal::_Evento_Size(void) {
 
 void VentanaPrincipal::_Evento_ExitSizeMove(void) {
 	if (App.VentanaRave.Maximizada() == FALSE) {
-		App.BD.Opciones_GuardarPosTamVentana();
+		App.Opciones.GuardarPosTamVentana();
 	}
 //	Debug_Escribir_Varg(L"WM_EXITSIZEMOVE %d, %d\n", wParam, lParam);
 }

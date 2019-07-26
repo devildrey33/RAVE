@@ -18,7 +18,7 @@
 void ControlesPantallaCompleta::Crear(void) {	
 	DVentana::CrearVentana(NULL, L"ControlesPantallaCompleta", L"", 0, 0, 1000, 80, WS_POPUP, WS_EX_TOOLWINDOW, NULL, NULL, NULL, NULL);
 	
-	Alineacion = static_cast<CPC_Alineacion>(App.BD.Opciones_AlineacionControlesVideo());
+	Alineacion = static_cast<CPC_Alineacion>(App.Opciones.AlineacionControlesVideo());
 
 	//AnimateWindow(_hWnd, 100, AW_HOR_POSITIVE | AW_VER_POSITIVE);
 
@@ -39,10 +39,10 @@ void ControlesPantallaCompleta::Crear(void) {
 	BotonMezclar.CrearBotonEx(this, L"Mezclar", 220, 10, 80, 30, ID_BOTON_MEZCLAR);
 	BotonMezclar.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
 	
-	if (App.BD.Opciones_Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
+	if (App.Opciones.Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
 	BotonRepetir.CrearBotonEx(this, L"Repetir", 310, 10, 80, 30, ID_BOTON_REPETIR);
 	BotonRepetir.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
-	if (App.BD.Opciones_Repeat() > 0) BotonRepetir.Marcado(TRUE);
+	if (App.Opciones.Repeat() > 0) BotonRepetir.Marcado(TRUE);
 
 	BotonRotar.CrearBotonEx(this, L"Rotar", 400, 10, 70, 30, ID_BOTON_ROTAR);
 	BotonRotar.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
@@ -85,7 +85,7 @@ void ControlesPantallaCompleta::RotarControles(void) {
 
 void ControlesPantallaCompleta::Mostrar(void) {
 	KillTimer(hWnd(), TIMER_CPC_INACTIVIDAD);
-	SetTimer(hWnd(), TIMER_CPC_INACTIVIDAD, App.BD.Opciones_OcultarMouseEnVideo(), NULL);
+	SetTimer(hWnd(), TIMER_CPC_INACTIVIDAD, App.Opciones.OcultarMouseEnVideo(), NULL);
 
 	// NO USAR IsWindowVisible para comprobar si están visibles los controles
 	if (_Visible == TRUE) return;
@@ -111,7 +111,7 @@ void ControlesPantallaCompleta::Transicion(const CPC_Transicion nTransicion) {
 	static double OpacidadHasta = 0.0f;
 	switch (nTransicion) {
 		case CPC_Transicion_Mostrar:
-			OpacidadHasta = static_cast<double>(App.BD.Opciones_OpacidadControlesVideo());
+			OpacidadHasta = static_cast<double>(App.Opciones.OpacidadControlesVideo());
 			break;
 		case CPC_Transicion_Ocultar:
 			OpacidadHasta = 0.0f;
@@ -299,9 +299,9 @@ void ControlesPantallaCompleta::Evento_SliderTiempo_Cambiado(void) {
 }
 
 void ControlesPantallaCompleta::Evento_SliderVolumen_Cambiado(void) {
-	App.BD.Opciones_Volumen(static_cast<int>(SliderVolumen.Valor()));
+	App.Opciones.Volumen(static_cast<int>(SliderVolumen.Valor()));
 	KillTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD);
-	SetTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD, App.BD.Opciones_OcultarMouseEnVideo(), NULL);
+	SetTimer(App.VentanaRave.hWnd(), TIMER_CPC_INACTIVIDAD, App.Opciones.OcultarMouseEnVideo(), NULL);
 }
 
 void ControlesPantallaCompleta::Evento_SliderVolumen_Cambio(void) {
@@ -450,7 +450,7 @@ LRESULT CALLBACK ControlesPantallaCompleta::GestorMensajes(UINT uMsg, WPARAM wPa
 			DWL::DMouse::ObtenerPosicion(&nPos);
 			if (_MousePos.x != nPos.x || _MousePos.y != nPos.y) {
 				KillTimer(_hWnd, TIMER_CPC_INACTIVIDAD);
-				SetTimer(_hWnd, TIMER_CPC_INACTIVIDAD, App.BD.Opciones_OcultarMouseEnVideo(), NULL);
+				SetTimer(_hWnd, TIMER_CPC_INACTIVIDAD, App.Opciones.OcultarMouseEnVideo(), NULL);
 				_MousePos = nPos;
 				Mostrar();
 			}

@@ -199,6 +199,8 @@
     <ClInclude Include="EtiquetaBD.h" />
     <ClInclude Include="ListaMedios.h" />
     <ClInclude Include="ListaRaices.h" />
+    <ClInclude Include="RaveOpciones.h" />
+    <ClInclude Include="RaveSQLite.h" />
     <ClInclude Include="Rave_MediaPlayer.h" />
     <ClInclude Include="MemoriaCompartida.h" />
     <ClInclude Include="RaveBD.h" />
@@ -251,6 +253,8 @@
     <ClCompile Include="ListaMedios.cpp" />
     <ClCompile Include="ListaRaices.cpp" />
     <ClCompile Include="MarcoControles.cpp" />
+    <ClCompile Include="RaveOpciones.cpp" />
+    <ClCompile Include="RaveSQLite.cpp" />
     <ClCompile Include="Rave_MediaPlayer.cpp" />
     <ClCompile Include="MemoriaCompartida.cpp" />
     <ClCompile Include="RAVE.cpp" />

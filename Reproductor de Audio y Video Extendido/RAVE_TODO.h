@@ -382,7 +382,8 @@
 
 		V  Crear objecte a la DWL per llegir arxius binaris, i que pugui crear un hash
 
-		-  Separar opcions de la base de dades, i fer unaltre BD per les opcions o ferles en un arxiu binari. 
+		V  Separar opcions de la base de dades, i fer unaltre BD per les opcions o ferles en un arxiu binari. 
+			- Al final amb unaltre BD
 
 		-  Crear finestra que mostri les dades de l'actualització.
 			- Crear control per mostrar les novetats o el changelog...

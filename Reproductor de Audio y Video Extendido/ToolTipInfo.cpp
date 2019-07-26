@@ -74,14 +74,14 @@ void ToolTipInfo::Mostrar(const int cX, const int cY, const int cAncho, const in
 
 	// Inicio el temporizador para ocultar el tooltip (si está bajo el gestor de tooltips ToolTipsInfo)
 	if (_Padre != NULL) {
-		SetTimer(_hWnd, ID_TEMPORIZADOR_OCULTAR, App.BD.Opciones_TiempoToolTips(), NULL);
+		SetTimer(_hWnd, ID_TEMPORIZADOR_OCULTAR, App.Opciones.TiempoToolTips(), NULL);
 	}
 
 	static double Cero = 0.0f;
 	static double MaxOpacidad = MAX_OPACIDAD;
 
 	// Inicio la animación de la opacidad
-	Ani.Iniciar({ 0.0f, DESPLAZAMIENTOY }, { &MaxOpacidad, &Cero }, App.BD.Opciones_TiempoAnimaciones(), [=](DAnimacion::Valores& Datos, const BOOL Terminado) {
+	Ani.Iniciar({ 0.0f, DESPLAZAMIENTOY }, { &MaxOpacidad, &Cero }, App.Opciones.TiempoAnimaciones(), [=](DAnimacion::Valores& Datos, const BOOL Terminado) {
 		double Op = Datos[0].Decimal();
 		if (Op > 0.0f && Op < 255.1f) {
 			Opacidad(static_cast<BYTE>(Op));
@@ -134,7 +134,7 @@ void ToolTipInfo::Ocultar(const BOOL Rapido) {
 	if (Rapido == FALSE) {
 		if (_hWnd != NULL) { 
 			Ani.Terminar();
-			Ani.Iniciar({ MAX_OPACIDAD, 0.0f }, { &Cero, &Doscientos }, App.BD.Opciones_TiempoAnimaciones(), [=](DAnimacion::Valores& Datos, const BOOL Terminado) {
+			Ani.Iniciar({ MAX_OPACIDAD, 0.0f }, { &Cero, &Doscientos }, App.Opciones.TiempoAnimaciones(), [=](DAnimacion::Valores& Datos, const BOOL Terminado) {
 				double Op = Datos[0].Decimal();				
 				if (Op > 0.0f && Op < 255.1f) {
 					Opacidad(static_cast<BYTE>(Op));
@@ -185,7 +185,7 @@ LRESULT CALLBACK ToolTipInfo::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lP
 			return MA_NOACTIVATEANDEAT;
 		// Mouse 
 		case WM_MOUSEMOVE :
-			if (App.BD.Opciones_OcultarTooltipsMouse() == TRUE) Ocultar();
+			if (App.Opciones.OcultarTooltipsMouse() == TRUE) Ocultar();
 			break;
 		case WM_LBUTTONDOWN:	case WM_RBUTTONDOWN:	case WM_MBUTTONDOWN:// Mouse presionado
 		case WM_LBUTTONUP:		case WM_RBUTTONUP:		case WM_MBUTTONUP:	// Mouse soltado

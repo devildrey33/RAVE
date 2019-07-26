@@ -150,7 +150,7 @@ const BOOL ArbolBD::AgregarNodoALista(NodoBD *nNodo) {
 
 
 	// Ejecuto el shufle si es necesario
-	if (App.BD.Opciones_Shufle() == TRUE) {
+	if (App.Opciones.Shufle() == TRUE) {
 		App.VentanaRave.Lista.Mezclar(TRUE);
 		App.VentanaRave.Lista.MedioActual = 0;
 	}

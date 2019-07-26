@@ -259,9 +259,9 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 		UINT64        TTotalMS  = TiempoTotalMs();
 		UINT64        TActualMS = TiempoActualMs();
 
-		if (TTotalMS < App.BD.Opciones_EfectoFadeAudioMS() || _Actual == NULL || _Siguiente == NULL) return;
+		if (TTotalMS < App.Opciones.EfectoFadeAudioMS() || _Actual == NULL || _Siguiente == NULL) return;
 
-		if (TTotalMS - App.BD.Opciones_EfectoFadeAudioMS() < TActualMS) {
+		if (TTotalMS - App.Opciones.EfectoFadeAudioMS() < TActualMS) {
 			// cambio el medio actual
 			App.VentanaRave.Lista.MedioActual = App.VentanaRave.Lista.MedioSiguiente(App.VentanaRave.Lista.MedioActual);
 
@@ -511,7 +511,7 @@ const BOOL Rave_MediaPlayer::Play(const BOOL ComprobarMomento) {
 
 void Rave_MediaPlayer::AsignarTitulo(void) {
 	std::wstring nTitulo;
-	if (App.BD.Opciones_MostrarMedioActualTitulo() == TRUE && _Actual != NULL && ComprobarEstado() != EnStop) {
+	if (App.Opciones.MostrarMedioActualTitulo() == TRUE && _Actual != NULL && ComprobarEstado() != EnStop) {
 		// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
 		if (_Actual->Medio.Pista() == 0)  nTitulo = std::wstring(RAVE_TITULO) + L" [" + _Actual->Medio.Nombre() + L"]";																// Sin pista
 		else                              nTitulo = std::wstring(RAVE_TITULO) + L" [" + DWL::Strings::ToStr(_Actual->Medio.Pista(), 2) + L" " + _Actual->Medio.Nombre() + L"]";		// Con pista
@@ -566,7 +566,7 @@ const BOOL Rave_MediaPlayer::StopTODO(void) {
 }
 
 const int Rave_MediaPlayer::Volumen(void) {
-	if (_Actual == NULL) return App.BD.Opciones_Volumen();
+	if (_Actual == NULL) return App.Opciones.Volumen();
 	return _Actual->Volumen();
 }
 
