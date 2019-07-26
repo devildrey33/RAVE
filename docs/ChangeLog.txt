@@ -22,7 +22,7 @@
 * Añadidas funcionabilidades básicas a los controles de edición de texto : alineación, selección, control + [c x v], placeholder, control [z y] con un buffer ilimitado.
 	* No son 100% funcionales aún, pero para lo que necesita el reproductor creo que va sobrado.
 
-* Se han separado las opciones de la base de datos de medios, ahora las opciones tienen su propio archivo "Opciones.BD".
+* Se han separado la tabla Opciones y la tabla TeclasRapidas de la base de datos de medios, ahora las tienen su propio archivo "Opciones.BD".
 	* Esto evita que no se guarden las opciones mientras se está ejecutando el thread de análisis.
 
 

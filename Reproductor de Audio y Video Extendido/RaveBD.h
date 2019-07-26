@@ -68,16 +68,6 @@ class RaveBD : public RaveSQLite {
 
 								// Inicia la base de datos
 	const BOOL					Iniciar(void);
-								// Termina la conexión a la base de datos
-//	void						Terminar(void);
-								// Consulta básica wchar_t
-//	const int					Consulta(const wchar_t *TxtConsulta);
-								// Consulta al estilo printf
-//	const int					ConsultaVarg(const wchar_t *TxtConsulta, ...);
-								// Consulta desde un std::wstring
-//	inline const int			Consulta(std::wstring &TxtConsulta) { return Consulta(TxtConsulta.c_str()); };
-								// Devuelve la ultima ID insertada
-	const LONG_PTR              UltimaIdInsertada(void);
 
 								// Función que agrega un momento para un medio
 	const BOOL                  AgregarMomento(BDMedio* nMedio, std::wstring& nNombre, const UINT64 nTiempoInicial, const UINT64 nTiempoFinal, const BOOL EvitarReproduccion);
@@ -147,118 +137,9 @@ class RaveBD : public RaveSQLite {
 								// Devuelve el puntero de la base de datos sqlite 3
 	inline sqlite3			   *operator()(void) { return _BD; }
 
-	const BOOL                  ObtenerTeclasRapidas(void);
-	const BOOL                  GuardarTeclasRapidas(void);
 
 	const BOOL                  ObtenerUltimaLista(void);
 	const BOOL                  GuardarUltimaLista(void);
-
-/*								// Función que obtiene las opciones de la base de datos
-	const BOOL					ObtenerOpciones(void);
-								// Función que devuelve la versión de la BD
-	const float                 ObtenerVersionBD(void);
-
-								// NOTA Esta función no guarda la posición en la BD
-	inline void					Opciones_AsignarPosVentana(const int nX, const int nY) { _Opciones_PosX = nX; _Opciones_PosY = nY; };
-								// Opciones que se guardan en la BD
-//	const BOOL					Opciones_GuardarOpciones(void);
-	const BOOL					Opciones_GuardarPosTamVentana(void);
-	const BOOL					Opciones_GuardarPosVentanaOpciones(void);
-//	const BOOL					Opciones_GuardarPosVentanaAsociar(void);
-	const BOOL					Opciones_GuardarPosVentanaAnalizar(void);
-	const BOOL					Opciones_GuardarPosTamDlgDirectorios(RECT &RC);
-	const BOOL					Opciones_GuardarPosVentanaMomentos(void);
-
-	inline const int			Opciones_Volumen(void) { return _Opciones_Volumen; }
-	void						Opciones_Volumen(const int nVolumen);
-
-	inline const int			Opciones_PosX(void)                 { return _Opciones_PosX; }
-	inline const int			Opciones_PosY(void)                 { return _Opciones_PosY; }
-	inline const int			Opciones_VentanaOpciones_PosX(void) { return _Opciones_VentanaOpciones_PosX; }
-	inline const int			Opciones_VentanaOpciones_PosY(void) { return _Opciones_VentanaOpciones_PosY; }
-	inline const int			Opciones_DlgDirectorios_PosX(void)  { return _Opciones_DlgDirectorios_PosX;  }
-	inline const int			Opciones_DlgDirectorios_PosY(void)  { return _Opciones_DlgDirectorios_PosY;  }
-	inline const int			Opciones_DlgDirectorios_Ancho(void) { return _Opciones_DlgDirectorios_Ancho; }
-	inline const int			Opciones_DlgDirectorios_Alto(void)  { return _Opciones_DlgDirectorios_Alto;  }
-	inline const int			Opciones_VentanaAnalizar_PosX(void) { return _Opciones_VentanaAnalizar_PosX; }
-	inline const int			Opciones_VentanaAnalizar_PosY(void) { return _Opciones_VentanaAnalizar_PosY; }
-	inline const int			Opciones_VentanaMomentos_PosX(void) { return _Opciones_VentanaMomentos_PosX; }
-	inline const int			Opciones_VentanaMomentos_PosY(void) { return _Opciones_VentanaMomentos_PosY; }
-
-	inline const int			Opciones_Ancho(void) { return _Opciones_Ancho; }
-	inline const int			Opciones_Alto(void)  { return _Opciones_Alto;  }
-
-	inline const BOOL			Opciones_Shufle(void) { return _Opciones_Shufle; }
-	void						Opciones_Shufle(const BOOL nShufle);
-
-	inline const Tipo_Repeat	Opciones_Repeat(void) { return _Opciones_Repeat; }
-	void						Opciones_Repeat(const Tipo_Repeat nRepeat);
-
-	inline const Tipo_Inicio	Opciones_Inicio(void) { return _Opciones_Inicio; }
-	void						Opciones_Inicio(const Tipo_Inicio nInicio);
-								// Tiempo para ocultar los controles pantalla completa
-	inline const int			Opciones_OcultarMouseEnVideo(void) { return _Opciones_OcultarMouseEnVideo; }
-	void						Opciones_OcultarMouseEnVideo(const int nOcultarMouseEnVideo);
-
-	inline const BOOL			Opciones_MostrarObtenerMetadatos(void) { return _Opciones_MostrarObtenerMetadatos; }
-	void						Opciones_MostrarObtenerMetadatos(const BOOL nMostrarObtenerMetadatos);
-
-	inline const BOOL			Opciones_MostrarAsociarArchivos(void) { return _Opciones_MostrarAsociarArchivos; }
-	void						Opciones_MostrarAsociarArchivos(const BOOL nMostrarAsociarArchivos);
-
-	inline const BOOL			Opciones_AnalizarMediosPendientes(void) { return _Opciones_AnalizarMediosPendientes; }
-	void						Opciones_AnalizarMediosPendientes(const BOOL nAnalizarMediosPendientes);
-
-	inline const BOOL			Opciones_BuscarActualizacion(void) { return _Opciones_BuscarActualizacion; }
-	void						Opciones_BuscarActualizacion(const BOOL nOpciones_BuscarActualizacion);
-
-	inline const UINT			Opciones_TiempoAnimaciones(void) { return _Opciones_TiempoAnimaciones; }
-	void						Opciones_TiempoAnimaciones(const UINT nOpciones_TiempoAnimaciones);
-
-	inline const UINT			Opciones_TiempoToolTips(void) { return _Opciones_TiempoToolTips; }
-	void						Opciones_TiempoToolTips(const UINT nOpciones_TiempoToolTips);
-
-	inline const BOOL			Opciones_NoAgregarMedioMenos25(void) { return _Opciones_NoAgregarMedioMenos25; }
-	void						Opciones_NoAgregarMedioMenos25(const BOOL nOpciones_NoAgregarMedioMenos25);
-
-	inline const BOOL			Opciones_NoGenerarListasMenos3(void) { return _Opciones_NoGenerarListasMenos3; }
-	void						Opciones_NoGenerarListasMenos3(const BOOL nOpciones_NoGenerarListasMenos3);
-
-	inline const BOOL			Opciones_Sumar005(void) { return _Opciones_Sumar005; }
-	void						Opciones_Sumar005(const BOOL n_pciones_Sumar005);
-
-	inline const int			Opciones_AlineacionControlesVideo(void) { return _Opciones_AlineacionControlesVideo; }
-	void						Opciones_AlineacionControlesVideo(const int nOpciones_AlineacionControlesVideo);
-
-	inline const int			Opciones_OpacidadControlesVideo(void) { return _Opciones_OpacidadControlesVideo; }
-	void						Opciones_OpacidadControlesVideo(const int nOpciones_OpacidadControlesVideo);
-
-	inline const UINT			Opciones_EfectoFadeAudioMS(void) { return _Opciones_EfectoFadeAudioMS; }
-	void						Opciones_EfectoFadeAudioMS(const UINT nOpciones_EfectoFadeAudioMS);
-
-	inline const BOOL			Opciones_OcultarTooltipsMouse(void) { return _Opciones_OcultarTooltipsMouse; }
-	void						Opciones_OcultarTooltipsMouse(const BOOL nOpciones_OcultarTooltipsMouse);
-
-	inline const BOOL			Opciones_MostrarMedioActualTitulo(void) { return _Opciones_MostrarMedioActualTitulo; }
-	void						Opciones_MostrarMedioActualTitulo(const BOOL nOpciones_MostrarMedioActualTitulo);
-
-	inline const int 			Opciones_MezclarListaGenero(void) { return _Opciones_MezclarListaGenero; }
-	void						Opciones_MezclarListaGenero(const int nOpciones_MezclarListaGenero);
-
-	inline const int			Opciones_MezclarListaGrupo(void) { return _Opciones_MezclarListaGrupo; }
-	void						Opciones_MezclarListaGrupo(const int nOpciones_MezclarListaGrupo);
-
-	inline const int			Opciones_MezclarListaDisco(void) { return _Opciones_MezclarListaDisco; }
-	void						Opciones_MezclarListaDisco(const int nOpciones_MezclarListaDisco);
-
-	inline const int			Opciones_MezclarLista50Can(void) { return _Opciones_MezclarLista50Can; }
-	void						Opciones_MezclarLista50Can(const int nOpciones_MezclarLista50Can);
-
-	inline const int			Opciones_MezclarListaNota(void) { return _Opciones_MezclarListaNota; }
-	void						Opciones_MezclarListaNota(const int nOpciones_MezclarListaNota);
-								// Guardar brillo, contraste, saturación y proporción
-	inline const BOOL			Opciones_GuardarBSCP(void) { return _Opciones_GuardarBSCP; }
-	void						Opciones_GuardarBSCP(const BOOL nOpciones_GuardarBSCP);*/
 
 
 	DWL::DUnidadesDisco			Unidades;
@@ -287,54 +168,6 @@ protected:
 
     const BOOL                 _CrearTablas(void);
 	const BOOL                 _ModificarTablas(void);
-//	std::wstring               _UltimoErrorSQL;
-//	sqlite3                   *_BD;
-
-								// Opciones en memória
-/*	std::wstring               _Opciones_PathAbrir;					// Ultimo path donde se ha abierto un archivo externo
-	int                        _Opciones_Volumen;
-	int                        _Opciones_PosX;
-	int                        _Opciones_PosY;
-	int                        _Opciones_VentanaOpciones_PosX;
-	int                        _Opciones_VentanaOpciones_PosY;
-	int                        _Opciones_DlgDirectorios_PosX;
-	int                        _Opciones_DlgDirectorios_PosY;
-	int                        _Opciones_DlgDirectorios_Ancho;
-	int                        _Opciones_DlgDirectorios_Alto;
-	int                        _Opciones_VentanaAnalizar_PosX;
-	int                        _Opciones_VentanaAnalizar_PosY;
-	int                        _Opciones_VentanaMomentos_PosX;
-	int                        _Opciones_VentanaMomentos_PosY;
-	int                        _Opciones_Ancho;
-	int                        _Opciones_Alto;
-	BOOL                       _Opciones_Shufle;
-	Tipo_Repeat                _Opciones_Repeat;
-	Tipo_Inicio                _Opciones_Inicio;					// Como se inicia el reproductor (lista de inicio)
-	float                      _Opciones_Version;					// Versión de la base de datos
-	int                        _Opciones_OcultarMouseEnVideo;		// Tiempo en MS que tarda en ocultarse el mouse y los controles de un video
-	BOOL                       _Opciones_MostrarObtenerMetadatos;	// Mostrar la ventana del thread obtener metadatos
-	BOOL                       _Opciones_MostrarAsociarArchivos;	// Mostrar la ventana para asociar este reproductor con todas las extensiones de medios conocidas.
-	BOOL					   _Opciones_AnalizarMediosPendientes;	// Analizar medios pendientes al actualizar el arbol de la base de datos
-	BOOL					   _Opciones_BuscarActualizacion;		// Buscar actualizaciones del reproductor al iniciar
-	UINT                       _Opciones_TiempoAnimaciones;			// Duración de las animaciones
-	UINT                       _Opciones_TiempoToolTips;			// Duración de los tooltips informativos de la parte inferior derecha
-
-	BOOL                       _Opciones_NoAgregarMedioMenos25;		// No Agregar medios con menos de 2.5 de nota a las listas aleatórias
-	BOOL                       _Opciones_NoGenerarListasMenos3;		// No generar listas aleatórias con menos de 3 medios
-	BOOL                       _Opciones_Sumar005;                  // Sumar 0.05 a la nota al reproducir completamente un medio
-	int				           _Opciones_AlineacionControlesVideo;	// Alineación para los controles pantalla completa
-	int						   _Opciones_OpacidadControlesVideo;    // Opacidad máxima para los controles pantalla completa
-//	LONG                       _Opciones_ContadorIDSMomentos;		// Contador global de las IDS para las tablas de momentos
-
-	UINT                       _Opciones_EfectoFadeAudioMS;			// Milisegundos para el efecto fade audio
-	BOOL					   _Opciones_OcultarTooltipsMouse;      // Ocultar los tooltips al pasar encima con el mouse
-	BOOL					   _Opciones_MostrarMedioActualTitulo;  // Mostrar el nombre del medio actual en la barra de titulo
-	int                        _Opciones_MezclarListaGenero;        // Mezclar listas aleatórias por genero
-	int                        _Opciones_MezclarListaGrupo;         // Mezclar listas aleatórias por grupo
-	int                        _Opciones_MezclarListaDisco;         // Mezclar listas aleatórias por disco
-	int                        _Opciones_MezclarLista50Can;         // Mezclar listas aleatórias con 50 canciones
-	int                        _Opciones_MezclarListaNota;          // Mezclar listas por Nota
-	BOOL                       _Opciones_GuardarBSCP;				// Guardar Brillo, Saturación, Contraste y Proporción*/
 
 	friend class ThreadAnalisis;
 	friend class BDMedio;

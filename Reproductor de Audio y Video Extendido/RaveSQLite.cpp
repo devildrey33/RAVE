@@ -71,3 +71,8 @@ const int RaveSQLite::Consulta(const wchar_t* TxtConsulta) {
 
 	return SqlRet;
 }
+
+
+const LONG_PTR RaveSQLite::UltimaIdInsertada(void) {
+	return static_cast<LONG_PTR>(sqlite3_last_insert_rowid(_BD));
+}

@@ -47,18 +47,12 @@ const BOOL RaveBD::Iniciar(void) {
 //	ObtenerOpciones();
 	// Obtengo las etiquetas
 	ObtenerEtiquetas();
-	// Obtengo las teclas rapidas
-	ObtenerTeclasRapidas();
 
 	Debug_Escribir(L"RaveBD::Iniciar\n");
 
 	return TRUE;
 }
 
-
-const LONG_PTR RaveBD::UltimaIdInsertada(void) {
-	return static_cast<LONG_PTR>(sqlite3_last_insert_rowid(_BD));
-}
 
 
 // Obtiene el medio por el hash
@@ -756,7 +750,7 @@ const BOOL RaveBD::_CrearTablas(void) {
 	///////////////////////////////////////////////////////////////////////////////////////
 
 
-	// Creo la tabla para las teclas rápidas ///////////////////////////////////////////////////
+/*	// Creo la tabla para las teclas rápidas ///////////////////////////////////////////////////
 	std::wstring CrearTablaTeclasRapidas =	L"CREATE TABLE TeclasRapidas ("
 												L"Tecla"	L" INTEGER,"
 												L"Control"	L" TINYINT(1),"
@@ -773,7 +767,7 @@ const BOOL RaveBD::_CrearTablas(void) {
 										 std::to_wstring(App.TeclasRapidas[i].Shift)	+ L")";
 		if (Consulta(Q.c_str()) == SQLITE_ERROR) return FALSE;
 	}
-	////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////*/
 
 
 	// Creo la tabla para guardar la ultima lista reproducida ////////////////////////
@@ -1108,66 +1102,6 @@ const sqlite3_int64 RaveBD::CrearHash(std::wstring &nPath) {
 	//	std::wstring PathCortado = Path.substr(2, Path.size() - 2);
 	std::hash<std::wstring> HashFunc;
 	return HashFunc(nPath.substr(2, nPath.size() - 2));
-}
-
-
-const BOOL RaveBD::ObtenerTeclasRapidas(void) {
-	std::wstring	Q			= L"SELECT * FROM TeclasRapidas";
-	wchar_t		   *SqlError	= NULL;
-	int				SqlRet		= 0;
-	sqlite3_stmt   *SqlQuery	= NULL;
-
-	SqlRet = sqlite3_prepare16_v2(_BD, Q.c_str(), -1, &SqlQuery, NULL);
-	if (SqlRet) {
-		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
-		return FALSE;
-	}
-	int VecesBusy = 0;
-	size_t R = 0;
-	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
-		SqlRet = sqlite3_step(SqlQuery);
-		if (SqlRet == SQLITE_ROW) {
-			if (R == App.TeclasRapidas.size()) break;
-			App.TeclasRapidas[R].Tecla		= static_cast<int>(sqlite3_column_int(SqlQuery, 0));
-			App.TeclasRapidas[R].Control	= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 1));
-			App.TeclasRapidas[R].Alt		= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 2));
-			App.TeclasRapidas[R++].Shift	= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 3));
-		}
-		if (SqlRet == SQLITE_BUSY) {
-			VecesBusy++;
-			if (VecesBusy == 100) break;
-		}
-
-	}
-
-	sqlite3_finalize(SqlQuery);
-
-	if (SqlRet == SQLITE_ERROR) {
-		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
-		return FALSE;
-	}
-
-
-	return (SqlRet != SQLITE_BUSY);
-
-}
-
-const BOOL RaveBD::GuardarTeclasRapidas(void) {
-	// Borro todos los datos de la tabla TeclasRapidas sin borrar la tabla
-	Consulta(L"DELETE FROM TeclasRapidas");
-	std::wstring Q;
-	int          SqlRet;
-	for (size_t i = 0; i <  App.TeclasRapidas.size(); i++) {
-		Q = L"INSERT INTO TeclasRapidas (Tecla, Control, Alt, Shift) VALUES(" + 
-				std::to_wstring(App.TeclasRapidas[i].Tecla)		+ L"," +
-				std::to_wstring(App.TeclasRapidas[i].Control)	+ L"," + 
-				std::to_wstring(App.TeclasRapidas[i].Alt)		+ L"," +
-				std::to_wstring(App.TeclasRapidas[i].Shift)		+
-			L")";
-		SqlRet = Consulta(Q);
-		if (SqlRet != SQLITE_DONE) return FALSE;
-	}
-	return TRUE;
 }
 
 

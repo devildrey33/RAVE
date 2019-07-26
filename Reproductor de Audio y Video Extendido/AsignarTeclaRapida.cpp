@@ -104,7 +104,7 @@ void AsignarTeclaRapida::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) 
 			_Editando = FALSE;
 			Repintar();
 			App.MostrarToolTipOpciones(L"Nueva tecla rápida asignada.");
-			App.BD.GuardarTeclasRapidas();
+			App.Opciones.GuardarTeclasRapidas();
 		}
 		else {
 			App.MostrarToolTipOpcionesError(L"La tecla ya está asignada");

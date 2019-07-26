@@ -173,7 +173,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 				#ifndef  RAVE_IGNORAR_LISTA_INICIO 	// No genera ninguna lista al iniciar (por el debug del VLC que es muy heavy.. y carga mucho al visual studio)
 					// Inicia la acción por defecto al empezar
 					Debug_Escribir_Varg(L"Rave::Iniciar ->  Acción de inicio : %d\n", BD.Opciones_Inicio());
-					switch (BD.Opciones_Inicio()) {
+					switch (Opciones.Inicio()) {
 	//					case Tipo_Inicio_NADA			:																		break;
 						case Tipo_Inicio_Genero			:	VentanaRave.GenerarListaAleatoria(TLA_Genero);						break;
 						case Tipo_Inicio_Grupo			:	VentanaRave.GenerarListaAleatoria(TLA_Grupo);						break;

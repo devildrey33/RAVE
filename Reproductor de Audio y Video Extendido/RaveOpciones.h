@@ -10,24 +10,25 @@ class RaveOpciones : public RaveSQLite {
 
 								// Inicia la base de datos
 	const BOOL					Iniciar(void);
-								// Termina la conexión a la base de datos
-//	void						Terminar(void);
-								// Consulta básica wchar_t
-/*	const int					Consulta(const wchar_t *TxtConsulta);
-	inline const int			Consulta(std::wstring& TxtConsulta) { return Consulta(TxtConsulta.c_str()); };*/
+
+	const BOOL                  ObtenerTeclasRapidas(void);
+	const BOOL                  GuardarTeclasRapidas(void);
 
 
 	template <typename T> T     Select(const wchar_t* Tabla, const wchar_t* Variable) { 
 									T				Ret      = 0;
-									const wchar_t  *SqlStr   = L"SELECT " Variable " FROM " Tabla;
 									wchar_t*		SqlError = NULL;
 									int				SqlRet   = 0;
 									sqlite3_stmt   *SqlQuery = NULL;
+									std::wstring    SqlStr = L"SELECT ";
+									SqlStr += Variable;
+									SqlStr += L" FROM ";
+									SqlStr += Tabla;
 
-									SqlRet = sqlite3_prepare16_v2(_BD, SqlStr, -1, &SqlQuery, NULL);
+									SqlRet = sqlite3_prepare16_v2(_BD, SqlStr.c_str(), -1, &SqlQuery, NULL);
 									if (SqlRet) {
 										_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
-										return FALSE;
+										return 0;
 									}
 									int VecesBusy = 0;
 									while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
@@ -47,7 +48,7 @@ class RaveOpciones : public RaveSQLite {
 
 									if (SqlRet == SQLITE_ERROR) {
 										_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
-										return 0.0f;
+										return 0;
 									}
 
 									return (SqlRet != SQLITE_BUSY) ? Ret : 0;
