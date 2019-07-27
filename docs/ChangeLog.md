@@ -1,6 +1,6 @@
 # Log de cambios
 
-### Versión 0.526
+## Versión 0.526
 
 * Ya no se agregan medios que esten temporalmente ausentes o no existan a las listas aleatórias.
 
@@ -29,7 +29,7 @@
 
 
 
-### Versión 0.525
+## Versión 0.525
 
 * Ahora se puede cambiar el skin del arbol y la lista dinámicamente, esto permite mostrar el arbol y la lista con una configuración oscura en el modo pantalla completa.
 
@@ -53,7 +53,7 @@
 
 
 
-### Versión 0.524
+## Versión 0.524
 
 * Botón de las opciones fijado al borde inferior del reproductor.
 
@@ -85,7 +85,7 @@
 
 
 
-### Versión 0.523
+## Versión 0.523
 
 * LibVLC actualizada a la versión 3.0.7
 
@@ -105,7 +105,7 @@
 
 
 
-### Versión 0.522
+## Versión 0.522
 
 * Creado SubMenu Momentos para el menú de la base de datos, que muestra los momentos como sub-menu.
 
@@ -119,7 +119,7 @@
 
 
 
-### Versión 0.521
+## Versión 0.521
 
 * Los momentos ya son funcionales con una precisión de 1000 milisegundos
 
@@ -129,7 +129,7 @@
 
 
 
-### Versión 0.520
+## Versión 0.520
 
 * Solucionado bug visual de los DBotonEx al desactivar-los.
 
@@ -151,7 +151,7 @@
 
 
 
-### Versión 0.519
+## Versión 0.519
 
 * Ahora se guarda la posición y el tamaño de la ventana para seleccionar directorios.
 
@@ -161,7 +161,7 @@
 
 
 
-### Versión 0.518
+## Versión 0.518
 
 * Suavizado el drag de la Lista.
 
@@ -173,7 +173,7 @@
 
 
 
-### Versión 0.517
+## Versión 0.517
 
 * Retocada ventana del error critico, que no mostraba correctamente todo el texto.
 
@@ -185,7 +185,7 @@
 
 
 
-### Versión 0.516
+## Versión 0.516
 
 * Solucionado bug con los controles de pantalla completa, que a veces no se mostraban con la opacidad correcta.
 
@@ -195,7 +195,7 @@
 
 
 
-### Versión 0.512
+## Versión 0.512
 
 * Añadidos menus para la BD : Abrir carpeta, Nota, y Propiedades(de windows) 100% funcionales.
 
@@ -205,7 +205,7 @@
 
 
 
-### Versión 0.511
+## Versión 0.511
 
 * Agregadas transiciones de resaltado y presionado para los items.
 
@@ -213,13 +213,13 @@
 
 
 
-### Versión 0.509
+## Versión 0.509
 
 * Creado objeto para poder cargar y pintar iconos facilmente.
 
 
 
-### Versión 0.508
+## Versión 0.508
 
 * Creado sistema interno para manejar distintos tipos de fuente mas facilmente.
 
@@ -227,7 +227,7 @@
 
 
 
-### Versión 0.507
+## Versión 0.507
 
 * Al mostrar los tooltips para carpetas ahora se calculan su tiempo total, su tamaño, y su nota media.
 
@@ -239,7 +239,7 @@
 
 
 
-### Versión 0.506
+## Versión 0.506
 
 * Se ha re-escrito todo el tema de multiseleccion con el shift y varias teclas (cursores, inicio, fin avpag, etc..) del Arbol.
 
@@ -253,7 +253,7 @@
 
 
 
-### Versión 0.505
+## Versión 0.505
 
 * Añadido borde con transición de color a los controles que heredan de la barra de scroll (Arbol y Lista).
 
@@ -265,7 +265,7 @@
 
 
 
-### Versión 0.504
+## Versión 0.504
 
 * Bug en la detección del sistema operativo que solo me permitia identificar hasta windows 8 solucionado. Ahora ya puedo identificar al windows 8.1 y al 10.
 
@@ -283,7 +283,7 @@
 
 
 
-### Versión 0.503
+## Versión 0.503
 
 * Varias mejoras en el objeto que crea las animaciones de tiempo, que me ayudaran un poco mas a dar vida al reproductor.
 
@@ -293,7 +293,7 @@
 
 
 
-### Versión 0.502
+## Versión 0.502
 
 * La nota de los tooltips ahora se muestra con estrellas en vez de con un valor.
 
@@ -301,7 +301,7 @@
 
 
 
-### Versión 0.501
+## Versión 0.501
 
 * Retocado el tamaño de la primera columna de los medios para adaptarse mejor a la pista.
 
@@ -309,7 +309,7 @@
 
 
 
-### Versión 0.500
+## Versión 0.500
 
 * Primera versión pública.
 
