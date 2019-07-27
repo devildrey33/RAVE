@@ -19,7 +19,7 @@ SOCKET	EnviarDump::_Server = NULL;
 #define EMAIL_DESTINO	"correo@destino.alli"
 */
 
-EnviarDump::EnviarDump(void) {
+EnviarDump::EnviarDump(void) : _Thread(NULL) {
 }
 
 

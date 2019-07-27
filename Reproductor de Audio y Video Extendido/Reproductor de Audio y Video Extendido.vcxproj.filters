@@ -211,6 +211,9 @@
     <ClInclude Include="RaveSQLite.h">
       <Filter>Base de datos</Filter>
     </ClInclude>
+    <ClInclude Include="VentanaActualizacion.h">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -329,6 +332,9 @@
     </ClCompile>
     <ClCompile Include="RaveSQLite.cpp">
       <Filter>Base de datos</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaActualizacion.cpp">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

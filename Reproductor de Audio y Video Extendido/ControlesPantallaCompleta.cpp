@@ -286,10 +286,10 @@ void ControlesPantallaCompleta::Evento_SliderTiempo_Cambio(void) {
 
 void ControlesPantallaCompleta::Evento_SliderTiempo_Cambiado(void) {
 //	static wchar_t TiempoStr[64];
-	std::wstring TiempoStr;
-	static float   TmpFloat = 0.0f;
+	std::wstring	TiempoStr;
+	static double	TmpFloat = 0.0f;
 	Debug_Escribir_Varg(L"Evento_SliderH %d, %f\n", App.MP.TiempoTotalMs(), TmpFloat);
-	App.MP.TiempoStr(static_cast<UINT64>(static_cast<float>(App.MP.TiempoTotalMs()) * TmpFloat), TiempoStr);
+	App.MP.TiempoStr(static_cast<UINT64>(App.MP.TiempoTotalMs() * TmpFloat), TiempoStr);
 	LabelTiempoActual.Texto(TiempoStr);
 	App.VentanaRave.LabelTiempoActual.Texto(TiempoStr);
 	App.MP.TiempoActual(SliderTiempo.Valor());

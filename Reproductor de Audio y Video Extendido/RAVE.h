@@ -19,6 +19,7 @@
 #include <DApp.h>
 #include "Actualizaciones.h"
 #include "RaveOpciones.h"
+#include "VentanaActualizacion.h"
 
 using namespace DWL;
 
@@ -106,6 +107,8 @@ class RAVE : public DApp {
 	VentanaPrincipal				VentanaRave;
 									// Ventana para mostrar errores criticos
 	VentanaErrorCritico				VentanaErrorCrit;
+									// Ventana para mostrar el proceso de la descarga de la actualización
+	VentanaActualizacion			VentanaAct;
 									// Ventana que muestra el mensaje para las asociaciones de archivo
 //	VentanaAsociarReproductor		VentanaAsociar;
 									// Ventana para mostrar las opciones

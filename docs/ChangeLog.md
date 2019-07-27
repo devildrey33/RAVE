@@ -15,6 +15,7 @@
 	* Lo bueno es que los medios siguen sin necesitar la letra de unidad de su path, por lo que se puede mover el directorio a otro disco duro, y el reproductor seguirá reconociendolos y conservará todos sus datos (habra que añadir una nueva raíz con el nuevo disco para que se muestren en la BD)
 
 * Solucionado bug que no almacenaba las etiquetas de los generos al analizar la canción.
+	* Solucionado crash si se intentaba crear una lista aleatoria sin etiquetas.
 
 * Solucionado el ancho de las etiquetas de Opciones -> Lista2 que se solapaban con los controles desplegables y no dejaban llegar los eventos de mouse en los primeros 60 pixeles de los desplegables.
 	* Lo mismo con Opciones -> Lista, que tambien tiene un control desplegable (es el problema que tiene el copy/paste a veces...)
@@ -24,12 +25,13 @@
 
 * Se han separado la tabla Opciones y la tabla TeclasRapidas de la base de datos de medios, ahora las tienen su propio archivo "Opciones.BD".
 	* Esto evita que no se guarden las opciones mientras se está ejecutando el thread de análisis.
+	* Por otra parte se pierden las antiguas opciones configuradas, por lo que habrá que reconfigurar el reproductor de nuevo.
 
 
 
 ### Versión 0.525
 
-* Ahora se puede cambiar el skin del arbol y la lista dinamicamente, esto me permite mostrar el arbol y la lista con una configuración oscura en el modo pantalla completa.
+* Ahora se puede cambiar el skin del arbol y la lista dinámicamente, esto permite mostrar el arbol y la lista con una configuración oscura en el modo pantalla completa.
 
 * Creado modo oscuro para la lista, el arbol y la barra de scroll (modo pantalla completa).
 
