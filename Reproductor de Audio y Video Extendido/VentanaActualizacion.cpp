@@ -32,7 +32,7 @@ void VentanaActualizacion::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMo
 			break;
 		case ID_NOVEDADES:
 			// https://github.com/devildrey33/RAVE/blob/master/docs/ChangeLog.md
-			ShellExecute(_hWnd, L"open", L"https://github.com/devildrey33/RAVE/blob/master/docs/ChangeLog.md", L"", L"", SW_SHOW);
+			ShellExecute(_hWnd, L"open", L"https://devildrey33.github.io/RAVE/ChangeLog.html", L"", L"", SW_SHOW);
 			break;
 	}
 }
