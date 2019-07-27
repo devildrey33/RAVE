@@ -37,6 +37,10 @@ const BOOL Actualizaciones::Descargar(void) {
 	// Ya se está descargando 
 	if (_hThreadDescargar != NULL) return FALSE;
 
+	// Creo la ventana
+	App.VentanaAct.Crear(_Version.c_str());
+
+
 	// Asigno el estado cancelado a false
 	Cancelar(FALSE);
 

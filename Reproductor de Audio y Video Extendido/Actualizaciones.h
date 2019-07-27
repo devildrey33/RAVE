@@ -13,7 +13,7 @@ class Actualizaciones {
 							// Función que busca una nueva actualización
 	const BOOL				Buscar(void);
 							// Función que descarga la nueva actualizacion
-	const BOOL				Descargar(void);
+	const BOOL				Descargar();
 							// Función que permite asignar el estado cancelado tanto para la busqueda, como para la descarga
 	void                    Cancelar(const BOOL nCancelar);
 							// Función que obtiene el estado cancelado para la busqueda y la descarga

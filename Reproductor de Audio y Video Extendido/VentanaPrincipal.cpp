@@ -1408,7 +1408,6 @@ void VentanaPrincipal::ThreadAnalizar_TotalMedios2(void) {
 
 void VentanaPrincipal::DescargarActualizacion(const wchar_t *nVersion) {
 	Debug_Escribir_Varg(L"VentanaPrincipal::DescargarActualizacion Nueva versión %s encontrada.\n", nVersion);
-	App.VentanaAct.Crear();
 	App.Actualizacion.Descargar();
 }
 

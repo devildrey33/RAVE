@@ -507,10 +507,10 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\README.md">
+    <None Include="..\docs\ChangeLog.md">
       <Filter>xXx _MAIN_ xXx</Filter>
     </None>
-    <None Include="..\Docs\ChangeLog.txt">
+    <None Include="..\docs\README.md">
       <Filter>xXx _MAIN_ xXx</Filter>
     </None>
   </ItemGroup>
