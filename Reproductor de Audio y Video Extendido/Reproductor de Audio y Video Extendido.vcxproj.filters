@@ -507,9 +507,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\docs\ChangeLog.md">
-      <Filter>xXx _MAIN_ xXx</Filter>
-    </None>
     <None Include="..\docs\README.md">
       <Filter>xXx _MAIN_ xXx</Filter>
     </None>
