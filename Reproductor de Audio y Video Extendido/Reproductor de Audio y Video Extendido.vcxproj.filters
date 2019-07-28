@@ -507,13 +507,13 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\ChangeLog.txt">
-      <Filter>xXx _MAIN_ xXx</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\README.md">
       <Filter>xXx _MAIN_ xXx</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\ChangeLog.html">
+      <Filter>xXx _MAIN_ xXx</Filter>
+    </Text>
   </ItemGroup>
 </Project>
