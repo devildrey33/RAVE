@@ -14,7 +14,7 @@ Todo lo que necesito para mi uso personal :
 Sistema operativo Windows 7 o superior (x86. x64)
 
 ### Log de cambios
-* [Ultima versión 0.526j RC6](https://devildrey33.github.io/RAVE/ChangeLog.html)
+* [Ultima versión 0.527j RC7](https://devildrey33.github.io/RAVE/ChangeLog.html)
 
 ## Empezando
  1. Descarga una de las siguientes versiones para windows : 
