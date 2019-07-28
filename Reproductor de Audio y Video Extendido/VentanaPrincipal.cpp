@@ -1406,10 +1406,32 @@ void VentanaPrincipal::ThreadAnalizar_TotalMedios2(void) {
 	BarraTareas.Valor(++_ValorMedios2, _MaximoTotalMedios2);
 }
 
-void VentanaPrincipal::DescargarActualizacion(const wchar_t *nVersion) {
-	Debug_Escribir_Varg(L"VentanaPrincipal::DescargarActualizacion Nueva versión %s encontrada.\n", nVersion);
+void VentanaPrincipal::Actualizacion_Descargar(const wchar_t *nVersion) {
+	Debug_Escribir_Varg(L"VentanaPrincipal::Actualizacion_Descargar  Nueva versión %s encontrada.\n", nVersion);
 	App.Actualizacion.Descargar();
 }
+
+// Función que mantiene la barra de descarga de la actualización
+void VentanaPrincipal::Actualizacion_Barra(const float nValor) {
+	App.VentanaAct.Barra.Valor(nValor);
+	App.VentanaAct.Barra.Repintar();
+}
+
+// Función que muestra un mensaje de error de la actualización
+void VentanaPrincipal::Actualizacion_Error(void) {
+	App.MostrarToolTipPlayerError(L"Error descargando la actualización...");
+}
+
+// Función que muestra un mensaje conforme se ha cancelado la actualización
+void VentanaPrincipal::Actualizacion_Cancelada(void) {
+	App.MostrarToolTipPlayer(L"Descarga de la actualización cancelada.");
+}
+
+// Función que avisa al usuario de que se ha descargado la actualización
+void VentanaPrincipal::Actualizacion_Descargada(void) {
+	App.MostrarToolTipPlayer(L"Descarga de la actualización completada.");
+}
+
 
 void VentanaPrincipal::_Evento_Size(void) {
 	RECT RCWMS;
@@ -1432,7 +1454,11 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 		case WM_REPRODUCIRMEDIO				:	ExploradorAgregarMedio(TRUE);															return 0;
 
 		// Para el thread que busca las actualizaciones
-		case WM_ACTUALIZACION_ENCONTRADA	:	DescargarActualizacion(reinterpret_cast<wchar_t *>(wParam));							return 0;
+		case WM_ACTUALIZACION_ENCONTRADA	:	Actualizacion_Descargar(reinterpret_cast<wchar_t *>(wParam));							return 0;
+		case WM_ACTUALIZACION_BARRA			:	Actualizacion_Barra(reinterpret_cast<float &>(wParam));									return 0;
+		case WM_ACTUALIZACION_ERROR			:	Actualizacion_Error();																	return 0;
+		case WM_ACTUALIZACION_CANCELADA		:	Actualizacion_Cancelada();																return 0;
+		case WM_ACTUALIZACION_DESCARGADA	:	Actualizacion_Descargada();																return 0;
 
 		// Para el Thread AgregarArchivosLista, al agregar/obtener el archivo en la BD, ya se puede agregar a la lista.
 		case WM_TAAL_AGREGARMEDIO			:	ThreadAgregarArchivosLista_AgregarMedio(wParam);										return 0;

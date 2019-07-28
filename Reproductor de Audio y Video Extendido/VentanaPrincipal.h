@@ -137,7 +137,16 @@ class VentanaPrincipal : public DWL::DVentana {
 								// Thread para analizar los medios
 	ThreadAnalisis				ThreadAnalizar;
 								// Función que descarga una nueva actualización
-	void						DescargarActualizacion(const wchar_t *nVersion);
+	void						Actualizacion_Descargar(const wchar_t *nVersion);
+								// Función que mantiene la barra de descarga de la actualización
+	void						Actualizacion_Barra(const float nValor);
+								// Función que muestra un mensaje de error de la actualización
+	void						Actualizacion_Error(void);
+								// Función que muestra un mensaje conforme se ha cancelado la actualización
+	void						Actualizacion_Cancelada(void);
+								// Función que avisa al usuario de que se ha descargado la actualización
+	void						Actualizacion_Descargada(void);
+
 								// Función que agrega un directorio al arbol de la base de datos
 	NodoBD                     *Arbol_AgregarDir(std::wstring *Path, const BOOL nRepintar = FALSE);
 								// Función que agrega una raíz al arbol de la base de datos

@@ -3,9 +3,13 @@
 #include <wininet.h>
 #include <wincrypt.h>
 #include <DStringUtils.h>
+#include <DDirectoriosWindows.h>
+#include <DArchivoBinario.h>
 
 HWND			Actualizaciones::_VentanaRave = NULL;
 std::wstring	Actualizaciones::_Version;
+BOOL			Actualizaciones::_Cancelar = FALSE;
+std::mutex		Actualizaciones::_Mutex;
 
 // Función que busca una nueva actualización
 const BOOL Actualizaciones::Buscar(void) {
@@ -123,9 +127,102 @@ unsigned long Actualizaciones::_ThreadBuscar(void* pThis) {
 	return 0;
 }
 
+#ifdef _WIN64
+	#define URL_INSTALADOR		L"https://devildrey33.github.io/RAVE/Instaladores/Instalador%20x64/SetupRave-x64."
+	#define NOMBRE_INSTALADOR	L"SetupRave-x64.msi"
+#else
+	#define URL_INSTALADOR		L"https://devildrey33.github.io/RAVE/Instaladores/Instalador%20x86/SetupRave-x86."
+	#define NOMBRE_INSTALADOR	L"SetupRave-x86.msi"
+#endif
+
 
 // Función main para el hilo de descargar la actualizacion
 unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
+
+	std::wstring	UrlInstalador		= URL_INSTALADOR L"msi";
+	std::wstring	UrlMD5				= URL_INSTALADOR L"md5";
+
+	TCHAR			szHead[]			= L"Accept: */*\r\n\r\n";
+	HINTERNET		Sesion				= InternetOpen(L"RAVE_Actualizacion", INTERNET_OPEN_TYPE_PRECONFIG, NULL, INTERNET_INVALID_PORT_NUMBER, 0);
+	HINTERNET		Peticion			= InternetOpenUrl(Sesion, UrlInstalador.c_str(), szHead, 0, INTERNET_FLAG_RELOAD, 0);
+//	DWORD			Longitud			= 0;
+	DWORD			Descargado			= 64;
+	DWORD           TotalDescargado		= 0;
+	char		    Datos[4097];
+	DWORD			TotalDatos			= 0;
+	TCHAR			TotalDatosStr[64];
+	BOOL			Ret					= HttpQueryInfo(Peticion, HTTP_QUERY_CONTENT_LENGTH, (LPVOID)TotalDatosStr, &Descargado, (LPDWORD)0);
+	
+	if (Ret == TRUE) TotalDatos = _wtol(TotalDatosStr);
+	
+	if (TotalDatos == 0) {
+		InternetCloseHandle(Peticion);
+		InternetCloseHandle(Sesion);
+		return -1;
+	}
+
+	float Valor = 0.0f;
+	SendMessage(_VentanaRave, WM_ACTUALIZACION_BARRA, reinterpret_cast<WPARAM&>(Valor), NULL);
+
+	Descargado = 0;
+
+	std::wstring PathFinal;  
+	DWL::DDirectoriosWindows::Comun_AppData(PathFinal);	
+	PathFinal += L"\\Rave\\" NOMBRE_INSTALADOR;
+
+	DWL::DArchivoBinario Archivo(PathFinal, TRUE);
+	
+	BOOL P = FALSE;
+	while (TRUE) {
+		Valor = static_cast<float>(TotalDescargado) / static_cast<float>(TotalDatos);
+		SendMessage(_VentanaRave, WM_ACTUALIZACION_BARRA, reinterpret_cast<WPARAM&>(Valor), NULL);
+		P = InternetReadFile(Peticion, (LPVOID)Datos, 4096, &Descargado);
+        if (P == FALSE) {
+			Debug_MostrarUltimoError();
+//            ReleaseMutex(Mutex);
+			break;
+		}
+
+		if (Cancelar() == TRUE) {
+			break;
+		}
+//        ReleaseMutex(Mutex);
+		Datos[Descargado] = '\0';
+		TotalDescargado += Descargado;
+		if (Descargado == 0)	
+			break;
+		else					
+			Archivo.Guardar(Datos, Descargado);
+	}
+    
+	
+	InternetCloseHandle(Peticion);
+	// Leo el hash que tiene la web
+	Peticion = InternetOpenUrl(Sesion, UrlMD5.c_str(), szHead, 0, INTERNET_FLAG_RELOAD, 0);
+	char  TxtHash[33]	= "";
+	DWORD BytesLeidos	= 0;
+	BOOL  Leido			= InternetReadFile(Peticion, TxtHash, 32, &BytesLeidos);
+
+
+	InternetCloseHandle(Peticion);
+	InternetCloseHandle(Sesion);
+
+	// Tiene el mismo md5
+	if (Archivo.MD5_char().compare(TxtHash) == 0) {
+		// Actualizacion descargada
+		SendMessage(_VentanaRave, WM_ACTUALIZACION_DESCARGADA, reinterpret_cast<WPARAM>(_Version.c_str()), 0);
+	}
+	// Cancelado o error
+	else {
+		if (Cancelar() == false) {
+			// Error
+			SendMessage(_VentanaRave, WM_ACTUALIZACION_ERROR, reinterpret_cast<WPARAM>(_Version.c_str()), 0);
+		}
+		else {
+			SendMessage(_VentanaRave, WM_ACTUALIZACION_CANCELADA, reinterpret_cast<WPARAM>(_Version.c_str()), 0);
+		}
+	}
+
 
 	return 0;
 }

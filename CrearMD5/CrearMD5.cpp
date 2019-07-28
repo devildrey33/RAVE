@@ -34,7 +34,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	DWL::DArchivoBinario Origen(PathO.c_str());
 	DWL::DArchivoBinario Destino(PathD.c_str());
 
-	Destino.Guardar(Origen.MD5(), FALSE);
+	Destino.Guardar(Origen.MD5_char(), FALSE);
 
 	/*    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CREARMD5));
 
