@@ -172,9 +172,9 @@ void VentanaOpcionesRAVE::Crear(void) {
 	////////////////////////////////////////////////
 	// Creo los controles dentro del marco General
 	////////////////////////////////////////////////
-	MarcaBuscarActualizaciones.CrearMarcaEx(&MarcoGeneral, L"Buscar nuevas actualizaciones al iniciar el reproductor", 10, 10, 380, 20, ID_MARCA_BUSCARACTUALIZACIONES, IDI_CHECK2);
+	MarcaBuscarActualizaciones.CrearMarcaEx(&MarcoGeneral, L"Buscar y descargar actualizaciones al iniciar el reproductor", 10, 10, 420, 20, ID_MARCA_BUSCARACTUALIZACIONES, IDI_CHECK2);
 	MarcaBuscarActualizaciones.Marcado(App.Opciones.BuscarActualizacion());
-	MarcaBuscarActualizaciones.Activado(FALSE);
+
 	// Separador 
 	SeparadorGeneral.Crear(&MarcoGeneral, 0, 39, RC.right - 10);
 

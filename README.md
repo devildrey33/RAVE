@@ -18,8 +18,8 @@ Sistema operativo Windows 7 o superior (x86. x64)
 
 ## Empezando
  1. Descarga una de las siguientes versiones para windows : 
-   * [RAVE x86 para 32 bits](http://devildrey33.github.io/RAVE/Instaladores/Instalador%20x86/SetupRave-x86.msi) 
-   * [RAVE x64 para 64 bits](http://devildrey33.github.io/RAVE/Instaladores/Instalador%20x64/SetupRave-x64.msi)
+   * [RAVE x86 para 32 bits](http://devildrey33.github.io/RAVE/Instaladores/SetupRave-x86.msi) 
+   * [RAVE x64 para 64 bits](http://devildrey33.github.io/RAVE/Instaladores/SetupRave-x64.msi)
  
  2. Instala y ejecuta el reproductor, luego abre la ventana de opciones.
  

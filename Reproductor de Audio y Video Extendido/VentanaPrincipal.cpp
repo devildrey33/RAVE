@@ -108,7 +108,9 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	DragAcceptFiles(hWnd(), TRUE);	
 
 	// Busco actualizaciones
-	App.Actualizacion.Buscar();
+	if (App.Opciones.BuscarActualizacion() == TRUE) {
+		App.Actualizacion.Buscar();
+	}
 
 	return rhWnd;
 }
@@ -1413,12 +1415,14 @@ void VentanaPrincipal::Actualizacion_Descargar(const wchar_t *nVersion) {
 
 // Función que mantiene la barra de descarga de la actualización
 void VentanaPrincipal::Actualizacion_Barra(const float nValor) {
+	if (App.VentanaAct.hWnd() == 0) return;
 	App.VentanaAct.Barra.Valor(nValor);
 	App.VentanaAct.Barra.Repintar();
 }
 
 // Función que muestra un mensaje de error de la actualización
 void VentanaPrincipal::Actualizacion_Error(void) {
+	App.VentanaAct.Destruir();
 	App.MostrarToolTipPlayerError(L"Error descargando la actualización...");
 }
 

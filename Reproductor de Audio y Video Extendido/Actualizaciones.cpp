@@ -77,6 +77,14 @@ const BOOL Actualizaciones::Cancelar(void) {
 	return Ret;
 }
 
+#ifdef _WIN64
+	#define URL_INSTALADOR		L"https://devildrey33.github.io/RAVE/Instaladores/SetupRave-x64."
+	#define NOMBRE_INSTALADOR	L"SetupRave-x64.msi"
+#else
+	#define URL_INSTALADOR		L"https://devildrey33.github.io/RAVE/Instaladores/SetupRave-x86."
+	#define NOMBRE_INSTALADOR	L"SetupRave-x86.msi"
+#endif
+
 
 // Función main para el hilo de buscar una actualizacion
 unsigned long Actualizaciones::_ThreadBuscar(void* pThis) {
@@ -123,17 +131,19 @@ unsigned long Actualizaciones::_ThreadBuscar(void* pThis) {
 		// Informo a la ventana del reproductor que hay una nueva actualización
 		SendMessage(_VentanaRave, WM_ACTUALIZACION_ENCONTRADA, reinterpret_cast<WPARAM>(_Version.c_str()), 0);
 	}
+	else {
+		// Si la versión coincide borro el instalador (si existe)
+		std::wstring	PathFinal;
+		DWL::DDirectoriosWindows::Comun_AppData(PathFinal);
+		PathFinal += L"\\Rave\\" NOMBRE_INSTALADOR;
+		if (GetFileAttributes(PathFinal.c_str()) != INVALID_FILE_ATTRIBUTES) {
+			DeleteFile(PathFinal.c_str());
+		}
+	}
 
 	return 0;
 }
 
-#ifdef _WIN64
-	#define URL_INSTALADOR		L"https://devildrey33.github.io/RAVE/Instaladores/Instalador%20x64/SetupRave-x64."
-	#define NOMBRE_INSTALADOR	L"SetupRave-x64.msi"
-#else
-	#define URL_INSTALADOR		L"https://devildrey33.github.io/RAVE/Instaladores/Instalador%20x86/SetupRave-x86."
-	#define NOMBRE_INSTALADOR	L"SetupRave-x86.msi"
-#endif
 
 
 // Función main para el hilo de descargar la actualizacion
@@ -150,8 +160,45 @@ unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
 	DWORD           TotalDescargado		= 0;
 	char		    Datos[4097];
 	DWORD			TotalDatos			= 0;
-	TCHAR			TotalDatosStr[64];
-	BOOL			Ret					= HttpQueryInfo(Peticion, HTTP_QUERY_CONTENT_LENGTH, (LPVOID)TotalDatosStr, &Descargado, (LPDWORD)0);
+	wchar_t			TotalDatosStr[64]   = L"";
+
+	// Leo el hash que tiene la web
+	Peticion = InternetOpenUrl(Sesion, UrlMD5.c_str(), szHead, 0, INTERNET_FLAG_RELOAD, 0);
+	char  TxtHash[33] = "";
+	DWORD BytesLeidos = 0;
+	BOOL  Leido = InternetReadFile(Peticion, TxtHash, 32, &BytesLeidos);
+	InternetCloseHandle(Peticion);
+	// Error no existe el hash
+	if (TxtHash[0] == L'<') {
+		SendMessage(_VentanaRave, WM_ACTUALIZACION_ERROR, 0, 0);
+		InternetCloseHandle(Sesion);
+		return -1;
+	}
+
+	// Compruebo si existe algun isntalador descargado
+	std::wstring	PathFinal;
+	DWL::DDirectoriosWindows::Comun_AppData(PathFinal);
+	PathFinal += L"\\Rave\\" NOMBRE_INSTALADOR;
+
+	if (GetFileAttributes(PathFinal.c_str()) != INVALID_FILE_ATTRIBUTES) {
+		// Existe un instalador
+		DWL::DArchivoBinario ArchivoC(PathFinal, TRUE);
+
+		// Tiene el mismo md5
+		if (ArchivoC.MD5_char().compare(TxtHash) == 0) {
+			// Actualizacion previamente descargada, no hace falta descargar nada
+			SendMessage(_VentanaRave, WM_ACTUALIZACION_DESCARGADA, 0, 0);
+			InternetCloseHandle(Sesion);
+			return 0;
+		}
+
+		// Si llegamos a este punto, es que el instalador o no es válido o es una version inferior.
+	}
+
+
+	// Descargo el instalador
+	Peticion = InternetOpenUrl(Sesion, UrlInstalador.c_str(), szHead, 0, INTERNET_FLAG_RELOAD, 0);
+	BOOL Ret = HttpQueryInfo(Peticion, HTTP_QUERY_CONTENT_LENGTH, (LPVOID)TotalDatosStr, &Descargado, (LPDWORD)0);
 	
 	if (Ret == TRUE) TotalDatos = _wtol(TotalDatosStr);
 	
@@ -165,11 +212,6 @@ unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
 	SendMessage(_VentanaRave, WM_ACTUALIZACION_BARRA, reinterpret_cast<WPARAM&>(Valor), NULL);
 
 	Descargado = 0;
-
-	std::wstring PathFinal;  
-	DWL::DDirectoriosWindows::Comun_AppData(PathFinal);	
-	PathFinal += L"\\Rave\\" NOMBRE_INSTALADOR;
-
 	DWL::DArchivoBinario Archivo(PathFinal, TRUE);
 	
 	BOOL P = FALSE;
@@ -179,14 +221,12 @@ unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
 		P = InternetReadFile(Peticion, (LPVOID)Datos, 4096, &Descargado);
         if (P == FALSE) {
 			Debug_MostrarUltimoError();
-//            ReleaseMutex(Mutex);
 			break;
 		}
 
 		if (Cancelar() == TRUE) {
 			break;
 		}
-//        ReleaseMutex(Mutex);
 		Datos[Descargado] = '\0';
 		TotalDescargado += Descargado;
 		if (Descargado == 0)	
@@ -197,30 +237,17 @@ unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
     
 	
 	InternetCloseHandle(Peticion);
-	// Leo el hash que tiene la web
-	Peticion = InternetOpenUrl(Sesion, UrlMD5.c_str(), szHead, 0, INTERNET_FLAG_RELOAD, 0);
-	char  TxtHash[33]	= "";
-	DWORD BytesLeidos	= 0;
-	BOOL  Leido			= InternetReadFile(Peticion, TxtHash, 32, &BytesLeidos);
-
-
-	InternetCloseHandle(Peticion);
 	InternetCloseHandle(Sesion);
 
 	// Tiene el mismo md5
 	if (Archivo.MD5_char().compare(TxtHash) == 0) {
 		// Actualizacion descargada
-		SendMessage(_VentanaRave, WM_ACTUALIZACION_DESCARGADA, reinterpret_cast<WPARAM>(_Version.c_str()), 0);
+		SendMessage(_VentanaRave, WM_ACTUALIZACION_DESCARGADA, 0, 0);
 	}
 	// Cancelado o error
 	else {
-		if (Cancelar() == false) {
-			// Error
-			SendMessage(_VentanaRave, WM_ACTUALIZACION_ERROR, reinterpret_cast<WPARAM>(_Version.c_str()), 0);
-		}
-		else {
-			SendMessage(_VentanaRave, WM_ACTUALIZACION_CANCELADA, reinterpret_cast<WPARAM>(_Version.c_str()), 0);
-		}
+		if (Cancelar() == FALSE)	{	SendMessage(_VentanaRave, WM_ACTUALIZACION_ERROR, 0, 0);		}
+		else						{	SendMessage(_VentanaRave, WM_ACTUALIZACION_CANCELADA, 0, 0);	}
 	}
 
 
