@@ -1,5 +1,5 @@
 # Reproductor de Audio y Video Extendido
-Reproductor de Audio y Video bajo windows basado en la [LibVlc](https://www.videolan.org/vlc/index.es.html) con una base de datos [SQLite](https://www.sqlite.org/).
+Reproductor de Audio y Video bajo windows basado en la [LibVlc](https://www.videolan.org/vlc/index.es.html) con una base de datos [SQLite](https://www.sqlite.org/). También utiliza la [ZLib](https://www.zlib.net/) para tareas de compresión y descompresión (solo para el actualizador).
 
 Todo lo que necesito para mi uso personal : 
  * Listas de música aleatórias nada mas empezar.

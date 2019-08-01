@@ -383,11 +383,12 @@
 		V  Crear objecte a la DWL per llegir arxius binaris, i que pugui crear un hash
 
 		V  Separar opcions de la base de dades, i fer unaltre BD per les opcions o ferles en un arxiu binari. 
-			- Al final amb unaltre BD
+			V Al final amb unaltre BD
 
-		-  Crear finestra que mostri les dades de l'actualització.
-			- Crear control per mostrar les novetats o el changelog...
+		V  Crear finestra que mostri les dades de l'actualització.
+			X Crear control per mostrar les novetats o el changelog... (amb un buto va que chuta)
 
+		- S'ha de fer 2 noves variables a les opcions per la posició de la finestra d'actualització 
 
 
 	RAVE 0.7

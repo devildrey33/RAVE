@@ -351,6 +351,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\ChangeLog.html" />
+    <Text Include="..\ULTIMA_VERSION.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />

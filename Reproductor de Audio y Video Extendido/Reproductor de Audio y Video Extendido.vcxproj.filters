@@ -515,5 +515,8 @@
     <Text Include="..\ChangeLog.html">
       <Filter>xXx _MAIN_ xXx</Filter>
     </Text>
+    <Text Include="..\ULTIMA_VERSION.txt">
+      <Filter>xXx _MAIN_ xXx</Filter>
+    </Text>
   </ItemGroup>
 </Project>
