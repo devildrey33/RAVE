@@ -239,8 +239,9 @@ unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
 	InternetCloseHandle(Peticion);
 	InternetCloseHandle(Sesion);
 
+	std::string MD5 = Archivo.MD5_char();
 	// Tiene el mismo md5
-	if (Archivo.MD5_char().compare(TxtHash) == 0) {
+	if (MD5.compare(TxtHash) == 0) {
 		// Actualizacion descargada
 		SendMessage(_VentanaRave, WM_ACTUALIZACION_DESCARGADA, 0, 0);
 	}

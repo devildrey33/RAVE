@@ -6,7 +6,7 @@ Todo lo que necesito para mi uso personal :
 
  * Apagado del ordenador al terminar una lista. 
 
- * Personalización de valores para cada video (brillo, saturacion, contraste, proporción, etc...)
+ * Personalización de valores para cada video (brillo, saturación, contraste, proporción, etc...)
 
  * Barra de controles vertical en videos (para ver bien los subtitulos al mover el mouse)
 
