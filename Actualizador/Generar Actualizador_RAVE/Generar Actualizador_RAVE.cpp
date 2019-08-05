@@ -105,8 +105,8 @@ void GenerarActualizadorApp::Iniciar(void) {
 		return;
 	}
 
-	// Abro el instalador final para escritura
-	InstaladorFinal.AbrirArchivoEscritura(PathInstaladorFinal.c_str());
+	// Abro el instalador final para lectura / escritura
+	InstaladorFinal.AbrirArchivo(PathInstaladorFinal.c_str(), TRUE);
 	Datos = new char[MaxBuffer]; // Creo memoria temporal para leer los archivos (el tamaño de la memoria equivale al archivo mas grande escaneado)
 	InstaladorVacio.PosicionLectura(0, FALSE);
 	InstaladorVacio.Leer(Datos, TamInstaladorVacio);
@@ -147,6 +147,8 @@ void GenerarActualizadorApp::Iniciar(void) {
 
 	// Guardo el tamaño del instalador al final del archivo, para saber donde posicionarme nada mas empezar
 	InstaladorFinal.Guardar<size_t>(&TamInstaladorVacio);
+//	InstaladorFinal.Cerrar();
+
 	// Guardo la firma del instalador (si no se encuentra la firma, el instalador no es válido)
 	std::string Firma("ActualizadorRAVE");
 	InstaladorFinal.GuardarString(Firma, FALSE);
@@ -154,7 +156,8 @@ void GenerarActualizadorApp::Iniciar(void) {
 	// Creo un archivo con el MD5 del instalador final
 	DWL::DArchivoBinario MD5Final;
 	MD5Final.AbrirArchivo(PathMD5Final.c_str(), TRUE);
-	MD5Final.GuardarString(InstaladorFinal.MD5_char(), FALSE);
+	MD5 = InstaladorFinal.MD5_char();
+	MD5Final.GuardarString(MD5, FALSE);
 	// Cierro el archivo del instalador final
 	InstaladorFinal.Cerrar();
 
