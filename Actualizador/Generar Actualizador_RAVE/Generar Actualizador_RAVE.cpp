@@ -141,6 +141,7 @@ void GenerarActualizadorApp::Iniciar(void) {
 		InstaladorFinal.Guardar(Datos, TamDatos);
 		// Cierro el archivo de lectura
 		Archivo.Cerrar();
+		// Escribo el path por la consola
 		ConsolaDebug.EscribirMS(L"%s\n", Archivos[i].c_str());
 	}
 
@@ -192,14 +193,8 @@ const int GenerarActualizadorApp::Comprimir(DWL::DArchivoBinario &Origen) {
 
 	// compress until end of file 
 	do {
-		
 		strm.avail_in = (uInt)Origen.Leer<char>(&in[0], CHUNK); //Origen.BytesLeidos();
-		/*		if (Origen.Error() == true) {
-					(void)deflateEnd(&strm);
-					return Z_ERRNO;
-				}*/
 		flush = Origen.FinalDelArchivo() ? Z_FINISH : Z_NO_FLUSH;
-		//        flush = feof(source) ? Z_FINISH : Z_NO_FLUSH;
 		strm.next_in = reinterpret_cast<Bytef*>(&in[0]);
 
 		// run deflate() on input until output buffer not full, finish
@@ -211,11 +206,6 @@ const int GenerarActualizadorApp::Comprimir(DWL::DArchivoBinario &Origen) {
 			have = CHUNK - strm.avail_out;
 			CopyMemory(&Datos[TamDatos], out, have);
 			TamDatos += have;
-//			Destino.AgregarParte(out, have);
-			/*if (Destino.Error() == true) {
-				(void)deflateEnd(&strm);
-				return Z_ERRNO;
-			}*/
 		} while (strm.avail_out == 0);
 
 	} while (flush != Z_FINISH);

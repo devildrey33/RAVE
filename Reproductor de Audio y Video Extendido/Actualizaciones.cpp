@@ -222,7 +222,7 @@ unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
 		if (Cancelar() == TRUE) {
 			break;
 		}
-		Datos[Descargado] = '\0';
+//		Datos[Descargado] = '\0';
 		TotalDescargado += Descargado;
 		if (Descargado == 0)	
 			break;

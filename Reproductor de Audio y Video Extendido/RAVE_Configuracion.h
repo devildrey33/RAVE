@@ -34,7 +34,7 @@
 	//#define RAVE_SIMULAR_ERRORCRITICO
 
 	// Simula que ha recibido un mensaje del actualizador que le dice que está corrupto
-	#define RAVE_SIMULAR_INSTALADOR_CORRUPTO
+	//#define RAVE_SIMULAR_INSTALADOR_CORRUPTO
 
 #endif
 

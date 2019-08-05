@@ -428,9 +428,8 @@ const LineaComando RAVE::ObtenerLineaComando(std::vector<std::wstring> &Paths) {
 					Ret = LineaComando_ErrorCritico;
 				}
 				else if (LineaComandos(i).compare(L"-ActualizacionTerminada") == 0) {
-					Ret = LineaComando_ActualizadorCorrupto;
-				}
-				
+					Ret = LineaComando_ActualizacionTerminada;
+				}				
 				else if (LineaComandos(i).compare(L"-ActualizadorCorrupto") == 0) {		
 					Ret = LineaComando_ActualizadorCorrupto;
 				}
