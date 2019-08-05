@@ -6,12 +6,12 @@
 #include "..\zlib-1.2.11\zlib.h"
 #include <DStringUtils.h>
 
-//#define CHUNK 16384
-#define CHUNK 7680
+#define CHUNK 16384
+//#define CHUNK 7680
 
 #ifdef _WIN64
 	#define DIRECTORIO_RAVE L"Release-x64"
-	#define PATH_FINAL		L"Actualizador\\Actualizador_RAVE_x64.exe"
+	#define PATH_FINAL		L"Actualizador\\Actualizador_RAVE_x64"
 	#ifdef _DEBUG
 		#define TITULO		L"Instalador x64 Debug"
 		#define PATH_BUILD	L"Build\\Actualizador_RAVE\\x64\\Debug\\Actualizador_RAVE.exe"
@@ -21,7 +21,7 @@
 	#endif
 #else
 	#define DIRECTORIO_RAVE L"Release-x86"
-	#define PATH_FINAL		L"Actualizador\\Actualizador_RAVE_x86.exe"
+	#define PATH_FINAL		L"Actualizador\\Actualizador_RAVE_x86"
 	#ifdef _DEBUG
 		#define TITULO		L"Instalador x86 Debug"
 		#define PATH_BUILD	L"Build\\Actualizador_RAVE\\x86\\Debug\\Actualizador_RAVE.exe"
@@ -45,6 +45,7 @@ void GenerarActualizadorApp::Iniciar(void) {
 	std::wstring DirectorioArchivos;	// Path donde está ubicado el reproductor compilado y con todas sus dlls
 	std::wstring PathInstaladorVacio;	// Path donde se ubica el instalador vacio
 	std::wstring PathInstaladorFinal;	// Path donde se ubica el instalador con los archivos comprimidos
+	std::wstring PathMD5Final;			// Path donde se ubica el archivo con el md5 del instalador
 	std::wstring Tmp;
 	std::wstring nPathActual = PathActual();
 
@@ -85,16 +86,22 @@ void GenerarActualizadorApp::Iniciar(void) {
 	ConsolaDebug.EscribirMS(L"Paso 2 : Analizar y almacenar el instalador vacio.");
 
 	PathInstaladorVacio = DirectorioRAVE + PATH_BUILD;
-	PathInstaladorFinal = DirectorioRAVE + PATH_FINAL;
+	PathInstaladorFinal = DirectorioRAVE + PATH_FINAL + L".exe";
+	PathMD5Final		= DirectorioRAVE + PATH_FINAL + L".md5";
 	DWL::DArchivoBinario InstaladorVacio, InstaladorFinal, Archivo;
 
 	// Abro el instalador vacio para lectura
 	InstaladorVacio.AbrirArchivoLectura(PathInstaladorVacio.c_str());
 	// Obtengo el tamaño del instalador vacio
-	size_t TamInstaladorVacio = InstaladorVacio.PosicionLectura(0, TRUE);
+	size_t TamInstaladorVacio = (size_t)InstaladorVacio.PosicionLectura(0, TRUE);
 
 	if (InstaladorVacio.EstaAbierto() == FALSE) {
 		MessageBox(NULL, L"No se encuentra el instalador vacio", L"Error", MB_OK | MB_ICONERROR);
+		return;
+	}
+
+	if (MaxBuffer == 0) {
+		MessageBox(NULL, L"No hay archivos a comprimir en " DIRECTORIO_RAVE, L"Error", MB_OK | MB_ICONERROR);
 		return;
 	}
 
@@ -118,7 +125,7 @@ void GenerarActualizadorApp::Iniciar(void) {
 	
 	for (size_t i = 0; i < Archivos.size(); i++) {
 		// Abro el archivo a comprimir
-		Archivo.AbrirArchivoLectura(Archivos[i].c_str());
+		BOOL B = Archivo.AbrirArchivoLectura(Archivos[i].c_str());
 		// Recorto el path del archivo para guardarlo dentro del instalador
 		PathArchivo = Archivos[i].substr(DirectorioArchivos.size() + 1, Archivos[i].size() - (DirectorioArchivos.size() + 1));
 		// Guardo el path relativo del archivo
@@ -142,6 +149,12 @@ void GenerarActualizadorApp::Iniciar(void) {
 	// Guardo la firma del instalador (si no se encuentra la firma, el instalador no es válido)
 	std::string Firma("ActualizadorRAVE");
 	InstaladorFinal.GuardarString(Firma, FALSE);
+
+	// Creo un archivo con el MD5 del instalador final
+	DWL::DArchivoBinario MD5Final;
+	MD5Final.AbrirArchivo(PathMD5Final.c_str(), TRUE);
+	MD5Final.GuardarString(InstaladorFinal.MD5_char(), FALSE);
+	// Cierro el archivo del instalador final
 	InstaladorFinal.Cerrar();
 
 	// Elimino la memória temporal para leer los archivos
@@ -149,8 +162,7 @@ void GenerarActualizadorApp::Iniciar(void) {
 
 	// Evento de post-compilación de Actualizador_RAVE para poder depurar un instalador con archivos comprimidos
 	if (PostCompilacion == TRUE) {
-//		MessageBox(NULL, PathInstaladorFinal.c_str(), L"", MB_OK);
-//		MessageBox(NULL, PathInstaladorVacio.c_str(), L"", MB_OK);
+		// Copio el instalador final en el directorio buld de donde se ha leido el instalador vacio (asi puedo depurar el instalador final)
 		CopyFile(PathInstaladorFinal.c_str(), PathInstaladorVacio.c_str(), FALSE);
 	}
 	else {
@@ -174,13 +186,14 @@ const int GenerarActualizadorApp::Comprimir(DWL::DArchivoBinario &Origen) {
 	ret = deflateInit(&strm, 5);
 	if (ret != Z_OK) return ret;
 
-	Origen.PosicionLectura(0, false);
+	Origen.PosicionLectura(0, FALSE);
+	
 	TamDatos = 0;
 
 	// compress until end of file 
 	do {
-		Origen.Leer(in, CHUNK * sizeof(char));
-		strm.avail_in = (uInt)Origen.BytesLeidos();
+		
+		strm.avail_in = (uInt)Origen.Leer<char>(&in[0], CHUNK); //Origen.BytesLeidos();
 		/*		if (Origen.Error() == true) {
 					(void)deflateEnd(&strm);
 					return Z_ERRNO;

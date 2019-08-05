@@ -5,6 +5,17 @@
 #include <DArchivoBinario.h>
 
 
+/*
+	Esta aplicación tiene por objetivo fusionar un ejecutable con varios archivos comprimidos, (el ejecutable fusionado deberia saber como tratar esos archivos comprimidos)
+	Puede funcionar de 3 formas :
+		- Desde el directorio "RAVE\Actualizador\Generar Actualizador_RAVE\"		cuando se ejecuta desde el visual studio, crea el instalador en la carpeta "RAVE\Actualizador\"
+		- Desde el directorio "RAVE\Actualizador\"									cuando se ejecuta desde el explorador, crea el instalador en la misma carpeta.
+		- Desde el directorio "RAVE\Actualizador\Actualizador_RAVE\"				cuando se ejecuta en el post-build de la configuración DebugGenerado del Actualizador_RAVE
+			- Este modo guarda el ejecutable final en la carpeta build debug para que se pueda depurar
+
+	NOTA IMPORTANTE : No modificar los directorios de build de la zlib, o no compilará bien la zlib (ya que tiene post-build con un bat que copia archivos asm)
+*/
+
 
 // Archivo lib de la DWL y de la ZLib según la configuración
 #ifdef _DEBUG
@@ -21,7 +32,7 @@
 		#pragma comment(lib, "..\\zlib-1.2.11\\contrib\\vstudio\\vc14\\x64\\ZlibStatRelease\\zlibstat.lib")
 	#else
 		#pragma comment(lib, "..\\..\\Build\\DWL\\x86\\Release\\DWL3.lib")
-		#pragma comment(lib, "..\\zlib-1.2.11\\contrib\\vstudio\\vc14\\x86\\ZlibStatRelease\\zlibstat.lib")
+		#pragma comment(lib, "..\\zlib-1.2.11\\contrib\\vstudio\\vc14\\x86\\ZlibStatReleaseWithoutAsm\\zlibstat.lib")
 	#endif
 #endif
 

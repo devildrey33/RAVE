@@ -7,13 +7,28 @@
 #include "..\zlib-1.2.11\zlib.h"
 #include <DDirectoriosWindows.h>
 #include <DStringUtils.h>
+#include <shellapi.h>
+#include <DRegistro.h>
+
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow) {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	// TODO: Colocar código aquí.
+	
+	// No tiene privilegios de administración
+#if ELEVAR_PRIVILEGIOS == TRUE
+	if (IsUserAnAdmin() == FALSE) {
+		// Ejecuto la aplicación y pido privilegios de administración
+		ShellExecute(NULL, TEXT("RunAs"), App.Path(FALSE).c_str(), L"", App.Path(TRUE).c_str(), SW_SHOWNORMAL);
+		// Salgo de esta aplicación que no tiene privilegios
+		return 0;
+		// Recuerda que una vez re-ejecutada como administrador no hay depurador...
+	}
+#endif
 
+	
+	// Creo la ventana principal, la cual inicia la actualización
 	App.Ventana.Crear();
 
 	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_ACTUALIZADORRAVEEXE));
@@ -34,21 +49,38 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 // Función que inicia la actualización
 void ActualizadorApp::Actualizar(void) {
-	std::wstring			PathTmp;
-	std::wstring            PathInstalador = App.Path(FALSE);
+	std::wstring			PathTmp;							// Path temporal donde se descomprimen todos los archivos
+	std::wstring            PathInstalador = App.Path(FALSE);	// Path donde está ubicado el instalador
+	std::wstring			PathReproductor;					// Path donde está ubicado el reproductor
+	std::wstring			PathEjecutable;						// Path del ejecutable principal del reproductor
+
 	DWL::DArchivoBinario	Instalador;
 	ULONG					ErrorMD5 = 0;
-	std::wstring			TxtError;
+	std::wstring			Tmp, Texto;
+
+	// Obtengo el path del reproductor desde el registro
+	DWL::DRegistro::ObtenerValor_String(HKEY_CURRENT_USER, L"Software\\Rave", L"Path", PathReproductor);
+	// No se encuentra el path en el registro, abortando...
+	if (PathReproductor.size() == 0) {
+		MessageBox(NULL, L"No se encuentra el path del reproductor en el registro, re-instala y ejecuta el reproductor para solucionar el problema.", L"Error", MB_OK | MB_ICONERROR);
+		PostQuitMessage(0);
+		return;
+	}
+
+	// Guardo el path del ejecutable
+	PathEjecutable = PathReproductor + L"Rave.exe";
 
 	// Creo el path Temporal
 	DWL::DDirectoriosWindows::Comun_AppData(PathTmp);
-	PathTmp += L"\\Rave\\Tmp\\";
+	PathTmp += L"\\Rave\\Nuevo\\";
+
 	// Borro el directorio Tmp para asegurar que no hay nada antiguo
 	BorrarDirectorio(PathTmp.c_str());
+
 	// Creo nuevamente el directorio Tmp
 	CreateDirectory(PathTmp.c_str(), NULL);
 
-
+	// Abro el instalador para lectura
 	if (Instalador.AbrirArchivoLectura(PathInstalador.c_str()) == FALSE) {
 		MessageBox(NULL, L"No se puede abrir el instalador", L"Error", MB_OK | MB_ICONERROR);
 		#ifndef _DEBUG
@@ -67,35 +99,48 @@ void ActualizadorApp::Actualizar(void) {
 	Instalador.PosicionLectura(-16, TRUE);
 	Instalador.Leer(Firma, 16);
 
+	// Creo la firma para comparar
 	std::string FirmaStr = "ActualizadorRAVE";
+
 	// La firma no coincide termino la aplicación (solo en la configuración RELEASE)
 	if (FirmaStr.compare(Firma) != 0) {
 		std::wstring TmpFirma;
 		DWL::Strings::AnsiToWide(Firma, TmpFirma);
-		TxtError = L"La firma no coincide : " + TmpFirma;
-		MessageBox(NULL, TxtError.c_str(), L"Error", MB_OK | MB_ICONERROR);
+		Tmp = L"La firma no coincide : " + TmpFirma;
+		MessageBox(NULL, Tmp.c_str(), L"Error", MB_OK | MB_ICONERROR);
 		#ifndef _DEBUG
 			PostQuitMessage(0);
 		#endif
 		return;
 	}
 
-	size_t TotalArchivos = 0;
 	// Leo el total de archivos
-	Instalador.PosicionLectura(TamInstaladorVacio, FALSE);
+	size_t TotalArchivos = 0;
+	Instalador.PosicionLectura((long)TamInstaladorVacio, FALSE);
 	Instalador.Leer<size_t>(&TotalArchivos);
-	App.Ventana.Barra.Maximo(static_cast<float>(TotalArchivos));
+
+	// Si no hay archivos, salgo
+	if (TotalArchivos == 0) {
+		MessageBox(NULL, L"No hay archivos comprimidos", L"Error", MB_OK | MB_ICONERROR);
+		PostQuitMessage(0);
+		return;
+	}
+
+	// Asigno el máximo para la barra
+	App.Ventana.Barra.Maximo(static_cast<float>(TotalArchivos - 1));
 
 	// Leo archivo por archivo para guardar los datos descomprimidos en un directorio temporal
 	std::wstring			PathArchivoRelativo;
 	std::wstring			PathArchivo;
-	std::string				MD5;
+	std::string				MD5, CompMD5;
 	size_t					TamDatos = 0;
 	char                   *Datos = nullptr;
 	DWL::DArchivoBinario	ArchivoDestino;
 
-//	TxtError = L"TotalArchivos : " + std::to_wstring(TotalArchivos);
-//	MessageBox(NULL, TxtError.c_str(), L"Error", MB_OK | MB_ICONERROR);
+	// Vuelvo a cerrar el reproductor si no estaba cerrado
+	HWND Reproductor = FindWindowEx(NULL, NULL, L"RAVE_VentanaPrincipal", NULL);
+	if (Reproductor != NULL) SendMessage(Reproductor, WM_CLOSE, 0, 0);
+
 
 	for (size_t i = 0; i < TotalArchivos; i++) {
 		// Leo el path destino
@@ -116,11 +161,12 @@ void ActualizadorApp::Actualizar(void) {
 		// Actualizo el texto del archivo destino
 		App.Ventana.EtiquetaNombreArchivo.Texto(PathArchivo);
 		// Descomprimo los datos comprimidos en memória y los vuelco en el ArchivoDestino
-		Descomprimir(Datos, TamDatos, ArchivoDestino);
+		Descomprimir(Datos, (DWORD)TamDatos, ArchivoDestino);
 		// Elimino los datos de memória
 		delete[] Datos;
 		// Si el MD5 no coincide...
-		if (MD5.compare(ArchivoDestino.MD5_char()) != 0) {
+		CompMD5 = ArchivoDestino.MD5_char();
+		if (MD5.compare(CompMD5) != 0) {
 			ErrorMD5++;
 		}
 		// Actualizo la barra de progreso
@@ -131,16 +177,65 @@ void ActualizadorApp::Actualizar(void) {
 
 	// Si hay errores en las comparaciones MD5 revierto la actualización
 	if (ErrorMD5 > 0) {
+		// Borro el directorio temporal
 		BorrarDirectorio(PathTmp.c_str());
 
-		std::wstring Err = L"Algunos archivos están corruptos... Abortando actualización.";
+		// Muestro un mensaje de error
+		std::wstring Err = L"Uno o más archivos están corruptos... Abortando actualización.";
 		MessageBox(NULL, Err.c_str(), L"Error", MB_OK | MB_ICONERROR);
 
 		// TODO : Ejecutar rave con parámetro que indique que el instalador es corrupto y borrar el instalador desde el reproductor
+		ShellExecute(NULL, L"open", PathEjecutable.c_str(), L"-ActualizadorCorrupto", PathReproductor.c_str(), SW_SHOW);
 
+		// Salgo de la App
 		PostQuitMessage(0);
+		return;
 	}
 
+	// Vuelvo a cerrar el reproductor si no estaba cerrado
+	Reproductor = FindWindowEx(NULL, NULL, L"RAVE_VentanaPrincipal", NULL);
+	if (Reproductor != NULL) SendMessage(Reproductor, WM_CLOSE, 0, 0);
+
+	
+	// Muevo la carpeta del reproductor a ProgramData\Rave\Old
+	DWL::DDirectoriosWindows::Comun_AppData(Tmp);
+	Tmp += L"\\Rave\\Viejo";
+	BOOL Mover = MoveFileEx(PathReproductor.c_str(), Tmp.c_str(), MOVEFILE_COPY_ALLOWED);
+
+	if (Mover != FALSE) {
+		// Muevo los nuevos archivos a la carpeta del reproductor
+		Mover = MoveFileEx(PathTmp.c_str(), PathReproductor.c_str(), MOVEFILE_COPY_ALLOWED);
+		// Se ha movido correctamente
+		if (Mover != FALSE) {
+			// Ejecuto el reproductor
+			ShellExecute(NULL, L"open", PathEjecutable.c_str(), L"-ActualizacionTerminada", PathReproductor.c_str(), SW_SHOW);
+		}
+		// No se ha movido
+		else {
+			// Restauro la carpeta
+			Mover = MoveFileEx(Tmp.c_str(), PathReproductor.c_str(), MOVEFILE_COPY_ALLOWED);
+			// Si no se ha podido mover.. lo mando todo a la mierda...
+			if (Mover == FALSE) {
+				MessageBox(NULL, L"Error fatal! descarga RAVE desde su pagina, e instalalo de nuevo.", L"Error", MB_OK | MB_ICONERROR);
+			}
+			// Se ha restaurado la versión antigua correctamente
+			else {
+				Texto = L"No se puede mover '" + PathTmp + L"' a '" + PathReproductor + L"'\n" + App.UltimoError();
+				MessageBox(NULL, Texto.c_str(), L"Error", MB_OK | MB_ICONERROR);
+			}
+			// Ejecuto el reproductor informando del error
+			ShellExecute(NULL, L"open", PathEjecutable.c_str(), L"-ActualizadorCorrupto", PathReproductor.c_str(), SW_SHOW);
+		}
+	}
+	// Error moviendo la carpeta a Old a partir de aqui ya no se que pasa... se puede haber movido parte de la carpeta y puede que falten arhivos...
+	else {		
+		Texto = L"No se puede mover '" + PathReproductor + L"' a '" + Tmp + L"'\n" + App.UltimoError();
+		MessageBox(NULL, Texto.c_str(), L"Error", MB_OK | MB_ICONERROR);
+		// Ejecuto el reproductor informando del error
+		ShellExecute(NULL, L"open", PathEjecutable.c_str(), L"-ActualizadorCorrupto", PathReproductor.c_str(), SW_SHOW);
+	}
+
+	// Terminado
 	PostQuitMessage(0);
 }
 
@@ -159,8 +254,8 @@ void ActualizadorApp::CrearDirectorios(std::wstring &Path) {
 	}
 }
 
-//#define CHUNK 16384
-#define CHUNK 7680
+#define CHUNK 16384
+//#define CHUNK 7680 // NO USAR
 
 int ActualizadorApp::Descomprimir(char *Datos, DWORD TamDatos, DWL::DArchivoBinario& Destino) {
 	int ret;

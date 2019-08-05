@@ -1,30 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug con archivos|Itanium">
-      <Configuration>Debug con archivos</Configuration>
-      <Platform>Itanium</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug con archivos|Win32">
-      <Configuration>Debug con archivos</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug con archivos|x64">
-      <Configuration>Debug con archivos</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugGenerado|Itanium">
-      <Configuration>DebugGenerado</Configuration>
-      <Platform>Itanium</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugGenerado|Win32">
-      <Configuration>DebugGenerado</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugGenerado|x64">
-      <Configuration>DebugGenerado</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Itanium">
       <Configuration>Debug</Configuration>
       <Platform>Itanium</Platform>
@@ -225,7 +201,7 @@
       <StringPooling>true</StringPooling>
       <ExceptionHandling>
       </ExceptionHandling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeaderOutputFile>$(IntDir)zlibstat.pch</PrecompiledHeaderOutputFile>

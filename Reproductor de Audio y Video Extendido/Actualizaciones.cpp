@@ -42,7 +42,7 @@ const BOOL Actualizaciones::Descargar(void) {
 	if (_hThreadDescargar != NULL) return FALSE;
 
 	// Creo la ventana
-	App.VentanaAct.Crear(_Version.c_str());
+	App.VentanaDescargarAct.Crear(_Version.c_str());
 
 
 	// Asigno el estado cancelado a false
@@ -77,13 +77,6 @@ const BOOL Actualizaciones::Cancelar(void) {
 	return Ret;
 }
 
-#ifdef _WIN64
-	#define URL_INSTALADOR		L"https://devildrey33.github.io/RAVE/Instaladores/SetupRave-x64."
-	#define NOMBRE_INSTALADOR	L"SetupRave-x64.msi"
-#else
-	#define URL_INSTALADOR		L"https://devildrey33.github.io/RAVE/Instaladores/SetupRave-x86."
-	#define NOMBRE_INSTALADOR	L"SetupRave-x86.msi"
-#endif
 
 
 // Función main para el hilo de buscar una actualizacion
@@ -135,7 +128,7 @@ unsigned long Actualizaciones::_ThreadBuscar(void* pThis) {
 		// Si la versión coincide borro el instalador (si existe)
 		std::wstring	PathFinal;
 		DWL::DDirectoriosWindows::Comun_AppData(PathFinal);
-		PathFinal += L"\\Rave\\" NOMBRE_INSTALADOR;
+		PathFinal += L"\\Rave\\" NOMBRE_ACTUALIZADOR L".exe";
 		if (GetFileAttributes(PathFinal.c_str()) != INVALID_FILE_ATTRIBUTES) {
 			DeleteFile(PathFinal.c_str());
 		}
@@ -149,8 +142,8 @@ unsigned long Actualizaciones::_ThreadBuscar(void* pThis) {
 // Función main para el hilo de descargar la actualizacion
 unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
 
-	std::wstring	UrlInstalador		= URL_INSTALADOR L"msi";
-	std::wstring	UrlMD5				= URL_INSTALADOR L"md5";
+	std::wstring	UrlInstalador		= URL_INSTALADOR L".actualizador";
+	std::wstring	UrlMD5				= URL_INSTALADOR L".md5";
 
 	TCHAR			szHead[]			= L"Accept: */*\r\n\r\n";
 	HINTERNET		Sesion				= InternetOpen(L"RAVE_Actualizacion", INTERNET_OPEN_TYPE_PRECONFIG, NULL, INTERNET_INVALID_PORT_NUMBER, 0);
@@ -168,7 +161,7 @@ unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
 	DWORD BytesLeidos = 0;
 	BOOL  Leido = InternetReadFile(Peticion, TxtHash, 32, &BytesLeidos);
 	InternetCloseHandle(Peticion);
-	// Error no existe el hash
+	// Error html no existe el hash
 	if (TxtHash[0] == L'<') {
 		SendMessage(_VentanaRave, WM_ACTUALIZACION_ERROR, 0, 0);
 		InternetCloseHandle(Sesion);
@@ -177,22 +170,24 @@ unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
 
 	// Compruebo si existe algun isntalador descargado
 	std::wstring	PathFinal;
-	DWL::DDirectoriosWindows::Comun_AppData(PathFinal);
-	PathFinal += L"\\Rave\\" NOMBRE_INSTALADOR;
+	std::wstring    DirectorioRaveAppData;
+	DWL::DDirectoriosWindows::Comun_AppData(DirectorioRaveAppData);
+	PathFinal = DirectorioRaveAppData + L"\\Rave\\" NOMBRE_ACTUALIZADOR L".exe";
 
 	if (GetFileAttributes(PathFinal.c_str()) != INVALID_FILE_ATTRIBUTES) {
 		// Existe un instalador
-		DWL::DArchivoBinario ArchivoC(PathFinal, TRUE);
-
+		DWL::DArchivoBinario ArchivoC;
+		ArchivoC.AbrirArchivoLectura(PathFinal.c_str());
+		std::string MD5C = ArchivoC.MD5_char();
 		// Tiene el mismo md5
-		if (ArchivoC.MD5_char().compare(TxtHash) == 0) {
+		if (MD5C.compare(TxtHash) == 0) {
 			// Actualizacion previamente descargada, no hace falta descargar nada
 			SendMessage(_VentanaRave, WM_ACTUALIZACION_DESCARGADA, 0, 0);
 			InternetCloseHandle(Sesion);
 			return 0;
 		}
-
 		// Si llegamos a este punto, es que el instalador o no es válido o es una version inferior.
+		ArchivoC.Cerrar();
 	}
 
 
@@ -239,7 +234,19 @@ unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
 	InternetCloseHandle(Peticion);
 	InternetCloseHandle(Sesion);
 
+	// Compruebo si existe algun isntalador descargado
+	std::wstring	MD5Final;
+	MD5Final = DirectorioRaveAppData + L"\\Rave\\" NOMBRE_ACTUALIZADOR L".md5";
+
+//	Archivo.Cerrar();
+//	Archivo.AbrirArchivoLectura(PathFinal.c_str());
+
 	std::string MD5 = Archivo.MD5_char();
+
+	DWL::DArchivoBinario ArchivoMD5(MD5Final, TRUE);
+	ArchivoMD5.GuardarString(MD5, FALSE);
+	ArchivoMD5.Cerrar();
+
 	// Tiene el mismo md5
 	if (MD5.compare(TxtHash) == 0) {
 		// Actualizacion descargada
@@ -251,6 +258,7 @@ unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
 		else						{	SendMessage(_VentanaRave, WM_ACTUALIZACION_CANCELADA, 0, 0);	}
 	}
 
+	Archivo.Cerrar();
 
 	return 0;
 }

@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug con archivos|Win32">
-      <Configuration>Debug con archivos</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug con archivos|x64">
-      <Configuration>Debug con archivos</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugGenerado|Win32">
-      <Configuration>DebugGenerado</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugGenerado|x64">
-      <Configuration>DebugGenerado</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -49,18 +33,6 @@
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
@@ -69,18 +41,6 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
@@ -101,22 +61,10 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -126,96 +74,32 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
-    <IncludePath>..\..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
-    <TargetName>GenerarActualizador_x64_Debug</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
-    <IncludePath>..\..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
-    <TargetName>GenerarActualizador_x64_Debug</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\Intermedio\</IntDir>
     <IncludePath>..\..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
     <TargetName>GenerarActualizador_x64_Debug</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
-    <IncludePath>..\..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
-    <TargetName>GenerarActualizador_x86_Debug</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
-    <IncludePath>..\..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
-    <TargetName>GenerarActualizador_x86_Debug</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\Intermedio\</IntDir>
     <IncludePath>..\..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
     <TargetName>GenerarActualizador_x86_Debug</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\Intermedio\</IntDir>
     <IncludePath>..\..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
     <TargetName>GenerarActualizador_x86</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\Intermedio\</IntDir>
     <IncludePath>..\..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
     <TargetName>GenerarActualizador_x64</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-    <PostBuildEvent>
-      <Command>copy "$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\GenerarActualizador_x64_Debug.exe" "$(SolutionDir)\Actualizador\GenerarActualizador_x64_Debug.exe"</Command>
-    </PostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|x64'">
-    <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-    <PostBuildEvent>
-      <Command>copy "$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\GenerarActualizador_x64_Debug.exe" "$(SolutionDir)\Actualizador\GenerarActualizador_x64_Debug.exe"</Command>
-    </PostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|x64'">
     <ClCompile>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -251,42 +135,6 @@
       <Command>copy "$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\GenerarActualizador_x86_Debug.exe" "$(SolutionDir)\Actualizador\GenerarActualizador_x86_Debug.exe"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>ZLIB_WINAPI;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-    <PostBuildEvent>
-      <Command>copy "$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\GenerarActualizador_x86_Debug.exe" "$(SolutionDir)\Actualizador\GenerarActualizador_x86_Debug.exe"</Command>
-    </PostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>ZLIB_WINAPI;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-    <PostBuildEvent>
-      <Command>copy "$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\GenerarActualizador_x86_Debug.exe" "$(SolutionDir)\Actualizador\GenerarActualizador_x86_Debug.exe"</Command>
-    </PostBuildEvent>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PrecompiledHeader>
@@ -304,6 +152,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/NODEFAULTLIB:LIBCMT %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)Build\Generar Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\GenerarActualizador_x86.exe" "$(SolutionDir)\Actualizador\GenerarActualizador_x86.exe"</Command>

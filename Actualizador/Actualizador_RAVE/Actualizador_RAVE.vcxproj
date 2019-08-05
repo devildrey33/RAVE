@@ -100,33 +100,37 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Build\Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)Build\Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\Intermedio\</IntDir>
     <IncludePath>..\..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Build\Actualizador_RAVE\$(PlatformShortName)\Debug\</OutDir>
-    <IntDir>$(SolutionDir)Build\Actualizador_RAVE\$(PlatformShortName)\Debug\</IntDir>
+    <IntDir>$(SolutionDir)Build\Actualizador_RAVE\$(PlatformShortName)\Debug\Intermedio\</IntDir>
     <IncludePath>..\..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>..\..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)Build\Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\Intermedio\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>..\..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)Build\Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\Intermedio\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Build\Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)Build\Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\Intermedio\</IntDir>
     <IncludePath>..\..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Build\Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)Build\Actualizador_RAVE\$(PlatformShortName)\$(Configuration)\Intermedio\</IntDir>
     <IncludePath>..\..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -219,6 +223,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/NODEFAULTLIB:LIBCMT %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

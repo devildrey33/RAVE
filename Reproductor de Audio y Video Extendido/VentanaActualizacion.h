@@ -4,7 +4,7 @@
 #include <DBotonEx.h>
 #include <DBarraProgresoEx.h>
 
-class VentanaActualizacion : public DWL::DVentana {
+class VentanaDescargarActualizacion : public DWL::DVentana {
   public:
 	void					Crear(const wchar_t* Version);
 

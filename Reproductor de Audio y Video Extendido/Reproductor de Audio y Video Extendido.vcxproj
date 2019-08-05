@@ -1,22 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug con archivos|Win32">
-      <Configuration>Debug con archivos</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug con archivos|x64">
-      <Configuration>Debug con archivos</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugGenerado|Win32">
-      <Configuration>DebugGenerado</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugGenerado|x64">
-      <Configuration>DebugGenerado</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -47,31 +31,7 @@
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
@@ -97,19 +57,7 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -123,41 +71,13 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>..\vlc-3.0.7\Include;..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
-    <TargetName>RAVE</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\vlc-3.0.7\Include;..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
-    <OutDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
-    <TargetName>RAVE</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\vlc-3.0.7\Include;..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
-    <OutDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\Intermedio\</IntDir>
     <TargetName>RAVE</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
-    <TargetName>RAVE</TargetName>
-    <IncludePath>..\vlc-3.0.7\Include;..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
-    <TargetName>RAVE</TargetName>
-    <IncludePath>..\vlc-3.0.7\Include;..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\Intermedio\</IntDir>
     <TargetName>RAVE</TargetName>
     <IncludePath>..\vlc-3.0.7\Include;..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
   </PropertyGroup>
@@ -165,13 +85,13 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>..\vlc-3.0.7\Include;..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\Intermedio\</IntDir>
     <TargetName>RAVE</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)Build\RAVE\$(PlatformShortName)\$(Configuration)\Intermedio\</IntDir>
     <TargetName>RAVE</TargetName>
     <IncludePath>..\vlc-3.0.7\Include;..\..\DWL3\DWL3;$(IncludePath)</IncludePath>
     <EmbedManifest>true</EmbedManifest>
@@ -195,75 +115,7 @@
       <AdditionalManifestFiles>..\RAVE.exe.manifest</AdditionalManifestFiles>
     </Manifest>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <TargetMachine>MachineX86</TargetMachine>
-    </Link>
-    <Manifest>
-      <AdditionalManifestFiles>..\RAVE.exe.manifest</AdditionalManifestFiles>
-    </Manifest>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <TargetMachine>MachineX86</TargetMachine>
-    </Link>
-    <Manifest>
-      <AdditionalManifestFiles>..\RAVE.exe.manifest</AdditionalManifestFiles>
-    </Manifest>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ManifestFile>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\$(TargetName)$(TargetExt).intermediate.manifest</ManifestFile>
-    </Link>
-    <Manifest>
-      <AdditionalManifestFiles>..\RAVE.exe.manifest</AdditionalManifestFiles>
-    </Manifest>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|x64'">
-    <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ManifestFile>$(SolutionDir)Build\$(PlatformShortName)\$(Configuration)\$(TargetName)$(TargetExt).intermediate.manifest</ManifestFile>
-    </Link>
-    <Manifest>
-      <AdditionalManifestFiles>..\RAVE.exe.manifest</AdditionalManifestFiles>
-    </Manifest>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -376,9 +228,10 @@
     <ClInclude Include="ThreadAnalisis.h" />
     <ClInclude Include="RAVE_TODO.h" />
     <ClInclude Include="ToolTipInfo.h" />
-    <ClInclude Include="VentanaActualizacion.h" />
+    <ClInclude Include="VentanaDescargarActualizacion.h" />
     <ClInclude Include="VentanaAsociarReproductor %28DEPRECATED%29.h" />
     <ClInclude Include="VentanaErrorCritico.h" />
+    <ClInclude Include="VentanaInstalarActualizacion.h" />
     <ClInclude Include="VentanaMomento.h" />
     <ClInclude Include="VentanaOpcionesRAVE.h" />
     <ClInclude Include="VentanaPrecarga.h" />
@@ -415,21 +268,13 @@
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp" />
     <ClCompile Include="sqlite3.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugGenerado|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug con archivos|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -437,9 +282,10 @@
     <ClCompile Include="ThreadAgregarArchivosLista.cpp" />
     <ClCompile Include="ThreadAnalisis.cpp" />
     <ClCompile Include="ToolTipInfo.cpp" />
-    <ClCompile Include="VentanaActualizacion.cpp" />
+    <ClCompile Include="VentanaDescargarActualizacion.cpp" />
     <ClCompile Include="VentanaAsociarReproductor %28DEPRECATED%29.cpp" />
     <ClCompile Include="VentanaErrorCritico.cpp" />
+    <ClCompile Include="VentanaInstalarActualizacion.cpp" />
     <ClCompile Include="VentanaMomento.cpp" />
     <ClCompile Include="VentanaOpcionesRAVE.cpp" />
     <ClCompile Include="VentanaPrecarga.cpp" />

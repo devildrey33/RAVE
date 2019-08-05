@@ -4,6 +4,8 @@
 #include <Shellapi.h>
 #include <Shlobj.h>
 #include <DIcono.h>
+#include <DRegistro.h>
+#include <DDirectoriosWindows.h>
 
 //#include <gdiplus.h>
 
@@ -99,8 +101,8 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 
 	BOOL Ret = FALSE;
 
-	std::vector<std::wstring> Paths;
 	// Obtengo la linea de comandos y ejecuto el reproductor según los argumentos
+	std::vector<std::wstring> Paths;
 	LineaComando LC = ObtenerLineaComando(Paths);
 
 	// Simula los argumentos para reproducir un video nada mas iniciar
@@ -124,86 +126,56 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 		}
 	#endif
 
+	// Simula que ha recibido un mensaje del actualizador conforme está corrupto
+	#ifdef RAVE_SIMULAR_INSTALADOR_CORRUPTO
+		LC = LineaComando_ActualizadorCorrupto;
+	#endif
+
+	// Miro el path del ejecutable
+	std::wstring P = App.Path();	
+	// Si no está en un directorio Debug o Release (para que no me la lie actualizando en alguno de esos directorios)
+	if (P.find(L"Debug") == std::wstring::npos && P.find(L"Release") == std::wstring::npos) {
+		// Añado una clave en el registro con el path del reproductor, para que el actualizador sepa donde hay que actualizar
+		DWL::DRegistro::AsignarValor_String(HKEY_CURRENT_USER, L"Software\\Rave", L"Path", P.c_str());
+	}
+
 
 	// Teclas rapidas por defecto
-	TeclasRapidas.push_back(TeclaRapida(VK_SPACE, FALSE, FALSE, FALSE));
-	TeclasRapidas.push_back(TeclaRapida(VK_INSERT, FALSE, FALSE, FALSE));
-	TeclasRapidas.push_back(TeclaRapida(VK_ADD, FALSE, FALSE, FALSE));
-	TeclasRapidas.push_back(TeclaRapida(VK_SUBTRACT, FALSE, FALSE, FALSE));
-	TeclasRapidas.push_back(TeclaRapida(VK_RIGHT, TRUE, FALSE, FALSE));
-	TeclasRapidas.push_back(TeclaRapida(VK_LEFT, TRUE, FALSE, FALSE));
-	TeclasRapidas.push_back(TeclaRapida(VK_F1, FALSE, FALSE, FALSE));
-	TeclasRapidas.push_back(TeclaRapida(VK_F2, FALSE, FALSE, FALSE));
-	TeclasRapidas.push_back(TeclaRapida(VK_F3, FALSE, FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_SPACE	, FALSE, FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_INSERT	, FALSE, FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_ADD		, FALSE, FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_SUBTRACT	, FALSE, FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_RIGHT	, TRUE , FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_LEFT		, TRUE , FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_F1		, FALSE, FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_F2		, FALSE, FALSE, FALSE));
+	TeclasRapidas.push_back(TeclaRapida(VK_F3		, FALSE, FALSE, FALSE));
 
-//	Gdiplus::GdiplusStartupInput	gdiplusStartupInput;
-	// Initialize GDI+.
-//	Gdiplus::GdiplusStartup(&_gdiplusToken, &gdiplusStartupInput, NULL);
-
+	
 	switch (LC) {
+		// El instalador está corrupto, lo borro
+		case LineaComando_ActualizadorCorrupto :
+			EliminarActualizador();
+			Ret = EjecutarReproductor(Paths, hWndPlayer, nCmdShow);
+			MostrarToolTipPlayerError(L"La actualización ha fallado...");
+			break;
+		// La actualización ha finalizado correctamente, la borro
+		case LineaComando_ActualizacionTerminada :
+			EliminarActualizador();
+			Ret = EjecutarReproductor(Paths, hWndPlayer, nCmdShow);
+			MostrarToolTipPlayer(L"RAVE actualizado a la versión : " RAVE_VERSIONSTR);
+			break;
+			
 		// Ejecución normal sin parámetros
 		case LineaComando_Nada :
 		case LineaComando_Path :
 		case LineaComando_Reproducir :
-			// Agrego el path a la memoria compartida, y envio un mensaje al reproductor
-			if (Paths.size() > 0 && PlayerInicial == FALSE) {
-				MemCompartida.AgregarPath(Paths[Paths.size() - 1]);					
-				PostMessage(hWndPlayer, (Paths[0] == L"-r") ? WM_REPRODUCIRMEDIO : WM_AGREGARMEDIO, 0, 0);
-			}
-			// Si ya existe un reproductor activo, salgo
-			if (PlayerInicial == FALSE) {
-				Ret = FALSE;
-				break;
-			}
-			// Inicio la BD de las opciones para tener los datos de la ventana principal, etc..
-			Opciones.Iniciar();
-			// Inicio la base de datos 
-			BD.Iniciar();
-
-			// Muestro la ventana principal y creo los menús
-			IniciarUI(nCmdShow);
-
-			// Compruebo las aosiciaciones de archivo y muestro la ventana si es necesario
-/*			if (AsociarMedios.ComprobarAsociaciones() == FALSE) {
-				VentanaAsociar.Mostrar();
-			}*/
-
-			// No hay paths, creo una lista de inicio
-			if (Paths.size() == 0 && PlayerInicial == TRUE) {
-				#ifndef  RAVE_IGNORAR_LISTA_INICIO 	// No genera ninguna lista al iniciar (por el debug del VLC que es muy heavy.. y carga mucho al visual studio)
-					// Inicia la acción por defecto al empezar
-					Debug_Escribir_Varg(L"Rave::Iniciar ->  Acción de inicio : %d\n", BD.Opciones_Inicio());
-					switch (Opciones.Inicio()) {
-	//					case Tipo_Inicio_NADA			:																		break;
-						case Tipo_Inicio_Genero			:	VentanaRave.GenerarListaAleatoria(TLA_Genero);						break;
-						case Tipo_Inicio_Grupo			:	VentanaRave.GenerarListaAleatoria(TLA_Grupo);						break;
-						case Tipo_Inicio_Disco			:	VentanaRave.GenerarListaAleatoria(TLA_Disco);						break;
-						case Tipo_Inicio_50Medios		:	VentanaRave.GenerarListaAleatoria(TLA_50Medios);					break;
-						case Tipo_Inicio_LoQueSea		:	VentanaRave.GenerarListaAleatoria(TLA_LoQueSea);					break;
-						case Tipo_Inicio_Nota			:	VentanaRave.GenerarListaAleatoria(TLA_Nota);						break;
-						case Tipo_Inicio_UltimaLista	:	BD.ObtenerUltimaLista();											break;
-					}
-				#endif
-			}
-			// Hay paths, los añado a la lista
-			else {
-				for (size_t i = 0; i < Paths.size(); i++) {
-					if (Paths[i] != L"-r") {
-						MemCompartida.AgregarPath(Paths[i]);
-					}
-				}
-				VentanaRave.ExploradorAgregarMedio(TRUE);
-			}
-			
-			VentanaRave.ActualizarArbol();
-
-			Ret = TRUE;
+			Ret = EjecutarReproductor(Paths, hWndPlayer, nCmdShow);
 			break;
 
 		// Ejecución para mostrar la ventana de error crítico
 		case LineaComando_ErrorCritico :
 			VentanaErrorCrit.Crear();
-			//ReleaseMutex(MutexPlayer);
 			Ret = TRUE;
 			break;
 
@@ -233,6 +205,81 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 	CloseHandle(MutexPlayer);
 
 	return Ret;
+}
+
+// Función que elimina el ejecutable de la actualización
+void RAVE::EliminarActualizador(void) {
+	std::wstring PathActualizador;
+	// Elimino el ejecutable de la actualizacion
+	DWL::DDirectoriosWindows::Comun_AppData(PathActualizador);
+	#ifdef _WIN64
+		PathActualizador += L"\\Rave\\Actualizador_RAVE_x64.exe";
+	#else
+		PathActualizador += L"\\Rave\\Actualizador_RAVE_x86.exe";
+	#endif
+	DeleteFile(PathActualizador.c_str());
+}
+
+
+const BOOL RAVE::EjecutarReproductor(std::vector<std::wstring> &Paths, HWND hWndPlayer, const int nCmdShow) {
+	BOOL Ret = FALSE;
+
+	// Agrego el path a la memoria compartida, y envio un mensaje al reproductor
+	if (Paths.size() > 0 && PlayerInicial == FALSE) {
+		MemCompartida.AgregarPath(Paths[Paths.size() - 1]);
+		PostMessage(hWndPlayer, (Paths[0] == L"-r") ? WM_REPRODUCIRMEDIO : WM_AGREGARMEDIO, 0, 0);
+	}
+	// Si ya existe un reproductor activo, salgo
+	if (PlayerInicial == FALSE) {
+		return FALSE;
+	}
+
+
+	// Inicio la BD de las opciones para tener los datos de la ventana principal, etc..
+	Opciones.Iniciar();
+	// Inicio la base de datos 
+	BD.Iniciar();
+
+	// Muestro la ventana principal y creo los menús
+	IniciarUI(nCmdShow);
+
+	// Compruebo las aosiciaciones de archivo y muestro la ventana si es necesario
+/*	if (AsociarMedios.ComprobarAsociaciones() == FALSE) {
+		VentanaAsociar.Mostrar();
+	}*/
+
+	// No hay paths, creo una lista de inicio
+	if (Paths.size() == 0 && PlayerInicial == TRUE) {
+		#ifndef  RAVE_IGNORAR_LISTA_INICIO 	// No genera ninguna lista al iniciar (por el debug del VLC que es muy heavy.. y carga mucho al visual studio)
+			// Inicia la acción por defecto al empezar
+			Debug_Escribir_Varg(L"Rave::Iniciar ->  Acción de inicio : %d\n", BD.Opciones_Inicio());
+			switch (Opciones.Inicio()) {
+				//					case Tipo_Inicio_NADA			:																		break;
+				case Tipo_Inicio_Genero		:	VentanaRave.GenerarListaAleatoria(TLA_Genero);						break;
+				case Tipo_Inicio_Grupo		:	VentanaRave.GenerarListaAleatoria(TLA_Grupo);						break;
+				case Tipo_Inicio_Disco		:	VentanaRave.GenerarListaAleatoria(TLA_Disco);						break;
+				case Tipo_Inicio_50Medios	:	VentanaRave.GenerarListaAleatoria(TLA_50Medios);					break;
+				case Tipo_Inicio_LoQueSea	:	VentanaRave.GenerarListaAleatoria(TLA_LoQueSea);					break;
+				case Tipo_Inicio_Nota		:	VentanaRave.GenerarListaAleatoria(TLA_Nota);						break;
+				case Tipo_Inicio_UltimaLista:	BD.ObtenerUltimaLista();											break;
+			}
+	#endif
+	}
+	// Hay paths, los añado a la lista
+	else {
+		for (size_t i = 0; i < Paths.size(); i++) {
+			if (Paths[i] != L"-r") {
+				MemCompartida.AgregarPath(Paths[i]);
+			}
+		}
+		VentanaRave.ExploradorAgregarMedio(TRUE);
+	}
+
+	// Actualizo el arbol de la base de datos
+	VentanaRave.ActualizarArbol();
+
+	return TRUE;
+
 }
 
 
@@ -363,17 +410,46 @@ void RAVE::Terminar(void) {
 
 
 const LineaComando RAVE::ObtenerLineaComando(std::vector<std::wstring> &Paths) {
-	int				TotalArgs	= 0;
-	TCHAR         **Args		= CommandLineToArgvW(GetCommandLine(), &TotalArgs);
+	size_t			TotalArgs	= TotalLineaComandos();
+//	TCHAR         **Args		= CommandLineToArgvW(GetCommandLine(), &TotalArgs);
 	LineaComando	Ret			= LineaComando_Nada;
+	
+	
 
 	// Si hay parámetros
 	if (TotalArgs > 1) {
+		Ret = LineaComando_Path;
 		// Guardo los argumentos en el vector Paths
 		for (int i = 1; i < TotalArgs; i++) {
-			Paths.push_back(Args[i]);
+			// Si es un comando
+			if (LineaComandos(i)[0] == L'-') {
+				// Parámetro para mostrar la ventana de error crítico
+				if (LineaComandos(i).compare(L"-MostrarErrorCritico") == 0) {
+					Ret = LineaComando_ErrorCritico;
+				}
+				else if (LineaComandos(i).compare(L"-ActualizacionTerminada") == 0) {
+					Ret = LineaComando_ActualizadorCorrupto;
+				}
+				
+				else if (LineaComandos(i).compare(L"-ActualizadorCorrupto") == 0) {		
+					Ret = LineaComando_ActualizadorCorrupto;
+				}
+				else if (LineaComandos(i).compare(L"-AsociarArchivos") == 0) {		// NO SE USA
+					Ret = LineaComando_AsociarArchivos;
+				}
+				else if (LineaComandos(i).compare(L"-DesAsociarArchivos") == 0) {	// NO SE USA
+					Ret = LineaComando_DesasociarArchivos;
+				}
+				else if (LineaComandos(i).compare(L"-r") == 0) {
+					Ret = LineaComando_Reproducir;
+				}
+			}
+			// Es un path, lo añado
+			else {
+				Paths.push_back(LineaComandos(i));
+			}
 		}
-
+		/*
 		if (Paths[0][0] == L'-') {
 			// Parámetro para mostrar la ventana de error crítico
 			if (Paths[0] == L"-MostrarErrorCritico") {
@@ -391,12 +467,12 @@ const LineaComando RAVE::ObtenerLineaComando(std::vector<std::wstring> &Paths) {
 		}
 		else {
 			Ret = LineaComando_Path;
-		}
+		}*/
 	}
 
 	// Libero la memória 
-	if (TotalArgs > 0)
-		LocalFree(Args);
+//	if (TotalArgs > 0)
+//		LocalFree(Args);
 	
 	return Ret;
 }

@@ -211,7 +211,10 @@
     <ClInclude Include="RaveSQLite.h">
       <Filter>Base de datos</Filter>
     </ClInclude>
-    <ClInclude Include="VentanaActualizacion.h">
+    <ClInclude Include="VentanaDescargarActualizacion.h">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClInclude>
+    <ClInclude Include="VentanaInstalarActualizacion.h">
       <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClInclude>
   </ItemGroup>
@@ -333,7 +336,10 @@
     <ClCompile Include="RaveSQLite.cpp">
       <Filter>Base de datos</Filter>
     </ClCompile>
-    <ClCompile Include="VentanaActualizacion.cpp">
+    <ClCompile Include="VentanaDescargarActualizacion.cpp">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaInstalarActualizacion.cpp">
       <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClCompile>
   </ItemGroup>

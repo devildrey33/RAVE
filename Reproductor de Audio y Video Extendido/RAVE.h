@@ -19,7 +19,8 @@
 #include <DApp.h>
 #include "Actualizaciones.h"
 #include "RaveOpciones.h"
-#include "VentanaActualizacion.h"
+#include "VentanaInstalarActualizacion.h"
+#include "VentanaDescargarActualizacion.h"
 
 using namespace DWL;
 
@@ -28,9 +29,11 @@ enum LineaComando {
 	LineaComando_Nada,					// Sin parámetros extra
 	LineaComando_Path,					// Viene con uno o varios paths
 	LineaComando_ErrorCritico,			// Mostrar ventana de error crítico
-	LineaComando_AsociarArchivos,		// Ejecuta una instancia de RAVE con permisos de administración para agregar las asociaciones de los medios en el registro de windows.
-	LineaComando_DesasociarArchivos,	// Ejecuta una instancia de RAVE con permisos de administración para eliminar las asociaciones del registro de windows.
-	LineaComando_Reproducir				// Reproduce el medio especificado en el segundo parámetro
+	LineaComando_AsociarArchivos,		// Ejecuta una instancia de RAVE con permisos de administración para agregar las asociaciones de los medios en el registro de windows.	(NO SE USA)
+	LineaComando_DesasociarArchivos,	// Ejecuta una instancia de RAVE con permisos de administración para eliminar las asociaciones del registro de windows.					(NO SE USA)
+	LineaComando_Reproducir,			// Reproduce el medio especificado en el segundo parámetro
+	LineaComando_ActualizadorCorrupto,	// Indica que se ha ejecutado la actualización y esta ha devuelto que está corrupta.
+	LineaComando_ActualizacionTerminada // Indica que se ha ejecutado el reproductor desde la actualización que ha terminado correctamente.
 };
 
 enum SOCerrarSistema {
@@ -63,6 +66,10 @@ class RAVE : public DApp {
 
 									// Obtiene la linea de comando y determina que hay que hacer
 	const LineaComando				ObtenerLineaComando(std::vector<std::wstring> &Paths);
+
+	const BOOL						EjecutarReproductor(std::vector<std::wstring>& Paths, HWND hWndPlayer, const int nCmdShow);
+
+	void							EliminarActualizador(void);
 
 //	void							Eventos_Mirar(void);
 
@@ -108,13 +115,13 @@ class RAVE : public DApp {
 									// Ventana para mostrar errores criticos
 	VentanaErrorCritico				VentanaErrorCrit;
 									// Ventana para mostrar el proceso de la descarga de la actualización
-	VentanaActualizacion			VentanaAct;
+	VentanaDescargarActualizacion	VentanaDescargarAct;
+									// Ventana que pregunta si se desea instalar la actualización
+	VentanaInstalarActualizacion	VentanaInstalarAct;
 									// Ventana que muestra el mensaje para las asociaciones de archivo
 //	VentanaAsociarReproductor		VentanaAsociar;
 									// Ventana para mostrar las opciones
 	VentanaOpcionesRAVE             VentanaOpciones;
-									// Ventana que muestra una consola al estilo MS-DOS para depuración
-//	DConsola						ConsolaDebug;
 
 	RaveBD							BD;
 	RaveOpciones					Opciones;
@@ -137,9 +144,6 @@ class RAVE : public DApp {
 	DMenuEx                        *MenuVideoFiltros;
 	DMenuEx                        *MenuVideoSubtitulos;
 	DMenuEx                        *MenuVideoMomentos;
-/*	DMenuEx                        *MenuVideoBrillo;
-	DMenuEx                        *MenuVideoContraste;
-	DMenuEx                        *MenuVideoSaturacion;*/
 
 	std::vector<TeclaRapida>       TeclasRapidas;
 

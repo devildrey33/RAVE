@@ -1415,14 +1415,14 @@ void VentanaPrincipal::Actualizacion_Descargar(const wchar_t *nVersion) {
 
 // Función que mantiene la barra de descarga de la actualización
 void VentanaPrincipal::Actualizacion_Barra(const float nValor) {
-	if (App.VentanaAct.hWnd() == 0) return;
-	App.VentanaAct.Barra.Valor(nValor);
-	App.VentanaAct.Barra.Repintar();
+	if (App.VentanaDescargarAct.hWnd() == 0) return;
+	App.VentanaDescargarAct.Barra.Valor(nValor);
+	App.VentanaDescargarAct.Barra.Repintar();
 }
 
 // Función que muestra un mensaje de error de la actualización
 void VentanaPrincipal::Actualizacion_Error(void) {
-	App.VentanaAct.Destruir();
+	App.VentanaDescargarAct.Destruir();
 	App.MostrarToolTipPlayerError(L"Error descargando la actualización...");
 }
 
@@ -1434,6 +1434,9 @@ void VentanaPrincipal::Actualizacion_Cancelada(void) {
 // Función que avisa al usuario de que se ha descargado la actualización
 void VentanaPrincipal::Actualizacion_Descargada(void) {
 	App.MostrarToolTipPlayer(L"Descarga de la actualización completada.");
+	App.VentanaDescargarAct.Destruir();
+	
+	App.VentanaInstalarAct.Crear();
 }
 
 

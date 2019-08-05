@@ -35,25 +35,28 @@
 #pragma comment(lib, "dwmapi")			// Librería para DwmExtendFrameIntoClientArea 
 
 #ifdef _DEBUG
-	#if _WIN32 || _WIN64
-		#if _WIN64
-			#pragma comment(lib, "..\\Build\\DWL\\x64\\Debug\\DWL3.lib")
-		#else
-			#pragma comment(lib, "..\\Build\\DWL\\x86\\Debug\\DWL3.lib")
-		#endif
+	#if _WIN64
+		#pragma comment(lib, "..\\Build\\DWL\\x64\\Debug\\DWL3.lib")
+	#else
+		#pragma comment(lib, "..\\Build\\DWL\\x86\\Debug\\DWL3.lib")
 	#endif
 #else
-	#if _WIN32 || _WIN64
-		#if _WIN64
-			#pragma comment(lib, "..\\Build\\DWL\\x64\\Release\\DWL3.lib")
-		#else
-			#pragma comment(lib, "..\\Build\\DWL\\x86\\Release\\DWL3.lib")
-		#endif
+	#if _WIN64
+		#pragma comment(lib, "..\\Build\\DWL\\x64\\Release\\DWL3.lib")
+	#else
+		#pragma comment(lib, "..\\Build\\DWL\\x86\\Release\\DWL3.lib")
 	#endif
 #endif
 
 
-
+// Nombre del actualizador según la configuración x86 o x64
+#ifdef _WIN64
+	#define NOMBRE_ACTUALIZADOR		L"Actualizador_RAVE_x64"									
+#else
+	#define NOMBRE_ACTUALIZADOR		L"Actualizador_RAVE_x86"
+#endif
+// URL para descargar el actualizador
+#define URL_INSTALADOR				L"https://devildrey33.github.io/RAVE/Instaladores/" NOMBRE_ACTUALIZADOR
 
 
 #define VLC_API
