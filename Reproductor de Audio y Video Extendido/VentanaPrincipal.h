@@ -148,6 +148,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						Actualizacion_Cancelada(void);
 								// Función que avisa al usuario de que se ha descargado la actualización
 	void						Actualizacion_Descargada(void);
+								// Función que muestra la ventana que pide al usuario instalar la actualización
+	void						Actualizacion_Existente(void);
 
 								// Función que agrega un directorio al arbol de la base de datos
 	NodoBD                     *Arbol_AgregarDir(std::wstring *Path, const BOOL nRepintar = FALSE);

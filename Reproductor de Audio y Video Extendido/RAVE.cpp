@@ -131,6 +131,10 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 		LC = LineaComando_ActualizadorCorrupto;
 	#endif
 
+	#ifdef RAVE_SIMULAR_ACTUALIZACION_TERMINADA
+		LC = LineaComando_ActualizacionTerminada;
+	#endif
+
 	// Miro el path del ejecutable
 	std::wstring P = App.Path();	
 	// Si no está en un directorio Debug o Release (para que no me la lie actualizando en alguno de esos directorios)
@@ -210,14 +214,19 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 // Función que elimina el ejecutable de la actualización
 void RAVE::EliminarActualizador(void) {
 	std::wstring PathActualizador;
+	std::wstring PathMD5;
 	// Elimino el ejecutable de la actualizacion
 	DWL::DDirectoriosWindows::Comun_AppData(PathActualizador);
+	PathMD5 = PathActualizador;
 	#ifdef _WIN64
-		PathActualizador += L"\\Rave\\Actualizador_RAVE_x64.exe";
+		PathActualizador	+= L"\\Rave\\Actualizador_RAVE_x64.exe";
+		PathMD5				+= L"\\Rave\\Actualizador_RAVE_x64.md5";
 	#else
-		PathActualizador += L"\\Rave\\Actualizador_RAVE_x86.exe";
+		PathActualizador	+= L"\\Rave\\Actualizador_RAVE_x86.exe";
+		PathMD5				+= L"\\Rave\\Actualizador_RAVE_x86.md5";
 	#endif
-	DeleteFile(PathActualizador.c_str());
+	BOOL R = DeleteFile(PathActualizador.c_str());
+	BOOL R2 = DeleteFile(PathMD5.c_str());
 }
 
 
@@ -412,15 +421,13 @@ void RAVE::Terminar(void) {
 const LineaComando RAVE::ObtenerLineaComando(std::vector<std::wstring> &Paths) {
 	size_t			TotalArgs	= TotalLineaComandos();
 //	TCHAR         **Args		= CommandLineToArgvW(GetCommandLine(), &TotalArgs);
-	LineaComando	Ret			= LineaComando_Nada;
-	
-	
+	LineaComando	Ret			= LineaComando_Nada;		
 
 	// Si hay parámetros
 	if (TotalArgs > 1) {
 		Ret = LineaComando_Path;
 		// Guardo los argumentos en el vector Paths
-		for (int i = 1; i < TotalArgs; i++) {
+		for (size_t i = 1; i < TotalArgs; i++) {
 			// Si es un comando
 			if (LineaComandos(i)[0] == L'-') {
 				// Parámetro para mostrar la ventana de error crítico

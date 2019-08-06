@@ -1444,6 +1444,11 @@ void VentanaPrincipal::Actualizacion_Descargada(void) {
 	App.VentanaInstalarAct.Crear();
 }
 
+// Función que muestra la ventana que pide al usuario instalar la actualización
+void VentanaPrincipal::Actualizacion_Existente(void) {
+	App.VentanaInstalarAct.Crear();
+}
+
 
 void VentanaPrincipal::_Evento_Size(void) {
 	RECT RCWMS;
@@ -1466,7 +1471,8 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 		case WM_REPRODUCIRMEDIO				:	ExploradorAgregarMedio(TRUE);															return 0;
 
 		// Para el thread que busca las actualizaciones
-		case WM_ACTUALIZACION_ENCONTRADA	:	Actualizacion_DescargaEncontrada(reinterpret_cast<wchar_t *>(wParam));					return 0;
+		case WM_ACTUALIZACION_ENCONTRADA	:	Actualizacion_DescargaEncontrada(reinterpret_cast<wchar_t*>(wParam));					return 0;
+		case WM_ACTUALIZACION_EXISTENTE		:	Actualizacion_Existente();																return 0;
 		case WM_ACTUALIZACION_MOSTRAR		:	Actualizacion_MostrarDescargar(reinterpret_cast<wchar_t*>(wParam));						return 0;
 		case WM_ACTUALIZACION_BARRA			:	Actualizacion_Barra(reinterpret_cast<float &>(wParam));									return 0;
 		case WM_ACTUALIZACION_ERROR			:	Actualizacion_Error();																	return 0;

@@ -79,8 +79,9 @@ void ActualizadorApp::Actualizar(void) {
 
 	// Borro el directorio Tmp para asegurar que no hay nada antiguo
 	BorrarDirectorio(PathNuevo.c_str());
+	BorrarDirectorio(PathViejo.c_str());
 
-	// Creo nuevamente el directorio Tmp
+	// Creo nuevamente el directorio Nuevo
 	CreateDirectory(PathNuevo.c_str(), NULL);
 
 	// Abro el instalador para lectura
@@ -140,9 +141,13 @@ void ActualizadorApp::Actualizar(void) {
 	char                   *Datos = nullptr;
 	DWL::DArchivoBinario	ArchivoDestino;
 
-	// Vuelvo a cerrar el reproductor si no estaba cerrado
+	// Cierro el reproductor si no estaba cerrado
 	HWND Reproductor = FindWindowEx(NULL, NULL, L"RAVE_VentanaPrincipal", NULL);
 	if (Reproductor != NULL) SendMessage(Reproductor, WM_CLOSE, 0, 0);
+
+	// Vuelvo a cerrar el reproductor si tenia 2 abiertos (el de debug)
+//	Reproductor = FindWindowEx(NULL, NULL, L"RAVE_VentanaPrincipal", NULL);
+//	if (Reproductor != NULL) SendMessage(Reproductor, WM_CLOSE, 0, 0);
 
 
 	for (size_t i = 0; i < TotalArchivos; i++) {
@@ -196,10 +201,6 @@ void ActualizadorApp::Actualizar(void) {
 		PostQuitMessage(0);
 		return;
 	}
-
-	// Vuelvo a cerrar el reproductor si no estaba cerrado
-	Reproductor = FindWindowEx(NULL, NULL, L"RAVE_VentanaPrincipal", NULL);
-	if (Reproductor != NULL) SendMessage(Reproductor, WM_CLOSE, 0, 0);
 
 	
 	// Muevo la carpeta del reproductor a ProgramData\Rave\Old

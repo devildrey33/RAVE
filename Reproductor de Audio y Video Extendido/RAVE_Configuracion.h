@@ -3,7 +3,7 @@
 // Versión y titulo
 #define RAVE_VERSION			0, 5, 2, 7
 #define RAVE_VERSIONF			0.527
-#define RAVE_VERSIONSTR			L"0.527d RC7"
+#define RAVE_VERSIONSTR			L"0.527e RC7"
 #define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
 #define RAVE_VERSIONBD          L"1.1"
 #define RAVE_VERSIONOPCIONES    L"1.1"
@@ -35,6 +35,9 @@
 
 	// Simula que ha recibido un mensaje del actualizador que le dice que está corrupto
 	//#define RAVE_SIMULAR_INSTALADOR_CORRUPTO
+
+	// Simula que ha recibido un mensaje del actualizador conforme ha terminado correctamente
+	#define RAVE_SIMULAR_ACTUALIZACION_TERMINADA
 
 #endif
 

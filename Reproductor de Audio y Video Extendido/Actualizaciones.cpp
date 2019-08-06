@@ -182,12 +182,14 @@ unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
 		// Tiene el mismo md5
 		if (MD5C.compare(TxtHash) == 0) {
 			// Actualizacion previamente descargada, no hace falta descargar nada
-			SendMessage(_VentanaRave, WM_ACTUALIZACION_DESCARGADA, 0, 0);
+			SendMessage(_VentanaRave, WM_ACTUALIZACION_EXISTENTE, 0, 0);
 			InternetCloseHandle(Sesion);
 			return 0;
 		}
 		// Si llegamos a este punto, es que el instalador o no es válido o es una version inferior.
 		ArchivoC.Cerrar();
+		// Borro el actualizador
+		DeleteFile(PathFinal.c_str());
 	}
 
 	// Informo al reproductor de que debe mostrar la ventana de descarga de la actualización
@@ -236,7 +238,7 @@ unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
 	InternetCloseHandle(Peticion);
 	InternetCloseHandle(Sesion);
 
-	// Compruebo si existe algun isntalador descargado
+	
 	std::wstring	MD5Final;
 	MD5Final = DirectorioRaveAppData + L"\\Rave\\" NOMBRE_ACTUALIZADOR L".md5";
 
@@ -259,8 +261,11 @@ unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
 		if (Cancelar() == FALSE)	{	SendMessage(_VentanaRave, WM_ACTUALIZACION_ERROR, 0, 0);		}
 		else						{	SendMessage(_VentanaRave, WM_ACTUALIZACION_CANCELADA, 0, 0);	}
 	}
+	
 
 	Archivo.Cerrar();
+
+//	SendMessage(_VentanaRave, WM_ACTUALIZACION_DESCARGADA, 0, 0);
 
 	return 0;
 }
