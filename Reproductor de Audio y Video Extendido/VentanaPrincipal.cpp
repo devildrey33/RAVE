@@ -1408,9 +1408,14 @@ void VentanaPrincipal::ThreadAnalizar_TotalMedios2(void) {
 	BarraTareas.Valor(++_ValorMedios2, _MaximoTotalMedios2);
 }
 
-void VentanaPrincipal::Actualizacion_Descargar(const wchar_t *nVersion) {
-	Debug_Escribir_Varg(L"VentanaPrincipal::Actualizacion_Descargar  Nueva versión %s encontrada.\n", nVersion);
+void VentanaPrincipal::Actualizacion_DescargaEncontrada(const wchar_t* nVersion) {
+	Debug_Escribir_Varg(L"VentanaPrincipal::Actualizacion_DescargaEncontrada  Nueva versión %s encontrada.\n", nVersion);
 	App.Actualizacion.Descargar();
+}
+
+void VentanaPrincipal::Actualizacion_MostrarDescargar(const wchar_t *nVersion) {
+	Debug_Escribir_Varg(L"VentanaPrincipal::Actualizacion_Descargar  Nueva versión %s encontrada.\n", nVersion);
+	App.VentanaDescargarAct.Crear(nVersion);
 }
 
 // Función que mantiene la barra de descarga de la actualización
@@ -1461,7 +1466,8 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 		case WM_REPRODUCIRMEDIO				:	ExploradorAgregarMedio(TRUE);															return 0;
 
 		// Para el thread que busca las actualizaciones
-		case WM_ACTUALIZACION_ENCONTRADA	:	Actualizacion_Descargar(reinterpret_cast<wchar_t *>(wParam));							return 0;
+		case WM_ACTUALIZACION_ENCONTRADA	:	Actualizacion_DescargaEncontrada(reinterpret_cast<wchar_t *>(wParam));					return 0;
+		case WM_ACTUALIZACION_MOSTRAR		:	Actualizacion_MostrarDescargar(reinterpret_cast<wchar_t*>(wParam));						return 0;
 		case WM_ACTUALIZACION_BARRA			:	Actualizacion_Barra(reinterpret_cast<float &>(wParam));									return 0;
 		case WM_ACTUALIZACION_ERROR			:	Actualizacion_Error();																	return 0;
 		case WM_ACTUALIZACION_CANCELADA		:	Actualizacion_Cancelada();																return 0;

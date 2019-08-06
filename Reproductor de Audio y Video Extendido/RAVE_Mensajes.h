@@ -34,3 +34,4 @@
 #define WM_ACTUALIZACION_DESCARGADA		WM_USER + 2023
 #define WM_ACTUALIZACION_ERROR			WM_USER + 2024
 #define WM_ACTUALIZACION_CANCELADA		WM_USER + 2025
+#define WM_ACTUALIZACION_MOSTRAR		WM_USER + 2026	// Muestra una ventana con el progreso de la descarga de la actualización

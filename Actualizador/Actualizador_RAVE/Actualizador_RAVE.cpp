@@ -49,7 +49,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 // Función que inicia la actualización
 void ActualizadorApp::Actualizar(void) {
-	std::wstring			PathTmp;							// Path temporal donde se descomprimen todos los archivos
+	std::wstring			PathNuevo;							// Path temporal donde se descomprimen todos los archivos
+	std::wstring			PathViejo;							// Path temporal donde se movera el reproductor viejo
 	std::wstring            PathInstalador = App.Path(FALSE);	// Path donde está ubicado el instalador
 	std::wstring			PathReproductor;					// Path donde está ubicado el reproductor
 	std::wstring			PathEjecutable;						// Path del ejecutable principal del reproductor
@@ -71,14 +72,16 @@ void ActualizadorApp::Actualizar(void) {
 	PathEjecutable = PathReproductor + L"Rave.exe";
 
 	// Creo el path Temporal
-	DWL::DDirectoriosWindows::Comun_AppData(PathTmp);
-	PathTmp += L"\\Rave\\Nuevo\\";
+	DWL::DDirectoriosWindows::Comun_AppData(PathNuevo);
+	PathViejo = PathNuevo;
+	PathNuevo += L"\\Rave\\Nuevo\\";
+	PathViejo += L"\\Rave\\Viejo\\";
 
 	// Borro el directorio Tmp para asegurar que no hay nada antiguo
-	BorrarDirectorio(PathTmp.c_str());
+	BorrarDirectorio(PathNuevo.c_str());
 
 	// Creo nuevamente el directorio Tmp
-	CreateDirectory(PathTmp.c_str(), NULL);
+	CreateDirectory(PathNuevo.c_str(), NULL);
 
 	// Abro el instalador para lectura
 	if (Instalador.AbrirArchivoLectura(PathInstalador.c_str()) == FALSE) {
@@ -153,7 +156,7 @@ void ActualizadorApp::Actualizar(void) {
 		// Leo los datos comprimidos en memória
 		Instalador.Leer(Datos, TamDatos);
 		// Asigno el path completo del archivo
-		PathArchivo = PathTmp + PathArchivoRelativo;
+		PathArchivo = PathNuevo + PathArchivoRelativo;
 		// Creo los directorios que hagan falta para el archivo
 		CrearDirectorios(PathArchivo);
 		// Abro el archivo destino para guardar los datos descomprimidos
@@ -169,6 +172,8 @@ void ActualizadorApp::Actualizar(void) {
 		if (MD5.compare(CompMD5) != 0) {
 			ErrorMD5++;
 		}
+		// Cierro el archivo
+		ArchivoDestino.Cerrar();
 		// Actualizo la barra de progreso
 		App.Ventana.Barra.Valor(static_cast<float>(i));
 		// Dejo correr los eventos
@@ -177,8 +182,8 @@ void ActualizadorApp::Actualizar(void) {
 
 	// Si hay errores en las comparaciones MD5 revierto la actualización
 	if (ErrorMD5 > 0) {
-		// Borro el directorio temporal
-		BorrarDirectorio(PathTmp.c_str());
+		// Borro el directorio temporal "Nuevo"
+		BorrarDirectorio(PathNuevo.c_str());
 
 		// Muestro un mensaje de error
 		std::wstring Err = L"Uno o más archivos están corruptos... Abortando actualización.";
@@ -198,29 +203,30 @@ void ActualizadorApp::Actualizar(void) {
 
 	
 	// Muevo la carpeta del reproductor a ProgramData\Rave\Old
-	DWL::DDirectoriosWindows::Comun_AppData(Tmp);
-	Tmp += L"\\Rave\\Viejo";
-	BOOL Mover = MoveFileEx(PathReproductor.c_str(), Tmp.c_str(), MOVEFILE_COPY_ALLOWED);
+	BOOL Mover = MoveFileEx(PathReproductor.c_str(), PathViejo.c_str(), MOVEFILE_COPY_ALLOWED);
 
 	if (Mover != FALSE) {
 		// Muevo los nuevos archivos a la carpeta del reproductor
-		Mover = MoveFileEx(PathTmp.c_str(), PathReproductor.c_str(), MOVEFILE_COPY_ALLOWED);
+		Mover = MoveFileEx(PathNuevo.c_str(), PathReproductor.c_str(), MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING);
 		// Se ha movido correctamente
 		if (Mover != FALSE) {
 			// Ejecuto el reproductor
 			ShellExecute(NULL, L"open", PathEjecutable.c_str(), L"-ActualizacionTerminada", PathReproductor.c_str(), SW_SHOW);
+			// Borro el directorio con la versión vieja
+			BorrarDirectorio(PathViejo.c_str());
 		}
 		// No se ha movido
 		else {
-			// Restauro la carpeta
-			Mover = MoveFileEx(Tmp.c_str(), PathReproductor.c_str(), MOVEFILE_COPY_ALLOWED);
+			std::wstring Err = App.UltimoError();
+			// Restauro la carpeta vieja del reproductor
+			Mover = MoveFileEx(PathViejo.c_str(), PathReproductor.c_str(), MOVEFILE_COPY_ALLOWED);
 			// Si no se ha podido mover.. lo mando todo a la mierda...
 			if (Mover == FALSE) {
 				MessageBox(NULL, L"Error fatal! descarga RAVE desde su pagina, e instalalo de nuevo.", L"Error", MB_OK | MB_ICONERROR);
 			}
 			// Se ha restaurado la versión antigua correctamente
 			else {
-				Texto = L"No se puede mover '" + PathTmp + L"' a '" + PathReproductor + L"'\n" + App.UltimoError();
+				Texto = L"No se puede mover '" + PathNuevo + L"' a '" + PathReproductor + L"'\n" + App.UltimoError();
 				MessageBox(NULL, Texto.c_str(), L"Error", MB_OK | MB_ICONERROR);
 			}
 			// Ejecuto el reproductor informando del error
@@ -229,7 +235,7 @@ void ActualizadorApp::Actualizar(void) {
 	}
 	// Error moviendo la carpeta a Old a partir de aqui ya no se que pasa... se puede haber movido parte de la carpeta y puede que falten arhivos...
 	else {		
-		Texto = L"No se puede mover '" + PathReproductor + L"' a '" + Tmp + L"'\n" + App.UltimoError();
+		Texto = L"No se puede mover '" + PathReproductor + L"' a '" + PathViejo + L"'\n" + App.UltimoError();
 		MessageBox(NULL, Texto.c_str(), L"Error", MB_OK | MB_ICONERROR);
 		// Ejecuto el reproductor informando del error
 		ShellExecute(NULL, L"open", PathEjecutable.c_str(), L"-ActualizadorCorrupto", PathReproductor.c_str(), SW_SHOW);

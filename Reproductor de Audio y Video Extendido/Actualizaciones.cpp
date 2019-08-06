@@ -42,7 +42,7 @@ const BOOL Actualizaciones::Descargar(void) {
 	if (_hThreadDescargar != NULL) return FALSE;
 
 	// Creo la ventana
-	App.VentanaDescargarAct.Crear(_Version.c_str());
+//	App.VentanaDescargarAct.Crear(_Version.c_str());
 
 
 	// Asigno el estado cancelado a false
@@ -190,6 +190,8 @@ unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
 		ArchivoC.Cerrar();
 	}
 
+	// Informo al reproductor de que debe mostrar la ventana de descarga de la actualización
+	SendMessage(_VentanaRave, WM_ACTUALIZACION_MOSTRAR, reinterpret_cast<WPARAM>(_Version.c_str()), 0);
 
 	// Descargo el instalador
 	Peticion = InternetOpenUrl(Sesion, UrlInstalador.c_str(), szHead, 0, INTERNET_FLAG_RELOAD, 0);

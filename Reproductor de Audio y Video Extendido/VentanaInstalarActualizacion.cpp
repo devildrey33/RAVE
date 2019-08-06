@@ -10,24 +10,28 @@
 #define ID_MARCA	1003
 
 void VentanaInstalarActualizacion::Crear(void) {
-	CrearVentana(NULL, L"RAVE_InstalarActualizacion", L"Nueva actualización", 100, 100, 570, 140, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU);
+	CrearVentana(NULL, L"RAVE_InstalarActualizacion", L"Nueva actualización", 100, 100, 570, 120, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 
 	RECT RC;
 	GetClientRect(_hWnd, &RC);
 
-	std::wstring Texto = L"Deseas instalar la actualización?";
-	Etiqueta.CrearEtiquetaEx(this, Texto.c_str(), 10, 10, RC.right - 20, RC.bottom - 70, ID_ETIQUETA, DWL::DEtiquetaEx_Alineacion_Centrado);
+	std::wstring Texto = L"Deseas instalar la actualización? requerirá privilegios de administración.";
+	Etiqueta.CrearEtiquetaEx(this, Texto.c_str(), 10, 10, RC.right - 20, 30, ID_ETIQUETA, DWL::DEtiquetaEx_Alineacion_Izquierda);
+	Etiqueta.Fuente.CrearFuente(22, Etiqueta.Skin.FuenteNombre.c_str(), TRUE, FALSE, FALSE);
 
-	MarcaNoBuscar.CrearMarcaEx(this, L"Desactivar actualizaciones automáticas.", 10, 40, 200, 30, ID_MARCA, IDI_CHECK2);
-	MarcaNoBuscar.Marcado(TRUE);
+	MarcaNoBuscar.CrearMarcaEx(this, L"Desactivar actualizaciones automáticas.", 10, RC.bottom - 40, 290, 30, ID_MARCA, IDI_CHECK2);
+	MarcaNoBuscar.Marcado(FALSE);
 
-	BotonInstalar.CrearBotonEx(this, L"Novedades", (RC.right - 210) / 2, RC.bottom - 40, 100, 30, ID_INSTALAR);
-	BotonCancelar.CrearBotonEx(this, L"Cancelar", ((RC.right - 210) / 2) + 110, RC.bottom - 40, 100, 30, ID_CANCELAR);
+	BotonInstalar.CrearBotonEx(this, L"Instalar", RC.right - 220, RC.bottom - 40, 100, 30, ID_INSTALAR);
+	BotonCancelar.CrearBotonEx(this, L"Cancelar", RC.right - 110, RC.bottom - 40, 100, 30, ID_CANCELAR);
 	Visible(TRUE);
 }
 
+
 void VentanaInstalarActualizacion::Evento_MarcaEx_Mouse_Click(DWL::DEventoMouse& DatosMouse) {
-	App.Opciones.BuscarActualizacion(MarcaNoBuscar.Marcado());
+	App.Opciones.BuscarActualizacion(!MarcaNoBuscar.Marcado());
+	if (MarcaNoBuscar.Marcado() == FALSE)		App.MostrarToolTipPlayer(L"Se buscarán actualizaciones automáticamente.");
+	else 										App.MostrarToolTipPlayer(L"No se buscarán actualizaciones automáticamente.");
 }
 
 

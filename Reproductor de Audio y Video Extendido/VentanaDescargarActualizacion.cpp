@@ -8,7 +8,7 @@
 #define ID_NOVEDADES	1003
 
 void VentanaDescargarActualizacion::Crear(const wchar_t *Version) {
-	CrearVentana(NULL, L"RAVE_DescargarActualizacion", L"Actualización", 100, 100, 570, 140, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU);
+	CrearVentana(NULL, L"RAVE_DescargarActualizacion", L"Actualización", 100, 100, 570, 140, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 
 	RECT RC;
 	GetClientRect(_hWnd, &RC);

@@ -136,8 +136,10 @@ class VentanaPrincipal : public DWL::DVentana {
 	ThreadAgregarArchivosLista  ThreadArchivosLista;
 								// Thread para analizar los medios
 	ThreadAnalisis				ThreadAnalizar;
+								// Función que inicia el thread de descarga (sin mostrar la ventana)
+	void						Actualizacion_DescargaEncontrada(const wchar_t* nVersion);
 								// Función que descarga una nueva actualización
-	void						Actualizacion_Descargar(const wchar_t *nVersion);
+	void						Actualizacion_MostrarDescargar(const wchar_t *nVersion);
 								// Función que mantiene la barra de descarga de la actualización
 	void						Actualizacion_Barra(const float nValor);
 								// Función que muestra un mensaje de error de la actualización

@@ -386,9 +386,11 @@
 			V Al final amb unaltre BD
 
 		V  Crear finestra que mostri les dades de l'actualització.
-			X Crear control per mostrar les novetats o el changelog... (amb un buto va que chuta)
+			X  Crear control per mostrar les novetats o el changelog... (amb un buto va que chuta)
+			V  Creat executable auto descomprimible per fer les actualitzacións
+			V  Creat projecte per fusionar el actualitzador amb els arxius comprimits
 
-		- S'ha de fer 2 noves variables a les opcions per la posició de la finestra d'actualització 
+		X  S'ha de fer 2 noves variables a les opcions per la posició de la finestra d'actualització 
 
 
 	RAVE 0.7

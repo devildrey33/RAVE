@@ -12,7 +12,7 @@ VentanaPrincipal::VentanaPrincipal(void) {
 
 
 void VentanaPrincipal::Crear(void) {
-	CrearVentana(NULL, L"ActualizadorRAVE", L"Actualizando RAVE", 100, 100, 570, 130, WS_OVERLAPPED | WS_CAPTION);
+	CrearVentana(NULL, L"ActualizadorRAVE", L"Actualizando RAVE", 100, 100, 570, 130, WS_OVERLAPPED | WS_CAPTION, NULL, NULL, NULL, NULL, IDI_ACTUALIZADORRAVEEXE);
 
 	RECT RC;
 	GetClientRect(_hWnd, &RC);
