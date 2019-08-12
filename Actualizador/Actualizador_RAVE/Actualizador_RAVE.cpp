@@ -60,7 +60,11 @@ void ActualizadorApp::Actualizar(void) {
 	std::wstring			Tmp, Texto;
 
 	// Obtengo el path del reproductor desde el registro
-	DWL::DRegistro::ObtenerValor_String(HKEY_CURRENT_USER, L"Software\\Rave", L"Path", PathReproductor);
+	#ifdef _WIN64
+		DWL::DRegistro::ObtenerValor_String(HKEY_CURRENT_USER, L"Software\\Rave", L"Path64", PathReproductor);
+	#else
+		DWL::DRegistro::ObtenerValor_String(HKEY_CURRENT_USER, L"Software\\Rave", L"Path32", PathReproductor);
+	#endif
 	// No se encuentra el path en el registro, abortando...
 	if (PathReproductor.size() == 0) {
 		MessageBox(NULL, L"No se encuentra el path del reproductor en el registro, re-instala y ejecuta el reproductor para solucionar el problema.", L"Error", MB_OK | MB_ICONERROR);

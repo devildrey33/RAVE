@@ -90,7 +90,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 	Debug_EscribirSinMS(L"\n");
 
 	// Inicializo la librería COM (para el TaskBarList)
-	HRESULT CIE = CoInitializeEx(0, COINIT_MULTITHREADED | COINIT_SPEED_OVER_MEMORY);
+//	HRESULT CIE = CoInitializeEx(0, COINIT_MULTITHREADED | COINIT_SPEED_OVER_MEMORY);
 
 	BOOL MemRet = FALSE;
 	// Si este hilo pertenece al reproductor inicial, creo la memória compartida.
@@ -140,7 +140,11 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 	// Si no está en un directorio Debug o Release (para que no me la lie actualizando en alguno de esos directorios)
 	if (P.find(L"Debug") == std::wstring::npos && P.find(L"Release") == std::wstring::npos) {
 		// Añado una clave en el registro con el path del reproductor, para que el actualizador sepa donde hay que actualizar
-		DWL::DRegistro::AsignarValor_String(HKEY_CURRENT_USER, L"Software\\Rave", L"Path", P.c_str());
+		#ifdef _WIN64
+			DWL::DRegistro::AsignarValor_String(HKEY_CURRENT_USER, L"Software\\Rave", L"Path64", P.c_str());
+		#else
+			DWL::DRegistro::AsignarValor_String(HKEY_CURRENT_USER, L"Software\\Rave", L"Path32", P.c_str());
+		#endif
 	}
 
 
