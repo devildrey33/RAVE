@@ -67,6 +67,7 @@ const Extension_Medio ExtensionesValidas::ObtenerExtension(const wchar_t *Extens
 	if (_wcsicmp(Extension, TEXT("CRDOWNLOAD")) == 0)	return Extension_CRDOWNLOAD;
 	if (_wcsicmp(Extension, TEXT("OPDOWNLOAD")) == 0)	return Extension_OPDOWNLOAD;
 	if (_wcsicmp(Extension, TEXT("M3U")) == 0)			return Extension_M3U;
+	if (_wcsicmp(Extension, TEXT("M3U8")) == 0)			return Extension_M3U8;
 	if (_wcsicmp(Extension, TEXT("SRT")) == 0)			return Extension_SRT;
 		
 
@@ -88,7 +89,7 @@ const Tipo_Medio ExtensionesValidas::ObtenerTipoMedio(const Extension_Medio Exte
 			return Tipo_Medio_Audio;
 		case Extension_CDA:
 			return Tipo_Medio_CDAudio;
-		case Extension_M3U:
+		case Extension_M3U: case Extension_M3U8 :
 			return Tipo_Medio_Lista;
 		case Extension_SRT:
 			return Tipo_Medio_Subtitulos;
@@ -130,6 +131,7 @@ const wchar_t *ExtensionesValidas::ExtensionStr(const Extension_Medio Extension)
 		case Extension_M2TS			:	return L"M2TS";
 		case Extension_M2V			:	return L"M2V";
 		case Extension_M3U			:	return L"M3U";
+		case Extension_M3U8			:	return L"M3U8";
 		case Extension_M4V			:	return L"M4V";
 		case Extension_MOD			:	return L"MOD";
 		case Extension_NSV			:	return L"NSV";

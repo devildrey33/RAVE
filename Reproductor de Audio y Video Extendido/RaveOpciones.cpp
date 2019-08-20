@@ -432,94 +432,29 @@ void RaveOpciones::GuardarBSCP(const BOOL nGuardarBSCP) {
 
 
 // Función que devuelve la versión de la BD (REHACER SELECT para que solo mire la version)
-const float RaveOpciones::ObtenerVersionBD(void) {
-/*	float			RetVersion = 0.0f;
-	const wchar_t*	SqlStr = L"SELECT Version FROM Opciones";
-	wchar_t*		SqlError = NULL;
-	int				SqlRet = 0;
-	sqlite3_stmt*	SqlQuery = NULL;
-
-	SqlRet = sqlite3_prepare16_v2(_BD, SqlStr, -1, &SqlQuery, NULL);
-	if (SqlRet) {
-		_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
-		return FALSE;
-	}
-	int VecesBusy = 0;
-	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
-		SqlRet = sqlite3_step(SqlQuery);
-		if (SqlRet == SQLITE_ROW) {
-			RetVersion = static_cast<float>(sqlite3_column_double(SqlQuery, 0));
-		}
-
-
-		if (SqlRet == SQLITE_BUSY) {
-			VecesBusy++;
-			if (VecesBusy == 100) break;
-		}
-	}
-
-	sqlite3_finalize(SqlQuery);
-
-	if (SqlRet == SQLITE_ERROR) {
-		_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
-		return 0.0f;
-	}
-
-	return (SqlRet != SQLITE_BUSY) ? RetVersion : 0.0f;*/
-	return Select<float>(L"Opciones", L"Version");
+const int RaveOpciones::ObtenerVersionBD(void) {
+	return (int)std::round(Select<float>(L"Opciones", L"Version") * 10.0);
 }
 
 
 // Función que devuelve la versión de las opciones (REHACER SELECT para que solo mire la version)
-const float RaveOpciones::ObtenerVersionOpciones(void) {
-/*	float			RetVersion = 0.0f;
-	const wchar_t*	SqlStr = L"SELECT VersionOpciones FROM Opciones";
-	wchar_t*		SqlError = NULL;
-	int				SqlRet = 0;
-	sqlite3_stmt*	SqlQuery = NULL;
-
-	SqlRet = sqlite3_prepare16_v2(_BD, SqlStr, -1, &SqlQuery, NULL);
-	if (SqlRet) {
-		_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
-		return FALSE;
-	}
-	int VecesBusy = 0;
-	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
-		SqlRet = sqlite3_step(SqlQuery);
-		if (SqlRet == SQLITE_ROW) {
-			RetVersion = static_cast<float>(sqlite3_column_double(SqlQuery, 0));
-		}
-
-
-		if (SqlRet == SQLITE_BUSY) {
-			VecesBusy++;
-			if (VecesBusy == 100) break;
-		}
-	}
-
-	sqlite3_finalize(SqlQuery);
-
-	if (SqlRet == SQLITE_ERROR) {
-		_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
-		return 0.0f;
-	}
-
-	return (SqlRet != SQLITE_BUSY) ? RetVersion : 0.0f;*/
-	return Select<float>(L"Opciones", L"VersionOpciones");
+const int RaveOpciones::ObtenerVersionOpciones(void) {
+	return (int)std::round(Select<float>(L"Opciones", L"VersionOpciones") * 10.0);
 }
 
 
 
 const BOOL RaveOpciones::GuardarPosTamVentana(void) {
 	if (App.VentanaRave.Maximizada() == FALSE) {
-		RECT RC;
-		GetWindowRect(App.VentanaRave.hWnd(), &RC);
-		_PosX = RC.left;
-		_PosY = RC.top;
-		_Ancho = abs(RC.right - RC.left);
-		_Alto = abs(RC.bottom - RC.top);
+		RECT RW, RC;
+		GetWindowRect(App.VentanaRave.hWnd(), &RW);
+		GetClientRect(App.VentanaRave.hWnd(), &RC);
+		_PosX = RW.left;
+		_PosY = RW.top;
+		_Ancho = RC.right;
+		_Alto = RC.bottom;
 
-		std::wstring Q = L"UPDATE Opciones SET PosX=" + std::to_wstring(RC.left) + L", PosY=" + std::to_wstring(RC.top) + L", Ancho=" + std::to_wstring(_Ancho) + L", Alto=" + std::to_wstring(_Alto) + L" WHERE Id=0";
+		std::wstring Q = L"UPDATE Opciones SET PosX=" + std::to_wstring(_PosX) + L", PosY=" + std::to_wstring(_PosY) + L", Ancho=" + std::to_wstring(_Ancho) + L", Alto=" + std::to_wstring(_Alto) + L" WHERE Id=0";
 		int SqlRet = Consulta(Q);
 		if (SqlRet == SQLITE_ERROR) {
 			_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
@@ -573,11 +508,11 @@ const BOOL RaveOpciones::GuardarPosVentanaAnalizar(void) {
 	return TRUE;
 }
 
-const BOOL RaveOpciones::GuardarPosTamDlgDirectorios(RECT& RW) {
-	_DlgDirectorios_PosX = RW.left;
-	_DlgDirectorios_PosY = RW.top;
-	_DlgDirectorios_Ancho = abs(RW.right - RW.left);
-	_DlgDirectorios_Alto = abs(RW.bottom - RW.top);
+const BOOL RaveOpciones::GuardarPosTamDlgDirectorios(RECT& RW, RECT &RC) {
+	_DlgDirectorios_PosX	= RW.left;
+	_DlgDirectorios_PosY	= RW.top;
+	_DlgDirectorios_Ancho	= RC.right;
+	_DlgDirectorios_Alto	= RC.bottom;
 
 	std::wstring Q = L"UPDATE Opciones SET VentanaAsociar_PosX=" + std::to_wstring(RW.left) + L", VentanaAsociar_PosY=" + std::to_wstring(RW.top) + L", DlgDirectorios_Ancho=" + std::to_wstring(_DlgDirectorios_Ancho) + L", DlgDirectorios_Ancho=" + std::to_wstring(_DlgDirectorios_Alto) + L" WHERE Id=0";
 	int SqlRet = Consulta(Q);

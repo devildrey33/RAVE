@@ -119,8 +119,11 @@ unsigned long Actualizaciones::_ThreadBuscar(void* pThis) {
 	// Paso la versión de ANSI a wchar_t
 	DWL::Strings::AnsiToWide(ResultadoANSI.c_str(), _Version);
 
+
 	// Si la versión no coincide
-	if (_Version.compare(RAVE_VERSIONSTR) != 0) {
+	int VersionWeb		= VersionInt(_Version);
+	int VersionActual	= VersionInt(RAVE_VERSIONSTR);
+	if (VersionWeb > VersionActual) {
 		// Informo a la ventana del reproductor que hay una nueva actualización
 		SendMessage(_VentanaRave, WM_ACTUALIZACION_ENCONTRADA, reinterpret_cast<WPARAM>(_Version.c_str()), 0);
 	}
@@ -137,6 +140,26 @@ unsigned long Actualizaciones::_ThreadBuscar(void* pThis) {
 	return 0;
 }
 
+
+// Convierte la versión string a un numero entero
+const int Actualizaciones::VersionInt(std::wstring Version) {
+	wchar_t Num[5] = L"0000";
+	// Tiene más de 2 carácteres es una versión válida
+	if (Version.size() > 2) {
+		// Elimino el punto del string
+		Version.erase(std::remove(Version.begin(), Version.end(), '.'), Version.end());
+		// Muevo los carácteres de la versión al array Num
+		for (size_t i = 0; i < 5; i++) {
+			// Si no hay más carácteres, salgo del bucle
+			if (i == Version.size()) break;
+
+			Num[i] = Version[i];
+		}
+
+		return _wtoi(Num);
+	}
+	return 0;
+}
 
 
 // Función main para el hilo de descargar la actualizacion

@@ -13,6 +13,7 @@
 
 class RaveVLC_Medio : public Rave_Medio {
   public :
+								// Constructor para un medio
 								RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &Medio);
 							   ~RaveVLC_Medio(void);
 

@@ -217,6 +217,9 @@
     <ClInclude Include="VentanaInstalarActualizacion.h">
       <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClInclude>
+    <ClInclude Include="VentanaObtenerURL.h">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -340,6 +343,9 @@
       <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClCompile>
     <ClCompile Include="VentanaInstalarActualizacion.cpp">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaObtenerURL.cpp">
       <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClCompile>
   </ItemGroup>

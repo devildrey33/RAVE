@@ -145,15 +145,16 @@ void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades)
 	Contraste		= static_cast<float>(sqlite3_column_double(SqlQuery, 27));
 	Saturacion		= static_cast<float>(sqlite3_column_double(SqlQuery, 28));
 
-	// Busco la letra de unidad del medio
-	for (size_t i = 0; i < Unidades.TotalUnidades(); i++) {
-		Path[0] = Unidades.Unidad(i)->Letra();
-		if (GetFileAttributes(Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
-			break;
+	// Si el medio pertenece a una unidad local
+	if (Ubicacion() == Ubicacion_Medio_Local) {
+		// Busco la letra de unidad del medio
+		for (size_t i = 0; i < Unidades.TotalUnidades(); i++) {
+			Path[0] = Unidades.Unidad(i)->Letra();
+			if (GetFileAttributes(Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
+				break;
+			}
 		}
 	}
-/*	DWL::DUnidadDisco *Unidad = Unidades.Buscar_Numero_Serie(IDDisco);
-	if (Unidad != NULL) Path[0] = Unidad->Letra();*/
 
 	ObtenerMomentos(Id);
 }
@@ -254,6 +255,33 @@ std::wstring &BDMedio::Disco(void) {
 		else                 		return DiscoTag;
 	}
 };
+
+
+const Ubicacion_Medio BDMedio::Ubicacion(std::wstring& nPath) {
+	// Si tiene mas de 4 carácteres se puede identificar
+	if (nPath.size() > 4) {
+		// Medio local que empieza por "?:\"
+		if (nPath[1] == L':' && nPath[2] == L'\\')
+			return Ubicacion_Medio_Local;
+		// Path que empieza por "\\" que viene de un directorio de la red local (\\<computer name>\<shared directory>\)
+		if (nPath[0] == L'\\' && nPath[1] == L'\\')
+			return Ubicacion_Medio_Red;
+		// URL que empieza por "Http"
+		if ((nPath[0] == L'h' || nPath[0] == L'H') && (nPath[1] == L't' || nPath[1] == L'T') && (nPath[2] == L't' || nPath[2] == L'T') && (nPath[3] == L'p' || nPath[3] == L'P'))
+			return Ubicacion_Medio_Internet;
+		// URL que empieza por "Ftp"
+		if ((nPath[0] == L'f' || nPath[0] == L'F') && (nPath[1] == L't' || nPath[1] == L'T') && (nPath[2] == L'p' || nPath[2] == L'P'))
+			return Ubicacion_Medio_Internet;
+	}
+
+	// No se puede determinar la ubicación...
+	return Ubicacion_Medio_INDEFINIDO;
+}
+
+// Función que devuelve la ubicación del medio analizando el path
+const Ubicacion_Medio BDMedio::Ubicacion(void) {
+	Ubicacion(Path);
+}
 
 // Función que devuelve true si el medio se tiene que reproducir con FMOD
 const BOOL BDMedio::EsFMOD(void) {

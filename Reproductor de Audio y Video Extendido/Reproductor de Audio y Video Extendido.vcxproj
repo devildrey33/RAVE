@@ -233,6 +233,7 @@
     <ClInclude Include="VentanaErrorCritico.h" />
     <ClInclude Include="VentanaInstalarActualizacion.h" />
     <ClInclude Include="VentanaMomento.h" />
+    <ClInclude Include="VentanaObtenerURL.h" />
     <ClInclude Include="VentanaOpcionesRAVE.h" />
     <ClInclude Include="VentanaPrecarga.h" />
     <ClInclude Include="VentanaPrincipal.h" />
@@ -287,6 +288,7 @@
     <ClCompile Include="VentanaErrorCritico.cpp" />
     <ClCompile Include="VentanaInstalarActualizacion.cpp" />
     <ClCompile Include="VentanaMomento.cpp" />
+    <ClCompile Include="VentanaObtenerURL.cpp" />
     <ClCompile Include="VentanaOpcionesRAVE.cpp" />
     <ClCompile Include="VentanaPrecarga.cpp" />
     <ClCompile Include="VentanaPrincipal.cpp" />

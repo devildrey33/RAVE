@@ -403,9 +403,10 @@ void VentanaOpcionesRAVE::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMou
 }
 
 void VentanaOpcionesRAVE::Evento_DlgDirectorios_CambioTamPos(HWND hWndDlg) {
-	RECT RCWMS2;
-	GetWindowRect(hWndDlg, &RCWMS2);
-	App.Opciones.GuardarPosTamDlgDirectorios(RCWMS2);
+	RECT RW, RC;
+	GetWindowRect(hWndDlg, &RW);
+	GetClientRect(hWndDlg, &RC);
+	App.Opciones.GuardarPosTamDlgDirectorios(RW, RC);
 }
 
 

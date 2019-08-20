@@ -555,12 +555,12 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 
 
 const BOOL RaveBD::_ModificarTablas(void) {
-	float        Version = App.Opciones.ObtenerVersionBD();
+	int          Version = App.Opciones.ObtenerVersionBD();
 	int          SqlRet  = 0;
+	BOOL         Ret     = FALSE;
 	std::wstring Q;
 
-	if (Version < 1.1) {
-
+	if (Version < 11) {
 		// Medios /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Añado la columna Proporcion en los medios
 		SqlRet = Consulta(L"ALTER TABLE Medios ADD COLUMN Proporcion INTEGER AFTER PistaEleccion");
@@ -583,37 +583,32 @@ const BOOL RaveBD::_ModificarTablas(void) {
 		// Añado la tecla F3 a la tabla TeclasRapidas
 		SqlRet = Consulta(L"INSERT INTO TeclasRapidas (Tecla, Control, Alt, Shift) VALUES(114, 0, 0, 0)");
 
-		// Versión //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		// Actualizo la versión de la BD (MOVER ESTE UPDATE A LA ULTIMA VERSIÓN)
-		Q = L"UPDATE Opciones SET Version=" RAVE_VERSIONBD L" WHERE Id=0";
-		SqlRet = Consulta(Q);
-		return TRUE;
+		Ret = TRUE;
+	}
+	// En la versión 12 se modifica el tamaño para los paths, y hay que crear una tabla nueva, copiar la vieja, borrar la vieja y renombrar la nueva
+	if (Version < 12) {
+		// Creo una nueva tabla para los medios con el tamaño del path corregido
+		if (_CrearTablaMedios(L"Medios2") == TRUE) {
+			// Establezco una transacción en memória
+			SqlRet = Consulta(L"BEGIN TRANSACTION");
+			// Copio los datos de la tabla Medios a la tabla Medios2
+			SqlRet = Consulta(L"INSERT INTO Medios2 SELECT * FROM Medios");
+			// Borro la tabla medios
+			SqlRet = Consulta(L"DROP TABLE Medios");
+			// Renombro la tabla Medios2 a Medios
+			SqlRet = Consulta(L"ALTER TABLE Medios2 RENAME TO Medios");
+			// Termino la transacción en memória
+			SqlRet = Consulta(L"COMMIT TRANSACTION");
 
+			// Versión //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			// Actualizo la versión de la BD (MOVER ESTE UPDATE A LA ULTIMA VERSIÓN)			
+			SqlRet = App.Opciones.Consulta(L"UPDATE Opciones SET Version=" RAVE_VERSIONBD L" WHERE Id=0");
+
+			Ret = TRUE;
+		}		
 	}
 
-/*	if (Version < 1.2) {
-		// Añado la columna EfectoFadeAudioMS en las opciones
-		Q = L"ALTER TABLE Opciones ADD COLUMN ContadorIDSMomentos INTEGER AFTER DlgDirectorios_Alto";
-		SqlRet = Consulta(Q);
-
-		// Modifico el valor de EfectoFadeAudioMS a 10000
-		Q = L"UPDATE Opciones SET ContadorIDSMomentos=0 WHERE Id=0";
-		SqlRet = Consulta(Q);
-
-
-		// Añado la columna IDMomentos en los medios
-		Q = L"ALTER TABLE Medios ADD COLUMN IDMomentos INTEGER AFTER Saturacion";
-		SqlRet = Consulta(Q);
-
-		// Modifico el valor de IDMomentos a -1 (que significa que no hay momentos guardados para el medio)
-		Q = L"UPDATE Medios SET IDMomentos=-1";
-		SqlRet = Consulta(Q);
-
-
-
-	}*/
-
-	return FALSE;
+	return Ret;
 }
 
 
@@ -713,6 +708,29 @@ const BOOL RaveBD::_CrearTablas(void) {
 	std::wstring CrearTablaRaiz = L"CREATE TABLE Raiz (Id INTEGER PRIMARY KEY, Path VARCHAR(260), IdDisco INTEGER)";
 	if (Consulta(CrearTablaRaiz.c_str()) == SQLITE_ERROR) return FALSE;
 	
+	// Creo la tabla para los medios
+	_CrearTablaMedios(L"Medios");
+
+	// Creo la tabla para las etiquetas
+	std::wstring CrearTablaEtiquetas = L"CREATE TABLE Etiquetas ("
+											L"Id" 				L" INTEGER PRIMARY KEY," 
+											L"Texto"			L" VARCHAR(260),"	 	  
+											L"Tipo"				L" INTEGER,"
+											L"Medios"			L" INTEGER,"
+											L"Nota"				L" DOUBLE,"				
+											L"Tiempo"			L" BIGINT,"				
+											L"Longitud"			L" BIGINT"				
+									   L")";
+
+	if (Consulta(CrearTablaEtiquetas.c_str()) == SQLITE_ERROR) return FALSE;
+
+
+
+	return TRUE;
+}
+
+
+const BOOL RaveBD::_CrearTablaMedios(const wchar_t *Nombre) {
 	/*	Tipo				Nombre			Posición		Tipo
 		---------------------------------------------------------------------- -
 		UINT				Id				     0			INTEGER PRIMARY KEY
@@ -745,11 +763,12 @@ const BOOL RaveBD::_CrearTablas(void) {
 		float               Contraste			27			DOUBLE
 		float               Saturacion 			28			DOUBLE
 		*/
+	std::wstring StrNombre = Nombre;
 	// Creo la tabla para los medios
-	std::wstring CrearTablaMedios =	L"CREATE TABLE Medios ("							
+	std::wstring CrearTablaMedios =	L"CREATE TABLE " + StrNombre +  L" ("
 										L"Id "				L"INTEGER PRIMARY KEY, "	//  0
  										L"Hash "			L"BIGINT UNIQUE, "			//  1
-										L"Path "			L"VARCHAR(260), "			//  2
+										L"Path "			L"VARCHAR(1024), "			//  2
 										L"NombrePath "		L"VARCHAR(128), "			//  2
 										L"TipoMedio "		L"INT, "					//  4
 										L"Extension "		L"INT, "					//  5
@@ -780,25 +799,8 @@ const BOOL RaveBD::_CrearTablas(void) {
 	if (Consulta(CrearTablaMedios.c_str()) == SQLITE_ERROR)
 		return FALSE;
 
-
-	// Creo la tabla para las etiquetas
-	std::wstring CrearTablaEtiquetas = L"CREATE TABLE Etiquetas ("
-											L"Id" 				L" INTEGER PRIMARY KEY," 
-											L"Texto"			L" VARCHAR(260),"	 	  
-											L"Tipo"				L" INTEGER,"
-											L"Medios"			L" INTEGER,"
-											L"Nota"				L" DOUBLE,"				
-											L"Tiempo"			L" BIGINT,"				
-											L"Longitud"			L" BIGINT"				
-									   L")";
-
-	if (Consulta(CrearTablaEtiquetas.c_str()) == SQLITE_ERROR) return FALSE;
-
-
-
 	return TRUE;
 }
-
 
 
 /* Devuelve 0 si ya existe una raiz igual, devuelve 1 si se ha agregado una nueva raiz, devuelve 2 si se ha agregado una nueva raiz, pero han desaparecido otras raices parientes */
@@ -882,14 +884,19 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 	// http://stackoverflow.com/questions/3505575/how-can-i-get-the-duration-of-an-mp3-file-cbr-or-vbr-with-a-very-small-library	//
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	// Recorto el path y substituyo la letra de unidad por un interrogante
 	std::wstring		PathCortado = nPath;
-	PathCortado[0] = L'?';
-//	DWL::DUnidadDisco  *UnidadDisco = Unidades.Buscar_Letra(nPath[0]);
+	Ubicacion_Medio		Ubicacion = BDMedio::Ubicacion(nPath);
+	// Si es un medio local
+	if (Ubicacion == Ubicacion_Medio_Local) {
+		// Substituyo la letra de unidad por un interrogante
+		PathCortado[0] = L'?';
+	}
 
+	// Asigno el delimitador del nombre (por defecto es '\\', pero si es un medio de internet es '/')
+	wchar_t DelimitadorNombre = (Ubicacion != Ubicacion_Medio_Internet)  ? L'\\' : L'/';
 
-	size_t				PosNombre		= nPath.find_last_of(TEXT("\\"));																					// Posición donde empieza el nombre
-	size_t				PosExtension	= nPath.find_last_of(TEXT("."));																					// Posición donde empieza la extensión
+	size_t				PosNombre		= nPath.find_last_of(DelimitadorNombre);																			// Posición donde empieza el nombre
+	size_t				PosExtension	= nPath.find_last_of(L'.');																							// Posición donde empieza la extensión
 	Extension_Medio		Extension		= ExtensionesValidas::ObtenerExtension(nPath.substr(PosExtension + 1, (nPath.size() - PosExtension) - 1).c_str());	// Obtengo el tipo de extensión
 	Tipo_Medio			Tipo			= ExtensionesValidas::ObtenerTipoMedio(Extension);																	// Obtengo el tipo de medio
 	sqlite3_int64		Hash			= CrearHash(PathCortado);																							// Creo un hash partiendo del path y el número de serie del disco

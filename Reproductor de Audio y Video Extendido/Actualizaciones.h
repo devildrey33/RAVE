@@ -18,6 +18,8 @@ class Actualizaciones {
 	static void             Cancelar(const BOOL nCancelar);
 							// Función que obtiene el estado cancelado para la busqueda y la descarga
 	static const BOOL       Cancelar(void);
+
+	static const int        VersionInt(std::wstring Version);
   protected:
 							// Función main para el hilo de buscar una actualizacion
 	static unsigned long   _ThreadBuscar(void* pThis);

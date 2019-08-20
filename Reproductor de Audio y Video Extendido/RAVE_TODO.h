@@ -364,19 +364,20 @@
 		V Bug al presionar F2 i F3 en pantalla completa...
 			V Decidir si treure el pantalla completa i mostrar el medi, o ignorar les tecles, o fer d'un cop la llista i la BD en modo pantalla completa
 
-		-  Buscar actualitzacións (algo simple que em doni la web per descarregar l'actualització)
-			- Sistema d'actualitzacións en el directori ProgramData per no requerir permisos d'administrador
+		V  Buscar actualitzacións (algo simple que em doni la web per descarregar l'actualització)
+			X Sistema d'actualitzacións en el directori ProgramData per no requerir permisos d'administrador
 				V  PAS1 Separar DWL del reproductor en un nou projecte, aixi la puc utilitzar en mes d'un projecte
 
-				-  PROBLEMA, si tinc el icona del loader a la barra de tasques, al executar el exe de ProgramData es mostra la APP amb un icona diferent a la barra,,,,
+				X  PROBLEMA, si tinc el icona del loader a la barra de tasques, al executar el exe de ProgramData es mostra la APP amb un icona diferent a la barra,,,,
 					- Llavors s'ha d'executar el exe normal, el nomal ha de cridar al loader, i si el loader ha d'actualitzar tancara el exe normal i despres l'obrira (vaya pollo...)
-				-  PROBLEMA2, el chrome te tots els seus arxius a Archivos de Programa i no a ProgramData...
+				X  PROBLEMA2, el chrome te tots els seus arxius a Archivos de Programa i no a ProgramData...
 
-				-  PAS2 veure si es necesari tenir algo al archivos de programa, o puc instalar directament a program data
-				-  PAS3 Crear un nou executable que fara de launcher i d'actualitzador
-					- Necesitara poguer descomprimir, i per que no.. comprimir
-					- Necesitara una llista d'arxius del reproductor
-					- Necesitara fer checks md5 de cada arxiu per determinar si está actualitzat
+				X  PAS2 veure si es necesari tenir algo al archivos de programa, o puc instalar directament a program data
+				X  PAS3 Crear un nou executable que fara de launcher i d'actualitzador
+					X Necesitara poguer descomprimir, i per que no.. comprimir
+					X Necesitara una llista d'arxius del reproductor
+					X Necesitara fer checks md5 de cada arxiu per determinar si está actualitzat
+			V  Sistema d'actualització que requereix privilegis d'administració i un executable autodescomprimible.
 				
 		V  QUAN s'acaba la llista el icona del play es queda en pausa
 
@@ -394,7 +395,22 @@
 
 
 	RAVE 0.7
+		-  Suport per urls externes de internet
+			- Crear dialeg per posar les urls
+			- Intentar mantenir una llista de canals de la tdt a la BD
+
+		-  Suport per unitats de red
+
+		-  Fer una llista / historial dels ultims 50 medis reproduits a la BD.
+			- Afegir data i hora de la reproducció
+
+		-  Fer una llista per etiquetes a la BD.
+
+		-  Fer una opcio per mostrar els medis que no existeixin a la BD desactivats
+
 		-  Les notes menors que 2 s'han de mostrar amb una estrella gris
+
+		-  Suport pel jamendo (mirar si hi ha alguna api...)
 
 		-  Control + [F / B] integrat en la llista i l'arbre, que resalti els items / nodos.
 
@@ -431,6 +447,11 @@
 
 		-  Fer efecte de fusio al acabar una canço i començar unaltre reproduint les dues a l'hora quan faltin X milisegs.
 			- AMB EL VLC IMPOSIBLE!! nomes te volum general..., lo que es un pel incomprensible perque la funció del volum demana un MediaPlayer, no la instancia. Al final tornarem al FMOD...
+
+
+
+
+
 
 
 

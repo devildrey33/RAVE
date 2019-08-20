@@ -1,11 +1,10 @@
 // Configuración para compilar RAVE
 
 // Versión y titulo
-#define RAVE_VERSION			0, 6, 0, 0
-#define RAVE_VERSIONF			0.6
-#define RAVE_VERSIONSTR			L"0.6"
+#define RAVE_VERSION			0, 6, 0, 1
+#define RAVE_VERSIONSTR			L"0.601"
 #define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
-#define RAVE_VERSIONBD          L"1.1"
+#define RAVE_VERSIONBD          L"1.2"
 #define RAVE_VERSIONOPCIONES    L"1.1"
 
 // Skin del reproductor (0 = normal, 1 = visual studio)
@@ -37,7 +36,7 @@
 	//#define RAVE_SIMULAR_INSTALADOR_CORRUPTO
 
 	// Simula que ha recibido un mensaje del actualizador conforme ha terminado correctamente
-	#define RAVE_SIMULAR_ACTUALIZACION_TERMINADA
+	//#define RAVE_SIMULAR_ACTUALIZACION_TERMINADA
 
 #endif
 

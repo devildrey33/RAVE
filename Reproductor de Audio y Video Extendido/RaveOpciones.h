@@ -57,9 +57,9 @@ class RaveOpciones : public RaveSQLite {
 								// Función que obtiene las opciones de la base de datos
 	const BOOL					ObtenerOpciones(void);
 								// Función que devuelve la versión de la BD
-	const float                 ObtenerVersionBD(void);
+	const int                   ObtenerVersionBD(void);
 								// Función que devuelve la versión de las Opciones
-	const float                 ObtenerVersionOpciones(void);
+	const int                   ObtenerVersionOpciones(void);
 
 								// NOTA Esta función no guarda la posición en la BD
 	inline void					AsignarPosVentana(const int nX, const int nY) { _PosX = nX; _PosY = nY; };
@@ -69,7 +69,7 @@ class RaveOpciones : public RaveSQLite {
 	const BOOL					GuardarPosVentanaOpciones(void);
 //	const BOOL					GuardarPosVentanaAsociar(void);
 	const BOOL					GuardarPosVentanaAnalizar(void);
-	const BOOL					GuardarPosTamDlgDirectorios(RECT &RC);
+	const BOOL					GuardarPosTamDlgDirectorios(RECT &RW, RECT &RC);
 	const BOOL					GuardarPosVentanaMomentos(void);
 
 	inline const int			Volumen(void) { return _Volumen; }

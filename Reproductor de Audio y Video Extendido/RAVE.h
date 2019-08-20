@@ -21,6 +21,7 @@
 #include "RaveOpciones.h"
 #include "VentanaInstalarActualizacion.h"
 #include "VentanaDescargarActualizacion.h"
+#include "VentanaObtenerURL.h"
 
 using namespace DWL;
 
@@ -122,6 +123,8 @@ class RAVE : public DApp {
 //	VentanaAsociarReproductor		VentanaAsociar;
 									// Ventana para mostrar las opciones
 	VentanaOpcionesRAVE             VentanaOpciones;
+									// Ventana para mostrar un editbox en el que introducir una URL
+	VentanaObtenerURL				VentanaURL;
 
 	RaveBD							BD;
 	RaveOpciones					Opciones;

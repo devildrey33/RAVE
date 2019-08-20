@@ -165,8 +165,11 @@ protected:
 	std::vector<BDRaiz *>      _Raices;
 	std::vector<EtiquetaBD>    _Etiquetas;
 	const BOOL                 _ConsultaObtenerMedio(std::wstring &TxtConsulta, BDMedio &OUT_Medio);
-
+								// Función que crea todas las tablas necesarias
     const BOOL                 _CrearTablas(void);
+								// Función que crea una tabla para medios con el nombre especificado
+	const BOOL                 _CrearTablaMedios(const wchar_t* Nombre);
+								// Función que modifica las tablas si son de una versión anterior
 	const BOOL                 _ModificarTablas(void);
 
 	friend class ThreadAnalisis;

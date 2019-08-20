@@ -548,8 +548,14 @@ void VentanaPrincipal::Arbol_Propiedades(void) {
 }
 
 
+void VentanaPrincipal::MostrarVentanaURL(void) {
+	App.VentanaURL.Mostrar();
+}
+
+
 void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 	switch (cID) {
+		// Menú boton lista
 		case ID_MENUBOTONLISTA_GENERAR			:	GenerarListaAleatoria();				return;
 		case ID_MENUBOTONLISTA_GENERAR_GENERO	:	GenerarListaAleatoria(TLA_Genero);		return;
 		case ID_MENUBOTONLISTA_GENERAR_GRUPO	:	GenerarListaAleatoria(TLA_Grupo);		return;
@@ -560,6 +566,7 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 			Lista.BorrarListaReproduccion();					
 			App.MostrarToolTipPlayer(L"Lista de reproducción borrada.");
 			return;
+		case ID_MENUBOTONLISTA_AGREGAR_URL		:	MostrarVentanaURL();					return;
 		// Id's de los botones de la barra de tareas
 		case ID_BOTON_PLAY						:	Lista_Play();							return;
 		case ID_BOTON_STOP						:	Lista_Stop();							return;
@@ -574,6 +581,7 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		case ID_MENUBD_AGREGARANUEVALISTA		:	Arbol_AgregarALista(TRUE);				return;
 		case ID_MENUBD_AGREGARALISTA			:	Arbol_AgregarALista(FALSE);				return;
 		case ID_MENUBD_MOMENTOS					:   Arbol_Momentos();						return;
+		case ID_MENUBD_AGREGAR_URL				:	MostrarVentanaURL();					return;
 		// Menú Lista
 		case ID_MENULISTA_ABRIRCARPETA			:	Lista_AbrirEnExplorador();				return;
 		case ID_MENULISTA_PROPIEDADES			:	Lista_Propiedades();					return;

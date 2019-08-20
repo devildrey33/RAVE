@@ -2,14 +2,20 @@
 
 //#include "TDisco.h"
 
+enum Ubicacion_Medio {
+	Ubicacion_Medio_INDEFINIDO  = -1,
+	Ubicacion_Medio_Local		=  0,
+	Ubicacion_Medio_Red			=  1,
+	Ubicacion_Medio_Internet	=  2
+};
+
 enum Tipo_Medio {
 	Tipo_Medio_INDEFINIDO	= -1,
-	//	Tipo_Medio_PreAudio = 0,
-	Tipo_Medio_Audio		= 1,
-	Tipo_Medio_Video		= 2,
-	Tipo_Medio_CDAudio		= 3,
-	Tipo_Medio_Lista		= 4,
-	Tipo_Medio_Subtitulos	= 5
+	Tipo_Medio_Audio		=  1,
+	Tipo_Medio_Video		=  2,
+	Tipo_Medio_CDAudio		=  3,
+	Tipo_Medio_Lista		=  4,
+	Tipo_Medio_Subtitulos	=  5
 };
 
 
@@ -46,6 +52,7 @@ enum Extension_Medio {
 	Extension_M2TS,
 	Extension_M2V,
 	Extension_M3U,
+	Extension_M3U8,
 	Extension_M4V,
 	Extension_MOD,
 	Extension_NSV,

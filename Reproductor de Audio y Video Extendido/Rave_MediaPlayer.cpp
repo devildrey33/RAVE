@@ -464,9 +464,22 @@ void Rave_MediaPlayer::_TerminarMedio(Rave_Medio *MedioEvento) {
 	// Asigno el valor de las barras del tiempo a su máximo
 	App.VentanaRave.SliderTiempo.Valor(App.VentanaRave.SliderTiempo.Maximo());
 	App.ControlesPC.SliderTiempo.Valor(App.ControlesPC.SliderTiempo.Maximo());
-	// Asigno las imagenes de los botones play / pausa a la del play
-	App.VentanaRave.BotonPlay.Icono(IDI_PLAY32, 32);
-	App.ControlesPC.BotonPlay.Icono(IDI_PLAY32, 32);
+
+	// Compruebo si el medio actual se está reproduciendo
+	BOOL RestaurarIconos = FALSE;
+	if (_Actual != NULL) {
+		if (_Actual->ComprobarEstado() != EnPlay) 	RestaurarIconos = TRUE;
+	}
+	else {
+		RestaurarIconos = TRUE;
+	}
+
+
+	if (RestaurarIconos == TRUE) {
+		// Asigno las imagenes de los botones play / pausa a la del play
+		App.VentanaRave.BotonPlay.Icono(IDI_PLAY32, 32);
+		App.ControlesPC.BotonPlay.Icono(IDI_PLAY32, 32);
+	}
 
 
 	if (_Anterior  == MedioEvento) _Anterior  = NULL;

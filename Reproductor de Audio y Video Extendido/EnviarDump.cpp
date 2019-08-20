@@ -5,6 +5,7 @@
 #include <codecvt>
 #include <Ws2tcpip.h>
 #include "RAVE_CuentaEmail.h"
+#include <DStringUtils.h>
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -240,12 +241,17 @@ unsigned long  EnviarDump::_ThreadEnviar(void *pDatosDump) {
 	_Enviar("--Boundary-=_StOHgENiGNeW");
 	_Enviar("Content-Type: text/plain"); 
 	_Enviar("Content-Transfer-Encoding: 8bit\n");
-	UINT VisualSudioVer = 2017;
+//	UINT VisualSudioVer = 2019;
+	
 	using convert_typeX = std::codecvt_utf8<wchar_t>;
 	std::wstring_convert<convert_typeX, wchar_t> converterX;
-	sprintf_s(szMsgLine, 255, "RAVE : %f, SO : %s, Compilado con : VisualStudio %d\r\n", RAVE_VERSIONF, converterX.to_bytes(App.ObtenerSO()).c_str(), VisualSudioVer);
-	_Enviar(szMsgLine);
+	
 
+	sprintf_s(szMsgLine, 255, "RAVE : %s, SO : %s, Compilado con : VisualStudio %d\r\n", converterX.to_bytes(RAVE_VERSIONSTR).c_str(),	converterX.to_bytes(App.ObtenerSO()).c_str(), _MSC_VER);
+
+	_Enviar(szMsgLine);
+	
+	
 	_Enviar("--Boundary-=_StOHgENiGNeW");
 	_Enviar("Content-Type:application/dump:\n name=\"Rave.dmp\"");
 	_Enviar("Content-Transfer-Encoding: base64");

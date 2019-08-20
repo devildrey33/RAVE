@@ -30,7 +30,8 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : Ra
 	}
 
 	libvlc_media_t *_Media = NULL;
-	_Media = libvlc_media_new_path(Instancia, AnsiStr.c_str());
+	if (nMedio.Ubicacion() == Ubicacion_Medio_Internet)	_Media = libvlc_media_new_location(Instancia, AnsiStr.c_str());
+	else												_Media = libvlc_media_new_path(Instancia, AnsiStr.c_str());
 	if (_Media == NULL) {
 		Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio  Error al abrir '%s'\n", Medio.Path.c_str());
 		TxtError = L"Error al abrir '" + Medio.Path + L"'";

@@ -313,6 +313,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 	// Menu Boton Arbol BD	
 	VentanaRave.Menu_BotonArbolBD.AgregarMenu(ID_MENUBD_ACTUALIZAR		, L"Actualizar"									, IDI_ACTUALIZAR);
 	VentanaRave.Menu_BotonArbolBD.AgregarMenu(ID_MENUBD_ANALIZAR		, L"Analizar"									, IDI_ANALIZAR);
+	VentanaRave.Menu_BotonArbolBD.AgregarMenu(ID_MENUBD_AGREGAR_URL		, L"Agregar URL"								, IDI_ANALIZAR);
 	
 	// Menu Lista
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_ABRIRCARPETA		, L"Abrir carpeta"								, IDI_DIRECTORIO);
@@ -331,6 +332,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_50MEDIOS								, L"Aleatória con 50 Medios"	, IDI_TERMINADO);
 		Menu->AgregarSeparador();
 		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_NOTA									, L"Por Nota"					, IDI_NOTA);
+	VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_AGREGAR_URL				, L"Agregar URL"					, IDI_LISTAALEATORIA);
 
 	// Menu Repetir
 	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_NO					, L"Desactivado"		, IDI_NOCHECK);
