@@ -721,6 +721,7 @@ BOOL CALLBACK Rave_MediaPlayer::EnumeracionVLC(HWND hWndWnd, LPARAM lParam) {
 
 
 LRESULT CALLBACK Rave_MediaPlayer::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
+	UINT64 T = 0;
 	switch (uMsg) {
 		case WM_TIMER :
 /*			switch (static_cast<UINT>(wParam)) {
@@ -736,7 +737,10 @@ LRESULT CALLBACK Rave_MediaPlayer::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			break;
 
 		case WM_MEDIO_TERMINADO :
-			_TerminarMedio(reinterpret_cast<Rave_Medio *>(wParam));
+			T = this->_Actual->TiempoTotalMs();
+//			if (T != 0) {
+			_TerminarMedio(reinterpret_cast<Rave_Medio*>(wParam));
+//			}
 			return 0;
 		
 		case WM_TIMER_LISTA :

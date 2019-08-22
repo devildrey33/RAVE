@@ -2,11 +2,11 @@
 #include "ExtensionesValidas.h"
 
 
-ExtensionesValidas::ExtensionesValidas() {
+ExtensionesValidas::ExtensionesValidas(void) {
 }
 
 
-ExtensionesValidas::~ExtensionesValidas() {
+ExtensionesValidas::~ExtensionesValidas(void) {
 }
 
 /* TODO : Ordenar extensiones por las mas utilizadas */
@@ -30,6 +30,7 @@ const Extension_Medio ExtensionesValidas::ObtenerExtension(const wchar_t *Extens
 	if (_wcsicmp(Extension, TEXT("MPEG1")) == 0)		return Extension_MPEG1;
 	if (_wcsicmp(Extension, TEXT("MPEG2")) == 0)		return Extension_MPEG2;
 	if (_wcsicmp(Extension, TEXT("MPEG4")) == 0)		return Extension_MPEG4;
+	if (_wcsicmp(Extension, TEXT("MPC")) == 0)			return Extension_MPC;
 	if (_wcsicmp(Extension, TEXT("MPE")) == 0)			return Extension_MPE;
 	if (_wcsicmp(Extension, TEXT("MP2")) == 0)			return Extension_MP2;
 	if (_wcsicmp(Extension, TEXT("MP3")) == 0)			return Extension_MP3;
@@ -85,7 +86,7 @@ const Tipo_Medio ExtensionesValidas::ObtenerTipoMedio(const Extension_Medio Exte
 		case Extension_VRO:		case Extension_WMV:		case Extension_CRDOWNLOAD:						case Extension_OPDOWNLOAD:
 			return Tipo_Medio_Video;
 		case Extension_FLAC:	case Extension_MID:		case Extension_MP2:		case Extension_MP3:		case Extension_S3M:		case Extension_WAV:		case Extension_WEBM:	case Extension_WMA:	
-		case Extension_XM:		case Extension_OGG:		case Extension_MOD:
+		case Extension_XM:		case Extension_OGG:		case Extension_MOD:		case Extension_MPC:
 			return Tipo_Medio_Audio;
 		case Extension_CDA:
 			return Tipo_Medio_CDAudio;
@@ -119,6 +120,7 @@ const wchar_t *ExtensionesValidas::ExtensionStr(const Extension_Medio Extension)
 		case Extension_MPEG1		:	return L"MPEG1";
 		case Extension_MPEG2		:	return L"MPEG2";
 		case Extension_MPEG4		:	return L"MPEG4";
+		case Extension_MPC			:	return L"MPC";
 		case Extension_MPE			:	return L"MPE";
 		case Extension_MP2			:	return L"MP2";
 		case Extension_MP3			:	return L"MP3";

@@ -280,7 +280,7 @@ const Ubicacion_Medio BDMedio::Ubicacion(std::wstring& nPath) {
 
 // Función que devuelve la ubicación del medio analizando el path
 const Ubicacion_Medio BDMedio::Ubicacion(void) {
-	Ubicacion(Path);
+	return Ubicacion(Path);
 }
 
 // Función que devuelve true si el medio se tiene que reproducir con FMOD
@@ -292,6 +292,7 @@ const BOOL BDMedio::EsFMOD(void) {
 		case Extension_MOD :
 		case Extension_MP2 :
 		case Extension_MP3 :
+		case Extension_MPC :
 		case Extension_OGG :
 		case Extension_S3M :
 		case Extension_WAV :

@@ -13,11 +13,14 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : Ra
 	App.MenuVideoFiltros->Menu(2)->BarraValor(Medio.Saturacion);	// Saturación
 
 	//std::wstring TxtError;
-	if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(Medio.Path.c_str())) {
-		Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio  El archivo '%s' NO EXISTE!\n", Medio.Path.c_str());
-		TxtError = L"El archivo '" + Medio.Path + L"' NO EXISTE!";
-		App.MostrarToolTipPlayerError(TxtError);
-		return;
+	Ubicacion_Medio Ubicacion = nMedio.Ubicacion();
+	if (Ubicacion != Ubicacion_Medio_Internet) {
+		if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(Medio.Path.c_str())) {
+			Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio  El archivo '%s' NO EXISTE!\n", Medio.Path.c_str());
+			TxtError = L"El archivo '" + Medio.Path + L"' NO EXISTE!";
+			App.MostrarToolTipPlayerError(TxtError);
+			return;
+		}
 	}
 
 	std::string AnsiStr;
@@ -30,8 +33,8 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : Ra
 	}
 
 	libvlc_media_t *_Media = NULL;
-	if (nMedio.Ubicacion() == Ubicacion_Medio_Internet)	_Media = libvlc_media_new_location(Instancia, AnsiStr.c_str());
-	else												_Media = libvlc_media_new_path(Instancia, AnsiStr.c_str());
+	if (Ubicacion == Ubicacion_Medio_Internet)	_Media = libvlc_media_new_location(Instancia, AnsiStr.c_str());
+	else										_Media = libvlc_media_new_path(Instancia, AnsiStr.c_str());
 	if (_Media == NULL) {
 		Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio  Error al abrir '%s'\n", Medio.Path.c_str());
 		TxtError = L"Error al abrir '" + Medio.Path + L"'";
@@ -282,12 +285,13 @@ void RaveVLC_Medio::AsignarProporcion(const wchar_t* Prop) {
 }*/
 
 const Estados_Medio RaveVLC_Medio::ComprobarEstado(void) {
-	if (_Medio == NULL) return SinCargar;
+	if (_Medio == NULL) 
+		return SinCargar;
 	libvlc_state_t Estado = libvlc_media_player_get_state(_Medio);
 	switch (Estado) {
 		case libvlc_NothingSpecial:	return Nada;
 		case libvlc_Opening:		return Abriendo;
-		case libvlc_Buffering:		return SinCargar;
+		case libvlc_Buffering:		return Cargando;
 		case libvlc_Playing:		return EnPlay;
 		case libvlc_Stopped:		return EnStop;
 		case libvlc_Paused:			return EnPausa;

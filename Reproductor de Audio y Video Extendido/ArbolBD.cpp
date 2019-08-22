@@ -66,7 +66,13 @@ NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre,
 			nIcono = RAVE_Iconos::RAVE_Icono_Directorio;
 			break;
 		default:							// Medio dentro de una raíz o directorio
-			nIcono = (nTipoNodo == ArbolBD_TipoNodo_Cancion) ? RAVE_Iconos::RAVE_Icono_Cancion : RAVE_Iconos::RAVE_Icono_Video;
+			switch(nTipoNodo) {
+				case ArbolBD_TipoNodo_Cancion		:	nIcono = RAVE_Icono_Cancion;	break;
+				case ArbolBD_TipoNodo_Video			:	nIcono = RAVE_Icono_Video;		break;
+				case ArbolBD_TipoNodo_ListaCanciones:	nIcono = RAVE_Icono_Lista;		break;
+			}
+//			nIcono = (nTipoNodo == ArbolBD_TipoNodo_Cancion) ? RAVE_Iconos::RAVE_Icono_Cancion : RAVE_Iconos::RAVE_Icono_Video;
+
 			// Si es el medio que se está reproduciendo pongo el icono del play o de la pausa
 			if (App.MP.MedioActual().Nombre().size() > 0) {
 				if (App.MP.MedioActual().Hash == nHash) {
@@ -112,11 +118,12 @@ const BOOL ArbolBD::AgregarNodoALista(NodoBD *nNodo) {
 	std::wstring SqlStr;
 	switch (nNodo->IDIcono()) {
 		case RAVE_Icono_Cancion : // Canción
-		case RAVE_Icono_Video : // Video
+		case RAVE_Icono_Video	: // Video
+		case RAVE_Icono_Lista   : // Lista m3u
 			SqlStr = L"SELECT * FROM Medios WHERE Hash =\"" + std::to_wstring(Hash) + L"\"";
 			//			SqlStr = L"SELECT * FROM Medios WHERE Path LIKE\"" + Path + L"\"";
 			break;
-		case RAVE_Icono_Raiz :		 // Raiz (simbolitza l'arrel afegida per l'usuario que conte varis medis repartits o no en directoris)
+		case RAVE_Icono_Raiz :		 // Raiz 
 		case RAVE_Icono_Directorio : // Directorio
 			SqlStr = L"SELECT * FROM Medios WHERE Path LIKE \"?" + Path.substr(1) + L"%\" COLLATE NOCASE";	// Path.substr(1) se salta la letra de la unidad y deja el path sin letra/unidad.
 			break;																							// La letra de unidad se substituye normalmente por '?' ya que puede ser un medio extraible y no tiene por que estar siempre en la misma letra
@@ -177,11 +184,21 @@ void ArbolBD::_AgregarMedio(NodoBD *nPadre, BDMedio *nMedio) {
 				TmpPadre = AgregarBDNodo(ArbolBD_TipoNodo_Directorio, TmpPadre, Filtrado.c_str(), 0, 0);
 			}
 			else { // Medio
-				std::wstring nPista;
-				nMedio->PistaStr(nPista);
-				std::wstring nNombre = nPista + L" " + nMedio->Nombre();
+				std::wstring nNombre = nMedio->Nombre();
+				// Si tiene pista, la agrego al nombre				
+				if (nMedio->Pista() != 0) {
+					std::wstring nPista;
+					nMedio->PistaStr(nPista);
+					nNombre = nPista + L" " + nMedio->Nombre();
+				}
+				
 				App.BD.FiltroNombre(nNombre, Filtrado);
-				ArbolBD_TipoNodo Tipo = (nMedio->TipoMedio == Tipo_Medio_Audio) ? ArbolBD_TipoNodo_Cancion : ArbolBD_TipoNodo_Video;
+				ArbolBD_TipoNodo Tipo = ArbolBD_TipoNodo_Indefinido;
+				switch (nMedio->TipoMedio) {
+					case Tipo_Medio_Audio:	Tipo = ArbolBD_TipoNodo_Cancion;		break;
+					case Tipo_Medio_Video:	Tipo = ArbolBD_TipoNodo_Video;			break;
+					case Tipo_Medio_Lista:	Tipo = ArbolBD_TipoNodo_ListaCanciones;	break;
+				}
 				Tmp = AgregarBDNodo(Tipo, TmpPadre, Filtrado.c_str(), nMedio->Hash, nMedio->Id);
 			}
 		}
@@ -303,8 +320,9 @@ void ArbolBD::ExplorarPath(NodoBD *nNodo) {
 					// Pistas con 2 o más caracteres
 					else				    { nTmpTxt = std::to_wstring(mPista) + L" " + mNombre;        }
 					switch (mTipoMedio) {
-						case Tipo_Medio_Audio:		mTipoNodo = ArbolBD_TipoNodo_Cancion;	break;
-						case Tipo_Medio_Video:		mTipoNodo = ArbolBD_TipoNodo_Video;		break;
+						case Tipo_Medio_Audio:		mTipoNodo = ArbolBD_TipoNodo_Cancion;			break;
+						case Tipo_Medio_Video:		mTipoNodo = ArbolBD_TipoNodo_Video;				break;
+						case Tipo_Medio_Lista:		mTipoNodo = ArbolBD_TipoNodo_ListaCanciones;	break;
 					}
 					AgregarBDNodo(mTipoNodo, static_cast<NodoBD *>(nNodo), nTmpTxt.c_str(), mHash, mId);
 				}

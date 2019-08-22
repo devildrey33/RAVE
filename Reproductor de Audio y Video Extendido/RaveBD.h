@@ -9,12 +9,13 @@
 enum Estados_Medio {
 	Nada      = 0,
 	SinCargar = 1,
-	Abriendo  = 2,
-	EnStop    = 3,
-	EnPlay    = 4,
-	EnPausa   = 5,
-	Terminada = 6,
-	EnError   = 7
+	Cargando  = 2,
+	Abriendo  = 3,
+	EnStop    = 4,
+	EnPlay    = 5,
+	EnPausa   = 6,
+	Terminada = 7,
+	EnError   = 8
 };
 
 
@@ -77,7 +78,7 @@ class RaveBD : public RaveSQLite {
 	const BOOL                  EliminarMomento(BDMedio* nMedio, const LONG_PTR mID);
 
 								// Función que extrae los datos del medio que nos da el path
-	const BOOL					AnalizarMedio(std::wstring &mPath, BDMedio &OUT_Medio, const ULONG Longitud = 0);
+	const BOOL					AnalizarMedio(std::wstring &mPath, BDMedio &OUT_Medio, const ULONG Longitud = 0, const UINT TiempoEnSecs = 0, const wchar_t *Nombre = nullptr);
 
 								// Obtiene un puntero con los datos del medio en la BD (Si el medio no existe devuelve FALSE)
 	const BOOL					ObtenerMedio(const sqlite3_int64 mHash, BDMedio &OUT_Medio);

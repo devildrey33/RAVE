@@ -40,6 +40,7 @@ enum Extension_Medio {
 	Extension_MPEG1,
 	Extension_MPEG2,
 	Extension_MPEG4,
+	Extension_MPC,
 	Extension_MPE,
 	Extension_MP2,
 	Extension_MP3,

@@ -12,6 +12,7 @@ enum RAVE_Iconos {
 	RAVE_Icono_Grupo		= IDI_GRUPO,
 	RAVE_Icono_Disco		= IDI_DISCO,
 	RAVE_Icono_CDAudio		= IDI_CDAUDIO,
+	RAVE_Icono_Lista		= IDI_AGREGARLISTA,
 	RAVE_Icono_Play			= IDI_PLAY3,
 	RAVE_Icono_Pausa		= IDI_PAUSA3
 };

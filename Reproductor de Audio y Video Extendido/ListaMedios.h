@@ -19,7 +19,12 @@ class ListaMedios : public DWL::DListaEx {
 								ListaMedios(void);
 				               ~ListaMedios(void);
 
+								// Función que agrega un medio a la lista
 	ItemMedio		           *AgregarMedio(BDMedio *nMedio);
+
+								// Función que agrega los medios de un m3u a la lista
+	void						AgregarM3u(std::wstring &PathM3u);
+
 	void						BorrarListaReproduccion(void);
 	void						ReproducirMedio(BDMedio &nMedio, LONG PosMomento = -1);
 
@@ -57,7 +62,13 @@ class ListaMedios : public DWL::DListaEx {
 	int							Errores;
 								// Posición en la lista del medio especificado (puede ser -1 si no hay medio actual)
 	const LONG_PTR              PosMedio(ItemMedio *pMedio);
+
+	
    protected:
+
+								// Función que parsea un M3u previamente cargado en memoria 
+	void					   _ParsearM3u(std::wstring &PathM3u, const char* Datos);
+
 
 //	size_t                     _ItemMarcadoOriginal;
 	std::vector<ItemMedio *>   _MediosOrdenados;

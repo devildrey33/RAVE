@@ -870,14 +870,18 @@ const BOOL RaveBD::EliminarRaiz(std::wstring &nPath) {
 	return TRUE;
 }
 
-// Analiza e inserta el medio en la BD
+// Pre-Analiza el medio y lo inserta en la BD
 // Devuelve FALSE si ahy un error
 // Devuelve TRUE si ya se ha añadido el medio
 // Devuelve 2 si el medio ya existia en la BD
-const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const ULONG Longitud) {
+const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const ULONG Longitud, const UINT TiempoEnSecs, const wchar_t* NombreDesdeM3u) {
+	Ubicacion_Medio		Ubicacion = BDMedio::Ubicacion(nPath);
+
 	// Compruebo que existe fisicamente en el disco (comprobar velocidades usando CreateFile)
-	if (GetFileAttributes(nPath.c_str()) == INVALID_FILE_ATTRIBUTES)
-		return FALSE;
+	if (Ubicacion != Ubicacion_Medio_Internet) {
+		if (GetFileAttributes(nPath.c_str()) == INVALID_FILE_ATTRIBUTES)
+			return FALSE;
+	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Obtenir temps d'un mp3 en milisegons																							//
@@ -885,7 +889,7 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	std::wstring		PathCortado = nPath;
-	Ubicacion_Medio		Ubicacion = BDMedio::Ubicacion(nPath);
+	wchar_t             UltimaLetra = PathCortado[0];
 	// Si es un medio local
 	if (Ubicacion == Ubicacion_Medio_Local) {
 		// Substituyo la letra de unidad por un interrogante
@@ -893,90 +897,110 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 	}
 
 	// Asigno el delimitador del nombre (por defecto es '\\', pero si es un medio de internet es '/')
-	wchar_t DelimitadorNombre = (Ubicacion != Ubicacion_Medio_Internet)  ? L'\\' : L'/';
+	wchar_t				DelimitadorNombre	= (Ubicacion != Ubicacion_Medio_Internet)  ? L'\\' : L'/';
 
-	size_t				PosNombre		= nPath.find_last_of(DelimitadorNombre);																			// Posición donde empieza el nombre
-	size_t				PosExtension	= nPath.find_last_of(L'.');																							// Posición donde empieza la extensión
-	Extension_Medio		Extension		= ExtensionesValidas::ObtenerExtension(nPath.substr(PosExtension + 1, (nPath.size() - PosExtension) - 1).c_str());	// Obtengo el tipo de extensión
-	Tipo_Medio			Tipo			= ExtensionesValidas::ObtenerTipoMedio(Extension);																	// Obtengo el tipo de medio
-	sqlite3_int64		Hash			= CrearHash(PathCortado);																							// Creo un hash partiendo del path y el número de serie del disco
-	UINT				Pista			= 0;																												// Número de pista
+	size_t				PosNombre			= nPath.find_last_of(DelimitadorNombre);																			// Posición donde empieza el nombre
+	size_t				PosExtension		= nPath.find_last_of(L'.');																							// Posición donde empieza la extensión
+	Extension_Medio		Extension			= ExtensionesValidas::ObtenerExtension(nPath.substr(PosExtension + 1, (nPath.size() - PosExtension) - 1).c_str());	// Obtengo el tipo de extensión
+	Tipo_Medio			Tipo				= ExtensionesValidas::ObtenerTipoMedio(Extension);																	// Obtengo el tipo de medio
+	sqlite3_int64		Hash				= CrearHash(PathCortado);																							// Creo un hash partiendo del path y el número de serie del disco
+	UINT				Pista				= 0;																												// Número de pista
+	int                 SqlRet = 0;
 	std::wstring		TmpNombre;
 	std::wstring		NombreFinal;
 	std::wstring        SqlStr;
-	int                 SqlRet = 0;
-//	ULONG               Longitud = 0;
 
-	Strings::Split PathSeparado(nPath, L'\\');
+	Strings::Split PathSeparado(nPath, DelimitadorNombre);
 
 	switch (Tipo) {
 		case Tipo_Medio_INDEFINIDO:
 			return FALSE;
 		case Tipo_Medio_Audio:
+			// Obtengo el nombre del disco
 			if (PathSeparado.Total() > 1) {
-//				OUT_Medio.DiscoPath = PathSeparado[PathSeparado.Total() - 2];
 				FiltroNombre(PathSeparado[PathSeparado.Total() - 2], OUT_Medio.DiscoPath);
 			}
+			// Obtengo el nombre del grupo
 			if (PathSeparado.Total() > 2) {
-//				OUT_Medio.GrupoPath = PathSeparado[PathSeparado.Total() - 3];
 				FiltroNombre(PathSeparado[PathSeparado.Total() - 3], OUT_Medio.GrupoPath);
 			}
-		case Tipo_Medio_Video:
-			AnalizarNombre(nPath.substr(PosNombre + 1, (PosExtension - PosNombre) - 1), TmpNombre, Pista);
-			FiltroNombre(TmpNombre, NombreFinal);
-			OUT_Medio.Hash			= Hash;
-			OUT_Medio.Path			= PathCortado;
-//			OUT_Medio.Path[0]		= L'?';
-			OUT_Medio.NombrePath	= NombreFinal;
-			OUT_Medio.TipoMedio		= Tipo;
-			OUT_Medio.Extension		= Extension;
-			OUT_Medio.PistaPath		= Pista;
-//			OUT_Medio.IDDisco		= UnidadDisco->Numero_Serie();
-			OUT_Medio.Longitud      = Longitud;
-			OUT_Medio.Nota          = 2;
-			OUT_Medio.Tiempo        = 0;
-			//SqlStr = L"INSERT INTO Medios (Hash, Path, NombrePath, TipoMedio, Extension, PistaPath, IDDisco, Longitud, Nota, Tiempo, Subtitulos, Parseado, DiscoPath, GrupoPath) VALUES(7931991700765854209,\"G:\\Pelis i Series\\...
-			SqlStr = L"INSERT INTO Medios (Hash, Path, NombrePath, TipoMedio, Extension, PistaPath, Longitud, Nota, Tiempo, Subtitulos, Parseado, DiscoPath, GrupoPath, Brillo, Saturacion, Contraste)"
-						  L" VALUES(" + std::to_wstring(Hash)							+ L",\"" +				// Hash
-										PathCortado										+ L"\",\"" +			// Path
-										NombreFinal										+ L"\", " +				// NombrePath
-										std::to_wstring(Tipo)							+ L"," +				// Tipo
-										std::to_wstring(Extension)						+ L"," +				// Extension
-										std::to_wstring(Pista)							+ L"," +				// PistaPath
-										//std::to_wstring(UnidadDisco->Numero_Serie())	+ L"," +				// ID Disco Duro
-										std::to_wstring(Longitud)						+ L"," +				// Longitud en bytes
-										L"2.5," +																// Nota
-										L"0," +																	// Tiempo
-										L"\"\"," +																// Subtitulos
-										L"0,\"" +																// Parseado
-										OUT_Medio.DiscoPath								+ L"\",\"" +			// DiscoPath
-										OUT_Medio.GrupoPath								+ L"\"," +				// GrupoPath
-										L"1.0," +                                                               // Brillo
-										L"1.0," +																// Saturación
-										L"1.0" +																// Contraste
-									L")";
-			SqlRet = Consulta(SqlStr);
-			if (SqlRet == SQLITE_DONE) {
-				return TRUE; // No existe el hash
-			}
-			else if (SqlRet == SQLITE_CONSTRAINT) {
-				return 2; // Ya existe el hash
-			}
-			else {  /* Error ? */
-				_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
-				return FALSE;
-			}
 			break;
-		//			_AnalizarNombre(Path.substr(PosNombre + 1, (PosExtension - PosNombre) - 1), TmpNombre, static_cast<TMedioVideo *>(Medio)->Pista);
-//		break;
-		case Tipo_Medio_CDAudio:
-		//		_AnalizarNombre(Path.substr(PosNombre + 1, (PosExtension - PosNombre) - 1), TmpNombre, static_cast<TMedioCDAudio *>(Medio)->Pista);
-			break;
+//		case Tipo_Medio_Video:
+//			break;
+//		case Tipo_Medio_CDAudio:
+//			break;
 		case Tipo_Medio_Lista:
-		//		_AnalizarNombre(Path.substr(PosNombre + 1, (PosExtension - PosNombre) - 1), TmpNombre, TmpPista);
+			// Excluyo la lista m3u del análisis
+			OUT_Medio.Parseado = TRUE;
 			break;
 	}
-	return FALSE;
+
+
+	// Analizo el nombre para obtener la pista (si existe)
+	AnalizarNombre(nPath.substr(PosNombre + 1, (PosExtension - PosNombre) - 1), TmpNombre, Pista);
+	
+	// Filtro de carácteres para el nombre
+	FiltroNombre(TmpNombre, NombreFinal);
+
+	// Relleno los valores del medio
+	OUT_Medio.Hash			= Hash;
+	OUT_Medio.Path			= PathCortado;
+	OUT_Medio.NombrePath	= (NombreDesdeM3u == nullptr) ? NombreFinal : NombreDesdeM3u;	// Si se ha especificado un nombre desde el M3u pongo el nombre del M3u
+	OUT_Medio.TipoMedio		= Tipo;
+	OUT_Medio.Extension		= Extension;
+	OUT_Medio.PistaPath		= Pista;
+	OUT_Medio.Longitud      = Longitud;
+	OUT_Medio.Tiempo		= (INT64)1000 * (INT64)TiempoEnSecs;
+
+	// Si es un medio de internet
+	if (OUT_Medio.Ubicacion() == Ubicacion_Medio_Internet) {
+		// Excluyo el medio del análisis
+		OUT_Medio.Parseado = TRUE;
+	}
+
+	// Creo el string para insertar el medio
+	SqlStr = L"INSERT INTO Medios (Hash, Path, NombrePath, TipoMedio, Extension, PistaPath, Longitud, Nota, Tiempo, Subtitulos, Parseado, DiscoPath, GrupoPath, Brillo, Saturacion, Contraste)"
+				L" VALUES(" +	std::to_wstring(OUT_Medio.Hash)					+ L",\"" +				// Hash
+								OUT_Medio.Path									+ L"\",\"" +			// Path
+								OUT_Medio.NombrePath							+ L"\", " +				// NombrePath
+								std::to_wstring(OUT_Medio.TipoMedio)			+ L"," +				// Tipo
+								std::to_wstring(OUT_Medio.Extension)			+ L"," +				// Extension
+								std::to_wstring(OUT_Medio.PistaPath)			+ L"," +				// PistaPath
+								//std::to_wstring(UnidadDisco->Numero_Serie())	+ L"," +				// ID Disco Duro
+								std::to_wstring(OUT_Medio.Longitud)				+ L"," +				// Longitud en bytes
+								L"2.5," +																// Nota
+								std::to_wstring(OUT_Medio.Tiempo)				+ L"," +				// Tiempo
+								L"\"\"," +																// Subtitulos
+								std::to_wstring(OUT_Medio.Parseado)				+ L",\"" +				// Parseado
+								OUT_Medio.DiscoPath								+ L"\",\"" +			// DiscoPath
+								OUT_Medio.GrupoPath								+ L"\"," +				// GrupoPath
+								L"1.0," +                                                               // Brillo
+								L"1.0," +																// Saturación
+								L"1.0" +																// Contraste
+							L")";
+	// Ejecuto la consulta
+	SqlRet = Consulta(SqlStr);
+
+	// Restauro la letra de unidad con la que venia
+	OUT_Medio.Path[0] = UltimaLetra;
+
+
+	// Se ha agregado
+	if (SqlRet == SQLITE_DONE) {
+		return TRUE; // No existe el hash
+	}
+	// No se ha agregado por que ya existe
+	else if (SqlRet == SQLITE_CONSTRAINT) {
+		return 2; // Ya existe el hash
+	}
+	// Error al agregar
+	else {  
+		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+
+
+	return TRUE;
 }
 
 

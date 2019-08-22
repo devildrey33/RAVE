@@ -29,7 +29,7 @@ const BOOL ThreadAnalisis::Iniciar(HWND nhWndDest) {
 
 	if (App.Opciones.MostrarObtenerMetadatos() == TRUE) {
 		// Creo la ventana que mostrará el progreso
-		CrearVentana(NULL, L"RAVE_ObtenerMetadatos", L"Analizando...", 300, 200, 700, 420, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+		CrearVentana(NULL, L"RAVE_ObtenerMetadatos", L"Analizando...", 300, 200, 660, 380, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 		RECT RC;
 		GetClientRect(_hWnd, &RC);
 		_BarraProgreso1.CrearBarraProgresoEx(this, 30, 105, RC.right - 60, 20, ID_BARRAPROGRESO1);

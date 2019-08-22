@@ -1,6 +1,6 @@
 #pragma once
 
-#pragma comment(lib, "wininet.lib")	// Agrego la libreria wininet.lib al proyecto
+//#pragma comment(lib, "wininet.lib")	// Agrego la libreria wininet.lib al proyecto
 
 #include <mutex>
 

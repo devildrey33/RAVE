@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "VentanaObtenerURL.h"
 #include "resource.h"
+#include <DArchivoInternet.h>
 
 #define ID_ETIQUETA 1000
 #define ID_EDITURL	1001
@@ -18,7 +19,23 @@ void VentanaObtenerURL::Mostrar(void) {
 }
 
 void VentanaObtenerURL::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse& DatosMouse) {
+	if (DatosMouse.ID() == ID_ABRIR) {
+		BotonAbrir.Activado(FALSE);
+		BDMedio Medio;
+		App.BD.AnalizarMedio(EditURL.Texto(), Medio);
+		App.VentanaRave.Lista.AgregarMedio(&Medio);
 
+/*		DArchivoInternet::Obtener(EditURL.Texto(),
+			[=](DWL::DPeticion &P) {
+				Destruir();
+				BDMedio Medio;
+				App.BD.AnalizarMedio(P.)
+			},
+			[=](const UINT IDError) {
+				Destruir();
+			}
+		);*/
+	}
 }
 
 

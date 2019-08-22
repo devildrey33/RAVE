@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "ListaMedios.h"
 #include "RAVE_Iconos.h"
+#include <DArchivoBinario.h>
+#include <DArchivoInternet.h>
+#include <DStringUtils.h>
 
 ListaMedios::ListaMedios(void) : MedioActual(NULL), Errores(0) {
 }
@@ -9,18 +12,6 @@ ListaMedios::ListaMedios(void) : MedioActual(NULL), Errores(0) {
 ListaMedios::~ListaMedios(void) {
 }
 
-/*
-void ListaMedios::Evento_TeclaPresionada(DWL::DEventoTeclado &DatosTeclado) {
-	App.VentanaRave.Evento_TeclaPresionada(DatosTeclado);
-}
-
-void ListaMedios::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
-	App.VentanaRave.Evento_TeclaSoltada(DatosTeclado);
-}
-
-void ListaMedios::Evento_Tecla(DWL::DEventoTeclado &DatosTeclado) {
-	App.VentanaRave.Evento_Tecla(DatosTeclado);
-}*/
 
 const LONG_PTR ListaMedios::PosMedio(ItemMedio *pMedio) {
 	if (pMedio == NULL) return -1;
@@ -80,6 +71,89 @@ void ListaMedios::BorrarListaReproduccion(void) {
 	Repintar();
 }
 
+// Función que parsea un M3u para leer sus datos, e introducir los medios que contiene en la lista
+// El M3u puede ser de internet, en ese caso hay que leer el M3u con un thread y esperar su respuesta.
+void ListaMedios::AgregarM3u(std::wstring &PathM3u) {
+	// M3u de internet
+	if (BDMedio::Ubicacion(PathM3u) == Ubicacion_Medio_Internet) {
+		DWL::DArchivoInternet::Obtener(PathM3u,
+			[=](DWL::DPeticion &P) {
+				_ParsearM3u(P.Url(), P.Datos());
+			},
+			[=](const UINT Error) {
+				Debug_Escribir_Varg(L"Error cargando el M3u : %d\n", Error);
+			},
+			[=](const float Valor) {
+				Debug_Escribir(L"Valor\n");
+			}
+		);
+	}
+	// M3u local o de red
+	else {
+		DWL::DArchivoBinario Archivo(PathM3u, FALSE);
+		if (Archivo.EstaAbierto() == TRUE) {
+			std::streamsize Tam = Archivo.Longitud();
+			char *Buffer = new char[Tam + 1];
+			size_t Final = Archivo.Leer(Buffer, Tam);
+			Buffer[Final] = '\0';
+			_ParsearM3u(PathM3u, Buffer);
+			delete[] Buffer;
+			Archivo.Cerrar();
+		}
+	}
+}
+
+
+void ListaMedios::_ParsearM3u(std::wstring &PathM3u, const char *Datos) {
+	// Miro si es un path local o de internet
+	wchar_t			Delimitador = (BDMedio::Ubicacion(PathM3u) == Ubicacion_Medio_Internet) ? L'/' : L'\\';
+	// Busco la ultima barra del path
+	size_t			Barra = PathM3u.find_last_of(Delimitador);
+	std::string		Path, PathArchivo;
+	std::wstring	PathFinal;
+	BDMedio         Medio;
+//	UINT			TiempoEnSecs;
+	// Convierto el path recortado a UTF8
+	DWL::Strings::WideToAnsi(PathM3u.substr(0, Barra + 1).c_str(), Path);
+
+	std::string DatosStr = Datos;
+	// Elimino posibles caracteres de retorno extras (en sistemas unix el retorno de carro se define con el caracter \n, en windows se usa \n y \r
+	DatosStr.erase(std::remove(DatosStr.begin(), DatosStr.end(), '\r'), DatosStr.end());
+
+	// Separo los datos por lineas
+	DWL::Strings::SplitA Lineas(DatosStr, '\n');
+
+	// Analizo las lineas una por una
+	for (size_t i = 0; i < Lineas.Total(); i++) {
+		// Es un medio y el path mide mas de dos carácteres
+		if (Lineas[i].find('#') == std::string::npos && Lineas[i].size() > 2) {
+			// Miro si el path de la línea es relativo
+			// Es un path absoluto
+			if (Lineas[i][1] == ':' || Lineas[i][1] == '\\' || (Lineas[i][0] == 'h' && Lineas[i][1] == 't')) {
+				PathArchivo = Lineas[i];
+			}
+			// Es un medio con path relativo
+			else {
+				PathArchivo = Path + Lineas[i];
+			}
+
+			DWL::Strings::AnsiToWide(PathArchivo.c_str(), PathFinal);
+			// pre-analizo el medio y lo inserto en la base de datos
+			if (App.BD.AnalizarMedio(PathFinal, Medio) == 2) {
+				// El medio ya existia, lo recargo
+				App.BD.ObtenerMedio(PathFinal, Medio);
+			}
+
+			// Agrego el medio a la lista
+			AgregarMedio(&Medio);
+		}
+		// Directiva de M3U extendido https://es.wikipedia.org/wiki/M3U
+		else {
+			// De momento omitiremos el tema de las directivas...
+		}
+	}
+}
+
 ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {
 	
 	// Busco si existe el hash para no agregar 2 medios iguales a la lista
@@ -89,9 +163,17 @@ ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {
 		}
 	}
 
-	// El medio no existe
-	if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(nMedio->Path.c_str())) {
-		Debug_Escribir_Varg(L"ListaMedios::AgregarMedio El medio path : '%s', id : '%d' no existe!\n", nMedio->Path.c_str(), nMedio->Hash);
+	if (BDMedio::Ubicacion(nMedio->Path) != Ubicacion_Medio_Internet) {
+		// El medio no existe
+		if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(nMedio->Path.c_str())) {
+			Debug_Escribir_Varg(L"ListaMedios::AgregarMedio El medio path : '%s', id : '%d' no existe!\n", nMedio->Path.c_str(), nMedio->Hash);
+			return NULL;
+		}
+	}
+
+	// Es un M3u, lo parseo y devuelvo NULL
+	if (nMedio->TipoMedio == Tipo_Medio_Lista) {
+		AgregarM3u(nMedio->Path);
 		return NULL;
 	}
 

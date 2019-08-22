@@ -122,6 +122,12 @@ unsigned long Actualizaciones::_ThreadBuscar(void* pThis) {
 
 	// Si la versión no coincide
 	int VersionWeb		= VersionInt(_Version);
+
+	// Simula que hay una nueva versión 9.99
+	#ifdef RAVE_SIMULAR_ACTUALIZACION_NUEVA
+		VersionWeb = VersionInt(L"9.99");
+	#endif
+
 	int VersionActual	= VersionInt(RAVE_VERSIONSTR);
 	if (VersionWeb > VersionActual) {
 		// Informo a la ventana del reproductor que hay una nueva actualización
@@ -170,7 +176,7 @@ unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
 
 	TCHAR			szHead[]			= L"Accept: */*\r\n\r\n";
 	HINTERNET		Sesion				= InternetOpen(L"RAVE_Actualizacion", INTERNET_OPEN_TYPE_PRECONFIG, NULL, INTERNET_INVALID_PORT_NUMBER, 0);
-	HINTERNET		Peticion			= InternetOpenUrl(Sesion, UrlInstalador.c_str(), szHead, 0, INTERNET_FLAG_RELOAD, 0);
+	HINTERNET		Peticion			= NULL; // InternetOpenUrl(Sesion, UrlInstalador.c_str(), szHead, 0, INTERNET_FLAG_RELOAD, 0);
 //	DWORD			Longitud			= 0;
 	DWORD			Descargado			= 64;
 	DWORD           TotalDescargado		= 0;
@@ -191,7 +197,7 @@ unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
 		return -1;
 	}
 
-	// Compruebo si existe algun isntalador descargado
+	// Compruebo si existe algun instalador descargado
 	std::wstring	PathFinal;
 	std::wstring    DirectorioRaveAppData;
 	DWL::DDirectoriosWindows::Comun_AppData(DirectorioRaveAppData);
@@ -249,10 +255,12 @@ unsigned long Actualizaciones::_ThreadDescargar(void* pThis) {
 		if (Cancelar() == TRUE) {
 			break;
 		}
-//		Datos[Descargado] = '\0';
 		TotalDescargado += Descargado;
+
+		// No se han leido datos, salgo
 		if (Descargado == 0)	
 			break;
+		// Guardo los datos leidos
 		else					
 			Archivo.Guardar(Datos, Descargado);
 	}

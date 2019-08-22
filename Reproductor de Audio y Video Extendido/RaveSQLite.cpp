@@ -23,15 +23,14 @@ const BOOL RaveSQLite::IniciarSQLite(const wchar_t *Path) {
 
 		return FALSE;
 	}
-	// Creo las tablas para la base de datos (si es necesario)
-	Debug_Escribir(L"RaveSQLite::Iniciar\n");
+	// Debug_Escribir(L"RaveSQLite::Iniciar\n");
 
 	return TRUE;
 }
 
 
 void RaveSQLite::Terminar(void) {
-	Debug_Escribir(L"RaveSQLite::Terminar\n");
+	// Debug_Escribir(L"RaveSQLite::Terminar\n");
 	if (_BD != NULL) sqlite3_close_v2(_BD);
 	_BD = NULL;
 }

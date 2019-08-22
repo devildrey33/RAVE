@@ -398,6 +398,7 @@
 		-  Suport per urls externes de internet
 			- Crear dialeg per posar les urls
 			- Intentar mantenir una llista de canals de la tdt a la BD
+				- https://github.com/LaQuay/TDTChannels/blob/master/TELEVISION.md
 
 		-  Suport per unitats de red
 
@@ -411,6 +412,10 @@
 		-  Les notes menors que 2 s'han de mostrar amb una estrella gris
 
 		-  Suport pel jamendo (mirar si hi ha alguna api...)
+
+		-  BD
+			-  Moure les arrels de la BD dels medis a la BD de les opcions
+			-  Crear taula a les opcions per guardar les posicions i tamanys de les finestres, i treure tot el barullo de PosX PosY de les opcions.
 
 		-  Control + [F / B] integrat en la llista i l'arbre, que resalti els items / nodos.
 
