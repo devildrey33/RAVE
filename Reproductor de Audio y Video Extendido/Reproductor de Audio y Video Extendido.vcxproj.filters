@@ -517,6 +517,9 @@
     <Image Include="..\Iconos\IDI_devildrey33.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
+    <Image Include="..\Iconos\IDI_IpTv.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">

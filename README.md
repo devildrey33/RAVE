@@ -91,7 +91,7 @@ Teclas por defecto cuando el reproductor tiene le foco del teclado (excepto si e
 
  ### Notas para compilar el proyecto
 
- * Todo lo necesario para compilar y ejecutar la LibVLC y SQLite vienen en este repositorio.
+ * Todo lo necesario para compilar y ejecutar la LibVLC, SQLite y la ZLib viene incluido.
  
  * Hace falta la [DWL3](https://github.com/devildrey33/DWL3) Devildrey33 Windows Library. Para ir bien deberías crear un directorio RAVE para el código del reproductor y un directorio DWL3 para la librería, ambos en tu directorio de proyectos. El proyecto está configurado para buscar la DWL en "..\DWL3"
 

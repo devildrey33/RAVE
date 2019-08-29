@@ -12,8 +12,11 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : Ra
 	App.MenuVideoFiltros->Menu(1)->BarraValor(Medio.Contraste);		// Contraste
 	App.MenuVideoFiltros->Menu(2)->BarraValor(Medio.Saturacion);	// Saturación
 
+//	Medio.Path = L"https://livestartover.atresmedia.com/lasexta/master.m3u8";
+//	Medio.Path = L"E:\\mp3\\ViRGiN STeeLe\\The Book Of Burining\\The Book Of Burining - copia.m3u";
+
 	//std::wstring TxtError;
-	Ubicacion_Medio Ubicacion = nMedio.Ubicacion();
+	Ubicacion_Medio Ubicacion = Medio.Ubicacion();
 	if (Ubicacion != Ubicacion_Medio_Internet) {
 		if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(Medio.Path.c_str())) {
 			Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio  El archivo '%s' NO EXISTE!\n", Medio.Path.c_str());
@@ -31,10 +34,12 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : Ra
 		App.MostrarToolTipPlayerError(TxtError);
 		return;
 	}
+	
 
 	libvlc_media_t *_Media = NULL;
 	if (Ubicacion == Ubicacion_Medio_Internet)	_Media = libvlc_media_new_location(Instancia, AnsiStr.c_str());
 	else										_Media = libvlc_media_new_path(Instancia, AnsiStr.c_str());
+
 	if (_Media == NULL) {
 		Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio  Error al abrir '%s'\n", Medio.Path.c_str());
 		TxtError = L"Error al abrir '" + Medio.Path + L"'";
@@ -48,20 +53,27 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : Ra
 	_Eventos = libvlc_media_player_event_manager(_Medio);
 	//	libvlc_event_attach(_Eventos, libvlc_MediaStateChanged, EventosVLC, this);				// no va
 	//	libvlc_event_attach(_Eventos, libvlc_MediaDurationChanged, EventosVLC, this);			// no va (igual amb streaming si...)
-	libvlc_event_attach(_Eventos, libvlc_MediaPlayerEndReached,		  Rave_MediaPlayer::EventosVLC, this);
-	libvlc_event_attach(_Eventos, libvlc_MediaPlayerEncounteredError, Rave_MediaPlayer::EventosVLC, this);	// errors
-	libvlc_event_attach(_Eventos, libvlc_MediaParsedChanged,		  Rave_MediaPlayer::EventosVLC, this);	// no va
+	int r = libvlc_event_attach(_Eventos, libvlc_MediaPlayerEndReached,		  Rave_MediaPlayer::EventosVLC, this);
+	r = libvlc_event_attach(_Eventos, libvlc_MediaPlayerEncounteredError, Rave_MediaPlayer::EventosVLC, this);	// errors
+	r = libvlc_event_attach(_Eventos, libvlc_MediaParsedChanged, Rave_MediaPlayer::EventosVLC, this);	// no va
+	r = libvlc_event_attach(_Eventos, libvlc_MediaPlayerPlaying, Rave_MediaPlayer::EventosVLC, this);	// para detectar cuando empieza a reproducirse (necesario para los m3us iptv)
+	r = libvlc_event_attach(_Eventos, libvlc_MediaSubItemAdded, Rave_MediaPlayer::EventosVLC, this);	// 
+	r = libvlc_event_attach(_Eventos, libvlc_MediaSubItemTreeAdded, Rave_MediaPlayer::EventosVLC, this);	// 
+	r = libvlc_event_attach(_Eventos, libvlc_MediaPlayerVout, Rave_MediaPlayer::EventosVLC, this);	// 
+	
 	// Desactiva los eventos del mouse y del teclado dentro de la ventana del vlc 
 	libvlc_video_set_mouse_input(_Medio, false);
 	libvlc_video_set_key_input(_Medio, false);
 
 	Volumen(static_cast<int>(App.VentanaRave.SliderVolumen.Valor()));
+	
 
-	if (Medio.TipoMedio == Tipo_Medio_Video) {
-		libvlc_media_player_set_hwnd(_Medio, App.VentanaRave.Video.hWnd());
+	// Si es un video o una iptv
+	if (Medio.TipoMedio == Tipo_Medio_Video || Medio.Tiempo == Tipo_Medio_IpTv) {
 		// Pulso el botón para mostrar el video
 		if (App.VentanaRave.PantallaCompleta() == FALSE) {
-			App.VentanaRave.Evento_BotonEx_Mouse_Click(DEventoMouse(0, 0, &App.VentanaRave.BotonVideo, 0));
+			App.VentanaRave.MostrarMarco(ID_BOTON_VIDEO);
+//			App.VentanaRave.Evento_BotonEx_Mouse_Click(DEventoMouse(0, 0, &App.VentanaRave.BotonVideo, 0));
 		}
 
 		// Cargo los valores de brillo, proporción, contraste, y saturación
@@ -95,6 +107,11 @@ void RaveVLC_Medio::Eliminar(void) {
 		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEndReached, Rave_MediaPlayer::EventosVLC, this);
 		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEncounteredError, Rave_MediaPlayer::EventosVLC, this);
 		libvlc_event_detach(_Eventos, libvlc_MediaParsedChanged, Rave_MediaPlayer::EventosVLC, this);
+		libvlc_event_detach(_Eventos, libvlc_MediaPlayerPlaying, Rave_MediaPlayer::EventosVLC, this);
+		libvlc_event_detach(_Eventos, libvlc_MediaSubItemAdded, Rave_MediaPlayer::EventosVLC, this);
+		libvlc_event_detach(_Eventos, libvlc_MediaSubItemTreeAdded, Rave_MediaPlayer::EventosVLC, this);
+		libvlc_event_detach(_Eventos, libvlc_MediaPlayerVout, Rave_MediaPlayer::EventosVLC, this);
+
 		Stop();
 		libvlc_media_player_release(_Medio);
 

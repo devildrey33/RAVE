@@ -932,6 +932,10 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 		case Tipo_Medio_Lista:
 			// Excluyo la lista m3u del análisis
 			OUT_Medio.Parseado = TRUE;
+			// Es una URL a un m3u (provablemente a una IPTV)
+			if (Ubicacion == Ubicacion_Medio_Internet) {
+				Tipo = Tipo_Medio_IpTv;
+			}
 			break;
 	}
 

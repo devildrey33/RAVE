@@ -163,7 +163,9 @@ ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {
 		}
 	}
 
-	if (BDMedio::Ubicacion(nMedio->Path) != Ubicacion_Medio_Internet) {
+	Ubicacion_Medio Ubicacion = BDMedio::Ubicacion(nMedio->Path);
+
+	if (Ubicacion != Ubicacion_Medio_Internet) {
 		// El medio no existe
 		if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(nMedio->Path.c_str())) {
 			Debug_Escribir_Varg(L"ListaMedios::AgregarMedio El medio path : '%s', id : '%d' no existe!\n", nMedio->Path.c_str(), nMedio->Hash);
@@ -171,17 +173,19 @@ ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {
 		}
 	}
 
-	// Es un M3u, lo parseo y devuelvo NULL
-	if (nMedio->TipoMedio == Tipo_Medio_Lista) {
+	// Es un M3u local o de red, lo parseo y devuelvo NULL
+	if (nMedio->TipoMedio == Tipo_Medio_Lista && Ubicacion != Ubicacion_Medio_Internet) {
 		AgregarM3u(nMedio->Path);
 		return NULL;
 	}
+	
 
 	// Miro el icono que necesita el medio
 	int nIcono = RAVE_Iconos::RAVE_Icono_Cancion;
 	switch (nMedio->TipoMedio) {
 		case Tipo_Medio_Audio: nIcono = RAVE_Iconos::RAVE_Icono_Cancion;	break;
 		case Tipo_Medio_Video: nIcono = RAVE_Iconos::RAVE_Icono_Video;		break;
+		case Tipo_Medio_IpTv : nIcono = RAVE_Iconos::RAVE_Icono_IpTv;		break;
 	}
 
 	// Paso la pista a string formateada a 2 digitos
@@ -192,9 +196,11 @@ ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {
 		// Si la pista solo tiene un carácter, le añado un cero delante
 		if (Pista.size() == 1) Pista = L"0" + Pista;
 	}
-	// Paso el tiempo a string formateado en mm:ss
-	std::wstring StrTiempo;
-	App.MP.TiempoStr(nMedio->Tiempo, StrTiempo);
+	// Tiempo vacio por defecto
+	std::wstring StrTiempo = L"--:--";
+	// Si no es una IP TV, paso el tiempo a string formateado en mm:ss
+	if (nMedio->TipoMedio != Tipo_Medio_IpTv)
+		App.MP.TiempoStr(nMedio->Tiempo, StrTiempo);
 
 	// Agrego el item
 	ItemMedio* TmpMedio = AgregarItem<ItemMedio>(nIcono, DLISTAEX_POSICION_FIN, { Pista, nMedio->Nombre(), StrTiempo });

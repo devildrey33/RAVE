@@ -996,7 +996,11 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 //		GetClientRect(hWnd(), &RC);
 //		BOOL R = App.VentanaRave.BarraTareas.Clip(&RC);
 		SetWindowLongPtr(hWnd(), GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
-		SetWindowPos(_hWnd, HWND_TOP, App.Opciones.PosX(), App.Opciones.PosY(), App.Opciones.Ancho(), App.Opciones.Alto(), SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+
+		RC = { App.Opciones.PosX(), App.Opciones.PosY(), App.Opciones.PosX() + App.Opciones.Ancho(), App.Opciones.PosY() + App.Opciones.Alto() };
+		AdjustWindowRectEx(&RC, WS_OVERLAPPEDWINDOW, FALSE, WS_EX_APPWINDOW);
+
+		SetWindowPos(_hWnd, HWND_TOP, RC.left, RC.top, RC.right - RC.left, RC.bottom - RC.top, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 		//MoveWindow(Video.hWnd(), 120, 71, RC.right - 120, RC.bottom - 70, TRUE);
 
 		App.ControlesPC.Ocultar();

@@ -11,6 +11,8 @@
 #endif
 
 
+class Rave_MediaPlayer;
+
 class RaveVLC_Medio : public Rave_Medio {
   public :
 								// Constructor para un medio
@@ -75,4 +77,6 @@ class RaveVLC_Medio : public Rave_Medio {
 	BOOL                       _Parseado;
 
 	DWL::DAnimacion            _AniVolumen;
+
+	friend class Rave_MediaPlayer;
 };

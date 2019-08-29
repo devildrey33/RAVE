@@ -395,12 +395,17 @@
 
 
 	RAVE 0.7
-		-  Suport per urls externes de internet
-			- Crear dialeg per posar les urls
+		V  Suport per urls externes de internet
+			V Crear dialeg per posar les urls
 			- Intentar mantenir una llista de canals de la tdt a la BD
 				- https://github.com/LaQuay/TDTChannels/blob/master/TELEVISION.md
 
+		V  Suport per m3u's de IpTv
+			- No actualitzar temps actual ni total ni la barra
+
 		-  Suport per unitats de red
+
+		-  Adaptar el sistema del VLC per tenir 3 instancies i acabar de fer lo del fade in out
 
 		-  Fer una llista / historial dels ultims 50 medis reproduits a la BD.
 			- Afegir data i hora de la reproducció

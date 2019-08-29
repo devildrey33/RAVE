@@ -313,7 +313,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 	// Menu Boton Arbol BD	
 	VentanaRave.Menu_BotonArbolBD.AgregarMenu(ID_MENUBD_ACTUALIZAR		, L"Actualizar"									, IDI_ACTUALIZAR);
 	VentanaRave.Menu_BotonArbolBD.AgregarMenu(ID_MENUBD_ANALIZAR		, L"Analizar"									, IDI_ANALIZAR);
-	VentanaRave.Menu_BotonArbolBD.AgregarMenu(ID_MENUBD_AGREGAR_URL		, L"Agregar URL"								, IDI_ANALIZAR);
+	VentanaRave.Menu_BotonArbolBD.AgregarMenu(ID_MENUBD_AGREGAR_URL		, L"Agregar URL"								, IDI_URL);
 	
 	// Menu Lista
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_ABRIRCARPETA		, L"Abrir carpeta"								, IDI_DIRECTORIO);

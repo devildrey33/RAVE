@@ -419,21 +419,37 @@ std::wstring &Rave_MediaPlayer::UltimoErrorVLC(void) {
 	return TxtError;
 }
 
-void Rave_MediaPlayer::EventosVLC(const libvlc_event_t *event, void *ptr) {
+void Rave_MediaPlayer::EventosVLC(const libvlc_event_t *evento, void *ptr) {
 	RaveVLC_Medio *MedioEvento = static_cast<RaveVLC_Medio *>(ptr);
 
-	// Error
-	if (event->type == libvlc_MediaPlayerEncounteredError) {
-		PostMessage(_hWndMensajes, WM_MEDIO_TERMINADO, reinterpret_cast<WPARAM>(MedioEvento), 0);
-		App.MostrarToolTipPlayerError(UltimoErrorVLC());
-	}
-	// Se ha terminado el medio
-	else if (event->type == libvlc_MediaPlayerEndReached) {
-		PostMessage(_hWndMensajes, WM_MEDIO_TERMINADO, reinterpret_cast<WPARAM>(MedioEvento), 0);
-	}
-	// Se ha parseado el medio (NO VA)
-	else if (event->type == libvlc_MediaParsedChanged) {
-		MedioEvento->ObtenerDatosParsing();
+	switch (evento->type) {
+		case libvlc_MediaPlayerEncounteredError :
+			PostMessage(_hWndMensajes, WM_MEDIO_TERMINADO, reinterpret_cast<WPARAM>(MedioEvento), 0);
+			App.MostrarToolTipPlayerError(UltimoErrorVLC());
+			break;
+		case libvlc_MediaPlayerEndReached :
+			PostMessage(_hWndMensajes, WM_MEDIO_TERMINADO, reinterpret_cast<WPARAM>(MedioEvento), 0);
+			break;
+		case libvlc_MediaParsedChanged :
+			MedioEvento->ObtenerDatosParsing();
+			break;
+		case libvlc_MediaPlayerPlaying :
+			libvlc_media_player_set_hwnd(static_cast<RaveVLC_Medio*>(_Actual)->_Medio, App.VentanaRave.Video.hWnd());
+			break;
+		case libvlc_MediaSubItemAdded:
+
+			break;
+		case libvlc_MediaSubItemTreeAdded:
+			break;
+		case libvlc_MediaPlayerVout:
+			// TODO: s'ha de fer un click al buto ver video
+			App.VentanaRave.MostrarMarco(ID_BOTON_VIDEO);
+			break;
+		case libvlc_MediaListItemAdded:
+			break;
+		case libvlc_MediaListEndReached:
+			PostMessage(_hWndMensajes, WM_MEDIO_TERMINADO, reinterpret_cast<WPARAM>(MedioEvento), 0);
+			break;
 	}
 }
 
@@ -721,7 +737,7 @@ BOOL CALLBACK Rave_MediaPlayer::EnumeracionVLC(HWND hWndWnd, LPARAM lParam) {
 
 
 LRESULT CALLBACK Rave_MediaPlayer::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	UINT64 T = 0;
+	//UINT64 T = 0;
 	switch (uMsg) {
 		case WM_TIMER :
 /*			switch (static_cast<UINT>(wParam)) {
@@ -737,9 +753,9 @@ LRESULT CALLBACK Rave_MediaPlayer::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 			break;
 
 		case WM_MEDIO_TERMINADO :
-			T = this->_Actual->TiempoTotalMs();
+//			T = this->_Actual->TiempoTotalMs();
 //			if (T != 0) {
-			_TerminarMedio(reinterpret_cast<Rave_Medio*>(wParam));
+				_TerminarMedio(reinterpret_cast<Rave_Medio*>(wParam));
 //			}
 			return 0;
 		
