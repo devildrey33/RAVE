@@ -347,6 +347,7 @@
     <Image Include="..\Iconos\IDI_Tam.ico" />
     <Image Include="..\Iconos\IDI_Terminado.ico" />
     <Image Include="..\Iconos\IDI_Tiempo.ico" />
+    <Image Include="..\Iconos\IDI_Url.ico" />
     <Image Include="..\Iconos\IDI_Video.ico" />
     <Image Include="..\Iconos\IDI_Video2.ico" />
     <Image Include="..\Iconos\IDI_Video3.ico" />

@@ -14,11 +14,14 @@ Rave_Medio *Rave_MediaPlayer::_Actual		= NULL;
 Rave_Medio *Rave_MediaPlayer::_Siguiente	= NULL;
 
 
-Rave_MediaPlayer::Rave_MediaPlayer(void) :  _InstanciaVLC(NULL)
+Rave_MediaPlayer::Rave_MediaPlayer(void) 
 #ifdef RAVE_UTILIZAR_FMOD
 											, _SistemaFMOD(NULL), _CanalMaster(NULL), _DSP(NULL) 
 #endif
 																									{
+	_InstanciaVLC[0] = NULL;
+	_InstanciaVLC[1] = NULL;
+	_InstanciaVLC[2] = NULL;
 }
 
 
@@ -47,12 +50,16 @@ const BOOL Rave_MediaPlayer::Iniciar(void) {
 	Debug_Escribir(L"Rave_MediaPlayer::Iniciar : Cargando LibVLC...\n");
 
 	DWORD t = GetTickCount();
-	_InstanciaVLC = libvlc_new(0, NULL);
-	if (_InstanciaVLC == NULL) {
+	_InstanciaVLC[0] = libvlc_new(0, NULL);
+	_InstanciaVLC[1] = libvlc_new(0, NULL);
+	_InstanciaVLC[2] = libvlc_new(0, NULL);
+	// Error iniciando las instancias
+	if (_InstanciaVLC[0] == NULL || _InstanciaVLC[1] == NULL || _InstanciaVLC[2] == NULL) {
 		Debug_Escribir(L"Rave_MediaPlayer::Iniciar : ERROR Cargando la LibVLC.\n");
 		return FALSE;
 	}
-	const char *ErrorVLC = libvlc_errmsg();
+
+	//	const char *ErrorVLC = libvlc_errmsg();
 	const char *Version = libvlc_get_version();
 	std::wstring StrVersion;
 	DWL::Strings::AnsiToWide(Version, StrVersion);
@@ -136,10 +143,18 @@ void Rave_MediaPlayer::Terminar(void) {
 	KillTimer(_hWnd, ID_TEMPORIZADOR_LISTA);
 
 	// Elimino el VLC
-	if (_InstanciaVLC != NULL) {
-		libvlc_release(_InstanciaVLC);
-		_InstanciaVLC = NULL;
+	if (_InstanciaVLC[0] != NULL) {
+		libvlc_release(_InstanciaVLC[0]);
+		_InstanciaVLC[0] = NULL;
 	}
+	if (_InstanciaVLC[1] != NULL) {
+		libvlc_release(_InstanciaVLC[1]);
+		_InstanciaVLC[1] = NULL;
+	}
+	if (_InstanciaVLC[2] != NULL) {
+		libvlc_release(_InstanciaVLC[2]);
+		_InstanciaVLC[2] = NULL;
+}
 
 #ifdef RAVE_UTILIZAR_FMOD
 	// Elimino el FMOD
@@ -296,6 +311,7 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 
 
 const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente) {
+	size_t InstanciaLibre = 0;
 	if (_Anterior != NULL) _EliminarRaveMedio(_Anterior);
 
 	// Si no es un video el medio actual pasa a ser el anterior
@@ -317,16 +333,18 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 		else {
 			_EliminarRaveMedio(_Siguiente);
 			_Siguiente = NULL;
-			if (Medio.EsFMOD() == FALSE)	_Actual = new RaveVLC_Medio(_InstanciaVLC, Medio);
+			InstanciaLibre = _InstanciaLibre();
+			if (Medio.EsFMOD() == FALSE)	_Actual = new RaveVLC_Medio(_InstanciaVLC[InstanciaLibre], InstanciaLibre, Medio);
 			#ifdef RAVE_UTILIZAR_FMOD
 				else                        _Actual = new RaveFMOD_Medio(_SistemaFMOD, Medio);
 			#endif
 		}
 	}
 
-	// No hay un medio siguiente
+	// No hay un medio siguiente 
 	else {
-		if (Medio.EsFMOD() == FALSE)	_Actual = new RaveVLC_Medio(_InstanciaVLC, Medio);
+		InstanciaLibre = _InstanciaLibre();
+		if (Medio.EsFMOD() == FALSE)	_Actual = new RaveVLC_Medio(_InstanciaVLC[InstanciaLibre], InstanciaLibre, Medio);
 		#ifdef RAVE_UTILIZAR_FMOD
 			else                        _Actual = new RaveFMOD_Medio(_SistemaFMOD, Medio);
 		#endif
@@ -338,7 +356,9 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 		if (MedioSiguiente != NULL) {
 			// Si el medio siguiente no es un video, cargo el medio siguiente.
 			if (MedioSiguiente->TipoMedio != Tipo_Medio_Video) {
-				if (Medio.EsFMOD() == FALSE)	_Siguiente = new RaveVLC_Medio(_InstanciaVLC, *MedioSiguiente);
+				InstanciaLibre = _InstanciaLibre();
+
+				if (Medio.EsFMOD() == FALSE)	_Siguiente = new RaveVLC_Medio(_InstanciaVLC[InstanciaLibre], InstanciaLibre, *MedioSiguiente);
 				#ifdef RAVE_UTILIZAR_FMOD
 					else                        _Siguiente = new RaveFMOD_Medio(_SistemaFMOD, *MedioSiguiente);
 				#endif
@@ -350,6 +370,25 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 		if (_Actual->TxtError.size() == 0) return TRUE;		
 	}
 	return FALSE;
+}
+
+const size_t Rave_MediaPlayer::_InstanciaLibre(void) {
+	BOOL L[3] = { TRUE, TRUE, TRUE };
+	if (_Anterior != NULL) {
+		L[_Anterior->InstanciaNum()] = FALSE;
+	}
+	if (_Actual != NULL) {
+		L[_Actual->InstanciaNum()] = FALSE;
+	}
+	if (_Siguiente != NULL) {
+		L[_Siguiente->InstanciaNum()] = FALSE;
+	}
+	// Busco que instancia esta libre
+	for (size_t i = 0; i < 3; i++) {
+		if (L[i] == TRUE) return i;
+	}
+	// Las 3 están ocupadas!?! devuelvo la 0
+	return 0;
 }
 
 void Rave_MediaPlayer::CerrarMedio(void) {

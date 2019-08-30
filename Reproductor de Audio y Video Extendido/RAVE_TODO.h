@@ -402,10 +402,13 @@
 
 		V  Suport per m3u's de IpTv
 			- No actualitzar temps actual ni total ni la barra
+			- Des-habilitar momentos, i habilitar brillo contraste proporcion i nota
 
 		-  Suport per unitats de red
 
-		-  Adaptar el sistema del VLC per tenir 3 instancies i acabar de fer lo del fade in out
+		V  Adaptar el sistema del VLC per tenir 3 instancies i acabar de fer lo del fade in out
+			V Ara el sistema funciona amb 3 instancies, i sembla que tot funciona...
+				- Falta refer el fade in-out testejar i crear la opcio.
 
 		-  Fer una llista / historial dels ultims 50 medis reproduits a la BD.
 			- Afegir data i hora de la reproducció
@@ -417,6 +420,8 @@
 		-  Les notes menors que 2 s'han de mostrar amb una estrella gris
 
 		-  Suport pel jamendo (mirar si hi ha alguna api...)
+
+		-  Revisar el tema dels subtitols, ara que he afegit els lua i demes..
 
 		-  BD
 			-  Moure les arrels de la BD dels medis a la BD de les opcions

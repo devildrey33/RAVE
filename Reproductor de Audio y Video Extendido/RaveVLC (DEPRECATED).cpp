@@ -1,4 +1,5 @@
 #include "stdafx.h"
+/*
 #include "RaveVLC (DEPRECATED).h"
 #include "VentanaPrecarga.h"
 #include "DStringUtils.h"
@@ -295,12 +296,7 @@ void RaveVLC::TiempoStr(UINT64 TMS, std::wstring &StrTiempo) {
 	else              StrTiempo += L"0" + std::to_wstring(Segundos);
 }
 
-/*
-void RaveVLC2::TiempoStr(UINT64 TMS, wchar_t *StrTiempo) {                                      //
-	int min = static_cast<int>(((TMS / 1000) / 60)); // -(temp.tm_hour * 60));
-	int sec = static_cast<int>((TMS / 1000) - (min * 60)); // -((temp.tm_hour * 60) * 60));
-	swprintf(StrTiempo, 256, TEXT("%.2d:%.2d"), min, sec);
-}*/
+
 
 // Necesito encontrar la ventana del VLC que se crea dentro del VerVideo para repintar el fondo negro
 BOOL CALLBACK RaveVLC::EnumeracionVLC(HWND hWndWnd, LPARAM lParam) {
@@ -309,13 +305,6 @@ BOOL CALLBACK RaveVLC::EnumeracionVLC(HWND hWndWnd, LPARAM lParam) {
 	return FALSE;
 }
 
-/*
-void RaveVLC::Evento_Temporizador(const UINT_PTR cID) {
-	switch (cID) {
-		case ID_TEMPORIZADOR_TIEMPO : Temporizador_Tiempo();		break;
-		case ID_TEMPORIZADOR_LISTA  : Temporizador_Lista();			break;
-	}
-}*/
 
 // Temporizador que controla la reproducción de la lista
 void RaveVLC::Temporizador_Lista(void) {
@@ -344,43 +333,6 @@ void RaveVLC::Temporizador_Lista(void) {
 	}
 
 
-	// Tiempo para el fade in out
-/*	else if (Estado == EnPlay) {
-		UINT64        TTotalMS  = TiempoTotalMs();
-		UINT64        TActualMS = TiempoActualMs();
-
-		if (TTotalMS < App.Opciones.EfectoFadeAudioMS() || _Actual == NULL || _Siguiente == NULL) return;
-
-		if (TTotalMS - App.Opciones.EfectoFadeAudioMS() < TActualMS) {
-			// cambio el medio actual
-			App.VentanaRave.Lista.MedioActual = App.VentanaRave.Lista.MedioSiguiente(App.VentanaRave.Lista.MedioActual);
-
-
-			_Siguiente->Volumen(0, FALSE);
-			_Siguiente->Play();
-
-			BDMedio NCan, NCan2;
-			App.BD.ObtenerMedio(App.VentanaRave.Lista.MedioActual->Hash, NCan);
-			ItemMedio *IMS = App.VentanaRave.Lista.MedioSiguiente(App.VentanaRave.Lista.MedioActual);
-			if (IMS == NULL) {
-				if (AbrirMedio(NCan, NULL) == FALSE) App.VentanaRave.Lista.Errores++;
-			}
-			else {
-				App.BD.ObtenerMedio(IMS->Hash, NCan2);
-				if (AbrirMedio(NCan, &NCan2) == FALSE) App.VentanaRave.Lista.Errores++;
-			}
-			// efecto fade in out
-			if (_Anterior != NULL && _Actual != NULL) {
-				Debug_Escribir(L"RaveVLC::Temporizador_Lista Fade in out\n");
-				if (_Anterior->Medio.TipoMedio != Tipo_Medio_Video && _Actual->Medio.TipoMedio != Tipo_Medio_Video) {
-					_Anterior->FadeOut();
-					_Actual->FadeIn();
-				}
-			}
-
-		}
-
-	}*/
 }
 
 // Temporizador que refresca el tiempo en las barras y labels
@@ -431,3 +383,4 @@ void RaveVLC::Temporizador_Tiempo(void) {
 
 
 }
+*/

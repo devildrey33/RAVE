@@ -1,5 +1,5 @@
 #pragma once
-
+/*
 #include "RaveVLC_Medio.h"
 #include "DTemporizador.h"
 
@@ -72,3 +72,5 @@ class RaveVLC : public DWL::DTemporizador {
 	libvlc_instance_t		  *_Instancia;
 };
 
+
+*/

@@ -16,6 +16,8 @@ void VentanaObtenerURL::Mostrar(void) {
 	EditURL.Placeholder = L"Introduce la URL que deseas abrir";
 	BotonAbrir.CrearBotonEx(this, L"Abrir", RC.right - 110, 10, 100, 30, ID_ABRIR);
 	Visible(TRUE);
+	// Asigno el foco del teclado al editbox
+	SetFocus(EditURL.hWnd());
 }
 
 void VentanaObtenerURL::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse& DatosMouse) {

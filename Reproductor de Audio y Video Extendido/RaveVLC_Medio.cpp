@@ -6,7 +6,7 @@
 #include "Rave_MediaPlayer.h"
 
 
-RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : Rave_Medio(nMedio), _Medio(NULL), _Eventos(NULL),  /*TiempoTotal(0) */ _Parseado(FALSE) {
+RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t *Instancia, const size_t nInstanciaNum, BDMedio &nMedio) : Rave_Medio(nMedio), _Medio(NULL), _Eventos(NULL),  _InstanciaVLC(nInstanciaNum), _Parseado(FALSE) {
 
 	App.MenuVideoFiltros->Menu(0)->BarraValor(Medio.Brillo);		// Brillo
 	App.MenuVideoFiltros->Menu(1)->BarraValor(Medio.Contraste);		// Contraste
@@ -53,13 +53,13 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : Ra
 	_Eventos = libvlc_media_player_event_manager(_Medio);
 	//	libvlc_event_attach(_Eventos, libvlc_MediaStateChanged, EventosVLC, this);				// no va
 	//	libvlc_event_attach(_Eventos, libvlc_MediaDurationChanged, EventosVLC, this);			// no va (igual amb streaming si...)
-	int r = libvlc_event_attach(_Eventos, libvlc_MediaPlayerEndReached,		  Rave_MediaPlayer::EventosVLC, this);
-	r = libvlc_event_attach(_Eventos, libvlc_MediaPlayerEncounteredError, Rave_MediaPlayer::EventosVLC, this);	// errors
-	r = libvlc_event_attach(_Eventos, libvlc_MediaParsedChanged, Rave_MediaPlayer::EventosVLC, this);	// no va
-	r = libvlc_event_attach(_Eventos, libvlc_MediaPlayerPlaying, Rave_MediaPlayer::EventosVLC, this);	// para detectar cuando empieza a reproducirse (necesario para los m3us iptv)
-	r = libvlc_event_attach(_Eventos, libvlc_MediaSubItemAdded, Rave_MediaPlayer::EventosVLC, this);	// 
-	r = libvlc_event_attach(_Eventos, libvlc_MediaSubItemTreeAdded, Rave_MediaPlayer::EventosVLC, this);	// 
-	r = libvlc_event_attach(_Eventos, libvlc_MediaPlayerVout, Rave_MediaPlayer::EventosVLC, this);	// 
+	libvlc_event_attach(_Eventos, libvlc_MediaPlayerEndReached			, Rave_MediaPlayer::EventosVLC, this);
+	libvlc_event_attach(_Eventos, libvlc_MediaPlayerEncounteredError	, Rave_MediaPlayer::EventosVLC, this);	// errors
+	libvlc_event_attach(_Eventos, libvlc_MediaParsedChanged				, Rave_MediaPlayer::EventosVLC, this);	// no va
+	libvlc_event_attach(_Eventos, libvlc_MediaPlayerPlaying				, Rave_MediaPlayer::EventosVLC, this);	// para detectar cuando empieza a reproducirse (necesario para los m3us iptv)
+	libvlc_event_attach(_Eventos, libvlc_MediaSubItemAdded				, Rave_MediaPlayer::EventosVLC, this);	// 
+	libvlc_event_attach(_Eventos, libvlc_MediaSubItemTreeAdded			, Rave_MediaPlayer::EventosVLC, this);	// 
+	libvlc_event_attach(_Eventos, libvlc_MediaPlayerVout				, Rave_MediaPlayer::EventosVLC, this);	// 
 	
 	// Desactiva los eventos del mouse y del teclado dentro de la ventana del vlc 
 	libvlc_video_set_mouse_input(_Medio, false);
@@ -91,7 +91,7 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t	*Instancia, BDMedio &nMedio) : Ra
 
 //	ComprobarMomento();
 
-	Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio Path '%s'\n", Medio.Path.c_str());	
+	Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio Path '%s', InstanciaNum : %d\n", Medio.Path.c_str(), nInstanciaNum);
 }
 
 
@@ -104,13 +104,13 @@ void RaveVLC_Medio::Eliminar(void) {
 	//	hWndVLC = NULL;
 	if (_Medio != NULL) {
 		Debug_Escribir_Varg(L"RaveVLC_Medio::~RaveVLC_Medio '%s' \n", Medio.Path.c_str());
-		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEndReached, Rave_MediaPlayer::EventosVLC, this);
+		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEndReached		, Rave_MediaPlayer::EventosVLC, this);
 		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEncounteredError, Rave_MediaPlayer::EventosVLC, this);
-		libvlc_event_detach(_Eventos, libvlc_MediaParsedChanged, Rave_MediaPlayer::EventosVLC, this);
-		libvlc_event_detach(_Eventos, libvlc_MediaPlayerPlaying, Rave_MediaPlayer::EventosVLC, this);
-		libvlc_event_detach(_Eventos, libvlc_MediaSubItemAdded, Rave_MediaPlayer::EventosVLC, this);
-		libvlc_event_detach(_Eventos, libvlc_MediaSubItemTreeAdded, Rave_MediaPlayer::EventosVLC, this);
-		libvlc_event_detach(_Eventos, libvlc_MediaPlayerVout, Rave_MediaPlayer::EventosVLC, this);
+		libvlc_event_detach(_Eventos, libvlc_MediaParsedChanged			, Rave_MediaPlayer::EventosVLC, this);
+		libvlc_event_detach(_Eventos, libvlc_MediaPlayerPlaying			, Rave_MediaPlayer::EventosVLC, this);
+		libvlc_event_detach(_Eventos, libvlc_MediaSubItemAdded			, Rave_MediaPlayer::EventosVLC, this);
+		libvlc_event_detach(_Eventos, libvlc_MediaSubItemTreeAdded		, Rave_MediaPlayer::EventosVLC, this);
+		libvlc_event_detach(_Eventos, libvlc_MediaPlayerVout			, Rave_MediaPlayer::EventosVLC, this);
 
 		Stop();
 		libvlc_media_player_release(_Medio);
@@ -157,6 +157,7 @@ const BOOL RaveVLC_Medio::Stop(void) {
 		//hWndVLC = NULL;
 
 		SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, TRUE, NULL, TRUE); // Activo protector de pantalla
+
 		// Elimino la región del clip
 		RECT RC;
 		GetClientRect(App.VentanaRave.hWnd(), &RC);

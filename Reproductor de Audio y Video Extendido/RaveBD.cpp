@@ -896,8 +896,14 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 		PathCortado[0] = L'?';
 	}
 
+	// Busco el caracter ?, y lo elimino junto a todo el texto que tenga detrás
+//	size_t PosDelimitadorPHP = PathCortado.find(L'?');
+//	if ( ==)
+
 	// Asigno el delimitador del nombre (por defecto es '\\', pero si es un medio de internet es '/')
 	wchar_t				DelimitadorNombre	= (Ubicacion != Ubicacion_Medio_Internet)  ? L'\\' : L'/';
+
+	wchar_t             DelimitadorPHP      = L'?';
 
 	size_t				PosNombre			= nPath.find_last_of(DelimitadorNombre);																			// Posición donde empieza el nombre
 	size_t				PosExtension		= nPath.find_last_of(L'.');																							// Posición donde empieza la extensión
@@ -914,7 +920,8 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 
 	switch (Tipo) {
 		case Tipo_Medio_INDEFINIDO:
-			return FALSE;
+			if (Ubicacion != Ubicacion_Medio_Internet)	return FALSE;
+			break;
 		case Tipo_Medio_Audio:
 			// Obtengo el nombre del disco
 			if (PathSeparado.Total() > 1) {
