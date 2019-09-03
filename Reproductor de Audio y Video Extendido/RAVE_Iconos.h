@@ -15,5 +15,6 @@ enum RAVE_Iconos {
 	RAVE_Icono_Lista		= IDI_AGREGARLISTA,
 	RAVE_Icono_Play			= IDI_PLAY3,
 	RAVE_Icono_Pausa		= IDI_PAUSA3,
-	RAVE_Icono_IpTv			= IDI_IPTV
+	RAVE_Icono_IpTv			= IDI_IPTV,
+	RAVE_Icono_Interrogante = IDI_INTERROGANTE
 };

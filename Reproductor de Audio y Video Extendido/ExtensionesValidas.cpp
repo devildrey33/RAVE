@@ -85,6 +85,7 @@ const Tipo_Medio ExtensionesValidas::ObtenerTipoMedio(const Extension_Medio Exte
 		case Extension_OGX:		case Extension_PS:		case Extension_RM:		case Extension_RMVB:	case Extension_SDP:		case Extension_TOD:		case Extension_TS:		case Extension_VOB:
 		case Extension_VRO:		case Extension_WMV:		case Extension_CRDOWNLOAD:						case Extension_OPDOWNLOAD:
 			return Tipo_Medio_Video;
+		// El Tipo_Medio_IpTv solo se puede obtener una vez cargado el M3u desde una URL
 		case Extension_FLAC:	case Extension_MID:		case Extension_MP2:		case Extension_MP3:		case Extension_S3M:		case Extension_WAV:		case Extension_WEBM:	case Extension_WMA:	
 		case Extension_XM:		case Extension_OGG:		case Extension_MOD:		case Extension_MPC:
 			return Tipo_Medio_Audio;

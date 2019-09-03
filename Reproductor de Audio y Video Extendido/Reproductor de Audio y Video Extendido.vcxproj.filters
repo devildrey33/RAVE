@@ -523,6 +523,9 @@
     <Image Include="..\Iconos\IDI_Url.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
+    <Image Include="..\Iconos\IDI_Interrogante.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">

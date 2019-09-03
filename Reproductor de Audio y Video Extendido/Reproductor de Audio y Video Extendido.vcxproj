@@ -321,6 +321,7 @@
     <Image Include="..\Iconos\IDI_Filtros.ico" />
     <Image Include="..\Iconos\IDI_Genero.ico" />
     <Image Include="..\Iconos\IDI_Grupo.ico" />
+    <Image Include="..\Iconos\IDI_Interrogante.ico" />
     <Image Include="..\Iconos\IDI_IpTv.ico" />
     <Image Include="..\Iconos\IDI_ListaAleatoria.ico" />
     <Image Include="..\Iconos\IDI_Momento.ico" />

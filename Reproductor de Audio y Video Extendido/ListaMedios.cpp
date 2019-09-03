@@ -23,18 +23,24 @@ const LONG_PTR ListaMedios::PosMedio(ItemMedio *pMedio) {
 
 // Obtiene el medio anterior (Si no hay medio anterior y SituarAlFinal es TRUE devuelve el ultimo Medio, Si SituarAlFinal es FALSE devolverá NULL)
 ItemMedio *ListaMedios::MedioAnterior(ItemMedio *nMedio, const BOOL SituarAlFinal) {
-	ItemMedio *Ret = NULL;
+	ItemMedio *Ret = nullptr;
 	// Si no hay items, asigno el medio actual a NULL y salgo
 	if (_Items.size() != 0) {
-		// Si el medio actual es NULL o es el primer medio de la lista, lo asigno al final de la lista
-		if (nMedio == NULL || nMedio == static_cast<ItemMedio *>(_Items[0])) {
-			Ret = static_cast<ItemMedio *>(_Items[_Items.size() - 1]);
+		// Si no se ha especificado ningun medio, devolvemos el ultimo
+		if (nMedio == nullptr) {
+			Ret = static_cast<ItemMedio*>(_Items[_Items.size() - 1]);
 		}
-		// No es el primero de la lista, retrocedo un medio
 		else {
-			LONG_PTR Pm = PosMedio(nMedio);
-			if (Pm > 0 && SituarAlFinal == TRUE) {
-				Ret = static_cast<ItemMedio *>(_Items[Pm - 1]);
+			// Si el medio actual es el primer medio de la lista, lo asigno al final de la lista
+			if (nMedio == static_cast<ItemMedio*>(_Items[0])) {
+				Ret = static_cast<ItemMedio*>(_Items[_Items.size() - 1]);
+			}
+			// No es el primero de la lista, retrocedo un medio
+			else {
+				LONG_PTR Pm = PosMedio(nMedio);
+				if (Pm > 0 && SituarAlFinal == TRUE) {
+					Ret = static_cast<ItemMedio*>(_Items[Pm - 1]);
+				}
 			}
 		}
 	}
@@ -42,18 +48,26 @@ ItemMedio *ListaMedios::MedioAnterior(ItemMedio *nMedio, const BOOL SituarAlFina
 }
 
 ItemMedio *ListaMedios::MedioSiguiente(ItemMedio *nMedio) {
-	ItemMedio *Ret = NULL;
+	ItemMedio *Ret = nullptr;
 	// Si no hay items, asigno el medio actual a NULL y salgo
 	if (_Items.size() != 0) {
-		// Si el medio actual es el ultimo de la lista
-		if (nMedio == NULL || nMedio == static_cast<ItemMedio *>(_Items[_Items.size() - 1])) {
-			Ret = static_cast<ItemMedio *>(_Items[0]);
+		// Si no se ha especificado ningun medio, devolvemos el primero
+		if (nMedio == nullptr) {
+			Ret = static_cast<ItemMedio*>(_Items[0]);
 		}
-		// No es el ultimo de la lista
 		else {
-			LONG_PTR Pm = PosMedio(nMedio);
-			if (Pm > -1 && Pm < static_cast<LONG_PTR>(_Items.size())) {
-				Ret = static_cast<ItemMedio *>(_Items[Pm + 1]);
+			// Si el medio actual es el ultimo de la lista
+			if (nMedio == static_cast<ItemMedio*>(_Items[_Items.size() - 1])) {
+				// Si la lista tiene mas de 1 medio
+				if (_Items.size() > 1)
+					Ret = static_cast<ItemMedio*>(_Items[0]);
+			}
+			// No es el ultimo de la lista
+			else {
+				LONG_PTR Pm = PosMedio(nMedio);
+				if (Pm > -1 && Pm < static_cast<LONG_PTR>(_Items.size())) {
+					Ret = static_cast<ItemMedio*>(_Items[Pm + 1]);
+				}
 			}
 		}
 	}
@@ -183,7 +197,7 @@ ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {
 	
 
 	// Miro el icono que necesita el medio
-	int nIcono = RAVE_Iconos::RAVE_Icono_Cancion;
+	int nIcono = RAVE_Iconos::RAVE_Icono_Interrogante;
 	switch (nMedio->TipoMedio) {
 		case Tipo_Medio_Audio: nIcono = RAVE_Iconos::RAVE_Icono_Cancion;	break;
 		case Tipo_Medio_Video: nIcono = RAVE_Iconos::RAVE_Icono_Video;		break;

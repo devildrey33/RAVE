@@ -332,7 +332,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_50MEDIOS								, L"Aleatória con 50 Medios"	, IDI_TERMINADO);
 		Menu->AgregarSeparador();
 		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_NOTA									, L"Por Nota"					, IDI_NOTA);
-	VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_AGREGAR_URL				, L"Agregar URL"					, IDI_LISTAALEATORIA);
+	VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_AGREGAR_URL				, L"Agregar URL"					, IDI_URL);
 
 	// Menu Repetir
 	VentanaRave.Menu_Repetir.AgregarMenu(ID_REPETIR_NO					, L"Desactivado"		, IDI_NOCHECK);

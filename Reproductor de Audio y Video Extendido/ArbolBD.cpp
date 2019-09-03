@@ -125,8 +125,8 @@ const BOOL ArbolBD::AgregarNodoALista(NodoBD *nNodo) {
 			break;
 		case RAVE_Icono_Raiz :		 // Raiz 
 		case RAVE_Icono_Directorio : // Directorio
-			SqlStr = L"SELECT * FROM Medios WHERE Path LIKE \"?" + Path.substr(1) + L"%\" COLLATE NOCASE";	// Path.substr(1) se salta la letra de la unidad y deja el path sin letra/unidad.
-			break;																							// La letra de unidad se substituye normalmente por '?' ya que puede ser un medio extraible y no tiene por que estar siempre en la misma letra
+			SqlStr = L"SELECT * FROM Medios WHERE Path LIKE \"?" + Path.substr(1) + L"%\" COLLATE NOCASE ORDER BY GrupoPath, DiscoPath, PistaPath, PistaTag ASC";	// Path.substr(1) se salta la letra de la unidad y deja el path sin letra/unidad.
+			break;																											// La letra de unidad se substituye normalmente por '?' ya que puede ser un medio extraible y no tiene por que estar siempre en la misma letra
 	}
 
 	sqlite3_stmt   *SqlQuery = NULL;
@@ -197,6 +197,7 @@ void ArbolBD::_AgregarMedio(NodoBD *nPadre, BDMedio *nMedio) {
 				switch (nMedio->TipoMedio) {
 					case Tipo_Medio_Audio:	Tipo = ArbolBD_TipoNodo_Cancion;		break;
 					case Tipo_Medio_Video:	Tipo = ArbolBD_TipoNodo_Video;			break;
+					case Tipo_Medio_IpTv:	Tipo = ArbolBD_TipoNodo_IpTv;			break;
 					case Tipo_Medio_Lista:	Tipo = ArbolBD_TipoNodo_ListaCanciones;	break;
 				}
 				Tmp = AgregarBDNodo(Tipo, TmpPadre, Filtrado.c_str(), nMedio->Hash, nMedio->Id);
@@ -322,6 +323,7 @@ void ArbolBD::ExplorarPath(NodoBD *nNodo) {
 					switch (mTipoMedio) {
 						case Tipo_Medio_Audio:		mTipoNodo = ArbolBD_TipoNodo_Cancion;			break;
 						case Tipo_Medio_Video:		mTipoNodo = ArbolBD_TipoNodo_Video;				break;
+						case Tipo_Medio_IpTv:		mTipoNodo = ArbolBD_TipoNodo_IpTv;				break;
 						case Tipo_Medio_Lista:		mTipoNodo = ArbolBD_TipoNodo_ListaCanciones;	break;
 					}
 					AgregarBDNodo(mTipoNodo, static_cast<NodoBD *>(nNodo), nTmpTxt.c_str(), mHash, mId);

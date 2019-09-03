@@ -11,6 +11,7 @@ enum ArbolBD_TipoNodo {
 	ArbolBD_TipoNodo_Disco,
 	ArbolBD_TipoNodo_Cancion,
 	ArbolBD_TipoNodo_Video,
+	ArbolBD_TipoNodo_IpTv,
 	ArbolBD_TipoNodo_PistaCDAudio,
 	ArbolBD_TipoNodo_ListaCanciones,
 	ArbolBD_TipoNodo_Subtitulos,

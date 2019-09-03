@@ -312,16 +312,23 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 
 const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente) {
 	size_t InstanciaLibre = 0;
-	if (_Anterior != NULL) _EliminarRaveMedio(_Anterior);
+	if (_Anterior != NULL) {
+		_EliminarRaveMedio(_Anterior);
+		_Anterior = NULL;
+	}
 
 	// Si no es un video el medio actual pasa a ser el anterior
-	if (Medio.TipoMedio != Tipo_Medio_Video) {
+	if (Medio.TipoMedio != Tipo_Medio_Video && Medio.TipoMedio != Tipo_Medio_IpTv) {
 		_Anterior = _Actual;
+		_Actual = NULL;
 	}
 	// Si es un video, elimino el medio actual
 	else {
 		_Anterior = NULL;
-		if (_Actual != NULL) _EliminarRaveMedio(_Actual);
+		if (_Actual != NULL) {
+			_EliminarRaveMedio(_Actual);
+			_Actual = NULL;
+		}
 	}
 
 	// Existe un medio siguiente cargado y tiene la misma id que el medio actual
@@ -342,7 +349,7 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 	}
 
 	// No hay un medio siguiente 
-	else {
+	else {		
 		InstanciaLibre = _InstanciaLibre();
 		if (Medio.EsFMOD() == FALSE)	_Actual = new RaveVLC_Medio(_InstanciaVLC[InstanciaLibre], InstanciaLibre, Medio);
 		#ifdef RAVE_UTILIZAR_FMOD
@@ -350,12 +357,12 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 		#endif
 	}
 
-	// Si el medio actual no es un video
-	if (Medio.TipoMedio != Tipo_Medio_Video) {
+	// Si el medio actual no es un video / iptv
+	if (Medio.TipoMedio != Tipo_Medio_Video && Medio.TipoMedio != Tipo_Medio_IpTv) {
 		// Si el medio siguiente existe
 		if (MedioSiguiente != NULL) {
-			// Si el medio siguiente no es un video, cargo el medio siguiente.
-			if (MedioSiguiente->TipoMedio != Tipo_Medio_Video) {
+			// Si el medio siguiente no es un video / iptv, cargo el medio siguiente.
+			if (MedioSiguiente->TipoMedio != Tipo_Medio_Video && MedioSiguiente->TipoMedio != Tipo_Medio_IpTv) {
 				InstanciaLibre = _InstanciaLibre();
 
 				if (Medio.EsFMOD() == FALSE)	_Siguiente = new RaveVLC_Medio(_InstanciaVLC[InstanciaLibre], InstanciaLibre, *MedioSiguiente);

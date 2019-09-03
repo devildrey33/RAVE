@@ -277,9 +277,11 @@ void VentanaPrincipal::Lista_Pausa(void) {
 void VentanaPrincipal::Lista_Play(void) {
 	if (Lista.TotalItems() == 0) return;
 
-	if (Lista.MedioActual == NULL) {
+	if (Lista.MedioActual == nullptr) {
 		Lista.MedioActual = Lista.MedioSiguiente(NULL);
 	}
+/*	if (Lista.MedioActual == nullptr) 
+return; */
 
 	Lista.Errores = 0;
 	BDMedio NCan, NCan2;

@@ -17,11 +17,12 @@ void Rave_Medio::ComprobarMomento(void) {
 */
 void Rave_Medio::ActualizarIconos(int nTipo) {
 	if (Medio.Hash != 0) {
-		int nIcono = 0;
+		int nIcono = RAVE_Iconos::RAVE_Icono_Interrogante;
 		switch (nTipo) {
 			case 0: // normal
-				if (Medio.TipoMedio == Tipo_Medio::Tipo_Medio_Audio) nIcono = RAVE_Iconos::RAVE_Icono_Cancion; // IDI_CANCION
-				if (Medio.TipoMedio == Tipo_Medio::Tipo_Medio_Video) nIcono = RAVE_Iconos::RAVE_Icono_Video; // IDI_VIDEO
+				if (Medio.TipoMedio == Tipo_Medio::Tipo_Medio_Audio) nIcono = RAVE_Iconos::RAVE_Icono_Cancion;	// IDI_CANCION
+				if (Medio.TipoMedio == Tipo_Medio::Tipo_Medio_Video) nIcono = RAVE_Iconos::RAVE_Icono_Video;	// IDI_VIDEO
+				if (Medio.TipoMedio == Tipo_Medio::Tipo_Medio_IpTv)  nIcono = RAVE_Iconos::RAVE_Icono_IpTv;		// IDI_IPTV
 				break;
 			case 1:
 				nIcono = RAVE_Iconos::RAVE_Icono_Play; // play

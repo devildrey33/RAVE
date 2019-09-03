@@ -433,7 +433,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 					Rand = App.Rand<size_t>(Etiquetas.size());
 				} while (Etiquetas[Rand]->Medios < 5 && Intentos++ < MAX_INTENTOS);
 			}
-			Q = L"SELECT * FROM Medios WHERE Genero=\"" + Etiquetas[Rand]->Texto + L"\"";
+			Q = L"SELECT * FROM Medios WHERE Genero=\"" + Etiquetas[Rand]->Texto + L"\" ORDER BY GrupoPath, DiscoPath, PistaPath, PistaTag ASC";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Genero (%s)\n", Etiquetas[Rand]->Texto.c_str());
 			Mezclar = App.Opciones.MezclarListaGenero();
 			break;
@@ -451,7 +451,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 					Rand = App.Rand<size_t>(Etiquetas.size());
 				} while (Etiquetas[Rand]->Medios < 5 && Intentos++ < MAX_INTENTOS);
 			}
-			Q = L"SELECT * FROM Medios WHERE (GrupoPath=\"" + Etiquetas[Rand]->Texto + L"\") OR (GrupoTag=\"" + Etiquetas[Rand]->Texto + L"\")";
+			Q = L"SELECT * FROM Medios WHERE (GrupoPath=\"" + Etiquetas[Rand]->Texto + L"\") OR (GrupoTag=\"" + Etiquetas[Rand]->Texto + L"\") ORDER BY DiscoPath, PistaPath, PistaTag ASC";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Grupo (%s)\n", Etiquetas[Rand]->Texto.c_str());
 			Mezclar = App.Opciones.MezclarListaGrupo();
 			break;
@@ -469,7 +469,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 					Rand = App.Rand<size_t>(Etiquetas.size());
 				} while (Etiquetas[Rand]->Medios < 5 && Intentos++ < MAX_INTENTOS);
 			}
-			Q = L"SELECT * FROM Medios WHERE (DiscoPath=\"" + Etiquetas[Rand]->Texto + L"\") OR (DiscoTag=\"" + Etiquetas[Rand]->Texto + L"\")";
+			Q = L"SELECT * FROM Medios WHERE (DiscoPath=\"" + Etiquetas[Rand]->Texto + L"\") OR (DiscoTag=\"" + Etiquetas[Rand]->Texto + L"\") ORDER BY PistaPath, PistaTag ASC";
 			Debug_Escribir_Varg(L"RaveBD::GenerarListaAleatoria Tipo : Disco (%s)\n", Etiquetas[Rand]->Texto.c_str());
 			Mezclar = App.Opciones.MezclarListaDisco();
 			break;
@@ -920,6 +920,7 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 
 	switch (Tipo) {
 		case Tipo_Medio_INDEFINIDO:
+			// Los tipos de medio indefinido locales se ignoran
 			if (Ubicacion != Ubicacion_Medio_Internet)	return FALSE;
 			break;
 		case Tipo_Medio_Audio:

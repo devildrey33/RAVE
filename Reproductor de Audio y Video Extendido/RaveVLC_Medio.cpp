@@ -190,7 +190,7 @@ const BOOL RaveVLC_Medio::Play(void) {
 //			ActualizarIconos(1);
 
 
-			if (Medio.TipoMedio == Tipo_Medio_Video) { // Desactivo el protector de pantalla si es un video
+			if (Medio.TipoMedio == Tipo_Medio_Video || Medio.TipoMedio == Tipo_Medio_IpTv) { // Desactivo el protector de pantalla si es un video
 				SetTimer(Rave_MediaPlayer::_hWndMensajes, TIMER_OBTENERVLCWND, 100, NULL);
 				SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, FALSE, NULL, TRUE);
 			}
@@ -441,7 +441,7 @@ const BOOL RaveVLC_Medio::ObtenerDatosParsing(void) {
 		// Enumero los subtitulos
 		EnumerarSubtitulos();
 
-		BOOL EsVideo = (Medio.TipoMedio == Tipo_Medio_Video);
+		BOOL EsVideo = (Medio.TipoMedio == Tipo_Medio_Video || Medio.TipoMedio == Tipo_Medio_IpTv);
 
 		// Activo / desactivo el menú de la proporción según el tipo de medio (audio / video)
 		App.MenuVideoProporcion->Activado(EsVideo);
