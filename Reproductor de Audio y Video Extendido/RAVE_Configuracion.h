@@ -1,8 +1,8 @@
 // Configuración para compilar RAVE
 
 // Versión y titulo
-#define RAVE_VERSION			0, 6, 0, 1
-#define RAVE_VERSIONSTR			L"0.601f"
+#define RAVE_VERSION			0, 6, 0, 2
+#define RAVE_VERSIONSTR			L"0.602"
 #define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
 #define RAVE_VERSIONBD          L"1.2"
 #define RAVE_VERSIONOPCIONES    L"1.1"
@@ -27,7 +27,7 @@
 	#define RAVE_IGNORAR_LISTA_INICIO
 
 	// Muestra la ventana para alertar de un error crítico (OJO si quieres enviar el dump, requiere tener un dump creado)
-	//#define RAVE_MOSTRAR_ERRORCRITICO
+	//#define RAVE_MOSTRAR_ERRORCRITICO	
 
 	// Simula un error crítico y luego invoca una nueva instancia que muestra el error crítico
 	//#define RAVE_SIMULAR_ERRORCRITICO

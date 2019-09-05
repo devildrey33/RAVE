@@ -54,6 +54,10 @@ class Rave_Medio {
 	  virtual const int             EnumerarSubtitulos(void)                                { return 0; };
 	  virtual const Rave_Medio_Tipo Tipo(void)												{ return Rave_Medio_Tipo_NADA; };
 
+	  virtual void                  FadeIn(void)											{ };
+	  virtual void                  FadeOut(void)											{ };
+
+
 	  virtual const BOOL			ObtenerDatosParsing(void)								{ return FALSE; };
 
 									// Obtiene el numero de instancia que se esta usando del VLC

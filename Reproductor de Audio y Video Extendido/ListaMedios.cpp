@@ -123,6 +123,8 @@ void ListaMedios::_ParsearM3u(std::wstring &PathM3u, const char *Datos) {
 	wchar_t			Delimitador = (BDMedio::Ubicacion(PathM3u) == Ubicacion_Medio_Internet) ? L'/' : L'\\';
 	// Busco la ultima barra del path
 	size_t			Barra = PathM3u.find_last_of(Delimitador);
+	size_t          Punto = PathM3u.find_last_of(L'.');
+	Extension_Medio	Extension =	ExtensionesValidas::ObtenerExtension(PathM3u.substr(Punto + 1, (PathM3u.size() - Punto) - 1).c_str());
 	std::string		Path, PathArchivo;
 	std::wstring	PathFinal;
 	BDMedio         Medio;
@@ -151,7 +153,11 @@ void ListaMedios::_ParsearM3u(std::wstring &PathM3u, const char *Datos) {
 				PathArchivo = Path + Lineas[i];
 			}
 
-			DWL::Strings::AnsiToWide(PathArchivo.c_str(), PathFinal);
+			// Los M3U son ansi, y los M3U8 son UTF8
+			if (Extension == Extension_M3U)	DWL::Strings::AnsiToWide(PathArchivo.c_str(), PathFinal);			
+			else							DWL::Strings::UTF8ToWide(PathArchivo.c_str(), PathFinal);
+
+
 			// pre-analizo el medio y lo inserto en la base de datos
 			if (App.BD.AnalizarMedio(PathFinal, Medio) == 2) {
 				// El medio ya existia, lo recargo

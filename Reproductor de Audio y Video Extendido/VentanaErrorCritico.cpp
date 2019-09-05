@@ -21,7 +21,7 @@ VentanaErrorCritico::~VentanaErrorCritico(void) {
 
 
 HWND VentanaErrorCritico::Crear(void) {
-	CrearVentana(NULL, L"Rave_ErrorCritico", L"Error crítico", 100, 100, 440, 340, WS_OVERLAPPEDWINDOW | WS_VISIBLE, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+	CrearVentana(NULL, L"Rave_ErrorCritico", L"Error crítico", 100, 100, 440, 300, WS_OVERLAPPEDWINDOW | WS_VISIBLE, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 	
 	RECT RC;
 	GetClientRect(hWnd(), &RC);

@@ -423,6 +423,8 @@
 
 		-  Revisar el tema dels subtitols, ara que he afegit els lua i demes..
 
+		-  Lo de enviar els dump ja no funciona... m'han cambiat el auth... i ara necesito smtp
+
 		-  BD
 			-  Moure les arrels de la BD dels medis a la BD de les opcions
 			-  Crear taula a les opcions per guardar les posicions i tamanys de les finestres, i treure tot el barullo de PosX PosY de les opcions.

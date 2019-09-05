@@ -90,14 +90,13 @@ NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre,
 	nNodo->Id		= nId;
 	nNodo->TipoNodo = nTipoNodo;
 	nNodo->MostrarExpansor(nExpansor);
-	return nNodo;
-	
+	return nNodo;	
 }
 
 
 
 
-const BOOL ArbolBD::AgregarNodoALista(NodoBD *nNodo) {
+const size_t ArbolBD::AgregarNodoALista(NodoBD *nNodo) {
 	if (nNodo == NULL) return FALSE;
 	NodoBD *TmpNodo = static_cast<NodoBD *>(nNodo);
 	sqlite3_int64 Hash = TmpNodo->Hash;
@@ -106,13 +105,11 @@ const BOOL ArbolBD::AgregarNodoALista(NodoBD *nNodo) {
 	std::wstring Path, TmpStr;
 
 	if (Hash == 0) { // Si no hay hash es que el nodo contiene uno o mas hijos
-
 		while (TmpNodo->Padre() != NULL) {
 			if (TmpNodo->IDIcono() == RAVE_Icono_Raiz)	{	Path = TmpNodo->Texto + Path;				}
 			else										{	Path = TmpNodo->Texto + L"\\" + Path;		}
 			TmpNodo = static_cast<NodoBD *>(TmpNodo->Padre());
 		}
-
 	}
 
 	std::wstring SqlStr;
@@ -136,13 +133,17 @@ const BOOL ArbolBD::AgregarNodoALista(NodoBD *nNodo) {
 		return FALSE;
 	}
 
-	int VecesBusy = 0;
+	int		VecesBusy		= 0;
+	size_t	MediosAgregados = 0;
+
 	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_MISUSE) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
 			BDMedio *Medio = new BDMedio(SqlQuery, App.BD.Unidades);
 			
-			App.VentanaRave.Lista.AgregarMedio(Medio);
+			if (App.VentanaRave.Lista.AgregarMedio(Medio) != nullptr) MediosAgregados++;
+
+			// Aseguro que el medio agregado a la lista exista en el arbol.
 			_AgregarMedio(static_cast<NodoBD *>(nNodo), Medio);
 
 			delete Medio;
@@ -163,7 +164,7 @@ const BOOL ArbolBD::AgregarNodoALista(NodoBD *nNodo) {
 	}
 	App.VentanaRave.Lista.Repintar();
 
-	return (SqlRet != SQLITE_BUSY);
+	return MediosAgregados;
 }
 
 // Asegura que el medio agregado a la lista, tambien exista en el arbol

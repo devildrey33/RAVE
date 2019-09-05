@@ -507,11 +507,12 @@ void VentanaPrincipal::Arbol_AgregarALista(const BOOL NuevaLista) {
 	}
 
 	// Busco los nodos seleccionados
-	NodoBD *Tmp = static_cast<NodoBD *>(Arbol.NodoRaiz());
+	NodoBD *Tmp				= static_cast<NodoBD *>(Arbol.NodoRaiz());
+	size_t  MediosAgregados = 0;
 	while (Tmp != NULL) {
 		if (Tmp->Seleccionado == TRUE) {
-			Arbol.AgregarNodoALista(Tmp);
-			App.MostrarToolTipPlayer(L"\"" + Tmp->Texto + nTexto);
+			MediosAgregados = Arbol.AgregarNodoALista(Tmp);
+			if (MediosAgregados != 0)	App.MostrarToolTipPlayer(L"\"" + Tmp->Texto + nTexto);
 		}
 		Tmp = static_cast<NodoBD *>(Arbol.BuscarNodoSiguiente(Tmp, TRUE));
 	}

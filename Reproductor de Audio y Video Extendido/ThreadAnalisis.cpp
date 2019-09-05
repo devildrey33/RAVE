@@ -441,7 +441,7 @@ std::wstring ThreadAnalisis::_ObtenerMeta(libvlc_media_t *Media, libvlc_meta_t T
 	char *Txt = libvlc_media_get_meta(Media, Tipo);
 	if (Txt != NULL) {
 		std::wstring TmpTxt; // = DString_ToStr(Txt);
-		Strings::AnsiToWide(Txt, TmpTxt);
+		Strings::UTF8ToWide(Txt, TmpTxt);
 		RaveBD::FiltroNombre(TmpTxt, Ret);
 	}
 	libvlc_free(Txt);
@@ -489,7 +489,7 @@ void ThreadAnalisis::_Parsear(libvlc_instance_t *VLC, std::wstring &Path) {
 //		UINT nPista;
 
 		char *Txt = libvlc_media_get_meta(Media, libvlc_meta_Title);
-		Strings::AnsiToWide(Txt, TmpTxt);
+		Strings::UTF8ToWide(Txt, TmpTxt);
 		libvlc_free(Txt);
 
 //		TmpTxt			= _ObtenerMeta(Media, libvlc_meta_Title);

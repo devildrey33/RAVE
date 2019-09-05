@@ -96,7 +96,7 @@ class Rave_MediaPlayer : public DWL::DVentana {
 	static Rave_Medio             *_Siguiente;
 
 						    		// VLC
-	libvlc_instance_t	    	  *_InstanciaVLC[3];
+	libvlc_instance_t	    	  *_InstanciaVLC;
 
 	const size_t                   _InstanciaLibre(void);
 									// FMOD

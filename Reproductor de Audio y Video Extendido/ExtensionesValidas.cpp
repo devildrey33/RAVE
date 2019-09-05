@@ -99,6 +99,7 @@ const Tipo_Medio ExtensionesValidas::ObtenerTipoMedio(const Extension_Medio Exte
 	return Tipo_Medio_INDEFINIDO;
 }
 
+
 // Actualizar tambien en en instalador HKEY_LOCAL_MACHINE "Software\Clients\Media\RAVE\Capabilities\FileAssociations" -> ".EXTENSION" : "RAVE.Audio/Video/Lista/CDAudio"
 const wchar_t *ExtensionesValidas::ExtensionStr(const Extension_Medio Extension) {
 	switch (Extension) {

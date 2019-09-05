@@ -6,7 +6,7 @@
 #include "Rave_MediaPlayer.h"
 
 
-RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t *Instancia, const size_t nInstanciaNum, BDMedio &nMedio) : Rave_Medio(nMedio), _Medio(NULL), _Eventos(NULL),  _InstanciaVLC(nInstanciaNum), _Parseado(FALSE) {
+RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t *Instancia, BDMedio &nMedio) : Rave_Medio(nMedio), _Medio(NULL), _Eventos(NULL),   _Parseado(FALSE), _Instancia(Instancia) {
 
 	App.MenuVideoFiltros->Menu(0)->BarraValor(Medio.Brillo);		// Brillo
 	App.MenuVideoFiltros->Menu(1)->BarraValor(Medio.Contraste);		// Contraste
@@ -26,19 +26,18 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t *Instancia, const size_t nInstanc
 		}
 	}
 
-	std::string AnsiStr;
+	std::string PathUTF8;
 	// Hay que convertir el path a UTF8 para que funcione en el VLC...
-	if (DWL::Strings::WideToAnsi(Medio.Path.c_str(), AnsiStr) == 0) {
+	if (DWL::Strings::WideToUTF8(Medio.Path.c_str(), PathUTF8) == 0) {
 		Debug_MostrarUltimoError();
 		TxtError = L"Error al convertir el string '" + Medio.Path + L"'";
 		App.MostrarToolTipPlayerError(TxtError);
 		return;
 	}
 	
-
 	libvlc_media_t *_Media = NULL;
-	if (Ubicacion == Ubicacion_Medio_Internet)	_Media = libvlc_media_new_location(Instancia, AnsiStr.c_str());
-	else										_Media = libvlc_media_new_path(Instancia, AnsiStr.c_str());
+	if (Ubicacion == Ubicacion_Medio_Internet)	_Media = libvlc_media_new_location(Instancia, PathUTF8.c_str());
+	else										_Media = libvlc_media_new_path(Instancia, PathUTF8.c_str());
 
 	if (_Media == NULL) {
 		Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio  Error al abrir '%s'\n", Medio.Path.c_str());
@@ -91,7 +90,7 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t *Instancia, const size_t nInstanc
 
 //	ComprobarMomento();
 
-	Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio Path '%s', InstanciaNum : %d\n", Medio.Path.c_str(), nInstanciaNum);
+	Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio Path '%s'\n", Medio.Path.c_str());
 }
 
 
@@ -214,7 +213,7 @@ void RaveVLC_Medio::Volumen(int nVolumen, const BOOL ActualizarUI) {
 	if (nVolumen > 200) nVolumen = 200;
 	if (nVolumen < 0)	nVolumen = 0;
 
-	Debug_Escribir_Varg(L"RaveVLC_Medio::Volumen  %d\n", nVolumen);
+	Debug_Escribir_Varg(L"RaveVLC_Medio::Volumen Vol : %d\n",  nVolumen);
 
 	if (ActualizarUI == TRUE) {
 		App.VentanaRave.SliderVolumen.Valor(static_cast<float>(nVolumen));
@@ -278,7 +277,7 @@ std::wstring &RaveVLC_Medio::ObtenerProporcion(void) {
 	static std::wstring Ret = L"Predeterminado";
 	char *Tmp = libvlc_video_get_aspect_ratio(_Medio);
 	if (Tmp != NULL) {
-		DWL::Strings::AnsiToWide(Tmp, Ret);
+		DWL::Strings::UTF8ToWide(Tmp, Ret);
 		libvlc_free(Tmp);
 	}
 	return Ret;
@@ -287,7 +286,7 @@ std::wstring &RaveVLC_Medio::ObtenerProporcion(void) {
 void RaveVLC_Medio::AsignarProporcion(const char* Prop) {
 	libvlc_video_set_aspect_ratio(_Medio, Prop);
 	if (Prop == NULL) Medio.Proporcion.resize(0);
-	else              DWL::Strings::AnsiToWide(Prop, Medio.Proporcion);
+	else              DWL::Strings::UTF8ToWide(Prop, Medio.Proporcion);
 }
 
 void RaveVLC_Medio::AsignarProporcion(const wchar_t* Prop) {
@@ -424,7 +423,7 @@ const BOOL RaveVLC_Medio::ObtenerDatosParsing(void) {
 			App.MenuVideoPistasDeAudio->EliminarTodosLosMenus();
 			for (int i = 0; i < TotalPîstas; i++) {
 				if (i != 0) {
-					DWL::Strings::AnsiToWide(Desc->psz_name, Texto);
+					DWL::Strings::UTF8ToWide(Desc->psz_name, Texto);
 					App.MenuVideoPistasDeAudio->AgregarMenu(static_cast<INT_PTR>(ID_MENUVIDEO_AUDIO_PISTAS_AUDIO) + i, Texto);
 				}
 				Desc = Desc->p_next;
@@ -466,7 +465,7 @@ const int RaveVLC_Medio::EnumerarSubtitulos(void) {
 	DMenuEx     *TmpMenu = NULL;
 	libvlc_track_description_t* Desc2 = libvlc_video_get_spu_description(_Medio);
 	for (int i = 0; i < TotalSubtitulos; i++) {
-		DWL::Strings::AnsiToWide(Desc2->psz_name, Texto);
+		DWL::Strings::UTF8ToWide(Desc2->psz_name, Texto);
 		TmpMenu = App.MenuVideoSubtitulos->AgregarMenu(static_cast<INT_PTR>(ID_MENUVIDEO_SUBTITULOS_SUBS) + i, Texto);
 		TmpMenu->Parametro = Desc2->i_id;
 		Desc2 = Desc2->p_next;
@@ -499,9 +498,9 @@ const int RaveVLC_Medio::AsignarSubtitulos(const wchar_t* Path) {
 // de 0 al volumen actual
 void RaveVLC_Medio::FadeIn(void) {
 	_AniVolumen.Terminar();
-	_AniVolumen.Iniciar({ 0.0f }, { (double *)(&App.Opciones._Volumen) }, App.Opciones.EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores& Valores, const BOOL Terminado) {
+	_AniVolumen.Iniciar({ 0.0f }, { static_cast<double>(App.Opciones.Volumen()) }, App.Opciones.EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores& Valores, const BOOL Terminado) {
 		Volumen(Valores[0].Entero(), FALSE);
-	}, { DWL::DAnimacion::FuncionesTiempo::Linear }, 200);
+	}, { DWL::DAnimacion::FuncionesTiempo::Linear }, 300);
 }
 
 // del volumen actual a 0
@@ -510,6 +509,6 @@ void RaveVLC_Medio::FadeOut(void) {
 	_AniVolumen.Terminar();
 	_AniVolumen.Iniciar({ static_cast<double>(App.Opciones.Volumen()) }, { &NuevoVolumen }, App.Opciones.EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores& Valores, const BOOL Terminado) {
 		Volumen(Valores[0].Entero(), FALSE);
-	}, { DWL::DAnimacion::FuncionesTiempo::Linear }, 200);
+	}, { DWL::DAnimacion::FuncionesTiempo::Linear }, 300);
 
 }

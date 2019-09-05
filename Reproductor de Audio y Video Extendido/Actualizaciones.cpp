@@ -116,8 +116,8 @@ unsigned long Actualizaciones::_ThreadBuscar(void* pThis) {
 		return 0; // no se ha encontrado el documento
 	}
 
-	// Paso la versión de ANSI a wchar_t
-	DWL::Strings::AnsiToWide(ResultadoANSI.c_str(), _Version);
+	// Paso la versión de utf8 a wchar_t
+	DWL::Strings::UTF8ToWide(ResultadoANSI.c_str(), _Version);
 
 
 	// Si la versión no coincide

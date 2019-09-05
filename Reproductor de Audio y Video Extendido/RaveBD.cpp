@@ -877,6 +877,9 @@ const BOOL RaveBD::EliminarRaiz(std::wstring &nPath) {
 const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const ULONG Longitud, const UINT TiempoEnSecs, const wchar_t* NombreDesdeM3u) {
 	Ubicacion_Medio		Ubicacion = BDMedio::Ubicacion(nPath);
 
+	// Asigno el path, por si no se encuentra el archivo, que el tooltip pueda decir el path que no encuentra
+	OUT_Medio.Path = nPath;
+
 	// Compruebo que existe fisicamente en el disco (comprobar velocidades usando CreateFile)
 	if (Ubicacion != Ubicacion_Medio_Internet) {
 		if (GetFileAttributes(nPath.c_str()) == INVALID_FILE_ATTRIBUTES)

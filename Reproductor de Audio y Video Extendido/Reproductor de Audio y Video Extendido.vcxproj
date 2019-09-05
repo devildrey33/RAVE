@@ -346,6 +346,7 @@
     <Image Include="..\Iconos\IDI_STOP32.ico" />
     <Image Include="..\Iconos\IDI_Subtitulos.ico" />
     <Image Include="..\Iconos\IDI_Tam.ico" />
+    <Image Include="..\Iconos\IDI_TDT.ico" />
     <Image Include="..\Iconos\IDI_Terminado.ico" />
     <Image Include="..\Iconos\IDI_Tiempo.ico" />
     <Image Include="..\Iconos\IDI_Url.ico" />

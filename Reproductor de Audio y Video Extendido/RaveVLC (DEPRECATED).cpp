@@ -29,7 +29,7 @@ const BOOL RaveVLC::Iniciar(void) {
 	const char *ErrorVLC = libvlc_errmsg();
 	const char *Version  = libvlc_get_version();
 	std::wstring StrVersion;
-	DWL::Strings::AnsiToWide(Version, StrVersion);
+	DWL::Strings::UTF8ToWide(Version, StrVersion);
 	Debug_Escribir_Varg(L"RaveVLC::Iniciar Cargado en %d MS, Version = '%s' \n", GetTickCount() - t, StrVersion.c_str());
 	
 	Precarga.Destruir();	
@@ -62,7 +62,7 @@ void RaveVLC::Terminar(void) {
 
 std::wstring &RaveVLC::UltimoError(void) {
 	static std::wstring TxtError;
-	DWL::Strings::AnsiToWide(libvlc_errmsg(), TxtError);
+	DWL::Strings::UTF8ToWide(libvlc_errmsg(), TxtError);
 	return TxtError;
 }
 

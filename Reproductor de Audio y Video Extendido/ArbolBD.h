@@ -40,7 +40,8 @@ class ArbolBD : public DWL::DArbolEx {
 	                       ~ArbolBD(void);
 	NodoBD		           *BuscarHash(sqlite3_int64 bHash);
 	NodoBD                 *AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre, const TCHAR *cTexto, const sqlite3_int64 nHash, const UINT Id);
-	const BOOL				AgregarNodoALista(NodoBD *nNodo);
+							// Devuelve el numero de medios agregados
+	const size_t			AgregarNodoALista(NodoBD *nNodo);
 
 							// Busca el primer nodo hijo que tiene el texto Buscar
 	NodoBD                 *BuscarHijoTxt(std::wstring &Buscar, NodoBD *Padre = NULL);

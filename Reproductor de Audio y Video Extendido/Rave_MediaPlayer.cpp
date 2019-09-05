@@ -14,14 +14,11 @@ Rave_Medio *Rave_MediaPlayer::_Actual		= NULL;
 Rave_Medio *Rave_MediaPlayer::_Siguiente	= NULL;
 
 
-Rave_MediaPlayer::Rave_MediaPlayer(void) 
+Rave_MediaPlayer::Rave_MediaPlayer(void) : _InstanciaVLC(NULL)
 #ifdef RAVE_UTILIZAR_FMOD
 											, _SistemaFMOD(NULL), _CanalMaster(NULL), _DSP(NULL) 
 #endif
 																									{
-	_InstanciaVLC[0] = NULL;
-	_InstanciaVLC[1] = NULL;
-	_InstanciaVLC[2] = NULL;
 }
 
 
@@ -50,11 +47,12 @@ const BOOL Rave_MediaPlayer::Iniciar(void) {
 	Debug_Escribir(L"Rave_MediaPlayer::Iniciar : Cargando LibVLC...\n");
 
 	DWORD t = GetTickCount();
-	_InstanciaVLC[0] = libvlc_new(0, NULL);
-	_InstanciaVLC[1] = libvlc_new(0, NULL);
-	_InstanciaVLC[2] = libvlc_new(0, NULL);
-	// Error iniciando las instancias
-	if (_InstanciaVLC[0] == NULL || _InstanciaVLC[1] == NULL || _InstanciaVLC[2] == NULL) {
+	// Para poder cambiar los volumenes de varias canciones (fade in/out) necesito el DirectSound
+	char const* Arg[] = { "--aout=directsound" };
+	_InstanciaVLC = libvlc_new(1, Arg);
+//	_InstanciaVLC = libvlc_new(0, nullptr);
+	// Error iniciando la instancia
+	if (_InstanciaVLC == NULL) {
 		Debug_Escribir(L"Rave_MediaPlayer::Iniciar : ERROR Cargando la LibVLC.\n");
 		return FALSE;
 	}
@@ -62,7 +60,7 @@ const BOOL Rave_MediaPlayer::Iniciar(void) {
 	//	const char *ErrorVLC = libvlc_errmsg();
 	const char *Version = libvlc_get_version();
 	std::wstring StrVersion;
-	DWL::Strings::AnsiToWide(Version, StrVersion);
+	DWL::Strings::UTF8ToWide(Version, StrVersion);
 	Debug_Escribir_Varg(L"Rave_MediaPlayer::Iniciar : LibVLC cargada en %d MS, Version = '%s' \n", GetTickCount() - t, StrVersion.c_str());
 
 	Precarga.Destruir();
@@ -143,18 +141,10 @@ void Rave_MediaPlayer::Terminar(void) {
 	KillTimer(_hWnd, ID_TEMPORIZADOR_LISTA);
 
 	// Elimino el VLC
-	if (_InstanciaVLC[0] != NULL) {
-		libvlc_release(_InstanciaVLC[0]);
-		_InstanciaVLC[0] = NULL;
+	if (_InstanciaVLC != NULL) {
+		libvlc_release(_InstanciaVLC);
+		_InstanciaVLC = NULL;
 	}
-	if (_InstanciaVLC[1] != NULL) {
-		libvlc_release(_InstanciaVLC[1]);
-		_InstanciaVLC[1] = NULL;
-	}
-	if (_InstanciaVLC[2] != NULL) {
-		libvlc_release(_InstanciaVLC[2]);
-		_InstanciaVLC[2] = NULL;
-}
 
 #ifdef RAVE_UTILIZAR_FMOD
 	// Elimino el FMOD
@@ -202,8 +192,8 @@ void Rave_MediaPlayer::Temporizador_Lista(void) {
 
 void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 	Estados_Medio Estado	= ComprobarEstado();
-	INT64         TTotalMS	= static_cast<INT64>(TiempoTotalMs());
-	INT64         TActualMS = static_cast<INT64>(TiempoActualMs());
+	INT64         TTotalMS	= TiempoTotalMs();
+	INT64         TActualMS = TiempoActualMs();
 
 	
 	if (_Actual) {
@@ -270,22 +260,23 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 
 
 	// Tiempo para el fade in out
-/*	if (Estado == EnPlay) {
-		UINT64        TTotalMS  = TiempoTotalMs();
-		UINT64        TActualMS = TiempoActualMs();
+	if (Estado == EnPlay) {
+//		UINT64        TTotalMS  = TiempoTotalMs();
+//		UINT64        TActualMS = TiempoActualMs();
 
-		if (TTotalMS < App.Opciones.EfectoFadeAudioMS() || _Actual == NULL || _Siguiente == NULL) return;
+		if (TTotalMS < App.Opciones.EfectoFadeAudioMS() || _Actual == nullptr || _Siguiente == nullptr) return;
 
-		if (TTotalMS - App.Opciones.EfectoFadeAudioMS() < TActualMS) {
+		if (TTotalMS - App.Opciones.EfectoFadeAudioMS() < TActualMS && _Actual->Tipo() == Tipo_Medio_Audio && _Siguiente->Tipo() == Tipo_Medio_Audio) {
 			// cambio el medio actual
 			App.VentanaRave.Lista.MedioActual = App.VentanaRave.Lista.MedioSiguiente(App.VentanaRave.Lista.MedioActual);
 
-
+			// Asigno el volumen del medio siguiente a 0, y empiezo a reproducir-lo
 			_Siguiente->Volumen(0, FALSE);
 			_Siguiente->Play();
 
 			BDMedio NCan, NCan2;
 			App.BD.ObtenerMedio(App.VentanaRave.Lista.MedioActual->Hash, NCan);
+			// Preparo el siguiente medio
 			ItemMedio *IMS = App.VentanaRave.Lista.MedioSiguiente(App.VentanaRave.Lista.MedioActual);
 			if (IMS == NULL) {
 				if (AbrirMedio(NCan, NULL) == FALSE) App.VentanaRave.Lista.Errores++;
@@ -305,7 +296,7 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 
 		}
 
-	}*/
+	}
 }
 
 
@@ -341,7 +332,7 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 			_EliminarRaveMedio(_Siguiente);
 			_Siguiente = NULL;
 			InstanciaLibre = _InstanciaLibre();
-			if (Medio.EsFMOD() == FALSE)	_Actual = new RaveVLC_Medio(_InstanciaVLC[InstanciaLibre], InstanciaLibre, Medio);
+			if (Medio.EsFMOD() == FALSE)	_Actual = new RaveVLC_Medio(_InstanciaVLC, Medio);
 			#ifdef RAVE_UTILIZAR_FMOD
 				else                        _Actual = new RaveFMOD_Medio(_SistemaFMOD, Medio);
 			#endif
@@ -351,7 +342,7 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 	// No hay un medio siguiente 
 	else {		
 		InstanciaLibre = _InstanciaLibre();
-		if (Medio.EsFMOD() == FALSE)	_Actual = new RaveVLC_Medio(_InstanciaVLC[InstanciaLibre], InstanciaLibre, Medio);
+		if (Medio.EsFMOD() == FALSE)	_Actual = new RaveVLC_Medio(_InstanciaVLC, Medio);
 		#ifdef RAVE_UTILIZAR_FMOD
 			else                        _Actual = new RaveFMOD_Medio(_SistemaFMOD, Medio);
 		#endif
@@ -365,7 +356,7 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 			if (MedioSiguiente->TipoMedio != Tipo_Medio_Video && MedioSiguiente->TipoMedio != Tipo_Medio_IpTv) {
 				InstanciaLibre = _InstanciaLibre();
 
-				if (Medio.EsFMOD() == FALSE)	_Siguiente = new RaveVLC_Medio(_InstanciaVLC[InstanciaLibre], InstanciaLibre, *MedioSiguiente);
+				if (Medio.EsFMOD() == FALSE)	_Siguiente = new RaveVLC_Medio(_InstanciaVLC, *MedioSiguiente);
 				#ifdef RAVE_UTILIZAR_FMOD
 					else                        _Siguiente = new RaveFMOD_Medio(_SistemaFMOD, *MedioSiguiente);
 				#endif
@@ -380,6 +371,10 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 }
 
 const size_t Rave_MediaPlayer::_InstanciaLibre(void) {
+
+	return 0;
+
+
 	BOOL L[3] = { TRUE, TRUE, TRUE };
 	if (_Anterior != NULL) {
 		L[_Anterior->InstanciaNum()] = FALSE;
@@ -461,7 +456,7 @@ const UINT64 Rave_MediaPlayer::TiempoStr_Ms(std::wstring& StrTiempo) {
 
 std::wstring &Rave_MediaPlayer::UltimoErrorVLC(void) {
 	static std::wstring TxtError;
-	DWL::Strings::AnsiToWide(libvlc_errmsg(), TxtError);
+	DWL::Strings::UTF8ToWide(libvlc_errmsg(), TxtError);
 	return TxtError;
 }
 
@@ -517,32 +512,33 @@ FMOD_RESULT F_CALLBACK Rave_MediaPlayer::EventosFMOD(FMOD_CHANNELCONTROL *chanCo
 // Función que se llama al terminar un medio
 void Rave_MediaPlayer::_TerminarMedio(Rave_Medio *MedioEvento) {
 
-	// Escondo los tooltip de las barras de tiempo
-	App.VentanaRave.SliderTiempo.OcultarToolTip();
-	App.ControlesPC.SliderTiempo.OcultarToolTip();
-	// Evito mostrar el tooltip si se pasa el mouse por encima del slider tiempo
-	App.VentanaRave.SliderTiempo.ToolTip(DBarraEx_ToolTip_SinToolTip);
-	App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_SinToolTip);
-	// Asigno el valor de las barras del tiempo a su máximo
-	App.VentanaRave.SliderTiempo.Valor(App.VentanaRave.SliderTiempo.Maximo());
-	App.ControlesPC.SliderTiempo.Valor(App.ControlesPC.SliderTiempo.Maximo());
+	if (MedioEvento == _Actual) {
+		// Escondo los tooltip de las barras de tiempo
+		App.VentanaRave.SliderTiempo.OcultarToolTip();
+		App.ControlesPC.SliderTiempo.OcultarToolTip();
+		// Evito mostrar el tooltip si se pasa el mouse por encima del slider tiempo
+		App.VentanaRave.SliderTiempo.ToolTip(DBarraEx_ToolTip_SinToolTip);
+		App.ControlesPC.SliderTiempo.ToolTip(DBarraEx_ToolTip_SinToolTip);
+		// Asigno el valor de las barras del tiempo a su máximo
+		App.VentanaRave.SliderTiempo.Valor(App.VentanaRave.SliderTiempo.Maximo());
+		App.ControlesPC.SliderTiempo.Valor(App.ControlesPC.SliderTiempo.Maximo());
 
-	// Compruebo si el medio actual se está reproduciendo
-	BOOL RestaurarIconos = FALSE;
-	if (_Actual != NULL) {
-		if (_Actual->ComprobarEstado() != EnPlay) 	RestaurarIconos = TRUE;
+		// Compruebo si el medio actual se está reproduciendo
+		BOOL RestaurarIconos = FALSE;
+		if (_Actual != NULL) {
+			if (_Actual->ComprobarEstado() != EnPlay) 	RestaurarIconos = TRUE;
+		}
+		else {
+			RestaurarIconos = TRUE;
+		}
+
+
+		if (RestaurarIconos == TRUE) {
+			// Asigno las imagenes de los botones play / pausa a la del play
+			App.VentanaRave.BotonPlay.Icono(IDI_PLAY32, 32);
+			App.ControlesPC.BotonPlay.Icono(IDI_PLAY32, 32);
+		}
 	}
-	else {
-		RestaurarIconos = TRUE;
-	}
-
-
-	if (RestaurarIconos == TRUE) {
-		// Asigno las imagenes de los botones play / pausa a la del play
-		App.VentanaRave.BotonPlay.Icono(IDI_PLAY32, 32);
-		App.ControlesPC.BotonPlay.Icono(IDI_PLAY32, 32);
-	}
-
 
 	if (_Anterior  == MedioEvento) _Anterior  = NULL;
 	if (_Actual    == MedioEvento) _Actual	  = NULL; 
@@ -634,66 +630,66 @@ const BOOL Rave_MediaPlayer::Stop(void) {
 }
 
 const BOOL Rave_MediaPlayer::StopTODO(void) {
-	if (_Anterior  != NULL) _Anterior->Stop();
-	if (_Actual    != NULL) _Actual->Stop();
-	if (_Siguiente != NULL) _Siguiente->Stop();
+	if (_Anterior  != nullptr) _Anterior->Stop();
+	if (_Actual    != nullptr) _Actual->Stop();
+	if (_Siguiente != nullptr) _Siguiente->Stop();
 	return TRUE;
 }
 
 const int Rave_MediaPlayer::Volumen(void) {
-	if (_Actual == NULL) return App.Opciones.Volumen();
+	if (_Actual == nullptr) return App.Opciones.Volumen();
 	return _Actual->Volumen();
 }
 
 void Rave_MediaPlayer::Volumen(int nVolumen) {
-	if (_Actual == NULL) return;
+	if (_Actual == nullptr) return;
 	_Actual->Volumen(nVolumen);
 }
 
 Estados_Medio Rave_MediaPlayer::ComprobarEstado(void) {
-	if (_Actual == NULL) return SinCargar;
+	if (_Actual == nullptr) return SinCargar;
 	return _Actual->ComprobarEstado();
 }
 
 
 const float Rave_MediaPlayer::TiempoActual(void) {
-	if (_Actual == NULL) return 0.0f;
+	if (_Actual == nullptr) return 0.0f;
 	return _Actual->TiempoActual();
 }
 
 void Rave_MediaPlayer::TiempoActual(float nTiempo) {
-	if (_Actual == NULL) return;
+	if (_Actual == nullptr) return;
 	_Actual->TiempoActual(nTiempo);
 }
 
 void Rave_MediaPlayer::TiempoActualMs(UINT64 nTiempo) {
-	if (_Actual == NULL) return;
+	if (_Actual == nullptr) return;
 	_Actual->TiempoActualMs(nTiempo);
 }
 
 const UINT64 Rave_MediaPlayer::TiempoTotalMs(void) {
-	if (_Actual == NULL) return 0;
+	if (_Actual == nullptr) return 0;
 	return _Actual->TiempoTotalMs();
 }
 
 const UINT64 Rave_MediaPlayer::TiempoActualMs(void) {
-	if (_Actual == NULL) return 0;
+	if (_Actual == nullptr) return 0;
 	return _Actual->TiempoActualMs();
 }
 
 void Rave_MediaPlayer::Ratio(const float R) {
-	if (_Actual == NULL) return;
+	if (_Actual == nullptr) return;
 	_Actual->Ratio(R);
 }
 
 std::wstring &Rave_MediaPlayer::ObtenerProporcion(void) {
 	static std::wstring Ret = L"Predeterminado";
-	if (_Actual == NULL) return Ret;
+	if (_Actual == nullptr) return Ret;
 	return _Actual->ObtenerProporcion();
 }
 
 void Rave_MediaPlayer::AsignarProporcion(const int Prop) {
-	if (_Actual == NULL) return;
+	if (_Actual == nullptr) return;
 
 	for (size_t i = 0; i < App.MenuVideoProporcion->TotalMenus(); i++) {
 		App.MenuVideoProporcion->Menu(i)->Icono(0);
@@ -702,7 +698,7 @@ void Rave_MediaPlayer::AsignarProporcion(const int Prop) {
 	App.MenuVideoProporcion->Menu(static_cast<size_t>(Prop) - ID_MENUVIDEO_PROPORCION_PREDETERMINADO)->Icono(IDI_CHECK2);
 	
 	switch (Prop) {
-		case ID_MENUVIDEO_PROPORCION_PREDETERMINADO : _Actual->AsignarProporcion(NULL);			break;
+		case ID_MENUVIDEO_PROPORCION_PREDETERMINADO : _Actual->AsignarProporcion(nullptr);		break;
 		case ID_MENUVIDEO_PROPORCION_16A9			: _Actual->AsignarProporcion("16:9");		break;
 		case ID_MENUVIDEO_PROPORCION_4A3			: _Actual->AsignarProporcion("4:3");		break;
 		case ID_MENUVIDEO_PROPORCION_1A1			: _Actual->AsignarProporcion("1:1");		break;
@@ -715,33 +711,33 @@ void Rave_MediaPlayer::AsignarProporcion(const int Prop) {
 }
 
 void Rave_MediaPlayer::Brillo(const float nBrillo) {
-	if (_Actual == NULL) return;
+	if (_Actual == nullptr) return;
 	_Actual->Brillo(nBrillo);
 }
 
 void Rave_MediaPlayer::Contraste(const float nContraste) {
-	if (_Actual == NULL) return;
+	if (_Actual == nullptr) return;
 	_Actual->Contraste(nContraste);
 }
 
 void Rave_MediaPlayer::Gamma(const float nGamma) {
-	if (_Actual == NULL) return;
+	if (_Actual == nullptr) return;
 	_Actual->Gamma(nGamma);
 }
 
 void Rave_MediaPlayer::Hue(const int nHue) {
-	if (_Actual == NULL) return;
+	if (_Actual == nullptr) return;
 	_Actual->Hue(nHue);
 }
 
 void Rave_MediaPlayer::Saturacion(const float nSaturacion) {
-	if (_Actual == NULL) return;
+	if (_Actual == nullptr) return;
 	_Actual->Saturacion(nSaturacion);
 }
 
 BDMedio &Rave_MediaPlayer::MedioActual(void) {
 	static BDMedio Vacio;
-	if (_Actual == NULL) return Vacio;
+	if (_Actual == nullptr) return Vacio;
 	return _Actual->Medio;
 }
 
@@ -751,22 +747,22 @@ void Rave_MediaPlayer::MedioActual(BDMedio& nMedio) {
 }
 
 const BOOL Rave_MediaPlayer::ObtenerDatosParsing(void) {
-	if (_Actual == NULL) return FALSE;
+	if (_Actual == nullptr) return FALSE;
 	return _Actual->ObtenerDatosParsing();
 }
 
 void Rave_MediaPlayer::AsignarPistaAudio(const int nPista) {
-	if (_Actual == NULL) return;
+	if (_Actual == nullptr) return;
 	_Actual->AsignarPistaAudio(nPista);
 }
 
 const int Rave_MediaPlayer::AsignarSubtitulos(const wchar_t* Path) {
-	if (_Actual == NULL) return 0;
+	if (_Actual == nullptr) return 0;
 	return _Actual->AsignarSubtitulos(Path);
 }
 
 const int Rave_MediaPlayer::EnumerarSubtitulos(void) {
-	if (_Actual == NULL) return 0;
+	if (_Actual == nullptr) return 0;
 	return _Actual->EnumerarSubtitulos();
 }
 
