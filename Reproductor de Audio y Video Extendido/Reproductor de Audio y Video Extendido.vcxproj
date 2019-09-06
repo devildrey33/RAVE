@@ -197,6 +197,7 @@
     <ClInclude Include="ControlSeparador.h" />
     <ClInclude Include="ControlVisualizacion.h" />
     <ClInclude Include="EtiquetaBD.h" />
+    <ClInclude Include="ItemMedio.h" />
     <ClInclude Include="ListaMedios.h" />
     <ClInclude Include="ListaRaices.h" />
     <ClInclude Include="RaveOpciones.h" />

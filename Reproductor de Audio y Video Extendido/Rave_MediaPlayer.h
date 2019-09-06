@@ -13,9 +13,10 @@ class Rave_MediaPlayer : public DWL::DVentana {
 								    // Inicia la VLC y el FMOD
 	const BOOL						Iniciar(void);
 	void							Terminar(void);
-
+									// Abre el medio de la lista especificado
+	const BOOL						AbrirMedio(ItemMedio *Medio);
 									// Abre el medio especificado y el medio siguiente (necesario para el efecto FADE IN OUT)
-	const BOOL						AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente);
+//	const BOOL						AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente);
 									// Cierra todos los medios (Anterior, Actual, y Siguiente)
 	void							CerrarMedio(void);
 
@@ -98,7 +99,6 @@ class Rave_MediaPlayer : public DWL::DVentana {
 						    		// VLC
 	libvlc_instance_t	    	  *_InstanciaVLC;
 
-	const size_t                   _InstanciaLibre(void);
 									// FMOD
 #ifdef RAVE_UTILIZAR_FMOD
 	FMOD::System                  *_SistemaFMOD;

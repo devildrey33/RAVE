@@ -6,21 +6,21 @@
 #include "Rave_MediaPlayer.h"
 
 
-RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t *Instancia, BDMedio &nMedio) : Rave_Medio(nMedio), _Medio(NULL), _Eventos(NULL),   _Parseado(FALSE), _Instancia(Instancia) {
+RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t *Instancia, ItemMedio *nMedio) : Rave_Medio(nMedio), _Medio(NULL), _Eventos(NULL), _Parseado(FALSE), _Instancia(Instancia) {
 
-	App.MenuVideoFiltros->Menu(0)->BarraValor(Medio.Brillo);		// Brillo
-	App.MenuVideoFiltros->Menu(1)->BarraValor(Medio.Contraste);		// Contraste
-	App.MenuVideoFiltros->Menu(2)->BarraValor(Medio.Saturacion);	// Saturación
+	App.MenuVideoFiltros->Menu(0)->BarraValor(Medio->BdMedio.Brillo);		// Brillo
+	App.MenuVideoFiltros->Menu(1)->BarraValor(Medio->BdMedio.Contraste);		// Contraste
+	App.MenuVideoFiltros->Menu(2)->BarraValor(Medio->BdMedio.Saturacion);	// Saturación
 
 //	Medio.Path = L"https://livestartover.atresmedia.com/lasexta/master.m3u8";
 //	Medio.Path = L"E:\\mp3\\ViRGiN STeeLe\\The Book Of Burining\\The Book Of Burining - copia.m3u";
 
 	//std::wstring TxtError;
-	Ubicacion_Medio Ubicacion = Medio.Ubicacion();
+	Ubicacion_Medio Ubicacion = Medio->BdMedio.Ubicacion();
 	if (Ubicacion != Ubicacion_Medio_Internet) {
-		if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(Medio.Path.c_str())) {
-			Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio  El archivo '%s' NO EXISTE!\n", Medio.Path.c_str());
-			TxtError = L"El archivo '" + Medio.Path + L"' NO EXISTE!";
+		if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(Medio->BdMedio.Path.c_str())) {
+			Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio  El archivo '%s' NO EXISTE!\n", Medio->BdMedio.Path.c_str());
+			TxtError = L"El archivo '" + Medio->BdMedio.Path + L"' NO EXISTE!";
 			App.MostrarToolTipPlayerError(TxtError);
 			return;
 		}
@@ -28,9 +28,9 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t *Instancia, BDMedio &nMedio) : Ra
 
 	std::string PathUTF8;
 	// Hay que convertir el path a UTF8 para que funcione en el VLC...
-	if (DWL::Strings::WideToUTF8(Medio.Path.c_str(), PathUTF8) == 0) {
+	if (DWL::Strings::WideToUTF8(Medio->BdMedio.Path.c_str(), PathUTF8) == 0) {
 		Debug_MostrarUltimoError();
-		TxtError = L"Error al convertir el string '" + Medio.Path + L"'";
+		TxtError = L"Error al convertir el string '" + Medio->BdMedio.Path + L"'";
 		App.MostrarToolTipPlayerError(TxtError);
 		return;
 	}
@@ -40,8 +40,8 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t *Instancia, BDMedio &nMedio) : Ra
 	else										_Media = libvlc_media_new_path(Instancia, PathUTF8.c_str());
 
 	if (_Media == NULL) {
-		Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio  Error al abrir '%s'\n", Medio.Path.c_str());
-		TxtError = L"Error al abrir '" + Medio.Path + L"'";
+		Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio  Error al abrir '%s'\n", Medio->BdMedio.Path.c_str());
+		TxtError = L"Error al abrir '" + Medio->BdMedio.Path + L"'";
 		App.MostrarToolTipPlayerError(TxtError);
 		return;
 	}
@@ -68,7 +68,7 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t *Instancia, BDMedio &nMedio) : Ra
 	
 
 	// Si es un video o una iptv
-	if (Medio.TipoMedio == Tipo_Medio_Video || Medio.Tiempo == Tipo_Medio_IpTv) {
+	if (Medio->BdMedio.TipoMedio == Tipo_Medio_Video || Medio->BdMedio.Tiempo == Tipo_Medio_IpTv) {
 		// Pulso el botón para mostrar el video
 		if (App.VentanaRave.PantallaCompleta() == FALSE) {
 			App.VentanaRave.MostrarMarco(ID_BOTON_VIDEO);
@@ -77,10 +77,10 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t *Instancia, BDMedio &nMedio) : Ra
 
 		// Cargo los valores de brillo, proporción, contraste, y saturación
 		if (App.Opciones.GuardarBSCP() == TRUE) {
-			if (Medio.Proporcion.size() != 0)	AsignarProporcion(Medio.Proporcion.c_str());
-			if (Medio.Brillo != 1.0)			Brillo(Medio.Brillo);
-			if (Medio.Contraste != 1.0)			Contraste(Medio.Contraste);
-			if (Medio.Saturacion != 1.0)		Saturacion(Medio.Saturacion);
+			if (Medio->BdMedio.Proporcion.size() != 0)	AsignarProporcion(Medio->BdMedio.Proporcion.c_str());
+			if (Medio->BdMedio.Brillo != 1.0)			Brillo(Medio->BdMedio.Brillo);
+			if (Medio->BdMedio.Contraste != 1.0)		Contraste(Medio->BdMedio.Contraste);
+			if (Medio->BdMedio.Saturacion != 1.0)		Saturacion(Medio->BdMedio.Saturacion);
 		}
 
 	}
@@ -90,7 +90,7 @@ RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t *Instancia, BDMedio &nMedio) : Ra
 
 //	ComprobarMomento();
 
-	Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio Path '%s'\n", Medio.Path.c_str());
+	Debug_Escribir_Varg(L"RaveVLC_Medio::RaveVLC_Medio Path '%s'\n", Medio->BdMedio.Path.c_str());
 }
 
 
@@ -102,7 +102,7 @@ RaveVLC_Medio::~RaveVLC_Medio(void) {
 void RaveVLC_Medio::Eliminar(void) {
 	//	hWndVLC = NULL;
 	if (_Medio != NULL) {
-		Debug_Escribir_Varg(L"RaveVLC_Medio::~RaveVLC_Medio '%s' \n", Medio.Path.c_str());
+		Debug_Escribir_Varg(L"RaveVLC_Medio::~RaveVLC_Medio '%s' \n", Medio->BdMedio.Path.c_str());
 		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEndReached		, Rave_MediaPlayer::EventosVLC, this);
 		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEncounteredError, Rave_MediaPlayer::EventosVLC, this);
 		libvlc_event_detach(_Eventos, libvlc_MediaParsedChanged			, Rave_MediaPlayer::EventosVLC, this);
@@ -115,11 +115,11 @@ void RaveVLC_Medio::Eliminar(void) {
 		libvlc_media_player_release(_Medio);
 
 		// Renombro archivos CRDOWNLOAD y OPDOWNLOAD una vez cerrados
-		if (Medio.Extension == Extension_CRDOWNLOAD || Medio.Extension == Extension_OPDOWNLOAD) {
-			size_t PosExtension = Medio.Path.find_last_of(TEXT("."));																				// Posición donde empieza la extensión
-			std::wstring NuevoPath = Medio.Path.substr(0, PosExtension);
-			if (MoveFile(Medio.Path.c_str(), NuevoPath.c_str()) != FALSE) {
-				App.BD.ActualizarPathMedio(NuevoPath, Medio.Id);
+		if (Medio->BdMedio.Extension == Extension_CRDOWNLOAD || Medio->BdMedio.Extension == Extension_OPDOWNLOAD) {
+			size_t PosExtension = Medio->BdMedio.Path.find_last_of(TEXT("."));																				// Posición donde empieza la extensión
+			std::wstring NuevoPath = Medio->BdMedio.Path.substr(0, PosExtension);
+			if (MoveFile(Medio->BdMedio.Path.c_str(), NuevoPath.c_str()) != FALSE) {
+				App.BD.ActualizarPathMedio(NuevoPath, Medio->BdMedio.Id);
 			}
 		}
 
@@ -189,7 +189,7 @@ const BOOL RaveVLC_Medio::Play(void) {
 //			ActualizarIconos(1);
 
 
-			if (Medio.TipoMedio == Tipo_Medio_Video || Medio.TipoMedio == Tipo_Medio_IpTv) { // Desactivo el protector de pantalla si es un video
+			if (Medio->BdMedio.TipoMedio == Tipo_Medio_Video || Medio->BdMedio.TipoMedio == Tipo_Medio_IpTv) { // Desactivo el protector de pantalla si es un video
 				SetTimer(Rave_MediaPlayer::_hWndMensajes, TIMER_OBTENERVLCWND, 100, NULL);
 				SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, FALSE, NULL, TRUE);
 			}
@@ -285,15 +285,15 @@ std::wstring &RaveVLC_Medio::ObtenerProporcion(void) {
 
 void RaveVLC_Medio::AsignarProporcion(const char* Prop) {
 	libvlc_video_set_aspect_ratio(_Medio, Prop);
-	if (Prop == NULL) Medio.Proporcion.resize(0);
-	else              DWL::Strings::UTF8ToWide(Prop, Medio.Proporcion);
+	if (Prop == NULL) Medio->BdMedio.Proporcion.resize(0);
+	else              DWL::Strings::UTF8ToWide(Prop, Medio->BdMedio.Proporcion);
 }
 
 void RaveVLC_Medio::AsignarProporcion(const wchar_t* Prop) {
 	std::string Ansi;
 	DWL::Strings::WideToAnsi(Prop, Ansi);
 	libvlc_video_set_aspect_ratio(_Medio, Ansi.c_str());
-	Medio.Proporcion = Prop;
+	Medio->BdMedio.Proporcion = Prop;
 }
 
 
@@ -371,7 +371,7 @@ void RaveVLC_Medio::Brillo(const float nBrillo) {
 	//	Debug_Escribir_Varg(L"RaveVLC::Brillo %02f\n", nBrillo);
 	libvlc_video_set_adjust_int(_Medio, libvlc_adjust_Enable, 1);
 	libvlc_video_set_adjust_float(_Medio, libvlc_adjust_Brightness, nBrillo);
-	Medio.Brillo = nBrillo;
+	Medio->BdMedio.Brillo = nBrillo;
 	App.MenuVideoFiltros->Menu(0)->BarraValor(nBrillo);
 }
 
@@ -379,7 +379,7 @@ void RaveVLC_Medio::Contraste(const float nContraste) {
 	if (_Medio == NULL) return;
 	libvlc_video_set_adjust_int(_Medio, libvlc_adjust_Enable, 1);
 	libvlc_video_set_adjust_float(_Medio, libvlc_adjust_Contrast, nContraste);
-	Medio.Contraste = nContraste;
+	Medio->BdMedio.Contraste = nContraste;
 	App.MenuVideoFiltros->Menu(1)->BarraValor(nContraste);
 }
 
@@ -399,7 +399,7 @@ void RaveVLC_Medio::Saturacion(const float nSaturacion) {
 	if (_Medio == NULL) return;
 	libvlc_video_set_adjust_int(_Medio, libvlc_adjust_Enable, 1);
 	libvlc_video_set_adjust_float(_Medio, libvlc_adjust_Saturation, nSaturacion);
-	Medio.Saturacion = nSaturacion;
+	Medio->BdMedio.Saturacion = nSaturacion;
 	App.MenuVideoFiltros->Menu(2)->BarraValor(nSaturacion);
 }
 
@@ -440,7 +440,7 @@ const BOOL RaveVLC_Medio::ObtenerDatosParsing(void) {
 		// Enumero los subtitulos
 		EnumerarSubtitulos();
 
-		BOOL EsVideo = (Medio.TipoMedio == Tipo_Medio_Video || Medio.TipoMedio == Tipo_Medio_IpTv);
+		BOOL EsVideo = (Medio->BdMedio.TipoMedio == Tipo_Medio_Video || Medio->BdMedio.TipoMedio == Tipo_Medio_IpTv);
 
 		// Activo / desactivo el menú de la proporción según el tipo de medio (audio / video)
 		App.MenuVideoProporcion->Activado(EsVideo);
@@ -498,9 +498,9 @@ const int RaveVLC_Medio::AsignarSubtitulos(const wchar_t* Path) {
 // de 0 al volumen actual
 void RaveVLC_Medio::FadeIn(void) {
 	_AniVolumen.Terminar();
-	_AniVolumen.Iniciar({ 0.0f }, { static_cast<double>(App.Opciones.Volumen()) }, App.Opciones.EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores& Valores, const BOOL Terminado) {
+	_AniVolumen.Iniciar({ 0.0f }, { (double)App.Opciones._Volumen }, App.Opciones.EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores& Valores, const BOOL Terminado) {
 		Volumen(Valores[0].Entero(), FALSE);
-	}, { DWL::DAnimacion::FuncionesTiempo::Linear }, 300);
+	}, { DWL::DAnimacion::FuncionesTiempo::Linear }, 100);
 }
 
 // del volumen actual a 0
@@ -509,6 +509,6 @@ void RaveVLC_Medio::FadeOut(void) {
 	_AniVolumen.Terminar();
 	_AniVolumen.Iniciar({ static_cast<double>(App.Opciones.Volumen()) }, { &NuevoVolumen }, App.Opciones.EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores& Valores, const BOOL Terminado) {
 		Volumen(Valores[0].Entero(), FALSE);
-	}, { DWL::DAnimacion::FuncionesTiempo::Linear }, 300);
+	}, { DWL::DAnimacion::FuncionesTiempo::Linear }, 100);
 
 }

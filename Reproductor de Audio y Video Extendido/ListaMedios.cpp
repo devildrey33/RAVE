@@ -21,8 +21,10 @@ const LONG_PTR ListaMedios::PosMedio(ItemMedio *pMedio) {
 	return -1;
 }
 
-// Obtiene el medio anterior (Si no hay medio anterior y SituarAlFinal es TRUE devuelve el ultimo Medio, Si SituarAlFinal es FALSE devolverá NULL)
-ItemMedio *ListaMedios::MedioAnterior(ItemMedio *nMedio, const BOOL SituarAlFinal) {
+// Función que devuelve el medio siguiente al especificado
+// Si nMedio es el primer medio, devuelve null.
+// Si nMedio es null, devuelve el ultimo medio (o null si no hay items).
+ItemMedio *ListaMedios::MedioAnterior(ItemMedio *nMedio) {
 	ItemMedio *Ret = nullptr;
 	// Si no hay items, asigno el medio actual a NULL y salgo
 	if (_Items.size() != 0) {
@@ -31,22 +33,18 @@ ItemMedio *ListaMedios::MedioAnterior(ItemMedio *nMedio, const BOOL SituarAlFina
 			Ret = static_cast<ItemMedio*>(_Items[_Items.size() - 1]);
 		}
 		else {
-			// Si el medio actual es el primer medio de la lista, lo asigno al final de la lista
-			if (nMedio == static_cast<ItemMedio*>(_Items[0])) {
-				Ret = static_cast<ItemMedio*>(_Items[_Items.size() - 1]);
-			}
-			// No es el primero de la lista, retrocedo un medio
-			else {
-				LONG_PTR Pm = PosMedio(nMedio);
-				if (Pm > 0 && SituarAlFinal == TRUE) {
-					Ret = static_cast<ItemMedio*>(_Items[Pm - 1]);
-				}
+			LONG_PTR Pm = PosMedio(nMedio);
+			if (Pm > 0 && Pm - 1 < static_cast<LONG_PTR>(_Items.size())) {
+				Ret = static_cast<ItemMedio*>(_Items[Pm - 1]);
 			}
 		}
 	}
 	return Ret;
 }
 
+// Función que devuelve el medio siguiente al especificado
+// Si nMedio es el ultimo medio, devuelve null.
+// Si nMedio es null, devuelve el primer medio (o null si no hay items).
 ItemMedio *ListaMedios::MedioSiguiente(ItemMedio *nMedio) {
 	ItemMedio *Ret = nullptr;
 	// Si no hay items, asigno el medio actual a NULL y salgo
@@ -56,18 +54,9 @@ ItemMedio *ListaMedios::MedioSiguiente(ItemMedio *nMedio) {
 			Ret = static_cast<ItemMedio*>(_Items[0]);
 		}
 		else {
-			// Si el medio actual es el ultimo de la lista
-			if (nMedio == static_cast<ItemMedio*>(_Items[_Items.size() - 1])) {
-				// Si la lista tiene mas de 1 medio
-				if (_Items.size() > 1)
-					Ret = static_cast<ItemMedio*>(_Items[0]);
-			}
-			// No es el ultimo de la lista
-			else {
-				LONG_PTR Pm = PosMedio(nMedio);
-				if (Pm > -1 && Pm < static_cast<LONG_PTR>(_Items.size())) {
-					Ret = static_cast<ItemMedio*>(_Items[Pm + 1]);
-				}
+			LONG_PTR Pm = PosMedio(nMedio);
+			if (Pm > -1 && Pm + 1 < static_cast<LONG_PTR>(_Items.size())) {
+				Ret = static_cast<ItemMedio*>(_Items[Pm + 1]);
 			}
 		}
 	}
@@ -76,14 +65,16 @@ ItemMedio *ListaMedios::MedioSiguiente(ItemMedio *nMedio) {
 
 
 void ListaMedios::BorrarListaReproduccion(void) {
-//	App.VLC.Stop();
+	// Cierro el medio y libero memoria
 	App.MP.CerrarMedio();
-
+	// Elimino los items de la lista
 	EliminarTodosLosItems();
-	MedioActual = NULL;
-
+	// Asigno el medio actual como null
+	MedioActual = nullptr;
+	// Repinto la lista
 	Repintar();
 }
+
 
 // Función que parsea un M3u para leer sus datos, e introducir los medios que contiene en la lista
 // El M3u puede ser de internet, en ese caso hay que leer el M3u con un thread y esperar su respuesta.
@@ -178,7 +169,7 @@ ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {
 	
 	// Busco si existe el hash para no agregar 2 medios iguales a la lista
 	for (size_t i = 0; i < _Items.size(); i++) {
-		if (static_cast<ItemMedio *>(_Items[i])->Hash == nMedio->Hash) {
+		if (static_cast<ItemMedio *>(_Items[i])->BdMedio.Hash == nMedio->Hash) {
 			return Medio(i); // Devuelvo el medio existente
 		}
 	}
@@ -229,15 +220,15 @@ ItemMedio *ListaMedios::AgregarMedio(BDMedio *nMedio) {
 	// Agrego el item también en el vector MediosOrdenados (por si el shufle está activado)
 	_MediosOrdenados.push_back(TmpMedio);
 	// Asigno el hash y la Id al item
-	TmpMedio->Hash	= nMedio->Hash;
-	TmpMedio->Id	= nMedio->Id;
+	TmpMedio->BdMedio	= *nMedio;
+//	TmpMedio->Id	= nMedio->Id;
 
 	return TmpMedio;
 }
 
 ItemMedio *ListaMedios::BuscarHash(sqlite3_int64 bHash) {
 	for (size_t i = 0; i < _Items.size(); i++) {
-		if (Medio(i)->Hash == bHash) return Medio(i);
+		if (Medio(i)->BdMedio.Hash == bHash) return Medio(i);
 	}
 	return NULL;
 }
@@ -246,25 +237,29 @@ ItemMedio *ListaMedios::BuscarHash(sqlite3_int64 bHash) {
 void ListaMedios::ReproducirMedio(BDMedio &nMedio, LONG PosMomento) {
 	// Busco el nuevo medio actual
 	for (size_t i = 0; i < _Items.size(); i++) {
-		if (Medio(i)->Hash == nMedio.Hash) {
+		if (Medio(i)->BdMedio.Hash == nMedio.Hash) {
 			MedioActual = Medio(i);
 			break;
 		}
 	}
 
 	App.MP.Stop();
-	BDMedio NCan;
-	App.BD.ObtenerMedio(MedioActual->Hash, NCan);
+	if (MedioActual != nullptr) {
+		MedioActual->BdMedio.PosMomento = PosMomento;
+		App.MP.AbrirMedio(MedioActual);		
+	}
+/*	BDMedio NCan;
+	App.BD.ObtenerMedio(MedioActual->BdMedio.Hash, NCan);
 	NCan.PosMomento = PosMomento;
 	BDMedio NCanS;
 	ItemMedio* IMS = MedioSiguiente(MedioActual);
 	if (IMS != NULL) {
-		App.BD.ObtenerMedio(MedioSiguiente(MedioActual)->Hash, NCanS);
+		App.BD.ObtenerMedio(MedioSiguiente(MedioActual)->BdMedio.Hash, NCanS);
 		if (App.MP.AbrirMedio(NCan, &NCanS) == FALSE) Errores++;
 	}
 	else {
 		if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Errores++;
-	}
+	}*/
 
 	App.MP.Play(TRUE);
 }
@@ -277,17 +272,22 @@ void ListaMedios::Evento_MouseDobleClick(DWL::DEventoMouse &EventoMouse) {
 			// Hay que parar la canción actual para que no se quede reproduciendo en el medio anterior
 			App.MP.Stop();
 
+			if (MedioActual != nullptr) {
+				App.MP.AbrirMedio(MedioActual);
+			}
+
+			/*
 			BDMedio NCan;
-			App.BD.ObtenerMedio(MedioActual->Hash, NCan);
+			App.BD.ObtenerMedio(MedioActual->BdMedio.Hash, NCan);
 			BDMedio NCanS;
 			ItemMedio *IMS = MedioSiguiente(MedioActual);
 			if (IMS != NULL) {
-				App.BD.ObtenerMedio(MedioSiguiente(MedioActual)->Hash, NCanS);
+				App.BD.ObtenerMedio(MedioSiguiente(MedioActual)->BdMedio.Hash, NCanS);
 				if (App.MP.AbrirMedio(NCan, &NCanS) == FALSE) Errores++;
 			}
 			else {
 				if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Errores++;
-			}
+			}*/
 
 //			if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
 			App.MP.Play();
@@ -312,7 +312,7 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse& DatosMouse) {
 	if (DatosMouse.Boton == 2) {		
 		if (_ItemResaltado != -1) {
 			BDMedio nMedio;
-			App.BD.ObtenerMedio(Medio(_ItemResaltado)->Hash, nMedio);
+			App.BD.ObtenerMedio(Medio(_ItemResaltado)->BdMedio.Hash, nMedio);
 			if (_ToolTip.Medio != nMedio ||_ToolTip.Visible() == FALSE) {
 				_ToolTip.Ocultar(TRUE);
 				_ToolTip.MostrarFijo(nMedio);
@@ -335,7 +335,7 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse& DatosMouse) {
 		// Si el item marcado corresponde a un medio
 		if (_ItemMarcado > -1 && _ItemMarcado < static_cast<LONG_PTR>(_Items.size())) {			
 			BDMedio TmpMedio;
-			App.BD.ObtenerMedio(Medio(_ItemMarcado)->Hash, TmpMedio);
+			App.BD.ObtenerMedio(Medio(_ItemMarcado)->BdMedio.Hash, TmpMedio);
 
 			// Miro si el medio tiene una raíz (si no tiene raíz no saldrá en la base de datos)
 			if (App.BD.BuscarRaiz(TmpMedio.Path) == NULL)
@@ -430,17 +430,23 @@ void ListaMedios::Evento_TeclaSoltada(DEventoTeclado &DatosTeclado) {
 		// Hay que parar la canción actual para que no se quede reproduciendo en el medio anterior
 		App.MP.Stop();
 
+		if (MedioActual != nullptr) {
+			App.MP.AbrirMedio(MedioActual);
+		}
+
+		/*
 		BDMedio NCan;
-		App.BD.ObtenerMedio(MedioActual->Hash, NCan);
+		App.BD.ObtenerMedio(MedioActual->BdMedio.Hash, NCan);
 		BDMedio NCanS;
 		ItemMedio* IMS = MedioSiguiente(MedioActual);
 		if (IMS != NULL) {
-			App.BD.ObtenerMedio(MedioSiguiente(MedioActual)->Hash, NCanS);
+			App.BD.ObtenerMedio(MedioSiguiente(MedioActual)->BdMedio.Hash, NCanS);
 			if (App.MP.AbrirMedio(NCan, &NCanS) == FALSE) Errores++;
 		}
 		else {
 			if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Errores++;
 		}
+		*/
 		//			if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
 		App.MP.Play();
 	}
@@ -507,6 +513,9 @@ void ListaMedios::Opacidad(const BYTE nNivel) {
 	if (App.VentanaRave.PantallaCompleta() == TRUE) {
 		SetWindowLongPtr(_hWnd, GWL_EXSTYLE, WS_EX_LAYERED | WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
 		SetLayeredWindowAttributes(_hWnd, 0, nNivel, LWA_ALPHA);
+	}
+	else {
+		SetLayeredWindowAttributes(_hWnd, 0, 255, LWA_ALPHA);
 	}
 };
 

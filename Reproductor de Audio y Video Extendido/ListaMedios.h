@@ -1,18 +1,9 @@
 #pragma once
 
-#include "DListaEx.h"
+#include "ItemMedio.h"
 #include "ToolTipInfo.h"
 
-class ItemMedio : public DWL::DListaEx_Item {
-  public:
-						ItemMedio(void) : Hash(0), Id(0)  {};
-		               ~ItemMedio(void) {};
 
-    sqlite3_int64		Hash;
-	UINT                Id;
-};
-
-class BDMedio;
 
 class ListaMedios : public DWL::DListaEx {
   public:
@@ -51,9 +42,13 @@ class ListaMedios : public DWL::DListaEx {
 	void                        Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado);
 
 	ItemMedio                  *MedioSiguiente(ItemMedio *nMedio);
-	ItemMedio                  *MedioAnterior(ItemMedio *nMedio, const BOOL SituarAlFinal = TRUE);
+	ItemMedio                  *MedioAnterior(ItemMedio *nMedio);
 //	ItemMedio					*MedioActualOrdenado;
+	
 	ItemMedio				   *MedioActual;
+
+	inline ItemMedio           *MedioPrimero(void)			{ return (_Items.size() == 0) ? NULL : static_cast<ItemMedio*>(_Items[0]); };
+	inline ItemMedio	       *MedioUltimo(void)			{ return (_Items.size() == 0) ? NULL : static_cast<ItemMedio*>(_Items[_Items.size() - 1]); };
 
 	void						Opacidad(const BYTE nNivel);
 	const BYTE                  Opacidad(void);

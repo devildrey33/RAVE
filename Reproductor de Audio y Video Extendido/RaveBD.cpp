@@ -1076,7 +1076,7 @@ const BOOL RaveBD::GuardarUltimaLista(void) {
 	std::wstring Q;
 	int          SqlRet;
 	for (LONG_PTR i = 0; i < App.VentanaRave.Lista.TotalItems(); i++) {
-		Q = L"INSERT INTO UltimaLista (Hash) VALUES(" + std::to_wstring(App.VentanaRave.Lista.Medio(i)->Hash) + L")";
+		Q = L"INSERT INTO UltimaLista (Hash) VALUES(" + std::to_wstring(App.VentanaRave.Lista.Medio(i)->BdMedio.Hash) + L")";
 		SqlRet = Consulta(Q);
 		if (SqlRet != SQLITE_DONE) return FALSE;
 	}
@@ -1226,7 +1226,7 @@ const BOOL RaveBD::MedioReproducido(BDMedio *rMedio) {
 
 // Actualiza la nota del ItemMedio especificado
 const BOOL RaveBD::MedioNota(ItemMedio *nMedio, const float nNota) {
-	std::wstring Q = L"UPDATE Medios SET Nota=" + DWL::Strings::ToStrF(nNota, 2) + L" WHERE Id=" + std::to_wstring(nMedio->Id);
+	std::wstring Q = L"UPDATE Medios SET Nota=" + DWL::Strings::ToStrF(nNota, 2) + L" WHERE Id=" + std::to_wstring(nMedio->BdMedio.Id);
 	int SqlRet = Consulta(Q);
 	if (SqlRet == SQLITE_ERROR) {
 		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));

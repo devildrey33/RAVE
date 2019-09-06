@@ -39,7 +39,7 @@ const BOOL Rave_MediaPlayer::Iniciar(void) {
 	_hWndMensajes = _hWnd;
 
 	// Inicio la VLC
-	// On Microsoft Windows, setting the default DLL directories to SYSTEM32 exclusively is strongly recommended for security reasons:
+	// On Microsoft Windows, setting the default DLL directories to SYSTEM32 exclusively is strongly recommended for security reasons
 	SetDefaultDllDirectories(LOAD_LIBRARY_SEARCH_SYSTEM32);
 
 	// Ventana de precarga
@@ -195,27 +195,27 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 	INT64         TTotalMS	= TiempoTotalMs();
 	INT64         TActualMS = TiempoActualMs();
 
-	
+	// MOMENTOS
 	if (_Actual) {
 		// Compruebo si el medio actual es un momento
-		if (_Actual->Medio.PosMomento != -1) {
+		if (_Actual->Medio->BdMedio.PosMomento != -1) {
 			// Compruebo si ha llegado al final del momento para parar el medio
-			if (TActualMS > _Actual->Medio.Momentos[_Actual->Medio.PosMomento]->TiempoFinal) {
+			if (TActualMS > _Actual->Medio->BdMedio.Momentos[_Actual->Medio->BdMedio.PosMomento]->TiempoFinal) {
 				Stop();
 				CerrarMedio();				
 			}
 		}
 		// Compruebo si el medio actual tiene algun momento de exclusión
 		else {
-			for (size_t i = 0; i < _Actual->Medio.Momentos.size(); i++) {
-				if (_Actual->Medio.Momentos[i]->Excluir == TRUE) {
+			for (size_t i = 0; i < _Actual->Medio->BdMedio.Momentos.size(); i++) {
+				if (_Actual->Medio->BdMedio.Momentos[i]->Excluir == TRUE) {
 					// Si el tiempo actual esta entre el inicio y el final del momento
 /*					if (TActualMS > _Actual->Medio.Momentos[i]->TiempoInicio && TActualMS < _Actual->Medio.Momentos[i]->TiempoFinal) {
 						TiempoActualMs(_Actual->Medio.Momentos[i]->TiempoFinal);
 					}*/
 					// Si el tiempo actual esta entre el inicio y el inicio + 500 ms
-					if (TActualMS > _Actual->Medio.Momentos[i]->TiempoInicio && TActualMS < _Actual->Medio.Momentos[i]->TiempoInicio + 500) {
-						TiempoActualMs(_Actual->Medio.Momentos[i]->TiempoFinal);
+					if (TActualMS > _Actual->Medio->BdMedio.Momentos[i]->TiempoInicio && TActualMS < _Actual->Medio->BdMedio.Momentos[i]->TiempoInicio + 500) {
+						TiempoActualMs(_Actual->Medio->BdMedio.Momentos[i]->TiempoFinal);
 					}
 				}
 			}
@@ -227,11 +227,16 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 		std::wstring TmpStr;
 		if (Estado == EnPlay || Estado == EnPausa) { // EnPlay y EnPausa
 			float TActual = TiempoActual();
-			
+			// Asigno el tiempo del medio anterior, que ahora ya no es controlable
+			if (_Anterior != nullptr) {
+				float TAnterior = _Anterior->TiempoActual();
+				App.VentanaRave.SliderTiempo.Valor2(TAnterior);
+				App.ControlesPC.SliderTiempo.Valor2(TAnterior);
+			}
+
 			// Si el slider del tiempo tiene la captura, es porque se esta modificando el tiempo, por lo que no hay que actualizar la posición en ese momento.
 			if (App.VentanaRave.SliderTiempo.Estado() != DBarraEx_Estado_Presionado && App.ControlesPC.SliderTiempo.Estado() != DBarraEx_Estado_Presionado) {
 				App.VentanaRave.SliderTiempo.Valor(TActual);
-				//					SliderTiempo.Posicion(static_cast<UINT64>(App.VLC.TiempoActual() * 30000));
 				App.ControlesPC.SliderTiempo.Valor(TActual);
 				// Lo mismo pasa con el tiempo actual
 				TiempoStr(TActualMS, TmpStr);
@@ -267,42 +272,110 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 		if (TTotalMS < App.Opciones.EfectoFadeAudioMS() || _Actual == nullptr || _Siguiente == nullptr) return;
 
 		if (TTotalMS - App.Opciones.EfectoFadeAudioMS() < TActualMS && _Actual->Tipo() == Tipo_Medio_Audio && _Siguiente->Tipo() == Tipo_Medio_Audio) {
-			// cambio el medio actual
-			App.VentanaRave.Lista.MedioActual = App.VentanaRave.Lista.MedioSiguiente(App.VentanaRave.Lista.MedioActual);
+			// Si el medio actual no es el ultimo, o el repeat es Tipo_Repeat_RepetirLista (en cualquier otro repeat no es posible calcular el primer medio ya que aun no se ha generado la lista)
+			if (App.Opciones.Repeat() == Tipo_Repeat_RepetirLista || App.VentanaRave.Lista.MedioActual != App.VentanaRave.Lista.MedioUltimo()) {
 
-			// Asigno el volumen del medio siguiente a 0, y empiezo a reproducir-lo
-			_Siguiente->Volumen(0, FALSE);
-			_Siguiente->Play();
+				// cambio el medio actual
+				App.VentanaRave.Lista.MedioActual = App.VentanaRave.Lista.MedioSiguiente(App.VentanaRave.Lista.MedioActual);
 
-			BDMedio NCan, NCan2;
-			App.BD.ObtenerMedio(App.VentanaRave.Lista.MedioActual->Hash, NCan);
-			// Preparo el siguiente medio
-			ItemMedio *IMS = App.VentanaRave.Lista.MedioSiguiente(App.VentanaRave.Lista.MedioActual);
-			if (IMS == NULL) {
-				if (AbrirMedio(NCan, NULL) == FALSE) App.VentanaRave.Lista.Errores++;
-			}
-			else {
-				App.BD.ObtenerMedio(IMS->Hash, NCan2);
-				if (AbrirMedio(NCan, &NCan2) == FALSE) App.VentanaRave.Lista.Errores++;
-			}
-			// efecto fade in out
-			if (_Anterior != NULL && _Actual != NULL) {
-				Debug_Escribir(L"RaveVLC::Temporizador_Lista Fade in out\n");
-				if (_Anterior->Medio.TipoMedio != Tipo_Medio_Video && _Actual->Medio.TipoMedio != Tipo_Medio_Video) {
-					_Anterior->FadeOut();
-					_Actual->FadeIn();
+				// Asigno el volumen del medio siguiente a 0, y empiezo a reproducir-lo
+				_Siguiente->Volumen(0, FALSE);				
+				BOOL B = _Siguiente->Play();
+				if (B == TRUE) {
+					// Actualizo los iconos de la lista y la BD
+					_Siguiente->ActualizarIconos(1);
+					// Muestro el tooltip con los datos
+					App.MostrarToolTipPlayer(_Siguiente->Medio->BdMedio);
+					// Compruebo si es un momento
+					//if (ComprobarMomento == TRUE) _Actual->ComprobarMomento();
+				}
+
+
+				// Abro el nuevo medio actual
+				if (AbrirMedio(App.VentanaRave.Lista.MedioActual) == FALSE) App.VentanaRave.Lista.Errores++; 
+				
+				// efecto fade in out
+				if (_Anterior != NULL && _Actual != NULL) {
+					Debug_Escribir(L"RaveVLC::Temporizador_Lista Fade in out\n");
+					if (_Anterior->Medio->BdMedio.TipoMedio == Tipo_Medio_Audio && _Actual->Medio->BdMedio.TipoMedio == Tipo_Medio_Audio) {
+						_Anterior->FadeOut();
+						_Actual->FadeIn();
+					}
 				}
 			}
-
 		}
 
 	}
 }
 
 
+// Función que abre el medio especificado de la lista de medios
+// El medio que hasta ahora era el actual se posicionara en el anterior
+// El nuevo medio pasa a ser el medio actual
+// Se busca si el medio siguiente es una cancion para tener-lo cargado para un efecto fade in/out
+const BOOL Rave_MediaPlayer::AbrirMedio(ItemMedio *Medio) {
+	// Elimino el medio anterior, si aun existe
+	if (_Anterior != nullptr) {
+		_EliminarRaveMedio(_Anterior);
+		_Anterior = nullptr;
+	}
+	// Busco el próximo medio siguiente
+	ItemMedio *NuevoMedioSiguiente = App.VentanaRave.Lista.MedioSiguiente(Medio);
+	// Si el medio actual es una cancion, pasa a ser el anterior
+	if (Medio->BdMedio.TipoMedio == Tipo_Medio_Audio) {
+		_Anterior	= _Actual;
+		_Actual		= nullptr;
+	}
+	// Es un video u otra cosa
+	else {
+		if (_Actual != nullptr) {
+			_EliminarRaveMedio(_Actual);
+			_Actual = nullptr;
+		}
+	}
 
+	// Existe un medio siguiente cargado y tiene la misma id que el medio actual
+	if (_Siguiente != nullptr) {
+		if (_Siguiente->Medio->BdMedio.Id == Medio->BdMedio.Id) {
+			_Actual = _Siguiente;
+		}
+		// El medio siguiente no se corresponde con el medio a cargar
+		else {
+			_EliminarRaveMedio(_Siguiente);
+			_Siguiente = nullptr;
+			_Actual = new RaveVLC_Medio(_InstanciaVLC, Medio);
+		}
+	}
+	// No hay un medio siguiente 
+	else {
+		_Actual = new RaveVLC_Medio(_InstanciaVLC, Medio);
+	}
+
+	// Recargo la información del medio en la BD
+	_Actual->Medio->BdMedio.Recargar();
+
+
+	// Si existe un posible nuevo medio siguiente
+	if (NuevoMedioSiguiente != nullptr) {
+		// Si el nuevo medio actual y el nuevo medio siguiente son canciones
+		if (Medio->BdMedio.TipoMedio == Tipo_Medio_Audio && NuevoMedioSiguiente->BdMedio.TipoMedio == Tipo_Medio_Audio) {
+			// Cargo el nuevo medio siguiente
+			_Siguiente = new RaveVLC_Medio(_InstanciaVLC, NuevoMedioSiguiente);
+		}
+	}
+
+	// Si existe el medio actual
+	if (_Actual != nullptr) {
+		// Si no hay ningún texto de error devuelvo TRUE
+		if (_Actual->TxtError.size() == 0) return TRUE;
+	}
+
+	// Parece que hay un error
+	return FALSE;
+}
+
+/*
 const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente) {
-	size_t InstanciaLibre = 0;
 	if (_Anterior != NULL) {
 		_EliminarRaveMedio(_Anterior);
 		_Anterior = NULL;
@@ -324,14 +397,13 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 
 	// Existe un medio siguiente cargado y tiene la misma id que el medio actual
 	if (_Siguiente != NULL) {
-		if (_Siguiente->Medio.Id == Medio.Id) {
+		if (_Siguiente->Medio.BdMedio.Id == Medio.Id) {
 			_Actual = _Siguiente;
 		}
 		// El medio siguiente no se corresponde con el medio a cargar
 		else {
 			_EliminarRaveMedio(_Siguiente);
 			_Siguiente = NULL;
-			InstanciaLibre = _InstanciaLibre();
 			if (Medio.EsFMOD() == FALSE)	_Actual = new RaveVLC_Medio(_InstanciaVLC, Medio);
 			#ifdef RAVE_UTILIZAR_FMOD
 				else                        _Actual = new RaveFMOD_Medio(_SistemaFMOD, Medio);
@@ -341,7 +413,6 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 
 	// No hay un medio siguiente 
 	else {		
-		InstanciaLibre = _InstanciaLibre();
 		if (Medio.EsFMOD() == FALSE)	_Actual = new RaveVLC_Medio(_InstanciaVLC, Medio);
 		#ifdef RAVE_UTILIZAR_FMOD
 			else                        _Actual = new RaveFMOD_Medio(_SistemaFMOD, Medio);
@@ -354,7 +425,6 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 		if (MedioSiguiente != NULL) {
 			// Si el medio siguiente no es un video / iptv, cargo el medio siguiente.
 			if (MedioSiguiente->TipoMedio != Tipo_Medio_Video && MedioSiguiente->TipoMedio != Tipo_Medio_IpTv) {
-				InstanciaLibre = _InstanciaLibre();
 
 				if (Medio.EsFMOD() == FALSE)	_Siguiente = new RaveVLC_Medio(_InstanciaVLC, *MedioSiguiente);
 				#ifdef RAVE_UTILIZAR_FMOD
@@ -368,41 +438,19 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 		if (_Actual->TxtError.size() == 0) return TRUE;		
 	}
 	return FALSE;
-}
+}*/
 
-const size_t Rave_MediaPlayer::_InstanciaLibre(void) {
-
-	return 0;
-
-
-	BOOL L[3] = { TRUE, TRUE, TRUE };
-	if (_Anterior != NULL) {
-		L[_Anterior->InstanciaNum()] = FALSE;
-	}
-	if (_Actual != NULL) {
-		L[_Actual->InstanciaNum()] = FALSE;
-	}
-	if (_Siguiente != NULL) {
-		L[_Siguiente->InstanciaNum()] = FALSE;
-	}
-	// Busco que instancia esta libre
-	for (size_t i = 0; i < 3; i++) {
-		if (L[i] == TRUE) return i;
-	}
-	// Las 3 están ocupadas!?! devuelvo la 0
-	return 0;
-}
 
 void Rave_MediaPlayer::CerrarMedio(void) {
-	if (_Anterior  != NULL)	_EliminarRaveMedio(_Anterior);
-	if (_Actual    != NULL)	_EliminarRaveMedio(_Actual);
-	if (_Siguiente != NULL) _EliminarRaveMedio(_Siguiente);
+	if (_Anterior  != nullptr)	_EliminarRaveMedio(_Anterior);
+	if (_Actual    != nullptr)	_EliminarRaveMedio(_Actual);
+	if (_Siguiente != nullptr) _EliminarRaveMedio(_Siguiente);
 
 	if (_Actual) _Actual->ActualizarIconos(0);
 
-	_Anterior  = NULL;
-	_Actual    = NULL;
-	_Siguiente = NULL;
+	_Anterior  = nullptr;
+	_Actual    = nullptr;
+	_Siguiente = nullptr;
 
 	AsignarTitulo();
 }
@@ -478,12 +526,11 @@ void Rave_MediaPlayer::EventosVLC(const libvlc_event_t *evento, void *ptr) {
 			libvlc_media_player_set_hwnd(static_cast<RaveVLC_Medio*>(_Actual)->_Medio, App.VentanaRave.Video.hWnd());
 			break;
 		case libvlc_MediaSubItemAdded:
-
 			break;
 		case libvlc_MediaSubItemTreeAdded:
 			break;
 		case libvlc_MediaPlayerVout:
-			// TODO: s'ha de fer un click al buto ver video
+			// Muestra el marco del video
 			App.VentanaRave.MostrarMarco(ID_BOTON_VIDEO);
 			break;
 		case libvlc_MediaListItemAdded:
@@ -540,9 +587,12 @@ void Rave_MediaPlayer::_TerminarMedio(Rave_Medio *MedioEvento) {
 		}
 	}
 
-	if (_Anterior  == MedioEvento) _Anterior  = NULL;
-	if (_Actual    == MedioEvento) _Actual	  = NULL; 
-	if (_Siguiente == MedioEvento) _Siguiente = NULL; 
+	App.VentanaRave.SliderTiempo.Valor2(0.0f);
+	App.ControlesPC.SliderTiempo.Valor2(0.0f);
+	
+	if (_Anterior  == MedioEvento) _Anterior  = nullptr;
+	if (_Actual    == MedioEvento) _Actual	  = nullptr;
+	if (_Siguiente == MedioEvento) _Siguiente = nullptr;
 	MedioEvento->Eliminar();
 	_EliminarRaveMedio(MedioEvento);
 
@@ -569,7 +619,7 @@ const BOOL Rave_MediaPlayer::Play(const BOOL ComprobarMomento) {
 		// Actualizo los iconos de la lista y la BD
 		_Actual->ActualizarIconos(1);
 		// Muestro el tooltip con los datos
-		App.MostrarToolTipPlayer(_Actual->Medio);
+		App.MostrarToolTipPlayer(_Actual->Medio->BdMedio);
 		// Compruebo si es un momento
 		if (ComprobarMomento == TRUE) _Actual->ComprobarMomento();
 	}
@@ -584,8 +634,8 @@ void Rave_MediaPlayer::AsignarTitulo(void) {
 	std::wstring nTitulo;
 	if (App.Opciones.MostrarMedioActualTitulo() == TRUE && _Actual != NULL && ComprobarEstado() != EnStop) {
 		// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
-		if (_Actual->Medio.Pista() == 0)  nTitulo = std::wstring(RAVE_TITULO) + L" [" + _Actual->Medio.Nombre() + L"]";																// Sin pista
-		else                              nTitulo = std::wstring(RAVE_TITULO) + L" [" + DWL::Strings::ToStr(_Actual->Medio.Pista(), 2) + L" " + _Actual->Medio.Nombre() + L"]";		// Con pista
+		if (_Actual->Medio->BdMedio.Pista() == 0)	nTitulo = std::wstring(RAVE_TITULO) + L" [" + _Actual->Medio->BdMedio.Nombre() + L"]";																		// Sin pista
+		else										nTitulo = std::wstring(RAVE_TITULO) + L" [" + DWL::Strings::ToStr(_Actual->Medio->BdMedio.Pista(), 2) + L" " + _Actual->Medio->BdMedio.Nombre() + L"]";		// Con pista
 	}
 	else {
 		nTitulo = std::wstring(RAVE_TITULO);
@@ -738,12 +788,12 @@ void Rave_MediaPlayer::Saturacion(const float nSaturacion) {
 BDMedio &Rave_MediaPlayer::MedioActual(void) {
 	static BDMedio Vacio;
 	if (_Actual == nullptr) return Vacio;
-	return _Actual->Medio;
+	return _Actual->Medio->BdMedio;
 }
 
 // Función que re-asigna los datos medio actual 
-void Rave_MediaPlayer::MedioActual(BDMedio& nMedio) {
-	_Actual->Medio = nMedio;
+void Rave_MediaPlayer::MedioActual(BDMedio &nMedio) {
+	_Actual->Medio->BdMedio = nMedio;
 }
 
 const BOOL Rave_MediaPlayer::ObtenerDatosParsing(void) {

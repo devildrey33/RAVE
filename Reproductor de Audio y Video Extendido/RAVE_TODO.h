@@ -404,11 +404,15 @@
 			- No actualitzar temps actual ni total ni la barra
 			- Des-habilitar momentos, i habilitar brillo contraste proporcion i nota
 
-		-  Suport per unitats de red
+		X  Adaptar el sistema del VLC per tenir 3 instancies i acabar de fer lo del fade in out
+			X  Ara el sistema funciona amb 3 instancies, i sembla que tot funciona...
+				V  La solució era utilitzar el driver de DirectSound
+		
+		-  S'ha de refer el VLC per obrir un ItemMedio de la llista, i ja m'encarrego internament de buscar el seguent i obrir-lo
+			-  El Rave_Medio ha de tenir el Item de la llista dintre, per poder cambiar icones
+				-  S'ha de refer la llista, i fer-la mes fácil, el Item ha de tenir el seu Nodo a la BD i el BDMedio dintre.
 
-		V  Adaptar el sistema del VLC per tenir 3 instancies i acabar de fer lo del fade in out
-			V Ara el sistema funciona amb 3 instancies, i sembla que tot funciona...
-				- Falta refer el fade in-out testejar i crear la opcio.
+		-  Suport per unitats de red
 
 		-  Fer una llista / historial dels ultims 50 medis reproduits a la BD.
 			- Afegir data i hora de la reproducció
@@ -421,9 +425,9 @@
 
 		-  Suport pel jamendo (mirar si hi ha alguna api...)
 
-		-  Revisar el tema dels subtitols, ara que he afegit els lua i demes..
+		-  Revisar el tema dels subtitols, ara que he afegit els lua i demes..			
 
-		-  Lo de enviar els dump ja no funciona... m'han cambiat el auth... i ara necesito smtp
+		-  Lo de enviar els dump ja no funciona... m'han cambiat el auth... i ara no se molt be el que necesito....
 
 		-  BD
 			-  Moure les arrels de la BD dels medis a la BD de les opcions
@@ -452,7 +456,7 @@
 			-  Mostrar el % del medi reproduit en el item que es el MedioActual
 				- Necesitare crear virtuals a DListaEx
 
-		-  Carregar llistes m3u
+		V  Carregar llistes m3u
 		-  Carregar pistes CDAudio
 		-  Suport per dvds de video
 		-  Actualitzar la BD automáticament al detectar una nova unitat per si es un cd d'audio o un DVD de video.
@@ -462,8 +466,8 @@
 
 		-  No hi han tooltips pels directoris dels videos de la BD... (per que no es crean etiquetes d'ells)
 
-		-  Fer efecte de fusio al acabar una canço i començar unaltre reproduint les dues a l'hora quan faltin X milisegs.
-			- AMB EL VLC IMPOSIBLE!! nomes te volum general..., lo que es un pel incomprensible perque la funció del volum demana un MediaPlayer, no la instancia. Al final tornarem al FMOD...
+		V  Fer efecte de fusio al acabar una canço i començar unaltre reproduint les dues a l'hora quan faltin X milisegs.
+			- Falta afegir les opcions a la finestra d'opcions, pero de moment funciona correctament
 
 
 
@@ -494,7 +498,6 @@
 		- CON EL FMOD : 
 			- Gano : 
 				- el analizador DSP en el audio
-				- el efecto fade in/out (ESPERO... NOT 100% SURE)
 				- la implementación del bubatronik puede ayudar, parece bastante bien pensada, aunque no es exactamente lo que busco ahora....
 			- Pierdo
 				- el ratio de reproducción en el audio.

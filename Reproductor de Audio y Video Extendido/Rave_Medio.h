@@ -1,6 +1,7 @@
 #pragma once
 
 #include "RaveBD.h"
+#include "ItemMedio.h"
 
 enum Rave_Medio_Tipo {
 	Rave_Medio_Tipo_NADA = 0,
@@ -8,10 +9,12 @@ enum Rave_Medio_Tipo {
 	Rave_Medio_Tipo_FMOD = 2
 };
 
+
+
 // Clase base para los medios del VLC o del FMOD
 class Rave_Medio {
   public :
-									Rave_Medio(BDMedio &nMedio)	: Medio(nMedio)				{ };
+									Rave_Medio(ItemMedio *nMedio);
 
 									/////////////////////////
 									// Funciones virtuales //
@@ -76,6 +79,5 @@ class Rave_Medio {
 									///////////////
 
 	  std::wstring                  TxtError;
-	  BDMedio						Medio;		// Datos del medio
-
+	  ItemMedio					   *Medio;		// Datos del medio
 };

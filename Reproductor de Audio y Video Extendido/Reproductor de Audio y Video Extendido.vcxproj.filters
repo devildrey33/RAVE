@@ -220,6 +220,9 @@
     <ClInclude Include="VentanaObtenerURL.h">
       <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClInclude>
+    <ClInclude Include="ItemMedio.h">
+      <Filter>Ventanas y Controles\Controles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">

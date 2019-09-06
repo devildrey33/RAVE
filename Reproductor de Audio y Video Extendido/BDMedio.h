@@ -92,4 +92,7 @@ class BDMedio {
 
 	std::vector<BDMomento*>			Momentos;
 	void							BorrarMomentos(void);
+
+									// Recarga los datos desde la BD para este medio
+	void							Recargar(void);
 };

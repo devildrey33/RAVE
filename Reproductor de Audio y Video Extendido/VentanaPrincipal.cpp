@@ -288,15 +288,17 @@ return; */
 	ItemMedio *IMS = NULL;
 	switch (App.MP.ComprobarEstado()) {
 		case SinCargar:
-			App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
+			if (App.MP.AbrirMedio(Lista.MedioActual) == FALSE) Lista.Errores++;
+			/*
+			App.BD.ObtenerMedio(Lista.MedioActual->BdMedio.Hash, NCan);
 			IMS = Lista.MedioSiguiente(Lista.MedioActual);
 			if (IMS != NULL) {
-				App.BD.ObtenerMedio(IMS->Hash, NCan2);
+				App.BD.ObtenerMedio(IMS->BdMedio.Hash, NCan2);
 				if (App.MP.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
 			}
 			else {
 				if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
-			}
+			}*/
 			if (App.MP.Play() == TRUE) {
 				BotonPlay.Icono(IDI_PAUSA32, 32);
 				App.ControlesPC.BotonPlay.Icono(IDI_PAUSA32, 32);
@@ -305,15 +307,16 @@ return; */
 			break;
 		case Terminada:
 			Lista.MedioActual = Lista.MedioSiguiente(Lista.MedioActual);
-			App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
+			if (App.MP.AbrirMedio(Lista.MedioActual) == FALSE) Lista.Errores++;
+			/*App.BD.ObtenerMedio(Lista.MedioActual->BdMedio.Hash, NCan);
 			IMS = Lista.MedioSiguiente(Lista.MedioActual);
 			if (IMS == NULL) {
 				if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
 			}
 			else {
-				App.BD.ObtenerMedio(IMS->Hash, NCan2);
+				App.BD.ObtenerMedio(IMS->BdMedio.Hash, NCan2);
 				if (App.MP.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
-			}
+			}*/
 			App.MP.Play();
 			break;
 		case EnStop:
@@ -343,18 +346,22 @@ void VentanaPrincipal::Lista_Siguiente(void) {
 	if (Lista.TotalItems() == 0) return;
 
 	Lista.MedioActual = Lista.MedioSiguiente(Lista.MedioActual);
+	// Se ha llegado al final de la lista, vuelvo a pedir el medio actual
+	if (Lista.MedioActual == nullptr) Lista.MedioActual = Lista.MedioSiguiente(nullptr);
 
-	BDMedio NCan, NCan2;
+//	BDMedio NCan, NCan2;
 	App.MP.Stop();
-	App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
+	/*
+	App.BD.ObtenerMedio(Lista.MedioActual->BdMedio.Hash, NCan);
 	ItemMedio *IMS = Lista.MedioSiguiente(Lista.MedioActual);
 	if (IMS == NULL) {
 		if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
 	}
 	else {
-		App.BD.ObtenerMedio(IMS->Hash, NCan2);
+		App.BD.ObtenerMedio(IMS->BdMedio.Hash, NCan2);
 		if (App.MP.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
-	}
+	}*/
+	if (App.MP.AbrirMedio(Lista.MedioActual) == FALSE) Lista.Errores++;
 	App.MP.Play();
 }
 
@@ -365,20 +372,22 @@ void VentanaPrincipal::Lista_Anterior(void) {
 	LONG_PTR TotalItems = Lista.TotalItems() - 1;
 	if (TotalItems == -1) TotalItems = 0;
 	Lista.MedioActual = Lista.MedioAnterior(Lista.MedioActual);
-/*	if (Lista.MedioActual < 0) Lista.MedioActual = TotalItems;
+	// Si es null es que es el primer item, y quiero el ultimo
+	if (Lista.MedioActual == nullptr) Lista.MedioActual = Lista.MedioAnterior(nullptr);
 
-	if (Lista.MedioActual >= 0 && Lista.MedioActual <= TotalItems) {*/
-	BDMedio NCan, NCan2;
+	
+/*	BDMedio NCan, NCan2;
 	ItemMedio *IMS = Lista.MedioSiguiente(Lista.MedioActual);
-	App.BD.ObtenerMedio(Lista.MedioActual->Hash, NCan);
+	App.BD.ObtenerMedio(Lista.MedioActual->BdMedio.Hash, NCan);*/
 	App.MP.Stop();
-	if (IMS == NULL) {
+/*	if (IMS == NULL) {
 		if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
 	}
 	else {
-		App.BD.ObtenerMedio(IMS->Hash, NCan2);
+		App.BD.ObtenerMedio(IMS->BdMedio.Hash, NCan2);
 		if (App.MP.AbrirMedio(NCan, &NCan2) == FALSE) Lista.Errores++;
-	}
+	}*/
+	if (App.MP.AbrirMedio(Lista.MedioActual) == FALSE) Lista.Errores++;
 //		TablaMedios_Medio NCan(App.BD(), Lista.Medio(Lista.MedioActual)->Hash);
 	
 	App.MP.Play();
@@ -413,7 +422,7 @@ void VentanaPrincipal::FiltrosVideoPorDefecto(void) {
 
 void VentanaPrincipal::Lista_Propiedades(void) {
 	BDMedio nMedio; 
-	App.BD.ObtenerMedio(Lista.MedioMarcado()->Hash, nMedio);
+	App.BD.ObtenerMedio(Lista.MedioMarcado()->BdMedio.Hash, nMedio);
 	SHELLEXECUTEINFO info = { 0 };
 	info.cbSize = sizeof info;
 	info.lpFile = nMedio.Path.c_str();
@@ -426,7 +435,7 @@ void VentanaPrincipal::Lista_Propiedades(void) {
 
 void VentanaPrincipal::Lista_AbrirEnExplorador(void) {
 	BDMedio nMedio;
-	App.BD.ObtenerMedio(Lista.MedioMarcado()->Hash, nMedio);
+	App.BD.ObtenerMedio(Lista.MedioMarcado()->BdMedio.Hash, nMedio);
 	PIDLIST_ABSOLUTE pidl;
 	pidl = ILCreateFromPath(nMedio.Path.c_str());
 	if (pidl) {
@@ -437,7 +446,7 @@ void VentanaPrincipal::Lista_AbrirEnExplorador(void) {
 }
 
 void VentanaPrincipal::Lista_MostrarEnBaseDatos(void) {
-	Arbol_MostrarMedio(Lista.MedioMarcado()->Hash);
+	Arbol_MostrarMedio(Lista.MedioMarcado()->BdMedio.Hash);
 	MostrarMarco(ID_BOTON_BD);
 }
 
@@ -450,7 +459,7 @@ void VentanaPrincipal::Lista_EliminarSeleccionados(void) {
 				App.MP.CerrarMedio();
 				MAC = TRUE;
 				// Asigno el medio anterior o NULL si no hay medio anterior
-				Lista.MedioActual = Lista.MedioAnterior(Lista.MedioActual, FALSE);
+				Lista.MedioActual = Lista.MedioAnterior(Lista.MedioActual);
 			}
 			Lista.EliminarItem(i);
 			Ret++;
@@ -474,7 +483,7 @@ void VentanaPrincipal::Lista_EliminarSeleccionados(void) {
 void VentanaPrincipal::Lista_Momentos(void) {
 	if (Lista.TotalItems() == 0) return;
 	BDMedio Medio;
-	App.BD.ObtenerMedio(Lista.MedioMarcado()->Hash, Medio);
+	App.BD.ObtenerMedio(Lista.MedioMarcado()->BdMedio.Hash, Medio);
 	Momentos.Mostrar(Medio);
 }
 
