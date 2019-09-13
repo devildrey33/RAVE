@@ -407,6 +407,8 @@
 		X  Adaptar el sistema del VLC per tenir 3 instancies i acabar de fer lo del fade in out
 			X  Ara el sistema funciona amb 3 instancies, i sembla que tot funciona...
 				V  La solució era utilitzar el driver de DirectSound
+
+		-  Al moure els items de la llista, si movem el item següent al actual... segur que es lia gorda xd
 		
 		-  S'ha de refer el VLC per obrir un ItemMedio de la llista, i ja m'encarrego internament de buscar el seguent i obrir-lo
 			-  El Rave_Medio ha de tenir el Item de la llista dintre, per poder cambiar icones

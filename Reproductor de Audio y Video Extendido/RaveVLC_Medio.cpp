@@ -102,7 +102,7 @@ RaveVLC_Medio::~RaveVLC_Medio(void) {
 void RaveVLC_Medio::Eliminar(void) {
 	//	hWndVLC = NULL;
 	if (_Medio != NULL) {
-		Debug_Escribir_Varg(L"RaveVLC_Medio::~RaveVLC_Medio '%s' \n", Medio->BdMedio.Path.c_str());
+//		Debug_Escribir_Varg(L"RaveVLC_Medio::~RaveVLC_Medio '%s' \n", Medio->BdMedio.Path.c_str());
 		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEndReached		, Rave_MediaPlayer::EventosVLC, this);
 		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEncounteredError, Rave_MediaPlayer::EventosVLC, this);
 		libvlc_event_detach(_Eventos, libvlc_MediaParsedChanged			, Rave_MediaPlayer::EventosVLC, this);
@@ -115,13 +115,13 @@ void RaveVLC_Medio::Eliminar(void) {
 		libvlc_media_player_release(_Medio);
 
 		// Renombro archivos CRDOWNLOAD y OPDOWNLOAD una vez cerrados
-		if (Medio->BdMedio.Extension == Extension_CRDOWNLOAD || Medio->BdMedio.Extension == Extension_OPDOWNLOAD) {
+/*		if (Medio->BdMedio.Extension == Extension_CRDOWNLOAD || Medio->BdMedio.Extension == Extension_OPDOWNLOAD) {
 			size_t PosExtension = Medio->BdMedio.Path.find_last_of(TEXT("."));																				// Posición donde empieza la extensión
 			std::wstring NuevoPath = Medio->BdMedio.Path.substr(0, PosExtension);
 			if (MoveFile(Medio->BdMedio.Path.c_str(), NuevoPath.c_str()) != FALSE) {
 				App.BD.ActualizarPathMedio(NuevoPath, Medio->BdMedio.Id);
 			}
-		}
+		}*/
 
 		_Medio = NULL;
 	}
@@ -484,9 +484,12 @@ const int RaveVLC_Medio::AsignarSubtitulos(const wchar_t* Path) {
 	int		TamRes = WideCharToMultiByte(CP_UTF8, NULL, Path, static_cast<int>(TamnTexto), Destino, 2048, NULL, NULL);
 	Destino[TamRes] = 0;
 	// Segons doc de la VLC libvlc_video_set_subtitle_file está DEPRECATED i s'ha d'utilitzar libvlc_media_player_add_slave, PERO a mi no em funciona...
-//	return libvlc_media_player_add_slave(_Medio, libvlc_media_slave_type_subtitle , Destino, true);
+	int R = libvlc_media_player_add_slave(_Medio, libvlc_media_slave_type_subtitle , Destino, false);
+
+//	EnumerarSubtitulos();
+	return R;
 //	return libvlc_video_set_spu(_Medio, 0);		
-	return libvlc_video_set_subtitle_file(_Medio, Destino);
+//	return libvlc_video_set_subtitle_file(_Medio, Destino);
 }
 
 

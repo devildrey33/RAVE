@@ -269,6 +269,7 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 //		UINT64        TTotalMS  = TiempoTotalMs();
 //		UINT64        TActualMS = TiempoActualMs();
 
+//		if (TTotalMS < App.Opciones.EfectoFadeAudioMS() || _Actual == nullptr) return;
 		if (TTotalMS < App.Opciones.EfectoFadeAudioMS() || _Actual == nullptr || _Siguiente == nullptr) return;
 
 		if (TTotalMS - App.Opciones.EfectoFadeAudioMS() < TActualMS && _Actual->Tipo() == Tipo_Medio_Audio && _Siguiente->Tipo() == Tipo_Medio_Audio) {
@@ -290,6 +291,9 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 					//if (ComprobarMomento == TRUE) _Actual->ComprobarMomento();
 				}
 
+				// Si el nuevo medio actual es NULL y el repeat es Tipo_Repeat_RepetirLista, asigno el primer item de la lista como actual
+//				if (App.VentanaRave.Lista.MedioActual == nullptr && App.Opciones.Repeat() == Tipo_Repeat_RepetirLista) 
+//					App.VentanaRave.Lista.MedioActual = App.VentanaRave.Lista.MedioPrimero();
 
 				// Abro el nuevo medio actual
 				if (AbrirMedio(App.VentanaRave.Lista.MedioActual) == FALSE) App.VentanaRave.Lista.Errores++; 
@@ -314,6 +318,9 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 // El nuevo medio pasa a ser el medio actual
 // Se busca si el medio siguiente es una cancion para tener-lo cargado para un efecto fade in/out
 const BOOL Rave_MediaPlayer::AbrirMedio(ItemMedio *Medio) {
+	// Si el item es null, salgo.
+	if (Medio == nullptr) return FALSE;
+
 	// Elimino el medio anterior, si aun existe
 	if (_Anterior != nullptr) {
 		_EliminarRaveMedio(_Anterior);
@@ -321,6 +328,10 @@ const BOOL Rave_MediaPlayer::AbrirMedio(ItemMedio *Medio) {
 	}
 	// Busco el próximo medio siguiente
 	ItemMedio *NuevoMedioSiguiente = App.VentanaRave.Lista.MedioSiguiente(Medio);
+	// Si el nuevo medio siguiente es NULL, hay mas de un item en la lista, y el repeat está en repetir lista :
+	// - Asigno el primer medio de la lista al NuevoMedioSiguiente
+//	if (App.Opciones.Repeat() == Tipo_Repeat_RepetirLista && NuevoMedioSiguiente == nullptr && App.VentanaRave.Lista.TotalItems() > 1) NuevoMedioSiguiente = App.VentanaRave.Lista.MedioPrimero();
+
 	// Si el medio actual es una cancion, pasa a ser el anterior
 	if (Medio->BdMedio.TipoMedio == Tipo_Medio_Audio) {
 		_Anterior	= _Actual;
@@ -444,9 +455,7 @@ const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente)
 void Rave_MediaPlayer::CerrarMedio(void) {
 	if (_Anterior  != nullptr)	_EliminarRaveMedio(_Anterior);
 	if (_Actual    != nullptr)	_EliminarRaveMedio(_Actual);
-	if (_Siguiente != nullptr) _EliminarRaveMedio(_Siguiente);
-
-	if (_Actual) _Actual->ActualizarIconos(0);
+	if (_Siguiente != nullptr)  _EliminarRaveMedio(_Siguiente);
 
 	_Anterior  = nullptr;
 	_Actual    = nullptr;
@@ -454,6 +463,7 @@ void Rave_MediaPlayer::CerrarMedio(void) {
 
 	AsignarTitulo();
 }
+
 
 void Rave_MediaPlayer::_EliminarRaveMedio(Rave_Medio *eMedio) {
 
