@@ -26,16 +26,43 @@ void BarraTiempo::Evento_PintarPersonalizado(HDC DC, RECT &RFondo) {
 	}
 }
 
+void BarraTiempo::DesAnimar(void) {
+	_AniBarra2.Terminar();
+
+	_AniBarra2.Iniciar({ COLOR_BARRA2 }, { _ColorFondo }, 300,
+		[=](DAnimacion::Valores& Datos, const BOOL Terminado) {
+			_ColorBarra2 = Datos[0].Color();
+			Repintar();
+			if (Terminado == TRUE) _Valor2 = 0.0f;
+		}
+	);
+
+}
+
+
 void BarraTiempo::Valor2(const float nValor2) { 
 	// Si en nuevo valor no es cero, y el actual es cero, inicio la animación
 	if (_Valor2 == 0.0f && nValor2 != 0.0f) {
+		_AniBarra2.Terminar();
 		// Animación
-		_AniBarra2.Iniciar({ _ColorBarra }, { COLOR_BARRA2 },300,
+		_AniBarra2.Iniciar({ _ColorBarra }, { COLOR_BARRA2 }, 300,
 			[=](DAnimacion::Valores& Datos, const BOOL Terminado) {
 				_ColorBarra2 = Datos[0].Color();
 				Repintar();
 			}
 		);
 	}
+
+	// Si el nuevo valor es cero, y el actual no es cero, inicio la des-animación
+/*	if (_Valor2 != 0.0f && nValor2 == 0.0f) {
+		// Animación
+		_AniBarra2.Iniciar({ COLOR_BARRA2 }, { _ColorFondo }, 300,
+			[=](DAnimacion::Valores& Datos, const BOOL Terminado) {
+				_ColorBarra2 = Datos[0].Color();
+				Repintar();
+			}
+		);
+	}*/
+
 	_Valor2 = nValor2; 
 }

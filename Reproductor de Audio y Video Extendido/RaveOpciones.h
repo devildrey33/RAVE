@@ -72,8 +72,9 @@ class RaveOpciones : public RaveSQLite {
 	const BOOL					GuardarPosTamDlgDirectorios(RECT &RW, RECT &RC);
 	const BOOL					GuardarPosVentanaMomentos(void);
 
-	inline const int			Volumen(void) { return _Volumen; }
-	void						Volumen(const int nVolumen);
+	inline const long			Volumen(void) { return _Volumen; }
+	inline long			       *VolumenPtr(void) { return &_Volumen; }
+	void						Volumen(const long nVolumen);
 
 	inline const int			PosX(void)                 { return _PosX; }
 	inline const int			PosY(void)                 { return _PosY; }
@@ -172,7 +173,7 @@ class RaveOpciones : public RaveSQLite {
 
 								// Opciones en memória
 	std::wstring               _PathAbrir;					// Ultimo path donde se ha abierto un archivo externo
-	int                        _Volumen;
+	long                       _Volumen;
 	int                        _PosX;
 	int                        _PosY;
 	int                        _VentanaOpciones_PosX;
@@ -216,6 +217,6 @@ class RaveOpciones : public RaveSQLite {
 	BOOL                       _GuardarBSCP;				// Guardar Brillo, Saturación, Contraste y Proporción
 	float                      _VersionOpciones;			// Versión de las opciones
 
-	friend class RaveVLC_Medio;
+//	friend class RaveVLC_Medio;
 };
 

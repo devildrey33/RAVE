@@ -223,6 +223,8 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 		}		
 	}
 
+
+	// Visualización del tiempo (barra y etiquetas)
 	ObtenerDatosParsing();
 	if (!App.VentanaRave.Minimizado()) {
 		std::wstring TmpStr;
@@ -572,9 +574,11 @@ void Rave_MediaPlayer::_TerminarMedio(Rave_Medio *MedioEvento) {
 		}
 	}
 
-	App.VentanaRave.SliderTiempo.Valor2(0.0f);
-	App.ControlesPC.SliderTiempo.Valor2(0.0f);
-	
+//	App.VentanaRave.SliderTiempo.Valor2(0.0f);
+//	App.ControlesPC.SliderTiempo.Valor2(0.0f);
+	App.VentanaRave.SliderTiempo.DesAnimar();
+	App.ControlesPC.SliderTiempo.DesAnimar();
+
 	if (_Anterior  == MedioEvento) _Anterior  = nullptr;
 	if (_Actual    == MedioEvento) _Actual	  = nullptr;
 	if (_Siguiente == MedioEvento) _Siguiente = nullptr;
@@ -678,6 +682,16 @@ const int Rave_MediaPlayer::Volumen(void) {
 
 void Rave_MediaPlayer::Volumen(int nVolumen) {
 	if (_Actual == nullptr) return;
+	// Si existe un medio anterior
+	if (_Anterior != nullptr) {
+		// Termino el fade out
+		_Anterior->_AniVolumen.Terminar();
+		// Asigno el volumen del medio anterior a 0
+		_Anterior->Volumen(0, FALSE);
+	}
+	// Termino el fade in
+	_Actual->_AniVolumen.Terminar();
+	// Asigno el volumen del medio actual
 	_Actual->Volumen(nVolumen);
 }
 

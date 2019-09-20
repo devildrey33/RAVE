@@ -11,6 +11,8 @@ class BarraTiempo : public DWL::DBarraDesplazamientoEx {
 	void				Evento_PintarPersonalizado(HDC DC, RECT& RFondo);
 						// segundo valor
 	void				Valor2(const float nValor2);
+						// Animación para ocultar el segundo tiempo
+	void				DesAnimar(void);
   protected:
 	float              _Valor2;
 

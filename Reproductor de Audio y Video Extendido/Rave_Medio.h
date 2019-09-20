@@ -19,53 +19,53 @@ class Rave_Medio {
 									/////////////////////////
 									// Funciones virtuales //
 									/////////////////////////
-	  virtual void                  Eliminar(void)                                          { };
+	  virtual void                  Eliminar(void)										            { };
 
 									// Controles
-	  virtual const BOOL			Play(void)												{ return FALSE; };
-	  virtual const BOOL			Pausa(void)												{ return FALSE; };
-	  virtual const BOOL			Stop(void)												{ return FALSE; };
+	  virtual const BOOL			Play(void)														{ return FALSE; };
+	  virtual const BOOL			Pausa(void)														{ return FALSE; };
+	  virtual const BOOL			Stop(void)														{ return FALSE; };
 
-	  virtual const BOOL			Ratio(const float R)									{ return FALSE; };
+	  virtual const BOOL			Ratio(const float R)											{ return FALSE; };
 
-	  virtual const int				Volumen(void)											{ return 0; };
-	  virtual void					Volumen(int nVolumen, const BOOL ActualizarUI = TRUE)	{ };
+	  virtual const int				Volumen(void)													{ return 0; };
+	  virtual void					Volumen(const long nVolumen, const BOOL ActualizarUI = TRUE)	{ };
 
 									// Estado
-	  virtual const Estados_Medio	ComprobarEstado(void)									{ return Estados_Medio::Nada; };
+	  virtual const Estados_Medio	ComprobarEstado(void)											{ return Estados_Medio::Nada; };
 
 									// Tiempo del medio
-	  virtual const float			TiempoActual(void)										{ return 0.0f; };
-	  virtual void					TiempoActual(float nTiempo)								{ };
-	  virtual const UINT64			TiempoTotalMs(void)										{ return 0; };
-	  virtual const UINT64			TiempoActualMs(void)									{ return 0; };
-	  virtual void					TiempoActualMs(UINT64 nTiempo)							{ };
+	  virtual const float			TiempoActual(void)												{ return 0.0f; };
+	  virtual void					TiempoActual(float nTiempo)										{ };
+	  virtual const UINT64			TiempoTotalMs(void)												{ return 0; };
+	  virtual const UINT64			TiempoActualMs(void)											{ return 0; };
+	  virtual void					TiempoActualMs(UINT64 nTiempo)									{ };
 
 									// Proporción para el video
-	  virtual std::wstring         &ObtenerProporcion(void)									{ static std::wstring Nada; return Nada; };
-	  virtual void                  AsignarProporcion(const char *Prop)						{ };
+	  virtual std::wstring         &ObtenerProporcion(void)											{ static std::wstring Nada; return Nada; };
+	  virtual void                  AsignarProporcion(const char *Prop)								{ };
 
 									// Filtros para el vídeo
-	  virtual void					Brillo(const float nBrillo)								{ };
-	  virtual void					Contraste(const float nContraste)						{ };
-	  virtual void					Gamma(const float nGamma)								{ };
-	  virtual void					Hue(const int nHue)										{ };
-	  virtual void					Saturacion(const float nSaturacion)						{ };
+	  virtual void					Brillo(const float nBrillo)										{ };
+	  virtual void					Contraste(const float nContraste)								{ };
+	  virtual void					Gamma(const float nGamma)										{ };
+	  virtual void					Hue(const int nHue)												{ };
+	  virtual void					Saturacion(const float nSaturacion)								{ };
 									// Pista de audio para el video
-	  virtual void					AsignarPistaAudio(int nPista)							{ };
-	  virtual const int             AsignarSubtitulos(const wchar_t* Path)                  { return 0; };
-	  virtual const int             EnumerarSubtitulos(void)                                { return 0; };
-	  virtual const Rave_Medio_Tipo Tipo(void)												{ return Rave_Medio_Tipo_NADA; };
+	  virtual void					AsignarPistaAudio(int nPista)									{ };
+	  virtual const int             AsignarSubtitulos(const wchar_t* Path)				          { return 0; };
+	  virtual const int             EnumerarSubtitulos(void)							          { return 0; };
+	  virtual const Rave_Medio_Tipo Tipo(void)														{ return Rave_Medio_Tipo_NADA; };
 
-	  virtual void                  FadeIn(void)											{ };
-	  virtual void                  FadeOut(void)											{ };
+	  virtual void                  FadeIn(void)													{ };
+	  virtual void                  FadeOut(void)													{ };
 
 
-	  virtual const BOOL			ObtenerDatosParsing(void)								{ return FALSE; };
+	  virtual const BOOL			ObtenerDatosParsing(void)										{ return FALSE; };
 
 									// Obtiene el numero de instancia que se esta usando del VLC
-	  virtual const size_t			InstanciaNum(void)										{ return 0; };
-
+	  virtual const size_t			InstanciaNum(void)												{ return 0; };
+			
 									///////////////////////
 									// Funciones propias //
 									///////////////////////
@@ -80,4 +80,11 @@ class Rave_Medio {
 
 	  std::wstring                  TxtError;
 	  ItemMedio					   *Medio;		// Datos del medio
+
+    protected:
+									// Para el fade in / out
+	  DWL::DAnimacion              _AniVolumen;
+
+
+	  friend class Rave_MediaPlayer;
 };

@@ -30,7 +30,7 @@ class RaveVLC_Medio : public Rave_Medio {
 
 								// Volumen del medio
 	const int					Volumen(void);
-	void						Volumen(int nVolumen, const BOOL ActualizarUI = TRUE);
+	void						Volumen(const long nVolumen, const BOOL ActualizarUI = TRUE);
 
 	const Estados_Medio			ComprobarEstado(void);
 
@@ -81,7 +81,9 @@ class RaveVLC_Medio : public Rave_Medio {
 //	size_t					   _InstanciaVLC;
 	libvlc_instance_t         *_Instancia;
 
-	DWL::DAnimacion            _AniVolumen;
+//	long                      *_Volumen;
+
+//	DWL::DAnimacion            _AniVolumen;
 
 	friend class Rave_MediaPlayer;
 };

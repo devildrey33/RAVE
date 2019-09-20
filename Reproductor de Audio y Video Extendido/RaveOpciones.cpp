@@ -207,7 +207,7 @@ const BOOL RaveOpciones::ObtenerOpciones(void) {
 	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
-			_Volumen					= static_cast<int>(sqlite3_column_int(SqlQuery, 1));
+			_Volumen					= static_cast<long>(sqlite3_column_int(SqlQuery, 1));
 			_PathAbrir					= reinterpret_cast<const wchar_t*>(sqlite3_column_text16(SqlQuery, 2));
 			_PosX						= static_cast<int>(sqlite3_column_int(SqlQuery, 3));
 			_PosY						= static_cast<int>(sqlite3_column_int(SqlQuery, 4));
@@ -273,7 +273,7 @@ const BOOL RaveOpciones::ObtenerOpciones(void) {
 }
 
 
-void RaveOpciones::Volumen(const int nVolumen) {
+void RaveOpciones::Volumen(const long nVolumen) {
 	_Volumen = nVolumen;
 	std::wstring Q = L"Update Opciones SET Volumen=" + std::to_wstring(nVolumen) + L" WHERE Id=0";
 	Consulta(Q.c_str());

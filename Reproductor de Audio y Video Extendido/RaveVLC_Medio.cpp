@@ -6,10 +6,10 @@
 #include "Rave_MediaPlayer.h"
 
 
-RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t *Instancia, ItemMedio *nMedio) : Rave_Medio(nMedio), _Medio(NULL), _Eventos(NULL), _Parseado(FALSE), _Instancia(Instancia) {
+RaveVLC_Medio::RaveVLC_Medio(libvlc_instance_t *Instancia, ItemMedio *nMedio) : Rave_Medio(nMedio), _Medio(NULL), _Eventos(NULL), _Parseado(FALSE), _Instancia(Instancia) /*, _Volumen(nullptr)*/ {
 
 	App.MenuVideoFiltros->Menu(0)->BarraValor(Medio->BdMedio.Brillo);		// Brillo
-	App.MenuVideoFiltros->Menu(1)->BarraValor(Medio->BdMedio.Contraste);		// Contraste
+	App.MenuVideoFiltros->Menu(1)->BarraValor(Medio->BdMedio.Contraste);	// Contraste
 	App.MenuVideoFiltros->Menu(2)->BarraValor(Medio->BdMedio.Saturacion);	// Saturación
 
 //	Medio.Path = L"https://livestartover.atresmedia.com/lasexta/master.m3u8";
@@ -208,7 +208,8 @@ const BOOL RaveVLC_Medio::Play(void) {
 
 
 // 0 - 200
-void RaveVLC_Medio::Volumen(int nVolumen, const BOOL ActualizarUI) {
+void RaveVLC_Medio::Volumen(const long rVolumen, const BOOL ActualizarUI) {
+	long nVolumen = rVolumen;
 	// Topes
 	if (nVolumen > 200) nVolumen = 200;
 	if (nVolumen < 0)	nVolumen = 0;
@@ -501,16 +502,21 @@ const int RaveVLC_Medio::AsignarSubtitulos(const wchar_t* Path) {
 // de 0 al volumen actual
 void RaveVLC_Medio::FadeIn(void) {
 	_AniVolumen.Terminar();
-	_AniVolumen.Iniciar({ 0.0f }, { (double)App.Opciones._Volumen }, App.Opciones.EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores& Valores, const BOOL Terminado) {
+//	static double *Vol = (double *)&App.Opciones._Volumen;
+//	static long *vol = (long *)& App.Opciones._Volumen;
+
+//	_Volumen = (long *)&App.Opciones._Volumen;
+
+	_AniVolumen.Iniciar({ 0 }, { App.Opciones.Volumen() }, App.Opciones.EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores& Valores, const BOOL Terminado) {
 		Volumen(Valores[0].Entero(), FALSE);
 	}, { DWL::DAnimacion::FuncionesTiempo::Linear }, 100);
 }
 
 // del volumen actual a 0
 void RaveVLC_Medio::FadeOut(void) {
-	static double NuevoVolumen = 0.0f;
+	static long NuevoVolumen = 0;
 	_AniVolumen.Terminar();
-	_AniVolumen.Iniciar({ static_cast<double>(App.Opciones.Volumen()) }, { &NuevoVolumen }, App.Opciones.EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores& Valores, const BOOL Terminado) {
+	_AniVolumen.Iniciar({ App.Opciones.Volumen() }, { NuevoVolumen }, App.Opciones.EfectoFadeAudioMS(), [=](DWL::DAnimacion::Valores& Valores, const BOOL Terminado) {
 		Volumen(Valores[0].Entero(), FALSE);
 	}, { DWL::DAnimacion::FuncionesTiempo::Linear }, 100);
 
