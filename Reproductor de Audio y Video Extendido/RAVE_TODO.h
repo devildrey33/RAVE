@@ -408,11 +408,13 @@
 			X  Ara el sistema funciona amb 3 instancies, i sembla que tot funciona...
 				V  La solució era utilitzar el driver de DirectSound
 
-		-  Al moure els items de la llista, si movem el item següent al actual... segur que es lia gorda xd
+		V  Al moure els items de la llista, si movem el item següent al actual... segur que es lia gorda xd
+			V  Mirar el item seguent al fer shufle
+			V  Mirar el item seguent al fer drag & drop a la llista
 		
-		-  S'ha de refer el VLC per obrir un ItemMedio de la llista, i ja m'encarrego internament de buscar el seguent i obrir-lo
-			-  El Rave_Medio ha de tenir el Item de la llista dintre, per poder cambiar icones
-				-  S'ha de refer la llista, i fer-la mes fácil, el Item ha de tenir el seu Nodo a la BD i el BDMedio dintre.
+		V  S'ha de refer el VLC per obrir un ItemMedio de la llista, i ja m'encarrego internament de buscar el seguent i obrir-lo
+			V  El Rave_Medio ha de tenir el Item de la llista dintre, per poder cambiar icones
+				X  S'ha de refer la llista, i fer-la mes fácil, el Item ha de tenir el seu Nodo a la BD i el BDMedio dintre. (NO ES SEGUR TENIR EL NODO, JA QUE POT SER QUE NO EXISTEIXI)
 
 		-  Suport per unitats de red
 
@@ -469,6 +471,7 @@
 		-  No hi han tooltips pels directoris dels videos de la BD... (per que no es crean etiquetes d'ells)
 
 		V  Fer efecte de fusio al acabar una canço i començar unaltre reproduint les dues a l'hora quan faltin X milisegs.
+			V Sumar 1 als cops reproduits, i sumar la nota.
 			- Falta afegir les opcions a la finestra d'opcions, pero de moment funciona correctament
 
 

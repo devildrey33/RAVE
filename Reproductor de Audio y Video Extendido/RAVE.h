@@ -11,6 +11,7 @@
 //#include "AsociarReproductor.h"
 //#include "VentanaAsociarReproductor.h"
 #include "VentanaOpcionesRAVE.h"
+#include "VentanaOpcionesRAVE2.h"
 #include "DToolTipEx.h"
 #include "AsignarTeclaRapida.h"
 #include <stdlib.h>
@@ -123,6 +124,7 @@ class RAVE : public DApp {
 //	VentanaAsociarReproductor		VentanaAsociar;
 									// Ventana para mostrar las opciones
 	VentanaOpcionesRAVE             VentanaOpciones;
+	VentanaOpcionesRAVE2            VentanaOpciones2;
 									// Ventana para mostrar un editbox en el que introducir una URL
 	VentanaObtenerURL				VentanaURL;
 

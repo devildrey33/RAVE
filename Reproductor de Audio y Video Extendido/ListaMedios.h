@@ -37,6 +37,7 @@ class ListaMedios : public DWL::DListaEx {
 	void						Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse);
 	void						Evento_MouseMovimiento(DWL::DEventoMouse &DatosMouse);
 	void                        Evento_MouseSaliendo(void);
+	void						Evento_DragTerminado(void);
 //	void						Evento_FocoPerdido(HWND hWndNuevoFoco);
 
 	void                        Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado);

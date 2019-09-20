@@ -200,6 +200,7 @@
     <ClInclude Include="ItemMedio.h" />
     <ClInclude Include="ListaMedios.h" />
     <ClInclude Include="ListaRaices.h" />
+    <ClInclude Include="Marco_BaseDatos.h" />
     <ClInclude Include="RaveOpciones.h" />
     <ClInclude Include="RaveSQLite.h" />
     <ClInclude Include="Rave_MediaPlayer.h" />
@@ -236,6 +237,7 @@
     <ClInclude Include="VentanaMomento.h" />
     <ClInclude Include="VentanaObtenerURL.h" />
     <ClInclude Include="VentanaOpcionesRAVE.h" />
+    <ClInclude Include="VentanaOpcionesRAVE2.h" />
     <ClInclude Include="VentanaPrecarga.h" />
     <ClInclude Include="VentanaPrincipal.h" />
     <ClInclude Include="VerVideo.h" />
@@ -256,6 +258,7 @@
     <ClCompile Include="ExtensionesValidas.cpp" />
     <ClCompile Include="ListaMedios.cpp" />
     <ClCompile Include="ListaRaices.cpp" />
+    <ClCompile Include="Marco_BaseDatos.cpp" />
     <ClCompile Include="MarcoControles.cpp" />
     <ClCompile Include="RaveOpciones.cpp" />
     <ClCompile Include="RaveSQLite.cpp" />
@@ -291,6 +294,7 @@
     <ClCompile Include="VentanaMomento.cpp" />
     <ClCompile Include="VentanaObtenerURL.cpp" />
     <ClCompile Include="VentanaOpcionesRAVE.cpp" />
+    <ClCompile Include="VentanaOpcionesRAVE2.cpp" />
     <ClCompile Include="VentanaPrecarga.cpp" />
     <ClCompile Include="VentanaPrincipal.cpp" />
     <ClCompile Include="VerVideo.cpp" />

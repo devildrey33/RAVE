@@ -248,18 +248,6 @@ void ListaMedios::ReproducirMedio(BDMedio &nMedio, LONG PosMomento) {
 		MedioActual->BdMedio.PosMomento = PosMomento;
 		App.MP.AbrirMedio(MedioActual);		
 	}
-/*	BDMedio NCan;
-	App.BD.ObtenerMedio(MedioActual->BdMedio.Hash, NCan);
-	NCan.PosMomento = PosMomento;
-	BDMedio NCanS;
-	ItemMedio* IMS = MedioSiguiente(MedioActual);
-	if (IMS != NULL) {
-		App.BD.ObtenerMedio(MedioSiguiente(MedioActual)->BdMedio.Hash, NCanS);
-		if (App.MP.AbrirMedio(NCan, &NCanS) == FALSE) Errores++;
-	}
-	else {
-		if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Errores++;
-	}*/
 
 	App.MP.Play(TRUE);
 }
@@ -276,38 +264,18 @@ void ListaMedios::Evento_MouseDobleClick(DWL::DEventoMouse &EventoMouse) {
 				App.MP.AbrirMedio(MedioActual);
 			}
 
-			/*
-			BDMedio NCan;
-			App.BD.ObtenerMedio(MedioActual->BdMedio.Hash, NCan);
-			BDMedio NCanS;
-			ItemMedio *IMS = MedioSiguiente(MedioActual);
-			if (IMS != NULL) {
-				App.BD.ObtenerMedio(MedioSiguiente(MedioActual)->BdMedio.Hash, NCanS);
-				if (App.MP.AbrirMedio(NCan, &NCanS) == FALSE) Errores++;
-			}
-			else {
-				if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Errores++;
-			}*/
-
-//			if (App.VLC.AbrirMedio(NCan) == FALSE) Errores++;
 			App.MP.Play();
 		}
 	}
 }
 
+// Se ha terminado una operacion de drag & drop
+void ListaMedios::Evento_DragTerminado(void) {
+	App.MP.AsegurarMedioSiguiente();
+}
+
 void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse& DatosMouse) {
-
-/*	if (GetCapture() == _hWnd) {
-		RECT RC;
-		GetClientRect(_hWnd, &RC);
-		POINT Pt = { DatosMouse.X(), DatosMouse.Y() };
-		if (PtInRect(&RC, Pt) == FALSE) {
-			ReleaseCapture();
-			Visible(FALSE);
-			return;
-		}
-	}*/
-
+	
 	// Boton del medio
 	if (DatosMouse.Boton == 2) {		
 		if (_ItemResaltado != -1) {
@@ -504,6 +472,9 @@ const BOOL ListaMedios::Mezclar(const BOOL nMezclar) {
 
 	// Repinto el control y devuelvo si la lista está mezclada o no
 	Repintar();
+	// Actualizo el medio siguiente del VLC para que conincida con el medio siguiente actual en la lista
+	App.MP.AsegurarMedioSiguiente();
+
 	return Ret;
 }
 

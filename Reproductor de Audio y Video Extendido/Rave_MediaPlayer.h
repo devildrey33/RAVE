@@ -15,6 +15,8 @@ class Rave_MediaPlayer : public DWL::DVentana {
 	void							Terminar(void);
 									// Abre el medio de la lista especificado
 	const BOOL						AbrirMedio(ItemMedio *Medio);
+									// Función que comprueba si el medio siguiente de la lista sigue siendo el medio siguiente del MediaPlayer, y en caso contrario, lo carga.
+	void							AsegurarMedioSiguiente(void);
 									// Abre el medio especificado y el medio siguiente (necesario para el efecto FADE IN OUT)
 //	const BOOL						AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente);
 									// Cierra todos los medios (Anterior, Actual, y Siguiente)

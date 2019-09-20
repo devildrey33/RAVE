@@ -739,7 +739,7 @@ void VentanaPrincipal::Evento_MenuEx_Barra_Cambiado(const UINT cID, const float 
 
 
 void VentanaPrincipal::Evento_BotonEx_Mouse_Presionado(DWL::DEventoMouse &DatosMouse) {
-	_BotonExMouseDownTick = GetTickCount();
+	_BotonExMouseDownTick = GetTickCount64();
 	switch (DatosMouse.ID()) {
 		case ID_BOTON_ANTERIOR:	
 			App.MP.Ratio(0.5f);
@@ -784,6 +784,8 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse)
 			case ID_BOTON_OPCIONES:
 				if (App.VentanaOpciones.hWnd() == NULL)		App.VentanaOpciones.Crear();
 				else                                        SetFocus(App.VentanaOpciones.hWnd());
+				if (App.VentanaOpciones2.hWnd() == NULL)	App.VentanaOpciones2.Crear();
+				else                                        SetFocus(App.VentanaOpciones2.hWnd());
 				break;
 			case ID_BOTON_BD:
 			case ID_BOTON_LISTA:
@@ -801,13 +803,13 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse)
 				break;
 			case ID_BOTON_ANTERIOR:
 				// El boton lleva menos de 200 milisegundos presionado
-				if (GetTickCount() < _BotonExMouseDownTick + 200) {
+				if (GetTickCount64() < _BotonExMouseDownTick + 200) {
 					Lista_Anterior();
 				}
 				break;
 			case ID_BOTON_SIGUIENTE:
 				// El boton lleva menos de 200 milisegundos presionado
-				if (GetTickCount() < _BotonExMouseDownTick + 200) {
+				if (GetTickCount64() < _BotonExMouseDownTick + 200) {
 					Lista_Siguiente();
 				}
 				break;

@@ -177,7 +177,7 @@ void Rave_MediaPlayer::Temporizador_Lista(void) {
 #endif
 	// Un medio de la lista ha terminado
 	if (Estado == SinCargar) {
-		App.BD.MedioReproducido(&App.MP.MedioActual());
+//		App.BD.MedioReproducido(&App.MP.MedioActual());
 		// Se ha llegado al final de la lista
 		if (App.VentanaRave.Lista.PosMedio(App.VentanaRave.Lista.MedioActual) == App.VentanaRave.Lista.TotalItems() - 1) {
 			App.VentanaRave.Repeat();
@@ -189,6 +189,7 @@ void Rave_MediaPlayer::Temporizador_Lista(void) {
 		}
 	}
 }
+
 
 void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 	Estados_Medio Estado	= ComprobarEstado();
@@ -385,71 +386,41 @@ const BOOL Rave_MediaPlayer::AbrirMedio(ItemMedio *Medio) {
 	return FALSE;
 }
 
-/*
-const BOOL Rave_MediaPlayer::AbrirMedio(BDMedio &Medio, BDMedio *MedioSiguiente) {
-	if (_Anterior != NULL) {
-		_EliminarRaveMedio(_Anterior);
-		_Anterior = NULL;
-	}
 
-	// Si no es un video el medio actual pasa a ser el anterior
-	if (Medio.TipoMedio != Tipo_Medio_Video && Medio.TipoMedio != Tipo_Medio_IpTv) {
-		_Anterior = _Actual;
-		_Actual = NULL;
-	}
-	// Si es un video, elimino el medio actual
-	else {
-		_Anterior = NULL;
-		if (_Actual != NULL) {
-			_EliminarRaveMedio(_Actual);
-			_Actual = NULL;
-		}
-	}
+// Función que comprueba si el medio siguiente de la lista sigue siendo el medio siguiente del MediaPlayer, y en caso contrario, lo carga.
+void Rave_MediaPlayer::AsegurarMedioSiguiente(void) {
+	// Si el medio actual no es válido, salgo de la función
+	if (_Actual			== nullptr)	 return;
+	if (_Actual->Medio	== nullptr)  return;
 
-	// Existe un medio siguiente cargado y tiene la misma id que el medio actual
-	if (_Siguiente != NULL) {
-		if (_Siguiente->Medio.BdMedio.Id == Medio.Id) {
-			_Actual = _Siguiente;
-		}
-		// El medio siguiente no se corresponde con el medio a cargar
-		else {
-			_EliminarRaveMedio(_Siguiente);
-			_Siguiente = NULL;
-			if (Medio.EsFMOD() == FALSE)	_Actual = new RaveVLC_Medio(_InstanciaVLC, Medio);
-			#ifdef RAVE_UTILIZAR_FMOD
-				else                        _Actual = new RaveFMOD_Medio(_SistemaFMOD, Medio);
-			#endif
-		}
-	}
-
-	// No hay un medio siguiente 
-	else {		
-		if (Medio.EsFMOD() == FALSE)	_Actual = new RaveVLC_Medio(_InstanciaVLC, Medio);
-		#ifdef RAVE_UTILIZAR_FMOD
-			else                        _Actual = new RaveFMOD_Medio(_SistemaFMOD, Medio);
-		#endif
-	}
-
-	// Si el medio actual no es un video / iptv
-	if (Medio.TipoMedio != Tipo_Medio_Video && Medio.TipoMedio != Tipo_Medio_IpTv) {
-		// Si el medio siguiente existe
-		if (MedioSiguiente != NULL) {
-			// Si el medio siguiente no es un video / iptv, cargo el medio siguiente.
-			if (MedioSiguiente->TipoMedio != Tipo_Medio_Video && MedioSiguiente->TipoMedio != Tipo_Medio_IpTv) {
-
-				if (Medio.EsFMOD() == FALSE)	_Siguiente = new RaveVLC_Medio(_InstanciaVLC, *MedioSiguiente);
-				#ifdef RAVE_UTILIZAR_FMOD
-					else                        _Siguiente = new RaveFMOD_Medio(_SistemaFMOD, *MedioSiguiente);
-				#endif
+	// Si el medio actual es una cancion
+	if (_Actual->Medio->BdMedio.TipoMedio == Tipo_Medio_Audio) {
+		// Busco el próximo medio siguiente
+		ItemMedio *NuevoMedioSiguiente = App.VentanaRave.Lista.MedioSiguiente(_Actual->Medio);
+		// Si existe un nuevo medio siguiente
+		if (NuevoMedioSiguiente != nullptr) {
+			// Si el nuevo medio siguiente es una cancion
+			if (NuevoMedioSiguiente->BdMedio.TipoMedio == Tipo_Medio_Audio) {
+				// Si no hay medio siguiente asignado
+				if (_Siguiente == nullptr) {
+					// Cargo el nuevo medio siguiente
+					_Siguiente = new RaveVLC_Medio(_InstanciaVLC, NuevoMedioSiguiente);
+				}
+				else {
+					// Si el medio siguiente no tiene el mismo path que el nuevo medio siguiente y no se está reproduciendo
+					if (_Siguiente->Medio->BdMedio.Path != NuevoMedioSiguiente->BdMedio.Path && _Siguiente->ComprobarEstado() != EnPlay) {
+						// Elimino el medio siguiente desfasado
+						_EliminarRaveMedio(_Siguiente);
+						// Cargo el nuevo medio siguiente
+						_Siguiente = new RaveVLC_Medio(_InstanciaVLC, NuevoMedioSiguiente);
+					}
+				}
 			}
 		}
 	}
+}
 
-	if (_Actual) {
-		if (_Actual->TxtError.size() == 0) return TRUE;		
-	}
-	return FALSE;
-}*/
+
 
 
 void Rave_MediaPlayer::CerrarMedio(void) {
@@ -523,11 +494,16 @@ void Rave_MediaPlayer::EventosVLC(const libvlc_event_t *evento, void *ptr) {
 
 	switch (evento->type) {
 		case libvlc_MediaPlayerEncounteredError :
-			PostMessage(_hWndMensajes, WM_MEDIO_TERMINADO, reinterpret_cast<WPARAM>(MedioEvento), 0);
+			// Muestro el error
 			App.MostrarToolTipPlayerError(UltimoErrorVLC());
+			// Cierro el medio y libero la memória
+			PostMessage(_hWndMensajes, WM_MEDIO_TERMINADO, 0, reinterpret_cast<LPARAM>(MedioEvento));
 			break;
 		case libvlc_MediaPlayerEndReached :
-			PostMessage(_hWndMensajes, WM_MEDIO_TERMINADO, reinterpret_cast<WPARAM>(MedioEvento), 0);
+			// Sumo 1 a las veces reproducidas del medio
+			App.BD.MedioReproducido(&MedioEvento->Medio->BdMedio);
+			// Cierro el medio y libero la memória
+			PostMessage(_hWndMensajes, WM_MEDIO_TERMINADO, 0, reinterpret_cast<LPARAM>(MedioEvento));
 			break;
 		case libvlc_MediaParsedChanged :
 			MedioEvento->ObtenerDatosParsing();
@@ -535,19 +511,19 @@ void Rave_MediaPlayer::EventosVLC(const libvlc_event_t *evento, void *ptr) {
 		case libvlc_MediaPlayerPlaying :
 			libvlc_media_player_set_hwnd(static_cast<RaveVLC_Medio*>(_Actual)->_Medio, App.VentanaRave.Video.hWnd());
 			break;
-		case libvlc_MediaSubItemAdded:
+/*		case libvlc_MediaSubItemAdded:
 			break;
 		case libvlc_MediaSubItemTreeAdded:
-			break;
+			break;*/
 		case libvlc_MediaPlayerVout:
 			// Muestra el marco del video
 			App.VentanaRave.MostrarMarco(ID_BOTON_VIDEO);
 			break;
-		case libvlc_MediaListItemAdded:
+/*		case libvlc_MediaListItemAdded:
 			break;
 		case libvlc_MediaListEndReached:
-			PostMessage(_hWndMensajes, WM_MEDIO_TERMINADO, reinterpret_cast<WPARAM>(MedioEvento), 0);
-			break;
+			PostMessage(_hWndMensajes, WM_MEDIO_TERMINADO, 0, reinterpret_cast<LPARAM>(MedioEvento));
+			break;*/
 	}
 }
 
@@ -588,7 +564,6 @@ void Rave_MediaPlayer::_TerminarMedio(Rave_Medio *MedioEvento) {
 		else {
 			RestaurarIconos = TRUE;
 		}
-
 
 		if (RestaurarIconos == TRUE) {
 			// Asigno las imagenes de los botones play / pausa a la del play
@@ -853,12 +828,9 @@ LRESULT CALLBACK Rave_MediaPlayer::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 				case ID_TEMPORIZADOR_LISTA  : Temporizador_Lista();				return 0;
 			}
 			break;
-
+		// Mensaje para eliminar el medio de la memória
 		case WM_MEDIO_TERMINADO :
-//			T = this->_Actual->TiempoTotalMs();
-//			if (T != 0) {
-				_TerminarMedio(reinterpret_cast<Rave_Medio*>(wParam));
-//			}
+			_TerminarMedio(reinterpret_cast<Rave_Medio*>(lParam));
 			return 0;
 		
 		case WM_TIMER_LISTA :

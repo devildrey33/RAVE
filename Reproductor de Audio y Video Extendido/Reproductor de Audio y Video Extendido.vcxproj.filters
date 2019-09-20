@@ -59,6 +59,9 @@
     <Filter Include="xXx _MAIN_ xXx\Actualizaciones">
       <UniqueIdentifier>{0d931b0e-4ca4-4d58-96a6-12c77db82615}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Ventanas y Controles\Ventanas\Opciones">
+      <UniqueIdentifier>{ac49779c-c796-4260-a27e-aa79262fe5f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -223,6 +226,12 @@
     <ClInclude Include="ItemMedio.h">
       <Filter>Ventanas y Controles\Controles</Filter>
     </ClInclude>
+    <ClInclude Include="VentanaOpcionesRAVE2.h">
+      <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
+    </ClInclude>
+    <ClInclude Include="Marco_BaseDatos.h">
+      <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -350,6 +359,12 @@
     </ClCompile>
     <ClCompile Include="VentanaObtenerURL.cpp">
       <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaOpcionesRAVE2.cpp">
+      <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
+    </ClCompile>
+    <ClCompile Include="Marco_BaseDatos.cpp">
+      <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

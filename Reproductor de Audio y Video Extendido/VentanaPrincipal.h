@@ -277,7 +277,7 @@ class VentanaPrincipal : public DWL::DVentana {
 								// Variable que determina si se ha entrado en modo patalla completa
 	BOOL                       _PantallaCompleta;		
 								// Ultimo tick del sistema al presionar el boton del mouse
-	DWORD                      _BotonExMouseDownTick;	
+	ULONGLONG                  _BotonExMouseDownTick;	
 								// Total de medios en la fase 2 del analisis
 	UINT                       _MaximoTotalMedios2;	
 								// Valor actual de los medios analizados en la fase 2

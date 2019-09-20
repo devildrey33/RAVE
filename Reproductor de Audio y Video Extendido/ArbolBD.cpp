@@ -140,11 +140,14 @@ const size_t ArbolBD::AgregarNodoALista(NodoBD *nNodo) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
 			BDMedio *Medio = new BDMedio(SqlQuery, App.BD.Unidades);
-			
-			if (App.VentanaRave.Lista.AgregarMedio(Medio) != nullptr) MediosAgregados++;
+			// Compruebo que el medio sea de internet o exista en el disco antes de agregar-lo
+			if (Medio->Ubicacion() == Ubicacion_Medio_Internet || GetFileAttributes(Medio->Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
+				// Agrego el medio a la lista y sumo uno a los medios agregados
+				if (App.VentanaRave.Lista.AgregarMedio(Medio) != nullptr) MediosAgregados++;
 
-			// Aseguro que el medio agregado a la lista exista en el arbol.
-			_AgregarMedio(static_cast<NodoBD *>(nNodo), Medio);
+				// Aseguro que el medio agregado a la lista exista en el arbol.
+				_AgregarMedio(static_cast<NodoBD*>(nNodo), Medio);
+			}
 
 			delete Medio;
 		}
@@ -249,7 +252,7 @@ void ArbolBD::ObtenerPath(NodoBD *nNodo, std::wstring &rPath) {
 // Función que explora el nodo expecificado
 void ArbolBD::ExplorarPath(NodoBD *nNodo) {
 	if (nNodo == NULL) return;
-	DWORD Tick = GetTickCount();
+	ULONGLONG Tick = GetTickCount64();
 	Debug_Escribir_Varg(L"ArbolBD::ExplorarPath  Nodo = '%s'\n", nNodo->Texto.c_str());
 
 	WIN32_FIND_DATA		FindInfoPoint;
@@ -339,7 +342,7 @@ void ArbolBD::ExplorarPath(NodoBD *nNodo) {
 		sqlite3_finalize(SqlQuery);
 	}
 
-	Debug_Escribir_Varg(L"ArbolBD::ExplorarPath terminado en = %dMS\n", GetTickCount() - Tick);
+	Debug_Escribir_Varg(L"ArbolBD::ExplorarPath terminado en = %dMS\n", GetTickCount64() - Tick);
 
 }
 
