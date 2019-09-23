@@ -3,23 +3,70 @@
 
 #define ID_ARBOLSECCIONES	1000
 #define ID_MARCOBD			1001
+#define ID_MARCOCANCIONES	1002
+#define ID_MARCOGENERAL		1003
+#define ID_MARCOLISTAS		1004
+#define ID_MARCOTECLADO		1005
+#define ID_MARCOVIDEO		1006
+
+
+
+const wchar_t *VentanaOpcionesRAVE2::OpcionesStr[NUM_OPCIONES] = {
+	L"Base de datos",	// 0
+	L"Inicio",			// 1
+	L"UI",				// 2
+	L"Teclado",			// 3
+	L"Listas",			// 4
+	L"Video"			// 5
+};
+
 
 void VentanaOpcionesRAVE2::Crear(void) {
 	DVentana::CrearVentana(NULL, L"RAVE_VentanaOpciones2", L"Opciones", App.Opciones.VentanaOpciones_PosX(), App.Opciones.VentanaOpciones_PosY(), 700, 350, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 
 	ArbolSecciones.CrearArbolEx(this, 10, 10, 190, 330, ID_ARBOLSECCIONES, WS_CHILD | WS_VISIBLE);
 
-	ArbolSecciones.AgregarNodo(L"Base de datos", NULL, 0);
-	ArbolSecciones.AgregarNodo(L"General", NULL, 0);
-	ArbolSecciones.AgregarNodo(L"Teclado", NULL, 0);
-	ArbolSecciones.AgregarNodo(L"Listas", NULL, 0);
-	ArbolSecciones.AgregarNodo(L"Canciones", NULL, 0);
-	ArbolSecciones.AgregarNodo(L"Video", NULL, 0);
+	int Iconos[NUM_OPCIONES] = { 
+		IDI_BASEDATOS, 
+		IDI_NOTA, 
+		IDI_PROPORCION, 
+		IDI_TECLADO,
+		IDI_AGREGARLISTA,		 
+		IDI_VIDEO 
+	};
+
+	for (size_t i = 0; i < 6; i++) {
+		ArbolSecciones.AgregarNodo(OpcionesStr[i], NULL, Iconos[i]);
+	}
 
 
 	MarcoBaseDatos.Crear(this, 210, 10, 480, 330, ID_MARCOBD);
+	MarcoInicio.Crear(this, 210, 10, 480, 330, ID_MARCOCANCIONES);
+	MarcoUI.Crear(this, 210, 10, 480, 330, ID_MARCOGENERAL);
+	MarcoListas.Crear(this, 210, 10, 480, 330, ID_MARCOLISTAS);
+	MarcoTeclado.Crear(this, 210, 10, 480, 330, ID_MARCOTECLADO);
+	MarcoVideo.Crear(this, 210, 10, 480, 330, ID_MARCOVIDEO);
+
+	MostrarMarco(0);
 
 	Visible(TRUE);
+}
+
+
+void VentanaOpcionesRAVE2::MostrarMarco(const size_t Marco) {
+	if (Marco > NUM_OPCIONES) return;
+
+	BOOL Marcos[NUM_OPCIONES];
+	for (size_t i = 0; i < NUM_OPCIONES; i++) Marcos[i] = FALSE;
+
+	Marcos[Marco] = TRUE;
+
+	MarcoBaseDatos.Visible(Marcos[0]);
+	MarcoInicio.Visible(Marcos[1]);
+	MarcoUI.Visible(Marcos[2]);
+	MarcoTeclado.Visible(Marcos[3]);
+	MarcoListas.Visible(Marcos[4]);
+	MarcoVideo.Visible(Marcos[5]);
 }
 
 void VentanaOpcionesRAVE2::Evento_Cerrar(void) {
@@ -28,17 +75,45 @@ void VentanaOpcionesRAVE2::Evento_Cerrar(void) {
 	App.OcultarToolTipOpciones();
 }
 
-void VentanaOpcionesRAVE2::Evento_ListaEx_Mouse_Click(DWL::DEventoMouse &DatosMouse) {
+void VentanaOpcionesRAVE2::Evento_ArbolEx_Mouse_Click(DWL::DEventoMouse &DatosMouse) {
+	if (ArbolSecciones.NodoMarcado() != nullptr) {
+		for (size_t i = 0; i < NUM_OPCIONES; i++) {
+			if (ArbolSecciones.NodoMarcado()->Texto.compare(OpcionesStr[i]) == 0) {
+				MostrarMarco(i);
+				return;
+			}
+		}
+	}
 }
+
+
+void VentanaOpcionesRAVE2::Evento_DlgDirectorios_CambioTamPos(HWND hWndDlg) {
+	RECT RW, RC;
+	GetWindowRect(hWndDlg, &RW);
+	GetClientRect(hWndDlg, &RC);
+	App.Opciones.GuardarPosTamDlgDirectorios(RW, RC);
+}
+
 
 LRESULT CALLBACK VentanaOpcionesRAVE2::GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
 		case WM_CLOSE:		
 			Evento_Cerrar();	
 			return 0;
-		case DWL_LISTAEX_MOUSESOLTADO:
-			Evento_ListaEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));
+		case DWL_ARBOLEX_CLICK:
+			Evento_ArbolEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
+		case WM_EXITSIZEMOVE:
+			App.Opciones.GuardarPosVentanaOpciones();
+			return 0;
+		case WM_MOVING:
+			App.OcultarToolTipOpciones();
+			return 0;
+		// El DlgDirectorios ha cambiado de tamaño o posición
+		case DWL_DLGDIRECTORIOS_POSTAM_CAMBIADO:
+			Evento_DlgDirectorios_CambioTamPos(WPARAM_TO_HWND(wParam));
+			return 0;
+
 	}
 
 	return DVentana::GestorMensajes(uMsg, wParam, lParam);

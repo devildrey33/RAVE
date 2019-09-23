@@ -10,7 +10,7 @@
 #include "RaveBD.h"
 //#include "AsociarReproductor.h"
 //#include "VentanaAsociarReproductor.h"
-#include "VentanaOpcionesRAVE.h"
+//#include "VentanaOpcionesRAVE.h"
 #include "VentanaOpcionesRAVE2.h"
 #include "DToolTipEx.h"
 #include "AsignarTeclaRapida.h"
@@ -123,7 +123,7 @@ class RAVE : public DApp {
 									// Ventana que muestra el mensaje para las asociaciones de archivo
 //	VentanaAsociarReproductor		VentanaAsociar;
 									// Ventana para mostrar las opciones
-	VentanaOpcionesRAVE             VentanaOpciones;
+//	VentanaOpcionesRAVE             VentanaOpciones;
 	VentanaOpcionesRAVE2            VentanaOpciones2;
 									// Ventana para mostrar un editbox en el que introducir una URL
 	VentanaObtenerURL				VentanaURL;

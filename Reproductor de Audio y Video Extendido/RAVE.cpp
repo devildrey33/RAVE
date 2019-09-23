@@ -398,7 +398,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 //	_ToolTip2.CrearToolTipEx(DWL::DhWnd::Fuente18Normal, &VentanaOpciones);
 	
 	_ToolTipPlayer.Iniciar(&VentanaRave);
-	_ToolTipOpciones.Iniciar(&VentanaOpciones);
+	_ToolTipOpciones.Iniciar(&VentanaOpciones2);
 	_ToolTipMomentos.Iniciar(&VentanaRave.Momentos);
 }
 

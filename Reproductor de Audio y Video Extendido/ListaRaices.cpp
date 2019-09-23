@@ -58,7 +58,7 @@ void ListaRaices::Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse) {
 
 	if (nItemPresionado == ItemResaltado() && _SubItemResaltado == 2) {
 		App.MostrarToolTipOpciones(L"Raiz \"" + nItemPresionado->Texto() + L"\" eliminada.");
-		App.VentanaOpciones.EliminarRaiz(nItemPresionado->Texto());
+		App.VentanaOpciones2.MarcoBaseDatos.EliminarRaiz(nItemPresionado->Texto());
 		EliminarItem(nItemPresionado);
 //		Repintar();
 	}

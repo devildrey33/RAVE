@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "VentanaOpcionesRAVE.h"
+#include "VentanaOpcionesRAVE (DEPRECATED).h"
 #include "resource.h"
 #include "DDlgDirectorios.h"
 #include "DStringUtils.h"
@@ -288,7 +288,7 @@ void VentanaOpcionesRAVE::Crear(void) {
 	
 	SeparadorVideo3.Crear(&MarcoVideo, 0, 120, RC.right - 10);
 
-	MarcaRecordarValoresVideo.CrearMarcaEx(&MarcoVideo, L"Guardar brillo, saturación, contraste, i proporción para cada medio.", 10, 130, 455, 30, ID_MARCA_VIDEOGUARDARVALORES, IDI_CHECK2);
+	MarcaRecordarValoresVideo.CrearMarcaEx(&MarcoVideo, L"Guardar brillo, saturación, contraste, y proporción para cada medio.", 10, 130, 455, 30, ID_MARCA_VIDEOGUARDARVALORES, IDI_CHECK2);
 	MarcaRecordarValoresVideo.Marcado(App.Opciones.GuardarBSCP());
 
 
@@ -318,10 +318,10 @@ void VentanaOpcionesRAVE::ActualizarListaInicio(void) {
 			DesplegableListaInicio.AgregarItem(Listas[i]);
 		}
 	}
-	// Si no hay raices solo valen 3 opciones
+	// Si no hay raices solo valen 2 opciones
 	else {
 		DesplegableListaInicio.AgregarItem(Listas[0]);
-		DesplegableListaInicio.AgregarItem(Listas[4]);
+//		DesplegableListaInicio.AgregarItem(Listas[4]);
 		DesplegableListaInicio.AgregarItem(Listas[7]);
 	}
 }
@@ -726,7 +726,7 @@ LRESULT CALLBACK VentanaOpcionesRAVE::GestorMensajes(UINT uMsg, WPARAM wParam, L
 		case DWL_DESPLEGABLEEX_CAMBIO :
 			Evento_ListaDesplegable_Cambio(static_cast<INT_PTR>(wParam));
 			return 0;
-		case DWL_LISTAEX_MOUSESOLTADO:
+		case DWL_LISTAEX_CLICK :
 			Evento_ListaEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
 		// El DlgDirectorios ha cambiado de tamaño o posición

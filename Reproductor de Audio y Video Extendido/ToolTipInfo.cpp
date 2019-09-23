@@ -54,9 +54,9 @@ void ToolTipInfo::Mostrar(const int cX, const int cY, const int cAncho, const in
 		// Si la ventana del thread analizar tiene el foco
 		if (Foco == App.VentanaRave.ThreadAnalizar.hWnd()) {
 			// Si la ventana opciones es visible
-			if (App.VentanaOpciones.Visible() == TRUE) {
+			if (App.VentanaOpciones2.Visible() == TRUE) {
 				// Muevo la ventana de las opciones arriba del todo
-				SetWindowPos(App.VentanaOpciones.hWnd(), HWND_TOP, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW | SWP_NOSIZE | SWP_NOMOVE);
+				SetWindowPos(App.VentanaOpciones2.hWnd(), HWND_TOP, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW | SWP_NOSIZE | SWP_NOMOVE);
 			}
 			// Muevo la ventana del thread arriba del todo
 //			SetWindowPos(Foco, HWND_TOP, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW | SWP_NOSIZE | SWP_NOMOVE);

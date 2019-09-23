@@ -201,6 +201,11 @@
     <ClInclude Include="ListaMedios.h" />
     <ClInclude Include="ListaRaices.h" />
     <ClInclude Include="Marco_BaseDatos.h" />
+    <ClInclude Include="Marco_Inicio.h" />
+    <ClInclude Include="Marco_UI.h" />
+    <ClInclude Include="Marco_Listas.h" />
+    <ClInclude Include="Marco_Teclado.h" />
+    <ClInclude Include="Marco_Video.h" />
     <ClInclude Include="RaveOpciones.h" />
     <ClInclude Include="RaveSQLite.h" />
     <ClInclude Include="Rave_MediaPlayer.h" />
@@ -236,7 +241,7 @@
     <ClInclude Include="VentanaInstalarActualizacion.h" />
     <ClInclude Include="VentanaMomento.h" />
     <ClInclude Include="VentanaObtenerURL.h" />
-    <ClInclude Include="VentanaOpcionesRAVE.h" />
+    <ClInclude Include="VentanaOpcionesRAVE %28DEPRECATED%29.h" />
     <ClInclude Include="VentanaOpcionesRAVE2.h" />
     <ClInclude Include="VentanaPrecarga.h" />
     <ClInclude Include="VentanaPrincipal.h" />
@@ -260,6 +265,11 @@
     <ClCompile Include="ListaRaices.cpp" />
     <ClCompile Include="Marco_BaseDatos.cpp" />
     <ClCompile Include="MarcoControles.cpp" />
+    <ClCompile Include="Marco_Inicio.cpp" />
+    <ClCompile Include="Marco_UI.cpp" />
+    <ClCompile Include="Marco_Listas.cpp" />
+    <ClCompile Include="Marco_Teclado.cpp" />
+    <ClCompile Include="Marco_Video.cpp" />
     <ClCompile Include="RaveOpciones.cpp" />
     <ClCompile Include="RaveSQLite.cpp" />
     <ClCompile Include="Rave_MediaPlayer.cpp" />
@@ -293,7 +303,7 @@
     <ClCompile Include="VentanaInstalarActualizacion.cpp" />
     <ClCompile Include="VentanaMomento.cpp" />
     <ClCompile Include="VentanaObtenerURL.cpp" />
-    <ClCompile Include="VentanaOpcionesRAVE.cpp" />
+    <ClCompile Include="VentanaOpcionesRAVE %28DEPRECATED%29.cpp" />
     <ClCompile Include="VentanaOpcionesRAVE2.cpp" />
     <ClCompile Include="VentanaPrecarga.cpp" />
     <ClCompile Include="VentanaPrincipal.cpp" />
@@ -352,6 +362,7 @@
     <Image Include="..\Iconos\IDI_Subtitulos.ico" />
     <Image Include="..\Iconos\IDI_Tam.ico" />
     <Image Include="..\Iconos\IDI_TDT.ico" />
+    <Image Include="..\Iconos\IDI_Teclado.ico" />
     <Image Include="..\Iconos\IDI_Terminado.ico" />
     <Image Include="..\Iconos\IDI_Tiempo.ico" />
     <Image Include="..\Iconos\IDI_Url.ico" />

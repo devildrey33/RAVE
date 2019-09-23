@@ -477,7 +477,12 @@
 
 
 
-
+		- Revisar el tema d'amagar el mouse en reproducció de video
+			- al fer click dret avegades no apareix el mouse pero si el menú
+		
+		- Bug en el explorador
+			- Si s'esta reproduint un medi, i posem reproducir desde el explorador ... s'afegeix a la llista pero no el reprodueix
+				- Casi que s'ha de borrar la llista abans de reproduir desde l'explorador
 
 
 

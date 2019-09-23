@@ -467,7 +467,7 @@ const BOOL RaveOpciones::GuardarPosTamVentana(void) {
 
 const BOOL RaveOpciones::GuardarPosVentanaOpciones(void) {
 	RECT RV;
-	GetWindowRect(App.VentanaOpciones.hWnd(), &RV);
+	GetWindowRect(App.VentanaOpciones2.hWnd(), &RV);
 	_VentanaOpciones_PosX = RV.left;
 	_VentanaOpciones_PosY = RV.top;
 	std::wstring Q = L"UPDATE Opciones SET VentanaOpciones_PosX=" + std::to_wstring(RV.left) + L", VentanaOpciones_PosY=" + std::to_wstring(RV.top) + L" WHERE Id=0";

@@ -34,7 +34,7 @@ void ControlSeparador::Pintar(HDC DC) {
 	HPEN VPen = static_cast<HPEN>(SelectObject(Buffer, PlumaSeparador));
 	int t = RC.bottom / 2;
 	MoveToEx(Buffer, 10, RC.bottom / 2, NULL);
-	LineTo(Buffer, RC.right - 20, RC.bottom / 2);
+	LineTo(Buffer, RC.right -10, RC.bottom / 2);
 	SelectObject(Buffer, VPen);
 	DeleteObject(PlumaSeparador);
 

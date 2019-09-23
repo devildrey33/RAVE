@@ -190,9 +190,6 @@
     <ClInclude Include="VentanaMomento.h">
       <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClInclude>
-    <ClInclude Include="VentanaOpcionesRAVE.h">
-      <Filter>Ventanas y Controles\Ventanas</Filter>
-    </ClInclude>
     <ClInclude Include="VentanaPrecarga.h">
       <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClInclude>
@@ -231,6 +228,24 @@
     </ClInclude>
     <ClInclude Include="Marco_BaseDatos.h">
       <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
+    </ClInclude>
+    <ClInclude Include="Marco_Teclado.h">
+      <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
+    </ClInclude>
+    <ClInclude Include="Marco_Listas.h">
+      <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
+    </ClInclude>
+    <ClInclude Include="Marco_Video.h">
+      <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
+    </ClInclude>
+    <ClInclude Include="Marco_UI.h">
+      <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
+    </ClInclude>
+    <ClInclude Include="Marco_Inicio.h">
+      <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
+    </ClInclude>
+    <ClInclude Include="VentanaOpcionesRAVE %28DEPRECATED%29.h">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -330,9 +345,6 @@
     <ClCompile Include="VentanaMomento.cpp">
       <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClCompile>
-    <ClCompile Include="VentanaOpcionesRAVE.cpp">
-      <Filter>Ventanas y Controles\Ventanas</Filter>
-    </ClCompile>
     <ClCompile Include="VentanaPrecarga.cpp">
       <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClCompile>
@@ -365,6 +377,24 @@
     </ClCompile>
     <ClCompile Include="Marco_BaseDatos.cpp">
       <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
+    </ClCompile>
+    <ClCompile Include="Marco_Teclado.cpp">
+      <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
+    </ClCompile>
+    <ClCompile Include="Marco_Listas.cpp">
+      <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
+    </ClCompile>
+    <ClCompile Include="Marco_Video.cpp">
+      <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
+    </ClCompile>
+    <ClCompile Include="Marco_UI.cpp">
+      <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
+    </ClCompile>
+    <ClCompile Include="Marco_Inicio.cpp">
+      <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
+    </ClCompile>
+    <ClCompile Include="VentanaOpcionesRAVE %28DEPRECATED%29.cpp">
+      <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -545,6 +575,9 @@
       <Filter>Archivos de recursos</Filter>
     </Image>
     <Image Include="..\Iconos\IDI_TDT.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Teclado.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>

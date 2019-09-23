@@ -782,8 +782,6 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse)
 	if (DatosMouse.Boton == 0) {
 		switch (DatosMouse.ID()) {
 			case ID_BOTON_OPCIONES:
-				if (App.VentanaOpciones.hWnd() == NULL)		App.VentanaOpciones.Crear();
-				else                                        SetFocus(App.VentanaOpciones.hWnd());
 				if (App.VentanaOpciones2.hWnd() == NULL)	App.VentanaOpciones2.Crear();
 				else                                        SetFocus(App.VentanaOpciones2.hWnd());
 				break;
@@ -941,6 +939,7 @@ void VentanaPrincipal::Evento_CambiandoTam(const UINT Lado, RECT *Rectangulo) {
 void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 	RECT RC; 
 	_PantallaCompleta = nActivar;
+	// Pantalla completa
 	if (nActivar == TRUE) {
 		App.OcultarToolTipPlayer();
 		App.OcultarToolTipOpciones();
@@ -984,19 +983,9 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 		Arbol.SkinScroll = ScrollSkinOscuro;
 		Arbol.Skin       = ArbolSkinOscuro;
 		Arbol.ActualizarSkin();
-		//		ShowWindow(Lista.hWnd(), SW_SHOW);
-
-		//		Video.AsignarFoco();
-
-//		RedrawWindow(App.VLC.hWndVLC, NULL, NULL, RDW_ERASE | RDW_INVALIDATE | RDW_ALLCHILDREN);
-
-
-//		SetTimer(hWnd(), TIMER_REPINTARVLC, 250, NULL);
-		/*		KillTimer(hWnd(), TIMER_CPC_INACTIVIDAD);
-		SetTimer(hWnd(), TIMER_CPC_INACTIVIDAD,		, NULL);*/
 
 	}
-
+	// Modo ventana normal
 	else {
 		EnumDisplayMonitors(NULL, NULL, VentanaPrincipal::EnumerarPantallas, NULL);
 		// Si el monitor donde se guardo la ultima posición no está disponible busco una nueva posición
@@ -1004,18 +993,14 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 			App.Opciones.AsignarPosVentana(RectMonitorActual.left + 100, RectMonitorActual.top + 100);
 		}
 
-//		App.ControlesPC._AniMostrar.Terminar();
-
 		ShowWindow(hWnd(), SW_RESTORE);
-//		GetClientRect(hWnd(), &RC);
-//		BOOL R = App.VentanaRave.BarraTareas.Clip(&RC);
 		SetWindowLongPtr(hWnd(), GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
 
 		RC = { App.Opciones.PosX(), App.Opciones.PosY(), App.Opciones.PosX() + App.Opciones.Ancho(), App.Opciones.PosY() + App.Opciones.Alto() };
 		AdjustWindowRectEx(&RC, WS_OVERLAPPEDWINDOW, FALSE, WS_EX_APPWINDOW);
 
 		SetWindowPos(_hWnd, HWND_TOP, RC.left, RC.top, RC.right - RC.left, RC.bottom - RC.top, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
-		//MoveWindow(Video.hWnd(), 120, 71, RC.right - 120, RC.bottom - 70, TRUE);
+		
 
 		App.ControlesPC.Ocultar();
 		DWL::DMouse::Visible(TRUE);
@@ -1100,7 +1085,7 @@ void VentanaPrincipal::Evento_Cerrar(void) {
 
 	App.OcultarToolTipPlayerRapido();
 	App.OcultarToolTipOpcionesRapido();
-	App.VentanaOpciones.Destruir();
+	App.VentanaOpciones2.Destruir();
 
 	Visible(FALSE);
 
