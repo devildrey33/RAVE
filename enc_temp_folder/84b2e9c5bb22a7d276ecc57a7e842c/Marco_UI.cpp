@@ -75,7 +75,7 @@ void Marco_UI::Crear(DWL::DhWnd* nPadre, const int cX, const int cY, const int c
 
 	EtiquetaVideoOpacidad.CrearEtiquetaEx(this, L"Opacidad para los controles", 10, 220, 200, 20, ID_ETIQUETA_VIDEOOPACIDAD);
 	BarraVideoOpacidad.CrearBarraDesplazamientoEx(this, 240, 220, 160, 20, ID_BARRA_VIDEOOPACIDAD, 50, 255, static_cast<float>(App.Opciones.OpacidadControlesVideo()));
-	BarraVideoOpacidad.MostrarValor(DBarraEx_MostrarValor_ValorMaximoInt);
+	BarraVideoTiempo.MostrarValor(DBarraEx_MostrarValor_ValorMaximoInt);
 	TmpStr = std::to_wstring(App.Opciones.OpacidadControlesVideo()) + L"/255";
 	EtiquetaVideoOpacidadTA.CrearEtiquetaEx(this, TmpStr.c_str(), 410, 220, 60, 20, ID_ETIQUETA_VIDEOOPACIDADTA, DEtiquetaEx_Alineacion_Derecha);
 

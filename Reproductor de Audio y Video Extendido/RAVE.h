@@ -160,6 +160,8 @@ class RAVE : public DApp {
 	ToolTipsInfo                  _ToolTipMomentos;
 
 	std::random_device			   _rd;
+
+	LineaComando				   _LC;
 	
 	// Token para el GDI+
 	//ULONG_PTR					   _gdiplusToken;

@@ -1287,6 +1287,10 @@ void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
 	App.MemCompartida.ObtenerPaths(Paths);	
 	// Si no hay paths salgo
 	if (Paths.size() == 0) return;
+	// Si se ha especificado "reproducir" borro la lista de reproducción para asegurar que se reproducirá
+	if (Reproducir == TRUE) {
+		Lista.BorrarListaReproduccion();
+	}
 
 	// Elimino los paths de la memoria compartida
 	App.MemCompartida.EliminarPaths();

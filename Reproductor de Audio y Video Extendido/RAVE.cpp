@@ -103,7 +103,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 
 	// Obtengo la linea de comandos y ejecuto el reproductor según los argumentos
 	std::vector<std::wstring> Paths;
-	LineaComando LC = ObtenerLineaComando(Paths);
+	_LC = ObtenerLineaComando(Paths);
 
 	// Simula los argumentos para reproducir un video nada mas iniciar
 	#ifdef RAVE_SIMULAR_REPRODUCIR_VIDEO
@@ -160,7 +160,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 	TeclasRapidas.push_back(TeclaRapida(VK_F3		, FALSE, FALSE, FALSE));
 
 	
-	switch (LC) {
+	switch (_LC) {
 		// El instalador está corrupto, lo borro
 		case LineaComando_ActualizadorCorrupto :
 			EliminarActualizador();
@@ -172,15 +172,17 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 			EliminarActualizador();
 			Ret = EjecutarReproductor(Paths, hWndPlayer, nCmdShow);
 			MostrarToolTipPlayer(L"RAVE actualizado a la versión : " RAVE_VERSIONSTR);
-			break;
-			
+			break;			
 		// Ejecución normal sin parámetros
 		case LineaComando_Nada :
 		case LineaComando_Path :
-		case LineaComando_Reproducir :
 			Ret = EjecutarReproductor(Paths, hWndPlayer, nCmdShow);
 			break;
-
+		// Ejecución desde el explorador (Reproducir)
+		case LineaComando_Reproducir:
+			VentanaRave.Lista.BorrarListaReproduccion();
+			Ret = EjecutarReproductor(Paths, hWndPlayer, nCmdShow);
+			break;
 		// Ejecución para mostrar la ventana de error crítico
 		case LineaComando_ErrorCritico :
 			VentanaErrorCrit.Crear();
@@ -240,7 +242,9 @@ const BOOL RAVE::EjecutarReproductor(std::vector<std::wstring> &Paths, HWND hWnd
 	// Agrego el path a la memoria compartida, y envio un mensaje al reproductor
 	if (Paths.size() > 0 && PlayerInicial == FALSE) {
 		MemCompartida.AgregarPath(Paths[Paths.size() - 1]);
-		PostMessage(hWndPlayer, (Paths[0] == L"-r") ? WM_REPRODUCIRMEDIO : WM_AGREGARMEDIO, 0, 0);
+
+//		MessageBox(NULL, Paths[0].c_str(), L"test", MB_OK);
+		PostMessage(hWndPlayer, (_LC == LineaComando_Reproducir) ? WM_REPRODUCIRMEDIO : WM_AGREGARMEDIO, 0, 0);
 	}
 	// Si ya existe un reproductor activo, salgo
 	if (PlayerInicial == FALSE) {

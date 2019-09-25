@@ -37,20 +37,20 @@ void Marco_Listas::Crear(DWL::DhWnd* nPadre, const int cX, const int cY, const i
 	MarcaCanciones25.CrearMarcaEx(this, L"No añadir canciones con menos de 2.5 de nota a listas aleatórias"							, 10, 70, 448, 20, ID_MARCA_CANCIONES25, IDI_CHECK2);
 	MarcaCanciones25.Marcado(App.Opciones.NoAgregarMedioMenos25());
 
-	SeparadorLista1.Crear(this, 0, 100, RC.right);
+	SeparadorLista1.Crear(this, 0, 100, RC.right - (_ScrollV_Ancho + 5));
 
 	EtiquetaNoGenerarListas3.CrearEtiquetaEx(this,	L"Al generar una lista aleatória partiendo de una etiqueta, puede darse el caso que "
-													L"esa etiqueta tenga menos de 5 canciones."									, 10, 110, RC.right - 40, 40, ID_ETIQUETA_NOGENERARLISTAS3);
-	MarcaNoGenerarListas3.CrearMarcaEx(this, L"No generar listas aleatórias con menos de 5 medios"								, 10, 160, 361, 20, ID_MARCA_NOGENERARLISTAS3, IDI_CHECK2);
+													L"esa etiqueta tenga menos de 3 canciones."									, 10, 110, RC.right - 40, 40, ID_ETIQUETA_NOGENERARLISTAS3);
+	MarcaNoGenerarListas3.CrearMarcaEx(this, L"No generar listas aleatórias con menos de 3 canciones"							, 10, 160, 361, 20, ID_MARCA_NOGENERARLISTAS3, IDI_CHECK2);
 	MarcaNoGenerarListas3.Marcado(App.Opciones.NoGenerarListasMenos3());
 
-	SeparadorLista2.Crear(this, 0, 190, RC.right);
+	SeparadorLista2.Crear(this, 0, 190, RC.right - (_ScrollV_Ancho + 5));
 	EtiquetaSumar005.CrearEtiquetaEx(this,	L"Una vez el medio llegue al final se sumará 0.05 a su nota, esto quiere decir que "
 											L"partiendo de una nota de 2.5, el medio alcanzará las 5 estrellas en 50 veces. "	, 10, 200, RC.right - 40, 60, ID_ETIQUETA_SUMAR005);
 	MarcaSumar005.CrearMarcaEx(this, L"Sumar 0.05 a la nota de los medios reproducidos hasta el final"							, 10, 270, 449, 20, ID_MARCA_SUMAR005, IDI_CHECK2);
 	MarcaSumar005.Marcado(App.Opciones.Sumar005());
 
-	SeparadorLista3.Crear(this, 0, 300, RC.right);
+	SeparadorLista3.Crear(this, 0, 300, RC.right - (_ScrollV_Ancho + 5));
 /*	EtiquetaListaInicio.CrearEtiquetaEx(this, L"Que tipo de lista se debe generar al iniciar?"				, 10, 320, RC.right - 260, 20, ID_ETIQUETA_LISTAINICIO);
 	DesplegableListaInicio.CrearListaDesplegable(this, L"", ID_DESPLEGABLE_LISTAINICIO, 0					, RC.right - 215, 320, 185, 20, DEdicionTextoEx_Entrada_SinEntrada, 300);
 	ActualizarListaInicio(); */
