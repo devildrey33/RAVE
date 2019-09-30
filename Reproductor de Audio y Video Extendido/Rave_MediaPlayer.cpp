@@ -47,10 +47,17 @@ const BOOL Rave_MediaPlayer::Iniciar(void) {
 	Debug_Escribir(L"Rave_MediaPlayer::Iniciar : Cargando LibVLC...\n");
 
 	DWORD t = GetTickCount();
+
 	// Para poder cambiar los volumenes de varias canciones (fade in/out) necesito el DirectSound
-	char const* Arg[] = { "--aout=directsound" };
-	_InstanciaVLC = libvlc_new(1, Arg);
+	char const* Arg[] = { 
+		"--aout=directsound",		// Direct sound para controlar el volumen de cada medio independientemente.
+		"--audio-filter=normvol",	// Filtro para normalizar el volumen
+		"--norm-buff-size=20",		// Tamaño del buffer para normalizar el volumen
+		"--norm-max-level=2,000000"	// Nivel máximo de volumen
+	};
+	_InstanciaVLC = libvlc_new(sizeof(Arg) / sizeof(*Arg), Arg);
 //	_InstanciaVLC = libvlc_new(0, nullptr);
+
 	// Error iniciando la instancia
 	if (_InstanciaVLC == NULL) {
 		Debug_Escribir(L"Rave_MediaPlayer::Iniciar : ERROR Cargando la LibVLC.\n");
@@ -267,8 +274,8 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 
 
 
-	// Tiempo para el fade in out
-	if (Estado == EnPlay) {
+	// Tiempo para el fade in/out
+	if (Estado == EnPlay && App.Opciones.EfectoFadeAudio() == TRUE) {
 //		UINT64        TTotalMS  = TiempoTotalMs();
 //		UINT64        TActualMS = TiempoActualMs();
 

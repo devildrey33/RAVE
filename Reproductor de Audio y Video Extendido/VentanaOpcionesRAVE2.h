@@ -7,10 +7,11 @@
 #include "Marco_Listas.h"
 #include "Marco_Teclado.h"
 #include "Marco_Video.h"
+#include "Marco_Audio.h"
 #include <DArbolEx.h>
 
 
-#define NUM_OPCIONES 6
+#define NUM_OPCIONES 7
 
 class VentanaOpcionesRAVE2 : public DWL::DVentana {
   public:
@@ -33,6 +34,7 @@ class VentanaOpcionesRAVE2 : public DWL::DVentana {
 	Marco_UI				MarcoUI;
 	Marco_Listas			MarcoListas;
 	Marco_Teclado			MarcoTeclado;
+	Marco_Audio				MarcoAudio;
 	Marco_Video				MarcoVideo;
 
 	static const wchar_t   *OpcionesStr[NUM_OPCIONES];

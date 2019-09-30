@@ -247,6 +247,9 @@
     <ClInclude Include="VentanaOpcionesRAVE %28DEPRECATED%29.h">
       <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClInclude>
+    <ClInclude Include="Marco_Audio.h">
+      <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -395,6 +398,9 @@
     </ClCompile>
     <ClCompile Include="VentanaOpcionesRAVE %28DEPRECATED%29.cpp">
       <Filter>Ventanas y Controles\Ventanas</Filter>
+    </ClCompile>
+    <ClCompile Include="Marco_Audio.cpp">
+      <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

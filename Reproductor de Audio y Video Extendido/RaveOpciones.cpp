@@ -6,10 +6,10 @@ RaveOpciones::RaveOpciones(void) : _Volumen(0), _PosX(0), _PosY(0), _VentanaOpci
 								  _VentanaAnalizar_PosX(0), _VentanaAnalizar_PosY(0), _Ancho(0), _Alto(0), _Shufle(FALSE), _Repeat(Tipo_Repeat_NADA), _Inicio(Tipo_Inicio_NADA),
 								  _Version(0.0f), _OcultarMouseEnVideo(0), _MostrarObtenerMetadatos(FALSE), _MostrarAsociarArchivos(FALSE), _AnalizarMediosPendientes(FALSE), 
 								  _BuscarActualizacion(FALSE), _TiempoAnimaciones(0), _TiempoToolTips(0), _NoAgregarMedioMenos25(FALSE), _NoGenerarListasMenos3(FALSE), 
-							 	  _Sumar005(FALSE), _AlineacionControlesVideo(0), _OpacidadControlesVideo(0), _EfectoFadeAudioMS(10000), _DlgDirectorios_Ancho(400), _DlgDirectorios_Alto(600), 
+							 	  _Sumar005(FALSE), _AlineacionControlesVideo(0), _OpacidadControlesVideo(0), _EfectoFadeAudioMS(5000), _DlgDirectorios_Ancho(400), _DlgDirectorios_Alto(600), 
 								  _VentanaMomentos_PosX(100), _VentanaMomentos_PosY(100), _OcultarTooltipsMouse(0), _MostrarMedioActualTitulo(TRUE), 
 								  _MezclarListaGenero(0), _MezclarListaGrupo(0), _MezclarListaDisco(0), _MezclarLista50Can(0), _MezclarListaNota(0), 
-								  _GuardarBSCP(1), _VersionOpciones(1.1f) {
+								  _GuardarBSCP(1), _VersionOpciones(1.1f), _EfectoFadeAudio(FALSE) {
 }
 
 
@@ -29,7 +29,9 @@ const BOOL RaveOpciones::Iniciar(void) {
 		return FALSE;
 	}
 	// Creo las tablas para la base de datos (si es necesario)
-	_CrearTablas();
+	if (_CrearTablas() == FALSE) {
+		_ModificarTablas();
+	}
 
 	ObtenerOpciones();
 	// Obtengo las teclas rapidas
@@ -42,63 +44,87 @@ const BOOL RaveOpciones::Iniciar(void) {
 }
 
 
-const BOOL RaveOpciones::_CrearTablas(void) {
+const BOOL RaveOpciones::_ModificarTablas(void) {
+	int         Version = ObtenerVersionOpciones();
+	int			SqlRet  = 0;
+	BOOL        Ret		= FALSE;
+	// Las opciones separadas de los medios empezaron por la versión 1.1 (la versión 1.0 estaba unida a la BD de medios)
+	if (Version < 12) {
+		// Añado la columna EfectoFadeAudio en las opciones
+		SqlRet = Consulta(L"ALTER TABLE Opciones ADD COLUMN EfectoFadeAudio INTEGER AFTER VersionOpciones");
 
+		// Actualizo el valor de EfectoFadeAudio a 0
+		SqlRet = Consulta(L"UPDATE Opciones SET EfectoFadeAudio=0, EfectoFadeAudioMS=5000");
+		_EfectoFadeAudio = FALSE;
+
+		// Versión //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// Actualizo la versión de la BD (MOVER ESTE UPDATE A LA ULTIMA VERSIÓN)			
+		SqlRet = Consulta(L"UPDATE Opciones SET VersionOpciones=" RAVE_VERSIONOPCIONES L" WHERE Id=0");
+		
+		Ret = TRUE;
+	}
+
+	return Ret;
+}
+
+
+const BOOL RaveOpciones::_CrearTablas(void) {
 	std::wstring Q;
 
 	// Creo la tabla para las opciones /////////////////////////////////////////////////////////////
 	std::wstring CrearTablaOpciones = L"CREATE TABLE Opciones ("
-		L"Id" 						L" INTEGER PRIMARY KEY,"		// 00
-		L"Volumen"					L" INTEGER,"					// 01
-		L"PathAbrir"				L" VARCHAR(260),"				// 02 NO SE USA	  
-		L"PosX"						L" INTEGER,"					// 03
-		L"PosY"						L" INTEGER,"					// 04
-		L"Ancho"					L" INTEGER,"					// 05
-		L"Alto"						L" INTEGER,"					// 06
-		L"Shufle"					L" INTEGER,"					// 07
-		L"Repeat"					L" INTEGER,"					// 08
-		L"Inicio"					L" INTEGER,"					// 09
-		L"OcultarMouseEnVideo"		L" INTEGER,"					// 10
-		L"Version"					L" DOUBLE,"						// 11
-		L"MostrarObtenerMetadatos"	L" INTEGER,"					// 12
-		L"MostrarAsociarArchivos"	L" INTEGER,"					// 13 NO SE USA
-		L"AnalizarMediosPendientes" L" INTEGER,"					// 14
-		L"VentanaOpciones_PosX"		L" INTEGER,"					// 15
-		L"VentanaOpciones_PosY"		L" INTEGER,"					// 16
-		L"VentanaAsociar_PosX"		L" INTEGER,"					// 17 Ahora es Opciones_DlgDirectorios_PosX
-		L"VentanaAsociar_PosY"		L" INTEGER,"					// 18 Ahora es Opciones_DlgDirectorios_PosY
-		L"VentanaAnalizar_PosX"		L" INTEGER,"					// 19
-		L"VentanaAnalizar_PosY"		L" INTEGER,"					// 20
-		L"BuscarActualizacion"		L" INTEGER,"					// 21
-		L"TiempoAnimaciones"		L" INTEGER,"					// 22
-		L"TiempoToolTips"			L" INTEGER,"					// 23
-		L"NoAgregarMedioMenos25"	L" INTEGER,"					// 24
-		L"NoGenerarListasMenos3"	L" INTEGER,"					// 25
-		L"Sumar005"					L" INTEGER,"					// 26 Sumar 0.05 a la nota una vez finalizado el medio
-		L"AlineacionControlesVideo"	L" INTEGER,"					// 27 Alineación para los controles del video
-		L"OpacidadControlesVideo"	L" INTEGER,"					// 28 Opacidad másima para los controles del video (ControlesPantallaCompleta)
-		L"EfectoFadeAudioMS"     	L" INTEGER,"					// 29 (NO SE USA DE MOMENTO, COMO MUCHO SE USARA SI IMPLEMENTO LA FMOD)
-		L"DlgDirectorios_Ancho"   	L" INTEGER,"					// 30
-		L"DlgDirectorios_Alto"   	L" INTEGER,"					// 31
-		L"VentanaMomentos_PosX"   	L" INTEGER,"					// 32 Posición X de la ventana de los momentos
-		L"VentanaMomentos_PosY"   	L" INTEGER,"					// 33 Posición Y de la ventana de los momentos
-		L"OcultarTooltipsMouse"     L" INTEGER,"					// 34 Ocultar tooltips al pasar por encima con el mouse
-		L"MostrarMedioActualTitulo" L" INTEGER,"					// 35 Mostrar el nombre del medio actual en la barra de titulo
-		L"MezclarListaGenero"       L" INTEGER,"					// 36 Mezclar listas por genero
-		L"MezclarListaGrupo"        L" INTEGER,"					// 37 Mezclar listas por grupo
-		L"MezclarListaDisco"        L" INTEGER,"					// 38 Mezclar listas por disco
-		L"MezclarLista50Can"        L" INTEGER,"					// 39 Mezclar listas con 50 canciones
-		L"MezclarListaNota"         L" INTEGER,"					// 40 Mezclar listas por nota
-		L"GuardarBSCP"              L" INTEGER,"					// 41 guardar brillo, contraste, saturación, y proporción
-		L"VersionOpciones"          L" DOUBLE"						// 42 versión de las opciones
+			L"Id" 						L" INTEGER PRIMARY KEY,"		// 00
+			L"Volumen"					L" INTEGER,"					// 01
+			L"PathAbrir"				L" VARCHAR(260),"				// 02 NO SE USA	  
+			L"PosX"						L" INTEGER,"					// 03
+			L"PosY"						L" INTEGER,"					// 04
+			L"Ancho"					L" INTEGER,"					// 05
+			L"Alto"						L" INTEGER,"					// 06
+			L"Shufle"					L" INTEGER,"					// 07
+			L"Repeat"					L" INTEGER,"					// 08
+			L"Inicio"					L" INTEGER,"					// 09
+			L"OcultarMouseEnVideo"		L" INTEGER,"					// 10
+			L"Version"					L" DOUBLE,"						// 11
+			L"MostrarObtenerMetadatos"	L" INTEGER,"					// 12
+			L"MostrarAsociarArchivos"	L" INTEGER,"					// 13 NO SE USA
+			L"AnalizarMediosPendientes" L" INTEGER,"					// 14
+			L"VentanaOpciones_PosX"		L" INTEGER,"					// 15
+			L"VentanaOpciones_PosY"		L" INTEGER,"					// 16
+			L"VentanaAsociar_PosX"		L" INTEGER,"					// 17 Ahora es Opciones_DlgDirectorios_PosX
+			L"VentanaAsociar_PosY"		L" INTEGER,"					// 18 Ahora es Opciones_DlgDirectorios_PosY
+			L"VentanaAnalizar_PosX"		L" INTEGER,"					// 19
+			L"VentanaAnalizar_PosY"		L" INTEGER,"					// 20
+			L"BuscarActualizacion"		L" INTEGER,"					// 21
+			L"TiempoAnimaciones"		L" INTEGER,"					// 22
+			L"TiempoToolTips"			L" INTEGER,"					// 23
+			L"NoAgregarMedioMenos25"	L" INTEGER,"					// 24
+			L"NoGenerarListasMenos3"	L" INTEGER,"					// 25
+			L"Sumar005"					L" INTEGER,"					// 26 Sumar 0.05 a la nota una vez finalizado el medio
+			L"AlineacionControlesVideo"	L" INTEGER,"					// 27 Alineación para los controles del video
+			L"OpacidadControlesVideo"	L" INTEGER,"					// 28 Opacidad másima para los controles del video (ControlesPantallaCompleta)
+			L"EfectoFadeAudioMS"     	L" INTEGER,"					// 29 Tiempo para el fade in/out entre canciones
+			L"DlgDirectorios_Ancho"   	L" INTEGER,"					// 30
+			L"DlgDirectorios_Alto"   	L" INTEGER,"					// 31
+			L"VentanaMomentos_PosX"   	L" INTEGER,"					// 32 Posición X de la ventana de los momentos
+			L"VentanaMomentos_PosY"   	L" INTEGER,"					// 33 Posición Y de la ventana de los momentos
+			L"OcultarTooltipsMouse"     L" INTEGER,"					// 34 Ocultar tooltips al pasar por encima con el mouse
+			L"MostrarMedioActualTitulo" L" INTEGER,"					// 35 Mostrar el nombre del medio actual en la barra de titulo
+			L"MezclarListaGenero"       L" INTEGER,"					// 36 Mezclar listas por genero
+			L"MezclarListaGrupo"        L" INTEGER,"					// 37 Mezclar listas por grupo
+			L"MezclarListaDisco"        L" INTEGER,"					// 38 Mezclar listas por disco
+			L"MezclarLista50Can"        L" INTEGER,"					// 39 Mezclar listas con 50 canciones
+			L"MezclarListaNota"         L" INTEGER,"					// 40 Mezclar listas por nota
+			L"GuardarBSCP"              L" INTEGER,"					// 41 guardar brillo, contraste, saturación, y proporción
+			L"VersionOpciones"          L" DOUBLE,"						// 42 versión de las opciones
+			L"EfectoFadeAudio"          L" INTEGER"						// 43 Efecto fade in/out
 		L")";
 	if (Consulta(CrearTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	// Añado los datos por defecto de las opciones ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes, VentanaOpciones_PosX, VentanaOpciones_PosY, VentanaAsociar_PosX, VentanaAsociar_PosY, VentanaAnalizar_PosX, VentanaAnalizar_PosY, BuscarActualizacion, TiempoAnimaciones, TiempoToolTips, NoAgregarMedioMenos25, NoGenerarListasMenos3, Sumar005, AlineacionControlesVideo, OpacidadControlesVideo, EfectoFadeAudioMS, DlgDirectorios_Ancho, DlgDirectorios_Alto, VentanaMomentos_PosX, VentanaMomentos_PosY, OcultarTooltipsMouse, MostrarMedioActualTitulo, MezclarListaGenero, MezclarListaGrupo, MezclarListaDisco, MezclarLista50Can, MezclarListaNota, GuardarBSCP, VersionOpciones) "
-		L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000, " RAVE_VERSIONBD ", 1, 1, 1, 400, 300, 500, 400, 300, 200, 1, 400, 5500, 1, 1, 1, 0, 200, 10000, 350, 400, 100, 100, 0, 1, 0, 0, 0, 0, 0, 1, " RAVE_VERSIONOPCIONES ")";
+	std::wstring ValoresTablaOpciones = L"INSERT INTO Opciones (ID, Volumen, PathAbrir, PosX, PosY, Ancho, Alto, Shufle, Repeat, Inicio, OcultarMouseEnVideo, Version, MostrarObtenerMetadatos, MostrarAsociarArchivos, AnalizarMediosPendientes, VentanaOpciones_PosX, VentanaOpciones_PosY, VentanaAsociar_PosX, VentanaAsociar_PosY, VentanaAnalizar_PosX, VentanaAnalizar_PosY, BuscarActualizacion, TiempoAnimaciones, TiempoToolTips, NoAgregarMedioMenos25, NoGenerarListasMenos3, Sumar005, AlineacionControlesVideo, OpacidadControlesVideo, EfectoFadeAudioMS, DlgDirectorios_Ancho, DlgDirectorios_Alto, VentanaMomentos_PosX, VentanaMomentos_PosY, OcultarTooltipsMouse, MostrarMedioActualTitulo, MezclarListaGenero, MezclarListaGrupo, MezclarListaDisco, MezclarLista50Can, MezclarListaNota, GuardarBSCP, VersionOpciones, EfectoFadeAudio) "
+		L"VALUES(0, 100, \"C:\\\", 100, 100, 660, 400, 0, 0, 0, 3000, " RAVE_VERSIONBD ", 1, 1, 1, 400, 300, 500, 400, 300, 200, 1, 400, 5500, 1, 1, 1, 0, 200, 5000, 350, 400, 100, 100, 0, 1, 0, 0, 0, 0, 0, 1, " RAVE_VERSIONOPCIONES ", 0)";
 	if (Consulta(ValoresTablaOpciones.c_str()) == SQLITE_ERROR) return FALSE;
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -250,6 +276,7 @@ const BOOL RaveOpciones::ObtenerOpciones(void) {
 			_MezclarListaNota			= static_cast<int>(sqlite3_column_int(SqlQuery, 40));
 			_GuardarBSCP				= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 41));
 			_VersionOpciones			= static_cast<float>(sqlite3_column_double(SqlQuery, 42));
+			_EfectoFadeAudio			= static_cast<BOOL>(sqlite3_column_int(SqlQuery, 43));
 
 			// Si hay alguna opcion de mezclar lista que no sea cero, establezco el shufle inicial a FALSE.
 			if (_MezclarListaGenero != 0 || _MezclarListaGrupo != 0 || _MezclarListaDisco != 0 || _MezclarLista50Can != 0 || _MezclarListaNota != 0) {
@@ -378,6 +405,12 @@ void RaveOpciones::OpacidadControlesVideo(const int nOpacidadControlesVideo) {
 void RaveOpciones::EfectoFadeAudioMS(const UINT nEfectoFadeAudioMS) {
 	_EfectoFadeAudioMS = nEfectoFadeAudioMS;
 	std::wstring Q = L"Update Opciones SET EfectoFadeAudioMS=" + std::to_wstring(nEfectoFadeAudioMS) + L" WHERE Id=0";
+	int Ret = Consulta(Q.c_str());
+}
+
+void RaveOpciones::EfectoFadeAudio(const BOOL nEfectoFadeAudio) {
+	_EfectoFadeAudio = nEfectoFadeAudio;
+	std::wstring Q = L"Update Opciones SET EfectoFadeAudio=" + std::to_wstring(nEfectoFadeAudio) + L" WHERE Id=0";
 	int Ret = Consulta(Q.c_str());
 }
 

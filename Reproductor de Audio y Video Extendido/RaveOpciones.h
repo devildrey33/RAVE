@@ -140,6 +140,9 @@ class RaveOpciones : public RaveSQLite {
 	inline const UINT			EfectoFadeAudioMS(void) { return _EfectoFadeAudioMS; }
 	void						EfectoFadeAudioMS(const UINT nEfectoFadeAudioMS);
 
+	inline const BOOL			EfectoFadeAudio(void) { return _EfectoFadeAudio; }
+	void						EfectoFadeAudio(const BOOL nEfectoFadeAudio);
+
 	inline const BOOL			OcultarTooltipsMouse(void) { return _OcultarTooltipsMouse; }
 	void						OcultarTooltipsMouse(const BOOL nOcultarTooltipsMouse);
 
@@ -167,6 +170,8 @@ class RaveOpciones : public RaveSQLite {
   protected:
 
     const BOOL                 _CrearTablas(void);
+
+	const BOOL                 _ModificarTablas(void);
 	
 /*	std::wstring               _UltimoErrorSQL;
 	sqlite3                   *_BD;*/
@@ -207,6 +212,7 @@ class RaveOpciones : public RaveSQLite {
 	int						   _OpacidadControlesVideo;		// Opacidad máxima para los controles pantalla completa
 
 	UINT                       _EfectoFadeAudioMS;			// Milisegundos para el efecto fade audio
+	BOOL                       _EfectoFadeAudio;			// Activar / Desactivar efecto fade in/out
 	BOOL					   _OcultarTooltipsMouse;		// Ocultar los tooltips al pasar encima con el mouse
 	BOOL					   _MostrarMedioActualTitulo;	// Mostrar el nombre del medio actual en la barra de titulo
 	int                        _MezclarListaGenero;			// Mezclar listas aleatórias por genero

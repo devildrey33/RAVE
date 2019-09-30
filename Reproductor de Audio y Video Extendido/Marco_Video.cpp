@@ -23,7 +23,7 @@ void Marco_Video::Crear(DWL::DhWnd* nPadre, const int cX, const int cY, const in
 
 	std::wstring TmpStr;
 
-	MarcaRecordarValoresVideo.CrearMarcaEx(this, L"Guardar brillo, saturación, contraste, y proporción para cada medio.", 10, 10, 460, 30, ID_MARCA_VIDEOGUARDARVALORES, IDI_CHECK2);
+	MarcaRecordarValoresVideo.CrearMarcaEx(this, L"Guardar brillo, saturación, contraste, y proporción para cada video.", 10, 10, 460, 30, ID_MARCA_VIDEOGUARDARVALORES, IDI_CHECK2);
 	MarcaRecordarValoresVideo.Marcado(App.Opciones.GuardarBSCP());
 
 

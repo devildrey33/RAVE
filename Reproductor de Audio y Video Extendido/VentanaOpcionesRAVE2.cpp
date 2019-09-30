@@ -7,7 +7,8 @@
 #define ID_MARCOGENERAL		1003
 #define ID_MARCOLISTAS		1004
 #define ID_MARCOTECLADO		1005
-#define ID_MARCOVIDEO		1006
+#define ID_MARCOAUDIO		1006
+#define ID_MARCOVIDEO		1007
 
 
 
@@ -17,7 +18,8 @@ const wchar_t *VentanaOpcionesRAVE2::OpcionesStr[NUM_OPCIONES] = {
 	L"UI",				// 2
 	L"Teclado",			// 3
 	L"Listas",			// 4
-	L"Video"			// 5
+	L"Audio",			// 5
+	L"Video"			// 6
 };
 
 
@@ -31,11 +33,12 @@ void VentanaOpcionesRAVE2::Crear(void) {
 		IDI_NOTA, 
 		IDI_PROPORCION, 
 		IDI_TECLADO,
-		IDI_AGREGARLISTA,		 
+		IDI_AGREGARLISTA,	
+		IDI_CANCION2,
 		IDI_VIDEO 
 	};
 
-	for (size_t i = 0; i < 6; i++) {
+	for (size_t i = 0; i < NUM_OPCIONES; i++) {
 		ArbolSecciones.AgregarNodo(OpcionesStr[i], NULL, Iconos[i]);
 	}
 
@@ -45,6 +48,7 @@ void VentanaOpcionesRAVE2::Crear(void) {
 	MarcoUI.Crear(this, 210, 10, 480, 330, ID_MARCOGENERAL);
 	MarcoListas.Crear(this, 210, 10, 480, 330, ID_MARCOLISTAS);
 	MarcoTeclado.Crear(this, 210, 10, 480, 330, ID_MARCOTECLADO);
+	MarcoAudio.Crear(this, 210, 10, 480, 330, ID_MARCOAUDIO);
 	MarcoVideo.Crear(this, 210, 10, 480, 330, ID_MARCOVIDEO);
 
 	MostrarMarco(0);
@@ -59,14 +63,17 @@ void VentanaOpcionesRAVE2::MostrarMarco(const size_t Marco) {
 	BOOL Marcos[NUM_OPCIONES];
 	for (size_t i = 0; i < NUM_OPCIONES; i++) Marcos[i] = FALSE;
 
-	Marcos[Marco] = TRUE;
+	if (Marco < NUM_OPCIONES) {
+		Marcos[Marco] = TRUE;
+	}
 
 	MarcoBaseDatos.Visible(Marcos[0]);
 	MarcoInicio.Visible(Marcos[1]);
 	MarcoUI.Visible(Marcos[2]);
 	MarcoTeclado.Visible(Marcos[3]);
 	MarcoListas.Visible(Marcos[4]);
-	MarcoVideo.Visible(Marcos[5]);
+	MarcoAudio.Visible(Marcos[5]);
+	MarcoVideo.Visible(Marcos[6]);
 }
 
 void VentanaOpcionesRAVE2::Evento_Cerrar(void) {
