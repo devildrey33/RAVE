@@ -63,6 +63,22 @@ class ItemMedio;
 class NodoBD;
 class RaveVLC_Medio;
 
+
+
+enum Tipo_ParteNombre {
+	Tipo_ParteNombre_Mierda     = -1,	// www. (Urls incluidas en el mismo nombre del archivo)
+	Tipo_ParteNombre_Texto		=  0,	// Qualquier texto
+	Tipo_ParteNombre_Pista4		=  1,	//  2019   (Posible / provable any) 
+	Tipo_ParteNombre_Pista1		=  2,	//     1		
+	Tipo_ParteNombre_Pista2		=  3,	//    03
+	Tipo_ParteNombre_Pista3		=  4,	//   102
+//	Tipo_ParteNombre_Pista1_2	=  5,	//  1-01
+//	Tipo_ParteNombre_Pista2_2	=  6,	// 10-02
+	Tipo_ParteNombre_Pista1x1	=  7,	//   1x4
+	Tipo_ParteNombre_Pista1x2	=  8,	//  1x04
+	Tipo_ParteNombre_Pista2x2	=  9,   // 01x05
+};
+
 class RaveBD : public RaveSQLite {
   public:
 								RaveBD(void);
@@ -151,7 +167,8 @@ class RaveBD : public RaveSQLite {
 	static void					FiltroPath(std::wstring &In, std::wstring &Out);
 	static void					FiltroNombre(std::wstring &In, std::wstring &Out);
 								// Filtro que anializa path y devuelve el nombre del medio y la pista
-	static const BOOL           AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre, UINT &nPista);
+	static const BOOL           AnalizarNombre(std::wstring& Analisis, std::wstring& nNombre, UINT& nPista);
+//	static const BOOL           AnalizarNombre2(std::wstring& Analisis, std::wstring& nNombre, UINT& nPista);
 
 								// Distancia entre 2 strings
 	static const int            Distancia(std::wstring &Origen, std::wstring &Destino);

@@ -1084,6 +1084,134 @@ const BOOL RaveBD::GuardarUltimaLista(void) {
 }
 
 
+/* Función que analiza el string para buscar posibles numeros de pista, para ello separa el string por carácteres y analiza cada sub-string por separado
+	Una vez identificados los sub-strings mira si hay alguno de ellos que pueda ser la pista, y en caso de haber mas de uno se usará el que sea más explicito.
+	Pos ejemplo podemos encontrar : "1999 Grupo X - Disco Z - 01x01 Cancion"
+	- En este caso hay 2 substrings que podrian ser una pista, pero por defecto las pistas de 4 digitos suelen indicar el año y no el número de pista, y por esa razón se elegirá 01x01 como pista, ya que es mucho mas explicita.
+ */
+// TODO : afegir parámetre amb el tipus d'arxiu (básicament necesito saber si es una canço en el cas de trobar una pista de 4 digits)
+const BOOL RaveBD::AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre, UINT &nPista) {
+	// Creo un string con carácteres filtrados 
+	std::wstring AnalisisFiltrado;
+	for (size_t i = 0; i < Analisis.size(); i++) {
+		switch (Analisis[i]) {
+			case L'_' : case L'-' :
+				AnalisisFiltrado += L" ";
+				break;
+			default :
+				AnalisisFiltrado += Analisis[i];
+		}
+	}
+
+	DWL::Strings::Split Sp(AnalisisFiltrado, L' ');
+	// Creo un vector de tipos para cada parte del string
+	std::vector<Tipo_ParteNombre> Tipos;
+	for (size_t i = 0; i < Sp.Total(); i++) Tipos.push_back(Tipo_ParteNombre_Texto);
+
+	// Analizo cada trozo del string, lo primero que busco son sub-strings con 5 carácteres de máximo, ya que estos pueden ser la pista.
+	// Los sub-strings con más de 5 carácteres quedan descartados
+	UINT TmpNum = 0;
+	for (size_t i = 0; i < Sp.Total(); i++) {
+		if (Sp[i].size() < 6) {
+			switch (Sp[i].size()) {
+				case 1: // Pista de un caracter (MUY POCO FIABLE)
+					if (_EsNumero(Sp[i][0]) == TRUE)	Tipos[i] = Tipo_ParteNombre_Pista1;
+					break;
+				case 2 : // Pista con dos carácteres
+					if (_EsNumero(Sp[i][0]) == TRUE && _EsNumero(Sp[i][1]) == TRUE)	Tipos[i] = Tipo_ParteNombre_Pista2;
+					break;
+				case 3: // Pista con tres carácteres puede ser 3 digitos, o 1x1
+					if (_EsNumero(Sp[i][0]) == TRUE && _EsNumero(Sp[i][1]) == TRUE && _EsNumero(Sp[i][2]) == TRUE)		Tipos[i] = Tipo_ParteNombre_Pista3;
+					else if (_EsNumero(Sp[i][0]) == TRUE && Sp[i][1] == L'x' && _EsNumero(Sp[i][2]) == TRUE)			Tipos[i] = Tipo_ParteNombre_Pista1x1;
+					break;
+				case 4: // Pista con cuatro carácteres hay 3 posibilidades : 1x01, 1-01, y 1999 (si es un número de 4 digitos es MUY provable que sea el año, solo elegir como pista si el medio es una canción)
+					TmpNum = _wtoi(Sp[i].c_str());
+					if (_EsNumero(Sp[i][0]) == TRUE && _EsNumero(Sp[i][1]) == TRUE && _EsNumero(Sp[i][2]) == TRUE && _EsNumero(Sp[i][3]) == TRUE) {
+						if (TmpNum > 1900 && TmpNum < 2050) { Tipos[i] = Tipo_ParteNombre_Texto;  } // Si va de 1900 a 2050, es casi seguro que es un año 
+						else								{ Tipos[i] = Tipo_ParteNombre_Pista4; } // TODO : Mirar si es una cançp, i en cas contrari eliminar-ho del nom						
+					}
+					else if (_EsNumero(Sp[i][0]) == TRUE && Sp[i][1] == L'x' && _EsNumero(Sp[i][2]) == TRUE && _EsNumero(Sp[i][3]) == TRUE)			Tipos[i] = Tipo_ParteNombre_Pista1x2; // Pista doble con un digito delante y dos detras separada por una 'x'
+					// ESTE NO PUEDE SER PORQUE FILTRO EL CARACTER -
+//					else if (_EsNumero(Sp[i][0]) == TRUE && Sp[i][1] == L'-' && _EsNumero(Sp[i][2]) == TRUE && _EsNumero(Sp[i][3]) == TRUE)			Tipos[i] = Tipo_ParteNombre_Pista1_2; // Pista doble con un digito delante y dos detras  separada por una '-'
+					break;
+				case 5: // Pista con cinco carácteres hay 2 posibilidades : 10x01 y 10-01
+					if (_EsNumero(Sp[i][0]) == TRUE && _EsNumero(Sp[i][1]) == TRUE && Sp[i][2] == L'x' && _EsNumero(Sp[i][3]) == TRUE && _EsNumero(Sp[i][4]) == TRUE)	Tipos[i] = Tipo_ParteNombre_Pista2x2; // Pista doble con dos digitos delante y dos detras  separada por una 'x'
+					// ESTE NO PUEDE SER PORQUE FILTRO EL CARACTER -
+//					if (_EsNumero(Sp[i][0]) == TRUE && _EsNumero(Sp[i][1]) == TRUE && Sp[i][2] == L'-' && _EsNumero(Sp[i][3]) == TRUE && _EsNumero(Sp[i][4]) == TRUE)	Tipos[i] = Tipo_ParteNombre_Pista2_2; // Pista doble con dos digitos delante y dos detras  separada por una '-'
+					break;
+			}
+			
+		}
+		else {
+			// Es una parte de texto, solo debo mirar si es una url 
+			if (Sp[i].find(L"http") != std::wstring::npos)		Tipos[i] = Tipo_ParteNombre_Mierda;
+			else if (Sp[i].find(L"www.") != std::wstring::npos) Tipos[i] = Tipo_ParteNombre_Mierda;
+			else if (Sp[i].find(L".com") != std::wstring::npos) Tipos[i] = Tipo_ParteNombre_Mierda;
+		}
+	}
+
+	int PosPista         = -1;
+	Tipo_ParteNombre UPN = Tipo_ParteNombre_Texto;
+	// Una vez identificados los sub-strings elijo el que tiene mas posibilidades de ser la pista
+	// Los tipos están ordenados de forma que el tipo que mas provabilidades tiene de ser una pista, es el que tiene mas valor.
+	for (size_t i = 0; i < Sp.Total(); i++) {
+		if (Tipos[i] > UPN) {
+			UPN = Tipos[i];
+			PosPista = i;
+		}
+	}
+
+	// Si hay algun sub-string que puede ser la pista
+	if (PosPista != -1) {
+		// Asigno la pista elegida
+		switch (Tipos[PosPista]) {
+			// Pistas en la que todos los carácteres son digitos
+			case Tipo_ParteNombre_Pista1 :
+			case Tipo_ParteNombre_Pista2 :
+			case Tipo_ParteNombre_Pista3 :
+			case Tipo_ParteNombre_Pista4 :
+				nPista = _wtoi(Sp[PosPista].c_str());
+				break;
+			// Pistas que el primer carácter es un digito, y el segundo un separador 'x' o '-' (el ultimo caracter es un digito)
+			case Tipo_ParteNombre_Pista1x1 :
+				nPista = (_wtoi(Sp[PosPista].substr(0, 1).c_str()) * 100) + _wtoi(Sp[PosPista].substr(2, 1).c_str());
+				break;
+			// Pistas que el primer carácter es un digito, y el segundo un separador 'x' o '-' (los dos ultimos caracteres son un digito)
+			case Tipo_ParteNombre_Pista1x2:
+//			case Tipo_ParteNombre_Pista1_2:
+				nPista = (_wtoi(Sp[PosPista].substr(0, 1).c_str()) * 100) + _wtoi(Sp[PosPista].substr(2, 2).c_str());
+				break;
+			// Pistas que el primer y el segundo carácter son digitos, y el tercero un separador 'x' o '-' (los dos ultimos caracteres son un digito)
+			case Tipo_ParteNombre_Pista2x2:
+//			case Tipo_ParteNombre_Pista2_2:
+				nPista = (_wtoi(Sp[PosPista].substr(0, 2).c_str()) * 100) + _wtoi(Sp[PosPista].substr(3, 2).c_str());
+				break;
+		}
+	}
+
+	// Por ultimo construyo el string con el nombre al que le quito la pista y posibles urls
+	for (size_t i = 0; i < Sp.Total(); i++) {
+		// Si el substring NO ES la pista elegida, o NO ES un sub-string marcado como mierda
+		if (i != PosPista && Tipos[i] != Tipo_ParteNombre_Mierda) {
+			nNombre += Sp[i];
+		}
+		// Si empieza una url salgo del bucle, y no añado nada mas al nombre (siempre que sea el tercer substring o mas grande
+		if (Tipos[i] == Tipo_ParteNombre_Mierda && i > 3) {
+			break;
+		}
+
+		// Si la posición de la pista, es el ultimo sub-string hay que mirar que no estamos en el penultimo sub-string para agregar el carácter separador.
+		// En caso de que la posición de la pista no sea el ultimo sub-string, hay que mirar que no estemos en el ultimo sub-string para añadir el espacio separador.
+		// Agrego un espacio para separar el substring
+		if (i > Sp.Total() - (PosPista == Sp.Total() - 1) ? -2 : -1) nNombre += L" ";
+	}
+
+	Debug_Escribir_Varg(L"RaveBD::AnalizarNombre2 %d %s\n", nPista, nNombre.c_str());
+
+	// Devuelvo TRUE si se ha encontrado una pista, FALSE en caso contrario
+	return (PosPista != -1) ? TRUE : FALSE;
+}
+
 /*
 	IN  -> Analisis
 	OUT -> nNombre
@@ -1091,7 +1219,7 @@ const BOOL RaveBD::GuardarUltimaLista(void) {
 	Nombres de pista validos : 1, 01, 1x01, 1-12, 20x21
 	Nunca se hace caso a 4 digitos seguidos o mas (ya que son o el año o otra cosa.. pero la pista seguro que no)
 	Se analiza de izquierda a derecha (lo mas normal es que la pista salga a la izquieda nada mas empezar)
-*/
+*//*
 const BOOL RaveBD::AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre, UINT &nPista) {
 	bool PistaEncontrada = false;
 	BOOL C1, C2, C3, C4, C5;
@@ -1108,6 +1236,8 @@ const BOOL RaveBD::AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre,
 				nPista = (_wtoi(Analisis.substr(i, 2).c_str()) * 100) + _wtoi(Analisis.substr(i + 3, 2).c_str());
 				if (i != 0) nNombre = Analisis.substr(0, i);
 				nNombre += Analisis.substr(i + 5, Analisis.size() - (i + 5));
+				Debug_Escribir_Varg(L"RaveBD::AnalizarNombre %d %s\n", nPista, nNombre.c_str());
+				AnalizarNombre2(Analisis, nNombre, nPista);
 				return TRUE;
 			}
 			// 1?01? (si el separador es un espacio no se tomara como pista doble)
@@ -1115,6 +1245,8 @@ const BOOL RaveBD::AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre,
 				nPista = (_wtoi(Analisis.substr(i, 1).c_str()) * 100) + _wtoi(Analisis.substr(i + 2, 2).c_str());
 				if (i != 0) nNombre = Analisis.substr(0, i);
 				nNombre += Analisis.substr(i + 4, Analisis.size() - (i + 4));
+				Debug_Escribir_Varg(L"RaveBD::AnalizarNombre %d %s\n", nPista, nNombre.c_str());
+				AnalizarNombre2(Analisis, nNombre, nPista);
 				return TRUE;
 			}
 			// 001?
@@ -1122,6 +1254,8 @@ const BOOL RaveBD::AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre,
 				nPista = _wtoi(Analisis.substr(i, 3).c_str());
 				if (i != 0) nNombre = Analisis.substr(0, i);
 				nNombre += Analisis.substr(i + 3, Analisis.size() - (i + 3));
+				Debug_Escribir_Varg(L"RaveBD::AnalizarNombre %d %s\n", nPista, nNombre.c_str());
+				AnalizarNombre2(Analisis, nNombre, nPista);
 				return TRUE;
 			}
 			// 01?
@@ -1129,6 +1263,8 @@ const BOOL RaveBD::AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre,
 				nPista = _wtoi(Analisis.substr(i, 2).c_str());
 				if (i != 0) nNombre = Analisis.substr(0, i);
 				nNombre += Analisis.substr(i + 2, Analisis.size() - (i + 2));
+				Debug_Escribir_Varg(L"RaveBD::AnalizarNombre %d %s\n", nPista, nNombre.c_str());
+				AnalizarNombre2(Analisis, nNombre, nPista);
 				return TRUE;
 			}
 			// 1?
@@ -1136,6 +1272,8 @@ const BOOL RaveBD::AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre,
 				nPista = _wtoi(Analisis.substr(i, 1).c_str());
 				if (i != 0) nNombre = Analisis.substr(0, i);
 				nNombre += Analisis.substr(i + 1, Analisis.size() - (i + 1));
+				Debug_Escribir_Varg(L"RaveBD::AnalizarNombre %d %s\n", nPista, nNombre.c_str());
+				AnalizarNombre2(Analisis, nNombre, nPista);
 				return TRUE;
 			}
 		}
@@ -1143,8 +1281,10 @@ const BOOL RaveBD::AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre,
 
 	nPista = 0;
 	nNombre = Analisis;
+	Debug_Escribir_Varg(L"RaveBD::AnalizarNombre %d %s\n", nPista, nNombre.c_str());
+	AnalizarNombre2(Analisis, nNombre, nPista);
 	return FALSE;
-}
+}*/
 
 
 const BOOL RaveBD::_EsNumero(const wchar_t Caracter) {

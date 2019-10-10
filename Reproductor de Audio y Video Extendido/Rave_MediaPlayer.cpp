@@ -46,14 +46,14 @@ const BOOL Rave_MediaPlayer::Iniciar(void) {
 	VentanaPrecarga Precarga;
 	Debug_Escribir(L"Rave_MediaPlayer::Iniciar : Cargando LibVLC...\n");
 
-	DWORD t = GetTickCount();
+	ULONGLONG t = GetTickCount64();
 
 	// Para poder cambiar los volumenes de varias canciones (fade in/out) necesito el DirectSound
 	char const* Arg[] = { 
-		"--aout=directsound",		// Direct sound para controlar el volumen de cada medio independientemente.
+		"--aout=directsound"/*,		// Direct sound para controlar el volumen de cada medio independientemente.
 		"--audio-filter=normvol",	// Filtro para normalizar el volumen
 		"--norm-buff-size=20",		// Tamaño del buffer para normalizar el volumen
-		"--norm-max-level=2,000000"	// Nivel máximo de volumen
+		"--norm-max-level=1,500000"	// Nivel máximo de volumen*/
 	};
 	_InstanciaVLC = libvlc_new(sizeof(Arg) / sizeof(*Arg), Arg);
 //	_InstanciaVLC = libvlc_new(0, nullptr);
@@ -68,7 +68,7 @@ const BOOL Rave_MediaPlayer::Iniciar(void) {
 	const char *Version = libvlc_get_version();
 	std::wstring StrVersion;
 	DWL::Strings::UTF8ToWide(Version, StrVersion);
-	Debug_Escribir_Varg(L"Rave_MediaPlayer::Iniciar : LibVLC cargada en %d MS, Version = '%s' \n", GetTickCount() - t, StrVersion.c_str());
+	Debug_Escribir_Varg(L"Rave_MediaPlayer::Iniciar : LibVLC cargada en %d MS, Version = '%s' \n", GetTickCount64() - t, StrVersion.c_str());
 
 	Precarga.Destruir();
 
@@ -202,6 +202,7 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 	Estados_Medio Estado	= ComprobarEstado();
 	INT64         TTotalMS	= TiempoTotalMs();
 	INT64         TActualMS = TiempoActualMs();
+	std::wstring  StrMomento;
 
 	// MOMENTOS
 	if (_Actual) {
@@ -218,13 +219,17 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 			for (size_t i = 0; i < _Actual->Medio->BdMedio.Momentos.size(); i++) {
 				if (_Actual->Medio->BdMedio.Momentos[i]->Excluir == TRUE) {
 					// Si el tiempo actual esta entre el inicio y el final del momento
-/*					if (TActualMS > _Actual->Medio.Momentos[i]->TiempoInicio && TActualMS < _Actual->Medio.Momentos[i]->TiempoFinal) {
-						TiempoActualMs(_Actual->Medio.Momentos[i]->TiempoFinal);
-					}*/
-					// Si el tiempo actual esta entre el inicio y el inicio + 500 ms
-					if (TActualMS > _Actual->Medio->BdMedio.Momentos[i]->TiempoInicio && TActualMS < _Actual->Medio->BdMedio.Momentos[i]->TiempoInicio + 500) {
+					if (TActualMS > _Actual->Medio->BdMedio.Momentos[i]->TiempoInicio && TActualMS < _Actual->Medio->BdMedio.Momentos[i]->TiempoFinal) {
+						StrMomento = L"Momento '" + _Actual->Medio->BdMedio.Momentos[i]->Nombre + L"' excluido";
+						App.MostrarToolTipPlayer(StrMomento);
 						TiempoActualMs(_Actual->Medio->BdMedio.Momentos[i]->TiempoFinal);
 					}
+					// Si el tiempo actual esta entre el inicio y el inicio + 500 ms
+/*					if (TActualMS > _Actual->Medio->BdMedio.Momentos[i]->TiempoInicio && TActualMS < _Actual->Medio->BdMedio.Momentos[i]->TiempoInicio + 500) {
+						StrMomento = L"Momento '" + _Actual->Medio->BdMedio.Momentos[i]->Nombre + L"' excluido";
+						App.MostrarToolTipPlayer(StrMomento);
+						TiempoActualMs(_Actual->Medio->BdMedio.Momentos[i]->TiempoFinal);
+					}*/
 				}
 			}
 		}		
@@ -253,15 +258,12 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 				App.VentanaRave.LabelTiempoActual.Texto(TmpStr);
 				App.ControlesPC.LabelTiempoActual.Texto(TmpStr);
 			}
-			// El tiempo total solo se actualiza cuando es distinto al anterior			
-			static UINT64 nTiempoTotal = 0;
-			if (TTotalMS != nTiempoTotal) {
-				TmpStr = L"";
-				nTiempoTotal = TTotalMS;
-				TiempoStr(TTotalMS, TmpStr);
-				App.VentanaRave.LabelTiempoTotal.Texto(TmpStr);
-				App.ControlesPC.LabelTiempoTotal.Texto(TmpStr);
-			}
+
+			// Actualizo el tiempo total
+			TmpStr = L"";
+			TiempoStr(TTotalMS, TmpStr);
+			App.VentanaRave.LabelTiempoTotal.Texto(TmpStr);
+			App.ControlesPC.LabelTiempoTotal.Texto(TmpStr);
 		}
 		else { //if (Estado == EnStop || Estado == SinCargar || Estado == Abriendo || Estado == Terminada || Estado == EnError || Estado == Nada) {
 			std::wstring Tiempo(L"00:00");

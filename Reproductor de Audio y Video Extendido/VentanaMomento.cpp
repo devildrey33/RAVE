@@ -34,6 +34,8 @@ void VentanaMomento::Mostrar(BDMedio& nMedio) {
 	}*/
 	CrearVentana(NULL, L"RAVE_Momentos", L"Momentos", App.Opciones.VentanaMomentos_PosX(), App.Opciones.VentanaMomentos_PosY(), 730, 200, WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME, NULL, NULL, NULL, NULL, IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
 
+	ListaMomentos.EliminarTodosLosItems();
+	ListaMomentos.EliminarTodasLasColumnas();
 	ListaMomentos.CrearListaEx(this, 10, 10, 250, 140, ID_LISTAMOMENTOS, WS_CHILD | WS_VISIBLE);
 	ListaMomentos.AgregarColumna();
 
@@ -258,7 +260,7 @@ void VentanaMomento::GuardarMomento(void) {
 	// Si es un nuevo momento
 	if (PosMomento == -1) {
 		if (App.BD.AgregarMomento(&Medio, Txt_Nombre.Texto(), TiempoInicio, TiempoFinal, Check_Excluir.Marcado())) {
-			Medio.Momentos[PosMomento]->Nombre = Txt_Nombre.Texto();
+//			Medio.Momentos[PosMomento]->Nombre = Txt_Nombre.Texto();
 			App.MostrarToolTipMomentos(L"Momento creado");
 		}
 		else {
