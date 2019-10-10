@@ -1091,6 +1091,9 @@ const BOOL RaveBD::GuardarUltimaLista(void) {
  */
 // TODO : afegir parámetre amb el tipus d'arxiu (básicament necesito saber si es una canço en el cas de trobar una pista de 4 digits)
 const BOOL RaveBD::AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre, UINT &nPista) {
+	
+	// TODO : s'ha de filtrar tot abans, i treure les posibles URL
+
 	// Creo un string con carácteres filtrados 
 	std::wstring AnalisisFiltrado;
 	for (size_t i = 0; i < Analisis.size(); i++) {
@@ -1120,9 +1123,10 @@ const BOOL RaveBD::AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre,
 				case 2 : // Pista con dos carácteres
 					if (_EsNumero(Sp[i][0]) == TRUE && _EsNumero(Sp[i][1]) == TRUE)	Tipos[i] = Tipo_ParteNombre_Pista2;
 					break;
-				case 3: // Pista con tres carácteres puede ser 3 digitos, o 1x1
+				case 3: // Pista con tres carácteres puede ser 3 digitos, o 1x1, 0 01.
 					if (_EsNumero(Sp[i][0]) == TRUE && _EsNumero(Sp[i][1]) == TRUE && _EsNumero(Sp[i][2]) == TRUE)		Tipos[i] = Tipo_ParteNombre_Pista3;
 					else if (_EsNumero(Sp[i][0]) == TRUE && Sp[i][1] == L'x' && _EsNumero(Sp[i][2]) == TRUE)			Tipos[i] = Tipo_ParteNombre_Pista1x1;
+					else if (_EsNumero(Sp[i][0]) == TRUE && _EsNumero(Sp[i][1]) == TRUE && Sp[i][2] == L'.' )			Tipos[i] = Tipo_ParteNombre_Pista2p;
 					break;
 				case 4: // Pista con cuatro carácteres hay 3 posibilidades : 1x01, 1-01, y 1999 (si es un número de 4 digitos es MUY provable que sea el año, solo elegir como pista si el medio es una canción)
 					TmpNum = _wtoi(Sp[i].c_str());
@@ -1172,6 +1176,9 @@ const BOOL RaveBD::AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre,
 			case Tipo_ParteNombre_Pista4 :
 				nPista = _wtoi(Sp[PosPista].c_str());
 				break;
+			case Tipo_ParteNombre_Pista2p:
+				nPista = _wtoi(Sp[PosPista].substr(0, 2).c_str());
+				break;
 			// Pistas que el primer carácter es un digito, y el segundo un separador 'x' o '-' (el ultimo caracter es un digito)
 			case Tipo_ParteNombre_Pista1x1 :
 				nPista = (_wtoi(Sp[PosPista].substr(0, 1).c_str()) * 100) + _wtoi(Sp[PosPista].substr(2, 1).c_str());
@@ -1196,9 +1203,9 @@ const BOOL RaveBD::AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre,
 			nNombre += Sp[i];
 		}
 		// Si empieza una url salgo del bucle, y no añado nada mas al nombre (siempre que sea el tercer substring o mas grande
-		if (Tipos[i] == Tipo_ParteNombre_Mierda && i > 3) {
+/*		if (Tipos[i] == Tipo_ParteNombre_Mierda && i > 3) {
 			break;
-		}
+		}*/
 
 		// Si la posición de la pista, es el ultimo sub-string hay que mirar que no estamos en el penultimo sub-string para agregar el carácter separador.
 		// En caso de que la posición de la pista no sea el ultimo sub-string, hay que mirar que no estemos en el ultimo sub-string para añadir el espacio separador.
