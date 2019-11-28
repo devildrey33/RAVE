@@ -95,6 +95,14 @@ const BOOL EnviarDump::Enviar(std::wstring &Path, HWND hWnd) {
 	return TRUE;
 }
 
+
+// El email que em va fer el Barba sembla que ja no funciona... haig de fer un client amb starttls i pasar de emails de tercers...
+// Client de email per windows que utilitza la OpenSSL 
+//	- https://www.codeproject.com/Articles/98355/SMTP-Client-with-SSL-TLS
+// OpenSSL Faq 
+//  - https://www.openssl.org/docs/faq.html
+
+// Exemple STARTTLS en windows sense OpenSSL http://www.coastrd.com/c-schannel-smtp
 unsigned long  EnviarDump::_ThreadEnviar(void *pDatosDump) {
 	EnviarDump_Datos *DatosDump = reinterpret_cast<EnviarDump_Datos *>(pDatosDump);
 

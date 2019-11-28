@@ -13,304 +13,307 @@
         }
     </style>
 </head>
-    <body>
-        <h1>Log de cambios</h1>
-        <ul>
-            <li>Solucionado bug al reproducir desde el menú del explorador, no reproducia el medio especificado si ya habia algo reproduciendose.</li>
-            <li>Solucionados varios bugs relacionados con crear / editar momentos.</li>
-            <li>Mejorada la detección del numero de pista si solo se dispone del path del medio.</li>
-        </ul>
-
-        <h2>Versión 0.602</h2>
-        <ul>
-            <li>Rediseñada la ventana de las opciones.</li>
-            <li>Ahora se usa DirectSound en vez de el MME, esto permite controlar el volumen de cada medio independientemente.</li>
-            <li>Añadida opción para hacer un efecto fade in/out en las canciones.</li>
-            <li>Se ha corregido un bug, en el que al añadir un directorio desde la base de datos, se intentaba añadir a la lista medios inexistentes.</li>
-            <li>Solucionado bug que hacia petar el reproductor, si pulsas un caracter encima de arbol y actualizas el arbol y vuelves a presionar otro caracter.</li>
-        </ul>
-
-        <h2>Versión 0.601</h2>
-        <ul>
-            <li>Motor de la base de datos SQLite actualizado a la versión 3.29.0</li>
-            <li>Incrementado el tamaño máximo para los paths de los medios en la BD de 260 a 1024 carácteres.</li>
-            <li>Solucionado bug por el cual no se reconocian los medios con el formato MPC (MusePack).</li>
-            <li>Solucionado error critico al borrar toda la lista con la tecla suprimir, si el mouse estaba encima de la lista de reproducción.</li>
-            <li>Agregado soporte básico para archivos m3u y m3u8.</li>
-            <li>LibVLC Actualizada a la versión 3.0.8</li>
-            <li>Posibilidad de reproducir canales de IpTv especificando su url (debe apuntar a un archivo de tipo m3u o meu8).</li>
-            <li>Retocados varios iconos.</li>
-        </ul>
-
-        <h2>Versión 0.600</h2>
-        <ul>
-            <li>Sistema para busqueda y descarga de nuevas actualizaciones.</li>
-        </ul>
-
-        <h2>Versión 0.526</h2>
-        <ul>
-            <li>Ya no se agregan medios que esten temporalmente ausentes o no existan a las listas aleatórias.</li>
-            <li>Las raices no disponibles ya no muestran un icono con una estrella en las opciones, y ahora muestran un texto (no disponible) para dejar claro que no está disponible.</li>
-            <li>Las raices no disponibles ya no muestran su carpeta vacia en la base de datos.</li>
-            <li>Se ha restaurado el icono para borrar raices en el mismo item que representa una raíz (en las opciones).</li>
-            <li>
-                <span>Retocada la forma en que se guardan los medios a la BD, ahora ya no conservaran la ID del disco duro que los contiene.</span>
-                <ul>
-                    <li>Lo malo es que si tienes el mismo medio en dos discos distintos con la misma ruta (solo que cambie la unidad) el reproductor solo reconocerá el primero de los dos (lo que no debería ser problema, a no ser que realmente no sean el mismo medio).</li>
-                    <li>Lo bueno es que los medios siguen sin necesitar la letra de unidad de su path, por lo que se puede mover el directorio a otro disco duro, y el reproductor seguirá reconociendolos y conservará todos sus datos (habra que añadir una nueva raíz con el nuevo disco para que se muestren en la BD)</li>
-                </ul>
-            </li>
-            <li>Solucionado bug que no almacenaba las etiquetas de los generos al analizar la canción.</li>
-            <li>Solucionado crash si se intentaba crear una lista aleatoria sin etiquetas.</li>
-            <li>
-                <span>Solucionado el ancho de las etiquetas de Opciones -> Lista2 que se solapaban con los controles desplegables y no dejaban llegar los eventos de mouse en los primeros 60 pixeles de los desplegables.</span>
-                <ul>
-                    <li>Lo mismo con Opciones -> Lista, que tambien tiene un control desplegable (es el problema que tiene el copy/paste a veces...)</li>
-                </ul>
-            </li>
-            <li>Añadidas funcionabilidades básicas a los controles de edición de texto : alineación, selección, control + [c x v], placeholder, control [z y] con un buffer ilimitado.</li>
-            <li>
-                <span>Se han separado la tabla Opciones y la tabla TeclasRapidas de la base de datos de medios, ahora las tienen su propio archivo "Opciones.BD".</span>
-                <ul>
-                    <li>Esto evita que no se guarden las opciones mientras se está ejecutando el thread de análisis.</li>
-                    <li>Por otra parte se pierden las antiguas opciones configuradas, por lo que habrá que reconfigurar el reproductor de nuevo.</li>
-                </ul>
-            </li>
-        </ul>
-
-
-        <h2>Versión 0.525</h2>
-        <ul>
-            <li>Ahora se puede cambiar el skin del arbol y la lista dinámicamente, esto permite mostrar el arbol y la lista con una configuración oscura en el modo pantalla completa.</li>
-            <li>Creado modo oscuro para la lista, el arbol y la barra de scroll (modo pantalla completa).</li>
-            <li>Los controles pantalla completa no se ocultarán si estas arrastrando el scroll de la lista o del arbol de la bd.</li>
-            <li>Ahora el shufle se guardará en las opciones al crear una lista aleatória que requiera el mezclado.</li>
-            <li>Ya no se muestra la pista 0 si el medio no tiene pista (tanto en la BD como en la Lista).</li>
-            <li>Solucionado bug, que al acabar la lista dejaba los iconos del ultimo medio como si estuviera en pausa.</li>
-            <li>Solucionado bug, que al hacer stop seguia mostrando el nombre del medio en la barra del titulo (siempre que la opcion esté activa).</li>
-            <li>Retocado comportamiento de los slider del tiempo, ahora al hacer stop su valor será 0, y al terminar el medio su valor será el máximo.</li>
-            <li>Solucionado bug, que al acabar un medio no asignaba la imagen del play al boton play / pausa.</li>
-            <li>Solucionado bug visual en el arbol y la lista, que en el mouseleave mostraba el fondo del item / nodo de un color distinto al resto del fondo del control. (DAnimacion REBUILD)</li>
-        </ul>
-
-
-        <h2>Versión 0.524</h2>
-        <ul>
-            <li>Botón de las opciones fijado al borde inferior del reproductor.</li>
-            <li>Ahora se puede ver la lista y la base de datos desde el modo pantalla completa (con SetParent, nada de tener 2 controles de lista y arbol).</li>
-            <li>Solucionado bug con las teclas F2 y F3 en pantalla completa, que mostraban la lista o la BD a un tamaño exagerado y no dejaban ver nada.</li>
-            <li>Solucionado bug al mostrar el menú de la lista, que seleccionaba 2 items si ya habia uno seleccionado.</li>
-            <li>Solucionado bug con los controles desplegables con lista que no mostraban correctamente el foco de su ventana padre.</li>
-            <li>Solucionado bug con el control para editar teclas rápidas, que no mostraba correctamente el control al pusar esc para cancelar la edición.</li>
-            <li>Agregada opción : Ocultar tooltips al mover el mouse por encima.</li>
-            <li>Agregada opción : Mostrar nombre del medio actual en la barra de título.</li>
-            <li>Agregada opción : Guardar valores de brillo, contraste, saturación, y proporción para cada medio.</li>
-            <li>Agregada opción : Mezclar listas aleatórias por genero.</li>
-            <li>Agregada opción : Mezclar listas aleatórias por grupo.</li>
-            <li>Agregada opción : Mezclar listas aleatórias por disco.</li>
-            <li>Agregada opción : Mezclar listas aleatórias con 50 canciones.</li>
-            <li>Agregada opción : Mezclar listas por nota.</li>
-        </ul>
-
-
-        <h2>Versión 0.523</h2>
-        <ul>
-            <li>LibVLC actualizada a la versión 3.0.7</li>
-            <li>Implementación básica para cargar subtitulos. (con algunos problemas...)</li>
-            <li>Creada pestaña teclado en las opciones.</li>
-            <li>Creado objeto DDlgAbrir que permite mostrar un dialogo para abrir archivos externos.</li>
-            <li>Ya no puedes asignar la misma tecla rápida para mas de una acción.</li>
-            <li>La ventana de opciones ya no puede ser redimensionada, que aunque lo fuera conservaba el tamaño inicial de los controles.</li>
-            <li>Añadidas teclas F1, F2 y F3 a la lista de teclas rápidas editables en las opciones.</li>
-            <li>Ahora se pueden generar listas por Nota > 2.5</li>
-            <li></li>
-        </ul>
+<body>
+    <h1>Log de cambios</h1>
+    <h2>Versión 0.603</h2>
+    <ul>
+        <li>Ahora se puede modificar el volumen utilizando la rueda del mouse, cuando el mouse está encima de la barra del volumen.</li>
+        <li>Solucionado bug que no guardaba el volumen en la BD, al modificarlo con la rueda del mouse en modo pantalla completa.</li>
+        <li>Solucionado bug al reproducir desde el menú del explorador, no reproducia el medio especificado si ya habia algo reproduciendose.</li>
+        <li>Solucionados varios bugs relacionados con crear / editar momentos.</li>
+        <li>Mejorada la detección del numero de pista si solo se dispone del path del medio.</li>
+    </ul>
+
+    <h2>Versión 0.602</h2>
+    <ul>
+        <li>Rediseñada la ventana de las opciones.</li>
+        <li>Ahora se usa DirectSound en vez de el MME, esto permite controlar el volumen de cada medio independientemente.</li>
+        <li>Añadida opción para hacer un efecto fade in/out en las canciones.</li>
+        <li>Se ha corregido un bug, en el que al añadir un directorio desde la base de datos, se intentaba añadir a la lista medios inexistentes.</li>
+        <li>Solucionado bug que hacia petar el reproductor, si pulsas un caracter encima de arbol y actualizas el arbol y vuelves a presionar otro caracter.</li>
+    </ul>
+
+    <h2>Versión 0.601</h2>
+    <ul>
+        <li>Motor de la base de datos SQLite actualizado a la versión 3.29.0</li>
+        <li>Incrementado el tamaño máximo para los paths de los medios en la BD de 260 a 1024 carácteres.</li>
+        <li>Solucionado bug por el cual no se reconocian los medios con el formato MPC (MusePack).</li>
+        <li>Solucionado error critico al borrar toda la lista con la tecla suprimir, si el mouse estaba encima de la lista de reproducción.</li>
+        <li>Agregado soporte básico para archivos m3u y m3u8.</li>
+        <li>LibVLC Actualizada a la versión 3.0.8</li>
+        <li>Posibilidad de reproducir canales de IpTv especificando su url (debe apuntar a un archivo de tipo m3u o meu8).</li>
+        <li>Retocados varios iconos.</li>
+    </ul>
+
+    <h2>Versión 0.600</h2>
+    <ul>
+        <li>Sistema para busqueda y descarga de nuevas actualizaciones.</li>
+    </ul>
+
+    <h2>Versión 0.526</h2>
+    <ul>
+        <li>Ya no se agregan medios que esten temporalmente ausentes o no existan a las listas aleatórias.</li>
+        <li>Las raices no disponibles ya no muestran un icono con una estrella en las opciones, y ahora muestran un texto (no disponible) para dejar claro que no está disponible.</li>
+        <li>Las raices no disponibles ya no muestran su carpeta vacia en la base de datos.</li>
+        <li>Se ha restaurado el icono para borrar raices en el mismo item que representa una raíz (en las opciones).</li>
+        <li>
+            <span>Retocada la forma en que se guardan los medios a la BD, ahora ya no conservaran la ID del disco duro que los contiene.</span>
+            <ul>
+                <li>Lo malo es que si tienes el mismo medio en dos discos distintos con la misma ruta (solo que cambie la unidad) el reproductor solo reconocerá el primero de los dos (lo que no debería ser problema, a no ser que realmente no sean el mismo medio).</li>
+                <li>Lo bueno es que los medios siguen sin necesitar la letra de unidad de su path, por lo que se puede mover el directorio a otro disco duro, y el reproductor seguirá reconociendolos y conservará todos sus datos (habra que añadir una nueva raíz con el nuevo disco para que se muestren en la BD)</li>
+            </ul>
+        </li>
+        <li>Solucionado bug que no almacenaba las etiquetas de los generos al analizar la canción.</li>
+        <li>Solucionado crash si se intentaba crear una lista aleatoria sin etiquetas.</li>
+        <li>
+            <span>Solucionado el ancho de las etiquetas de Opciones -> Lista2 que se solapaban con los controles desplegables y no dejaban llegar los eventos de mouse en los primeros 60 pixeles de los desplegables.</span>
+            <ul>
+                <li>Lo mismo con Opciones -> Lista, que tambien tiene un control desplegable (es el problema que tiene el copy/paste a veces...)</li>
+            </ul>
+        </li>
+        <li>Añadidas funcionabilidades básicas a los controles de edición de texto : alineación, selección, control + [c x v], placeholder, control [z y] con un buffer ilimitado.</li>
+        <li>
+            <span>Se han separado la tabla Opciones y la tabla TeclasRapidas de la base de datos de medios, ahora las tienen su propio archivo "Opciones.BD".</span>
+            <ul>
+                <li>Esto evita que no se guarden las opciones mientras se está ejecutando el thread de análisis.</li>
+                <li>Por otra parte se pierden las antiguas opciones configuradas, por lo que habrá que reconfigurar el reproductor de nuevo.</li>
+            </ul>
+        </li>
+    </ul>
+
+
+    <h2>Versión 0.525</h2>
+    <ul>
+        <li>Ahora se puede cambiar el skin del arbol y la lista dinámicamente, esto permite mostrar el arbol y la lista con una configuración oscura en el modo pantalla completa.</li>
+        <li>Creado modo oscuro para la lista, el arbol y la barra de scroll (modo pantalla completa).</li>
+        <li>Los controles pantalla completa no se ocultarán si estas arrastrando el scroll de la lista o del arbol de la bd.</li>
+        <li>Ahora el shufle se guardará en las opciones al crear una lista aleatória que requiera el mezclado.</li>
+        <li>Ya no se muestra la pista 0 si el medio no tiene pista (tanto en la BD como en la Lista).</li>
+        <li>Solucionado bug, que al acabar la lista dejaba los iconos del ultimo medio como si estuviera en pausa.</li>
+        <li>Solucionado bug, que al hacer stop seguia mostrando el nombre del medio en la barra del titulo (siempre que la opcion esté activa).</li>
+        <li>Retocado comportamiento de los slider del tiempo, ahora al hacer stop su valor será 0, y al terminar el medio su valor será el máximo.</li>
+        <li>Solucionado bug, que al acabar un medio no asignaba la imagen del play al boton play / pausa.</li>
+        <li>Solucionado bug visual en el arbol y la lista, que en el mouseleave mostraba el fondo del item / nodo de un color distinto al resto del fondo del control. (DAnimacion REBUILD)</li>
+    </ul>
+
+
+    <h2>Versión 0.524</h2>
+    <ul>
+        <li>Botón de las opciones fijado al borde inferior del reproductor.</li>
+        <li>Ahora se puede ver la lista y la base de datos desde el modo pantalla completa (con SetParent, nada de tener 2 controles de lista y arbol).</li>
+        <li>Solucionado bug con las teclas F2 y F3 en pantalla completa, que mostraban la lista o la BD a un tamaño exagerado y no dejaban ver nada.</li>
+        <li>Solucionado bug al mostrar el menú de la lista, que seleccionaba 2 items si ya habia uno seleccionado.</li>
+        <li>Solucionado bug con los controles desplegables con lista que no mostraban correctamente el foco de su ventana padre.</li>
+        <li>Solucionado bug con el control para editar teclas rápidas, que no mostraba correctamente el control al pusar esc para cancelar la edición.</li>
+        <li>Agregada opción : Ocultar tooltips al mover el mouse por encima.</li>
+        <li>Agregada opción : Mostrar nombre del medio actual en la barra de título.</li>
+        <li>Agregada opción : Guardar valores de brillo, contraste, saturación, y proporción para cada medio.</li>
+        <li>Agregada opción : Mezclar listas aleatórias por genero.</li>
+        <li>Agregada opción : Mezclar listas aleatórias por grupo.</li>
+        <li>Agregada opción : Mezclar listas aleatórias por disco.</li>
+        <li>Agregada opción : Mezclar listas aleatórias con 50 canciones.</li>
+        <li>Agregada opción : Mezclar listas por nota.</li>
+    </ul>
 
 
+    <h2>Versión 0.523</h2>
+    <ul>
+        <li>LibVLC actualizada a la versión 3.0.7</li>
+        <li>Implementación básica para cargar subtitulos. (con algunos problemas...)</li>
+        <li>Creada pestaña teclado en las opciones.</li>
+        <li>Creado objeto DDlgAbrir que permite mostrar un dialogo para abrir archivos externos.</li>
+        <li>Ya no puedes asignar la misma tecla rápida para mas de una acción.</li>
+        <li>La ventana de opciones ya no puede ser redimensionada, que aunque lo fuera conservaba el tamaño inicial de los controles.</li>
+        <li>Añadidas teclas F1, F2 y F3 a la lista de teclas rápidas editables en las opciones.</li>
+        <li>Ahora se pueden generar listas por Nota > 2.5</li>
+        <li></li>
+    </ul>
 
-        <h2>Versión 0.522</h2>
-        <ul>
-            <li>Creado SubMenu Momentos para el menú de la base de datos, que muestra los momentos como sub-menu.</li>
-            <li>Creado SubMenu Momentos para el menú del video, que muestra los momentos como sub-menu.</li>
-            <li>Ahora no se activará el sub-menu Momentos en el menu de la lista si hay mas de un medio seleccionado.</li>
-            <li>Se han fusionado todas las tablas de momentos en una sola, me resultará mas fácil tranajar con una sola tabla que con una por medio, en especial si hay que hacer listas aleatórias.</li>
-            <li>Añadidos nuevos iconos para los menús que no tenian icono (aun faltan un par o tres).</li>
-        </ul>
 
 
+    <h2>Versión 0.522</h2>
+    <ul>
+        <li>Creado SubMenu Momentos para el menú de la base de datos, que muestra los momentos como sub-menu.</li>
+        <li>Creado SubMenu Momentos para el menú del video, que muestra los momentos como sub-menu.</li>
+        <li>Ahora no se activará el sub-menu Momentos en el menu de la lista si hay mas de un medio seleccionado.</li>
+        <li>Se han fusionado todas las tablas de momentos en una sola, me resultará mas fácil tranajar con una sola tabla que con una por medio, en especial si hay que hacer listas aleatórias.</li>
+        <li>Añadidos nuevos iconos para los menús que no tenian icono (aun faltan un par o tres).</li>
+    </ul>
 
-        <h2>Versión 0.521</h2>
-        <ul>
-            <li>Los momentos ya son funcionales con una precisión de 1000 milisegundos.</li>
-            <li>Añadidos varios botones para poder modificar el tiempo de los momentos de una forma más precisa.</li>
-            <li>Si creas / editas / eliminas un momento del medio que se está reproduciendo, se actualizará automáticamente.</li>
-        </ul>
 
 
+    <h2>Versión 0.521</h2>
+    <ul>
+        <li>Los momentos ya son funcionales con una precisión de 1000 milisegundos.</li>
+        <li>Añadidos varios botones para poder modificar el tiempo de los momentos de una forma más precisa.</li>
+        <li>Si creas / editas / eliminas un momento del medio que se está reproduciendo, se actualizará automáticamente.</li>
+    </ul>
 
-        <h2>Versión 0.520</h2>
-        <ul>
-            <li>Solucionado bug visual de los DBotonEx al desactivar-los.</li>
-            <li>Ahora al presionar la tecla Intro en la lista, pondrá a reproducir el medio marcado.</li>
-            <li>Añadido modo de entrada para los controles de edición de texto, ahora puede ser : Texto, Entero, Decimal, Tiempo.</li>
-            <li>Añadidos colores para la sombra en los estados (Resaltado, presionado, y desactivado).</li>
-            <li>Nueva ventana para poder crear momentos (ahora es posible marcar un momento dentro de un medio para ser recordado en futuras sesiones)</li>
-            <li>Añadido modelo de tablas de la BD para los momentos.</li>
-            <li>Añadidas nuevas columnas en las opciones para guardar la posición de los momentos.</li>
-            <li>Añadida ventana para crear / modificar / eliminar momentos (no es 100% funcional aún...)</li>
-            <li>Añadidos tooltips para la ventana de los momentos.</li>
-        </ul>
 
 
-        <h2>Versión 0.519</h2>
-        <ul>
-            <li>Ahora se guarda la posición y el tamaño de la ventana para seleccionar directorios.</li>
-            <li>La tecla F2 ahora muestra el medio actual en la Base de datos.</li>
-            <li>La tecla F3 ahora muestra el medio actual en la Lista.</li>
-        </ul>
+    <h2>Versión 0.520</h2>
+    <ul>
+        <li>Solucionado bug visual de los DBotonEx al desactivar-los.</li>
+        <li>Ahora al presionar la tecla Intro en la lista, pondrá a reproducir el medio marcado.</li>
+        <li>Añadido modo de entrada para los controles de edición de texto, ahora puede ser : Texto, Entero, Decimal, Tiempo.</li>
+        <li>Añadidos colores para la sombra en los estados (Resaltado, presionado, y desactivado).</li>
+        <li>Nueva ventana para poder crear momentos (ahora es posible marcar un momento dentro de un medio para ser recordado en futuras sesiones)</li>
+        <li>Añadido modelo de tablas de la BD para los momentos.</li>
+        <li>Añadidas nuevas columnas en las opciones para guardar la posición de los momentos.</li>
+        <li>Añadida ventana para crear / modificar / eliminar momentos (no es 100% funcional aún...)</li>
+        <li>Añadidos tooltips para la ventana de los momentos.</li>
+    </ul>
 
 
+    <h2>Versión 0.519</h2>
+    <ul>
+        <li>Ahora se guarda la posición y el tamaño de la ventana para seleccionar directorios.</li>
+        <li>La tecla F2 ahora muestra el medio actual en la Base de datos.</li>
+        <li>La tecla F3 ahora muestra el medio actual en la Lista.</li>
+    </ul>
 
-        <h2>Versión 0.518</h2>
-        <ul>
-            <li>Suavizado el drag de la Lista.</li>
-            <li>Añadidos temporizadores para mover el scroll si en una operación de drag, si el mouse queda por encima o por debajo del control y hay mas items por explorar.</li>
-            <li>Solucionado bug con los botones que se muestran en el preview de la barra de tareas, ahora ya funcionan todos correctamente.</li>
-            <li>Los menus que no tienen iconos en sus submenus, ahora ya no dejan el margen a la izquierda para ellos.</li>
-        </ul>
 
 
+    <h2>Versión 0.518</h2>
+    <ul>
+        <li>Suavizado el drag de la Lista.</li>
+        <li>Añadidos temporizadores para mover el scroll si en una operación de drag, si el mouse queda por encima o por debajo del control y hay mas items por explorar.</li>
+        <li>Solucionado bug con los botones que se muestran en el preview de la barra de tareas, ahora ya funcionan todos correctamente.</li>
+        <li>Los menus que no tienen iconos en sus submenus, ahora ya no dejan el margen a la izquierda para ellos.</li>
+    </ul>
 
-        <h2>Versión 0.517</h2>
-        <ul>
-            <li>Retocada ventana del error critico, que no mostraba correctamente todo el texto.</li>
-            <li>Actualizada la base de datos del reproductor para poder guardar nuevos valores (v1.1)</li>
-            <li>Ahora se cargan y se guardan los valores del brillo, saturación, contraste, y proporción de cada video individualmente.</li>
-            <li>Solucionado bug a eliminar el ultimo item de la lista.</li>
-        </ul>
 
 
+    <h2>Versión 0.517</h2>
+    <ul>
+        <li>Retocada ventana del error critico, que no mostraba correctamente todo el texto.</li>
+        <li>Actualizada la base de datos del reproductor para poder guardar nuevos valores (v1.1)</li>
+        <li>Ahora se cargan y se guardan los valores del brillo, saturación, contraste, y proporción de cada video individualmente.</li>
+        <li>Solucionado bug a eliminar el ultimo item de la lista.</li>
+    </ul>
 
-        <h2>Versión 0.516</h2>
-        <ul>
-            <li>Solucionado bug con los controles de pantalla completa, que a veces no se mostraban con la opacidad correcta.</li>
-            <li>Añadida posibilidad de arrastrar medios de la Lista y de este modo modificar su posición.</li>
-            <li>Creada página sobre el reproductor en el github.</li>
-        </ul>
 
 
+    <h2>Versión 0.516</h2>
+    <ul>
+        <li>Solucionado bug con los controles de pantalla completa, que a veces no se mostraban con la opacidad correcta.</li>
+        <li>Añadida posibilidad de arrastrar medios de la Lista y de este modo modificar su posición.</li>
+        <li>Creada página sobre el reproductor en el github.</li>
+    </ul>
 
-        <h2>Versión 0.512</h2>
-        <ul>
-            <li>Añadidos menus para la BD : Abrir carpeta, Nota, y Propiedades(de windows) 100% funcionales.</li>
-            <li>Mejorada velocidad de exploración de los directorios al requerir menos datos de la BD para comparaciones.</li>
-            <li>Pequeños retoques visuales en la alineación de los controles.</li>
-        </ul>
 
 
+    <h2>Versión 0.512</h2>
+    <ul>
+        <li>Añadidos menus para la BD : Abrir carpeta, Nota, y Propiedades(de windows) 100% funcionales.</li>
+        <li>Mejorada velocidad de exploración de los directorios al requerir menos datos de la BD para comparaciones.</li>
+        <li>Pequeños retoques visuales en la alineación de los controles.</li>
+    </ul>
 
-        <h2>Versión 0.511</h2>
-        <ul>
-            <li>Agregadas transiciones de resaltado y presionado para los items.</li>
-            <li>Mejoras en los calculos del espacio interno de los Menus.</li>
-        </ul>
 
 
+    <h2>Versión 0.511</h2>
+    <ul>
+        <li>Agregadas transiciones de resaltado y presionado para los items.</li>
+        <li>Mejoras en los calculos del espacio interno de los Menus.</li>
+    </ul>
 
-        <h2>Versión 0.509</h2>
-        <ul>
-            <li>Creado objeto para poder cargar y pintar iconos facilmente.</li>
-        </ul>
 
 
+    <h2>Versión 0.509</h2>
+    <ul>
+        <li>Creado objeto para poder cargar y pintar iconos facilmente.</li>
+    </ul>
 
-        <h2>Versión 0.508</h2>
-        <ul>
-            <li>Creado sistema interno para manejar distintos tipos de fuente mas facilmente.</li>
-            <li>Añadido objeto skin para todos los controles...</li>
-        </ul>
 
 
+    <h2>Versión 0.508</h2>
+    <ul>
+        <li>Creado sistema interno para manejar distintos tipos de fuente mas facilmente.</li>
+        <li>Añadido objeto skin para todos los controles...</li>
+    </ul>
 
-        <h2>Versión 0.507</h2>
-        <ul>
-            <li>Al mostrar los tooltips para carpetas ahora se calculan su tiempo total, su tamaño, y su nota media.</li>
-            <li>Solucionado bug que mientras se estába cargando el núcleo de la VLC no hacia caso a los medios que se pudieran añadir desde el explorador.</li>
-            <li>Transición de resaltado para el fondo del arbol.</li>
-            <li>Inicio de un sistema básico para poder hacer skins con relativa facilidad.</li>
-        </ul>
 
 
+    <h2>Versión 0.507</h2>
+    <ul>
+        <li>Al mostrar los tooltips para carpetas ahora se calculan su tiempo total, su tamaño, y su nota media.</li>
+        <li>Solucionado bug que mientras se estába cargando el núcleo de la VLC no hacia caso a los medios que se pudieran añadir desde el explorador.</li>
+        <li>Transición de resaltado para el fondo del arbol.</li>
+        <li>Inicio de un sistema básico para poder hacer skins con relativa facilidad.</li>
+    </ul>
 
-        <h2>Versión 0.506</h2>
-        <ul>
-            <li>Se ha re-escrito todo el tema de multiseleccion con el shift y varias teclas (cursores, inicio, fin avpag, etc..) del Arbol.</li>
-            <li>Ahora se captura el mouse en los eventos MouseDown y MouseUp del Arbol.</li>
-            <li>Implementadas transiciones de resaltado y presionado para los nodos del Arbol.</li>
-            <li>Ahora el Arbol soporta las teclas de la A a la Z para buscar nodos visibles.</li>
-            <li>Retocados varios iconos del reproductor.</li>
-        </ul>
 
 
+    <h2>Versión 0.506</h2>
+    <ul>
+        <li>Se ha re-escrito todo el tema de multiseleccion con el shift y varias teclas (cursores, inicio, fin avpag, etc..) del Arbol.</li>
+        <li>Ahora se captura el mouse en los eventos MouseDown y MouseUp del Arbol.</li>
+        <li>Implementadas transiciones de resaltado y presionado para los nodos del Arbol.</li>
+        <li>Ahora el Arbol soporta las teclas de la A a la Z para buscar nodos visibles.</li>
+        <li>Retocados varios iconos del reproductor.</li>
+    </ul>
 
-        <h2>Versión 0.505</h2>
-        <ul>
-            <li>Añadido borde con transición de color a los controles que heredan de la barra de scroll (Arbol y Lista).</li>
-            <li>Retocados expansores del Arbol, ahora hay 2 tipos de expansor y tienen una transición de resaltado y presionado.</li>
-            <li>Solucionado bug con los controles pantalla completa que no se mostraban mas una vez terminado el primer vídeo.</li>
-            <li>Pequeños retoques en los margenes y bordes de la barra de scroll.</li>
-        </ul>
 
 
+    <h2>Versión 0.505</h2>
+    <ul>
+        <li>Añadido borde con transición de color a los controles que heredan de la barra de scroll (Arbol y Lista).</li>
+        <li>Retocados expansores del Arbol, ahora hay 2 tipos de expansor y tienen una transición de resaltado y presionado.</li>
+        <li>Solucionado bug con los controles pantalla completa que no se mostraban mas una vez terminado el primer vídeo.</li>
+        <li>Pequeños retoques en los margenes y bordes de la barra de scroll.</li>
+    </ul>
 
-        <h2>Versión 0.504</h2>
-        <ul>
-            <li>Bug en la detección del sistema operativo que solo me permitia identificar hasta windows 8 solucionado. Ahora ya puedo identificar al windows 8.1 y al 10.</li>
-            <li>Bug en el orden de los tooltips que a veces podian quedar detras de la ventana principal.</li>
-            <li>Barra de scroll re-escrita, antes se podia ajustar del 0% al 100% sin contar el espacio de la página. Ahora se puede ajustar de 0.0 a 1.0 contando el tamaño de la página.</li>
-            <li>Añadidas animaciones / transiciones de color en la barra de scroll.</li>
-            <li>Retocados controles Lista y Arbol para adaptarse a los cambios de la barra de scroll.</li>
-            <li>Retocados los colores de la barra de scroll para que resalten más.</li>
-            <li>Los menús ahora comprueban que tengan suficiente espacio a la derecha para mostrar el sub-menu, y en caso contrario lo muestran por la izquierda.</li>
-        </ul>
 
 
+    <h2>Versión 0.504</h2>
+    <ul>
+        <li>Bug en la detección del sistema operativo que solo me permitia identificar hasta windows 8 solucionado. Ahora ya puedo identificar al windows 8.1 y al 10.</li>
+        <li>Bug en el orden de los tooltips que a veces podian quedar detras de la ventana principal.</li>
+        <li>Barra de scroll re-escrita, antes se podia ajustar del 0% al 100% sin contar el espacio de la página. Ahora se puede ajustar de 0.0 a 1.0 contando el tamaño de la página.</li>
+        <li>Añadidas animaciones / transiciones de color en la barra de scroll.</li>
+        <li>Retocados controles Lista y Arbol para adaptarse a los cambios de la barra de scroll.</li>
+        <li>Retocados los colores de la barra de scroll para que resalten más.</li>
+        <li>Los menús ahora comprueban que tengan suficiente espacio a la derecha para mostrar el sub-menu, y en caso contrario lo muestran por la izquierda.</li>
+    </ul>
 
-        <h2>Versión 0.503</h2>
-        <ul>
-            <li>Varias mejoras en el objeto que crea las animaciones de tiempo, que me ayudaran un poco mas a dar vida al reproductor.</li>
-            <li>Bug en los colores de los controles marca, solucionado.</li>
-            <li>Ahora los tooltips no desaparecen de golpe al mover la ventana, y se hace una animación.</li>
-        </ul>
 
 
+    <h2>Versión 0.503</h2>
+    <ul>
+        <li>Varias mejoras en el objeto que crea las animaciones de tiempo, que me ayudaran un poco mas a dar vida al reproductor.</li>
+        <li>Bug en los colores de los controles marca, solucionado.</li>
+        <li>Ahora los tooltips no desaparecen de golpe al mover la ventana, y se hace una animación.</li>
+    </ul>
 
-        <h2>Versión 0.502</h2>
-        <ul>
-            <li>La nota de los tooltips ahora se muestra con estrellas en vez de con un valor.</li>
-            <li>Varios retoques internos al sistema de tooltips. Entre otras cosas ahora los tooltips ya no se ocultan al pasar por encima con el mouse, puedes hacer click para ocultar-los.</li>
-        </ul>
 
 
+    <h2>Versión 0.502</h2>
+    <ul>
+        <li>La nota de los tooltips ahora se muestra con estrellas en vez de con un valor.</li>
+        <li>Varios retoques internos al sistema de tooltips. Entre otras cosas ahora los tooltips ya no se ocultan al pasar por encima con el mouse, puedes hacer click para ocultar-los.</li>
+    </ul>
 
-        <h2>Versión 0.501</h2>
-        <ul>
-            <li>Retocado el tamaño de la primera columna de los medios para adaptarse mejor a la pista.</li>
-            <li>Retoques internos en el manejo del medio actual.</li>
-        </ul>
 
 
+    <h2>Versión 0.501</h2>
+    <ul>
+        <li>Retocado el tamaño de la primera columna de los medios para adaptarse mejor a la pista.</li>
+        <li>Retoques internos en el manejo del medio actual.</li>
+    </ul>
 
-        <h2>Versión 0.500</h2>
-        <ul>
-            <li>Primera versión pública.</li>
-            <li>Base de datos y escaneo de medios.</li>
-            <li>Lista básica con shufle y repeat.</li>
-            <li>Listas aleatórias.</li>
-            <li>Controles básicos (play, pausa, stop, avanzar medio, retroceder medio, volumen, etc..).</li>
-            <li>Modo pantalla completa para los vídeos.</li>
-            <li>Tooltips informativos para los medios.</li>
-        </ul>
 
-    </body>
+
+    <h2>Versión 0.500</h2>
+    <ul>
+        <li>Primera versión pública.</li>
+        <li>Base de datos y escaneo de medios.</li>
+        <li>Lista básica con shufle y repeat.</li>
+        <li>Listas aleatórias.</li>
+        <li>Controles básicos (play, pausa, stop, avanzar medio, retroceder medio, volumen, etc..).</li>
+        <li>Modo pantalla completa para los vídeos.</li>
+        <li>Tooltips informativos para los medios.</li>
+    </ul>
+
+</body>
 </html>

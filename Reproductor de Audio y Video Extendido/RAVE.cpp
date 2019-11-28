@@ -114,15 +114,20 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 
 	// Muestra la ventana para alertar de un error crítico
 	#ifdef RAVE_MOSTRAR_ERRORCRITICO
-		LC = LineaComando_ErrorCritico;
+		_LC = LineaComando_ErrorCritico;
 	#endif
 
 	// Simula un error crítico y luego invoca una nueva instancia que muestra el error crítico
 	#ifdef RAVE_SIMULAR_ERRORCRITICO
 		// Hay que comprobar que no se vaya a mostrar la ventana de error crítico, o el windows entrará en un bucle infinito abriendo el Rave xd
-		if (LC != LineaComando_ErrorCritico) {
-			int *SEC = NULL;
-			SEC[0] = 2;
+		if (_LC != LineaComando_ErrorCritico) {
+			try {
+				int *SEC = NULL;
+				SEC[0] = 2;
+			} // PETIT TEST PER VEURE SI FUNCIONA EL CATCH AMB EL ACCESS VIOLATION
+			catch (const std::exception &ex) {
+				Debug_Escribir(L"Simulación Error Crítico");
+			}
 		}
 	#endif
 

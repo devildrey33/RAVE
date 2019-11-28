@@ -72,8 +72,8 @@ enum Tipo_ParteNombre {
 	Tipo_ParteNombre_Pista1		=  2,	//     1		
 	Tipo_ParteNombre_Pista2		=  3,	//    03
 	Tipo_ParteNombre_Pista3		=  4,	//   102
-	Tipo_ParteNombre_Pista2p	=  5,	//   01.
-//	Tipo_ParteNombre_Pista2_2	=  6,	// 10-02
+	Tipo_ParteNombre_Pista1p	=  5,	//    1.
+	Tipo_ParteNombre_Pista2p	=  6,	//   01.
 	Tipo_ParteNombre_Pista1x1	=  7,	//   1x4
 	Tipo_ParteNombre_Pista1x2	=  8,	//  1x04
 	Tipo_ParteNombre_Pista2x2	=  9,   // 01x05

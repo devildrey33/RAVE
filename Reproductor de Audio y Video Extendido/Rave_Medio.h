@@ -53,8 +53,8 @@ class Rave_Medio {
 	  virtual void					Saturacion(const float nSaturacion)								{ };
 									// Pista de audio para el video
 	  virtual void					AsignarPistaAudio(int nPista)									{ };
-	  virtual const int             AsignarSubtitulos(const wchar_t* Path)				          { return 0; };
-	  virtual const int             EnumerarSubtitulos(void)							          { return 0; };
+	  virtual const int             AsignarSubtitulos(const wchar_t* Path)							{ return 0; };
+	  virtual const int             EnumerarSubtitulos(void)										{ return 0; };
 	  virtual const Rave_Medio_Tipo Tipo(void)														{ return Rave_Medio_Tipo_NADA; };
 
 	  virtual void                  FadeIn(void)													{ };

@@ -1069,6 +1069,21 @@ void VentanaPrincipal::Evento_SliderVolumen_Cambiado(void) {
 	App.Opciones.Volumen(static_cast<int>(SliderVolumen.Valor()));
 }
 
+// Modifico y guardo el volumen
+void VentanaPrincipal::Evento_SliderVolumen_Rueda(DEventoMouseRueda &DatosMouse) {
+	int Vol = App.MP.Volumen();
+	Vol += (DatosMouse.Delta() > 0) ? 10 : -10;
+	App.MP.Volumen(Vol);
+	App.Opciones.Volumen(Vol);
+
+	// Actualizo el UI
+	SliderVolumen.Valor(static_cast<float>(Vol));
+	App.ControlesPC.SliderVolumen.Valor(static_cast<float>(Vol));
+	std::wstring StrVol = std::to_wstring(Vol) + L"%";
+	LabelVolumen.Texto(StrVol);
+	App.ControlesPC.LabelVolumen.Texto(StrVol);
+}
+
 void VentanaPrincipal::Evento_BorraFondo(HDC DC) {
 	RECT RC;
 	GetClientRect(hWnd(), &RC);
@@ -1334,6 +1349,12 @@ void VentanaPrincipal::Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse) {
 	}
 }
 
+void VentanaPrincipal::Evento_BarraEx_Rueda(DWL::DEventoMouseRueda& DatosMouse) {
+	if (DatosMouse.ID() == ID_SLIDER_VOLUMEN) {
+		Evento_SliderVolumen_Rueda(DatosMouse);
+	}
+}
+
 
 void VentanaPrincipal::ThreadAgregarArchivosLista_Terminado(void) {
 	ThreadArchivosLista.Terminar();
@@ -1534,6 +1555,7 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 		// Barra de desplazamiento (barra de tiempo y volumen) 
 		case DWL_BARRAEX_CAMBIANDO			:	Evento_BarraEx_Cambiando(WPARAM_TO_DEVENTOMOUSE(wParam));								return 0;	// Se está modificando (mouse down)		
 		case DWL_BARRAEX_CAMBIADO			:  	Evento_BarraEx_Cambiado(WPARAM_TO_DEVENTOMOUSE(wParam));								return 0;	// Se ha modificado	(mouse up)
+		case DWL_BARRAEX_MOUSERUEDA			:   Evento_BarraEx_Rueda(WPARAM_TO_DEVENTOMOUSERUEDA(wParam));								return 0;	// Se ha movido la rueda del mouse
 
 		// Mensajes para el BotonEx
 		case DWL_BOTONEX_CLICK				:	Evento_BotonEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));								return 0;

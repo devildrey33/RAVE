@@ -73,6 +73,7 @@ void VerVideo::_Evento_MouseRueda(WPARAM wParam, LPARAM lParam) {
 		int Vol = App.MP.Volumen();
 		Vol += (DatosMouse.Delta() > 0) ? 10 : -10;
 		App.MP.Volumen(Vol);
+		App.Opciones.Volumen(Vol);
 //	}
 }
 

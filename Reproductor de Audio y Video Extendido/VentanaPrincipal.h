@@ -50,8 +50,10 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						Evento_SliderTiempo_Cambiado(void);
 								// Evento que recibe cuando se ha cambiado la barra del volumen
 	void						Evento_SliderVolumen_Cambiado(void);
-								// Evento que recibe cuando se está cambiando la barra del tiempo
+								// Evento que recibe cuando se está cambiando la barra del volumen
 	void						Evento_SliderVolumen_Cambiando(void);
+								// Evento que se recibe cuando se está moviendo la rueda del mouse dentro de la barra del volumen
+	void						Evento_SliderVolumen_Rueda(DEventoMouseRueda& DatosMouse);
 								// Evento que se recibe cuando se sueltan archivos desde el explorador a esta ventana
 	void						Evento_SoltarArchivos(WPARAM wParam);
 								// Evento que se recibe cuando es necesario borrar el fondo de esta ventana
@@ -62,6 +64,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						Evento_BarraEx_Cambiando(DWL::DEventoMouse &DatosMouse);
 								// Evento que recibe cuando se ha cambiado una barra extendida
 	void						Evento_BarraEx_Cambiado(DWL::DEventoMouse &DatosMouse);
+								// Evento que recibe cuando se ha movido la rueda del mouse dentro de una barra extendida
+	void						Evento_BarraEx_Rueda(DWL::DEventoMouseRueda& DatosMouse);
 
 								// Mensaje que se recibe del thread agregar archivos, que indica que se ha terminado
 	void						ThreadAgregarArchivosLista_Terminado(void);

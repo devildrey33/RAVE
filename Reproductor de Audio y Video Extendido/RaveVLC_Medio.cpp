@@ -101,6 +101,8 @@ RaveVLC_Medio::~RaveVLC_Medio(void) {
 // OJU s'ha d'utilitzar sempre desde el thread principal o pot fer un deadlock
 void RaveVLC_Medio::Eliminar(void) {
 	//	hWndVLC = NULL;
+	_AniVolumen.Terminar();
+
 	if (_Medio != NULL) {
 //		Debug_Escribir_Varg(L"RaveVLC_Medio::~RaveVLC_Medio '%s' \n", Medio->BdMedio.Path.c_str());
 		libvlc_event_detach(_Eventos, libvlc_MediaPlayerEndReached		, Rave_MediaPlayer::EventosVLC, this);
@@ -497,7 +499,9 @@ const int RaveVLC_Medio::AsignarSubtitulos(const wchar_t* Path) {
 
 
 
-
+///////////////////////////////////////////////////////
+// TODO : moure fade in i fade out a Rave_MediaPlayer
+///////////////////////////////////////////////////////
 
 // de 0 al volumen actual
 void RaveVLC_Medio::FadeIn(void) {
