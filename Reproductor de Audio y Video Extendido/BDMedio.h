@@ -3,6 +3,7 @@
 #include "DUnidadesDisco.h"
 #include "ExtensionesValidas.h"
 #include "vlc.hpp"
+#include "RaveSQLite.h"
 
 // Objeto para almacenar un momento
 class BDMomento {
@@ -22,9 +23,9 @@ class BDMomento {
 // Clase con los datos de un medio
 class BDMedio {
   public :
-									BDMedio(void) : PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), /*IDDisco(0),*/ Parseado(FALSE), Actualizar(FALSE), Nota(2.5f), PistaEleccion(0), Reproducido(0), GrupoEleccion(0), DiscoEleccion(0), NombreEleccion(0), Brillo(1.0f), Contraste(1.0f), Saturacion(1.0f), PosMomento(-1) { };
+									BDMedio(void) : IDDisco(0), PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), /*IDDisco(0),*/ Parseado(FALSE), Actualizar(FALSE), Nota(2.5f), PistaEleccion(0), Reproducido(0), GrupoEleccion(0), DiscoEleccion(0), NombreEleccion(0), Brillo(1.0f), Contraste(1.0f), Saturacion(1.0f), PosMomento(-1) { };
 //									BDMedio(UINT nId, sqlite3_int64 nHash, const wchar_t *nPath, const wchar_t *nNombre, Tipo_Medio nTipoMedio, Extension_Medio nExtension, UINT nReproducido, ULONG nLongitud, DWORD nIDDisco, UINT nNota, UINT nGenero, UINT nGrupo, UINT nDisco, UINT nPista, INT64 nTiempo, const wchar_t *nSubtitulos) : Id(nId), Hash(nHash), Path(nPath), NombrePath(nNombre), TipoMedio(nTipoMedio), Extension(nExtension), Longitud(nLongitud), IDDisco(nIDDisco), Nota(nNota), Pista(nPista), Tiempo(nTiempo), Subtitulos(nSubtitulos), Parseado(FALSE) { }
-									BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
+									BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades, RaveSQLite *BD);
 									BDMedio(const BDMedio& c);
 						           ~BDMedio(void);
 
@@ -51,8 +52,11 @@ class BDMedio {
 	UINT							Reproducido;
 	float							Nota;
 
-	UINT							Id;					// ID unica que identifica al medio (mucho mkas recomendable que el Hash)
-//	DWORD							IDDisco;
+	UINT							Id;					// ID unica que identifica al medio (mucho mas recomendable que el Hash para buscar en la BD)
+
+	DWORD							IDDisco;			// Ultima ID de disco conocida, (si se encuentran 2 o mas unidades con el medio disponible en su directorio, deberá escoger siempre el disco donde se encontro la ultima vez)
+														//	Esto evitara un bug RARO que tengo por la distribución de mis unidades... tengo los medios en la unidad E, pero tengo un disco externo de backup que siempre es la D.
+														//  Al escanear los medios diponibles encuentra primero los del disco externo, y si lo apago... se lia gorda, y si además mientras salen mensajes de error por que no encuentra los medios, creo una lista aleatória... rebienta y ni muestra la ventana del dump....
 
 	std::wstring					Genero;
 
@@ -73,7 +77,7 @@ class BDMedio {
 		
 	void							PistaStr(std::wstring &nPistaStr);
 									// Función que obtiene todos los datos del medio en la BD
-	void							ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades);
+	void							ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades, RaveSQLite *BD);
 	void							ObtenerMomentos(const UINT nId);
 
 	std::wstring					Proporcion;
@@ -95,4 +99,10 @@ class BDMedio {
 
 									// Recarga los datos desde la BD para este medio
 	void							Recargar(void);
+
+									// Consulta SQL, que requiere : 
+									//	TxtConsulta    [IN]  : Puntero constante al texto de la consulta.
+									//  BD             [IN]  : Puntero a la base de datos de donde  queremos hacer la consulta.
+									//  UltimoErrorSQL [OUT] : std::wstring con el texto del ultimo error generado por la consulta (si no hay error UltimoErrorSQL.size() será 0)
+	const int						Consulta(const wchar_t *TxtConsulta, sqlite3 *BD, std::wstring &UltimoErrorSQL);
 };

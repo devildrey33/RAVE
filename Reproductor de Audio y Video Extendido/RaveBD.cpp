@@ -122,7 +122,7 @@ const BOOL RaveBD::ObtenerMediosPorParsear(std::vector<std::wstring> &Paths) {
 	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
-			Medio.ObtenerFila(SqlQuery, Unidades);
+			Medio.ObtenerFila(SqlQuery, Unidades, this);
 			Paths.push_back(Medio.Path);
 		}
 
@@ -159,7 +159,7 @@ const BOOL RaveBD::_ConsultaObtenerMedio(std::wstring &TxtConsulta, BDMedio &OUT
 	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
-			OUT_Medio.ObtenerFila(SqlQuery, Unidades);
+			OUT_Medio.ObtenerFila(SqlQuery, Unidades, this);
 			Ret = TRUE;
 		}
 		if (SqlRet == SQLITE_BUSY) {
@@ -500,7 +500,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
 			BDMedio TmpMedio;
-			TmpMedio.ObtenerFila(SqlQuery, Unidades);
+			TmpMedio.ObtenerFila(SqlQuery, Unidades, this);
 			if (App.Opciones.NoAgregarMedioMenos25() == TRUE) {
 				// si la nota es mas grande o igual que 2.5
 				if (TmpMedio.Nota >= 2.5f) {
@@ -894,10 +894,10 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 	std::wstring		PathCortado = nPath;
 	wchar_t             UltimaLetra = PathCortado[0];
 	// Si es un medio local
-	if (Ubicacion == Ubicacion_Medio_Local) {
+/*	if (Ubicacion == Ubicacion_Medio_Local) {
 		// Substituyo la letra de unidad por un interrogante
 		PathCortado[0] = L'?';
-	}
+	}*/
 
 	// Busco el caracter ?, y lo elimino junto a todo el texto que tenga detrás
 //	size_t PosDelimitadorPHP = PathCortado.find(L'?');
@@ -906,7 +906,7 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 	// Asigno el delimitador del nombre (por defecto es '\\', pero si es un medio de internet es '/')
 	wchar_t				DelimitadorNombre	= (Ubicacion != Ubicacion_Medio_Internet)  ? L'\\' : L'/';
 
-	wchar_t             DelimitadorPHP      = L'?';
+//	wchar_t             DelimitadorPHP      = L'?';
 
 	size_t				PosNombre			= nPath.find_last_of(DelimitadorNombre);																			// Posición donde empieza el nombre
 	size_t				PosExtension		= nPath.find_last_of(L'.');																							// Posición donde empieza la extensión
@@ -973,6 +973,15 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 		OUT_Medio.Parseado = TRUE;
 	}
 
+	
+	DWORD IDDisco = 0;
+	// Busco la unidad por la letra especificada en el path
+	DWL::DUnidadDisco *Unidad = Unidades.Buscar_Letra(nPath[0]);
+	if (Unidad != nullptr) {
+		// Guardo el numero de serie del disco, para tener una referéncia en caso de multiples ubicaciones del mismo medio.
+		IDDisco = Unidad->Numero_Serie();
+	}
+
 	// Creo el string para insertar el medio
 	SqlStr = L"INSERT INTO Medios (Hash, Path, NombrePath, TipoMedio, Extension, PistaPath, Longitud, Nota, Tiempo, Subtitulos, Parseado, DiscoPath, GrupoPath, Brillo, Saturacion, Contraste)"
 				L" VALUES(" +	std::to_wstring(OUT_Medio.Hash)					+ L",\"" +				// Hash
@@ -981,7 +990,7 @@ const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const 
 								std::to_wstring(OUT_Medio.TipoMedio)			+ L"," +				// Tipo
 								std::to_wstring(OUT_Medio.Extension)			+ L"," +				// Extension
 								std::to_wstring(OUT_Medio.PistaPath)			+ L"," +				// PistaPath
-								//std::to_wstring(UnidadDisco->Numero_Serie())	+ L"," +				// ID Disco Duro
+//								std::to_wstring(IDDisco)						+ L"," +				// ID Disco Duro (a malas puede ser 0)
 								std::to_wstring(OUT_Medio.Longitud)				+ L"," +				// Longitud en bytes
 								L"2.5," +																// Nota
 								std::to_wstring(OUT_Medio.Tiempo)				+ L"," +				// Tiempo

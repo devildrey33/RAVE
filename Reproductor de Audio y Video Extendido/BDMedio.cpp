@@ -5,7 +5,7 @@
 BDMedio::BDMedio(const BDMedio& c) :	PistaTag(c.PistaTag), PistaPath(c.PistaPath), PistaEleccion(c.PistaEleccion),
 										NombreTag(c.NombreTag), NombrePath(c.NombrePath), NombreEleccion(c.NombreEleccion),
 										Hash(c.Hash), Path(c.Path), TipoMedio(c.TipoMedio), Tiempo(c.Tiempo), Extension(c.Extension),
-										Longitud(c.Longitud), Reproducido(c.Reproducido), Nota(c.Nota), Id(c.Id), /*IDDisco(c.IDDisco),*/
+										Longitud(c.Longitud), Reproducido(c.Reproducido), Nota(c.Nota), Id(c.Id), IDDisco(c.IDDisco),
 										GrupoTag(c.GrupoTag), GrupoPath(c.GrupoPath), GrupoEleccion(c.GrupoEleccion),
 										DiscoTag(c.DiscoTag), DiscoPath(c.DiscoPath), DiscoEleccion(c.DiscoEleccion),
 										Subtitulos(c.Subtitulos), Parseado(c.Parseado), Actualizar(c.Actualizar), Genero(c.Genero),
@@ -17,8 +17,8 @@ BDMedio::BDMedio(const BDMedio& c) :	PistaTag(c.PistaTag), PistaPath(c.PistaPath
 }
 
 // Constructor que obtiene los datos de una fila
-BDMedio::BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades) : PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), /*IDDisco(0),*/ Parseado(FALSE), Actualizar(FALSE), Nota(2.5f), PistaEleccion(0), Reproducido(0), GrupoEleccion(0), DiscoEleccion(0), NombreEleccion(0), Saturacion(1.0f), Brillo(1.0f), Contraste(1.0f) {
-	ObtenerFila(SqlQuery, Unidades);
+BDMedio::BDMedio(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades, RaveSQLite* BD) : IDDisco(0), PistaPath(0), PistaTag(0), Hash(0), TipoMedio(Tipo_Medio_INDEFINIDO), Extension(Extension_NOSOPORTADA), Tiempo(0), Longitud(0), Id(0), /*IDDisco(0),*/ Parseado(FALSE), Actualizar(FALSE), Nota(2.5f), PistaEleccion(0), Reproducido(0), GrupoEleccion(0), DiscoEleccion(0), NombreEleccion(0), Saturacion(1.0f), Brillo(1.0f), Contraste(1.0f) {
+	ObtenerFila(SqlQuery, Unidades, BD);
 }
 
 BDMedio::~BDMedio(void) { 
@@ -50,7 +50,7 @@ BDMedio& BDMedio::operator = (const BDMedio& c) {
 	Reproducido		= c.Reproducido;		// 12
 	Nota			= c.Nota;				// 13
 	Id				= c.Id;					// 14
-//	IDDisco			= c.IDDisco;			// 15
+	IDDisco			= c.IDDisco;			// 15
 	GrupoTag		= c.GrupoTag;			// 16
 	GrupoPath		= c.GrupoPath;			// 17
 	GrupoEleccion	= c.GrupoEleccion;		// 18
@@ -84,7 +84,7 @@ BDMedio& BDMedio::operator = (const BDMedio& c) {
 		Extension_Medio		Extension		     5			INT
 		UINT				Reproducido		     6			INT
 		ULONG				Longitud		     7			INT
-		DWORD				IDDisco			     8			INT						(DEPRECATED)
+		DWORD				IDDisco			     8			INT						(Primera ID de disco encontrada, si hay varios discos con el medio en la misma ubicación, se elegirá la letra de la Unidad con la primera ID de disco encontrada)
 		float				Nota			     9			DOUBLE
 		std::wstring		Genero		        10			VARCHAR(128)
 		std::wstring		GrupoPath	        11			VARCHAR(128)
@@ -106,7 +106,7 @@ BDMedio& BDMedio::operator = (const BDMedio& c) {
 		float               Contraste			27			DOUBLE
 		float               Saturacion 			28			DOUBLE
 */
-void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades) {
+void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades, RaveSQLite *BD) {
 	Id				= static_cast<UINT>(sqlite3_column_int(SqlQuery, 0));
 	Hash			= sqlite3_column_int64(SqlQuery, 1);
 	Path			= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 2));
@@ -116,7 +116,7 @@ void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades)
 	Extension		= static_cast<Extension_Medio>(sqlite3_column_int(SqlQuery, 5));
 	Reproducido		= static_cast<UINT>(sqlite3_column_int(SqlQuery, 6));
 	Longitud		= static_cast<DWORD>(sqlite3_column_int(SqlQuery, 7));
-//	IDDisco			= static_cast<DWORD>(sqlite3_column_int(SqlQuery, 8));
+	IDDisco			= static_cast<DWORD>(sqlite3_column_int(SqlQuery, 8));
 	Nota			= static_cast<float>(sqlite3_column_double(SqlQuery, 9));
 	const wchar_t *nGenero		= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 10));
 	const wchar_t *nGrupoPath	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 11));
@@ -145,16 +145,54 @@ void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades)
 	Contraste		= static_cast<float>(sqlite3_column_double(SqlQuery, 27));
 	Saturacion		= static_cast<float>(sqlite3_column_double(SqlQuery, 28));
 
+
+
+
+	// TODO : 
+	//			m'haig de refiar de l'ultim path guardat amb lletra inclosa
+	//				en cas de no existir l'arxiu, puc buscar en les unitats disponibles aviam si existeix l'arxiu
+	//					si no trobo l'arxiu en cap unitat disponible, deixo el path original, per que mostri l'error de l'arxiu.
+	//				s'ha de preveure que el path pot ser local, de red o de internet.
+	//					local    : es pot detectar si existeix l'arxiu amb el api del sistema d'arxius i es pot obtenir el md5 de l'arxiu
+	//									si no existeix, el puc buscar a la resta d''unitats locals disponibles
+	//					red		 : es pot detectar si existeix l'arxiu amb el api del sistema d'arxius de windows, però no es recomenable obtenir el md5 per no saturar la red.
+	//					internet : no es pot detectar amb el api del sistema d'arxius, i no es pot obtenir el md5.
+
+
+/*	Path[0] = L'?';
+
 	// Si el medio pertenece a una unidad local
+	// Hay que pensar que el medio puede estár en varias unidades a la vez.
+	//  - Para ello en el primer escaneo se guarda la ID del disco donde se ha encontrado.
+	//  - Si se encuentran mas de una unidad con el mismo medio se elegirá siempre el medio con la ID de disco del primer escaneo
+	//  - Si no se encuentra la ID de disco original, se elegirá el primer disco por orden alfabetico que contenga el medio, y se guardará la ID del disco de este nuevo disco.
+	BOOL ReasignarIDDisco = TRUE;
 	if (Ubicacion() == Ubicacion_Medio_Local) {
 		// Busco la letra de unidad del medio
 		for (size_t i = 0; i < Unidades.TotalUnidades(); i++) {
-			Path[0] = Unidades.Unidad(i)->Letra();
-			if (GetFileAttributes(Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
+			// Obtengo la primera letra de unidad que contiene el medio
+			if (Path[0] == L'?') {
+				Path[0] = Unidades.Unidad(i)->Letra();
+			}
+			// Si la letra de unidad coincide, y la unidad es la unidad de disco del primer escaneo
+			if (Path[0] == Unidades.Unidad(i)->Letra() && Unidades.Unidad(i)->Numero_Serie() == IDDisco) {
+				ReasignarIDDisco = FALSE;
 				break;
 			}
 		}
 	}
+
+	// Hay un disco con el medio, y no se ha encontrado un disco con la IDDisco del primer escaneo, se asignara la IDDisco actual 
+	if (Path[0] == L'?' && ReasignarIDDisco == TRUE) {
+		DWL::DUnidadDisco *Unidad = Unidades.Buscar_Letra(Path[0]);
+		// Si la unidad existe
+		if (Unidad != nullptr) {
+			// Creo la consulta
+			std::wstring Q = L"UPDATE Medios SET IDDisco=" + std::to_wstring(Unidad->Numero_Serie()) + L" WHERE Id=" + std::to_wstring(Id);
+			// Actualizo el la ID del disco del medio
+			Consulta(Q.c_str(), BD->_BD, BD->_UltimoErrorSQL);
+		}
+	}*/
 
 	ObtenerMomentos(Id);
 }
@@ -309,4 +347,44 @@ const BOOL BDMedio::EsFMOD(void) {
 // Función que recarga los datos desde la BD para este medio
 void BDMedio::Recargar(void) {
 	App.BD.ObtenerMedio(Hash, *this);
+}
+
+
+
+// Consulta SQL, que requiere : 
+//	TxtConsulta    [IN]  : Puntero constante al texto de la consulta.
+//  BD             [IN]  : Puntero a la base de datos de donde  queremos hacer la consulta.
+//  UltimoErrorSQL [OUT] : std::wstring con el texto del ultimo error generado por la consulta (si no hay error UltimoErrorSQL.size() será 0)
+const int BDMedio::Consulta(const wchar_t* TxtConsulta, sqlite3 *BD, std::wstring &UltimoErrorSQL) {
+	if (BD == NULL) return FALSE;
+
+	sqlite3_stmt* SqlQuery = NULL;
+	int           SqlRet = sqlite3_prepare16_v2(BD, TxtConsulta, -1, &SqlQuery, NULL);
+	if (SqlRet) {
+		UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(BD));
+		Debug_Escribir_Varg(L"BDMedio::Consulta %s\n", UltimoErrorSQL.c_str());
+		return SqlRet;
+	}
+
+	/*	SQLITE_FULL		: database or disk full
+		SQLITE_IOERR	: disk I / O error
+		SQLITE_BUSY		: database in use by another process
+		SQLITE_NOMEM	:*/
+	int VecesBusy = 0;
+
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
+		SqlRet = sqlite3_step(SqlQuery);
+		if (SqlRet == SQLITE_BUSY) {
+			VecesBusy++;
+			if (VecesBusy == 100) break;
+		}
+	}
+	sqlite3_finalize(SqlQuery);
+	// Si hay un error lo apunto
+	if (SqlRet == SQLITE_ERROR || SqlRet == SQLITE_CONSTRAINT) {
+		UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(BD));
+		//		Debug_Escribir_Varg(L"RaveSQLite::Consulta %s\n", _UltimoErrorSQL.c_str());
+	}
+
+	return SqlRet;
 }

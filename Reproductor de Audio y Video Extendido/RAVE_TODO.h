@@ -395,6 +395,23 @@
 
 
 	RAVE 0.7
+		IMPORTANT
+		-  Re-escriure el sistema de detecció de medis, i guardar els paths amb la ultima unitat coneguda
+			V Eliminar els paths amb ?, i posar sempre l'ultim path obtingut.
+			- Pensar especialment amb paths de red
+			- Buscar el hash del medi, si existeix, però el path es diferent, sobre escriure el path, RES MES
+				- Pot haber-hi casos en que sigui complicat o molt lent obtenir el hash d'un medi (red, internet), això s'ha de tenir en compte
+			- Ara mateix el problema principal es que busca el medi en totes les unitats de la A a la Z per ordre.
+				- SITUACIÓ :	si afegim una arrel de la unitat E, i despres tenim un disc extern de backup a la unitat D amb el mateix directori, 
+								quan escaneja les arrels i els seus arxius m'agafa els de la D (per que va abans de la E)
+
+		-  Probar d'afegir una arrel de red i veure que no pasa...
+		-  Al afegir medis a una llista, parsejar els medis no parsejats, i actualitzar el seu temps
+			- el analisis haura de mirar a cada arxiu si ja ha estat revisat, o igual es mes facil tornar-lo a revisar..., però ho haig de tenir en compte.
+
+
+
+
 		V  Suport per urls externes de internet
 			V Crear dialeg per posar les urls
 			- Intentar mantenir una llista de canals de la tdt a la BD

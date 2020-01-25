@@ -122,7 +122,7 @@ const size_t ArbolBD::AgregarNodoALista(NodoBD *nNodo) {
 			break;
 		case RAVE_Icono_Raiz :		 // Raiz 
 		case RAVE_Icono_Directorio : // Directorio
-			SqlStr = L"SELECT * FROM Medios WHERE Path LIKE \"?" + Path.substr(1) + L"%\" COLLATE NOCASE ORDER BY GrupoPath, DiscoPath, PistaPath, PistaTag ASC";	// Path.substr(1) se salta la letra de la unidad y deja el path sin letra/unidad.
+			SqlStr = L"SELECT * FROM Medios WHERE Path LIKE \"%" + Path.substr(1) + L"%\" COLLATE NOCASE ORDER BY GrupoPath, DiscoPath, PistaPath, PistaTag ASC";	// Path.substr(1) se salta la letra de la unidad y deja el path sin letra/unidad.
 			break;																											// La letra de unidad se substituye normalmente por '?' ya que puede ser un medio extraible y no tiene por que estar siempre en la misma letra
 	}
 
@@ -139,7 +139,7 @@ const size_t ArbolBD::AgregarNodoALista(NodoBD *nNodo) {
 	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_MISUSE) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
-			BDMedio *Medio = new BDMedio(SqlQuery, App.BD.Unidades);
+			BDMedio *Medio = new BDMedio(SqlQuery, App.BD.Unidades, &App.BD);
 			// Compruebo que el medio sea de internet o exista en el disco antes de agregar-lo
 			if (Medio->Ubicacion() == Ubicacion_Medio_Internet || GetFileAttributes(Medio->Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
 				// Agrego el medio a la lista y sumo uno a los medios agregados

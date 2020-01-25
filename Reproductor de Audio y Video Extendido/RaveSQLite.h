@@ -2,6 +2,8 @@
 
 #include <string>
 
+class BDMedio;
+
 class RaveSQLite {
   public:
 								RaveSQLite(void);
@@ -17,5 +19,7 @@ class RaveSQLite {
   protected:
 	std::wstring		       _UltimoErrorSQL;
 	sqlite3				      *_BD;
+
+	friend class BDMedio;
 };
 
