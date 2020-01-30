@@ -63,8 +63,8 @@ const BOOL RaveBD::ObtenerMedio(const sqlite3_int64 mHash, BDMedio &OUT_Medio) {
 // Obtiene el medio por el path
 const BOOL RaveBD::ObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio) {
 	std::wstring TmpPath = mPath;
-	TmpPath[0] = L'?'; // Evito la letra de unidad (para raices cambiantes)
-	std::wstring SqlStr = L"SELECT * FROM Medios WHERE Path like \"" + TmpPath + L"\" COLLATE NOCASE"; // COLLATE NOCASE = Comparar strings case insensitive
+//	TmpPath[0] = L'?'; // Evito la letra de unidad (para raices cambiantes)
+	std::wstring SqlStr = L"SELECT * FROM Medios WHERE Path like \"%" + TmpPath.substr(1) + L"\" COLLATE NOCASE"; // COLLATE NOCASE = Comparar strings case insensitive
 	return _ConsultaObtenerMedio(SqlStr, OUT_Medio);
 }
 
