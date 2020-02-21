@@ -90,7 +90,7 @@ class Rave_MediaPlayer : public DWL::DVentana {
   protected:
 	void                           _TerminarMedio(Rave_Medio *tMedio);
 
-	static void                    _EliminarRaveMedio(Rave_Medio *eMedio);
+	static void                    _EliminarRaveMedio(Rave_Medio *eMedio, const BOOL ActualizarIcono = TRUE);
 
 	static HWND                    _hWndMensajes;
 

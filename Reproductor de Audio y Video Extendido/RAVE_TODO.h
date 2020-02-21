@@ -409,7 +409,7 @@
 		-  Al afegir medis a una llista, parsejar els medis no parsejats, i actualitzar el seu temps
 			- el analisis haura de mirar a cada arxiu si ja ha estat revisat, o igual es mes facil tornar-lo a revisar..., però ho haig de tenir en compte.
 
-
+		V  hi ha un bug chungo... si executes l'ultima canço de la llista, i despres tires enrera, acabes la canço i tornes a tirar enrera... peta...
 
 
 		V  Suport per urls externes de internet

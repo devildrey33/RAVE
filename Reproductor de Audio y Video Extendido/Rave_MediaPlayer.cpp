@@ -184,7 +184,6 @@ void Rave_MediaPlayer::Temporizador_Lista(void) {
 #endif
 	// Un medio de la lista ha terminado
 	if (Estado == SinCargar) {
-//		App.BD.MedioReproducido(&App.MP.MedioActual());
 		// Se ha llegado al final de la lista
 		if (App.VentanaRave.Lista.PosMedio(App.VentanaRave.Lista.MedioActual) == App.VentanaRave.Lista.TotalItems() - 1) {
 			App.VentanaRave.Repeat();
@@ -244,6 +243,8 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 			float TActual = TiempoActual();
 			// Asigno el tiempo del medio anterior, que ahora ya no es controlable
 			if (_Anterior != nullptr) {
+				// TODO : hi ha un bug chungo... si executes l'ultima canço de la llista, i despres tires enrera, acabes la canço i tornes a tirar enrera... peta...
+				// EN PRINCIPI ESTÁ SOLUCIONAT
 				float TAnterior = _Anterior->TiempoActual();
 				App.VentanaRave.SliderTiempo.Valor2(TAnterior);
 				App.ControlesPC.SliderTiempo.Valor2(TAnterior);
@@ -312,7 +313,7 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 				
 				// efecto fade in out
 				if (_Anterior != NULL && _Actual != NULL) {
-					Debug_Escribir(L"RaveVLC::Temporizador_Lista Fade in out\n");
+					Debug_Escribir(L"Rave_MediaPlayer::Temporizador_Lista Fade in out\n");
 					if (_Anterior->Medio->BdMedio.TipoMedio == Tipo_Medio_Audio && _Actual->Medio->BdMedio.TipoMedio == Tipo_Medio_Audio) {
 						_Anterior->FadeOut();
 						_Actual->FadeIn();
@@ -330,16 +331,23 @@ void Rave_MediaPlayer::Temporizador_Tiempo(void) {
 // El nuevo medio pasa a ser el medio actual
 // Se busca si el medio siguiente es una cancion para tener-lo cargado para un efecto fade in/out
 const BOOL Rave_MediaPlayer::AbrirMedio(ItemMedio *Medio) {
+
+	Debug_Escribir(L"Rave_MediaPlayer::AbrirMedio_Lista\n");
 	// Si el item es null, salgo.
-	if (Medio == nullptr) return FALSE;
+	if (Medio == nullptr) 
+		return FALSE;
+
 
 	// Elimino el medio anterior, si aun existe
 	if (_Anterior != nullptr) {
-		_EliminarRaveMedio(_Anterior);
+		// Elimino el medio anterior (si el medio anterior es el mismo que el actual, no actualizo los iconos)
+		_EliminarRaveMedio(_Anterior, (Medio == _Anterior->Medio) ? FALSE : TRUE);
 		_Anterior = nullptr;
 	}
+
 	// Busco el próximo medio siguiente
-	ItemMedio *NuevoMedioSiguiente = App.VentanaRave.Lista.MedioSiguiente(Medio);
+	ItemMedio* NuevoMedioSiguiente = App.VentanaRave.Lista.MedioSiguiente(Medio);
+
 	// Si el nuevo medio siguiente es NULL, hay mas de un item en la lista, y el repeat está en repetir lista :
 	// - Asigno el primer medio de la lista al NuevoMedioSiguiente
 //	if (App.Opciones.Repeat() == Tipo_Repeat_RepetirLista && NuevoMedioSiguiente == nullptr && App.VentanaRave.Lista.TotalItems() > 1) NuevoMedioSiguiente = App.VentanaRave.Lista.MedioPrimero();
@@ -361,6 +369,7 @@ const BOOL Rave_MediaPlayer::AbrirMedio(ItemMedio *Medio) {
 	if (_Siguiente != nullptr) {
 		if (_Siguiente->Medio->BdMedio.Id == Medio->BdMedio.Id) {
 			_Actual = _Siguiente;
+			_Siguiente = nullptr; // Hay que asignar null al medio siguiente para no tenerlo duplicado y que al borrar el actual me quede el puntero al siguiente inválido
 		}
 		// El medio siguiente no se corresponde con el medio a cargar
 		else {
@@ -447,9 +456,18 @@ void Rave_MediaPlayer::CerrarMedio(void) {
 }
 
 
-void Rave_MediaPlayer::_EliminarRaveMedio(Rave_Medio *eMedio) {
+void Rave_MediaPlayer::_EliminarRaveMedio(Rave_Medio *eMedio, const BOOL ActualizarIcono) {
+	if (eMedio != nullptr) {
+		Debug_Escribir_Varg(L"Rave_MediaPlayer::_EliminarRaveMedio %02d %s\n", eMedio->Medio->BdMedio.Pista(), eMedio->Medio->BdMedio.Nombre().c_str());
+	}
+	else {
+		Debug_Escribir(L"Rave_MediaPlayer::_EliminarRaveMedio nullptr\n");
+	}
+	
 
-	if (eMedio) eMedio->ActualizarIconos(0);
+	if (eMedio) {
+		if (ActualizarIcono == TRUE)	eMedio->ActualizarIconos(0);
+	}
 	
 
 	switch (eMedio->Tipo()) {

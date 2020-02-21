@@ -20,6 +20,7 @@ void Rave_Medio::ComprobarMomento(void) {
 	2 - Pausa
 */
 void Rave_Medio::ActualizarIconos(int nTipo) {
+	if (Medio == nullptr) return;
 	if (Medio->BdMedio.Hash != 0) {
 		int nIcono = RAVE_Iconos::RAVE_Icono_Interrogante;
 		switch (nTipo) {
