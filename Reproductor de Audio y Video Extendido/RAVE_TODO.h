@@ -410,6 +410,7 @@
 			- el analisis haura de mirar a cada arxiu si ja ha estat revisat, o igual es mes facil tornar-lo a revisar..., però ho haig de tenir en compte.
 
 		V  hi ha un bug chungo... si executes l'ultima canço de la llista, i despres tires enrera, acabes la canço i tornes a tirar enrera... peta...
+			V El tema era que quan asignava la canço seguent a la actual, no deixava el punter seguent a NULL.
 
 
 		V  Suport per urls externes de internet

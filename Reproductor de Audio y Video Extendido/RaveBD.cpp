@@ -1208,7 +1208,7 @@ const BOOL RaveBD::AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre,
 		if (i > Sp.Total() - (PosPista == Sp.Total() - 1) ? -2 : -1) nNombre += L" ";
 	}
 
-	Debug_Escribir_Varg(L"RaveBD::AnalizarNombre2 %d %s\n", nPista, nNombre.c_str());
+//	Debug_Escribir_Varg(L"RaveBD::AnalizarNombre %d %s\n", nPista, nNombre.c_str());
 
 	// Devuelvo TRUE si se ha encontrado una pista, FALSE en caso contrario
 	return (PosPista != -1) ? TRUE : FALSE;

@@ -153,7 +153,7 @@ const UINT ThreadActualizarArbol::_EscanearDirectorio(std::wstring &nPath, BDRai
 	return TotalArchivosEscaneados;
 }
 
-
+// Función que determina si el nombre de archivo es válido. (Basicamente mira que el archivo no sea "." o "..")
 const BOOL ThreadActualizarArbol::_EsNombreValido(const wchar_t *nNombre) {
 	if (nNombre[0] == TEXT('.') && nNombre[1] == 0)								return FALSE;
 	if (nNombre[0] == TEXT('.') && nNombre[1] == TEXT('.') && nNombre[2] == 0)	return FALSE;

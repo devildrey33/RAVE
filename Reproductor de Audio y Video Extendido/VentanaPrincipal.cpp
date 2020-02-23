@@ -134,7 +134,7 @@ void VentanaPrincipal::CrearSkins(void) {
 	ListaSkinOscuro.TextoItemPresionado					= COLOR_LISTA_OSCURA_SELECCION_TEXTO_PRESIONADO;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Colores para el fondo de los nodos
+	// Colores para el fondo de los nodos (OJO los colores del fondo y del borde del control están en DBarraSroll_Skin)
 	ArbolSkinOscuro.FondoNodoResaltado					= COLOR_ARBOL_OSCURO_FONDO_RESALTADO;
 	ArbolSkinOscuro.FondoNodoSeleccionado				= COLOR_ARBOL_OSCURO_SELECCION;
 	ArbolSkinOscuro.FondoNodoSeleccionadoResaltado		= COLOR_ARBOL_OSCURO_SELECCION_RESALTADO;

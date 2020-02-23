@@ -84,7 +84,7 @@ BDMedio& BDMedio::operator = (const BDMedio& c) {
 		Extension_Medio		Extension		     5			INT
 		UINT				Reproducido		     6			INT
 		ULONG				Longitud		     7			INT
-		DWORD				IDDisco			     8			INT						(Primera ID de disco encontrada, si hay varios discos con el medio en la misma ubicación, se elegirá la letra de la Unidad con la primera ID de disco encontrada)
+		DWORD				IDDisco			     8			INT						(YA NO SE USA)  (Primera ID de disco encontrada, si hay varios discos con el medio en la misma ubicación, se elegirá la letra de la Unidad con la primera ID de disco encontrada)
 		float				Nota			     9			DOUBLE
 		std::wstring		Genero		        10			VARCHAR(128)
 		std::wstring		GrupoPath	        11			VARCHAR(128)
@@ -148,7 +148,6 @@ void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades,
 
 
 
-	// TODO : 
 	//			m'haig de refiar de l'ultim path guardat amb lletra inclosa
 	//				en cas de no existir l'arxiu, puc buscar en les unitats disponibles aviam si existeix l'arxiu
 	//					si no trobo l'arxiu en cap unitat disponible, deixo el path original, per que mostri l'error de l'arxiu.
@@ -158,6 +157,28 @@ void BDMedio::ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades,
 	//					red		 : es pot detectar si existeix l'arxiu amb el api del sistema d'arxius de windows, però no es recomenable obtenir el md5 per no saturar la red.
 	//					internet : no es pot detectar amb el api del sistema d'arxius, i no es pot obtenir el md5.
 
+	// El medio no existe en el ultimo path conocido y es un medio local
+	if (GetFileAttributes(Path.c_str()) == INVALID_FILE_ATTRIBUTES && Ubicacion() == Ubicacion_Medio_Local) {		
+		// Miro si el medio está en otra unidad disponible con la misma ruta
+		DUnidadDisco *Unidad = nullptr;
+		std::wstring  Q;
+		// Recorro todas las unidades disponibles
+		for (size_t i = 0; i < Unidades.TotalUnidades(); i++) {
+			Unidad = Unidades.Unidad(i);
+			// La unidad no existe (NO DEBERIA OCURRIR...)
+			if (Unidad != nullptr) {
+				Path[0] = Unidad->Letra();
+				// El archivo existe en otra unidad con el mismo path (solo cambia la letra de unidad)
+				if (GetFileAttributes(Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
+					// Actualizo el path en la BD
+					Q = L"UPDATE Medios SET Path =\"" + Path + L"\" WHERE Id=" + std::to_wstring(Id);
+					Consulta(Q.c_str(), BD->_BD, BD->_UltimoErrorSQL);
+					// Salgo del bucle
+					break;
+				}
+			}
+		}
+	}
 
 /*	Path[0] = L'?';
 
@@ -245,9 +266,10 @@ void BDMedio::ObtenerMomentos(const UINT nId) {
 	}
 }
 
+// Pasa la pista numérica a string y la devuelve en el parámetro nPistaStr
 void BDMedio::PistaStr(std::wstring &nPistaStr) {
-	if (Pista() < 10) { nPistaStr = L"0" + std::to_wstring(Pista()); }
-	else { nPistaStr = std::to_wstring(Pista()); }
+	if (Pista() < 10)	{ nPistaStr = L"0" + std::to_wstring(Pista());	}
+	else				{ nPistaStr = std::to_wstring(Pista());			}
 }
 
 UINT BDMedio::Pista(void) { 

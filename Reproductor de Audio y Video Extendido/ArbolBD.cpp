@@ -292,7 +292,8 @@ void ArbolBD::ExplorarPath(NodoBD *nNodo) {
 
 	// Consulta que obtiene todas las entradas que contienen el path
 	if (AgregarMedios == TRUE) {
-		std::wstring    SqlStr = L"SELECT Id, Hash, Path, NombrePath, TipoMedio, PistaPath FROM Medios WHERE Path LIKE \"%" + nPath.substr(1) + L"%\" COLLATE NOCASE";
+		std::wstring    SqlStr = L"SELECT Id, Hash, Path, NombrePath, TipoMedio, PistaPath FROM Medios WHERE Path LIKE \"" + nPath + L"%\" COLLATE NOCASE";
+//		std::wstring    SqlStr = L"SELECT Id, Hash, Path, NombrePath, TipoMedio, PistaPath FROM Medios WHERE Path LIKE \"%" + nPath.substr(1) + L"%\" COLLATE NOCASE";
 		int				SqlRet = 0;
 		sqlite3_stmt   *SqlQuery = NULL;
 		
@@ -330,7 +331,10 @@ void ArbolBD::ExplorarPath(NodoBD *nNodo) {
 						case Tipo_Medio_IpTv:		mTipoNodo = ArbolBD_TipoNodo_IpTv;				break;
 						case Tipo_Medio_Lista:		mTipoNodo = ArbolBD_TipoNodo_ListaCanciones;	break;
 					}
-					AgregarBDNodo(mTipoNodo, static_cast<NodoBD *>(nNodo), nTmpTxt.c_str(), mHash, mId);
+					// Me aseguro de que existe el archivo antes de añadir-lo
+					if (GetFileAttributes(mPath.c_str()) != INVALID_FILE_ATTRIBUTES) {
+						AgregarBDNodo(mTipoNodo, static_cast<NodoBD*>(nNodo), nTmpTxt.c_str(), mHash, mId);
+					}
 				}
 			}
 			if (SqlRet == SQLITE_BUSY) {

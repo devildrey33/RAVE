@@ -54,7 +54,8 @@ class BDMedio {
 
 	UINT							Id;					// ID unica que identifica al medio (mucho mas recomendable que el Hash para buscar en la BD)
 
-	DWORD							IDDisco;			// Ultima ID de disco conocida, (si se encuentran 2 o mas unidades con el medio disponible en su directorio, deberá escoger siempre el disco donde se encontro la ultima vez)
+	DWORD							IDDisco;			// (NO SE USA, Solo se conserva para evitar retocar la tabla de Medios)
+														// Ultima ID de disco conocida, (si se encuentran 2 o mas unidades con el medio disponible en su directorio, deberá escoger siempre el disco donde se encontro la ultima vez)
 														//	Esto evitara un bug RARO que tengo por la distribución de mis unidades... tengo los medios en la unidad E, pero tengo un disco externo de backup que siempre es la D.
 														//  Al escanear los medios diponibles encuentra primero los del disco externo, y si lo apago... se lia gorda, y si además mientras salen mensajes de error por que no encuentra los medios, creo una lista aleatória... rebienta y ni muestra la ventana del dump....
 
@@ -63,19 +64,21 @@ class BDMedio {
 	std::wstring	               &Grupo(void);
 	std::wstring					GrupoTag;
 	std::wstring					GrupoPath;
-	BOOL							GrupoEleccion;	// Elección : TRUE Path, FALSE Tag 
+	BOOL							GrupoEleccion;		// Elección : TRUE Path, FALSE Tag 
 
 	std::wstring	               &Disco(void);
 	std::wstring					DiscoTag;
 	std::wstring					DiscoPath;
-	BOOL							DiscoEleccion;	// Elección : TRUE Path, FALSE Tag 
+	BOOL							DiscoEleccion;		// Elección : TRUE Path, FALSE Tag 
 
 	std::wstring					Subtitulos;
 
-	BOOL							Parseado;	// Determina si se ha parseado/analizado el medio en busca de metadatos
-	BOOL							Actualizar; // NO SE GUARDA EN LA BD, ES SOLO PARA SABER SI HAY QUE ACTUALIZAR EL MEDIO O NO:...
-		
+	BOOL							Parseado;			// Determina si se ha parseado/analizado el medio en busca de metadatos
+	BOOL							Actualizar;			// NO SE GUARDA EN LA BD, ES SOLO PARA SABER SI HAY QUE ACTUALIZAR EL MEDIO O NO:...
+
+									// Convierte la pista de UINT a std::wstring y la devuelve en el parámetro nPistaStr
 	void							PistaStr(std::wstring &nPistaStr);
+
 									// Función que obtiene todos los datos del medio en la BD
 	void							ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades, RaveSQLite *BD);
 	void							ObtenerMomentos(const UINT nId);
@@ -85,7 +88,7 @@ class BDMedio {
 	float							Contraste;
 	float							Saturacion;
 
-	LONG							PosMomento; // Momento a reproducir (si es -1 es que no hay momento a reproducir)
+	LONG							PosMomento;			// Momento a reproducir (si es -1 es que no hay momento a reproducir)
 
 	const BOOL						EsFMOD(void);
 
