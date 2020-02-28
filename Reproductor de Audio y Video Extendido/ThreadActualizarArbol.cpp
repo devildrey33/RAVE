@@ -59,16 +59,19 @@ HANDLE ThreadActualizarArbol::Thread(void) {
 
 unsigned long ThreadActualizarArbol::_ThreadActualizar(void *pThis) {
 	ThreadActualizarArbol *This = reinterpret_cast<ThreadActualizarArbol *>(pThis);
+	// Inicio las Opciones para este thread
+	This->_Opciones.Iniciar();
 	// Inicio la BD en este thread
 	This->_BD.Iniciar();
+
 
 	UINT	TotalArchivos = 0;
 	size_t	i             = 0;
 	// Fase 1 : enumerar archivos y directorios
 	This->_BD.Consulta(L"BEGIN TRANSACTION");
 	BDRaiz *R = NULL;
-	for (i = 0; i < This->_BD.TotalRaices(); i++) {
-		R = This->_BD.Raiz(i);
+	for (i = 0; i < This->_Opciones.TotalRaices(); i++) {
+		R = This->_Opciones.Raiz(i);
 		if (GetFileAttributes(R->Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
 			TotalArchivos += This->_EscanearDirectorio(R->Path, R);
 		}
@@ -141,7 +144,7 @@ const UINT ThreadActualizarArbol::_EscanearDirectorio(std::wstring &nPath, BDRai
 			else {
 				TotalArchivosEscaneados++;
 				// Agrego el medio a la BD
-				if (_BD.AnalizarMedio(Path, Medio, FindInfoPoint.nFileSizeLow) == TRUE) {
+				if (_BD.AnalizarMedio(Path, Medio, _Unidades, FindInfoPoint.nFileSizeLow) == TRUE) {
 					// Si no existia el medio agregado, añado el medio a la lista de medios a parsear
 //					_PorParsear.push_back(Path);
 				}

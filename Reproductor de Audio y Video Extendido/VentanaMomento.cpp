@@ -222,7 +222,7 @@ void VentanaMomento::ActivarEditarEliminar(const BOOL nActivar) {
 
 void VentanaMomento::CargarMomentos(void) {
 	// Vuelvo a cargar el medio de la base de datos (por si hay nuevos momentos)
-	if (App.BD.ObtenerMedio(Medio.Hash, Medio) == FALSE) return;
+	if (App.BD.ObtenerMedio(Medio.Hash, Medio, App.Unidades) == FALSE) return;
 
 	ListaMomentos.EliminarTodosLosItems();
 	for (size_t i = 0; i < Medio.Momentos.size(); i++) {

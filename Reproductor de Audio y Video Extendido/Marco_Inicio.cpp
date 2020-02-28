@@ -41,7 +41,7 @@ void Marco_Inicio::ActualizarListaInicio(void) {
 	DesplegableListaInicio.Texto(Listas[static_cast<int>(App.Opciones.Inicio())]);
 	DesplegableListaInicio.EliminarTodosLosItems();
 	// Si hay raices añado todas las opciones
-	if (App.BD.TotalRaices() > 0) {
+	if (App.Opciones.TotalRaices() > 0) {
 		for (int i = 0; i < 8; i++) {
 			DesplegableListaInicio.AgregarItem(Listas[i]);
 		}

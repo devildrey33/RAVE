@@ -33,9 +33,12 @@ const BOOL RaveOpciones::Iniciar(void) {
 		_ModificarTablas();
 	}
 
+	// Obtengo las opciones generales
 	ObtenerOpciones();
 	// Obtengo las teclas rapidas
 	ObtenerTeclasRapidas();
+	// Obtengo las raices de la base de datos
+	ObtenerRaices();
 
 
 	Debug_Escribir(L"RaveOpciones::Iniciar\n");
@@ -70,6 +73,11 @@ const BOOL RaveOpciones::_ModificarTablas(void) {
 
 const BOOL RaveOpciones::_CrearTablas(void) {
 	std::wstring Q;
+
+
+	// Creo la tabla para las raices
+	std::wstring CrearTablaRaiz = L"CREATE TABLE Raiz (Id INTEGER PRIMARY KEY, Path VARCHAR(260), IdDisco INTEGER)";
+	if (Consulta(CrearTablaRaiz.c_str()) == SQLITE_ERROR) return FALSE;
 
 	// Creo la tabla para las opciones /////////////////////////////////////////////////////////////
 	std::wstring CrearTablaOpciones = L"CREATE TABLE Opciones ("
@@ -148,6 +156,7 @@ const BOOL RaveOpciones::_CrearTablas(void) {
 		if (Consulta(Q.c_str()) == SQLITE_ERROR) return FALSE;
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 	return TRUE;
@@ -553,5 +562,164 @@ const BOOL RaveOpciones::GuardarPosTamDlgDirectorios(RECT& RW, RECT &RC) {
 		_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
 		return FALSE;
 	}
+	return TRUE;
+}
+
+
+
+// Función que busca una raíz por el path
+// Se ha adaptado para que encuentre raices parciales, es decir :
+// - Si tenemos en la BD la raíz "c:\mp3\grupo" y buscamos "c:\mp3" devolvera la raíz "c:\mp3\grupo"
+// - Si tenemos en la BD la raíz "c:\mp3" y buscamos "c:\mp3\grupo" devolverá la raíz "c:\mp3"
+BDRaiz* RaveOpciones::BuscarRaiz(std::wstring& Path) {
+	int Comp = 0;
+
+	for (size_t i = 0; i < _Raices.size(); i++) {
+		if (_CompararRaices(_Raices[i]->Path, Path) == TRUE) {
+			return _Raices[i];
+		}
+	}
+	return NULL;
+}
+
+
+// Función que compara 2 paths pertenecientes a posibles raices
+// Se ha adaptado para que encuentre raices parciales, es decir :
+// - Si tenemos en la BD la raíz "c:\mp3\grupo" y buscamos "c:\mp3" devolvera la raíz "c:\mp3\grupo"
+// - Si tenemos en la BD la raíz "c:\mp3" y buscamos "c:\mp3\grupo" devolverá la raíz "c:\mp3"
+const BOOL RaveOpciones::_CompararRaices(std::wstring& Path1, std::wstring& Path2) {
+	int Comp = 0;
+	// El Path a buscar es de mayor tamaño
+	if (Path1.size() < Path2.size())		Comp = _wcsicmp(Path1.c_str(), Path2.substr(0, Path1.size()).c_str());
+	// El Path a buscar es de menor tamaño
+	else if (Path1.size() > Path2.size())	Comp = _wcsicmp(Path1.substr(0, Path2.size()).c_str(), Path2.c_str());
+	// Tienen el mismo tamaño
+	else									Comp = _wcsicmp(Path1.c_str(), Path2.c_str());
+	// Devuelvo TRUE si son similares o iguales
+	return (Comp == 0) ? TRUE : FALSE;
+}
+
+// Función que busca una raíz por su ID
+BDRaiz* RaveOpciones::BuscarRaiz(const unsigned long bID) {
+	for (size_t i = 0; i < _Raices.size(); i++) {
+		if (_Raices[i]->Id == bID) return _Raices[i];
+	}
+	return NULL;
+}
+// Elimina las raices de la memória
+void RaveOpciones::_BorrarRaices(void) {
+	for (size_t i = 0; i < _Raices.size(); i++) delete _Raices[i];
+	_Raices.resize(0);
+}
+
+// Función que obtiene todas las raices de la base de datos, y las carga en memória
+const BOOL RaveOpciones::ObtenerRaices(void) {
+	_BorrarRaices();
+	int				    SqlRet = 0;
+	const wchar_t* SqlStr = L"SELECT * FROM Raiz";
+	DWL::DUnidadesDisco nUnidades;
+	DWL::DUnidadDisco* Unidad = NULL;
+	sqlite3_stmt* SqlQuery = NULL;
+	SqlRet = sqlite3_prepare16_v2(_BD, SqlStr, -1, &SqlQuery, NULL);
+	if (SqlRet) return FALSE;
+	int VecesBusy = 0;
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
+		SqlRet = sqlite3_step(SqlQuery);
+		if (SqlRet == SQLITE_ROW) {
+			BDRaiz* TmpRaiz = new BDRaiz;
+			TmpRaiz->Id = static_cast<unsigned long>(sqlite3_column_int64(SqlQuery, 0));
+			TmpRaiz->Path = reinterpret_cast<const wchar_t*>(sqlite3_column_text16(SqlQuery, 1));
+			TmpRaiz->ID_Disco = static_cast<unsigned long>(sqlite3_column_int64(SqlQuery, 2));
+			// Asigno la letra de unidad a la raíz ya que las unidades extraibles pueden cambiar de letra pero siempre tienen el mismo número de serie.
+			Unidad = nUnidades.Buscar_Numero_Serie(TmpRaiz->ID_Disco);
+			if (Unidad != NULL) {
+				TmpRaiz->Path[0] = Unidad->Letra();
+				TmpRaiz->Letra = Unidad->Letra();
+			}
+			_Raices.push_back(TmpRaiz);
+		}
+		if (SqlRet == SQLITE_BUSY) {
+			VecesBusy++;
+			if (VecesBusy == 100) break;
+		}
+
+	}
+
+	sqlite3_finalize(SqlQuery);
+
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+
+	return (SqlRet != SQLITE_BUSY);
+}
+
+
+
+/* Devuelve 0 si ya existe una raiz igual, devuelve 1 si se ha agregado una nueva raiz, devuelve 2 si se ha agregado una nueva raiz, pero han desaparecido otras raices parientes */
+
+/*	Se puede dar el caso en que dada una raíz existente se quiera agregar otra raíz que es pariente de esta.
+	En este no se añadirá ninguna raíz y la raíz existente pasara a tener el path que ocupe menos caracteres. */
+const int RaveOpciones::AgregarRaiz(std::wstring& nPath, DWL::DUnidadesDisco &Unidades) {
+	int				Ret = 1;
+	UINT			Total = 0;
+	int				SqlRet = 0;
+	size_t          i = 0;
+	sqlite3_stmt* SqlQuery = NULL;
+	std::wstring	PathFinal = nPath;
+	if (PathFinal[PathFinal.size() - 1] != TEXT('\\')) PathFinal += TEXT('\\');
+
+	std::wstring    RaizFinal = PathFinal;		// Path final mas corto
+	size_t			PathMasCorto = RaizFinal.size();
+
+	// Busco raices similares
+	std::vector<BDRaiz*> RaicesSimilares;
+	for (i = 0; i < _Raices.size(); i++) {
+		// Si las raices se parecen y no tienen el mismo número de caracteres
+		if (_CompararRaices(_Raices[i]->Path, PathFinal) == TRUE) {
+			if (_Raices[i]->Path.size() != PathFinal.size()) {
+				RaicesSimilares.push_back(_Raices[i]);
+				// Busco el path mas corto que será el definitivo
+				if (PathMasCorto > _Raices[i]->Path.size()) {
+					PathMasCorto = _Raices[i]->Path.size();
+					RaizFinal = _Raices[i]->Path;
+				}
+			}
+			// La raiz es igual
+			else {
+				return 0;
+			}
+		}
+	}
+
+	// Borro todas las raices similares
+	for (i = 0; i < RaicesSimilares.size(); i++) {
+		std::wstring Q = L"DELETE FROM Raiz WHERE Path=\"" + RaicesSimilares[i]->Path + L"\"";
+		SqlRet = Consulta(Q);
+		Ret = 2;
+	}
+
+	DWL::DUnidadDisco *Unidad = Unidades.Buscar_Letra(RaizFinal[0]);
+	if (Unidad == NULL)
+		return NULL;
+
+	std::wstring SqlStr = L"INSERT INTO Raiz (Path, IDDisco) VALUES(\"" + RaizFinal + L"\", " + std::to_wstring(Unidad->Numero_Serie()) + L")";
+	SqlRet = Consulta(SqlStr);
+
+	ObtenerRaices();
+
+	return Ret;
+}
+
+
+const BOOL RaveOpciones::EliminarRaiz(std::wstring& nPath) {
+	std::wstring Q = L"DELETE FROM Raiz WHERE Path=\"" + nPath + L"\"";
+	int SqlRet = Consulta(Q);
+	//	BOOL Ret = ConsultaVarg(L"DELETE FROM Raiz WHERE Path ='%s'", nPath.c_str());
+	if (SqlRet == SQLITE_ERROR) {
+		return FALSE;
+	}
+	ObtenerRaices();
 	return TRUE;
 }

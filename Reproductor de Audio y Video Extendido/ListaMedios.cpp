@@ -150,9 +150,9 @@ void ListaMedios::_ParsearM3u(std::wstring &PathM3u, const char *Datos) {
 
 
 			// pre-analizo el medio y lo inserto en la base de datos
-			if (App.BD.AnalizarMedio(PathFinal, Medio) == 2) {
+			if (App.BD.AnalizarMedio(PathFinal, Medio, App.Unidades) == 2) {
 				// El medio ya existia, lo recargo
-				App.BD.ObtenerMedio(PathFinal, Medio);
+				App.BD.ObtenerMedio(PathFinal, Medio, App.Unidades);
 			}
 
 			// Agrego el medio a la lista
@@ -280,7 +280,7 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse& DatosMouse) {
 	if (DatosMouse.Boton == 2) {		
 		if (_ItemResaltado != -1) {
 			BDMedio nMedio;
-			App.BD.ObtenerMedio(Medio(_ItemResaltado)->BdMedio.Hash, nMedio);
+			App.BD.ObtenerMedio(Medio(_ItemResaltado)->BdMedio.Hash, nMedio, App.Unidades);
 			if (_ToolTip.Medio != nMedio ||_ToolTip.Visible() == FALSE) {
 				_ToolTip.Ocultar(TRUE);
 				_ToolTip.MostrarFijo(nMedio);
@@ -303,10 +303,10 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse& DatosMouse) {
 		// Si el item marcado corresponde a un medio
 		if (_ItemMarcado > -1 && _ItemMarcado < static_cast<LONG_PTR>(_Items.size())) {			
 			BDMedio TmpMedio;
-			App.BD.ObtenerMedio(Medio(_ItemMarcado)->BdMedio.Hash, TmpMedio);
+			App.BD.ObtenerMedio(Medio(_ItemMarcado)->BdMedio.Hash, TmpMedio, App.Unidades);
 
 			// Miro si el medio tiene una raíz (si no tiene raíz no saldrá en la base de datos)
-			if (App.BD.BuscarRaiz(TmpMedio.Path) == NULL)
+			if (App.Opciones.BuscarRaiz(TmpMedio.Path) == NULL)
 				nBuscarBDActivado = FALSE;
 
 			// Asigno la nota al menu/barra de la nota

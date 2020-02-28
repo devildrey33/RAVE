@@ -3,6 +3,7 @@
 class RaveVLC_Medio;
 
 #include "RaveSQLite.h"
+#include "BDRaiz.h"
 
 class RaveOpciones : public RaveSQLite {
   public:
@@ -15,15 +16,12 @@ class RaveOpciones : public RaveSQLite {
 	const BOOL                  GuardarTeclasRapidas(void);
 
 
-	template <typename T> T     Select(const wchar_t* Tabla, const wchar_t* Variable) { 
+	template <typename T> T     Select(const wchar_t *Tabla, const wchar_t *Variable) { 
 									T				Ret      = 0;
 									wchar_t*		SqlError = NULL;
 									int				SqlRet   = 0;
 									sqlite3_stmt   *SqlQuery = NULL;
-									std::wstring    SqlStr = L"SELECT ";
-									SqlStr += Variable;
-									SqlStr += L" FROM ";
-									SqlStr += Tabla;
+									std::wstring    SqlStr = L"SELECT " + std::wstring(Variable) + L" FROM " + std::wstring(Tabla);
 
 									SqlRet = sqlite3_prepare16_v2(_BD, SqlStr.c_str(), -1, &SqlQuery, NULL);
 									if (SqlRet) {
@@ -167,6 +165,21 @@ class RaveOpciones : public RaveSQLite {
 	inline const BOOL			GuardarBSCP(void) { return _GuardarBSCP; }
 	void						GuardarBSCP(const BOOL nGuardarBSCP);
 
+
+
+								// Funciones para buscar una raíz por su path o por su id
+	BDRaiz                     *BuscarRaiz(std::wstring &nPath);
+	BDRaiz                     *BuscarRaiz(const unsigned long bID);
+								// Función para agregar una raíz a la base de datos
+	const int                   AgregarRaiz(std::wstring &nPath, DWL::DUnidadesDisco &Unidades);
+								// Función para eliminar una raíz de la base de datos
+	const BOOL					EliminarRaiz(std::wstring &nPath);
+								// Función que obtiene las raices de la base de datos
+	const BOOL					ObtenerRaices(void);
+								// Funciones para obtener los datos de las raices en memória
+	inline const size_t			TotalRaices(void)		{ return _Raices.size(); }
+	inline BDRaiz              *Raiz(const size_t Pos)  { return _Raices[Pos];   }
+
   protected:
 
     const BOOL                 _CrearTablas(void);
@@ -223,6 +236,9 @@ class RaveOpciones : public RaveSQLite {
 	BOOL                       _GuardarBSCP;				// Guardar Brillo, Saturación, Contraste y Proporción
 	float                      _VersionOpciones;			// Versión de las opciones
 
-//	friend class RaveVLC_Medio;
+	const BOOL			       _CompararRaices(std::wstring& Path1, std::wstring& Path2);
+	void                       _BorrarRaices(void);
+	std::vector<BDRaiz*>       _Raices;
+	//	friend class RaveVLC_Medio;
 };
 

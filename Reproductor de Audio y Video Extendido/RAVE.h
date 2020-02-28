@@ -130,6 +130,9 @@ class RAVE : public DApp {
 
 	RaveBD							BD;
 	RaveOpciones					Opciones;
+
+	DWL::DUnidadesDisco				Unidades;
+
 	Rave_MediaPlayer				MP;
 	ControlesPantallaCompleta		ControlesPC;
 

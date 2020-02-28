@@ -2,6 +2,7 @@
 
 #include "RaveBD.h"
 #include <mutex>
+#include "RaveOpciones.h"
 
 class ThreadActualizarArbol {
   public:
@@ -26,6 +27,8 @@ class ThreadActualizarArbol {
 	HWND				       _VentanaPlayer;
 	HANDLE				       _Thread;
 	RaveBD                     _BD;
+	RaveOpciones               _Opciones;
+	DWL::DUnidadesDisco        _Unidades;
 	//std::vector<std::wstring>  _PorParsear;
 };
 

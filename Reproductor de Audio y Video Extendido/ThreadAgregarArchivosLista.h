@@ -23,6 +23,7 @@ class ThreadAgregarArchivosLista {
 	HWND				       _VentanaPlayer;
 	HANDLE				       _Thread;
 	RaveBD                     _BD;
+	DWL::DUnidadesDisco        _Unidades;
 	std::vector<std::wstring>  _Paths;
 };
 

@@ -396,7 +396,7 @@ void VentanaPrincipal::Lista_Anterior(void) {
 
 void VentanaPrincipal::GenerarListaAleatoria(const TipoListaAleatoria nTipo) {
 	std::vector<BDMedio> Medios;
-	App.BD.GenerarListaAleatoria(Medios, nTipo);
+	App.BD.GenerarListaAleatoria(Medios, App.Unidades, nTipo);
 	Lista.BorrarListaReproduccion();
 	for (size_t i = 0; i < Medios.size(); i++) {
 		Lista.AgregarMedio(&Medios[i]);
@@ -422,7 +422,7 @@ void VentanaPrincipal::FiltrosVideoPorDefecto(void) {
 
 void VentanaPrincipal::Lista_Propiedades(void) {
 	BDMedio nMedio; 
-	App.BD.ObtenerMedio(Lista.MedioMarcado()->BdMedio.Hash, nMedio);
+	App.BD.ObtenerMedio(Lista.MedioMarcado()->BdMedio.Hash, nMedio, App.Unidades);
 	SHELLEXECUTEINFO info = { 0 };
 	info.cbSize = sizeof info;
 	info.lpFile = nMedio.Path.c_str();
@@ -435,7 +435,7 @@ void VentanaPrincipal::Lista_Propiedades(void) {
 
 void VentanaPrincipal::Lista_AbrirEnExplorador(void) {
 	BDMedio nMedio;
-	App.BD.ObtenerMedio(Lista.MedioMarcado()->BdMedio.Hash, nMedio);
+	App.BD.ObtenerMedio(Lista.MedioMarcado()->BdMedio.Hash, nMedio, App.Unidades);
 	PIDLIST_ABSOLUTE pidl;
 	pidl = ILCreateFromPath(nMedio.Path.c_str());
 	if (pidl) {
@@ -483,14 +483,14 @@ void VentanaPrincipal::Lista_EliminarSeleccionados(void) {
 void VentanaPrincipal::Lista_Momentos(void) {
 	if (Lista.TotalItems() == 0) return;
 	BDMedio Medio;
-	App.BD.ObtenerMedio(Lista.MedioMarcado()->BdMedio.Hash, Medio);
+	App.BD.ObtenerMedio(Lista.MedioMarcado()->BdMedio.Hash, Medio, App.Unidades);
 	Momentos.Mostrar(Medio);
 }
 
 // Tambien sirve para los momentos de la BD y del vídeo
 void VentanaPrincipal::Lista_MomentosAbrir(const UINT64 HashMedio, const int PosMomento) {
 	BDMedio Medio;
-	App.BD.ObtenerMedio(HashMedio, Medio);
+	App.BD.ObtenerMedio(HashMedio, Medio, App.Unidades);
 	Lista.ReproducirMedio(Medio, PosMomento);
 }
 
@@ -680,7 +680,7 @@ void VentanaPrincipal::Arbol_AsignarNota(const float nNota) {
 
 void VentanaPrincipal::Arbol_Momentos(void) {
 	BDMedio Medio;
-	App.BD.ObtenerMedio(Arbol.MedioMarcado()->Hash, Medio);
+	App.BD.ObtenerMedio(Arbol.MedioMarcado()->Hash, Medio, App.Unidades);
 	Momentos.Mostrar(Medio);
 }
 
@@ -1157,7 +1157,7 @@ NodoBD *VentanaPrincipal::Arbol_AgregarRaiz(std::wstring *Path) {
 
 NodoBD *VentanaPrincipal::Arbol_AgregarDir(std::wstring *Path, const BOOL nRepintar) {
 	// Si no hay raíz no hay galletas
-	BDRaiz *Raiz = App.BD.BuscarRaiz(*Path);
+	BDRaiz *Raiz = App.Opciones.BuscarRaiz(*Path);
 	if (Raiz == NULL) return NULL;
 
 	// Busco el nodo de la raíz
@@ -1189,7 +1189,7 @@ NodoBD *VentanaPrincipal::Arbol_AgregarDir(std::wstring *Path, const BOOL nRepin
 
 const BOOL VentanaPrincipal::Arbol_MostrarMedio(BDMedio &mMedio) {
 	// Si no hay raíz no hay galletas
-	BDRaiz *Raiz = App.BD.BuscarRaiz(mMedio.Path);
+	BDRaiz *Raiz = App.Opciones.BuscarRaiz(mMedio.Path);
 	if (Raiz == NULL) return FALSE;
 
 	// Busco el nodo de la raíz
@@ -1240,7 +1240,7 @@ const BOOL VentanaPrincipal::Arbol_MostrarMedio(BDMedio &mMedio) {
 const BOOL VentanaPrincipal::Arbol_MostrarMedio(const sqlite3_int64 Hash) {
 	BDMedio mMedio;
 	// Si el medio existe lo muestro
-	if (App.BD.ObtenerMedio(Hash, mMedio) == TRUE) {
+	if (App.BD.ObtenerMedio(Hash, mMedio, App.Unidades) == TRUE) {
 		Arbol_MostrarMedio(mMedio);
 		return TRUE;
 	}
@@ -1275,15 +1275,15 @@ void VentanaPrincipal::ActualizarArbol(void) {
 
 	BarraTareas.Estado_Indeterminado();
 	// Re-escaneo las unidades de disco
-	App.BD.Unidades.Escanear_Unidades_Locales();
+	App.Unidades.Escanear_Unidades_Locales();
 	//	if (_hWnd != NULL) return;
 	Arbol.BorrarTodo();
 
 	NodoBD *Tmp = NULL;
 
-	for (size_t i = 0; i < App.BD.TotalRaices(); i++) {
-		if (GetFileAttributes(App.BD.Raiz(i)->Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
-			Tmp = Arbol_AgregarRaiz(&App.BD.Raiz(i)->Path);
+	for (size_t i = 0; i < App.Opciones.TotalRaices(); i++) {
+		if (GetFileAttributes(App.Opciones.Raiz(i)->Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
+			Tmp = Arbol_AgregarRaiz(&App.Opciones.Raiz(i)->Path);
 			Arbol.ExplorarPath(Tmp);
 		}
 	}
@@ -1313,10 +1313,10 @@ void VentanaPrincipal::ExploradorAgregarMedio(const BOOL Reproducir) {
 	sqlite3_int64 Hash = 0; 
 	BDMedio Medio;
 	for (size_t i = 0; i < Paths.size(); i++) {
-		if (App.BD.ObtenerMedio(Paths[i], Medio) == FALSE) {
-			App.BD.AnalizarMedio(Paths[i], Medio, 0);
+		if (App.BD.ObtenerMedio(Paths[i], Medio, App.Unidades) == FALSE) {
+			App.BD.AnalizarMedio(Paths[i], Medio, App.Unidades, 0);
 			// Necesito volver a obtener el medio para que me devuelva su ID
-			App.BD.ObtenerMedio(Medio.Hash, Medio);
+			App.BD.ObtenerMedio(Medio.Hash, Medio, App.Unidades);
 //				return;
 		}
 

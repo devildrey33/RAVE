@@ -451,8 +451,17 @@
 
 		-  Lo de enviar els dump ja no funciona... m'han cambiat el auth... i ara no se molt be el que necesito....
 
+		-  Opcions
+			- Canviar "Inicio" per "General" i buscar una icona de una roda.
+				- Afegir a general Opcions del historial :
+					- Check per guardar el historial
+						- Checks per conservar nomnes una setmana o un mes? casi que no... de moment
+					- Buto per borrar el historial
+
 		-  BD
-			-  Moure les arrels de la BD dels medis a la BD de les opcions
+			V  Moure les arrels de la BD dels medis a la BD de les opcions
+			V  Moure les UnidadesDisco de la BD a la App
+			V  Crear una taula UltimaLista2 nomes amb la id foregin, i descartar UltimaLista
 			-  Crear taula a les opcions per guardar les posicions i tamanys de les finestres, i treure tot el barullo de PosX PosY de les opcions.
 
 		-  Control + [F / B] integrat en la llista i l'arbre, que resalti els items / nodos.

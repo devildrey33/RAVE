@@ -42,8 +42,6 @@ const BOOL RaveBD::Iniciar(void) {
 		_ModificarTablas();
 	}
 
-	// Obtengo las raices de la base de datos
-	ObtenerRaices();
 	// Obtengo las etiquetas
 	ObtenerEtiquetas();
 
@@ -55,60 +53,22 @@ const BOOL RaveBD::Iniciar(void) {
 
 
 // Obtiene el medio por el hash
-const BOOL RaveBD::ObtenerMedio(const sqlite3_int64 mHash, BDMedio &OUT_Medio) {
+const BOOL RaveBD::ObtenerMedio(const sqlite3_int64 mHash, BDMedio &OUT_Medio, DWL::DUnidadesDisco& Unidades) {
 	std::wstring    SqlStr = L"SELECT * FROM Medios WHERE Hash =" + std::to_wstring(mHash);
-	return _ConsultaObtenerMedio(SqlStr, OUT_Medio);
+	return _ConsultaObtenerMedio(SqlStr, OUT_Medio, Unidades);
 }
 
 // Obtiene el medio por el path
-const BOOL RaveBD::ObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio) {
+const BOOL RaveBD::ObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio, DWL::DUnidadesDisco& Unidades) {
 	std::wstring TmpPath = mPath;
 //	TmpPath[0] = L'?'; // Evito la letra de unidad (para raices cambiantes)
 	std::wstring SqlStr = L"SELECT * FROM Medios WHERE Path like \"%" + TmpPath.substr(1) + L"\" COLLATE NOCASE"; // COLLATE NOCASE = Comparar strings case insensitive
-	return _ConsultaObtenerMedio(SqlStr, OUT_Medio);
-}
-
-// Función que busca una raíz por el path
-// Se ha adaptado para que encuentre raices parciales, es decir :
-// - Si tenemos en la BD la raíz "c:\mp3\grupo" y buscamos "c:\mp3" devolvera la raíz "c:\mp3\grupo"
-// - Si tenemos en la BD la raíz "c:\mp3" y buscamos "c:\mp3\grupo" devolverá la raíz "c:\mp3"
-BDRaiz *RaveBD::BuscarRaiz(std::wstring &Path) {
-	int Comp = 0;
-	for (size_t i = 0; i < _Raices.size(); i++) {
-		if (_CompararRaices(_Raices[i]->Path, Path) == TRUE) {
-			return _Raices[i];
-		}
-	}
-	return NULL;
+	return _ConsultaObtenerMedio(SqlStr, OUT_Medio, Unidades);
 }
 
 
-// Función que compara 2 paths pertenecientes a posibles raices
-// Se ha adaptado para que encuentre raices parciales, es decir :
-// - Si tenemos en la BD la raíz "c:\mp3\grupo" y buscamos "c:\mp3" devolvera la raíz "c:\mp3\grupo"
-// - Si tenemos en la BD la raíz "c:\mp3" y buscamos "c:\mp3\grupo" devolverá la raíz "c:\mp3"
-const BOOL RaveBD::_CompararRaices(std::wstring &Path1, std::wstring &Path2) {
-	int Comp = 0;
-	// El Path a buscar es de mayor tamaño
-	if (Path1.size() < Path2.size())		Comp = _wcsicmp(Path1.c_str(), Path2.substr(0, Path1.size()).c_str());
-	// El Path a buscar es de menor tamaño
-	else if (Path1.size() > Path2.size())	Comp = _wcsicmp(Path1.substr(0, Path2.size()).c_str(), Path2.c_str());
-	// Tienen el mismo tamaño
-	else									Comp = _wcsicmp(Path1.c_str(), Path2.c_str());
-	// Devuelvo TRUE si son similares o iguales
-	return (Comp == 0) ? TRUE : FALSE;
-}
 
-// Función que busca una raíz por su ID
-BDRaiz *RaveBD::BuscarRaiz(const unsigned long bID) {
-	for (size_t i = 0; i < _Raices.size(); i++) {
-		if (_Raices[i]->Id == bID) return _Raices[i];
-	}
-	return NULL;
-}
-
-
-const BOOL RaveBD::ObtenerMediosPorParsear(std::vector<std::wstring> &Paths) {
+const BOOL RaveBD::ObtenerMediosPorParsear(std::vector<std::wstring> &Paths, DUnidadesDisco &Unidades) {
 	std::wstring TxtConsulta = L"SELECT * FROM Medios WHERE Parseado = 0";
 	int				SqlRet = 0;
 	sqlite3_stmt   *SqlQuery = NULL;
@@ -143,7 +103,7 @@ const BOOL RaveBD::ObtenerMediosPorParsear(std::vector<std::wstring> &Paths) {
 
 
 // Devuelve FALSE si no se encuentra el medio o hay algun error
-const BOOL RaveBD::_ConsultaObtenerMedio(std::wstring &TxtConsulta, BDMedio &OUT_Medio) {
+const BOOL RaveBD::_ConsultaObtenerMedio(std::wstring &TxtConsulta, BDMedio &OUT_Medio, DWL::DUnidadesDisco& Unidades) {
 	int				SqlRet		= 0;
 	sqlite3_stmt   *SqlQuery	= NULL;
 	BOOL            Ret			= FALSE;
@@ -181,54 +141,6 @@ const BOOL RaveBD::_ConsultaObtenerMedio(std::wstring &TxtConsulta, BDMedio &OUT
 }
 
 
-// Elimina las raices de la memória
-void RaveBD::_BorrarRaices(void) {
-	for (size_t i = 0; i < _Raices.size(); i++) delete _Raices[i];
-	_Raices.resize(0);
-}
-
-// Función que obtiene todas las raices de la base de datos, y las carga en memória
-const BOOL RaveBD::ObtenerRaices(void) {
-	_BorrarRaices();
-	int				    SqlRet = 0;
-	const wchar_t      *SqlStr = L"SELECT * FROM Raiz";
-	DWL::DUnidadesDisco nUnidades;
-	DWL::DUnidadDisco  *Unidad   = NULL;
-	sqlite3_stmt       *SqlQuery = NULL;
-	SqlRet = sqlite3_prepare16_v2(_BD, SqlStr, -1, &SqlQuery, NULL);
-	if (SqlRet) return FALSE;
-	int VecesBusy = 0;
-	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
-		SqlRet = sqlite3_step(SqlQuery);
-		if (SqlRet == SQLITE_ROW) {
-			BDRaiz *TmpRaiz		= new BDRaiz;
-			TmpRaiz->Id			= static_cast<unsigned long>(sqlite3_column_int64(SqlQuery, 0));
-			TmpRaiz->Path		= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 1));
-			TmpRaiz->ID_Disco	= static_cast<unsigned long>(sqlite3_column_int64(SqlQuery, 2));			
-			// Asigno la letra de unidad a la raíz ya que las unidades extraibles pueden cambiar de letra pero siempre tienen el mismo número de serie.
-			Unidad = nUnidades.Buscar_Numero_Serie(TmpRaiz->ID_Disco);
-			if (Unidad != NULL) {
-				TmpRaiz->Path[0] = Unidad->Letra();
-				TmpRaiz->Letra = Unidad->Letra();
-			}
-			_Raices.push_back(TmpRaiz);
-		}
-		if (SqlRet == SQLITE_BUSY) {
-			VecesBusy++;
-			if (VecesBusy == 100) break;
-		}
-
-	}
-
-	sqlite3_finalize(SqlQuery);
-
-	if (SqlRet == SQLITE_ERROR) {
-		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
-		return FALSE;
-	}
-
-	return (SqlRet != SQLITE_BUSY);
-}
 
 
 const BOOL RaveBD::ObtenerEtiquetas(void) {
@@ -395,7 +307,7 @@ const BOOL RaveBD::ActualizarMedioAnalisis(BDMedio *nMedio) {
 }
 
 // Función que genera una lista aleatória por el tipo especificado, y la guarda en la variable OUT_Medios 
-const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const TipoListaAleatoria nTipo) {
+const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, DWL::DUnidadesDisco& Unidades, const TipoListaAleatoria nTipo) {
 	// si no hay etiquetas solo se puede generar listas aleatorias de 50 medios sin ninguna base, si el tipo especificado no se puede gemerar. salgo
 	if (_Etiquetas.size() == 0 && nTipo != TLA_50Medios && nTipo != TLA_LoQueSea && nTipo != TLA_Nota) {
 		App.MostrarToolTipPlayer(L"No se pueden generar listas aleatórias hasta que no se analize la base de datos.");
@@ -682,6 +594,7 @@ const BOOL RaveBD::EliminarMomento(BDMedio* nMedio, const LONG_PTR mID) {
 // Si hay que modificar alguna tabla, se tiene que hacer en la función _ModificarTablas, la cual mira la versión de las opciones 
 const BOOL RaveBD::_CrearTablas(void) {
 
+
 	std::wstring Q;
 	// Creo la tabla para los Momentos ///////////////////////////////////////////////////
 	std::wstring CrearTablaMomentos = L"CREATE TABLE Momentos ("
@@ -698,18 +611,25 @@ const BOOL RaveBD::_CrearTablas(void) {
 	
 
 	// Creo la tabla para guardar la ultima lista reproducida ////////////////////////
-	std::wstring CrearTablaUltimaLista = L"CREATE TABLE UltimaLista (Hash BIGINT)";
-	if (Consulta(CrearTablaUltimaLista.c_str()) == SQLITE_ERROR) return FALSE;
+//	std::wstring CrearTablaUltimaLista = L"CREATE TABLE UltimaLista (Hash BIGINT)";
+//	if (Consulta(CrearTablaUltimaLista.c_str()) == SQLITE_ERROR) return FALSE;
 	////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
 	// Creo la tabla para las raices
-	std::wstring CrearTablaRaiz = L"CREATE TABLE Raiz (Id INTEGER PRIMARY KEY, Path VARCHAR(260), IdDisco INTEGER)";
-	if (Consulta(CrearTablaRaiz.c_str()) == SQLITE_ERROR) return FALSE;
+//	std::wstring CrearTablaRaiz = L"CREATE TABLE Raiz (Id INTEGER PRIMARY KEY, Path VARCHAR(260), IdDisco INTEGER)";
+//	if (Consulta(CrearTablaRaiz.c_str()) == SQLITE_ERROR) return FALSE;
 	
 	// Creo la tabla para los medios
 	_CrearTablaMedios(L"Medios");
+
+	// Creo la tabla para guardar la ultima lista reproducida con referencias //////////////////
+	std::wstring CrearTablaUltimaLista = L"CREATE TABLE UltimaLista2 (Id INTEGER, FOREIGN KEY(Id) REFERENCES Medios(Id))";
+	if (Consulta(CrearTablaUltimaLista.c_str()) == SQLITE_ERROR)
+		return FALSE;
+	////////////////////////////////////////////////////////////////////////////////////////////
+
 
 	// Creo la tabla para las etiquetas
 	std::wstring CrearTablaEtiquetas = L"CREATE TABLE Etiquetas ("
@@ -803,78 +723,11 @@ const BOOL RaveBD::_CrearTablaMedios(const wchar_t *Nombre) {
 }
 
 
-/* Devuelve 0 si ya existe una raiz igual, devuelve 1 si se ha agregado una nueva raiz, devuelve 2 si se ha agregado una nueva raiz, pero han desaparecido otras raices parientes */
-
-/*	Se puede dar el caso en que dada una raíz existente se quiera agregar otra raíz que es pariente de esta.
-	En este no se añadirá ninguna raíz y la raíz existente pasara a tener el path que ocupe menos caracteres. */
-const int RaveBD::AgregarRaiz(std::wstring &nPath) {
-	int				Ret				= 1;
-	UINT			Total			= 0;
-	int				SqlRet			= 0;
-	size_t          i				= 0;
-	sqlite3_stmt   *SqlQuery		= NULL;
-	std::wstring	PathFinal		= nPath;
-	if (PathFinal[PathFinal.size() - 1] != TEXT('\\')) PathFinal += TEXT('\\');
-
-	std::wstring    RaizFinal		= PathFinal;		// Path final mas corto
-	size_t			PathMasCorto	= RaizFinal.size();
-
-	// Busco raices similares
-	std::vector<BDRaiz *> RaicesSimilares;
-	for (i = 0; i < _Raices.size(); i++) {
-		// Si las raices se parecen y no tienen el mismo número de caracteres
-		if (_CompararRaices(_Raices[i]->Path, PathFinal) == TRUE) {
-			if (_Raices[i]->Path.size() != PathFinal.size()) {
-				RaicesSimilares.push_back(_Raices[i]);
-				// Busco el path mas corto que será el definitivo
-				if (PathMasCorto > _Raices[i]->Path.size()) {
-					PathMasCorto = _Raices[i]->Path.size();
-					RaizFinal = _Raices[i]->Path;
-				}
-			}
-			// La raiz es igual
-			else {
-				return 0;
-			}
-		}
-	}
-
-	// Borro todas las raices similares
-	for (i = 0; i < RaicesSimilares.size(); i++) {
-		std::wstring Q = L"DELETE FROM Raiz WHERE Path=\"" + RaicesSimilares[i]->Path + L"\"";
-		SqlRet = Consulta(Q);
-		Ret = 2;
-	}
-
-	DWL::DUnidadDisco  *Unidad = Unidades.Buscar_Letra(RaizFinal[0]);
-	if (Unidad == NULL)
-		return NULL;
-
-	std::wstring SqlStr = L"INSERT INTO Raiz (Path, IDDisco) VALUES(\"" + RaizFinal + L"\", " + std::to_wstring(Unidad->Numero_Serie()) + L")";
-	SqlRet = Consulta(SqlStr);
-
-	ObtenerRaices();
-
-	return Ret;
-}
-
-
-const BOOL RaveBD::EliminarRaiz(std::wstring &nPath) {
-	std::wstring Q = L"DELETE FROM Raiz WHERE Path=\"" + nPath + L"\"";
-	int SqlRet = Consulta(Q);
-//	BOOL Ret = ConsultaVarg(L"DELETE FROM Raiz WHERE Path ='%s'", nPath.c_str());
-	if (SqlRet == SQLITE_ERROR) {
-		return FALSE;
-	}
-	ObtenerRaices();
-	return TRUE;
-}
-
 // Pre-Analiza el medio y lo inserta en la BD
 // Devuelve FALSE si ahy un error
 // Devuelve TRUE si ya se ha añadido el medio
 // Devuelve 2 si el medio ya existia en la BD
-const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, const ULONG Longitud, const UINT TiempoEnSecs, const wchar_t* NombreDesdeM3u) {
+const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, DWL::DUnidadesDisco& Unidades, const ULONG Longitud, const UINT TiempoEnSecs, const wchar_t* NombreDesdeM3u) {
 	Ubicacion_Medio		Ubicacion = BDMedio::Ubicacion(nPath);
 
 	// Asigno el path, por si no se encuentra el archivo, que el tooltip pueda decir el path que no encuentra
@@ -1037,9 +890,9 @@ const sqlite3_int64 RaveBD::CrearHash(std::wstring &nPath) {
 }
 
 
-const BOOL RaveBD::ObtenerUltimaLista(void) {
+const BOOL RaveBD::ObtenerUltimaLista(DWL::DUnidadesDisco &Unidades) {
 
-	App.VentanaRave.Lista.BorrarListaReproduccion();
+/*	App.VentanaRave.Lista.BorrarListaReproduccion();
 
 	const wchar_t  *SqlStr = L"SELECT * FROM UltimaLista";
 	wchar_t		   *SqlError = NULL;
@@ -1056,7 +909,7 @@ const BOOL RaveBD::ObtenerUltimaLista(void) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
 			BDMedio Medio;
-			ObtenerMedio(sqlite3_column_int64(SqlQuery, 0), Medio);
+			ObtenerMedio(sqlite3_column_int64(SqlQuery, 0), Medio, Unidades);
 			App.VentanaRave.Lista.AgregarMedio(&Medio);
 		}
 		if (SqlRet == SQLITE_BUSY) {
@@ -1075,21 +928,77 @@ const BOOL RaveBD::ObtenerUltimaLista(void) {
 	}
 
 
+	return (SqlRet != SQLITE_BUSY);*/
+
+	App.VentanaRave.Lista.BorrarListaReproduccion();
+
+	const wchar_t  *SqlStr = L"SELECT * FROM Medios, UltimaLista2 WHERE Medios.Id == UltimaLista2.Id";
+
+	wchar_t*		SqlError = NULL;
+	int				SqlRet = 0;
+	sqlite3_stmt   *SqlQuery = NULL;
+
+	SqlRet = sqlite3_prepare16_v2(_BD, SqlStr, -1, &SqlQuery, NULL);
+	if (SqlRet) {
+		_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+	int VecesBusy = 0;
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
+		SqlRet = sqlite3_step(SqlQuery);
+		if (SqlRet == SQLITE_ROW) {
+			BDMedio Medio;
+			Medio.ObtenerFila(SqlQuery, Unidades, this);
+//			ObtenerMedio(sqlite3_column_int64(SqlQuery, 0), Medio, Unidades);
+			App.VentanaRave.Lista.AgregarMedio(&Medio);
+		}
+		if (SqlRet == SQLITE_BUSY) {
+			VecesBusy++;
+			if (VecesBusy == 100) break;
+		}
+
+	}
+
+	sqlite3_finalize(SqlQuery);
+	App.VentanaRave.Lista_Play();
+
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+
+
 	return (SqlRet != SQLITE_BUSY);
+
+
+
 
 }
 
 const BOOL RaveBD::GuardarUltimaLista(void) {
 	// Botto todos los datos de la tabla UltimaLista sin borrar la tabla
-	Consulta(L"DELETE FROM UltimaLista");
+/*	Consulta(L"DELETE FROM UltimaLista");
 	std::wstring Q;
 	int          SqlRet;
 	for (LONG_PTR i = 0; i < App.VentanaRave.Lista.TotalItems(); i++) {
-		Q = L"INSERT INTO UltimaLista (Hash) VALUES(" + std::to_wstring(App.VentanaRave.Lista.Medio(i)->BdMedio.Hash) + L")";
+		Q = L"INSERT INTO UltimaLista (Id) VALUES(" + std::to_wstring(App.VentanaRave.Lista.Medio(i)->BdMedio.Hash) + L")";
 		SqlRet = Consulta(Q);
 		if (SqlRet != SQLITE_DONE) return FALSE;
 	}
+	return TRUE;*/
+
+	// Botto todos los datos de la tabla UltimaLista sin borrar la tabla
+	Consulta(L"DELETE FROM UltimaLista2");
+	std::wstring Q;
+	int          SqlRet;
+	for (LONG_PTR i = 0; i < App.VentanaRave.Lista.TotalItems(); i++) {
+		Q = L"INSERT INTO UltimaLista2 (Id) VALUES(" + std::to_wstring(App.VentanaRave.Lista.Medio(i)->BdMedio.Id) + L")";
+		SqlRet = Consulta(Q);
+		if (SqlRet != SQLITE_DONE)
+			return FALSE;
+	}
 	return TRUE;
+
 }
 
 
@@ -1315,7 +1224,7 @@ const BOOL RaveBD::MedioNota(NodoBD *nMedio, const float nNota) {
 	return TRUE;
 }
 
-const BOOL RaveBD::ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios) {
+const BOOL RaveBD::ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios, DWL::DUnidadesDisco& Unidades) {
 	const wchar_t  *Q = L"SELECT Id, NombrePath, Genero, GrupoPath, DiscoPath, NombreTag, GrupoTag, DiscoTag, Path, PistaTag, PistaPath, Nota, Tiempo, Longitud FROM Medios WHERE TipoMedio=1"; // Tipo_Medio_Audio
 	
 	int				SqlRet = 0;

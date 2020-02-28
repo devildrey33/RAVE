@@ -24,7 +24,7 @@ void VentanaObtenerURL::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse& DatosMouse
 	if (DatosMouse.ID() == ID_ABRIR) {
 		BotonAbrir.Activado(FALSE);
 		BDMedio Medio;
-		App.BD.AnalizarMedio(EditURL.Texto(), Medio);
+		App.BD.AnalizarMedio(EditURL.Texto(), Medio, App.Unidades);
 		App.VentanaRave.Lista.AgregarMedio(&Medio);
 
 /*		DArchivoInternet::Obtener(EditURL.Texto(),

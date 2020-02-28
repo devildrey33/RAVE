@@ -274,7 +274,7 @@ const BOOL RAVE::EjecutarReproductor(std::vector<std::wstring> &Paths, HWND hWnd
 	if (Paths.size() == 0 && PlayerInicial == TRUE) {
 		#ifndef  RAVE_IGNORAR_LISTA_INICIO 	// No genera ninguna lista al iniciar (por el debug del VLC que es muy heavy.. y carga mucho al visual studio)
 			// Inicia la acción por defecto al empezar
-			Debug_Escribir_Varg(L"Rave::Iniciar ->  Acción de inicio : %d\n", BD.Opciones_Inicio());
+			Debug_Escribir_Varg(L"Rave::Iniciar ->  Acción de inicio : %d\n", Opciones.Inicio());
 			switch (Opciones.Inicio()) {
 				//					case Tipo_Inicio_NADA			:																		break;
 				case Tipo_Inicio_Genero		:	VentanaRave.GenerarListaAleatoria(TLA_Genero);						break;
@@ -283,7 +283,7 @@ const BOOL RAVE::EjecutarReproductor(std::vector<std::wstring> &Paths, HWND hWnd
 				case Tipo_Inicio_50Medios	:	VentanaRave.GenerarListaAleatoria(TLA_50Medios);					break;
 				case Tipo_Inicio_LoQueSea	:	VentanaRave.GenerarListaAleatoria(TLA_LoQueSea);					break;
 				case Tipo_Inicio_Nota		:	VentanaRave.GenerarListaAleatoria(TLA_Nota);						break;
-				case Tipo_Inicio_UltimaLista:	BD.ObtenerUltimaLista();											break;
+				case Tipo_Inicio_UltimaLista:	BD.ObtenerUltimaLista(Unidades);									break;
 			}
 	#endif
 	}

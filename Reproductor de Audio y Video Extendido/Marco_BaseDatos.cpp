@@ -24,8 +24,8 @@ void Marco_BaseDatos::Crear(DWL::DhWnd *nPadre, const int cX, const int cY, cons
 	EtiquetaBaseDeDatos1.CrearEtiquetaEx(this, E1, 10, 0, RC.right - 20, 120, ID_ETIQUETA_BASEDEDATOS);
 	// Lista con las raices
 	ListaRaiz.CrearListaRaiz(this, 10, 130, RC.right - 20, 80, ID_LISTARAIZ);
-	for (size_t i = 0; i < App.BD.TotalRaices(); i++) {
-		ListaRaiz.AgregarRaiz(App.BD.Raiz(i)->Path.c_str());
+	for (size_t i = 0; i < App.Opciones.TotalRaices(); i++) {
+		ListaRaiz.AgregarRaiz(App.Opciones.Raiz(i)->Path.c_str());
 	}
 	ListaRaiz.Visible(TRUE);
 	ListaRaiz.MultiSeleccion = FALSE;
@@ -83,7 +83,7 @@ void Marco_BaseDatos::AgregarRaiz(void) {
 	if (Ret == TRUE) {
 		// Agrego la raíz a la BD.
 		//		BDRaiz *nRaiz = NULL;
-		int AR = App.BD.AgregarRaiz(Path);
+		int AR = App.Opciones.AgregarRaiz(Path, App.Unidades);
 		// Puede que esa raíz sea parte de otra raíz existente o viceversa, en ese caso no se agrega una nueva raíz a la lista, habrá que modificar la lista
 		if (AR == 1) {
 			//			ListaRaiz.AgregarRaiz(Path.c_str());
@@ -112,8 +112,8 @@ void Marco_BaseDatos::AgregarRaiz(void) {
 	}
 
 	ListaRaiz.EliminarTodosLosItems();
-	for (size_t i = 0; i < App.BD.TotalRaices(); i++) {
-		ListaRaiz.AgregarRaiz(App.BD.Raiz(i)->Path.c_str());
+	for (size_t i = 0; i < App.Opciones.TotalRaices(); i++) {
+		ListaRaiz.AgregarRaiz(App.Opciones.Raiz(i)->Path.c_str());
 	}
 	ListaRaiz.Repintar();
 }
@@ -121,7 +121,7 @@ void Marco_BaseDatos::AgregarRaiz(void) {
 void Marco_BaseDatos::EliminarRaiz(std::wstring& Path) {
 	App.VentanaRave.ThreadActualizar.Cancelar(TRUE);
 	App.VentanaRave.ThreadAnalizar.Cancelar(TRUE);
-	App.BD.EliminarRaiz(Path);
+	App.Opciones.EliminarRaiz(Path);
 	ListaRaiz.EliminarItem(ListaRaiz.ItemMarcado());
 	ListaRaiz.Repintar();
 	App.VentanaOpciones2.MarcoInicio.ActualizarListaInicio();
@@ -173,8 +173,6 @@ LRESULT CALLBACK Marco_BaseDatos::GestorMensajes(UINT uMsg, WPARAM wParam, LPARA
 		case DWL_LISTAEX_CLICK :
 			Evento_ListaEx_Mouse_Click(WPARAM_TO_DEVENTOMOUSE(wParam));
 			return 0;
-
-
 	}
 
 	return DMarcoScrollEx::GestorMensajes(uMsg, wParam, lParam);

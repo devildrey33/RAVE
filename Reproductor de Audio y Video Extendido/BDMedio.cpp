@@ -366,9 +366,9 @@ const BOOL BDMedio::EsFMOD(void) {
 	return FALSE;
 }
 
-// Función que recarga los datos desde la BD para este medio
+// Función que recarga los datos desde la BD para este medio (NO USAR EN THREADS)
 void BDMedio::Recargar(void) {
-	App.BD.ObtenerMedio(Hash, *this);
+	App.BD.ObtenerMedio(Hash, *this, App.Unidades);
 }
 
 

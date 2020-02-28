@@ -139,7 +139,7 @@ const size_t ArbolBD::AgregarNodoALista(NodoBD *nNodo) {
 	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_MISUSE) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
-			BDMedio *Medio = new BDMedio(SqlQuery, App.BD.Unidades, &App.BD);
+			BDMedio *Medio = new BDMedio(SqlQuery, App.Unidades, &App.BD);
 			// Compruebo que el medio sea de internet o exista en el disco antes de agregar-lo
 			if (Medio->Ubicacion() == Ubicacion_Medio_Internet || GetFileAttributes(Medio->Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
 				// Agrego el medio a la lista y sumo uno a los medios agregados
@@ -395,12 +395,12 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 				case ArbolBD_TipoNodo_Cancion:
 				case ArbolBD_TipoNodo_Video:
 					// Es un medio, hay que obtener su nota
-					if (App.BD.ObtenerMedio(NodoRes->Hash, Medio) == TRUE) {
+					if (App.BD.ObtenerMedio(NodoRes->Hash, Medio, App.Unidades) == TRUE) {
 						App.VentanaRave.Menu_ArbolBD.Menu(4)->BarraValor(Medio.Nota);
 					}
 
 					BDMedio TmpMedio;
-					App.BD.ObtenerMedio(MedioMarcado()->Hash, TmpMedio);
+					App.BD.ObtenerMedio(MedioMarcado()->Hash, TmpMedio, App.Unidades);
 
 					DWL::DMenuEx* TmpMenu = NULL;
 					App.VentanaRave.Menu_ArbolBD.Menu(3)->EliminarTodosLosMenus();
@@ -448,7 +448,7 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 				break;
 			case ArbolBD_TipoNodo_Cancion	 :
 			case ArbolBD_TipoNodo_Video		 :
-				if (App.BD.ObtenerMedio(NodoRes->Hash, Medio) == TRUE) {
+				if (App.BD.ObtenerMedio(NodoRes->Hash, Medio, App.Unidades) == TRUE) {
 					if (Medio != _ToolTipM.Medio || _ToolTipM.Visible() == FALSE) {
 						Debug_Escribir(L"Destruir2\n");
 						_ToolTipM.Ocultar(TRUE);
@@ -496,7 +496,7 @@ void ArbolBD::ObtenerPathNodo(NodoBD *pNodo, std::wstring &OUT_Path) {
 	// Si es un medio
 	if (Tmp->TipoNodo == ArbolBD_TipoNodo_Cancion || Tmp->TipoNodo == ArbolBD_TipoNodo_Video) {
 		BDMedio Medio;
-		App.BD.ObtenerMedio(Tmp->Hash, Medio);
+		App.BD.ObtenerMedio(Tmp->Hash, Medio, App.Unidades);
 		OUT_Path = Medio.Path;
 	}
 	else {

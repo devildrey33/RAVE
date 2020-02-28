@@ -121,8 +121,8 @@ void VentanaOpcionesRAVE::Crear(void) {
 	EtiquetaBaseDeDatos1.CrearEtiquetaEx(&MarcoBaseDeDatos, E1, 10, 10, RC.right - 40, 120, ID_ETIQUETA_BASEDEDATOS);
 	// Lista con las raices
 	ListaRaiz.CrearListaRaiz(&MarcoBaseDeDatos, 10, 140, RC.right - 40, 80, ID_LISTARAIZ);
-	for (size_t i = 0; i < App.BD.TotalRaices(); i++) {
-		ListaRaiz.AgregarRaiz(App.BD.Raiz(i)->Path.c_str());
+	for (size_t i = 0; i < App.Opciones.TotalRaices(); i++) {
+		ListaRaiz.AgregarRaiz(App.Opciones.Raiz(i)->Path.c_str());
 	}
 	ListaRaiz.Visible(TRUE);
 	ListaRaiz.MultiSeleccion = FALSE;
@@ -313,7 +313,7 @@ void VentanaOpcionesRAVE::ActualizarListaInicio(void) {
 	DesplegableListaInicio.Texto(Listas[static_cast<int>(App.Opciones.Inicio())]);
 	DesplegableListaInicio.EliminarTodosLosItems();
 	// Si hay raices añado todas las opciones
-	if (App.BD.TotalRaices() > 0) {
+	if (App.Opciones.TotalRaices() > 0) {
 		for (int i = 0; i < 8; i++) {
 			DesplegableListaInicio.AgregarItem(Listas[i]);
 		}
@@ -425,7 +425,7 @@ void VentanaOpcionesRAVE::AgregarRaiz(void) {
 	if (Ret == TRUE) {
 		// Agrego la raíz a la BD.
 		//		BDRaiz *nRaiz = NULL;
-		int AR = App.BD.AgregarRaiz(Path);
+		int AR = App.Opciones.AgregarRaiz(Path, App.Unidades);
 		// Puede que esa raíz sea parte de otra raíz existente o viceversa, en ese caso no se agrega una nueva raíz a la lista, habrá que modificar la lista
 		if (AR == 1) {
 //			ListaRaiz.AgregarRaiz(Path.c_str());
@@ -454,8 +454,8 @@ void VentanaOpcionesRAVE::AgregarRaiz(void) {
 	}
 
 	ListaRaiz.EliminarTodosLosItems();
-	for (size_t i = 0; i < App.BD.TotalRaices(); i++) {
-		ListaRaiz.AgregarRaiz(App.BD.Raiz(i)->Path.c_str());
+	for (size_t i = 0; i < App.Opciones.TotalRaices(); i++) {
+		ListaRaiz.AgregarRaiz(App.Opciones.Raiz(i)->Path.c_str());
 	}
 	ListaRaiz.Repintar();
 }
@@ -463,7 +463,7 @@ void VentanaOpcionesRAVE::AgregarRaiz(void) {
 void VentanaOpcionesRAVE::EliminarRaiz(std::wstring &Path) {
 	App.VentanaRave.ThreadActualizar.Cancelar(TRUE);
 	App.VentanaRave.ThreadAnalizar.Cancelar(TRUE);
-	App.BD.EliminarRaiz(Path);
+	App.Opciones.EliminarRaiz(Path);
 	ListaRaiz.EliminarItem(ListaRaiz.ItemMarcado());
 	ListaRaiz.Repintar();
 	ActualizarListaInicio();

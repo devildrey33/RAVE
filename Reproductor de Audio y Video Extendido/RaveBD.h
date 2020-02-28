@@ -2,7 +2,7 @@
 
 #include "BDMedio.h"
 #include "EtiquetaBD.h"
-#include "BDRaiz.h"
+//#include "BDRaiz.h"
 #include "RAVE_Mensajes.h"
 #include "RaveSQLite.h"
 
@@ -94,15 +94,15 @@ class RaveBD : public RaveSQLite {
 	const BOOL                  EliminarMomento(BDMedio* nMedio, const LONG_PTR mID);
 
 								// Función que extrae los datos del medio que nos da el path
-	const BOOL					AnalizarMedio(std::wstring &mPath, BDMedio &OUT_Medio, const ULONG Longitud = 0, const UINT TiempoEnSecs = 0, const wchar_t *Nombre = nullptr);
+	const BOOL					AnalizarMedio(std::wstring &mPath, BDMedio &OUT_Medio, DWL::DUnidadesDisco& Unidades, const ULONG Longitud = 0, const UINT TiempoEnSecs = 0, const wchar_t *Nombre = nullptr);
 
 								// Obtiene un puntero con los datos del medio en la BD (Si el medio no existe devuelve FALSE)
-	const BOOL					ObtenerMedio(const sqlite3_int64 mHash, BDMedio &OUT_Medio);
-	const BOOL					ObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio);
+	const BOOL					ObtenerMedio(const sqlite3_int64 mHash, BDMedio &OUT_Medio, DWL::DUnidadesDisco &Unidades);
+	const BOOL					ObtenerMedio(std::wstring &mPath, BDMedio &OUT_Medio, DWL::DUnidadesDisco &Unidades);
 
 								// Obtiene una lista de paths que pertenecen a medios por parsear (extraer metadatos, id3, etc...)
-	const BOOL                  ObtenerMediosPorParsear(std::vector<std::wstring> &Paths);
-	const BOOL                  ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios);
+	const BOOL                  ObtenerMediosPorParsear(std::vector<std::wstring> &Paths, DWL::DUnidadesDisco &Unidades);
+	const BOOL                  ObtenerMediosPorRevisar(std::vector<BDMedio> &Medios, DWL::DUnidadesDisco &Unidades);
 
 								// Funcion que actualiza los hash de los medios a la versión 1.1 de la BD
 	const BOOL                  ActualizarHashs11(void);
@@ -133,9 +133,9 @@ class RaveBD : public RaveSQLite {
 	const BOOL                  ActualizarPathMedio(std::wstring &Path, const UINT mID);
 
 								// Genera una lista aleatoria por el tipo especificado
-	const BOOL                  GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, const TipoListaAleatoria nTipo = TLA_LoQueSea);
+	const BOOL                  GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, DWL::DUnidadesDisco &Unidades, const TipoListaAleatoria nTipo = TLA_LoQueSea);
 
-								// Funciones para buscar una raíz por su path o por su id
+/*								// Funciones para buscar una raíz por su path o por su id
 	BDRaiz                     *BuscarRaiz(std::wstring &nPath);
 	BDRaiz                     *BuscarRaiz(const unsigned long bID);
 								// Función para agregar una raíz a la base de datos
@@ -146,7 +146,7 @@ class RaveBD : public RaveSQLite {
 	const BOOL					ObtenerRaices(void);
 								// Funciones para obtener los datos de las raices en memória
 	inline const size_t			TotalRaices(void)		{ return _Raices.size(); }
-	inline BDRaiz              *Raiz(const size_t Pos)  { return _Raices[Pos];   }
+	inline BDRaiz              *Raiz(const size_t Pos)  { return _Raices[Pos];   } */
 
 								// Función que crea un Hash partiendo de la ID del disco y el path del medio
 	const sqlite3_int64			CrearHash(std::wstring &nPath);
@@ -155,11 +155,11 @@ class RaveBD : public RaveSQLite {
 	inline sqlite3			   *operator()(void) { return _BD; }
 
 
-	const BOOL                  ObtenerUltimaLista(void);
+	const BOOL                  ObtenerUltimaLista(DWL::DUnidadesDisco &Unidades);
 	const BOOL                  GuardarUltimaLista(void);
 
 
-	DWL::DUnidadesDisco			Unidades;
+	//DWL::DUnidadesDisco			Unidades;
 
 
 								// Filtros estaticos
@@ -172,17 +172,17 @@ class RaveBD : public RaveSQLite {
 
 								// Distancia entre 2 strings
 	static const int            Distancia(std::wstring &Origen, std::wstring &Destino);
-protected:
+  protected:
 	const BOOL                  ActualizarMedioAnalisis(BDMedio *nMedio);
 
 								// Devuelve TRUE si es un número del 0 al 9, no acepta comas para decimales
     static const BOOL		   _EsNumero(const wchar_t Caracter);
 
-	const BOOL			       _CompararRaices(std::wstring &Path1, std::wstring &Path2);
+/*	const BOOL			       _CompararRaices(std::wstring &Path1, std::wstring &Path2);
 	void                       _BorrarRaices(void);
-	std::vector<BDRaiz *>      _Raices;
+	std::vector<BDRaiz *>      _Raices;*/
 	std::vector<EtiquetaBD>    _Etiquetas;
-	const BOOL                 _ConsultaObtenerMedio(std::wstring &TxtConsulta, BDMedio &OUT_Medio);
+	const BOOL                 _ConsultaObtenerMedio(std::wstring &TxtConsulta, BDMedio &OUT_Medio, DWL::DUnidadesDisco& Unidades);
 								// Función que crea todas las tablas necesarias
     const BOOL                 _CrearTablas(void);
 								// Función que crea una tabla para medios con el nombre especificado

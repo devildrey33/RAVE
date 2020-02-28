@@ -94,7 +94,7 @@ unsigned long ThreadAnalisis::_ThreadAnalisis(void *pThis) {
 	// Fase 1 : Obtener una lista de medios que no se han parseado
 	This->_BD.Iniciar();
 	This->_PorParsear.resize(0);
-	This->_BD.ObtenerMediosPorParsear(This->_PorParsear);
+	This->_BD.ObtenerMediosPorParsear(This->_PorParsear, This->_Unidades);
 
 	if (This->_PorParsear.size() > 0) {
 		PostMessage(This->_VentanaPlayer, WM_TOM_MOSTRARVENTANA, 0, 0);		
@@ -151,7 +151,7 @@ unsigned long ThreadAnalisis::_ThreadAnalisis(void *pThis) {
 
 void ThreadAnalisis::_RevisarMedios(void) {
 	// FASE 1 : Obtengo los medios revisables (solo los del Tipo_Audio)
-	_BD.ObtenerMediosPorRevisar(_Medios);
+	_BD.ObtenerMediosPorRevisar(_Medios, _Unidades);
 	size_t i = 0, i2 = 0, i3 = 0, Pos = 0;
 
 
@@ -451,7 +451,7 @@ std::wstring ThreadAnalisis::_ObtenerMeta(libvlc_media_t *Media, libvlc_meta_t T
 
 void ThreadAnalisis::_Parsear(libvlc_instance_t *VLC, std::wstring &Path) {
 	BDMedio Medio;
-	_BD.ObtenerMedio(Path, Medio);
+	_BD.ObtenerMedio(Path, Medio, _Unidades);
 
 	// Compruebo que existe el archivo	
 	if (INVALID_FILE_ATTRIBUTES == GetFileAttributes(Path.c_str())) {
