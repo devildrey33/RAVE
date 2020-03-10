@@ -1,5 +1,6 @@
 #pragma once
 
+// Base de datos para los medios
 #include "BDMedio.h"
 #include "EtiquetaBD.h"
 //#include "BDRaiz.h"
@@ -159,6 +160,8 @@ class RaveBD : public RaveSQLite {
 	const BOOL                  GuardarUltimaLista(void);
 
 
+	void                        GuardarHistorial_Lista(void);
+	void                        GuardarHistorial_Medio(void);
 	//DWL::DUnidadesDisco			Unidades;
 
 

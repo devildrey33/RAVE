@@ -415,7 +415,7 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 					break;
 			}
 		}
-		// Si hay mas de un nodo seleccionado desactivo los menus : Abrir carpeta, Nota, y Propiedades
+		// Si hay mas de un nodo seleccionado desactivo los menus : Abrir carpeta, Nota, Información, y Propiedades
 		if (TotalNodosSeleccionados() > 1) nActivar2 = FALSE;
 
 		App.VentanaRave.Menu_ArbolBD.Menu(0)->Activado(nActivar); // Agregar a lista
@@ -424,7 +424,8 @@ void ArbolBD::Evento_MouseSoltado(DEventoMouse &DatosMouse) {
 		App.VentanaRave.Menu_ArbolBD.Menu(2)->Activado(nActivar2); // Abrir carpeta
 		App.VentanaRave.Menu_ArbolBD.Menu(3)->Activado(nActivar3); // Momentos
 		App.VentanaRave.Menu_ArbolBD.Menu(4)->Activado(nActivar2); // Nota
-		App.VentanaRave.Menu_ArbolBD.Menu(5)->Activado(nActivar2); // Propiedades
+		App.VentanaRave.Menu_ArbolBD.Menu(5)->Activado(nActivar2); // Informacion
+		App.VentanaRave.Menu_ArbolBD.Menu(6)->Activado(nActivar2); // Propiedades
 
 		App.VentanaRave.Menu_ArbolBD.Mostrar(&App.VentanaRave);
 	}

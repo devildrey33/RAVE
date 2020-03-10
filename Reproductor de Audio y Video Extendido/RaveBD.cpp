@@ -306,7 +306,7 @@ const BOOL RaveBD::ActualizarMedioAnalisis(BDMedio *nMedio) {
 	return TRUE;
 }
 
-// Función que genera una lista aleatória por el tipo especificado, y la guarda en la variable OUT_Medios 
+// Función que genera una lista aleatória por el tipo especificado, y la guarda en la variable OUT_Medios (DEBE EJECUTARSE DESDE EL THREAD PRINCIPAL)
 const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, DWL::DUnidadesDisco& Unidades, const TipoListaAleatoria nTipo) {
 	// si no hay etiquetas solo se puede generar listas aleatorias de 50 medios sin ninguna base, si el tipo especificado no se puede gemerar. salgo
 	if (_Etiquetas.size() == 0 && nTipo != TLA_50Medios && nTipo != TLA_LoQueSea && nTipo != TLA_Nota) {
@@ -460,7 +460,10 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, DWL::
 		case TLA_Nota:		ToolTip = L"Lista aleatória por Nota con "  + std::to_wstring(TotalAgregados) + L" canciones generada.";										break;
 	}
 	App.MostrarToolTipPlayer(ToolTip);
+	// Asigno el nombre a la lista
+	App.VentanaRave.Lista.Nombre = ToolTip;
 
+	// TODO : Agregar lista al historial
 
 	return (SqlRet != SQLITE_BUSY);
 }
@@ -593,9 +596,28 @@ const BOOL RaveBD::EliminarMomento(BDMedio* nMedio, const LONG_PTR mID) {
 */
 // Si hay que modificar alguna tabla, se tiene que hacer en la función _ModificarTablas, la cual mira la versión de las opciones 
 const BOOL RaveBD::_CrearTablas(void) {
+//	std::wstring Q;
+	// Creo la tabla para guardar las listas del historial
+	std::wstring CrearTablaHistorialLista =	L"CREATE TABLE Historial_Lista ("
+											L"Id"				L" INTEGER PRIMARY KEY,"
+											L"Fecha"			L" TEXT,"
+											L"Nombre"			L" TEXT"		
+										L")";
+	if (Consulta(CrearTablaHistorialLista.c_str()) == SQLITE_ERROR)
+		return FALSE;
 
+	// Creo la tabla para guardar los medios del historial
+	std::wstring CrearTablaHistorial =	L"CREATE TABLE Historial ("
+											//L"Id"				L" INTEGER PRIMARY KEY,"
+											L"IdMedio"			L" INTEGER,"
+											L"IdLista"			L" INTEGER,"
+											L"Fecha"			L" TEXT,"
+											L"FOREIGN KEY(IdMedio) REFERENCES Medios(Id),"
+											L"FOREIGN KEY(IdLista) REFERENCES Historial_Lista(Id)"
+										L")";
+	if (Consulta(CrearTablaHistorial.c_str()) == SQLITE_ERROR) 
+		return FALSE;
 
-	std::wstring Q;
 	// Creo la tabla para los Momentos ///////////////////////////////////////////////////
 	std::wstring CrearTablaMomentos = L"CREATE TABLE Momentos ("
 											L"Id" 				L" INTEGER PRIMARY KEY,"
@@ -892,51 +914,13 @@ const sqlite3_int64 RaveBD::CrearHash(std::wstring &nPath) {
 
 const BOOL RaveBD::ObtenerUltimaLista(DWL::DUnidadesDisco &Unidades) {
 
-/*	App.VentanaRave.Lista.BorrarListaReproduccion();
-
-	const wchar_t  *SqlStr = L"SELECT * FROM UltimaLista";
-	wchar_t		   *SqlError = NULL;
-	int				SqlRet = 0;
-	sqlite3_stmt   *SqlQuery = NULL;
-
-	SqlRet = sqlite3_prepare16_v2(_BD, SqlStr, -1, &SqlQuery, NULL);
-	if (SqlRet) {
-		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
-		return FALSE;
-	}
-	int VecesBusy = 0;
-	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
-		SqlRet = sqlite3_step(SqlQuery);
-		if (SqlRet == SQLITE_ROW) {
-			BDMedio Medio;
-			ObtenerMedio(sqlite3_column_int64(SqlQuery, 0), Medio, Unidades);
-			App.VentanaRave.Lista.AgregarMedio(&Medio);
-		}
-		if (SqlRet == SQLITE_BUSY) {
-			VecesBusy++;
-			if (VecesBusy == 100) break;
-		}
-
-	}
-
-	sqlite3_finalize(SqlQuery);
-	App.VentanaRave.Lista_Play();
-
-	if (SqlRet == SQLITE_ERROR) {
-		_UltimoErrorSQL = static_cast<const wchar_t *>(sqlite3_errmsg16(_BD));
-		return FALSE;
-	}
-
-
-	return (SqlRet != SQLITE_BUSY);*/
-
+	// Elimino los medios de la lista
 	App.VentanaRave.Lista.BorrarListaReproduccion();
 
-	const wchar_t  *SqlStr = L"SELECT * FROM Medios, UltimaLista2 WHERE Medios.Id == UltimaLista2.Id";
-
-	wchar_t*		SqlError = NULL;
-	int				SqlRet = 0;
-	sqlite3_stmt   *SqlQuery = NULL;
+	const wchar_t  *SqlStr		= L"SELECT * FROM Medios, UltimaLista2 WHERE Medios.Id == UltimaLista2.Id";
+	wchar_t*		SqlError	= NULL;
+	int				SqlRet		= 0;
+	sqlite3_stmt   *SqlQuery	= NULL;
 
 	SqlRet = sqlite3_prepare16_v2(_BD, SqlStr, -1, &SqlQuery, NULL);
 	if (SqlRet) {
@@ -948,6 +932,7 @@ const BOOL RaveBD::ObtenerUltimaLista(DWL::DUnidadesDisco &Unidades) {
 		SqlRet = sqlite3_step(SqlQuery);
 		if (SqlRet == SQLITE_ROW) {
 			BDMedio Medio;
+			// Obtengo los datos del medio
 			Medio.ObtenerFila(SqlQuery, Unidades, this);
 //			ObtenerMedio(sqlite3_column_int64(SqlQuery, 0), Medio, Unidades);
 			App.VentanaRave.Lista.AgregarMedio(&Medio);
@@ -1336,16 +1321,13 @@ const BOOL RaveBD::ActualizarHashs11(void) {
 	return (SqlRet != SQLITE_BUSY);
 }
 
-// Función que actualiza un hash especificado en el medio que corresponda con la Id especificada
-/*const BOOL RaveBD::ActualizarHash(const UINT IdMedio, const sqlite3_int64 nHash) {
-	
-}*/
 
 
+// Función que compara la distancia entre 2 strings (levenshtein)
 const int RaveBD::Distancia(std::wstring &Origen, std::wstring &Destino) {
 	// Step 1
-	const int n = static_cast<int>(Origen.size());
-	const int m = static_cast<int>(Destino.size());
+	const LONGLONG n = static_cast<int>(Origen.size());
+	const LONGLONG m = static_cast<int>(Destino.size());
 
 	if (n < 5) return n + m; // Si origen es mas pequeño que 4 caracteres
 	if (m < 5) return m + n; // Si destino es mas pequeño que 4 caracteres
@@ -1365,10 +1347,10 @@ const int RaveBD::Distancia(std::wstring &Origen, std::wstring &Destino) {
 	// Si se llevan mas de dos caracteres de tamaño no hace falta comprobar nada
 	if (n - m < 2 && n - m > -2) {
 		// Step 3
-		for (int i = 1; i <= n; i++) {
+		for (LONGLONG i = 1; i <= n; i++) {
 			const TCHAR s_i = Origen[i - 1];
 			// Step 4
-			for (int j = 1; j <= m; j++) {
+			for (LONGLONG j = 1; j <= m; j++) {
 				const TCHAR t_j = Destino[j - 1];
 
 				// Step 5

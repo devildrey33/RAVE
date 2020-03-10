@@ -21,7 +21,7 @@
 
 //RAVE *_APLICACION = NULL;
 
-RAVE::RAVE(void) : PlayerInicial(FALSE), MutexPlayer(NULL), MenuVideoPistasDeAudio(NULL), MenuVideoProporcion(NULL), MenuVideoFiltros(NULL), MenuVideoSubtitulos(NULL), MenuVideoMomentos(NULL)/*, _gdiplusToken(0) */ {
+RAVE::RAVE(void) : PlayerInicial(FALSE), MutexPlayer(NULL), MenuVideoPistasDeAudio(NULL), MenuVideoProporcion(NULL), MenuVideoFiltros(NULL), MenuVideoSubtitulos(NULL), MenuVideoMomentos(NULL), _LC(LineaComando_Nada)/*, _gdiplusToken(0) */ {
 	// Inicio la semilla para generar números aleatórios
 //	srand(GetTickCount());
 }
@@ -314,6 +314,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ABRIRCARPETA			, L"Abrir carpeta"								, IDI_DIRECTORIO);
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_MOMENTOS				, L"Momentos"									, IDI_MOMENTOS);
 	VentanaRave.Menu_ArbolBD.AgregarBarra(ID_MENUBD_NOTA				, L"Nota"										, IDI_NOTA, 0.0f, 5.0f, 2.5f, DBarraEx_MostrarValor_ValorMaximo2Decimales);
+	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_INFORMACION			, L"Información"								, IDI_INTERROGANTE);
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_PROPIEDADES			, L"Propiedades"								, IDI_MOMENTO_EXCLUIR2);
 	VentanaRave.Menu_ArbolBD.AgregarSeparador();
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ACTUALIZAR			, L"Actualizar"									, IDI_ACTUALIZAR);
@@ -330,6 +331,7 @@ void RAVE::IniciarUI(int nCmdShow) {
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_MOMENTOS			, L"Momentos"									, IDI_MOMENTOS);
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_MOSTRARBD			, L"Mostrar en la BD"							, IDI_BASEDATOS);
 	VentanaRave.Menu_Lista.AgregarBarra(ID_MENULISTA_NOTA				, L"Nota"										, IDI_NOTA , 0.0f, 5.0f, 2.5f, DBarraEx_MostrarValor_ValorMaximo2Decimales);
+	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_INFORMACION			, L"Información"								, IDI_INTERROGANTE);
 	VentanaRave.Menu_Lista.AgregarMenu(ID_MENULISTA_PROPIEDADES			, L"Propiedades"								, IDI_MOMENTO_EXCLUIR2);
 
 	// Menu Boton Lista

@@ -15,8 +15,11 @@ enum ArbolBD_TipoNodo {
 	ArbolBD_TipoNodo_PistaCDAudio,
 	ArbolBD_TipoNodo_ListaCanciones,
 	ArbolBD_TipoNodo_Subtitulos,
-	ArbolBD_TipoNodo_Directorio,
-	ArbolBD_TipoNodo_Raiz,
+	ArbolBD_TipoNodo_Directorio,		// Directorio dentro de una raíz
+	ArbolBD_TipoNodo_Raiz,				// Raíz de las opciones
+	ArbolBD_TipoNodo_Historial,			// Medio dentro del historial
+	ArbolBD_TipoNodo_Historial_Lista,	// Lista de medios dentro del historial
+	ArbolBD_TipoNodo_Historial_Fecha	// Fecha dentro del historial
 };
 
 

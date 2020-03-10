@@ -201,6 +201,7 @@
     <ClInclude Include="ControlSeparador.h" />
     <ClInclude Include="ControlVisualizacion.h" />
     <ClInclude Include="EtiquetaBD.h" />
+    <ClInclude Include="Fecha_Historial.h" />
     <ClInclude Include="ItemMedio.h" />
     <ClInclude Include="ListaMedios.h" />
     <ClInclude Include="ListaRaices.h" />
@@ -266,6 +267,7 @@
     <ClCompile Include="ControlVisualizacion.cpp" />
     <ClCompile Include="EnviarDump.cpp" />
     <ClCompile Include="ExtensionesValidas.cpp" />
+    <ClCompile Include="Fecha_Historial.cpp" />
     <ClCompile Include="ListaMedios.cpp" />
     <ClCompile Include="ListaRaices.cpp" />
     <ClCompile Include="Marco_Audio.cpp" />
@@ -330,6 +332,7 @@
     <Image Include="..\Iconos\IDI_BASEDATOS.ico" />
     <Image Include="..\Iconos\IDI_Borrar.ico" />
     <Image Include="..\Iconos\IDI_BorrarResaltado.ico" />
+    <Image Include="..\Iconos\IDI_Calendario.ico" />
     <Image Include="..\Iconos\IDI_Cancion.ico" />
     <Image Include="..\Iconos\IDI_Cancion2.ico" />
     <Image Include="..\Iconos\IDI_CDAudio.ico" />
@@ -342,6 +345,7 @@
     <Image Include="..\Iconos\IDI_Filtros.ico" />
     <Image Include="..\Iconos\IDI_Genero.ico" />
     <Image Include="..\Iconos\IDI_Grupo.ico" />
+    <Image Include="..\Iconos\IDI_Historial.ico" />
     <Image Include="..\Iconos\IDI_Interrogante.ico" />
     <Image Include="..\Iconos\IDI_IpTv.ico" />
     <Image Include="..\Iconos\IDI_ListaAleatoria.ico" />

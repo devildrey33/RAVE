@@ -76,6 +76,9 @@ unsigned long ThreadActualizarArbol::_ThreadActualizar(void *pThis) {
 			TotalArchivos += This->_EscanearDirectorio(R->Path, R);
 		}
 	}
+	// Fase 2 : enumerar historial
+
+
 	// Termino la transaction para actualizar los datos básicos
 	This->_BD.Consulta(L"COMMIT TRANSACTION");
 	This->_BD.Terminar();

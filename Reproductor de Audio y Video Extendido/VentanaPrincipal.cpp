@@ -420,6 +420,16 @@ void VentanaPrincipal::FiltrosVideoPorDefecto(void) {
 	App.BD.ActualizarMedio(&App.MP.MedioActual());
 }
 
+void VentanaPrincipal::Lista_Informacion(void) {
+	if (Lista.MedioMarcado() == nullptr) return;
+
+	// Los medios que hay en la lista pueden estar des-actualizados, obtengo los datos de nuevo para el medio especificado
+	BDMedio Medio;
+	App.BD.ObtenerMedio(Lista.MedioMarcado()->BdMedio.Path, Medio, App.Unidades);
+	App.MostrarToolTipPlayer(Medio);
+
+}
+
 void VentanaPrincipal::Lista_Propiedades(void) {
 	BDMedio nMedio; 
 	App.BD.ObtenerMedio(Lista.MedioMarcado()->BdMedio.Hash, nMedio, App.Unidades);
@@ -559,6 +569,32 @@ void VentanaPrincipal::Arbol_Propiedades(void) {
 	ShellExecuteEx(&info);
 }
 
+void VentanaPrincipal::Arbol_Informacion(void) {
+	std::wstring	EtiquetaFiltrada;
+	EtiquetaBD     *Etiqueta = NULL;
+	BDMedio			Medio;
+
+	if (Arbol.MedioMarcado() == NULL) return;
+	
+	RaveBD::FiltroNombre(Arbol.MedioMarcado()->Texto, EtiquetaFiltrada);
+
+	switch (Arbol.MedioMarcado()->TipoNodo) {
+		case ArbolBD_TipoNodo_Cancion:
+		case ArbolBD_TipoNodo_Video:
+			App.BD.ObtenerMedio(Arbol.MedioMarcado()->Hash, Medio, App.Unidades);
+			App.MostrarToolTipPlayer(Medio);
+			break;
+		case ArbolBD_TipoNodo_Directorio:
+		case ArbolBD_TipoNodo_Genero:
+		case ArbolBD_TipoNodo_Grupo:
+		case ArbolBD_TipoNodo_Disco:
+			Etiqueta = App.BD.ObtenerEtiqueta(EtiquetaFiltrada);
+			if (Etiqueta != NULL) {
+				App.MostrarToolTipPlayer(Etiqueta);
+			}
+			break;
+	}
+}
 
 void VentanaPrincipal::MostrarVentanaURL(void) {
 	App.VentanaURL.Mostrar();
@@ -590,12 +626,14 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		case ID_MENUBD_ANALIZAR					:	AnalizarBD();							return;
 		case ID_MENUBD_ABRIRCARPETA             :   Arbol_AbrirCarpeta();					return;
 		case ID_MENUBD_PROPIEDADES              :   Arbol_Propiedades();					return;
+		case ID_MENUBD_INFORMACION              :   Arbol_Informacion();					return;
 		case ID_MENUBD_AGREGARANUEVALISTA		:	Arbol_AgregarALista(TRUE);				return;
 		case ID_MENUBD_AGREGARALISTA			:	Arbol_AgregarALista(FALSE);				return;
 		case ID_MENUBD_MOMENTOS					:   Arbol_Momentos();						return;
 		case ID_MENUBD_AGREGAR_URL				:	MostrarVentanaURL();					return;
 		// Menú Lista
 		case ID_MENULISTA_ABRIRCARPETA			:	Lista_AbrirEnExplorador();				return;
+		case ID_MENULISTA_INFORMACION			:	Lista_Informacion();					return;
 		case ID_MENULISTA_PROPIEDADES			:	Lista_Propiedades();					return;
 		case ID_MENULISTA_MOSTRARBD             :   Lista_MostrarEnBaseDatos();				return;
 		case ID_MENULISTA_ELIMINAR              :   Lista_EliminarSeleccionados();			return;

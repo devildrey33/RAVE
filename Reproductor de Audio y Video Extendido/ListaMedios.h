@@ -59,7 +59,7 @@ class ListaMedios : public DWL::DListaEx {
 								// Posición en la lista del medio especificado (puede ser -1 si no hay medio actual)
 	const LONG_PTR              PosMedio(ItemMedio *pMedio);
 
-	
+	std::wstring                Nombre;
    protected:
 
 								// Función que parsea un M3u previamente cargado en memoria 

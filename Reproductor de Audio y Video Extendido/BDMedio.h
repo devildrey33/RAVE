@@ -79,8 +79,8 @@ class BDMedio {
 									// Convierte la pista de UINT a std::wstring y la devuelve en el parámetro nPistaStr
 	void							PistaStr(std::wstring &nPistaStr);
 
-									// Función que obtiene todos los datos del medio en la BD
-	void							ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades, RaveSQLite *BD);
+									// Función virtual que obtiene todos los datos del medio en la BD
+	virtual void					ObtenerFila(sqlite3_stmt *SqlQuery, DWL::DUnidadesDisco &Unidades, RaveSQLite *BD);
 	void							ObtenerMomentos(const UINT nId);
 
 	std::wstring					Proporcion;
@@ -108,4 +108,21 @@ class BDMedio {
 									//  BD             [IN]  : Puntero a la base de datos de donde  queremos hacer la consulta.
 									//  UltimoErrorSQL [OUT] : std::wstring con el texto del ultimo error generado por la consulta (si no hay error UltimoErrorSQL.size() será 0)
 	const int						Consulta(const wchar_t *TxtConsulta, sqlite3 *BD, std::wstring &UltimoErrorSQL);
+};
+
+
+
+
+
+// Objeto para los elementos del historial
+class BDMedio_Historial : public BDMedio {
+public:
+	BDMedio_Historial(void) : BDMedio(), Id(0) {	}
+	BDMedio_Historial(sqlite3_stmt* SqlQuery, DWL::DUnidadesDisco& Unidades, RaveSQLite* BD);
+	BDMedio_Historial(const BDMedio& c);
+
+	virtual void	ObtenerFila(sqlite3_stmt* SqlQuery, DWL::DUnidadesDisco& Unidades, RaveSQLite* BD);
+	UINT			Id;
+	std::wstring	FechaInicio;
+	std::wstring	FechaFin;
 };

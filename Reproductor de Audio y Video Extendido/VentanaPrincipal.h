@@ -128,6 +128,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	void                        Arbol_AgregarALista(const BOOL NuevaLista);
 								// Función para abrir la carpeta del nodo especificado
 	void						Arbol_AbrirCarpeta(void);
+								// Función para mostrar un tooltip con información del nodo
+	void						Arbol_Informacion(void);
 								// Función para abrir la ventana de propiedades de windows del nodo especificado (puede ser un directorio o un medio)
 	void						Arbol_Propiedades(void);
 								// Función para asignar la nota de un nodo (si se hace en un directorio, se asignará la nota para todos sus medios)
@@ -173,6 +175,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						Lista_Pausa(void);
 								// Función que para el medio actual
 	void						Lista_Stop(void);
+								// Función para mostrar el tooltip del medio marcado en la lista
+	void						Lista_Informacion(void);
 								// Función que muestra las propiedades el medio especificado
 	void                        Lista_Propiedades(void);
 								// Función que abre la carpeta del medio especificado

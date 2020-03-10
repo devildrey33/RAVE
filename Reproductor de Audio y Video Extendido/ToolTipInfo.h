@@ -156,6 +156,7 @@ class ToolTipsInfo {
 	void                            MostrarToolTipError(const wchar_t *Texto);
 	void                            MostrarToolTipError(std::wstring &Texto);
 	void                            MostrarToolTip(BDMedio &Medio);
+	void                            MostrarToolTip(EtiquetaBD *Etiqueta);
 //	void                            EliminarToolTip(ToolTipInfo *ToolTip);
 	HWND                            Padre(void);
 	inline DWL::DhWnd              *DPadre(void) { return _Padre; };

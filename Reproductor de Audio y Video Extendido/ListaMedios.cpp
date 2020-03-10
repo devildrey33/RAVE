@@ -5,7 +5,7 @@
 #include <DArchivoInternet.h>
 #include <DStringUtils.h>
 
-ListaMedios::ListaMedios(void) : MedioActual(NULL), Errores(0) {
+ListaMedios::ListaMedios(void) : MedioActual(NULL), Errores(0), Nombre(L"Lista") {
 }
 
 
@@ -298,7 +298,8 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse& DatosMouse) {
 		BOOL nActivar				= (_ItemResaltado == -1) ? FALSE : TRUE;
 		BOOL nBuscarBDActivado		= nActivar;
 		BOOL nMomentosActivado		= nActivar;
-		BOOL nPropiedadesActivado	= nActivar;
+		BOOL nInformacionActivado   = nActivar;
+		BOOL nPropiedadesActivado   = nActivar;
 
 		// Si el item marcado corresponde a un medio
 		if (_ItemMarcado > -1 && _ItemMarcado < static_cast<LONG_PTR>(_Items.size())) {			
@@ -323,10 +324,12 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse& DatosMouse) {
 					if (TmpMenu) TmpMenu->Parametro = TmpMedio.Hash;
 				}
 			}
+			// Hay mas de uno seleccionado
 			else {
 				nMomentosActivado	 = FALSE;
 				nBuscarBDActivado	 = FALSE;
 				nPropiedadesActivado = FALSE;
+				nInformacionActivado = FALSE;
 			}
 		}
 
@@ -355,8 +358,9 @@ void ListaMedios::Evento_MouseSoltado(DWL::DEventoMouse& DatosMouse) {
 		App.VentanaRave.Menu_Lista.Menu(2)->Activado(nMomentosActivado);
 		App.VentanaRave.Menu_Lista.Menu(3)->Activado(nBuscarBDActivado);
 		App.VentanaRave.Menu_Lista.Menu(4)->Activado(nActivar);
-		App.VentanaRave.Menu_Lista.Menu(5)->Activado(nPropiedadesActivado);
-/*		for (size_t i = 0; i < App.VentanaRave.Menu_Lista.TotalMenus(); i++) {
+		App.VentanaRave.Menu_Lista.Menu(5)->Activado(nInformacionActivado);
+		App.VentanaRave.Menu_Lista.Menu(6)->Activado(nPropiedadesActivado);
+		/*		for (size_t i = 0; i < App.VentanaRave.Menu_Lista.TotalMenus(); i++) {
 			if		(i == 2)	App.VentanaRave.Menu_Lista.Menu(i)->Activado(nMomentosActivado);
 			else if (i == 3)	App.VentanaRave.Menu_Lista.Menu(i)->Activado(nBuscarBDActivado);
 			else if (i == 5)	App.VentanaRave.Menu_Lista.Menu(i)->Activado(nPropiedadesActivado);

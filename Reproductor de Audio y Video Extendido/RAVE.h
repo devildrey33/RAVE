@@ -87,6 +87,7 @@ class RAVE : public DApp {
 	inline void                     MostrarToolTipPlayer(const wchar_t *Texto)			{ _ToolTipPlayer.MostrarToolTip(Texto); };
 	inline void                     MostrarToolTipPlayer(std::wstring &Texto)			{ _ToolTipPlayer.MostrarToolTip(Texto); };
 	inline void                     MostrarToolTipPlayer(BDMedio &Medio)				{ _ToolTipPlayer.MostrarToolTip(Medio); };
+	inline void                     MostrarToolTipPlayer(EtiquetaBD *Etiqueta)			{ _ToolTipPlayer.MostrarToolTip(Etiqueta); };
 	inline void                     MostrarToolTipPlayerError(const wchar_t *Texto)		{ _ToolTipPlayer.MostrarToolTipError(Texto); };
 	inline void                     MostrarToolTipPlayerError(std::wstring &Texto)		{ _ToolTipPlayer.MostrarToolTipError(Texto); };
 

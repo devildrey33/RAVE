@@ -649,6 +649,11 @@ void ToolTipsInfo::MostrarToolTipError(std::wstring &Texto) {
 	_MostrarToolTip(TT);
 }
 
+void ToolTipsInfo::MostrarToolTip(EtiquetaBD *Etiqueta) {
+	ToolTipInfo *TT = new ToolTipInfo_Etiqueta(Etiqueta);
+	_MostrarToolTip(TT);
+}
+
 void ToolTipsInfo::MostrarToolTip(BDMedio &Medio) {
 	ToolTipInfo *TT = new ToolTipInfo_Medio(Medio);
 	_MostrarToolTip(TT);

@@ -250,6 +250,9 @@
     <ClInclude Include="Marco_Audio.h">
       <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
     </ClInclude>
+    <ClInclude Include="Fecha_Historial.h">
+      <Filter>Base de datos</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Reproductor de Audio y Video Extendido.cpp">
@@ -401,6 +404,9 @@
     </ClCompile>
     <ClCompile Include="Marco_Audio.cpp">
       <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
+    </ClCompile>
+    <ClCompile Include="Fecha_Historial.cpp">
+      <Filter>Base de datos</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -584,6 +590,12 @@
       <Filter>Archivos de recursos</Filter>
     </Image>
     <Image Include="..\Iconos\IDI_Teclado.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Calendario.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Historial.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>

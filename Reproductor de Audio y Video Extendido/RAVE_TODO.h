@@ -461,7 +461,8 @@
 		-  BD
 			V  Moure les arrels de la BD dels medis a la BD de les opcions
 			V  Moure les UnidadesDisco de la BD a la App
-			V  Crear una taula UltimaLista2 nomes amb la id foregin, i descartar UltimaLista
+			V  Crear una taula UltimaLista2 nomes amb la id foregin, i descartar UltimaLista.
+				V  Carregar la ultima llista amb una sola consulta SQL
 			-  Crear taula a les opcions per guardar les posicions i tamanys de les finestres, i treure tot el barullo de PosX PosY de les opcions.
 
 		-  Control + [F / B] integrat en la llista i l'arbre, que resalti els items / nodos.
