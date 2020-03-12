@@ -62,6 +62,9 @@
     <Filter Include="Ventanas y Controles\Ventanas\Opciones">
       <UniqueIdentifier>{ac49779c-c796-4260-a27e-aa79262fe5f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Base de datos\Historial">
+      <UniqueIdentifier>{a2995a58-81ae-4fc4-8632-923000f018a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -250,8 +253,14 @@
     <ClInclude Include="Marco_Audio.h">
       <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
     </ClInclude>
-    <ClInclude Include="Fecha_Historial.h">
-      <Filter>Base de datos</Filter>
+    <ClInclude Include="Historial_Fecha.h">
+      <Filter>Base de datos\Historial</Filter>
+    </ClInclude>
+    <ClInclude Include="Historial_Medio.h">
+      <Filter>Base de datos\Historial</Filter>
+    </ClInclude>
+    <ClInclude Include="Historial_Lista.h">
+      <Filter>Base de datos\Historial</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -405,8 +414,14 @@
     <ClCompile Include="Marco_Audio.cpp">
       <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
     </ClCompile>
-    <ClCompile Include="Fecha_Historial.cpp">
-      <Filter>Base de datos</Filter>
+    <ClCompile Include="Historial_Fecha.cpp">
+      <Filter>Base de datos\Historial</Filter>
+    </ClCompile>
+    <ClCompile Include="Historial_Lista.cpp">
+      <Filter>Base de datos\Historial</Filter>
+    </ClCompile>
+    <ClCompile Include="Historial_Medio.cpp">
+      <Filter>Base de datos\Historial</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

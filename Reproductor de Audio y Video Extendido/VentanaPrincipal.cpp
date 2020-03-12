@@ -536,7 +536,11 @@ void VentanaPrincipal::Arbol_AgregarALista(const BOOL NuevaLista) {
 		Tmp = static_cast<NodoBD *>(Arbol.BuscarNodoSiguiente(Tmp, TRUE));
 	}
 
-	if (App.MP.ComprobarEstado() != EnPlay) App.VentanaRave.Lista_Play();
+	// Guardo el texto del nodo marcado como nombre de la lista para el historial
+	if (Arbol.MedioMarcado() != NULL && NuevaLista == TRUE) App.BD.GuardarHistorial_Lista(Historial_Lista(Arbol.MedioMarcado()->Texto));
+
+
+	if (App.MP.ComprobarEstado() != EnPlay && App.MP.ComprobarEstado() != EnPausa) App.VentanaRave.Lista_Play();
 }
 
 void VentanaPrincipal::Arbol_AbrirCarpeta(void) {

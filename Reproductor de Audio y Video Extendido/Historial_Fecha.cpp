@@ -20,7 +20,7 @@ Historial_Fecha::Historial_Fecha(std::wstring &StrFecha) : _Tiempo({ 0, 0, 0, 0,
 
 // Función que asigna la fecha actual
 void Historial_Fecha::AsignarFechaActual(void) {
-	GetSystemTime(&_Tiempo);
+	GetLocalTime(&_Tiempo);
 }
 
 // Función que asigna la fecha partiendo de una cadena de caracteres con el siguiente formato : "yyyy-mm-dd hh:mm:ss"
@@ -82,12 +82,12 @@ const FILETIME Historial_Fecha::Valor(void) {
 }
 
 // Operador que asigna una nueva Historial_Fecha a este objeto
-Historial_Fecha &Historial_Fecha::operator = (const Historial_Fecha&c) {
+Historial_Fecha &Historial_Fecha::operator = (const Historial_Fecha &c) {
 	_Tiempo = c._Tiempo;
 	return *this;
 }
 
-// Operador que asigna una nueva Fecha_Historial a partir de la fecha de 64 bits especificada
+// Operador que asigna una nueva Historial_Fecha a partir de la fecha de 64 bits especificada
 Historial_Fecha &Historial_Fecha::operator = (const FILETIME nFecha) {
 	FILETIME ft = nFecha;
 	BOOL hrback = FileTimeToSystemTime(&ft, &_Tiempo);

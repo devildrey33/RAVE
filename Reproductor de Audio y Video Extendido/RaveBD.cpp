@@ -4,16 +4,8 @@
 #include "DStringUtils.h"
 #include "ListaMedios.h"
 
-RaveBD::RaveBD(void) /*: _BD(NULL)/*, _Opciones_Volumen(0), _Opciones_PosX(0), _Opciones_PosY(0), _Opciones_VentanaOpciones_PosX(0), _Opciones_VentanaOpciones_PosY(0), _Opciones_DlgDirectorios_PosX(0), _Opciones_DlgDirectorios_PosY(0), 
-								  _Opciones_VentanaAnalizar_PosX(0), _Opciones_VentanaAnalizar_PosY(0), _Opciones_Ancho(0), _Opciones_Alto(0), _Opciones_Shufle(FALSE), _Opciones_Repeat(Tipo_Repeat_NADA), _Opciones_Inicio(Tipo_Inicio_NADA),
-								  _Opciones_Version(0.0f), _Opciones_OcultarMouseEnVideo(0), _Opciones_MostrarObtenerMetadatos(FALSE), _Opciones_MostrarAsociarArchivos(FALSE), _Opciones_AnalizarMediosPendientes(FALSE), 
-								  _Opciones_BuscarActualizacion(FALSE), _Opciones_TiempoAnimaciones(0), _Opciones_TiempoToolTips(0), _Opciones_NoAgregarMedioMenos25(FALSE), _Opciones_NoGenerarListasMenos3(FALSE), 
-							 	  _Opciones_Sumar005(FALSE), _Opciones_AlineacionControlesVideo(0), _Opciones_OpacidadControlesVideo(0), _Opciones_EfectoFadeAudioMS(10000), _Opciones_DlgDirectorios_Ancho(400), _Opciones_DlgDirectorios_Alto(600), 
-								  _Opciones_VentanaMomentos_PosX(100), _Opciones_VentanaMomentos_PosY(100), _Opciones_OcultarTooltipsMouse(0), _Opciones_MostrarMedioActualTitulo(TRUE), 
-								  _Opciones_MezclarListaGenero(0), _Opciones_MezclarListaGrupo(0), _Opciones_MezclarListaDisco(0), _Opciones_MezclarLista50Can(0), _Opciones_MezclarListaNota(0), 
-								  _Opciones_GuardarBSCP(1)*/ {
+RaveBD::RaveBD(void) : RaveSQLite(), Historial_UltimaIDLista(0) {
 }
-
 
 
 // Crea / carga la base de datos
@@ -463,7 +455,8 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, DWL::
 	// Asigno el nombre a la lista
 	App.VentanaRave.Lista.Nombre = ToolTip;
 
-	// TODO : Agregar lista al historial
+	// Agrego la lista al historial
+	App.BD.GuardarHistorial_Lista(Historial_Lista(ToolTip));
 
 	return (SqlRet != SQLITE_BUSY);
 }
@@ -607,7 +600,7 @@ const BOOL RaveBD::_CrearTablas(void) {
 		return FALSE;
 
 	// Creo la tabla para guardar los medios del historial
-	std::wstring CrearTablaHistorial =	L"CREATE TABLE Historial ("
+	std::wstring CrearTablaHistorial =	L"CREATE TABLE Historial_Medio ("
 											//L"Id"				L" INTEGER PRIMARY KEY,"
 											L"IdMedio"			L" INTEGER,"
 											L"IdLista"			L" INTEGER,"
@@ -986,6 +979,30 @@ const BOOL RaveBD::GuardarUltimaLista(void) {
 
 }
 
+// Guarda los datos de una lista en el historial
+const BOOL RaveBD::GuardarHistorial_Lista(Historial_Lista &HL) {
+	std::wstring Fecha;
+	int          SqlRet = 0;
+	HL.Fecha.Texto(Fecha);
+	std::wstring Q = L"INSERT INTO Historial_Lista (Nombre, Fecha) VALUES('" + HL.Nombre + L"', '" + Fecha + L"')";
+	SqlRet = Consulta(Q);
+	if (SqlRet != SQLITE_DONE)
+		return FALSE;
+	Historial_UltimaIDLista = UltimaIdInsertada();
+	return TRUE;
+}
+
+// Guarda los datos de un medio en el historial
+const BOOL RaveBD::GuardarHistorial_Medio(Historial_Medio &HM) {
+	std::wstring Fecha;
+	int          SqlRet = 0;
+	HM.Fecha.Texto(Fecha);
+	std::wstring Q = L"INSERT INTO Historial_Medio (IdLista, IdMedio, Fecha) VALUES(" + std::to_wstring(HM.IdLista) + L", " + std::to_wstring(HM.IdMedio) + L", '" + Fecha + L"')";
+	SqlRet = Consulta(Q);
+	if (SqlRet != SQLITE_DONE)
+		return FALSE;
+	return TRUE;
+}
 
 /* Función que analiza el string para buscar posibles numeros de pista, para ello separa el string por carácteres y analiza cada sub-string por separado
 	Una vez identificados los sub-strings mira si hay alguno de ellos que pueda ser la pista, y en caso de haber mas de uno se usará el que sea más explicito.
@@ -1329,8 +1346,8 @@ const int RaveBD::Distancia(std::wstring &Origen, std::wstring &Destino) {
 	const LONGLONG n = static_cast<int>(Origen.size());
 	const LONGLONG m = static_cast<int>(Destino.size());
 
-	if (n < 5) return n + m; // Si origen es mas pequeño que 4 caracteres
-	if (m < 5) return m + n; // Si destino es mas pequeño que 4 caracteres
+	if (n < 5) return static_cast<int>(n + m); // Si origen es mas pequeño que 4 caracteres
+	if (m < 5) return static_cast<int>(m + n); // Si destino es mas pequeño que 4 caracteres
 							 //	if (n < 3) return n; // Si origen es mas pequeño que 2 caracteres
 							 //	if (m < 3) return m; // Si destino es mas pequeño que 2 caracteres
 

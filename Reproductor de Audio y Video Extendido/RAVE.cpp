@@ -6,6 +6,8 @@
 #include <DIcono.h>
 #include <DRegistro.h>
 #include <DDirectoriosWindows.h>
+#include "Historial_Lista.h"
+
 
 //#include <gdiplus.h>
 
@@ -185,7 +187,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 			break;
 		// Ejecución desde el explorador (Reproducir)
 		case LineaComando_Reproducir:
-			VentanaRave.Lista.BorrarListaReproduccion();
+			VentanaRave.Lista.BorrarListaReproduccion();			
 			Ret = EjecutarReproductor(Paths, hWndPlayer, nCmdShow);
 			break;
 		// Ejecución para mostrar la ventana de error crítico
@@ -284,11 +286,18 @@ const BOOL RAVE::EjecutarReproductor(std::vector<std::wstring> &Paths, HWND hWnd
 				case Tipo_Inicio_LoQueSea	:	VentanaRave.GenerarListaAleatoria(TLA_LoQueSea);					break;
 				case Tipo_Inicio_Nota		:	VentanaRave.GenerarListaAleatoria(TLA_Nota);						break;
 				case Tipo_Inicio_UltimaLista:	BD.ObtenerUltimaLista(Unidades);									break;
+				default                     :   BD.GuardarHistorial_Lista(Historial_Lista(L"Lista"));				break;
 			}
-	#endif
+		#else
+			// Guardo una lista inicial en el historial
+			BD.GuardarHistorial_Lista(Historial_Lista(L"Lista"));
+		#endif
+
 	}
 	// Hay paths, los añado a la lista
 	else {
+		// Guardo una lista inicial en el historial
+		BD.GuardarHistorial_Lista(Historial_Lista(L"Lista"));
 		for (size_t i = 0; i < Paths.size(); i++) {
 			if (Paths[i] != L"-r") {
 				MemCompartida.AgregarPath(Paths[i]);

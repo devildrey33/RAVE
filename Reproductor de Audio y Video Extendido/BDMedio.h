@@ -113,7 +113,7 @@ class BDMedio {
 
 
 
-
+/*
 // Objeto para los elementos del historial
 class BDMedio_Historial : public BDMedio {
 public:
@@ -125,4 +125,4 @@ public:
 	UINT			Id;
 	std::wstring	FechaInicio;
 	std::wstring	FechaFin;
-};
+};*/

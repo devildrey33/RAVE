@@ -201,7 +201,9 @@
     <ClInclude Include="ControlSeparador.h" />
     <ClInclude Include="ControlVisualizacion.h" />
     <ClInclude Include="EtiquetaBD.h" />
-    <ClInclude Include="Fecha_Historial.h" />
+    <ClInclude Include="Historial_Fecha.h" />
+    <ClInclude Include="Historial_Lista.h" />
+    <ClInclude Include="Historial_Medio.h" />
     <ClInclude Include="ItemMedio.h" />
     <ClInclude Include="ListaMedios.h" />
     <ClInclude Include="ListaRaices.h" />
@@ -267,7 +269,9 @@
     <ClCompile Include="ControlVisualizacion.cpp" />
     <ClCompile Include="EnviarDump.cpp" />
     <ClCompile Include="ExtensionesValidas.cpp" />
-    <ClCompile Include="Fecha_Historial.cpp" />
+    <ClCompile Include="Historial_Fecha.cpp" />
+    <ClCompile Include="Historial_Lista.cpp" />
+    <ClCompile Include="Historial_Medio.cpp" />
     <ClCompile Include="ListaMedios.cpp" />
     <ClCompile Include="ListaRaices.cpp" />
     <ClCompile Include="Marco_Audio.cpp" />
