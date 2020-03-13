@@ -41,7 +41,7 @@ class ArbolBD : public DWL::DArbolEx {
   public:
 							ArbolBD(void);
 	                       ~ArbolBD(void);
-	NodoBD		           *BuscarHash(sqlite3_int64 bHash);
+	NodoBD		           *BuscarHash(sqlite3_int64 bHash, NodoBD *Desde = nullptr);
 	NodoBD                 *AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre, const TCHAR *cTexto, const sqlite3_int64 nHash, const UINT Id);
 							// Devuelve el numero de medios agregados
 	const size_t			AgregarNodoALista(NodoBD *nNodo);
@@ -52,6 +52,7 @@ class ArbolBD : public DWL::DArbolEx {
 
 	void					ObtenerPath(NodoBD *nNodo, std::wstring &rPath);
 	void					ExplorarPath(NodoBD *nNodo);
+	void					ExplorarHistorial(NodoBD* nNodo);
 							// Falta fer una funció com la de const BOOL ArbolBD::TreeView_Evento_Nodo_Expandiendo(DTreeView_Nodo *nNodo) adaptada a aquesta..... (ArbolBD DEPRECATED.cpp ArbolBD::TreeView_Evento_Nodo_Expandiendo)
 	void					Evento_Nodo_Expandido(DWL::DArbolEx_Nodo *nNodo, const BOOL nExpandido);
 	void					Evento_MouseSoltado(DWL::DEventoMouse &DatosMouse);
@@ -70,9 +71,11 @@ class ArbolBD : public DWL::DArbolEx {
 	void					Opacidad(const BYTE nNivel);
 	const BYTE              Opacidad(void);
 
+	NodoBD                 *BDNodoHistorial;
   protected:
     void                   _AgregarMedio(NodoBD *nPadre, BDMedio *nMedio);
 	ToolTipInfo_Medio      _ToolTipM;
 	ToolTipInfo_Etiqueta   _ToolTipE;
+	
 };
 

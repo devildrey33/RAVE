@@ -443,20 +443,24 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, DWL::
 	}
 
 	// Muestro el tooltip en el player
-	std::wstring ToolTip;
+	std::wstring ToolTip, ToolTip2, ToolTip3;
 	switch (Tipo) {
-		case TLA_Genero:	ToolTip = L"Lista aleatória por Genero \""	+ Etiquetas[Rand]->Texto + L"\" generada con " + std::to_wstring(TotalAgregados) + L" canciones.";	break;
-		case TLA_Grupo:		ToolTip = L"Lista aleatória por Grupo \""	+ Etiquetas[Rand]->Texto + L"\" generada con " + std::to_wstring(TotalAgregados) + L" canciones.";	break;
-		case TLA_Disco:		ToolTip = L"Lista aleatória por Disco \""	+ Etiquetas[Rand]->Texto + L"\" generada con " + std::to_wstring(TotalAgregados) + L" canciones.";	break;
-		case TLA_50Medios:	ToolTip = L"Lista aleatória con "			+ std::to_wstring(TotalAgregados) + L" canciones generada.";										break;
-		case TLA_Nota:		ToolTip = L"Lista aleatória por Nota con "  + std::to_wstring(TotalAgregados) + L" canciones generada.";										break;
+		case TLA_Genero:	ToolTip3 = L"Lista aleatória por "; ToolTip = L"Genero \"" + Etiquetas[Rand]->Texto + L"\""; ToolTip2 = L"\" generada con " + std::to_wstring(TotalAgregados) + L" canciones.";	break;
+		case TLA_Grupo:		ToolTip3 = L"Lista aleatória por "; ToolTip = L"Grupo \""  + Etiquetas[Rand]->Texto + L"\""; ToolTip2 = L"\" generada con " + std::to_wstring(TotalAgregados) + L" canciones.";	break;
+		case TLA_Disco:		ToolTip3 = L"Lista aleatória por "; ToolTip = L"Disco \""  + Etiquetas[Rand]->Texto + L"\""; ToolTip2 = L"\" generada con " + std::to_wstring(TotalAgregados) + L" canciones.";	break;
+		case TLA_50Medios:	ToolTip3 = L""; ToolTip = L"Lista aleatória"; ToolTip2 =L" con " + std::to_wstring(TotalAgregados) + L" canciones generada.";													break;
+		case TLA_Nota:		ToolTip3 = L""; ToolTip = L"Lista por Nota";  ToolTip2 = L" con " + std::to_wstring(TotalAgregados) + L" canciones generada.";													break;
 	}
-	App.MostrarToolTipPlayer(ToolTip);
 	// Asigno el nombre a la lista
 	App.VentanaRave.Lista.Nombre = ToolTip;
-
 	// Agrego la lista al historial
-	App.BD.GuardarHistorial_Lista(Historial_Lista(ToolTip));
+	Historial_Lista Historial(ToolTip);
+	App.BD.GuardarHistorial_Lista(Historial);
+	// Agrego la entrada del historial a la BD
+	App.VentanaRave.Arbol_AgregarHistorial_Lista(Historial);
+
+	// Muestro el tooltip
+	App.MostrarToolTipPlayer(ToolTip3 + ToolTip + ToolTip2);
 
 	return (SqlRet != SQLITE_BUSY);
 }

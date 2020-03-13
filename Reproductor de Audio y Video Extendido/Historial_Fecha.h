@@ -45,7 +45,12 @@ class Historial_Fecha {
 
 											// Función que devuelve la fecha y la hora en formato LONGLONG
     const FILETIME							Valor(void);
-	const std::wstring                     &Texto(std::wstring &OUT_Str);
+											// Función que devuelve un string con la fecha y el tiempo en formato "YYYY-MM-DD HH:MM:SS"
+	std::wstring                           &Texto(std::wstring &OUT_Str);
+											// Función que devuelve un string con la fecha en formato "YYYY-MM-DD"
+	std::wstring					       &Fecha(std::wstring& OUT_Str);
+											// Función que devuelve un string con el tiempo en formato "HH:MM:SS"
+	std::wstring                           &Tiempo(std::wstring &OUT_Str);
   protected:
 	void                                   _ObtenerDiaSemana(void);
 //    std::wstring                           _StrFecha;

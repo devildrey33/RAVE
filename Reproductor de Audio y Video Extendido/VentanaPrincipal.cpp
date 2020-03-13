@@ -537,7 +537,14 @@ void VentanaPrincipal::Arbol_AgregarALista(const BOOL NuevaLista) {
 	}
 
 	// Guardo el texto del nodo marcado como nombre de la lista para el historial
-	if (Arbol.MedioMarcado() != NULL && NuevaLista == TRUE) App.BD.GuardarHistorial_Lista(Historial_Lista(Arbol.MedioMarcado()->Texto));
+	if (Arbol.MedioMarcado() != NULL && NuevaLista == TRUE) {
+		std::wstring Txt = (Arbol.MedioMarcado()->TipoNodo != ArbolBD_TipoNodo_Historial_Lista) ? Arbol.MedioMarcado()->Texto : Arbol.MedioMarcado()->Texto.substr(9);
+		Historial_Lista Historial(Txt);
+		App.BD.GuardarHistorial_Lista(Historial);
+
+		// Agrego la entrada del historial a la BD
+		App.VentanaRave.Arbol_AgregarHistorial_Lista(Historial);
+	}
 
 
 	if (App.MP.ComprobarEstado() != EnPlay && App.MP.ComprobarEstado() != EnPausa) App.VentanaRave.Lista_Play();
@@ -1223,11 +1230,29 @@ NodoBD *VentanaPrincipal::Arbol_AgregarDir(std::wstring *Path, const BOOL nRepin
 	if (Ret == NULL) {
 		Ret = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Directorio, TmpNodo, Filtrado.c_str(), 0, 0);
 	}
-	//	delete Path;
 	if (nRepintar == TRUE)	Arbol.Repintar();
 
 	return Ret;
 }
+
+// Función que agrega una lista del historial al arbol de la base de datos
+NodoBD *VentanaPrincipal::Arbol_AgregarHistorial_Lista(Historial_Lista &Lista) {
+	std::wstring StrFecha, StrTiempo, StrNombre;
+	NodoBD *NodoFecha = nullptr;
+	// Busco un nodo con la misma fecha
+	NodoFecha = Arbol.BuscarHijoTxt(Lista.Fecha.Fecha(StrFecha), Arbol.BDNodoHistorial);
+	// Si el nodo no existe, lo creo
+	if (NodoFecha == nullptr) 	NodoFecha = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Historial_Fecha, Arbol.BDNodoHistorial, StrFecha.c_str(), 0, 0);
+	
+	// Agrego el nodo para la lista
+	StrNombre = Lista.Fecha.Tiempo(StrTiempo) + L" " + Lista.Nombre;
+	NodoBD *Ret = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Historial_Lista, NodoFecha, StrNombre.c_str() , 0, static_cast<UINT>(Lista.Id));
+
+	Arbol.Repintar();
+
+	return Ret;
+}
+
 
 const BOOL VentanaPrincipal::Arbol_MostrarMedio(BDMedio &mMedio) {
 	// Si no hay raíz no hay galletas
@@ -1302,7 +1327,7 @@ void VentanaPrincipal::AnalizarBD(void) {
 
 void VentanaPrincipal::ActualizarArbol(void) {
 	// Para evitar un posible dead lock miro si el menú está activado, y si no lo está es que se acaba de llamar a esta función y se está esperando a que termine el thread del analisis
-	if (Menu_ArbolBD.Menu(6)->Activado() == FALSE) return;
+	if (Menu_ArbolBD.Menu(7)->Activado() == FALSE) return;
 
 	// Desactivo el menú actualizar
 	Menu_ArbolBD.Menu(6)->Activado(FALSE);
@@ -1322,7 +1347,7 @@ void VentanaPrincipal::ActualizarArbol(void) {
 	Arbol.BorrarTodo();
 
 	NodoBD *Tmp = NULL;
-
+	
 	for (size_t i = 0; i < App.Opciones.TotalRaices(); i++) {
 		if (GetFileAttributes(App.Opciones.Raiz(i)->Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
 			Tmp = Arbol_AgregarRaiz(&App.Opciones.Raiz(i)->Path);
@@ -1331,6 +1356,10 @@ void VentanaPrincipal::ActualizarArbol(void) {
 	}
 
 	Arbol.Repintar();
+
+	Arbol.BDNodoHistorial = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Historial, NULL, L"Historial", 0, 0);
+	Arbol.BDNodoHistorial->Expandido = TRUE;
+
 
 	// Inicio el thread de la busqueda
 	ThreadActualizar.Iniciar(hWnd());
@@ -1432,6 +1461,14 @@ void VentanaPrincipal::ThreadABuscarArchivos_AgregarDirectorio(LPARAM lParam) {
 	Arbol_AgregarDir(TmpStr, TRUE);
 	delete TmpStr; // Hay que borrar de memória el path (se crea en el thread BuscarArchivos y ya no es necesario)
 }
+
+void VentanaPrincipal::ThreadABuscarArchivos_AgregarHistorial(LPARAM lParam) {
+	Historial_Lista *Lista = reinterpret_cast<Historial_Lista *>(lParam);
+	Arbol_AgregarHistorial_Lista(*Lista);
+	delete Lista; // Hay que borrar de memória el Historial_Lista (se crea en el thread BuscarArchivos y ya no es necesario)
+}
+
+
 
 void VentanaPrincipal::ThreadABuscarArchivos_Terminado(const BOOL Cancelado, LPARAM lParam) {
 	ThreadActualizar.Terminar();
@@ -1561,9 +1598,10 @@ LRESULT CALLBACK VentanaPrincipal::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 		case WM_TAAL_AGREGARMEDIO			:	ThreadAgregarArchivosLista_AgregarMedio(wParam);										return 0;
 		case WM_TAAL_TERMINADO				:	ThreadAgregarArchivosLista_Terminado();													return 0;
 
-		// ThreadBuscarArchivos
+		// ThreadActualizarArbol
 		case WM_TBA_AGREGARRAIZ				:	ThreadABuscarArchivos_AgregarRaiz(lParam);												return 0;
 		case WM_TBA_AGREGARDIR				:	ThreadABuscarArchivos_AgregarDirectorio(lParam);										return 0;
+		case WM_TBA_AGREGARHISTORIAL        :	ThreadABuscarArchivos_AgregarHistorial(lParam);											return 0;
 		case WM_TBA_TERMINADO				:	ThreadABuscarArchivos_Terminado(FALSE, lParam);											return 0;
 		case WM_TBA_CANCELADO				:	ThreadABuscarArchivos_Terminado(TRUE, lParam);											return 0;
 

@@ -75,6 +75,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						ThreadABuscarArchivos_AgregarRaiz(LPARAM lParam);
 								// Mensaje que se recibe del thread buscar archivos, que indica que se ha agregado un directorio
 	void						ThreadABuscarArchivos_AgregarDirectorio(LPARAM lParam);
+								// Mensaje que se recibe del thread actualizar arbol que indica que se ha agregado una lista al historial
+	void						ThreadABuscarArchivos_AgregarHistorial(LPARAM lParam);
 								// Mensaje que se recibe del thread buscar archivos, que indica que se ha terminado
 	void						ThreadABuscarArchivos_Terminado(const BOOL Cancelado, LPARAM lParam);
 								// Mensaje que se recibe del thread analizar, que indica que se ha terminado
@@ -136,6 +138,13 @@ class VentanaPrincipal : public DWL::DVentana {
 	void                        Arbol_AsignarNota(const float nNota);
 								// Función para abrir la ventana de momentos
 	void                        Arbol_Momentos(void);
+								// Función que agrega un directorio al arbol de la base de datos
+	NodoBD                     *Arbol_AgregarDir(std::wstring *Path, const BOOL nRepintar = FALSE);
+								// Función que agrega una raíz al arbol de la base de datos
+	NodoBD                     *Arbol_AgregarRaiz(std::wstring *Path);
+								// Función que agrega una lista del historial al arbol de la base de datos
+	NodoBD                     *Arbol_AgregarHistorial_Lista(Historial_Lista &Lista);
+
 								// Thread para actualizar el arbol de la base de datos
 	ThreadActualizarArbol		ThreadActualizar;
 								// Thread para añadir archivos externos a la lista
@@ -156,13 +165,9 @@ class VentanaPrincipal : public DWL::DVentana {
 	void						Actualizacion_Descargada(void);
 								// Función que muestra la ventana que pide al usuario instalar la actualización
 	void						Actualizacion_Existente(void);
-
+								// Función que muestra la ventana para abrir URL's
 	void						MostrarVentanaURL(void);
 
-								// Función que agrega un directorio al arbol de la base de datos
-	NodoBD                     *Arbol_AgregarDir(std::wstring *Path, const BOOL nRepintar = FALSE);
-								// Función que agrega una raíz al arbol de la base de datos
-	NodoBD                     *Arbol_AgregarRaiz(std::wstring *Path);
 								// Función que enumera las pantallas disponibles, y busca una donde ubicar el reproductor
 	static BOOL CALLBACK		EnumerarPantallas(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData);
 								// Función que ejecuta el siguiente medio de la lista (el primero si no se ha ejecutado ninguno)

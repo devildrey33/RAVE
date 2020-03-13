@@ -76,13 +76,69 @@ unsigned long ThreadActualizarArbol::_ThreadActualizar(void *pThis) {
 			TotalArchivos += This->_EscanearDirectorio(R->Path, R);
 		}
 	}
+
 	// Fase 2 : enumerar historial
+//	std::wstring Q = L"SELECT * FROM Historial_Listas";
+	const wchar_t      *SqlStr   = L"SELECT * FROM Historial_Lista ORDER BY Fecha";
+	int					SqlRet   = 0;
+	sqlite3_stmt       *SqlQuery = NULL;
+	Historial_Lista     *Lista   = nullptr;
+
+	SqlRet = sqlite3_prepare16_v2(This->_BD._BD, SqlStr, -1, &SqlQuery, NULL);
+	if (SqlRet) {
+		This->_BD._UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(This->_BD._BD));
+//		return FALSE;
+	}
+	int VecesBusy = 0;
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
+		SqlRet = sqlite3_step(SqlQuery);
+		if (SqlRet == SQLITE_ROW) {
+
+			/*				std::wstring CrearTablaHistorialLista =	L"CREATE TABLE Historial_Lista ("
+											L"Id"				L" INTEGER PRIMARY KEY,"
+											L"Fecha"			L" TEXT,"
+											L"Nombre"			L" TEXT"		
+										L")";*/	
+			Lista = new Historial_Lista(
+				reinterpret_cast<const wchar_t*>(sqlite3_column_text16(SqlQuery, 2)),	// Nombre
+				reinterpret_cast<const wchar_t*>(sqlite3_column_text16(SqlQuery, 1)),	// Fecha
+				static_cast<UINT64>(sqlite3_column_int64(SqlQuery, 0))					// Id
+			);
+
+			// TODO : mirar si la llista te medis en el historial, i en cas contrari borrar el punter Llista
+			int TotalMedios = 0;
+			std::wstring Q = L"SELECT COUNT(*) FROM Historial_Medio WHERE IdLista=" + std::to_wstring(Lista->Id);
+			This->_BD.ConsultaInt(Q, TotalMedios);
+
+			if (TotalMedios > 0) {
+				// Mando la información de la lista del historial al thread principal
+				PostMessage(This->_VentanaPlayer, WM_TBA_AGREGARHISTORIAL, 0, reinterpret_cast<LPARAM>(Lista));
+			}
+			else {
+				delete Lista;
+			}
+		}
+		if (SqlRet == SQLITE_BUSY) {
+			VecesBusy++;
+			if (VecesBusy == 100) break;
+		}
+	}
+
+	sqlite3_finalize(SqlQuery);
+
+	if (SqlRet == SQLITE_ERROR) {
+		This->_BD._UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(This->_BD._BD));
+//		return FALSE;
+	}
+
+
 
 
 	// Termino la transaction para actualizar los datos básicos
 	This->_BD.Consulta(L"COMMIT TRANSACTION");
 	This->_BD.Terminar();
 
+	// Aviso al thread principal de que la busqueda se ha terminado / cancelado
 	if (This->Cancelar() == TRUE)	PostMessage(This->_VentanaPlayer, WM_TBA_CANCELADO, 0, static_cast<LPARAM>(TotalArchivos));
 	else							PostMessage(This->_VentanaPlayer, WM_TBA_TERMINADO, 0, static_cast<LPARAM>(TotalArchivos));
 	

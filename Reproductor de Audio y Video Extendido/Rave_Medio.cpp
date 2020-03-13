@@ -36,10 +36,12 @@ void Rave_Medio::ActualizarIconos(int nTipo) {
 				nIcono = RAVE_Iconos::RAVE_Icono_Pausa; // Pausa
 				break;
 		}
-		// Actualizo el nodo del ArbolBD
+		// Actualizo los nodos del ArbolBD
 		NodoBD *Nodo = App.VentanaRave.Arbol.BuscarHash(Medio->BdMedio.Hash);
-		if (Nodo != NULL)
+		while (Nodo != NULL) {
 			Nodo->Icono(nIcono);
+			Nodo = App.VentanaRave.Arbol.BuscarHash(Medio->BdMedio.Hash, static_cast<NodoBD *>(App.VentanaRave.Arbol.BuscarNodoSiguiente(Nodo , FALSE, NULL)));
+		}
 		App.VentanaRave.Arbol.Repintar();
 		// Actualizo el Item del ListaMedios
 		ItemMedio *Item = App.VentanaRave.Lista.BuscarHash(Medio->BdMedio.Hash);

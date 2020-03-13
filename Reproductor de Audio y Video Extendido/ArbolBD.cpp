@@ -3,7 +3,7 @@
 #include "RAVE_Iconos.h"
 #include "DStringUtils.h"
 
-ArbolBD::ArbolBD(void) {
+ArbolBD::ArbolBD(void) : BDNodoHistorial(nullptr) {
 }
 
 
@@ -23,14 +23,15 @@ void ArbolBD::Evento_Tecla(DWL::DEventoTeclado &DatosTeclado) {
 	App.VentanaRave.Evento_Tecla(DatosTeclado);
 }*/
 
-NodoBD *ArbolBD::BuscarHash(sqlite3_int64 bHash) {
-	if (_Raiz.TotalHijos() == 0) return NULL;
-	NodoBD *Tmp = static_cast<NodoBD *>(_Raiz.Hijo(0));
-	while (Tmp != NULL) {
-		if (Tmp->Hash == bHash) return Tmp;
-		Tmp = static_cast<NodoBD *>(BuscarNodoSiguiente(Tmp, FALSE, NULL));		
+NodoBD *ArbolBD::BuscarHash(sqlite3_int64 bHash, NodoBD *Desde) {
+	if (_Raiz.TotalHijos() == 0) return nullptr;
+	if (Desde == nullptr) Desde = static_cast<NodoBD*>(_Raiz.Hijo(0));
+//	NodoBD *Tmp = static_cast<NodoBD *>(_Raiz.Hijo(0));
+	while (Desde != NULL) {
+		if (Desde->Hash == bHash) return Desde;
+		Desde = static_cast<NodoBD *>(BuscarNodoSiguiente(Desde, FALSE, NULL));
 	}
-	return NULL;
+	return nullptr;
 }
 
 
@@ -38,13 +39,13 @@ NodoBD *ArbolBD::BuscarHash(sqlite3_int64 bHash) {
 NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre, const TCHAR *cTexto, const sqlite3_int64 nHash, const UINT nId) {
 
 	// Busco si existe el hash
-	if ((nTipoNodo == ArbolBD_TipoNodo_Cancion || nTipoNodo == ArbolBD_TipoNodo_Video) && _Raiz.TotalHijos() != 0) {
+/*	if ((nTipoNodo == ArbolBD_TipoNodo_Cancion || nTipoNodo == ArbolBD_TipoNodo_Video) && _Raiz.TotalHijos() != 0) {
 		NodoBD *Tmp = static_cast<NodoBD *>(_Raiz.Hijo(0));
 		while (Tmp != NULL) {
 			if (Tmp->Hash == nHash) return Tmp;
 			Tmp = static_cast<NodoBD *>(BuscarNodoSiguiente(Tmp, FALSE, NULL));
 		}
-	}
+	}*/
 
 	int						 nIcono    = 0;
 	DFuente					 nFuente   = Fuente;
@@ -64,6 +65,15 @@ NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre,
 			break;
 		case ArbolBD_TipoNodo_Directorio:	// Directorio dentro de una raíz
 			nIcono = RAVE_Iconos::RAVE_Icono_Directorio;
+			break;
+		case ArbolBD_TipoNodo_Historial:	// Raíz para el historial
+			nIcono = RAVE_Iconos::RAVE_Icono_Historial;
+			break;
+		case ArbolBD_TipoNodo_Historial_Lista:	// Lista dentro del historial
+			nIcono = RAVE_Iconos::RAVE_Icono_Historial_Lista;
+			break;
+		case ArbolBD_TipoNodo_Historial_Fecha: // Fecha dentro del historial
+			nIcono = RAVE_Iconos::RAVE_Icono_Historial_Fecha;
 			break;
 		default:							// Medio dentro de una raíz o directorio
 			switch(nTipoNodo) {
@@ -124,12 +134,19 @@ const size_t ArbolBD::AgregarNodoALista(NodoBD *nNodo) {
 		case RAVE_Icono_Directorio : // Directorio
 			SqlStr = L"SELECT * FROM Medios WHERE Path LIKE \"%" + Path.substr(1) + L"%\" COLLATE NOCASE ORDER BY GrupoPath, DiscoPath, PistaPath, PistaTag ASC";	// Path.substr(1) se salta la letra de la unidad y deja el path sin letra/unidad.
 			break;																											// La letra de unidad se substituye normalmente por '?' ya que puede ser un medio extraible y no tiene por que estar siempre en la misma letra
+		case RAVE_Icono_Historial_Fecha:
+			SqlStr = L"SELECT * FROM Medios, Historial_Medio WHERE Historial_Medio.Fecha LIKE \"" + nNodo->Texto + L"%\" AND Historial_Medio.IdMedio = Medios.Id";
+//			SqlStr = L"SELECT * FROM Medios, Historial_Medio WHERE Historial_Medio.Fecha";
+			break;
+		case RAVE_Icono_Historial_Lista:
+			SqlStr = L"SELECT * FROM Medios, Historial_Medio WHERE Historial_Medio.IdLista=" + std::to_wstring(nNodo->Id) + L" AND Historial_Medio.IdMedio = Medios.Id";
+			break;
 	}
 
 	sqlite3_stmt   *SqlQuery = NULL;
 	int SqlRet = sqlite3_prepare16_v2(App.BD(), SqlStr.c_str(), -1, &SqlQuery, NULL);
 	if (SqlRet) {
-		const char* Error = sqlite3_errmsg(App.BD());
+		const wchar_t *Error = static_cast<const wchar_t*>(sqlite3_errmsg16(App.BD()));
 		return FALSE;
 	}
 
@@ -228,8 +245,20 @@ NodoBD *ArbolBD::BuscarHijoTxt(std::wstring &Buscar, NodoBD *nPadre) {
 }
 
 void ArbolBD::Evento_Nodo_Expandido(DWL::DArbolEx_Nodo *nNodo, const BOOL nExpandido) {
+
 	if (nExpandido == TRUE && nNodo->TotalHijos() == 0) {
-		ExplorarPath(static_cast<NodoBD *>(nNodo));
+		switch (nNodo->Icono().ID()) {
+			case RAVE_Iconos::RAVE_Icono_Historial_Lista:
+				ExplorarHistorial(static_cast<NodoBD*>(nNodo));
+				break;
+//			case RAVE_Iconos::RAVE_Icono_Historial_Fecha:
+//				break;
+			default:
+				ExplorarPath(static_cast<NodoBD*>(nNodo));
+				break;
+		}
+		
+		
 	}
 }
 
@@ -248,6 +277,66 @@ void ArbolBD::ObtenerPath(NodoBD *nNodo, std::wstring &rPath) {
 		Tmp = Tmp->Padre();
 	}
 }
+
+// Función que carga una lista del historial partiendo del nodo especificado
+void ArbolBD::ExplorarHistorial(NodoBD* nNodo) {
+	if (nNodo == NULL) return;	
+	ULONGLONG Tick = GetTickCount64();
+	Debug_Escribir_Varg(L"ArbolBD::ExplorarHistorial  Nodo = '%s'\n", nNodo->Texto.c_str());
+	// 
+	std::wstring    SqlStr = L"SELECT Medios.Id, Medios.Hash, Medios.Path, Medios.NombrePath, Medios.TipoMedio, Medios.PistaPath FROM Medios, Historial_Medio WHERE Historial_Medio.IdLista=" + std::to_wstring(nNodo->Id) + L" AND Historial_Medio.IdMedio = Medios.Id";
+	int				SqlRet = 0;
+	sqlite3_stmt* SqlQuery = NULL;
+
+	SqlRet = sqlite3_prepare16_v2(App.BD(), SqlStr.c_str(), -1, &SqlQuery, NULL);
+	if (SqlRet == SQLITE_ERROR) {
+		std::wstring Error = static_cast<const wchar_t*>(sqlite3_errmsg16(App.BD()));
+		return; // Error
+	}
+
+	std::wstring nTmpTxt;
+	int VecesBusy = 0;
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR) {
+		SqlRet = sqlite3_step(SqlQuery);
+		if (SqlRet == SQLITE_ROW) {
+			UINT             mId		= static_cast<UINT>(sqlite3_column_int(SqlQuery, 0));
+			size_t			 mHash		= static_cast<size_t>(sqlite3_column_int64(SqlQuery, 1));
+			std::wstring	 mPath		= reinterpret_cast<const wchar_t*>(sqlite3_column_text16(SqlQuery, 2));
+			std::wstring     mNombre	= reinterpret_cast<const wchar_t*>(sqlite3_column_text16(SqlQuery, 3));
+			Tipo_Medio       mTipoMedio = static_cast<Tipo_Medio>(sqlite3_column_int(SqlQuery, 4));
+			UINT             mPista		= static_cast<UINT>(sqlite3_column_int(SqlQuery, 5));
+			ArbolBD_TipoNodo mTipoNodo	= ArbolBD_TipoNodo_Indefinido;
+
+			// Si la pista es 0, no la pongo
+			if (mPista == 0)		{ nTmpTxt = mNombre; }
+			// Si la pista es menor que 10, le añado un cero delante
+			else if (mPista < 10)	{ nTmpTxt = L"0" + std::to_wstring(mPista) + L" " + mNombre; }
+			// Pistas con 2 o más caracteres
+			else					{ nTmpTxt = std::to_wstring(mPista) + L" " + mNombre; }
+			switch (mTipoMedio) {
+				case Tipo_Medio_Audio:		mTipoNodo = ArbolBD_TipoNodo_Cancion;			break;
+				case Tipo_Medio_Video:		mTipoNodo = ArbolBD_TipoNodo_Video;				break;
+				case Tipo_Medio_IpTv:		mTipoNodo = ArbolBD_TipoNodo_IpTv;				break;
+				case Tipo_Medio_Lista:		mTipoNodo = ArbolBD_TipoNodo_ListaCanciones;	break;
+			}
+			// Me aseguro de que existe el archivo antes de añadir-lo
+			if (GetFileAttributes(mPath.c_str()) != INVALID_FILE_ATTRIBUTES) {
+				AgregarBDNodo(mTipoNodo, static_cast<NodoBD*>(nNodo), nTmpTxt.c_str(), mHash, mId);
+			}
+
+			if (SqlRet == SQLITE_BUSY) {
+				VecesBusy++;
+				if (VecesBusy == 100) break;
+			}
+
+		}
+	}
+
+	sqlite3_finalize(SqlQuery);
+
+	Debug_Escribir_Varg(L"ArbolBD::ExplorarHistorial terminado en = %dMS\n", GetTickCount64() - Tick);
+}
+
 
 // Función que explora el nodo expecificado
 void ArbolBD::ExplorarPath(NodoBD *nNodo) {
@@ -314,7 +403,7 @@ void ArbolBD::ExplorarPath(NodoBD *nNodo) {
 				std::wstring     mNombre	= reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 3));
 				Tipo_Medio       mTipoMedio	= static_cast<Tipo_Medio>(sqlite3_column_int(SqlQuery, 4));
 				UINT             mPista		= static_cast<UINT>(sqlite3_column_int(SqlQuery, 5));
-				ArbolBD_TipoNodo mTipoNodo = ArbolBD_TipoNodo_Indefinido;
+				ArbolBD_TipoNodo mTipoNodo  = ArbolBD_TipoNodo_Indefinido;
 
 				BarrasMedio = DWL::Strings::ContarCaracter(mPath, L'\\');
 

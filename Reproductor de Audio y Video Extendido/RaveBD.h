@@ -121,6 +121,8 @@ class RaveBD : public RaveSQLite {
 								// Obtiene la lista completa de etiquetas
 	const BOOL                  ObtenerEtiquetas(void);
 
+//	Historial_Lista             ObtenerHistorial_Listas();
+
 								// Calcula el total de medios, el total de bytes, el total de tiempo, y la nota media de una etiqueta
 	void						CalcularDatosEtiqueta(EtiquetaBD *Etiqueta);
 								// Asigna la nota especificada a los medios que pertenecen a la etiqueta especificada.
@@ -135,20 +137,7 @@ class RaveBD : public RaveSQLite {
 
 								// Genera una lista aleatoria por el tipo especificado
 	const BOOL                  GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, DWL::DUnidadesDisco &Unidades, const TipoListaAleatoria nTipo = TLA_LoQueSea);
-
-/*								// Funciones para buscar una raíz por su path o por su id
-	BDRaiz                     *BuscarRaiz(std::wstring &nPath);
-	BDRaiz                     *BuscarRaiz(const unsigned long bID);
-								// Función para agregar una raíz a la base de datos
-	const int                   AgregarRaiz(std::wstring &nPath);
-								// Función para eliminar una raíz de la base de datos
-	const BOOL					EliminarRaiz(std::wstring &nPath);
-								// Función que obtiene las raices de la base de datos
-	const BOOL					ObtenerRaices(void);
-								// Funciones para obtener los datos de las raices en memória
-	inline const size_t			TotalRaices(void)		{ return _Raices.size(); }
-	inline BDRaiz              *Raiz(const size_t Pos)  { return _Raices[Pos];   } */
-
+	
 								// Función que crea un Hash partiendo de la ID del disco y el path del medio
 	const sqlite3_int64			CrearHash(std::wstring &nPath);
 
@@ -161,7 +150,7 @@ class RaveBD : public RaveSQLite {
 
 
 	const BOOL                  GuardarHistorial_Lista(Historial_Lista &HL);
-	UINT                        Historial_UltimaIDLista;						// Ultima ID insertada en la tabla Historial_Lista
+	LONG_PTR                    Historial_UltimaIDLista;						// Ultima ID insertada en la tabla Historial_Lista
 	const BOOL                  GuardarHistorial_Medio(Historial_Medio &HM);
 	//DWL::DUnidadesDisco			Unidades;
 

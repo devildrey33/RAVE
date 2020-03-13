@@ -95,7 +95,48 @@ Historial_Fecha &Historial_Fecha::operator = (const FILETIME nFecha) {
 }
 
 // Devuelve una cadena de caracteres con el texto formateado para SQLite
-const std::wstring &Historial_Fecha::Texto(std::wstring &OUT_Str) {
+std::wstring &Historial_Fecha::Texto(std::wstring &OUT_Str) {
+	std::wstring TmpStr, TmpStr2;
+	Fecha(TmpStr);
+	Tiempo(TmpStr2);
+	OUT_Str = TmpStr + L" " + TmpStr2;
+
+	// Convierto el año
+	/*TmpStr = std::to_wstring(_Tiempo.wYear);
+	while (TmpStr.size() < 4) TmpStr.insert(0, L"0");
+	OUT_Str += TmpStr + L"-";
+
+	// Convierto el mes
+	TmpStr = std::to_wstring(_Tiempo.wMonth);
+	while (TmpStr.size() < 2) TmpStr.insert(0, L"0");
+	OUT_Str += TmpStr + L"-";
+
+	// Convierto el dia
+	TmpStr = std::to_wstring(_Tiempo.wDay);
+	while (TmpStr.size() < 2) TmpStr.insert(0, L"0");
+	OUT_Str += TmpStr + L" ";
+
+	// Convierto la hora
+	TmpStr = std::to_wstring(_Tiempo.wHour);
+	while (TmpStr.size() < 2) TmpStr.insert(0, L"0");
+	OUT_Str += TmpStr + L":";
+
+	// Convierto los minutos
+	TmpStr = std::to_wstring(_Tiempo.wMinute);
+	while (TmpStr.size() < 2) TmpStr.insert(0, L"0");
+	OUT_Str += TmpStr + L":";
+
+	// Convierto los segundos
+	TmpStr = std::to_wstring(_Tiempo.wSecond);
+	while (TmpStr.size() < 2) TmpStr.insert(0, L"0");
+	OUT_Str += TmpStr;*/
+
+	return OUT_Str;
+}
+
+
+// Función que devuelve un string con la fecha en formato "YYYY-MM-DD"
+std::wstring& Historial_Fecha::Fecha(std::wstring& OUT_Str) {
 	std::wstring TmpStr;
 
 	// Convierto el año
@@ -111,8 +152,14 @@ const std::wstring &Historial_Fecha::Texto(std::wstring &OUT_Str) {
 	// Convierto el dia
 	TmpStr = std::to_wstring(_Tiempo.wDay);
 	while (TmpStr.size() < 2) TmpStr.insert(0, L"0");
-	OUT_Str += TmpStr + L" ";
+	OUT_Str += TmpStr;
 
+	return OUT_Str;
+}
+
+// Función que devuelve un string con el tiempo en formato "HH:MM:SS"
+std::wstring& Historial_Fecha::Tiempo(std::wstring& OUT_Str) {
+	std::wstring TmpStr;
 	// Convierto la hora
 	TmpStr = std::to_wstring(_Tiempo.wHour);
 	while (TmpStr.size() < 2) TmpStr.insert(0, L"0");
