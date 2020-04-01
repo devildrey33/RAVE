@@ -298,6 +298,176 @@ const BOOL RaveBD::ActualizarMedioAnalisis(BDMedio *nMedio) {
 	return TRUE;
 }
 
+// Genera una lista partiendo de la sugerencia donde se ha hecho click
+const BOOL RaveBD::GenerarListaDesdeSugerencias(DWL::DMenuEx &Menu, const TipoListaAleatoria nTipo) {
+	std::wstring	Q;
+	BOOL			Mezclar = FALSE;
+	// Genero la consulta según el tipo especificado
+	switch (nTipo) {
+		case TLA_Genero :
+			Q = L"SELECT * FROM Medios WHERE Genero=\"" + Menu.Texto() + L"\" ORDER BY GrupoPath, DiscoPath, PistaPath, PistaTag ASC";
+			Debug_Escribir_Varg(L"RaveBD::GenerarListaDesdeSugerencias Tipo : Genero (%s)\n", Menu.Texto().c_str());
+			Mezclar = App.Opciones.MezclarListaGenero();
+			break;
+		case TLA_Grupo :
+			Q = L"SELECT * FROM Medios WHERE (GrupoPath=\"" + Menu.Texto() + L"\") OR (GrupoTag=\"" + Menu.Texto() + L"\") ORDER BY DiscoPath, PistaPath, PistaTag ASC";
+			Debug_Escribir_Varg(L"RaveBD::GenerarListaDesdeSugerencias Tipo : Grupo (%s)\n", Menu.Texto());
+			Mezclar = App.Opciones.MezclarListaGrupo();
+			break;
+		case TLA_Disco :
+			Q = L"SELECT * FROM Medios WHERE (DiscoPath=\"" + Menu.Texto() + L"\") OR (DiscoTag=\"" + Menu.Texto() + L"\") ORDER BY PistaPath, PistaTag ASC";
+			Debug_Escribir_Varg(L"RaveBD::GenerarListaDesdeSugerencias Tipo : Disco (%s)\n", Menu.Texto());
+			Mezclar = App.Opciones.MezclarListaDisco();
+			break;
+	}
+
+	// Ejecuto la consulta 
+	int						SqlRet = 0;
+	sqlite3_stmt           *SqlQuery = NULL;
+	int						VecesBusy = 0;
+	int						TotalAgregados = 0;
+	std::vector<BDMedio>	OUT_Medios;
+
+	SqlRet = sqlite3_prepare16_v2(_BD, Q.c_str(), -1, &SqlQuery, NULL);
+	if (SqlRet) {
+		_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
+		SqlRet = sqlite3_step(SqlQuery);
+		if (SqlRet == SQLITE_ROW) {
+			BDMedio TmpMedio;
+			TmpMedio.ObtenerFila(SqlQuery, App.Unidades, this);
+			if (App.Opciones.NoAgregarMedioMenos25() == TRUE) {
+				// si la nota es mas grande o igual que 2.5
+				if (TmpMedio.Nota >= 2.5f) {
+					if (GetFileAttributes(TmpMedio.Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
+						OUT_Medios.push_back(TmpMedio);
+						TotalAgregados++;
+					}
+				}
+			}
+			else {
+				if (GetFileAttributes(TmpMedio.Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
+					OUT_Medios.push_back(TmpMedio);
+					TotalAgregados++;
+				}
+			}
+		}
+		if (SqlRet == SQLITE_BUSY) {
+			VecesBusy++;
+			if (VecesBusy == 100) break;
+		}
+
+	}
+
+	sqlite3_finalize(SqlQuery);
+
+	// Asigno el estado de los botones de shufle
+	if		(Mezclar == 1)	App.VentanaRave.BotonMezclar.Marcado(TRUE);  // Forzar mezclar
+	else if (Mezclar == 2)	App.VentanaRave.BotonMezclar.Marcado(FALSE); // Forzar sin mezclar
+	App.ControlesPC.BotonMezclar.Marcado(App.VentanaRave.BotonMezclar.Marcado());
+	App.Opciones.Shufle(App.VentanaRave.BotonMezclar.Marcado());
+
+	// Agrego los medios a la lista
+	App.VentanaRave.Lista.BorrarListaReproduccion();
+	for (size_t i = 0; i < OUT_Medios.size(); i++) {
+		App.VentanaRave.Lista.AgregarMedio(&OUT_Medios[i]);
+	}
+	if (App.VentanaRave.BotonMezclar.Marcado() == TRUE) {
+		App.VentanaRave.Lista.Mezclar(TRUE);
+		App.VentanaRave.Lista.MedioActual = NULL;
+	}
+	App.VentanaRave.Lista.Repintar();
+
+
+
+	// Miro si hay algun error en la consulta
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+
+	// Muestro el tooltip en el player
+	std::wstring ToolTip, ToolTip2, ToolTip3;
+	switch (nTipo) {
+		case TLA_Genero:	ToolTip3 = L"Sugerencia por "; ToolTip = L"Genero \"" + Menu.Texto() + L"\""; ToolTip2 = L"\" generada con " + std::to_wstring(TotalAgregados) + L" canciones.";	break;
+		case TLA_Grupo:		ToolTip3 = L"Sugerencia por "; ToolTip = L"Grupo \"" + Menu.Texto() + L"\""; ToolTip2 = L"\" generada con " + std::to_wstring(TotalAgregados) + L" canciones.";	break;
+		case TLA_Disco:		ToolTip3 = L"Sugerencia por "; ToolTip = L"Disco \"" + Menu.Texto() + L"\""; ToolTip2 = L"\" generada con " + std::to_wstring(TotalAgregados) + L" canciones.";	break;
+	}
+	// Asigno el nombre a la lista
+	App.VentanaRave.Lista.Nombre = ToolTip;
+	// Agrego la lista al historial
+	Historial_Lista Historial(ToolTip);
+	App.BD.GuardarHistorial_Lista(Historial);
+	// Agrego la entrada del historial a la BD
+	App.VentanaRave.Arbol_AgregarHistorial_Lista(Historial);
+
+	// Muestro el tooltip
+	App.MostrarToolTipPlayer(ToolTip3 + ToolTip + ToolTip2);
+
+	// Empiezo a reproducir la lista
+	App.VentanaRave.Lista_Play();
+
+	return (VecesBusy != 100) ? TRUE : FALSE;
+
+}
+
+
+// Genera una sugerencia del tipo especificado de etiqueta con 5 etiquetas aleatórias (SOLO SE PUEDE USAR CON LOS TIPOS GENERO, GRUPO, y DISCO)
+const BOOL RaveBD::GenerarSugerenciasMenu(DWL::DMenuEx &Menu, const TipoListaAleatoria nTipo) {
+	std::wstring Q;
+	UINT		 IDMenu = 0;
+	switch (nTipo) {
+		case TLA_Genero:
+			Q = L"SELECT Texto FROM Etiquetas WHERE Tipo & " + std::to_wstring(TIPO_GENERO) + L" != 0 ORDER BY RANDOM() LIMIT 5";
+			IDMenu = ID_MENUBOTONLISTA_GENERAR_GENERO_RND;
+			break;
+		case TLA_Grupo:
+			Q = L"SELECT Texto FROM Etiquetas WHERE Tipo & " + std::to_wstring(TIPO_GRUPOPATH) + L" != 0 AND Tipo & " + std::to_wstring(TIPO_GRUPOTAG) + L" != 0 ORDER BY RANDOM() LIMIT 5";
+			IDMenu = ID_MENUBOTONLISTA_GENERAR_GRUPO_RND;
+			break;
+		case TLA_Disco:
+			Q = L"SELECT Texto FROM Etiquetas WHERE Tipo & " + std::to_wstring(TIPO_DISCOPATH) + L" != 0 AND Tipo & " + std::to_wstring(TIPO_DISCOTAG) + L" != 0 ORDER BY RANDOM() LIMIT 5";
+			IDMenu = ID_MENUBOTONLISTA_GENERAR_DISCO_RND;
+			break;
+		default : // Si el tipo no es válido salgo
+			return FALSE;
+	}
+
+	int				    SqlRet = 0;
+	sqlite3_stmt* SqlQuery = NULL;
+
+	SqlRet = sqlite3_prepare16_v2(_BD, Q.c_str(), -1, &SqlQuery, NULL);
+	if (SqlRet) {
+		_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+	int			VecesBusy		= 0;
+	int			TotalAgregados	= 0;
+	wchar_t    *Etiqueta		= nullptr;
+
+	Menu.EliminarTodosLosMenus();
+
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
+		SqlRet = sqlite3_step(SqlQuery);
+		if (SqlRet == SQLITE_ROW) {
+			const wchar_t *Etiqueta = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 0));
+			Menu.AgregarMenu(IDMenu + TotalAgregados++, Etiqueta, IDI_GENERO);
+		}
+		// Compruebo si está ocupado
+		if (SqlRet == SQLITE_BUSY) {
+			VecesBusy++;
+			if (VecesBusy == 100) break;
+		}
+	}
+
+	sqlite3_finalize(SqlQuery);
+
+	return (VecesBusy != 100) ? TRUE : FALSE;
+}
+
 // Función que genera una lista aleatória por el tipo especificado, y la guarda en la variable OUT_Medios (DEBE EJECUTARSE DESDE EL THREAD PRINCIPAL)
 const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, DWL::DUnidadesDisco& Unidades, const TipoListaAleatoria nTipo) {
 	// si no hay etiquetas solo se puede generar listas aleatorias de 50 medios sin ninguna base, si el tipo especificado no se puede gemerar. salgo

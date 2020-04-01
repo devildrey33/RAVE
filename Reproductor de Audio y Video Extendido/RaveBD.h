@@ -6,6 +6,7 @@
 //#include "BDRaiz.h"
 #include "RAVE_Mensajes.h"
 #include "RaveSQLite.h"
+#include <DMenuEx.h>
 
 enum Estados_Medio {
 	Nada      = 0,
@@ -137,7 +138,11 @@ class RaveBD : public RaveSQLite {
 
 								// Genera una lista aleatoria por el tipo especificado
 	const BOOL                  GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, DWL::DUnidadesDisco &Unidades, const TipoListaAleatoria nTipo = TLA_LoQueSea);
-	
+								// Genera una sugerencia del tipo especificado de etiqueta con 5 etiquetas aleatórias (SOLO SE PUEDE USAR CON LOS TIPOS GENERO, GRUPO, y DISCO)
+	const BOOL                  GenerarSugerenciasMenu(DWL::DMenuEx &Menu, const TipoListaAleatoria nTipo);
+								// Genera una lista partiendo de la sugerencia donde se ha hecho click
+	const BOOL                  GenerarListaDesdeSugerencias(DWL::DMenuEx& Menu, const TipoListaAleatoria nTipo);
+
 								// Función que crea un Hash partiendo de la ID del disco y el path del medio
 	const sqlite3_int64			CrearHash(std::wstring &nPath);
 

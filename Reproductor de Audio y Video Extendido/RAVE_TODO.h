@@ -436,8 +436,12 @@
 
 		-  Suport per unitats de red
 
-		-  Fer una llista / historial dels ultims 50 medis reproduits a la BD.
-			- Afegir data i hora de la reproducció
+		V  Fer una llista / historial dels ultims 50 medis reproduits a la BD.
+			V  Afegir data i hora de la reproducció
+				-  De Moment es infinita... ja li posare un tope de 7 dies o algo aixi..
+				V  Ordenar per mes recent
+
+		-  Fer subgerencies de llistes aleatories en el menu del buto llista.
 
 		-  Fer una llista per etiquetes a la BD.
 

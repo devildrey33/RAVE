@@ -67,19 +67,10 @@ unsigned long ThreadActualizarArbol::_ThreadActualizar(void *pThis) {
 
 	UINT	TotalArchivos = 0;
 	size_t	i             = 0;
-	// Fase 1 : enumerar archivos y directorios
-	This->_BD.Consulta(L"BEGIN TRANSACTION");
-	BDRaiz *R = NULL;
-	for (i = 0; i < This->_Opciones.TotalRaices(); i++) {
-		R = This->_Opciones.Raiz(i);
-		if (GetFileAttributes(R->Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
-			TotalArchivos += This->_EscanearDirectorio(R->Path, R);
-		}
-	}
-
-	// Fase 2 : enumerar historial
+	////////////////////////////////
+	// Fase 1 : enumerar historial
 //	std::wstring Q = L"SELECT * FROM Historial_Listas";
-	const wchar_t      *SqlStr   = L"SELECT * FROM Historial_Lista ORDER BY Fecha";
+	const wchar_t      *SqlStr   = L"SELECT * FROM Historial_Lista ORDER BY Id DESC";
 	int					SqlRet   = 0;
 	sqlite3_stmt       *SqlQuery = NULL;
 	Historial_Lista     *Lista   = nullptr;
@@ -115,6 +106,7 @@ unsigned long ThreadActualizarArbol::_ThreadActualizar(void *pThis) {
 				PostMessage(This->_VentanaPlayer, WM_TBA_AGREGARHISTORIAL, 0, reinterpret_cast<LPARAM>(Lista));
 			}
 			else {
+				// No hay medios en la lista, la borro de memoria
 				delete Lista;
 			}
 		}
@@ -123,6 +115,19 @@ unsigned long ThreadActualizarArbol::_ThreadActualizar(void *pThis) {
 			if (VecesBusy == 100) break;
 		}
 	}
+
+	/////////////////////////////////////////////
+	// Fase 2 : enumerar archivos y directorios
+	This->_BD.Consulta(L"BEGIN TRANSACTION");
+	BDRaiz* R = NULL;
+	for (i = 0; i < This->_Opciones.TotalRaices(); i++) {
+		R = This->_Opciones.Raiz(i);
+		if (GetFileAttributes(R->Path.c_str()) != INVALID_FILE_ATTRIBUTES) {
+			TotalArchivos += This->_EscanearDirectorio(R->Path, R);
+		}
+	}
+
+
 
 	sqlite3_finalize(SqlQuery);
 

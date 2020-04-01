@@ -42,7 +42,7 @@ class ArbolBD : public DWL::DArbolEx {
 							ArbolBD(void);
 	                       ~ArbolBD(void);
 	NodoBD		           *BuscarHash(sqlite3_int64 bHash, NodoBD *Desde = nullptr);
-	NodoBD                 *AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre, const TCHAR *cTexto, const sqlite3_int64 nHash, const UINT Id);
+	NodoBD                 *AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre, const TCHAR *cTexto, const sqlite3_int64 nHash, const UINT Id, const size_t PosicionNodo = DARBOLEX_POSICIONNODO_ORDENADO);
 							// Devuelve el numero de medios agregados
 	const size_t			AgregarNodoALista(NodoBD *nNodo);
 

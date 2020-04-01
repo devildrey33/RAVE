@@ -9,6 +9,7 @@
 #include "Historial_Lista.h"
 
 
+#include <DEnviarCorreo.h>
 //#include <gdiplus.h>
 
 
@@ -26,6 +27,24 @@
 RAVE::RAVE(void) : PlayerInicial(FALSE), MutexPlayer(NULL), MenuVideoPistasDeAudio(NULL), MenuVideoProporcion(NULL), MenuVideoFiltros(NULL), MenuVideoSubtitulos(NULL), MenuVideoMomentos(NULL), _LC(LineaComando_Nada)/*, _gdiplusToken(0) */ {
 	// Inicio la semilla para generar números aleatórios
 //	srand(GetTickCount());
+
+/*	static DWL::DEnviarCorreo C;
+	C.Servidor("smtp.gmail.com", 465);
+	
+	C.Enviar(
+		// Terminado
+		[=]() {
+			int z = 0;
+		},
+		// Error
+		[=](int nError) {
+			int z = 0;
+		},
+		// Porcentaje
+		[=](int nValor) {
+			int z = 0;
+		}
+	);*/
 }
 
 
@@ -346,12 +365,18 @@ void RAVE::IniciarUI(int nCmdShow) {
 	// Menu Boton Lista
 	VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_BORRAR					, L"Borrar Lista"					, IDI_ELIMINAR);
 	DMenuEx *Menu = VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_GENERAR	, L"Generar Lista"					, IDI_LISTAALEATORIA);
-		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GENERO									, L"Aleatória por Genero"		, IDI_GENERO);
-		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GRUPO									, L"Aleatória por Grupo"		, IDI_GRUPO);
-		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_DISCO									, L"Aleatória por Disco"		, IDI_DISCO);
-		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_50MEDIOS								, L"Aleatória con 50 Medios"	, IDI_TERMINADO);
-		Menu->AgregarSeparador();
-		Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_NOTA									, L"Por Nota"					, IDI_NOTA);
+	DMenuEx *MenuRnd = Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GENERO					, L"Aleatória por Genero"		, IDI_GENERO);
+						MenuRnd->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GENERO_RND,				L"Rnd"						, IDI_GENERO);
+						MenuRnd->EventoMostrarMenu = [=](DWL::DMenuEx& nMenu) {	BD.GenerarSugerenciasMenu(nMenu, TLA_Genero); };
+			 MenuRnd = Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GRUPO					, L"Aleatória por Grupo"		, IDI_GRUPO);
+ 						MenuRnd->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GRUPO_RND,				L"Rnd"						, IDI_GRUPO);
+						MenuRnd->EventoMostrarMenu = [=](DWL::DMenuEx& nMenu) { BD.GenerarSugerenciasMenu(nMenu, TLA_Grupo); };
+			 MenuRnd = Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_DISCO					, L"Aleatória por Disco"		, IDI_DISCO);
+						MenuRnd->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_DISCO_RND,				L"Rnd"						, IDI_DISCO);
+						MenuRnd->EventoMostrarMenu = [=](DWL::DMenuEx& nMenu) { BD.GenerarSugerenciasMenu(nMenu, TLA_Disco); };
+			 MenuRnd = Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_50MEDIOS					, L"Aleatória con 50 Medios"	, IDI_TERMINADO);
+			 MenuRnd = Menu->AgregarSeparador();
+			 MenuRnd = Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_NOTA						, L"Por Nota"					, IDI_NOTA);
 	VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_AGREGAR_URL				, L"Agregar URL"					, IDI_URL);
 
 	// Menu Repetir

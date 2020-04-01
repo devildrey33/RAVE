@@ -36,7 +36,7 @@ NodoBD *ArbolBD::BuscarHash(sqlite3_int64 bHash, NodoBD *Desde) {
 
 
 
-NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre, const TCHAR *cTexto, const sqlite3_int64 nHash, const UINT nId) {
+NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre, const TCHAR *cTexto, const sqlite3_int64 nHash, const UINT nId, const size_t PosicionNodo) {
 
 	// Busco si existe el hash
 /*	if ((nTipoNodo == ArbolBD_TipoNodo_Cancion || nTipoNodo == ArbolBD_TipoNodo_Video) && _Raiz.TotalHijos() != 0) {
@@ -95,7 +95,7 @@ NodoBD *ArbolBD::AgregarBDNodo(const ArbolBD_TipoNodo nTipoNodo, NodoBD *nPadre,
 			break;
 	}
 
-	NodoBD *nNodo	= AgregarNodo<NodoBD>(cTexto, nPadre, nIcono, &nFuente, DARBOLEX_POSICIONNODO_ORDENADO);
+	NodoBD *nNodo	= AgregarNodo<NodoBD>(cTexto, nPadre, nIcono, &nFuente, PosicionNodo);
 	nNodo->Hash		= nHash;
 	nNodo->Id		= nId;
 	nNodo->TipoNodo = nTipoNodo;

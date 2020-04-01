@@ -19,5 +19,5 @@ enum RAVE_Iconos {
 	RAVE_Icono_Interrogante		= IDI_INTERROGANTE,
 	RAVE_Icono_Historial		= IDI_HISTORIAL,
 	RAVE_Icono_Historial_Lista	= IDI_AGREGARNUEVALISTA,
-	RAVE_Icono_Historial_Fecha	= IDI_TIEMPO
+	RAVE_Icono_Historial_Fecha	= IDI_CALENDARIO
 };

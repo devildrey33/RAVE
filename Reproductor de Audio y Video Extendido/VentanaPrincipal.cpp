@@ -616,11 +616,41 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 	switch (cID) {
 		// Menú boton lista
 		case ID_MENUBOTONLISTA_GENERAR			:	GenerarListaAleatoria();				return;
+		// Lista aleatória por genero
 		case ID_MENUBOTONLISTA_GENERAR_GENERO	:	GenerarListaAleatoria(TLA_Genero);		return;
+		// Sugerencias genero 
+		case ID_MENUBOTONLISTA_GENERAR_GENERO_RND     : 
+		case ID_MENUBOTONLISTA_GENERAR_GENERO_RND + 1 :
+		case ID_MENUBOTONLISTA_GENERAR_GENERO_RND + 2 :
+		case ID_MENUBOTONLISTA_GENERAR_GENERO_RND + 3 :
+		case ID_MENUBOTONLISTA_GENERAR_GENERO_RND + 4 :
+			App.BD.GenerarListaDesdeSugerencias(*Menu_BotonLista.BuscarMenu(cID), TLA_Genero);
+			return;
+		// Lista aleatória por grupo
 		case ID_MENUBOTONLISTA_GENERAR_GRUPO	:	GenerarListaAleatoria(TLA_Grupo);		return;
+		// Sugerencias grupo
+		case ID_MENUBOTONLISTA_GENERAR_GRUPO_RND     :
+		case ID_MENUBOTONLISTA_GENERAR_GRUPO_RND + 1 :
+		case ID_MENUBOTONLISTA_GENERAR_GRUPO_RND + 2 :
+		case ID_MENUBOTONLISTA_GENERAR_GRUPO_RND + 3 :
+		case ID_MENUBOTONLISTA_GENERAR_GRUPO_RND + 4 :
+			App.BD.GenerarListaDesdeSugerencias(*Menu_BotonLista.BuscarMenu(cID), TLA_Grupo);
+			return;
+		// Lista aleatória por disco
 		case ID_MENUBOTONLISTA_GENERAR_DISCO	:	GenerarListaAleatoria(TLA_Disco);		return;
+		// Sugerencias disco
+		case ID_MENUBOTONLISTA_GENERAR_DISCO_RND     : 
+		case ID_MENUBOTONLISTA_GENERAR_DISCO_RND + 1 :
+		case ID_MENUBOTONLISTA_GENERAR_DISCO_RND + 2 :
+		case ID_MENUBOTONLISTA_GENERAR_DISCO_RND + 3 :
+		case ID_MENUBOTONLISTA_GENERAR_DISCO_RND + 4 :
+			App.BD.GenerarListaDesdeSugerencias(*Menu_BotonLista.BuscarMenu(cID), TLA_Disco);
+			return;
+		// Lista aleatória 
 		case ID_MENUBOTONLISTA_GENERAR_50MEDIOS	:	GenerarListaAleatoria(TLA_50Medios);	return;
+		// Lista por nota
 		case ID_MENUBOTONLISTA_GENERAR_NOTA		:	GenerarListaAleatoria(TLA_Nota);		return;
+		// Borrar la lista
 		case ID_MENUBOTONLISTA_BORRAR			:
 			Lista.BorrarListaReproduccion();					
 			App.MostrarToolTipPlayer(L"Lista de reproducción borrada.");
@@ -1242,11 +1272,11 @@ NodoBD *VentanaPrincipal::Arbol_AgregarHistorial_Lista(Historial_Lista &Lista) {
 	// Busco un nodo con la misma fecha
 	NodoFecha = Arbol.BuscarHijoTxt(Lista.Fecha.Fecha(StrFecha), Arbol.BDNodoHistorial);
 	// Si el nodo no existe, lo creo
-	if (NodoFecha == nullptr) 	NodoFecha = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Historial_Fecha, Arbol.BDNodoHistorial, StrFecha.c_str(), 0, 0);
+	if (NodoFecha == nullptr) 	NodoFecha = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Historial_Fecha, Arbol.BDNodoHistorial, StrFecha.c_str(), 0, 0, DARBOLEX_POSICIONNODO_FIN);
 	
 	// Agrego el nodo para la lista
 	StrNombre = Lista.Fecha.Tiempo(StrTiempo) + L" " + Lista.Nombre;
-	NodoBD *Ret = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Historial_Lista, NodoFecha, StrNombre.c_str() , 0, static_cast<UINT>(Lista.Id));
+	NodoBD *Ret = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Historial_Lista, NodoFecha, StrNombre.c_str() , 0, static_cast<UINT>(Lista.Id), DARBOLEX_POSICIONNODO_FIN);
 
 	Arbol.Repintar();
 
