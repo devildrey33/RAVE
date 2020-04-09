@@ -339,7 +339,8 @@ const BOOL Rave_MediaPlayer::AbrirMedio(ItemMedio *Medio) {
 
 	// Guardo el medio en el historial
 	App.BD.GuardarHistorial_Medio(Historial_Medio(Medio->BdMedio.Id));
-
+	
+	
 
 	// Elimino el medio anterior, si aun existe
 	if (_Anterior != nullptr) {

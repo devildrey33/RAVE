@@ -132,6 +132,40 @@ const BOOL RaveBD::_ConsultaObtenerMedio(std::wstring &TxtConsulta, BDMedio &OUT
 	return Ret;
 }
 
+Historial_Lista RaveBD::ObtenerHistorial_Lista(const INT64 Id) {
+	Historial_Lista Ret;
+	std::wstring Q = L"SELECT * FROM Historial_Lista WHERE Id = " + std::to_wstring(Id);
+
+	int			    SqlRet = 0;
+	sqlite3_stmt   *SqlQuery = NULL;
+
+	Ret.Id = Id;
+
+	SqlRet = sqlite3_prepare16_v2(_BD, Q.c_str(), -1, &SqlQuery, NULL);
+	if (SqlRet) return FALSE;
+	int VecesBusy = 0;
+	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
+		SqlRet = sqlite3_step(SqlQuery);
+		if (SqlRet == SQLITE_ROW) {
+			Ret.Fecha  = reinterpret_cast<const wchar_t*>(sqlite3_column_text16(SqlQuery, 1));
+			Ret.Nombre = reinterpret_cast<const wchar_t*>(sqlite3_column_text16(SqlQuery, 2));
+		}
+		if (SqlRet == SQLITE_BUSY) {
+			VecesBusy++;
+			if (VecesBusy == 100) break;
+		}
+
+	}
+
+	sqlite3_finalize(SqlQuery);
+
+	if (SqlRet == SQLITE_ERROR) {
+		_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
+		return FALSE;
+	}
+
+	return Ret;
+}
 
 
 
@@ -402,7 +436,7 @@ const BOOL RaveBD::GenerarListaDesdeSugerencias(DWL::DMenuEx &Menu, const TipoLi
 	Historial_Lista Historial(ToolTip);
 	App.BD.GuardarHistorial_Lista(Historial);
 	// Agrego la entrada del historial a la BD
-	App.VentanaRave.Arbol_AgregarHistorial_Lista(Historial);
+	App.VentanaRave.Arbol_AgregarHistorial_Lista(Historial, FALSE);
 
 	// Muestro el tooltip
 	App.MostrarToolTipPlayer(ToolTip3 + ToolTip + ToolTip2);
@@ -419,16 +453,56 @@ const BOOL RaveBD::GenerarListaDesdeSugerencias(DWL::DMenuEx &Menu, const TipoLi
 const BOOL RaveBD::GenerarSugerenciasMenu(DWL::DMenuEx &Menu, const TipoListaAleatoria nTipo) {
 	std::wstring Q;
 	UINT		 IDMenu = 0;
+	std::wstring TDP = std::to_wstring(TIPO_DISCOPATH);
 	switch (nTipo) {
 		case TLA_Genero:
 			Q = L"SELECT Texto FROM Etiquetas WHERE Tipo & " + std::to_wstring(TIPO_GENERO) + L" != 0 ORDER BY RANDOM() LIMIT 5";
 			IDMenu = ID_MENUBOTONLISTA_GENERAR_GENERO_RND;
 			break;
 		case TLA_Grupo:
-			Q = L"SELECT Texto FROM Etiquetas WHERE Tipo & " + std::to_wstring(TIPO_GRUPOPATH) + L" != 0 AND Tipo & " + std::to_wstring(TIPO_GRUPOTAG) + L" != 0 ORDER BY RANDOM() LIMIT 5";
+			Q = L"SELECT Texto FROM Etiquetas WHERE Tipo & " + std::to_wstring(TIPO_GRUPOPATH) + L" != 0 OR Tipo & " + std::to_wstring(TIPO_GRUPOTAG) + L" != 0 ORDER BY RANDOM() LIMIT 5";
 			IDMenu = ID_MENUBOTONLISTA_GENERAR_GRUPO_RND;
 			break;
 		case TLA_Disco:
+			
+
+
+			// Aquesta gripa i em modifica aTexto...
+/*			Q = L"SELECT DISTINCT aTexto, Medios.GrupoTag AS aTag, Medios.GrupoPath AS aPath, Medios.GrupoEleccion AS aEleccion "
+				L"FROM Medios, ("
+					L"SELECT Texto AS aTexto FROM Etiquetas "
+					L"WHERE ("
+						L"Tipo & " + TDP + L" != 0 "
+						L"OR "
+						L"Tipo & " + TDP + L" != 0"
+					L") "
+					L"ORDER BY RANDOM() "
+					L"LIMIT 50"
+				L") "
+				L"WHERE ("
+					L"aPath = aTexto "
+					L"OR "
+					L"aTag = aTexto"
+				L") "
+				L"LIMIT 5 ";*/
+				
+			
+			/* El tema es que vull afegir a :
+			----------------------------------------------------			
+				
+				SELECT Etiquetas.Texto AS aTexto FROM Etiquetas
+					WHERE (
+						Etiquetas.Tipo & 4 != 0
+						OR
+						Etiquetas.Tipo & 10 != 0
+					)
+					ORDER BY RANDOM()
+					LIMIT 5
+				
+			------------------------------------------------------
+				els noms de grup de la primera coincindencia d'un medio amb els membres DiscoPath i DiscoTag (segons el DiscoEleccion
+			*/
+			// GrupoEleccion : 1 path, 0 tag
 			Q = L"SELECT Texto FROM Etiquetas WHERE Tipo & " + std::to_wstring(TIPO_DISCOPATH) + L" != 0 AND Tipo & " + std::to_wstring(TIPO_DISCOTAG) + L" != 0 ORDER BY RANDOM() LIMIT 5";
 			IDMenu = ID_MENUBOTONLISTA_GENERAR_DISCO_RND;
 			break;
@@ -436,36 +510,33 @@ const BOOL RaveBD::GenerarSugerenciasMenu(DWL::DMenuEx &Menu, const TipoListaAle
 			return FALSE;
 	}
 
-	int				    SqlRet = 0;
-	sqlite3_stmt* SqlQuery = NULL;
-
-	SqlRet = sqlite3_prepare16_v2(_BD, Q.c_str(), -1, &SqlQuery, NULL);
-	if (SqlRet) {
-		_UltimoErrorSQL = static_cast<const wchar_t*>(sqlite3_errmsg16(_BD));
-		return FALSE;
-	}
-	int			VecesBusy		= 0;
-	int			TotalAgregados	= 0;
-	wchar_t    *Etiqueta		= nullptr;
-
 	Menu.EliminarTodosLosMenus();
 
-	while (SqlRet != SQLITE_DONE && SqlRet != SQLITE_ERROR && SqlRet != SQLITE_CONSTRAINT) {
-		SqlRet = sqlite3_step(SqlQuery);
-		if (SqlRet == SQLITE_ROW) {
-			const wchar_t *Etiqueta = reinterpret_cast<const wchar_t *>(sqlite3_column_text16(SqlQuery, 0));
-			Menu.AgregarMenu(IDMenu + TotalAgregados++, Etiqueta, IDI_GENERO);
+	sqlite3 *BD = _BD;
+	RaveSQLite_Consulta C(_BD, Q, [&BD, &nTipo, &Menu, &IDMenu](RaveSQLite_Consulta &This) {
+		std::wstring Texto;
+		std::wstring Etiqueta = This.ObtenerStr(0);
+		int TotalAgregados = 0;
+		// Si es un disco, ejecuto una segunda consulta para determinar su grupo
+		if (nTipo == TLA_Disco) {
+			std::wstring Q2 = L"SELECT GrupoPath, GrupoTag, GrupoEleccion FROM Medios WHERE (DiscoPath=\"" + Etiqueta + L"\" OR DiscoTag=\"" + Etiqueta + L"\") LIMIT 1";
+			std::wstring GP, GT;
+			int          El = 0;
+			RaveSQLite_Consulta C2(BD, Q2, [&GP, &GT, &El, &Texto](RaveSQLite_Consulta& This) {
+				GP = This.ObtenerStr(0);
+				GT = This.ObtenerStr(1);
+				El = This.ObtenerInt(2);
+			});
+			Texto = L"(";
+			if (El == 0)	{ Texto += (GT.size() != 0) ? GT : GP; }	// Tag
+			else			{ Texto += (GP.size() != 0) ? GP : GT; }	// Path
+			Texto += L") ";
 		}
-		// Compruebo si está ocupado
-		if (SqlRet == SQLITE_BUSY) {
-			VecesBusy++;
-			if (VecesBusy == 100) break;
-		}
-	}
+		Texto += Etiqueta;
+		Menu.AgregarMenu(IDMenu + TotalAgregados++, Texto, IDI_GENERO);
 
-	sqlite3_finalize(SqlQuery);
-
-	return (VecesBusy != 100) ? TRUE : FALSE;
+	});
+	return C.Resultado();
 }
 
 // Función que genera una lista aleatória por el tipo especificado, y la guarda en la variable OUT_Medios (DEBE EJECUTARSE DESDE EL THREAD PRINCIPAL)
@@ -627,7 +698,7 @@ const BOOL RaveBD::GenerarListaAleatoria(std::vector<BDMedio> &OUT_Medios, DWL::
 	Historial_Lista Historial(ToolTip);
 	App.BD.GuardarHistorial_Lista(Historial);
 	// Agrego la entrada del historial a la BD
-	App.VentanaRave.Arbol_AgregarHistorial_Lista(Historial);
+	App.VentanaRave.Arbol_AgregarHistorial_Lista(Historial, FALSE);
 
 	// Muestro el tooltip
 	App.MostrarToolTipPlayer(ToolTip3 + ToolTip + ToolTip2);

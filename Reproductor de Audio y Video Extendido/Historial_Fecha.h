@@ -23,6 +23,8 @@ class Historial_Fecha {
 //    Fecha_Historial						   &operator = (const wchar_t *TxtFecha);
 //    Fecha_Historial						   &operator = (std::wstring &StrFecha);
 	Historial_Fecha						   &operator = (const FILETIME nFecha);
+	Historial_Fecha						   &operator = (const wchar_t *TxtFecha);
+	Historial_Fecha						   &operator = (std::wstring  &xtFecha);
 
 											// Funciones para asignar y devolver la fecha en un UINT
 	inline const WORD						Dia(void)						{ return _Tiempo.wDay;			};

@@ -94,6 +94,17 @@ Historial_Fecha &Historial_Fecha::operator = (const FILETIME nFecha) {
 	return *this;
 }
 
+Historial_Fecha &Historial_Fecha::operator = (const wchar_t *TxtFecha) {
+	AsignarFechaStr(TxtFecha);
+	return *this;
+}
+
+Historial_Fecha &Historial_Fecha::operator = (std::wstring &TxtFecha) {
+	AsignarFechaStr(TxtFecha);
+	return *this;
+}
+
+
 // Devuelve una cadena de caracteres con el texto formateado para SQLite
 std::wstring &Historial_Fecha::Texto(std::wstring &OUT_Str) {
 	std::wstring TmpStr, TmpStr2;

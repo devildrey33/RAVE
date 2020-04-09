@@ -99,7 +99,7 @@ unsigned long ThreadActualizarArbol::_ThreadActualizar(void *pThis) {
 			// TODO : mirar si la llista te medis en el historial, i en cas contrari borrar el punter Llista
 			int TotalMedios = 0;
 			std::wstring Q = L"SELECT COUNT(*) FROM Historial_Medio WHERE IdLista=" + std::to_wstring(Lista->Id);
-			This->_BD.ConsultaInt(Q, TotalMedios);
+			This->_BD.Consulta(Q, TotalMedios);
 
 			if (TotalMedios > 0) {
 				// Mando la información de la lista del historial al thread principal

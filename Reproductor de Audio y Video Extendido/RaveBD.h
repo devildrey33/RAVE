@@ -122,7 +122,7 @@ class RaveBD : public RaveSQLite {
 								// Obtiene la lista completa de etiquetas
 	const BOOL                  ObtenerEtiquetas(void);
 
-//	Historial_Lista             ObtenerHistorial_Listas();
+	Historial_Lista             ObtenerHistorial_Lista(const INT64 Id);
 
 								// Calcula el total de medios, el total de bytes, el total de tiempo, y la nota media de una etiqueta
 	void						CalcularDatosEtiqueta(EtiquetaBD *Etiqueta);

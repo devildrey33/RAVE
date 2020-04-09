@@ -396,7 +396,7 @@
 
 	RAVE 0.7
 		IMPORTANT
-		-  Re-escriure el sistema de detecció de medis, i guardar els paths amb la ultima unitat coneguda
+		V  Re-escriure el sistema de detecció de medis, i guardar els paths amb la ultima unitat coneguda
 			V Eliminar els paths amb ?, i posar sempre l'ultim path obtingut.
 			V Pensar especialment amb paths de red
 			X Buscar el hash del medi, si existeix, però el path es diferent, sobre escriure el path, RES MES
