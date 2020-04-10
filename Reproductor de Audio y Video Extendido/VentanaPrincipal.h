@@ -144,8 +144,6 @@ class VentanaPrincipal : public DWL::DVentana {
 	NodoBD                     *Arbol_AgregarRaiz(std::wstring *Path);
 								// Función que agrega una lista del historial al arbol de la base de datos
 	NodoBD                     *Arbol_AgregarHistorial_Lista(Historial_Lista &Lista, const BOOL AlFinal = TRUE);
-								// Función que agrega una medio del historial al arbol de la base de datos
-	NodoBD                     *Arbol_AgregarHistorial_Medio(Historial_Lista &Lista, Historial_Medio &nMedio, const BOOL AlFinal = TRUE);
 
 								// Thread para actualizar el arbol de la base de datos
 	ThreadActualizarArbol		ThreadActualizar;

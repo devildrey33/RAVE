@@ -1285,40 +1285,13 @@ NodoBD* VentanaPrincipal::Arbol_AgregarHistorial_Lista(Historial_Lista& Lista, c
 }
 
 
-
-// Función que agrega una lista del historial al arbol de la base de datos
-NodoBD* VentanaPrincipal::Arbol_AgregarHistorial_Medio(Historial_Lista &Lista, Historial_Medio &nMedio, const BOOL AlFinal) {
-	std::wstring StrFecha, StrTiempo, StrNombre;
-	NodoBD *NodoFecha = nullptr, *NodoLista = nullptr;
-	// Busco un nodo con la misma fecha
-	NodoFecha = Arbol.BuscarHijoTxt(Lista.Fecha.Fecha(StrFecha), Arbol.BDNodoHistorial);
-	// Si el nodo no existe, lo creo
-	if (NodoFecha == nullptr)
-		NodoFecha = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Historial_Fecha, Arbol.BDNodoHistorial, StrFecha.c_str(), 0, 0, (AlFinal == TRUE) ? DARBOLEX_POSICIONNODO_FIN : 0);
-
-	// Busco un nodo con la misma lista dentro de la fecha
-	StrNombre = Lista.Fecha.Tiempo(StrTiempo) + L" " + Lista.Nombre;
-	NodoLista = Arbol.BuscarHijoTxt(StrNombre, NodoFecha);
-
-	// Si no se ha encontrado el nodo de la lista, lo agrego
-	if (NodoLista == nullptr)
-		NodoLista = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Historial_Lista, NodoFecha, StrNombre.c_str(), 0, static_cast<UINT>(Lista.Id), (AlFinal == TRUE) ? DARBOLEX_POSICIONNODO_FIN : 0);
-
-	NodoBD *Ret = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Historial_Lista, NodoFecha, StrNombre.c_str(), 0, static_cast<UINT>(Lista.Id), (AlFinal == TRUE) ? DARBOLEX_POSICIONNODO_FIN : 0);
-
-	Arbol.Repintar();
-
-	return Ret;
-}
-
-
 const BOOL VentanaPrincipal::Arbol_MostrarMedio(BDMedio &mMedio) {
 	// Si no hay raíz no hay galletas
 	BDRaiz *Raiz = App.Opciones.BuscarRaiz(mMedio.Path);
 	if (Raiz == NULL) return FALSE;
 
 	// Busco el nodo de la raíz
-	NodoBD *TmpNodo = static_cast<NodoBD *>(Arbol.BuscarHijoTxt(Raiz->Path, NULL));
+	NodoBD *TmpNodo  = static_cast<NodoBD *>(Arbol.BuscarHijoTxt(Raiz->Path, NULL));
 	NodoBD *TmpNodo2 = NULL;
 	// Si el nodo raíz no existe lo creo
 	if (TmpNodo == NULL) {

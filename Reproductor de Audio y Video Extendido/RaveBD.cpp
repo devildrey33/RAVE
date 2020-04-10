@@ -343,7 +343,7 @@ const BOOL RaveBD::GenerarListaDesdeSugerencias(DWL::DMenuEx &Menu, const TipoLi
 
 	// Si texto del menú viene con parentesis (es un disco al que le he añadido el grupo al principio entre parentesis)
 	Pos = MT.find_first_of(L')');
-	if (Pos != std::wstring::npos && Pos + 2 > MT.size()) {
+	if (Pos != std::wstring::npos && Pos + 2 < MT.size()) {
 		MT = Menu.Texto().substr(Pos + 2);
 	}
 
@@ -479,28 +479,6 @@ const BOOL RaveBD::GenerarSugerenciasMenu(DWL::DMenuEx &Menu, const TipoListaAle
 			break;
 		case TLA_Disco:
 			
-
-
-			// Aquesta gripa i em modifica aTexto...
-/*			Q = L"SELECT DISTINCT aTexto, Medios.GrupoTag AS aTag, Medios.GrupoPath AS aPath, Medios.GrupoEleccion AS aEleccion "
-				L"FROM Medios, ("
-					L"SELECT Texto AS aTexto FROM Etiquetas "
-					L"WHERE ("
-						L"Tipo & " + TDP + L" != 0 "
-						L"OR "
-						L"Tipo & " + TDP + L" != 0"
-					L") "
-					L"ORDER BY RANDOM() "
-					L"LIMIT 50"
-				L") "
-				L"WHERE ("
-					L"aPath = aTexto "
-					L"OR "
-					L"aTag = aTexto"
-				L") "
-				L"LIMIT 5 ";*/
-				
-			
 			/* El tema es que vull afegir a :
 			----------------------------------------------------			
 				
@@ -527,11 +505,13 @@ const BOOL RaveBD::GenerarSugerenciasMenu(DWL::DMenuEx &Menu, const TipoListaAle
 
 	Menu.EliminarTodosLosMenus();
 
+	Debug_Escribir_Varg(L"RaveBD::GenerarSugerenciasMenu %d\n", nTipo);
+
 	sqlite3 *BD = _BD;
-	RaveSQLite_Consulta C(_BD, Q, [&BD, &nTipo, &Menu, &IDMenu, &IDIcono](RaveSQLite_Consulta &This) {
+	int TotalAgregados = 0;
+	RaveSQLite_Consulta C(_BD, Q, [&BD, &nTipo, &Menu, &IDMenu, &IDIcono, &TotalAgregados](RaveSQLite_Consulta &This) {
 		std::wstring Texto;
 		std::wstring Etiqueta = This.ObtenerStr(0);
-		int TotalAgregados = 0;
 		// Si es un disco, ejecuto una segunda consulta para determinar su grupo
 		if (nTipo == TLA_Disco) {
 			std::wstring Q2 = L"SELECT GrupoPath, GrupoTag, GrupoEleccion FROM Medios WHERE (DiscoPath=\"" + Etiqueta + L"\" OR DiscoTag=\"" + Etiqueta + L"\") LIMIT 1";
@@ -548,7 +528,10 @@ const BOOL RaveBD::GenerarSugerenciasMenu(DWL::DMenuEx &Menu, const TipoListaAle
 			Texto += L") ";
 		}
 		Texto += Etiqueta;
-		Menu.AgregarMenu(IDMenu + TotalAgregados++, Texto, IDIcono);
+		Menu.AgregarMenu(IDMenu + TotalAgregados, Texto, IDIcono);
+		TotalAgregados++;
+		Debug_Escribir_Varg(L"%s\n", Texto.c_str());
+
 
 	});
 	return C.Resultado();
