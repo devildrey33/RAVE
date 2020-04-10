@@ -440,8 +440,10 @@
 			V  Afegir data i hora de la reproducció
 				-  De Moment es infinita... ja li posare un tope de 7 dies o algo aixi..
 				V  Ordenar per mes recent
+				-  Falta afegir el medi actual cada cop (la llista s'afegeix, pero no les cançons / video que vaig executant)
 
-		-  Fer subgerencies de llistes aleatories en el menu del buto llista.
+		V  Fer subgerencies de llistes aleatories en el menu del buto llista.
+			V Les subgerencies de discs han de mostrar també de quin grup son.
 
 		-  Fer una llista per etiquetes a la BD.
 

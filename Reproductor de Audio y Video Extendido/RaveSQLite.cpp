@@ -219,7 +219,10 @@ RaveSQLite_Consulta::RaveSQLite_Consulta(sqlite3 *nBD, const wchar_t *Consulta, 
 
 const int RaveSQLite_Consulta::Ejecutar(sqlite3 *nBD, const wchar_t *Consulta, std::function<void(RaveSQLite_Consulta &)> LambdaFila) {
 	// La BD no es válida
-	if (nBD == NULL) return FALSE;
+	if (nBD == NULL) {
+		_TmpStr = L"La BD especificada es NULL";
+		return SQLITE_ERROR;
+	}
 
 //	sqlite3_stmt *SqlQuery = NULL;
 	_SqlRet   = sqlite3_prepare16_v2(nBD, Consulta, -1, &_SqlQuery, NULL);
@@ -236,28 +239,32 @@ const int RaveSQLite_Consulta::Ejecutar(sqlite3 *nBD, const wchar_t *Consulta, s
 		SQLITE_NOMEM	:*/
 	int VecesBusy = 0;
 
-	while (_SqlRet != SQLITE_DONE && _SqlRet != SQLITE_ERROR && _SqlRet != SQLITE_CONSTRAINT) {
+	// Bucle principal para la consulta
+	while (_SqlRet != SQLITE_DONE && _SqlRet != SQLITE_ERROR && _SqlRet != SQLITE_CONSTRAINT && _SqlRet != SQLITE_IOERR) {
 		_SqlRet = sqlite3_step(_SqlQuery);
 		if (_SqlRet == SQLITE_ROW) {
 			LambdaFila(*this);
 		}
 
-		if (_SqlRet == SQLITE_BUSY) {
+		else if (_SqlRet == SQLITE_BUSY) {
 			VecesBusy++;
 			if (VecesBusy == 100) {
-//				_TmpStr = L"Base de datos ocupada por otro proceso";
 				break;
 			}
 		}
 
 	}
+
+	// Termino la consulta
 	sqlite3_finalize(_SqlQuery);
-	// Si hay un error lo apunto
-	if (_SqlRet == SQLITE_ERROR || _SqlRet == SQLITE_CONSTRAINT) {
+
+	// Si la consulta no ha terminado bien.. apunto el error
+	if (_SqlRet != SQLITE_DONE) {
 		_TmpStr = static_cast<const wchar_t*>(sqlite3_errmsg16(nBD));
 //		Debug_Escribir_Varg(L"RaveSQLite::Consulta %s\n", _TmpStr.c_str());
 	}
 
+	// Devuelvo el código resultado de la consulta
 	return _SqlRet;
 }
 

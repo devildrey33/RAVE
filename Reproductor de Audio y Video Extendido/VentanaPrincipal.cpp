@@ -1268,16 +1268,16 @@ NodoBD *VentanaPrincipal::Arbol_AgregarDir(std::wstring *Path, const BOOL nRepin
 // Función que agrega una lista del historial al arbol de la base de datos
 NodoBD* VentanaPrincipal::Arbol_AgregarHistorial_Lista(Historial_Lista& Lista, const BOOL AlFinal) {
 	std::wstring StrFecha, StrTiempo, StrNombre;
-	NodoBD* NodoFecha = nullptr;
+	NodoBD *NodoFecha = nullptr;
 	// Busco un nodo con la misma fecha
 	NodoFecha = Arbol.BuscarHijoTxt(Lista.Fecha.Fecha(StrFecha), Arbol.BDNodoHistorial);
-	// Si el nodo no existe, lo creo
+	// Si el con la misma fecha nodo no existe, lo creo
 	if (NodoFecha == nullptr)
 		NodoFecha = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Historial_Fecha, Arbol.BDNodoHistorial, StrFecha.c_str(), 0, 0, (AlFinal == TRUE) ? DARBOLEX_POSICIONNODO_FIN : 0);
 
 	// Agrego el nodo para la lista
 	StrNombre = Lista.Fecha.Tiempo(StrTiempo) + L" " + Lista.Nombre;
-	NodoBD* Ret = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Historial_Lista, NodoFecha, StrNombre.c_str(), 0, static_cast<UINT>(Lista.Id), (AlFinal == TRUE) ? DARBOLEX_POSICIONNODO_FIN : 0);
+	NodoBD *Ret = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Historial_Lista, NodoFecha, StrNombre.c_str(), 0, static_cast<UINT>(Lista.Id), (AlFinal == TRUE) ? DARBOLEX_POSICIONNODO_FIN : 0);
 
 	Arbol.Repintar();
 
@@ -1289,16 +1289,22 @@ NodoBD* VentanaPrincipal::Arbol_AgregarHistorial_Lista(Historial_Lista& Lista, c
 // Función que agrega una lista del historial al arbol de la base de datos
 NodoBD* VentanaPrincipal::Arbol_AgregarHistorial_Medio(Historial_Lista &Lista, Historial_Medio &nMedio, const BOOL AlFinal) {
 	std::wstring StrFecha, StrTiempo, StrNombre;
-	NodoBD* NodoFecha = nullptr;
+	NodoBD *NodoFecha = nullptr, *NodoLista = nullptr;
 	// Busco un nodo con la misma fecha
 	NodoFecha = Arbol.BuscarHijoTxt(Lista.Fecha.Fecha(StrFecha), Arbol.BDNodoHistorial);
 	// Si el nodo no existe, lo creo
 	if (NodoFecha == nullptr)
 		NodoFecha = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Historial_Fecha, Arbol.BDNodoHistorial, StrFecha.c_str(), 0, 0, (AlFinal == TRUE) ? DARBOLEX_POSICIONNODO_FIN : 0);
 
-	// Agrego el nodo para la lista
+	// Busco un nodo con la misma lista dentro de la fecha
 	StrNombre = Lista.Fecha.Tiempo(StrTiempo) + L" " + Lista.Nombre;
-	NodoBD* Ret = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Historial_Lista, NodoFecha, StrNombre.c_str(), 0, static_cast<UINT>(Lista.Id), (AlFinal == TRUE) ? DARBOLEX_POSICIONNODO_FIN : 0);
+	NodoLista = Arbol.BuscarHijoTxt(StrNombre, NodoFecha);
+
+	// Si no se ha encontrado el nodo de la lista, lo agrego
+	if (NodoLista == nullptr)
+		NodoLista = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Historial_Lista, NodoFecha, StrNombre.c_str(), 0, static_cast<UINT>(Lista.Id), (AlFinal == TRUE) ? DARBOLEX_POSICIONNODO_FIN : 0);
+
+	NodoBD *Ret = Arbol.AgregarBDNodo(ArbolBD_TipoNodo_Historial_Lista, NodoFecha, StrNombre.c_str(), 0, static_cast<UINT>(Lista.Id), (AlFinal == TRUE) ? DARBOLEX_POSICIONNODO_FIN : 0);
 
 	Arbol.Repintar();
 

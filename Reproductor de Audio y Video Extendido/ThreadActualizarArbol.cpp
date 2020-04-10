@@ -96,7 +96,7 @@ unsigned long ThreadActualizarArbol::_ThreadActualizar(void *pThis) {
 				static_cast<UINT64>(sqlite3_column_int64(SqlQuery, 0))					// Id
 			);
 
-			// TODO : mirar si la llista te medis en el historial, i en cas contrari borrar el punter Llista
+			// Miro si la llista tiene medios en el historial, y en caso contrario, borro el puntero Llista
 			int TotalMedios = 0;
 			std::wstring Q = L"SELECT COUNT(*) FROM Historial_Medio WHERE IdLista=" + std::to_wstring(Lista->Id);
 			This->_BD.Consulta(Q, TotalMedios);

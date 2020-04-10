@@ -323,13 +323,13 @@ void ArbolBD::ExplorarHistorial(NodoBD* nNodo) {
 			if (GetFileAttributes(mPath.c_str()) != INVALID_FILE_ATTRIBUTES) {
 				AgregarBDNodo(mTipoNodo, static_cast<NodoBD*>(nNodo), nTmpTxt.c_str(), mHash, mId);
 			}
-
-			if (SqlRet == SQLITE_BUSY) {
-				VecesBusy++;
-				if (VecesBusy == 100) break;
-			}
-
 		}
+
+		else if (SqlRet == SQLITE_BUSY) {
+			VecesBusy++;
+			if (VecesBusy == 100) break;
+		}
+
 	}
 
 	sqlite3_finalize(SqlQuery);

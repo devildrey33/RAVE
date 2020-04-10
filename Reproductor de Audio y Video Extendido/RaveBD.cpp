@@ -132,11 +132,13 @@ const BOOL RaveBD::_ConsultaObtenerMedio(std::wstring &TxtConsulta, BDMedio &OUT
 	return Ret;
 }
 
+
+// Obtiene la lista del historial según la Id especificada
 Historial_Lista RaveBD::ObtenerHistorial_Lista(const INT64 Id) {
 	Historial_Lista Ret;
 	std::wstring Q = L"SELECT * FROM Historial_Lista WHERE Id = " + std::to_wstring(Id);
 
-	int			    SqlRet = 0;
+	int			    SqlRet = 0; 
 	sqlite3_stmt   *SqlQuery = NULL;
 
 	Ret.Id = Id;
@@ -336,21 +338,30 @@ const BOOL RaveBD::ActualizarMedioAnalisis(BDMedio *nMedio) {
 const BOOL RaveBD::GenerarListaDesdeSugerencias(DWL::DMenuEx &Menu, const TipoListaAleatoria nTipo) {
 	std::wstring	Q;
 	BOOL			Mezclar = FALSE;
+	std::wstring    MT = Menu.Texto();
+	size_t          Pos = std::wstring::npos;
+
+	// Si texto del menú viene con parentesis (es un disco al que le he añadido el grupo al principio entre parentesis)
+	Pos = MT.find_first_of(L')');
+	if (Pos != std::wstring::npos && Pos + 2 > MT.size()) {
+		MT = Menu.Texto().substr(Pos + 2);
+	}
+
 	// Genero la consulta según el tipo especificado
 	switch (nTipo) {
 		case TLA_Genero :
-			Q = L"SELECT * FROM Medios WHERE Genero=\"" + Menu.Texto() + L"\" ORDER BY GrupoPath, DiscoPath, PistaPath, PistaTag ASC";
-			Debug_Escribir_Varg(L"RaveBD::GenerarListaDesdeSugerencias Tipo : Genero (%s)\n", Menu.Texto().c_str());
+			Q = L"SELECT * FROM Medios WHERE Genero=\"" + MT + L"\" ORDER BY GrupoPath, DiscoPath, PistaPath, PistaTag ASC";
+			Debug_Escribir_Varg(L"RaveBD::GenerarListaDesdeSugerencias Tipo : Genero (%s)\n", MT.c_str());
 			Mezclar = App.Opciones.MezclarListaGenero();
 			break;
 		case TLA_Grupo :
-			Q = L"SELECT * FROM Medios WHERE (GrupoPath=\"" + Menu.Texto() + L"\") OR (GrupoTag=\"" + Menu.Texto() + L"\") ORDER BY DiscoPath, PistaPath, PistaTag ASC";
-			Debug_Escribir_Varg(L"RaveBD::GenerarListaDesdeSugerencias Tipo : Grupo (%s)\n", Menu.Texto());
+			Q = L"SELECT * FROM Medios WHERE (GrupoPath=\"" + MT + L"\") OR (GrupoTag=\"" + MT + L"\") ORDER BY DiscoPath, PistaPath, PistaTag ASC";
+			Debug_Escribir_Varg(L"RaveBD::GenerarListaDesdeSugerencias Tipo : Grupo (%s)\n", MT);
 			Mezclar = App.Opciones.MezclarListaGrupo();
 			break;
-		case TLA_Disco :
-			Q = L"SELECT * FROM Medios WHERE (DiscoPath=\"" + Menu.Texto() + L"\") OR (DiscoTag=\"" + Menu.Texto() + L"\") ORDER BY PistaPath, PistaTag ASC";
-			Debug_Escribir_Varg(L"RaveBD::GenerarListaDesdeSugerencias Tipo : Disco (%s)\n", Menu.Texto());
+		case TLA_Disco :			
+			Q = L"SELECT * FROM Medios WHERE (DiscoPath=\"" + MT + L"\") OR (DiscoTag=\"" + MT + L"\") ORDER BY PistaPath, PistaTag ASC";
+			Debug_Escribir_Varg(L"RaveBD::GenerarListaDesdeSugerencias Tipo : Disco (%s)\n", MT);
 			Mezclar = App.Opciones.MezclarListaDisco();
 			break;
 	}
@@ -452,16 +463,19 @@ const BOOL RaveBD::GenerarListaDesdeSugerencias(DWL::DMenuEx &Menu, const TipoLi
 // Genera una sugerencia del tipo especificado de etiqueta con 5 etiquetas aleatórias (SOLO SE PUEDE USAR CON LOS TIPOS GENERO, GRUPO, y DISCO)
 const BOOL RaveBD::GenerarSugerenciasMenu(DWL::DMenuEx &Menu, const TipoListaAleatoria nTipo) {
 	std::wstring Q;
-	UINT		 IDMenu = 0;
+	INT_PTR		 IDMenu  = 0;
+	UINT         IDIcono = 0;
 	std::wstring TDP = std::to_wstring(TIPO_DISCOPATH);
 	switch (nTipo) {
 		case TLA_Genero:
 			Q = L"SELECT Texto FROM Etiquetas WHERE Tipo & " + std::to_wstring(TIPO_GENERO) + L" != 0 ORDER BY RANDOM() LIMIT 5";
 			IDMenu = ID_MENUBOTONLISTA_GENERAR_GENERO_RND;
+			IDIcono = IDI_GENERO;
 			break;
 		case TLA_Grupo:
 			Q = L"SELECT Texto FROM Etiquetas WHERE Tipo & " + std::to_wstring(TIPO_GRUPOPATH) + L" != 0 OR Tipo & " + std::to_wstring(TIPO_GRUPOTAG) + L" != 0 ORDER BY RANDOM() LIMIT 5";
 			IDMenu = ID_MENUBOTONLISTA_GENERAR_GRUPO_RND;
+			IDIcono = IDI_GRUPO;
 			break;
 		case TLA_Disco:
 			
@@ -505,6 +519,7 @@ const BOOL RaveBD::GenerarSugerenciasMenu(DWL::DMenuEx &Menu, const TipoListaAle
 			// GrupoEleccion : 1 path, 0 tag
 			Q = L"SELECT Texto FROM Etiquetas WHERE Tipo & " + std::to_wstring(TIPO_DISCOPATH) + L" != 0 AND Tipo & " + std::to_wstring(TIPO_DISCOTAG) + L" != 0 ORDER BY RANDOM() LIMIT 5";
 			IDMenu = ID_MENUBOTONLISTA_GENERAR_DISCO_RND;
+			IDIcono = IDI_DISCO;
 			break;
 		default : // Si el tipo no es válido salgo
 			return FALSE;
@@ -513,7 +528,7 @@ const BOOL RaveBD::GenerarSugerenciasMenu(DWL::DMenuEx &Menu, const TipoListaAle
 	Menu.EliminarTodosLosMenus();
 
 	sqlite3 *BD = _BD;
-	RaveSQLite_Consulta C(_BD, Q, [&BD, &nTipo, &Menu, &IDMenu](RaveSQLite_Consulta &This) {
+	RaveSQLite_Consulta C(_BD, Q, [&BD, &nTipo, &Menu, &IDMenu, &IDIcono](RaveSQLite_Consulta &This) {
 		std::wstring Texto;
 		std::wstring Etiqueta = This.ObtenerStr(0);
 		int TotalAgregados = 0;
@@ -533,7 +548,7 @@ const BOOL RaveBD::GenerarSugerenciasMenu(DWL::DMenuEx &Menu, const TipoListaAle
 			Texto += L") ";
 		}
 		Texto += Etiqueta;
-		Menu.AgregarMenu(IDMenu + TotalAgregados++, Texto, IDI_GENERO);
+		Menu.AgregarMenu(IDMenu + TotalAgregados++, Texto, IDIcono);
 
 	});
 	return C.Resultado();
@@ -1234,6 +1249,7 @@ const BOOL RaveBD::GuardarHistorial_Lista(Historial_Lista &HL) {
 	if (SqlRet != SQLITE_DONE)
 		return FALSE;
 	Historial_UltimaIDLista = UltimaIdInsertada();
+	HL.Id = Historial_UltimaIDLista;
 	return TRUE;
 }
 

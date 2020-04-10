@@ -121,7 +121,7 @@ class RaveBD : public RaveSQLite {
 	EtiquetaBD                 *ObtenerEtiqueta(std::wstring &eTexto);
 								// Obtiene la lista completa de etiquetas
 	const BOOL                  ObtenerEtiquetas(void);
-
+								// Obtiene la lista del historial según la Id especificada
 	Historial_Lista             ObtenerHistorial_Lista(const INT64 Id);
 
 								// Calcula el total de medios, el total de bytes, el total de tiempo, y la nota media de una etiqueta
