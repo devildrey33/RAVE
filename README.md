@@ -67,9 +67,9 @@ Teclas por defecto cuando el reproductor tiene le foco del teclado (excepto si e
 *-*                          | `Bajar volumen`
 *Control + Cursor derecha*   | `Reproducir siguiente` 
 *Control + Cursor izquierda* | `Reproducir anterior`
-*F1*                         | 'Mostrar info del medio actual'
-*F2*                         | 'Mostrar medio actual en la BD'
-*F3*                         | 'Mostrar medio actual en la lista'
+*F1*                         | `Mostrar info del medio actual`
+*F2*                         | `Mostrar medio actual en la BD`
+*F3*                         | `Mostrar medio actual en la lista`
 
 ### FAQ
  * Que es una raíz?
