@@ -505,7 +505,7 @@ const BOOL RaveBD::GenerarSugerenciasMenu(DWL::DMenuEx &Menu, const TipoListaAle
 
 	Menu.EliminarTodosLosMenus();
 
-	Debug_Escribir_Varg(L"RaveBD::GenerarSugerenciasMenu %d\n", nTipo);
+//	Debug_Escribir_Varg(L"RaveBD::GenerarSugerenciasMenu %d\n", nTipo);
 
 	sqlite3 *BD = _BD;
 	int TotalAgregados = 0;
@@ -530,7 +530,7 @@ const BOOL RaveBD::GenerarSugerenciasMenu(DWL::DMenuEx &Menu, const TipoListaAle
 		Texto += Etiqueta;
 		Menu.AgregarMenu(IDMenu + TotalAgregados, Texto, IDIcono);
 		TotalAgregados++;
-		Debug_Escribir_Varg(L"%s\n", Texto.c_str());
+//		Debug_Escribir_Varg(L"%s\n", Texto.c_str());
 
 
 	});

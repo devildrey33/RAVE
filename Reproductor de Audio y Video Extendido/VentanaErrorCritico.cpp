@@ -35,7 +35,7 @@ HWND VentanaErrorCritico::Crear(void) {
 						L"Si lo deseas puedes mandar el informe de errores para que \n"
 						L"sea revisado pulsando el boton Enviar. De esta forma estaras \n"
 						L"ayudando al desarrollo de este reproductor."
-						L"\n\nEn caso contrario pula el boton Salir. ";
+						L"\n\nEn caso contrario pula el botón Salir. ";
 	TextoError.CrearEtiquetaEx(this, TE.c_str(), 10, 40, RC.right - 20, 180, ID_VEC_TEXTOERROR, DEtiquetaEx_Alineacion_Izquierda, WS_CHILD | WS_VISIBLE);
 //	TextoError.Fuente = Fuente18Normal;
 

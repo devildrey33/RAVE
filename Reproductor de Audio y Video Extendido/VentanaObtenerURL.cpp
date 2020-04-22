@@ -26,6 +26,7 @@ void VentanaObtenerURL::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse& DatosMouse
 		BDMedio Medio;
 		App.BD.AnalizarMedio(EditURL.Texto(), Medio, App.Unidades);
 		App.VentanaRave.Lista.AgregarMedio(&Medio);
+		Destruir();
 
 /*		DArchivoInternet::Obtener(EditURL.Texto(),
 			[=](DWL::DPeticion &P) {

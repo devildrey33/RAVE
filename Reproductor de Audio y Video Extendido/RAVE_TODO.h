@@ -417,6 +417,7 @@
 			V Crear dialeg per posar les urls
 			- Intentar mantenir una llista de canals de la tdt a la BD
 				- https://github.com/LaQuay/TDTChannels/blob/master/TELEVISION.md
+				- https://github.com/iptv-org/iptv
 
 		V  Suport per m3u's de IpTv
 			- No actualitzar temps actual ni total ni la barra
