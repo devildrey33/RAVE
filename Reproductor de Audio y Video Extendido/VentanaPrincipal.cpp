@@ -1174,6 +1174,7 @@ void VentanaPrincipal::Evento_BorraFondo(HDC DC) {
 
 void VentanaPrincipal::Evento_Cerrar(void) {
 
+	ThreadAnalizar.Cancelar(TRUE);
 	ThreadActualizar.Cancelar(TRUE);
 	ThreadArchivosLista.Cancelar(TRUE);
 

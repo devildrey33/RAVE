@@ -16,6 +16,7 @@ ThreadAnalisis::ThreadAnalisis(void) : DWL::DVentana(), _FASE(0), _VentanaPlayer
 
 
 ThreadAnalisis::~ThreadAnalisis(void) {
+//	Debug_Escribir(L"ThreadAnalisis::~ThreadAnalisis\n");
 }
 
 

@@ -414,7 +414,9 @@
 
 
 		V  Suport per urls externes de internet
-			V Crear dialeg per posar les urls
+			V Crear dialeg per posar les urls.
+				V Tancar dialeg al obrir una URL.
+			V Al analitzar els medis, pot ser que algunes URL vinguin amb variables GET de PHP, s'ha de retallar la extensió a partir del interrogant.
 			- Intentar mantenir una llista de canals de la tdt a la BD
 				- https://github.com/LaQuay/TDTChannels/blob/master/TELEVISION.md
 				- https://github.com/iptv-org/iptv
