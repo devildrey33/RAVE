@@ -671,6 +671,7 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		case ID_MENUBD_AGREGARANUEVALISTA		:	Arbol_AgregarALista(TRUE);				return;
 		case ID_MENUBD_AGREGARALISTA			:	Arbol_AgregarALista(FALSE);				return;
 		case ID_MENUBD_MOMENTOS					:   Arbol_Momentos();						return;
+		case ID_MENUBD_REANALIZAR				:   Arbol_Reanalizar();						return;
 		case ID_MENUBD_AGREGAR_URL				:	MostrarVentanaURL();					return;
 		// Menú Lista
 		case ID_MENULISTA_ABRIRCARPETA			:	Lista_AbrirEnExplorador();				return;
@@ -761,6 +762,14 @@ void VentanaPrincipal::Arbol_Momentos(void) {
 	BDMedio Medio;
 	App.BD.ObtenerMedio(Arbol.MedioMarcado()->Hash, Medio, App.Unidades);
 	Momentos.Mostrar(Medio);
+}
+
+
+void VentanaPrincipal::Arbol_Reanalizar(void) {
+	BDMedio Medio;
+	App.BD.ObtenerMedio(Arbol.MedioMarcado()->Hash, Medio, App.Unidades);
+	// PRE ANALISIS
+	App.BD.AnalizarMedio(Medio.Path, Medio, App.Unidades);
 }
 
 

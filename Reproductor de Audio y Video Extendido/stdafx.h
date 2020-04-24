@@ -123,6 +123,7 @@
 #define ID_MENUBD_PROPIEDADES					2107
 #define ID_MENUBD_MOMENTOS                      2108
 #define ID_MENUBD_AGREGAR_URL				    2109
+#define ID_MENUBD_REANALIZAR					2110
 
 
 /*#define ID_MENUMEZCLAR_SI						2110

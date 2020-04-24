@@ -347,6 +347,12 @@ void RAVE::IniciarUI(int nCmdShow) {
 	VentanaRave.Menu_ArbolBD.AgregarSeparador();
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ACTUALIZAR			, L"Actualizar"									, IDI_ACTUALIZAR);
 	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_ANALIZAR				, L"Analizar"									, IDI_ANALIZAR);
+	// Opciones de depuración en el arbol
+#ifdef _DEBUG
+	VentanaRave.Menu_ArbolBD.AgregarSeparador();
+	VentanaRave.Menu_ArbolBD.AgregarMenu(ID_MENUBD_REANALIZAR			, L"Re-Analizar medio"							, 0);
+#endif
+
 
 	// Menu Boton Arbol BD	
 	VentanaRave.Menu_BotonArbolBD.AgregarMenu(ID_MENUBD_ACTUALIZAR		, L"Actualizar"									, IDI_ACTUALIZAR);

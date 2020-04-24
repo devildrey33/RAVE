@@ -534,6 +534,7 @@ void ThreadAnalisis::_Parsear(libvlc_instance_t *VLC, std::wstring &Path) {
 	libvlc_media_release(Media);
 }
 
+
 void ThreadAnalisis::_ParsearTerminado(const libvlc_event_t *event, void *user_data) {
 	(void)event;
 	HANDLE Sem = (HANDLE)user_data;

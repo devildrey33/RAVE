@@ -983,7 +983,7 @@ const BOOL RaveBD::_CrearTablaMedios(const wchar_t *Nombre) {
 
 // Pre-Analiza el medio y lo inserta en la BD
 // Devuelve FALSE si ahy un error
-// Devuelve TRUE si ya se ha añadido el medio
+// Devuelve TRUE si se ha añadido el medio (no existia anteriormente)
 // Devuelve 2 si el medio ya existia en la BD
 const BOOL RaveBD::AnalizarMedio(std::wstring &nPath, BDMedio &OUT_Medio, DWL::DUnidadesDisco& Unidades, const ULONG Longitud, const UINT TiempoEnSecs, const wchar_t* NombreDesdeM3u) {
 	Ubicacion_Medio		Ubicacion = BDMedio::Ubicacion(nPath);
@@ -1306,7 +1306,7 @@ const BOOL RaveBD::AnalizarNombre(std::wstring &Analisis, std::wstring &nNombre,
 	int PosPista         = -1;
 	Tipo_ParteNombre UPN = Tipo_ParteNombre_Texto;
 	// Una vez identificados los sub-strings elijo el que tiene mas posibilidades de ser la pista
-	// Los tipos están ordenados de forma que el tipo que mas provabilidades tiene de ser una pista, es el que tiene mas valor.
+	// Los tipos están ordenados de forma que el tipo que mas provabilidades tiene que ser una pista, es el que tiene mas valor.
 	for (size_t i = 0; i < Sp.Total(); i++) {
 		if (Tipos[i] > UPN) {
 			UPN = Tipos[i];

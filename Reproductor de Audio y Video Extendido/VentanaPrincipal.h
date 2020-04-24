@@ -138,6 +138,8 @@ class VentanaPrincipal : public DWL::DVentana {
 	void                        Arbol_AsignarNota(const float nNota);
 								// Función para abrir la ventana de momentos
 	void                        Arbol_Momentos(void);
+								// Función para re-analizar un medio (SOLO PARA MODO DEBUG)
+	void						Arbol_Reanalizar(void);
 								// Función que agrega un directorio al arbol de la base de datos
 	NodoBD                     *Arbol_AgregarDir(std::wstring *Path, const BOOL nRepintar = FALSE);
 								// Función que agrega una raíz al arbol de la base de datos

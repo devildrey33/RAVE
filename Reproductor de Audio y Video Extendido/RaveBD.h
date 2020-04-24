@@ -72,8 +72,8 @@ enum Tipo_ParteNombre {
 	Tipo_ParteNombre_Texto		=  0,	// Qualquier texto
 	Tipo_ParteNombre_Pista4		=  1,	//  2019   (Posible / provable any) 
 	Tipo_ParteNombre_Pista1		=  2,	//     1		
-	Tipo_ParteNombre_Pista2		=  3,	//    03
-	Tipo_ParteNombre_Pista3		=  4,	//   102
+	Tipo_ParteNombre_Pista3		=  3,	//   102
+	Tipo_ParteNombre_Pista2		=  4,	//    03
 	Tipo_ParteNombre_Pista1p	=  5,	//    1.
 	Tipo_ParteNombre_Pista2p	=  6,	//   01.
 	Tipo_ParteNombre_Pista1x1	=  7,	//   1x4
