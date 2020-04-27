@@ -588,6 +588,12 @@ void RAVE::Evento_TeclaSoltada(DWL::DEventoTeclado &DatosTeclado) {
 		case VK_MEDIA_PREV_TRACK:
 			App.VentanaRave.Lista_Anterior();
 			return;
+		case VK_ESCAPE:
+			// Si ha presionado el esc en el modo pantalla completa
+			if (VentanaRave.PantallaCompleta() == TRUE) {
+				VentanaRave.PantallaCompleta(FALSE);
+			}
+			return;
 	}
 	
 	BOOL Control	= ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0);
