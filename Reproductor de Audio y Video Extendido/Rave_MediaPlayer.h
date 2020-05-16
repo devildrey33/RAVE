@@ -76,6 +76,8 @@ class Rave_MediaPlayer : public DWL::DVentana {
 
 	const BOOL						ObtenerDatosParsing(void);
 	
+									// Asigna el tick en el que se ha salido de pantalla completa
+	void                            AsignarTick_SalirPantallaCompleta(void);
 
 	static std::wstring            &UltimoErrorVLC(void);
 

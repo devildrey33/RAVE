@@ -78,6 +78,7 @@ class RaveVLC_Medio : public Rave_Medio {
 	libvlc_event_manager_t    *_Eventos;
 	BOOL                       _Parseado;
 
+
 //	size_t					   _InstanciaVLC;
 	libvlc_instance_t         *_Instancia;
 

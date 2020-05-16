@@ -3,7 +3,7 @@
 #include "Rave_Iconos.h"
 #include "ListaMedios.h"
 
-Rave_Medio::Rave_Medio(ItemMedio *nMedio) : Medio(nMedio) { 
+Rave_Medio::Rave_Medio(ItemMedio *nMedio) : Medio(nMedio), _SalirPantallaCompleta(0) {
 };
 
 void Rave_Medio::ComprobarMomento(void) {
@@ -54,4 +54,8 @@ void Rave_Medio::ActualizarIconos(int nTipo) {
 		}
 		App.VentanaRave.Lista.Repintar();
 	}
+}
+
+void Rave_Medio::Evento_SalirPantallaCompleta(void) {
+	_SalirPantallaCompleta = GetTickCount64();
 }

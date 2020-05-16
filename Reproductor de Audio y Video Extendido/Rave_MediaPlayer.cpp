@@ -846,6 +846,11 @@ const int Rave_MediaPlayer::EnumerarSubtitulos(void) {
 	return _Actual->EnumerarSubtitulos();
 }
 
+void Rave_MediaPlayer::AsignarTick_SalirPantallaCompleta(void) {
+	if (_Actual != nullptr) _Actual->Evento_SalirPantallaCompleta();
+//	if (_Siguiente != nullptr) _Actual->Evento_SalirPantallaCompleta();
+}
+
 void Rave_MediaPlayer::Temporizador_ObtenerVentanaVLC(void) {
 	EnumChildWindows(App.VentanaRave.Video.hWnd(), &Rave_MediaPlayer::EnumeracionVLC, NULL);
 	if (App.MP.hWndVLC != NULL) KillTimer(hWnd(), TIMER_OBTENERVLCWND);
@@ -890,3 +895,4 @@ LRESULT CALLBACK Rave_MediaPlayer::GestorMensajes(UINT uMsg, WPARAM wParam, LPAR
 	}
 	return DVentana::GestorMensajes(uMsg, wParam, lParam);
 }
+

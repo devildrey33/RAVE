@@ -347,13 +347,15 @@ const float RaveVLC_Medio::TiempoActual(void) {
 
 void RaveVLC_Medio::TiempoActual(float nTiempo) {
 	if (_Medio != NULL) {
-		libvlc_media_player_set_position(_Medio, nTiempo);
+		// Si el tick de la ultima vez que se salio de pantalla completa + 100 es menor que el ultimo tick
+		if (_SalirPantallaCompleta + 500 < GetTickCount64())	libvlc_media_player_set_position(_Medio, nTiempo);
 	}
 }
 
 void RaveVLC_Medio::TiempoActualMs(UINT64 nTiempo) {
 	if (_Medio != NULL) {
-		libvlc_media_player_set_time(_Medio, nTiempo);
+		// Si el tick de la ultima vez que se salio de pantalla completa + 100 es menor que el ultimo tick
+		if (_SalirPantallaCompleta + 500 < GetTickCount64())	libvlc_media_player_set_time(_Medio, nTiempo);
 	}
 }
 

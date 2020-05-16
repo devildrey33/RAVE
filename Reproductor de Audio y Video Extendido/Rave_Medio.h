@@ -66,14 +66,18 @@ class Rave_Medio {
 									// Obtiene el numero de instancia que se esta usando del VLC
 	  virtual const size_t			InstanciaNum(void)												{ return 0; };
 			
+
 									///////////////////////
 									// Funciones propias //
 									///////////////////////
 
+									// Asigna el tick en el que se ha salido de pantalla completa
+	  void                          Evento_SalirPantallaCompleta(void);
+
 									// Actualiza los iconos de la BD i la lista
 	  void							ActualizarIconos(int nIcono);
 	  void                          ComprobarMomento(void);
-
+	  
 									///////////////
 									// Variables //
 									///////////////
@@ -84,6 +88,12 @@ class Rave_Medio {
     protected:
 									// Para el fade in / out
 	  DWL::DAnimacion              _AniVolumen;
+
+
+  								    // Tick en el que se ha pasado de pantalla completa a pantalla normal
+								    // Al cambiar de pantalla completa a normal con doble click, puede pasar que el ultimo click suceda encima de la barra de tiempo, y este sea modificado
+								    // Por eso, no se debe cambiar el tiempo del medio durante _SalirPantallaCompleta + 100 
+	  ULONGLONG                    _SalirPantallaCompleta;
 
 
 	  friend class Rave_MediaPlayer;

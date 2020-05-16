@@ -1132,6 +1132,9 @@ void VentanaPrincipal::PantallaCompleta(const BOOL nActivar) {
 		Arbol.SkinScroll = ScrollSkinClaro;
 		Arbol.Skin       = ArbolSkinClaro;
 		Arbol.ActualizarSkin();
+
+		// Asigno el tick, para que no se modifique el tiempo accidentalmente al salir de pantalla completa
+		App.MP.AsignarTick_SalirPantallaCompleta();
 	}
 
 	InvalidateRect(App.MP.hWndVLC, NULL, TRUE);
