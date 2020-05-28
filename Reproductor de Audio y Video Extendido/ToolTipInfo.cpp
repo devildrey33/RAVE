@@ -37,15 +37,25 @@ void ToolTipInfo::Mostrar(const int cX, const int cY, const int cAncho, const in
 
 	if (_hWnd == NULL) {
 		_Ocultando = FALSE;
-		_hWnd = DVentana::CrearVentana(DWndPadre, L"RAVE_ToolTipInfo", L"", cX, cY, cAncho, cAlto, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
+//		_hWnd = DVentana::CrearVentana(DWndPadre, L"RAVE_ToolTipInfo", L"", cX, cY, cAncho, cAlto, WS_POPUP | WS_CAPTION, WS_EX_TOPMOST | WS_EX_TOOLWINDOW);
+		_hWnd = DVentana::CrearVentana(DWndPadre, L"RAVE_ToolTipInfo", L"", cX, cY, cAncho, cAlto, WS_POPUP | WS_CAPTION, WS_EX_TOOLWINDOW);
 		MARGINS Margen = { 0, 0, 0, 1 };
 		DwmExtendFrameIntoClientArea(_hWnd, &Margen);
 	}
 	Opacidad(0);
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Lo que hago es posicionar el z-order del tooltip detras de la ventana padre, y luego posiciono la ventana padre detras del tooltip
+	// Esto crea situaciones en que se pierde el orden general de las ventanas, y la ventana padre queda siempre por delante
 	// Asigno la posición del tooltip detras de la ventana con el foco
-	SetWindowPos(_hWnd, DWndPadre->hWnd(), cX, cY, cAncho, cAlto, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
+//	SetWindowPos(_hWnd, DWndPadre->hWnd(), cX, cY, cAncho, cAlto, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW);
 	// Situo el padre justo detras de este tooltip
-	SetWindowPos(DWndPadre->hWnd(), _hWnd, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+//	SetWindowPos(DWndPadre->hWnd(), _hWnd, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	// Asigno la posición del tooltip y la altura del tooltip
+	SetWindowPos(_hWnd, NULL, cX, cY, cAncho, cAlto, SWP_NOACTIVATE | SWP_FRAMECHANGED | SWP_SHOWWINDOW | SWP_NOZORDER);
+//	BringWindowToTop(_hWnd);
 
 
 	// Corrijo el z-order de las ventanas que puedan tener el foco en este momento
@@ -664,6 +674,7 @@ void ToolTipsInfo::_MostrarToolTip(ToolTipInfo *TT) {
 		delete TT;
 		return;
 	}
+	// La ventana padre no está visible, elimino el tooltip
 	if (IsWindowVisible(_Padre->hWnd()) == FALSE) {
 		delete TT;
 		return;

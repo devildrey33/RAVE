@@ -193,6 +193,16 @@ void ArbolBD::_AgregarMedio(NodoBD *nPadre, BDMedio *nMedio) {
 	size_t TA = nPadre->Ancestros() + 1;
 	std::wstring Filtrado;
 	NodoBD *TmpPadre = nPadre, *Tmp = NULL;
+
+	std::wstring nNombre = nMedio->Nombre();
+	// Si tiene pista, la agrego al nombre				
+	if (nMedio->Pista() != 0) {
+		std::wstring nPista;
+		nMedio->PistaStr(nPista);
+		nNombre = nPista + L" " + nMedio->Nombre();
+	}
+	nSplit[nSplit.Total() - 1] = nNombre;
+
 	// Busco si están creados los subdirectorios
 	for (size_t TA = nPadre->Ancestros() + 1; TA < nSplit.Total(); TA++) {
 		Tmp = BuscarHijoTxt(nSplit[TA], TmpPadre);
@@ -205,13 +215,6 @@ void ArbolBD::_AgregarMedio(NodoBD *nPadre, BDMedio *nMedio) {
 				TmpPadre = AgregarBDNodo(ArbolBD_TipoNodo_Directorio, TmpPadre, Filtrado.c_str(), 0, 0);
 			}
 			else { // Medio
-				std::wstring nNombre = nMedio->Nombre();
-				// Si tiene pista, la agrego al nombre				
-				if (nMedio->Pista() != 0) {
-					std::wstring nPista;
-					nMedio->PistaStr(nPista);
-					nNombre = nPista + L" " + nMedio->Nombre();
-				}
 				
 				App.BD.FiltroNombre(nNombre, Filtrado);
 				ArbolBD_TipoNodo Tipo = ArbolBD_TipoNodo_Indefinido;
