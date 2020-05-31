@@ -1164,15 +1164,18 @@ void VentanaPrincipal::Evento_SliderVolumen_Cambiado(void) {
 void VentanaPrincipal::Evento_SliderVolumen_Rueda(DEventoMouseRueda &DatosMouse) {
 	int Vol = App.MP.Volumen();
 	Vol += (DatosMouse.Delta() > 0) ? 10 : -10;
-	App.MP.Volumen(Vol);
-	App.Opciones.Volumen(Vol);
-
+	if (Vol > 200) Vol = 200;
+	if (Vol < 0)   Vol = 0;
 	// Actualizo el UI
 	SliderVolumen.Valor(static_cast<float>(Vol));
 	App.ControlesPC.SliderVolumen.Valor(static_cast<float>(Vol));
 	std::wstring StrVol = std::to_wstring(Vol) + L"%";
 	LabelVolumen.Texto(StrVol);
 	App.ControlesPC.LabelVolumen.Texto(StrVol);
+	App.Opciones.Volumen(Vol);
+	// Actualizo el volumen
+	App.MP.Volumen(Vol);
+
 }
 
 void VentanaPrincipal::Evento_BorraFondo(HDC DC) {
