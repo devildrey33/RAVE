@@ -132,6 +132,7 @@ void RaveVLC_Medio::Eliminar(void) {
 // OJU s'ha d'utilitzar sempre desde el thread principal o pot fer un deadlock
 const BOOL RaveVLC_Medio::Stop(void) {
 	if (_Medio != NULL) {
+		BOOL Video = FALSE;
 		Debug_Escribir_Varg(L"RaveVLC_Medio::Stop %d\n", _Medio);
 
 		_AniVolumen.Terminar();
@@ -150,6 +151,7 @@ const BOOL RaveVLC_Medio::Stop(void) {
 		if (libvlc_media_player_has_vout(_Medio) > 0) {
 			// Para evitar un deadlock si se está reproduciendo un video y el foco está en otra parte
 			HWND Foco = SetFocus(App.VentanaRave.hWnd()); // REVISADO
+			Video = TRUE;
 		}
 		// Desactivo los filtros que pueda haber activados para evitar un crash en la versión x86
 //		libvlc_video_set_adjust_int(_Medio, libvlc_adjust_Enable, 0);
@@ -160,9 +162,11 @@ const BOOL RaveVLC_Medio::Stop(void) {
 		SystemParametersInfo(SPI_SETSCREENSAVEACTIVE, TRUE, NULL, TRUE); // Activo protector de pantalla
 
 		// Elimino la región del clip
-		RECT RC;
-		GetClientRect(App.VentanaRave.hWnd(), &RC);
-		BOOL R = App.VentanaRave.BarraTareas.Clip(&RC);
+		if (Video == TRUE) {
+			RECT RC;
+			GetClientRect(App.VentanaRave.hWnd(), &RC);
+			BOOL R = App.VentanaRave.BarraTareas.Clip(&RC);
+		}
 		
 		// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
 //		std::wstring nTitulo = std::wstring(RAVE_TITULO) + L" - " +  MedioActual.Nombre();
