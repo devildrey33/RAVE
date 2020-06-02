@@ -1,7 +1,7 @@
 #pragma once
 
 #include "VentanaPrincipal.h"
-#include "DConsola.h"
+//#include "DConsola.h"
 #include "Rave_MediaPlayer.h"
 #include "ControlesPantallaCompleta.h"
 #include "RAVE_Configuracion.h"

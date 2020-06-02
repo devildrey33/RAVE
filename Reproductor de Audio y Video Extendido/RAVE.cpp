@@ -7,7 +7,8 @@
 #include <DRegistro.h>
 #include <DDirectoriosWindows.h>
 #include "Historial_Lista.h"
-
+#include "DLogConsola.h"
+#include "DLogArchivo.h"
 
 #include <DEnviarCorreo.h>
 //#include <gdiplus.h>
@@ -89,12 +90,32 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 			break;
 		}
 	}
-			
+
+	// Path para el archivo de log		
+	std::wstring PathLog;
+	DWL::DDirectoriosWindows::Comun_AppData(PathLog);
+	PathLog += L"\\RAVE\\Log.txt";
+	// Especifico el tipo de log en la DWL
+	LogTipo(RAVE_LOG);
+
+	switch (RAVE_LOG) {
+		case DWL::DTipoLog::Archivo:
+			Log->Crear(PathLog.c_str());
+			Debug_Escribir(L"RAVE::Iniciar\n");
+			break;
+		case DWL::DTipoLog::Consola:
+			Log->Crear(L"Consola de depuración");
+			Debug_Escribir(L"RAVE::Iniciar\n");
+			break;
+	}
+
 	// Consola para mensajes de depuración
-	#ifdef RAVE_MOSTRAR_CONSOLA
-		ConsolaDebug.Crear(L"Consola de depuración");
+/*	#ifdef RAVE_MOSTRAR_CONSOLA
+		delete Log;
+		Log = new DLogConsola;
+		Log->Crear(L"Consola de depuración");
 		Debug_Escribir(L"RAVE::Iniciar\n");
-	#endif
+	#endif*/
 
 	// Aseguro que el directorio actual sea el del player
 	SetCurrentDirectory(AppPath.c_str());

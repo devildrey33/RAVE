@@ -2,7 +2,7 @@
 
 // Versión y titulo
 #define RAVE_VERSION			0, 6, 0, 5
-#define RAVE_VERSIONSTR			L"0.605e"
+#define RAVE_VERSIONSTR			L"0.605g"
 #define RAVE_TITULO				L"RAVE " RAVE_VERSIONSTR
 #define RAVE_VERSIONBD          L"1.2"
 #define RAVE_VERSIONOPCIONES    L"1.2"
@@ -13,9 +13,14 @@
 #define RAVE_SKIN_NORMAL        0
 #define RAVE_SKIN_VISUALSTUDIO  1
 
+#define RAVE_LOG_NADA			DWL::DTipoLog::Nada
+#define RAVE_LOG_ARCHIVO		DWL::DTipoLog::Archivo
+#define RAVE_LOG_CONSOLA		DWL::DTipoLog::Consola
+
 #ifdef _DEBUG
-	// Mostrar consola de depuración
-	#define RAVE_MOSTRAR_CONSOLA
+	// Tipo de log (puede ser : Nada, Archivo, y Consola)
+	#define RAVE_LOG				RAVE_LOG_CONSOLA
+//	#define RAVE_LOG				RAVE_LOG_ARCHIVO
 
 	// Simular el AppPath en "C:\ProgramFiles\RAVE\" (OJO PORQUE LA LIBVLC LA CARGA DE LA CARPETA "...\RAVE\VLCx64")
 	#define RAVE_SIMULAR_APPPATH
@@ -40,6 +45,11 @@
 
 	// Simula que hay una nueva versión disponible (9.99)
 	//#define RAVE_SIMULAR_ACTUALIZACION_NUEVA
+
+#else // RELEASE
+	// Tipo de log (puede ser : Nada, Archivo, y Consola)
+	#define RAVE_LOG				RAVE_LOG_ARCHIVO
+//	#define RAVE_LOG				RAVE_LOG_NADA
 
 #endif
 

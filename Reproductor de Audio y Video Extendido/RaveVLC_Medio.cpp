@@ -166,6 +166,7 @@ const BOOL RaveVLC_Medio::Stop(void) {
 			RECT RC;
 			GetClientRect(App.VentanaRave.hWnd(), &RC);
 			BOOL R = App.VentanaRave.BarraTareas.Clip(&RC);
+			Debug_Escribir_Varg(L"BarraTareasClip : T%d, L%d, B%d, R%d, BOOL:%d\n", RC.top, RC.left, RC.bottom, RC.right, R);
 		}
 		
 		// Asigno el titulo de la ventana con el nombre del medio que se acaba de abrir
