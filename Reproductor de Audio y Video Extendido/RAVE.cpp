@@ -136,7 +136,7 @@ const BOOL RAVE::Iniciar(int nCmdShow) {
 
 	BOOL MemRet = FALSE;
 	// Si este hilo pertenece al reproductor inicial, creo la memória compartida.
-	// Si este hilo no pertenece al reproductor inicial, obtengo la memória compartida (que ya debe haber sido inicializada)
+	// Si este hilo NO pertenece al reproductor inicial, obtengo la memória compartida (que ya debe haber sido inicializada)
 	if (PlayerInicial == TRUE) 	MemRet = MemCompartida.Crear(L"Memoria_Rave");	 // Creo un espacio de memória compartida	
 	else						MemRet = MemCompartida.Obtener(L"Memoria_Rave"); // Obtengo el espacio de memória compartida
 

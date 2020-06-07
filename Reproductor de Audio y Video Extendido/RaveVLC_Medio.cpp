@@ -221,8 +221,7 @@ void RaveVLC_Medio::Volumen(const long rVolumen, const BOOL ActualizarUI) {
 	if (nVolumen > 200) nVolumen = 200;
 	if (nVolumen < 0)	nVolumen = 0;
 
-	Debug_Escribir_Varg(L"RaveVLC_Medio::Volumen Vol : %d\n",  nVolumen);
-
+	
 	if (ActualizarUI == TRUE) {
 		App.VentanaRave.SliderVolumen.Valor(static_cast<float>(nVolumen));
 		App.ControlesPC.SliderVolumen.Valor(static_cast<float>(nVolumen));
@@ -233,6 +232,8 @@ void RaveVLC_Medio::Volumen(const long rVolumen, const BOOL ActualizarUI) {
 
 	if (_Medio != NULL) {
 		libvlc_audio_set_volume(_Medio, nVolumen);
+	
+		Debug_Escribir_Varg(L"RaveVLC_Medio::Volumen Vol : %d\n", libvlc_audio_get_volume(_Medio));
 	}
 }
 
