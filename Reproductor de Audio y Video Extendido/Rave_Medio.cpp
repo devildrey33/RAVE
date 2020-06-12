@@ -29,21 +29,21 @@ void Rave_Medio::ActualizarIconos(int nTipo) {
 				if (Medio->BdMedio.TipoMedio == Tipo_Medio::Tipo_Medio_Video) nIcono = RAVE_Iconos::RAVE_Icono_Video;	// IDI_VIDEO
 				if (Medio->BdMedio.TipoMedio == Tipo_Medio::Tipo_Medio_IpTv)  nIcono = RAVE_Iconos::RAVE_Icono_IpTv;	// IDI_IPTV
 
-				App.VentanaRave.BotonPlay.Icono(IDI_PLAY32, 32);
-				App.ControlesPC.BotonPlay.Icono(IDI_PLAY32, 32);
+				App.VentanaRave.BotonPlay.Icono(IDI_PLAY4, 24);
+				App.ControlesPC.BotonPlay.Icono(IDI_PLAY4, 24);
 				App.ControlesPC.BarraTareas.Boton_Icono(ID_BOTON_PLAY, IDI_PLAY32);
 
 				break;
 			case 1:
 				nIcono = RAVE_Iconos::RAVE_Icono_Play; // play
-				App.VentanaRave.BotonPlay.Icono(IDI_PAUSA32, 32);
-				App.ControlesPC.BotonPlay.Icono(IDI_PAUSA32, 32);
+				App.VentanaRave.BotonPlay.Icono(IDI_PAUSA4, 24);
+				App.ControlesPC.BotonPlay.Icono(IDI_PAUSA4, 24);
 				App.ControlesPC.BarraTareas.Boton_Icono(ID_BOTON_PLAY, IDI_PAUSA32);
 				break;
 			case 2:
 				nIcono = RAVE_Iconos::RAVE_Icono_Pausa; // Pausa
-				App.VentanaRave.BotonPlay.Icono(IDI_PLAY32, 32);
-				App.ControlesPC.BotonPlay.Icono(IDI_PLAY32, 32);
+				App.VentanaRave.BotonPlay.Icono(IDI_PLAY4, 24);
+				App.ControlesPC.BotonPlay.Icono(IDI_PLAY4, 24);
 				App.ControlesPC.BarraTareas.Boton_Icono(ID_BOTON_PLAY, IDI_PLAY32);
 				break;
 		}

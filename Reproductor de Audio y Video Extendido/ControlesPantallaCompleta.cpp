@@ -28,11 +28,11 @@ void ControlesPantallaCompleta::Crear(void) {
 	RECT RC;
 	GetClientRect(hWnd(), &RC);
 
-	BotonAtras.CrearBotonEx(this,	 IDI_PREV32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  10, 10, 30, 30, ID_BOTON_ANTERIOR);
-	BotonPlay.CrearBotonEx(this,	 IDI_PLAY32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  50, 10, 30, 30, ID_BOTON_PLAY);
-//	BotonPausa.CrearBotonEx(this,	 IDI_PAUSA32, 32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  90, 10, 30, 30, ID_BOTON_PAUSA);
-	BotonStop.CrearBotonEx(this,	 IDI_STOP32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  90, 10, 30, 30, ID_BOTON_STOP);
-	BotonAdelante.CrearBotonEx(this, IDI_NEXT32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 130, 10, 30, 30, ID_BOTON_SIGUIENTE);
+	BotonAtras.CrearBotonEx(this,	 IDI_PREV,  24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  10, 10, 30, 30, ID_BOTON_ANTERIOR);
+	BotonPlay.CrearBotonEx(this,	 IDI_PLAY4,  24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  50, 10, 30, 30, ID_BOTON_PLAY);
+//	BotonPausa.CrearBotonEx(this,	 IDI_PAUSA32, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  90, 10, 30, 30, ID_BOTON_PAUSA);
+	BotonStop.CrearBotonEx(this,	 IDI_STOP,  24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  90, 10, 30, 30, ID_BOTON_STOP);
+	BotonAdelante.CrearBotonEx(this, IDI_NEXT,  24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 130, 10, 30, 30, ID_BOTON_SIGUIENTE);
 
 	LabelRatio.CrearEtiquetaEx(this, L"x1.0", 170, 16, 40, 30, ID_LABEL_RATIO, DEtiquetaEx_Alineacion_Centrado);
 
@@ -69,13 +69,24 @@ void ControlesPantallaCompleta::Crear(void) {
 
 
 
-void ControlesPantallaCompleta::RotarControles(void) {
+void ControlesPantallaCompleta::RotarControles(const BOOL Invertido) {
 	// El BotonAtras siempre se queda en la misma posición
-	switch (Alineacion) {
-		case Abajo		:	Alineacion = Izquierda;		break;
-		case Izquierda	:	Alineacion = Arriba;		break;
-		case Arriba		:	Alineacion = Derecha;		break;
-		case Derecha	:	Alineacion = Abajo;			break;
+	if (Invertido == false) {
+		switch (Alineacion) {
+			case Abajo		:	Alineacion = Izquierda;		break;
+			case Izquierda	:	Alineacion = Arriba;		break;
+			case Arriba		:	Alineacion = Derecha;		break;
+			case Derecha	:	Alineacion = Abajo;			break;
+		}
+	}
+	else {
+		switch (Alineacion) {
+			case Abajo		:	Alineacion = Derecha;		break;
+			case Izquierda	:	Alineacion = Abajo;			break;
+			case Arriba		:	Alineacion = Izquierda;		break;
+			case Derecha	:	Alineacion = Arriba;		break;
+		}
+
 	}
 	Alinear();
 
@@ -372,7 +383,7 @@ void ControlesPantallaCompleta::Evento_BarraEx_Cambiado(DWL::DEventoMouse &Datos
 
 void ControlesPantallaCompleta::Evento_BotonEx_Click(DWL::DEventoMouse &DatosMouse) {
 	switch (DatosMouse.ID()) {
-		case ID_BOTON_ROTAR    : RotarControles();											break;
+		case ID_BOTON_ROTAR    : RotarControles((DatosMouse.Boton == 0) ? FALSE : TRUE);	break;
 		case ID_BOTON_BD_PC    : MostrarBD();												break;
 		case ID_BOTON_LISTA_PC : MostrarLista();											break;
 		default                : App.VentanaRave.Evento_BotonEx_Mouse_Click(DatosMouse);	break;

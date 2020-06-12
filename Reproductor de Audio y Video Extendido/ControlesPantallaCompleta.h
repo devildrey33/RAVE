@@ -86,7 +86,7 @@ class ControlesPantallaCompleta :public DVentana {
 
 	CPC_Alineacion		    Alineacion;
 
-	void					RotarControles(void);
+	void					RotarControles(const BOOL Invertido = FALSE);
 
 	LRESULT CALLBACK		GestorMensajes(UINT uMsg, WPARAM wParam, LPARAM lParam);
 

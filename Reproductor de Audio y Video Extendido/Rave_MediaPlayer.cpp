@@ -600,8 +600,8 @@ void Rave_MediaPlayer::_TerminarMedio(Rave_Medio *MedioEvento) {
 
 		if (RestaurarIconos == TRUE) {
 			// Asigno las imagenes de los botones play / pausa a la del play
-			App.VentanaRave.BotonPlay.Icono(IDI_PLAY32, 32);
-			App.ControlesPC.BotonPlay.Icono(IDI_PLAY32, 32);
+			App.VentanaRave.BotonPlay.Icono(IDI_PLAY4, 24);
+			App.ControlesPC.BotonPlay.Icono(IDI_PLAY4, 24);
 		}
 	}
 

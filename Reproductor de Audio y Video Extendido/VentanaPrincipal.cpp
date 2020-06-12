@@ -11,8 +11,8 @@
 #include <Shlobj.h>
 #include "DDlgAbrir.h"
 
-#define RAVE_MIN_ANCHO 670
-#define RAVE_MIN_ALTO  302
+#define RAVE_MIN_ANCHO 570
+#define RAVE_MIN_ALTO  320
 //#define RAVE_BOTONES_LATERALES_ANCHO 140
 #define RAVE_BOTONES_IMAGEN_TAM			24
 #define RAVE_BOTONES_LATERALES_ANCHO	RAVE_BOTONES_IMAGEN_TAM + 16
@@ -54,17 +54,17 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 
 	// Marco superior izquierdo /////////////
 	MarcoSI.Crear(this, 10, 10, 380, 30, ID_MARCOSI);
-	BotonAtras.CrearBotonEx(&MarcoSI,	 IDI_PREV32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,   0, 0, 30, 30, ID_BOTON_ANTERIOR);
-	BotonPlay.CrearBotonEx(&MarcoSI,	 IDI_PLAY32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  40, 0, 30, 30, ID_BOTON_PLAY);
-	BotonStop.CrearBotonEx(&MarcoSI,	 IDI_STOP32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  80, 0, 30, 30, ID_BOTON_STOP);
-	BotonAdelante.CrearBotonEx(&MarcoSI, IDI_NEXT32,  32, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 120, 0, 30, 30, ID_BOTON_SIGUIENTE);
+	BotonAtras.CrearBotonEx(&MarcoSI,	 IDI_PREV,  24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,   0, 0, 30, 30, ID_BOTON_ANTERIOR);
+	BotonPlay.CrearBotonEx(&MarcoSI,	 IDI_PLAY4, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  40, 0, 30, 30, ID_BOTON_PLAY);
+	BotonStop.CrearBotonEx(&MarcoSI,	 IDI_STOP,  24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  80, 0, 30, 30, ID_BOTON_STOP);
+	BotonAdelante.CrearBotonEx(&MarcoSI, IDI_NEXT,  24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 120, 0, 30, 30, ID_BOTON_SIGUIENTE);
 
 	LabelRatio.CrearEtiquetaEx(&MarcoSI, L"x1.0", 160, 5, 40, 30, ID_LABEL_RATIO, DEtiquetaEx_Alineacion_Centrado);
 
-	BotonMezclar.CrearBotonEx(&MarcoSI, L"Mezclar", 210, 0, 70, 30, ID_BOTON_MEZCLAR);
+	BotonMezclar.CrearBotonEx(&MarcoSI, IDI_MEZCLAR, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 210, 0, 30, 30, ID_BOTON_MEZCLAR);
 	BotonMezclar.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
 	if (App.Opciones.Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
-	BotonRepetir.CrearBotonEx(&MarcoSI, L"Repetir", 290, 0, 70, 30, ID_BOTON_REPETIR);
+	BotonRepetir.CrearBotonEx(&MarcoSI, IDI_REPETIR, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 250, 0, 30, 30, ID_BOTON_REPETIR);
 	BotonRepetir.Fuente.CrearFuente(18, BotonRepetir.Skin.FuenteNombre.c_str(), TRUE);
 	if (App.Opciones.Repeat() > 0) BotonRepetir.Marcado(TRUE);
 	//////////////////////////////////////////
@@ -75,7 +75,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	// Marco superior derecho
 	MarcoSD.Crear(this, RC.right - 260, 16, 250, 24, ID_MARCOSD);
 	// Creo el slider para modificar el volumen
-	SliderVolumen.CrearBarraVolumen(&MarcoSD, 120, 3, 90, 17, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.Opciones.Volumen()));
+	SliderVolumen.CrearBarraVolumen(&MarcoSD, 120, 3, 90, 16, ID_SLIDER_VOLUMEN, 0, 200, static_cast<float>(App.Opciones.Volumen()));
 	std::wstring TxtVolumen = std::to_wstring(App.Opciones.Volumen()) + L"%";
 	LabelVolumen.CrearEtiquetaEx(&MarcoSD, TxtVolumen.c_str(), 215, 1, 40, 20, ID_LABEL_VOLUMEN, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
 	// Creo los labels para mostrar el tiempo actual y el total
@@ -267,8 +267,8 @@ void VentanaPrincipal::Repeat(void) {
 
 
 void VentanaPrincipal::Lista_Pausa(void) {
-	BotonPlay.Icono(IDI_PLAY32, 32);
-	App.ControlesPC.BotonPlay.Icono(IDI_PLAY32, 32);
+	BotonPlay.Icono(IDI_PLAY4, 24);
+	App.ControlesPC.BotonPlay.Icono(IDI_PLAY4, 24);
 	BarraTareas.Boton_Icono(ID_BOTON_PLAY, IDI_PLAY32);
 	App.MP.Pausa();
 }
@@ -300,8 +300,8 @@ return; */
 				if (App.MP.AbrirMedio(NCan, NULL) == FALSE) Lista.Errores++;
 			}*/
 			if (App.MP.Play() == TRUE) {
-				BotonPlay.Icono(IDI_PAUSA32, 32);
-				App.ControlesPC.BotonPlay.Icono(IDI_PAUSA32, 32);
+				BotonPlay.Icono(IDI_PAUSA4, 24);
+				App.ControlesPC.BotonPlay.Icono(IDI_PAUSA4, 24);
 				BarraTareas.Boton_Icono(ID_BOTON_PLAY, IDI_PAUSA32);
 			}
 			break;
@@ -322,8 +322,8 @@ return; */
 		case EnStop:
 		case EnPausa:
 			if (App.MP.Play() == TRUE) {
-				BotonPlay.Icono(IDI_PAUSA32, 32);
-				App.ControlesPC.BotonPlay.Icono(IDI_PAUSA32, 32);
+				BotonPlay.Icono(IDI_PAUSA4, 24);
+				App.ControlesPC.BotonPlay.Icono(IDI_PAUSA4, 24);
 				BarraTareas.Boton_Icono(ID_BOTON_PLAY, IDI_PAUSA32);
 			}			
 			break;
@@ -336,8 +336,8 @@ return; */
 
 void VentanaPrincipal::Lista_Stop(void) {
 	Lista.Errores = 0;
-	BotonPlay.Icono(IDI_PLAY32, 32);
-	App.ControlesPC.BotonPlay.Icono(IDI_PLAY32, 32);
+	BotonPlay.Icono(IDI_PLAY4, 24);
+	App.ControlesPC.BotonPlay.Icono(IDI_PLAY4, 24);
 	App.MP.Stop();
 }
 
