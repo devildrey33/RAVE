@@ -12,10 +12,10 @@
 #include "DDlgAbrir.h"
 
 #define RAVE_MIN_ANCHO 670
-#define RAVE_MIN_ALTO  289
-#define RAVE_BOTONES_LATERALES_ANCHO 140
-
-
+#define RAVE_MIN_ALTO  302
+//#define RAVE_BOTONES_LATERALES_ANCHO 140
+#define RAVE_BOTONES_IMAGEN_TAM			24
+#define RAVE_BOTONES_LATERALES_ANCHO	RAVE_BOTONES_IMAGEN_TAM + 16
 
 // Función que crea la ventana principal del reproductor
 HWND VentanaPrincipal::Crear(int nCmdShow) {
@@ -70,7 +70,7 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	//////////////////////////////////////////
 
 	// Creo el slider para mostrar / modificar el tiempo del medio actual
-	SliderTiempo.CrearBarraDesplazamientoEx(this, 10, 50, RC.right - 20, 20, ID_SLIDER_TIEMPO);
+	SliderTiempo.CrearBarraDesplazamientoEx(this, 10, 50, RC.right - 20, 10, ID_SLIDER_TIEMPO);
 
 	// Marco superior derecho
 	MarcoSD.Crear(this, RC.right - 260, 16, 250, 24, ID_MARCOSD);
@@ -84,13 +84,13 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	LabelTiempoTotal.CrearEtiquetaEx(&MarcoSD, L"00:00", 65, 1, 55, 20, ID_LABEL_TIEMPOTOTAL, DEtiquetaEx_Alineacion_Centrado, WS_CHILD | WS_VISIBLE);
 
 	// Marco inferior izquierdo /////////////
-	MarcoII.Crear(this, 10, 80, RAVE_BOTONES_LATERALES_ANCHO, 2000, ID_MARCOSI);
-	BotonBD.CrearBotonEx(&MarcoII, L"Base de datos", 0, 0, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_BD);
+	MarcoII.Crear(this, 10, 76, RAVE_BOTONES_LATERALES_ANCHO, 2000, ID_MARCOSI);
+	BotonBD.CrearBotonEx(&MarcoII, IDI_BASEDATOS2, RAVE_BOTONES_IMAGEN_TAM, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 0, 0, RAVE_BOTONES_LATERALES_ANCHO, RAVE_BOTONES_LATERALES_ANCHO, ID_BOTON_BD);
 	BotonBD.Marcado(TRUE); // Por defecto siempre se muestra la base de datos al empezar
-	BotonLista.CrearBotonEx(&MarcoII, L"Lista de medios", 0, 35, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_LISTA);
-	BotonVideo.CrearBotonEx(&MarcoII, L"Ver video", 0, 70, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_VIDEO);
+	BotonLista.CrearBotonEx(&MarcoII, IDI_LISTA, RAVE_BOTONES_IMAGEN_TAM, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 0, RAVE_BOTONES_LATERALES_ANCHO + 4, RAVE_BOTONES_LATERALES_ANCHO, RAVE_BOTONES_LATERALES_ANCHO, ID_BOTON_LISTA);
+	BotonVideo.CrearBotonEx(&MarcoII, IDI_VIDEO4, RAVE_BOTONES_IMAGEN_TAM, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 0, (RAVE_BOTONES_LATERALES_ANCHO + 4) * 2, RAVE_BOTONES_LATERALES_ANCHO, RAVE_BOTONES_LATERALES_ANCHO, ID_BOTON_VIDEO);
 	// El Boton Opciones queda siempre en la parte inferior del marco, para que quede separado de los otros (ya que es una ventana externa)
-	BotonOpciones.CrearBotonEx(&MarcoII, L"Opciones", 0, RC.bottom - 120, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_BOTON_OPCIONES);
+	BotonOpciones.CrearBotonEx(&MarcoII, IDI_OPCIONES, RAVE_BOTONES_IMAGEN_TAM, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 0, RC.bottom - 130, RAVE_BOTONES_LATERALES_ANCHO, RAVE_BOTONES_LATERALES_ANCHO, ID_BOTON_OPCIONES);
 	
 	#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
 		Vis.Crear(&MarcoII, 0, 160, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_VISUALIZACION);
@@ -193,14 +193,14 @@ void VentanaPrincipal::CrearBotonesThumb(void) {
 
 
 void VentanaPrincipal::AjustarControles(RECT &RC) {
-	MoveWindow(Lista.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, TRUE);
-	MoveWindow(Arbol.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, TRUE);
-	MoveWindow(Video.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 81, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 90, TRUE);
+	MoveWindow(Lista.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 77, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 86, TRUE);
+	MoveWindow(Arbol.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 77, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 86, TRUE);
+	MoveWindow(Video.hWnd(), (RAVE_BOTONES_LATERALES_ANCHO + 20), 77, RC.right - (RAVE_BOTONES_LATERALES_ANCHO + 30), RC.bottom - 86, TRUE);
 
-	MoveWindow(SliderTiempo.hWnd(), 10, 50, RC.right - 20, 20, TRUE);
+	MoveWindow(SliderTiempo.hWnd(), 10, 50, RC.right - 20, 16, TRUE);
 	MoveWindow(MarcoSD.hWnd(), RC.right - 260, 14, 255, 24, TRUE);
 
-	MoveWindow(BotonOpciones.hWnd(), 0, RC.bottom - 120, RAVE_BOTONES_LATERALES_ANCHO, 30, TRUE);
+	MoveWindow(BotonOpciones.hWnd(), 0, RC.bottom - 130, RAVE_BOTONES_LATERALES_ANCHO, RAVE_BOTONES_LATERALES_ANCHO, TRUE);
 
 	if (App.MP.hWndVLC != NULL) {
 		InvalidateRect(App.MP.hWndVLC, &RC, TRUE);

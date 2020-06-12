@@ -613,6 +613,18 @@
     <Image Include="..\Iconos\IDI_Historial.ico">
       <Filter>Archivos de recursos</Filter>
     </Image>
+    <Image Include="..\Iconos\IDI_BaseDatos2.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Lista.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Opciones.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="..\Iconos\IDI_Video4.ico">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">

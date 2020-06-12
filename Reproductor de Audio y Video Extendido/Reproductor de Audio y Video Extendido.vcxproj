@@ -334,6 +334,7 @@
     <Image Include="..\Iconos\IDI_AgregarNuevaLista.ico" />
     <Image Include="..\Iconos\IDI_Analizar.ico" />
     <Image Include="..\Iconos\IDI_BASEDATOS.ico" />
+    <Image Include="..\Iconos\IDI_BaseDatos2.ico" />
     <Image Include="..\Iconos\IDI_Borrar.ico" />
     <Image Include="..\Iconos\IDI_BorrarResaltado.ico" />
     <Image Include="..\Iconos\IDI_Calendario.ico" />
@@ -352,6 +353,7 @@
     <Image Include="..\Iconos\IDI_Historial.ico" />
     <Image Include="..\Iconos\IDI_Interrogante.ico" />
     <Image Include="..\Iconos\IDI_IpTv.ico" />
+    <Image Include="..\Iconos\IDI_Lista.ico" />
     <Image Include="..\Iconos\IDI_ListaAleatoria.ico" />
     <Image Include="..\Iconos\IDI_Momento.ico" />
     <Image Include="..\Iconos\IDI_Momentos.ico" />
@@ -360,6 +362,7 @@
     <Image Include="..\Iconos\IDI_NEXT32.ico" />
     <Image Include="..\Iconos\IDI_NoCheck.ico" />
     <Image Include="..\Iconos\IDI_Nota.ico" />
+    <Image Include="..\Iconos\IDI_Opciones.ico" />
     <Image Include="..\Iconos\IDI_Pausa.ico" />
     <Image Include="..\Iconos\IDI_Pausa2.ico" />
     <Image Include="..\Iconos\IDI_Pausa3.ico" />
@@ -383,6 +386,7 @@
     <Image Include="..\Iconos\IDI_Video.ico" />
     <Image Include="..\Iconos\IDI_Video2.ico" />
     <Image Include="..\Iconos\IDI_Video3.ico" />
+    <Image Include="..\Iconos\IDI_Video4.ico" />
     <Image Include="..\Iconos\IDI_VLC.ico" />
     <Image Include="Reproductor de Audio y Video Extendido.ico" />
     <Image Include="small.ico" />
