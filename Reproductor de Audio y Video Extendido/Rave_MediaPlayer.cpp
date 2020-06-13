@@ -470,7 +470,7 @@ void Rave_MediaPlayer::_EliminarRaveMedio(Rave_Medio *eMedio, const BOOL Actuali
 	
 
 	if (eMedio) {
-		if (ActualizarIcono == TRUE)	eMedio->ActualizarIconos(0);
+		if (ActualizarIcono == TRUE)	eMedio->ActualizarIconos(0, eMedio == _Actual);
 	}
 	
 
@@ -590,7 +590,7 @@ void Rave_MediaPlayer::_TerminarMedio(Rave_Medio *MedioEvento) {
 		App.ControlesPC.SliderTiempo.Valor(App.ControlesPC.SliderTiempo.Maximo());
 
 		// Compruebo si el medio actual se está reproduciendo
-		BOOL RestaurarIconos = FALSE;
+/*		BOOL RestaurarIconos = FALSE;
 		if (_Actual != NULL) {
 			if (_Actual->ComprobarEstado() != EnPlay) 	RestaurarIconos = TRUE;
 		}
@@ -602,7 +602,7 @@ void Rave_MediaPlayer::_TerminarMedio(Rave_Medio *MedioEvento) {
 			// Asigno las imagenes de los botones play / pausa a la del play
 			App.VentanaRave.BotonPlay.Icono(IDI_PLAY4, 24);
 			App.ControlesPC.BotonPlay.Icono(IDI_PLAY4, 24);
-		}
+		}*/
 	}
 
 //	App.VentanaRave.SliderTiempo.Valor2(0.0f);
@@ -610,11 +610,12 @@ void Rave_MediaPlayer::_TerminarMedio(Rave_Medio *MedioEvento) {
 	App.VentanaRave.SliderTiempo.DesAnimar();
 	App.ControlesPC.SliderTiempo.DesAnimar();
 
+	MedioEvento->Eliminar();
+	_EliminarRaveMedio(MedioEvento);
+
 	if (_Anterior  == MedioEvento) _Anterior  = nullptr;
 	if (_Actual    == MedioEvento) _Actual	  = nullptr;
 	if (_Siguiente == MedioEvento) _Siguiente = nullptr;
-	MedioEvento->Eliminar();
-	_EliminarRaveMedio(MedioEvento);
 
 	AsignarTitulo();
 }

@@ -183,7 +183,7 @@ void VentanaPrincipal::CrearBotonesThumb(void) {
 	// Creo los botones del Thumb de la taskbar
 	std::vector<DBarraTareas_Boton> Botones;
 	Botones.push_back(DBarraTareas_Boton(IDI_PREV32, L"Medio Anterior", ID_BOTON_ANTERIOR));
-	Botones.push_back(DBarraTareas_Boton(IDI_PLAY32, L"Play / Pausa", ID_BOTON_PLAY));
+	Botones.push_back(DBarraTareas_Boton((App.MP.ComprobarEstado() == SinCargar) ? IDI_PLAY32 : IDI_PAUSA32, L"Play / Pausa", ID_BOTON_PLAY));
 	Botones.push_back(DBarraTareas_Boton(IDI_STOP32, L"Stop", ID_BOTON_STOP));
 	Botones.push_back(DBarraTareas_Boton(IDI_NEXT32, L"Medio Siguiente", ID_BOTON_SIGUIENTE));
 	BarraTareas.AgregarBotones(Botones);

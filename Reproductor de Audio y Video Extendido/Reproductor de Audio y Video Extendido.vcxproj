@@ -381,6 +381,8 @@
     <Image Include="..\Iconos\IDI_Proporcion.ico" />
     <Image Include="..\Iconos\IDI_Raiz.ico" />
     <Image Include="..\Iconos\IDI_Repetir.ico" />
+    <Image Include="..\Iconos\IDI_RotarH.ico" />
+    <Image Include="..\Iconos\IDI_RotarV.ico" />
     <Image Include="..\Iconos\IDI_Stop.ico" />
     <Image Include="..\Iconos\IDI_STOP32.ico" />
     <Image Include="..\Iconos\IDI_Subtitulos.ico" />

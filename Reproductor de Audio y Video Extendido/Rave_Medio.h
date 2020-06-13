@@ -75,7 +75,7 @@ class Rave_Medio {
 	  void                          Evento_SalirPantallaCompleta(void);
 
 									// Actualiza los iconos de la BD i la lista
-	  void							ActualizarIconos(int nIcono);
+	  void							ActualizarIconos(int nIcono, const BOOL ActualizarBotones = TRUE);
 	  void                          ComprobarMomento(void);
 	  
 									///////////////

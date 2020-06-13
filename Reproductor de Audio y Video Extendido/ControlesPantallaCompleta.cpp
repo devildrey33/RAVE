@@ -36,22 +36,22 @@ void ControlesPantallaCompleta::Crear(void) {
 
 	LabelRatio.CrearEtiquetaEx(this, L"x1.0", 170, 16, 40, 30, ID_LABEL_RATIO, DEtiquetaEx_Alineacion_Centrado);
 
-	BotonMezclar.CrearBotonEx(this, L"Mezclar", 220, 10, 80, 30, ID_BOTON_MEZCLAR);
-	BotonMezclar.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
+	BotonMezclar.CrearBotonEx(this, IDI_MEZCLAR, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 260, 10, 30, 30, ID_BOTON_MEZCLAR);
+//	BotonMezclar.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
 	
 	if (App.Opciones.Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
-	BotonRepetir.CrearBotonEx(this, L"Repetir", 310, 10, 80, 30, ID_BOTON_REPETIR);
-	BotonRepetir.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
+	BotonRepetir.CrearBotonEx(this, IDI_REPETIR, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 300, 10, 30, 30, ID_BOTON_REPETIR);
+//	BotonRepetir.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
 	if (App.Opciones.Repeat() > 0) BotonRepetir.Marcado(TRUE);
 
-	BotonRotar.CrearBotonEx(this, L"Rotar", 400, 10, 70, 30, ID_BOTON_ROTAR);
-	BotonRotar.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
+	BotonRotar.CrearBotonEx(this, IDI_ROTARV, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 380, 10, 30, 30, ID_BOTON_ROTAR);
+//	BotonRotar.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
 
-	BotonBD.CrearBotonEx(this, L"BD", 480, 10, 70, 30, ID_BOTON_BD_PC);
-	BotonBD.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
+	BotonBD.CrearBotonEx(this, IDI_BASEDATOS2, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 460, 10, 30, 30, ID_BOTON_BD_PC);
+//	BotonBD.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
 
-	BotonLista.CrearBotonEx(this, L"Lista", 560, 10, 70, 30, ID_BOTON_LISTA_PC);
-	BotonLista.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
+	BotonLista.CrearBotonEx(this, IDI_LISTA, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 500, 10, 30, 30, ID_BOTON_LISTA_PC);
+//	BotonLista.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
 
 	SliderTiempo.CrearBarraDesplazamientoEx(this, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO);
 //	SliderTiempo.Crear(hWnd, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO, WS_CHILD | TBS_NOTICKS | WS_VISIBLE, 0, 30000, 0);
@@ -175,11 +175,11 @@ void ControlesPantallaCompleta::Alinear(void) {
 			SetWindowPos(BotonPlay.hWnd()			, HWND_TOP, 50, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(BotonStop.hWnd()			, HWND_TOP, 90, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(LabelRatio.hWnd()			, HWND_TOP, 170, 16, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(BotonMezclar.hWnd()		, HWND_TOP,	220, 10, 80, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
-			SetWindowPos(BotonRepetir.hWnd()		, HWND_TOP,	310, 10, 80, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
-			SetWindowPos(BotonRotar.hWnd()			, HWND_TOP, 400, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(BotonBD.hWnd()				, HWND_TOP, 480, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(BotonLista.hWnd()			, HWND_TOP, 560, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(BotonMezclar.hWnd()		, HWND_TOP,	260, 10, 30, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(BotonRepetir.hWnd()		, HWND_TOP,	300, 10, 30, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(BotonRotar.hWnd()			, HWND_TOP, 380, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(BotonBD.hWnd()				, HWND_TOP, 460, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(BotonLista.hWnd()			, HWND_TOP, 500, 10, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(LabelTiempoActual.hWnd()	, HWND_TOP, Ancho - 285, 12, 0, 0				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(LabelTiempoSeparador.hWnd(), HWND_TOP, Ancho - 230, 12, 0, 0				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(LabelTiempoTotal.hWnd()	, HWND_TOP,	Ancho - 220, 12, 0, 0				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
@@ -200,16 +200,16 @@ void ControlesPantallaCompleta::Alinear(void) {
 			SetWindowPos(BotonPlay.hWnd()			, HWND_TOP, 10, 50, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(BotonStop.hWnd()			, HWND_TOP, 50, 50, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(LabelRatio.hWnd()			, HWND_TOP, 25, 90, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(BotonMezclar.hWnd()		, HWND_TOP,	10, 120, 70, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
-			SetWindowPos(BotonRepetir.hWnd()		, HWND_TOP,	10, 160, 70, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
-			SetWindowPos(BotonRotar.hWnd()			, HWND_TOP, 10, 200, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(BotonMezclar.hWnd()		, HWND_TOP,	10, 140, 30, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(BotonRepetir.hWnd()		, HWND_TOP,	50, 140, 30, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(BotonRotar.hWnd()			, HWND_TOP, 30, 200, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(BotonBD.hWnd()				, HWND_TOP, 10, 240, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
-			SetWindowPos(BotonLista.hWnd()			, HWND_TOP, 10, 280, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(BotonLista.hWnd()			, HWND_TOP, 50, 240, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			
 			
-			SetWindowPos(SliderVolumen.hWnd()		, HWND_TOP, 10, 320, 70, 20						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(SliderVolumen.hWnd()		, HWND_TOP, 10, 290, 70, 20						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
 //			SetWindowPos(LabelVolumen.hWnd()		, HWND_TOP,	950, 12, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE | NO_MOVE);
-			SetWindowPos(SliderTiempo.hWnd()		, HWND_TOP, 30, 350, 30, Alto - 420				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(SliderTiempo.hWnd()		, HWND_TOP, 30, 320, 30, Alto - 390				, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
 			SliderTiempo.Alineacion(AbajoArriba);
 			SetWindowPos(LabelTiempoActual.hWnd()	, HWND_TOP, 17, Alto - 60, 0, 0					, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 //			SetWindowPos(LabelTiempoSeparador.hWnd(), HWND_TOP, 770, 12, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
