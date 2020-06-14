@@ -915,11 +915,11 @@ void VentanaPrincipal::Evento_BotonEx_Mouse_Click(DWL::DEventoMouse &DatosMouse)
 		switch (DatosMouse.ID()) {
 			case ID_BOTON_BD:
 				GetWindowRect(BotonBD.hWnd(), &RV);
-				Menu_BotonArbolBD.Mostrar(this, RV.left, RV.bottom);
+				Menu_BotonArbolBD.Mostrar(this, RV.right, RV.top);
 				break;
 			case ID_BOTON_LISTA:
 				GetWindowRect(BotonLista.hWnd(), &RV);
-				Menu_BotonLista.Mostrar(this, RV.left, RV.bottom);
+				Menu_BotonLista.Mostrar(this, RV.right, RV.top);
 				break;
 		}
 	}
