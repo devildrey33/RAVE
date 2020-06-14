@@ -44,7 +44,7 @@ void ControlesPantallaCompleta::Crear(void) {
 //	BotonRepetir.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
 	if (App.Opciones.Repeat() > 0) BotonRepetir.Marcado(TRUE);
 
-	BotonRotar.CrearBotonEx(this, IDI_ROTARV, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 380, 10, 30, 30, ID_BOTON_ROTAR);
+	BotonRotar.CrearBotonEx(this, (Alineacion == Arriba || Alineacion == Abajo) ? IDI_ROTARV : IDI_ROTARH, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 380, 10, 30, 30, ID_BOTON_ROTAR);
 //	BotonRotar.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
 
 	BotonBD.CrearBotonEx(this, IDI_BASEDATOS2, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 460, 10, 30, 30, ID_BOTON_BD_PC);
@@ -71,23 +71,26 @@ void ControlesPantallaCompleta::Crear(void) {
 
 void ControlesPantallaCompleta::RotarControles(const BOOL Invertido) {
 	// El BotonAtras siempre se queda en la misma posición
+	UINT IcoRotar = IDI_ROTARH;
 	if (Invertido == false) {
 		switch (Alineacion) {
-			case Abajo		:	Alineacion = Izquierda;		break;
-			case Izquierda	:	Alineacion = Arriba;		break;
-			case Arriba		:	Alineacion = Derecha;		break;
-			case Derecha	:	Alineacion = Abajo;			break;
+			case Abajo		:	Alineacion = Izquierda;		IcoRotar = IDI_ROTARH;		break;
+			case Izquierda	:	Alineacion = Arriba;		IcoRotar = IDI_ROTARV;		break;
+			case Arriba		:	Alineacion = Derecha;		IcoRotar = IDI_ROTARH;		break;
+			case Derecha	:	Alineacion = Abajo;			IcoRotar = IDI_ROTARV;		break;
 		}
 	}
 	else {
 		switch (Alineacion) {
-			case Abajo		:	Alineacion = Derecha;		break;
-			case Izquierda	:	Alineacion = Abajo;			break;
-			case Arriba		:	Alineacion = Izquierda;		break;
-			case Derecha	:	Alineacion = Arriba;		break;
+			case Abajo		:	Alineacion = Derecha;		IcoRotar = IDI_ROTARV;		break;
+			case Izquierda	:	Alineacion = Abajo;			IcoRotar = IDI_ROTARH;		break;
+			case Arriba		:	Alineacion = Izquierda;		IcoRotar = IDI_ROTARV;		break;
+			case Derecha	:	Alineacion = Arriba;		IcoRotar = IDI_ROTARH;		break;
 		}
 
 	}
+
+	BotonRotar.Icono(IcoRotar, 24);
 	Alinear();
 
 	if (BotonBD.Marcado() == TRUE)		MostrarBD(TRUE);
@@ -202,7 +205,7 @@ void ControlesPantallaCompleta::Alinear(void) {
 			SetWindowPos(LabelRatio.hWnd()			, HWND_TOP, 25, 90, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(BotonMezclar.hWnd()		, HWND_TOP,	10, 140, 30, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
 			SetWindowPos(BotonRepetir.hWnd()		, HWND_TOP,	50, 140, 30, 30						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE);
-			SetWindowPos(BotonRotar.hWnd()			, HWND_TOP, 30, 200, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
+			SetWindowPos(BotonRotar.hWnd()			, HWND_TOP, 30, 190, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(BotonBD.hWnd()				, HWND_TOP, 10, 240, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			SetWindowPos(BotonLista.hWnd()			, HWND_TOP, 50, 240, 0, 0						, SWP_SHOWWINDOW | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSIZE);
 			
@@ -404,7 +407,7 @@ void ControlesPantallaCompleta::MostrarBD(const BOOL Forzar) {
 		switch (Alineacion) {
 			case Abajo:		SetWindowPos(App.VentanaRave.Arbol.hWnd(), HWND_TOPMOST, RW.left, RW.top - 320, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
 			case Arriba:	SetWindowPos(App.VentanaRave.Arbol.hWnd(), HWND_TOPMOST, RW.left, RW.bottom + 50, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
-			case Izquierda:	SetWindowPos(App.VentanaRave.Arbol.hWnd(), HWND_TOPMOST, RW.right + 20, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+			case Izquierda:	SetWindowPos(App.VentanaRave.Arbol.hWnd(), HWND_TOPMOST, RW.right + 60, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
 			case Derecha:	SetWindowPos(App.VentanaRave.Arbol.hWnd(), HWND_TOPMOST, RW.left - 420, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
 		}
 
@@ -429,7 +432,7 @@ void ControlesPantallaCompleta::MostrarLista(const BOOL Forzar) {
 			case Abajo:		SetWindowPos(App.VentanaRave.Lista.hWnd(), HWND_TOPMOST, RW.left, RW.top - 320, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
 			case Arriba:	SetWindowPos(App.VentanaRave.Lista.hWnd(), HWND_TOPMOST, RW.left, RW.bottom + 50, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
 			case Izquierda:	SetWindowPos(App.VentanaRave.Lista.hWnd(), HWND_TOPMOST, RW.right + 20, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
-			case Derecha:	SetWindowPos(App.VentanaRave.Lista.hWnd(), HWND_TOPMOST, RW.left - 420, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
+			case Derecha:	SetWindowPos(App.VentanaRave.Lista.hWnd(), HWND_TOPMOST, RW.left - 460, RW.top, 400, 300, SWP_SHOWWINDOW | SWP_NOACTIVATE); 	break;
 		}
 		ShowWindow(App.VentanaRave.Lista.hWnd(), SW_SHOW);
 	}
