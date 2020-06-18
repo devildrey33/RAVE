@@ -503,7 +503,7 @@ const BOOL RaveBD::GenerarSugerenciasMenu(DWL::DMenuEx &Menu, const TipoListaAle
 			return FALSE;
 	}
 
-	Menu.EliminarTodosLosMenus();
+//	Menu.EliminarTodosLosMenus();
 
 //	Debug_Escribir_Varg(L"RaveBD::GenerarSugerenciasMenu %d\n", nTipo);
 
@@ -528,10 +528,10 @@ const BOOL RaveBD::GenerarSugerenciasMenu(DWL::DMenuEx &Menu, const TipoListaAle
 			Texto += L") ";
 		}
 		Texto += Etiqueta;
-		Menu.AgregarMenu(IDMenu + TotalAgregados, Texto, IDIcono);
-		TotalAgregados++;
+		Menu[TotalAgregados++].Texto(Texto);
+//		Menu.AgregarMenu(IDMenu + TotalAgregados, Texto, IDIcono);
+//		TotalAgregados++;
 //		Debug_Escribir_Varg(L"%s\n", Texto.c_str());
-
 
 	});
 	return C.Resultado();

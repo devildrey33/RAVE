@@ -392,18 +392,31 @@ void RAVE::IniciarUI(int nCmdShow) {
 	// Menu Boton Lista
 	VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_BORRAR					, L"Borrar Lista"					, IDI_ELIMINAR);
 	DMenuEx *Menu = VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_GENERAR	, L"Generar Lista"					, IDI_LISTAALEATORIA);
-	DMenuEx *MenuRnd = Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GENERO					, L"Aleatória por Genero"		, IDI_GENERO);
-						MenuRnd->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GENERO_RND,				L"Rnd"						, IDI_GENERO);
-						MenuRnd->EventoMostrarMenu = [=](DWL::DMenuEx& nMenu) {	BD.GenerarSugerenciasMenu(nMenu, TLA_Genero); };
-			 MenuRnd = Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GRUPO					, L"Aleatória por Grupo"		, IDI_GRUPO);
- 						MenuRnd->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GRUPO_RND,				L"Rnd"						, IDI_GRUPO);
-						MenuRnd->EventoMostrarMenu = [=](DWL::DMenuEx& nMenu) { BD.GenerarSugerenciasMenu(nMenu, TLA_Grupo); };
-			 MenuRnd = Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_DISCO					, L"Aleatória por Disco"		, IDI_DISCO);
-						MenuRnd->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_DISCO_RND,				L"Rnd"						, IDI_DISCO);
-						MenuRnd->EventoMostrarMenu = [=](DWL::DMenuEx& nMenu) { BD.GenerarSugerenciasMenu(nMenu, TLA_Disco); };
-			 MenuRnd = Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_50MEDIOS					, L"Aleatória con 50 Medios"	, IDI_TERMINADO);
-			 MenuRnd = Menu->AgregarSeparador();
-			 MenuRnd = Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_NOTA						, L"Por Nota"					, IDI_NOTA);
+	size_t i = 0;
+	// Sugerencias genero
+	DMenuEx* MenuRnd = Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GENERO, L"Aleatória por Genero", IDI_GENERO);
+	for (i = 0; i < 5; i++)
+		MenuRnd->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GENERO_RND + i							, L"Rnd"					, IDI_GENERO );		
+	MenuRnd->AgregarSeparador();
+	MenuRnd = MenuRnd->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GENERO_RND + 5						, L"Regenerar sugerencias"	, IDI_MEZCLAR);
+	MenuRnd->OcultarEnClick(FALSE);
+	// Sugerencias grupo
+	MenuRnd = Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GRUPO								, L"Aleatória por Grupo"		, IDI_GRUPO);	
+	for (i = 0; i < 5; i++) MenuRnd->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GRUPO_RND + i		, L"Rnd"					, IDI_GRUPO);
+	MenuRnd->AgregarSeparador();
+	MenuRnd = MenuRnd->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_GRUPO_RND + 5						, L"Regenerar sugerencias"	, IDI_MEZCLAR);
+	// Sugerencias disco
+	MenuRnd = Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_DISCO								, L"Aleatória por Disco"		, IDI_DISCO);
+	for (i = 0; i < 5; i++) MenuRnd->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_DISCO_RND + i		, L"Rnd"					, IDI_DISCO);
+	MenuRnd->AgregarSeparador();
+	MenuRnd = MenuRnd->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_DISCO_RND + 5						, L"Regenerar sugerencias"	, IDI_MEZCLAR);
+	MenuRnd->OcultarEnClick(FALSE);
+
+
+//						MenuRnd->EventoMostrarMenu = [=](DWL::DMenuEx& nMenu) { BD.GenerarSugerenciasMenu(nMenu, TLA_Disco); };
+	MenuRnd = Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_50MEDIOS							, L"Aleatória con 50 Medios"	, IDI_TERMINADO);
+	MenuRnd = Menu->AgregarSeparador();
+	MenuRnd = Menu->AgregarMenu(ID_MENUBOTONLISTA_GENERAR_NOTA								, L"Por Nota"					, IDI_NOTA);
 	VentanaRave.Menu_BotonLista.AgregarMenu(ID_MENUBOTONLISTA_AGREGAR_URL				, L"Agregar URL"					, IDI_URL);
 
 	// Menu Repetir

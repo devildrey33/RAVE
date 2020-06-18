@@ -112,6 +112,17 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 		App.Actualizacion.Buscar();
 	}
 
+	// Genero las sugerencias del boton lista
+	// Generos
+	DWL::DMenuEx *nMenu = Menu_BotonLista.BuscarMenu(ID_MENUBOTONLISTA_GENERAR_GENERO);
+	App.BD.GenerarSugerenciasMenu(*nMenu, TLA_Genero);
+	// Grupos
+	nMenu = Menu_BotonLista.BuscarMenu(ID_MENUBOTONLISTA_GENERAR_GRUPO);
+	App.BD.GenerarSugerenciasMenu(*nMenu, TLA_Grupo);
+	// Discos
+	nMenu = Menu_BotonLista.BuscarMenu(ID_MENUBOTONLISTA_GENERAR_DISCO);
+	App.BD.GenerarSugerenciasMenu(*nMenu, TLA_Disco);
+
 	return rhWnd;
 }
 
@@ -626,6 +637,10 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		case ID_MENUBOTONLISTA_GENERAR_GENERO_RND + 4 :
 			App.BD.GenerarListaDesdeSugerencias(*Menu_BotonLista.BuscarMenu(cID), TLA_Genero);
 			return;
+		// Regenerar sugerencias
+		case ID_MENUBOTONLISTA_GENERAR_GENERO_RND + 5:
+			App.BD.GenerarSugerenciasMenu(*Menu_BotonLista.BuscarMenu(ID_MENUBOTONLISTA_GENERAR_GENERO), TLA_Genero);
+			return;
 		// Lista aleatória por grupo
 		case ID_MENUBOTONLISTA_GENERAR_GRUPO	:	GenerarListaAleatoria(TLA_Grupo);		return;
 		// Sugerencias grupo
@@ -636,7 +651,11 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		case ID_MENUBOTONLISTA_GENERAR_GRUPO_RND + 4 :
 			App.BD.GenerarListaDesdeSugerencias(*Menu_BotonLista.BuscarMenu(cID), TLA_Grupo);
 			return;
-		// Lista aleatória por disco
+			// Regenerar sugerencias
+		case ID_MENUBOTONLISTA_GENERAR_GRUPO_RND + 5:
+			App.BD.GenerarSugerenciasMenu(*Menu_BotonLista.BuscarMenu(ID_MENUBOTONLISTA_GENERAR_GRUPO), TLA_Grupo);
+			return;
+			// Lista aleatória por disco
 		case ID_MENUBOTONLISTA_GENERAR_DISCO	:	GenerarListaAleatoria(TLA_Disco);		return;
 		// Sugerencias disco
 		case ID_MENUBOTONLISTA_GENERAR_DISCO_RND     : 
@@ -646,7 +665,11 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		case ID_MENUBOTONLISTA_GENERAR_DISCO_RND + 4 :
 			App.BD.GenerarListaDesdeSugerencias(*Menu_BotonLista.BuscarMenu(cID), TLA_Disco);
 			return;
-		// Lista aleatória 
+			// Regenerar sugerencias
+		case ID_MENUBOTONLISTA_GENERAR_DISCO_RND + 5:
+			App.BD.GenerarSugerenciasMenu(*Menu_BotonLista.BuscarMenu(ID_MENUBOTONLISTA_GENERAR_DISCO), TLA_Disco);
+			return;
+			// Lista aleatória 
 		case ID_MENUBOTONLISTA_GENERAR_50MEDIOS	:	GenerarListaAleatoria(TLA_50Medios);	return;
 		// Lista por nota
 		case ID_MENUBOTONLISTA_GENERAR_NOTA		:	GenerarListaAleatoria(TLA_Nota);		return;
