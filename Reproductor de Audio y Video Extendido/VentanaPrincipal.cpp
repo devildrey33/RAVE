@@ -55,17 +55,23 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	// Marco superior izquierdo /////////////
 	MarcoSI.Crear(this, 10, 10, 380, 30, ID_MARCOSI);
 	BotonAtras.CrearBotonEx(&MarcoSI,	 IDI_PREV,  24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,   0, 0, 30, 30, ID_BOTON_ANTERIOR);
+	BotonAtras.TextoToolTip = L"Medio anterior";
 	BotonPlay.CrearBotonEx(&MarcoSI,	 IDI_PLAY4, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  40, 0, 30, 30, ID_BOTON_PLAY);
+	BotonPlay.TextoToolTip = L"Play / Pausa";
 	BotonStop.CrearBotonEx(&MarcoSI,	 IDI_STOP,  24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  80, 0, 30, 30, ID_BOTON_STOP);
+	BotonStop.TextoToolTip = L"Stop";
 	BotonAdelante.CrearBotonEx(&MarcoSI, IDI_NEXT,  24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 120, 0, 30, 30, ID_BOTON_SIGUIENTE);
+	BotonAdelante.TextoToolTip = L"Siguiente medio";
 
 	LabelRatio.CrearEtiquetaEx(&MarcoSI, L"x1.0", 160, 5, 40, 30, ID_LABEL_RATIO, DEtiquetaEx_Alineacion_Centrado);
 
 	BotonMezclar.CrearBotonEx(&MarcoSI, IDI_MEZCLAR, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 210, 0, 30, 30, ID_BOTON_MEZCLAR);
 	BotonMezclar.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
+	BotonMezclar.TextoToolTip = L"Mezclar lista";
 	if (App.Opciones.Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
 	BotonRepetir.CrearBotonEx(&MarcoSI, IDI_REPETIR, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 250, 0, 30, 30, ID_BOTON_REPETIR);
 	BotonRepetir.Fuente.CrearFuente(18, BotonRepetir.Skin.FuenteNombre.c_str(), TRUE);
+	BotonRepetir.TextoToolTip = L"Repetir lista";
 	if (App.Opciones.Repeat() > 0) BotonRepetir.Marcado(TRUE);
 	//////////////////////////////////////////
 
@@ -86,12 +92,17 @@ HWND VentanaPrincipal::Crear(int nCmdShow) {
 	// Marco inferior izquierdo /////////////
 	MarcoII.Crear(this, 10, 76, RAVE_BOTONES_LATERALES_ANCHO, 2000, ID_MARCOSI);
 	BotonBD.CrearBotonEx(&MarcoII, IDI_BASEDATOS2, RAVE_BOTONES_IMAGEN_TAM, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 0, 0, RAVE_BOTONES_LATERALES_ANCHO, RAVE_BOTONES_LATERALES_ANCHO, ID_BOTON_BD);
+	BotonBD.TextoToolTip = L"Base de datos";
 	BotonBD.Marcado(TRUE); // Por defecto siempre se muestra la base de datos al empezar
 	BotonLista.CrearBotonEx(&MarcoII, IDI_LISTA, RAVE_BOTONES_IMAGEN_TAM, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 0, RAVE_BOTONES_LATERALES_ANCHO + 4, RAVE_BOTONES_LATERALES_ANCHO, RAVE_BOTONES_LATERALES_ANCHO, ID_BOTON_LISTA);
+	BotonLista.TextoToolTip = L"Lista";
 	BotonVideo.CrearBotonEx(&MarcoII, IDI_VIDEO4, RAVE_BOTONES_IMAGEN_TAM, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 0, (RAVE_BOTONES_LATERALES_ANCHO + 4) * 2, RAVE_BOTONES_LATERALES_ANCHO, RAVE_BOTONES_LATERALES_ANCHO, ID_BOTON_VIDEO);
+	BotonVideo.TextoToolTip = L"Ver video";
+
 	// El Boton Opciones queda siempre en la parte inferior del marco, para que quede separado de los otros (ya que es una ventana externa)
 	BotonOpciones.CrearBotonEx(&MarcoII, IDI_OPCIONES, RAVE_BOTONES_IMAGEN_TAM, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 0, RC.bottom - 130, RAVE_BOTONES_LATERALES_ANCHO, RAVE_BOTONES_LATERALES_ANCHO, ID_BOTON_OPCIONES);
-	
+	BotonOpciones.TextoToolTip = L"Opciones";
+
 	#ifdef RAVE_VLC_DOBLE_MEDIO_FFT
 		Vis.Crear(&MarcoII, 0, 160, RAVE_BOTONES_LATERALES_ANCHO, 30, ID_VISUALIZACION);
 	#endif
@@ -211,7 +222,7 @@ void VentanaPrincipal::AjustarControles(RECT &RC) {
 	MoveWindow(SliderTiempo.hWnd(), 10, 50, RC.right - 20, 16, TRUE);
 	MoveWindow(MarcoSD.hWnd(), RC.right - 260, 14, 255, 24, TRUE);
 
-	MoveWindow(BotonOpciones.hWnd(), 0, RC.bottom - 130, RAVE_BOTONES_LATERALES_ANCHO, RAVE_BOTONES_LATERALES_ANCHO, TRUE);
+	MoveWindow(BotonOpciones.hWnd(), 0, RC.bottom - 126, RAVE_BOTONES_LATERALES_ANCHO, RAVE_BOTONES_LATERALES_ANCHO, TRUE);
 
 	if (App.MP.hWndVLC != NULL) {
 		InvalidateRect(App.MP.hWndVLC, &RC, TRUE);

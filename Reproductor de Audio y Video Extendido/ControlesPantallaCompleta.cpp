@@ -29,28 +29,32 @@ void ControlesPantallaCompleta::Crear(void) {
 	GetClientRect(hWnd(), &RC);
 
 	BotonAtras.CrearBotonEx(this,	 IDI_PREV,  24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  10, 10, 30, 30, ID_BOTON_ANTERIOR);
+	BotonAtras.TextoToolTip = L"Medio anterior";
 	BotonPlay.CrearBotonEx(this,	 IDI_PLAY4,  24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  50, 10, 30, 30, ID_BOTON_PLAY);
-//	BotonPausa.CrearBotonEx(this,	 IDI_PAUSA32, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  90, 10, 30, 30, ID_BOTON_PAUSA);
+	BotonPlay.TextoToolTip = L"Play";
 	BotonStop.CrearBotonEx(this,	 IDI_STOP,  24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO,  90, 10, 30, 30, ID_BOTON_STOP);
+	BotonStop.TextoToolTip = L"Stop";
 	BotonAdelante.CrearBotonEx(this, IDI_NEXT,  24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 130, 10, 30, 30, ID_BOTON_SIGUIENTE);
+	BotonAdelante.TextoToolTip = L"Siguiente medio";
 
 	LabelRatio.CrearEtiquetaEx(this, L"x1.0", 170, 16, 40, 30, ID_LABEL_RATIO, DEtiquetaEx_Alineacion_Centrado);
 
 	BotonMezclar.CrearBotonEx(this, IDI_MEZCLAR, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 260, 10, 30, 30, ID_BOTON_MEZCLAR);
-//	BotonMezclar.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
+	BotonMezclar.TextoToolTip = L"Mezclar lista";
 	
 	if (App.Opciones.Shufle() == TRUE) BotonMezclar.Marcado(TRUE);
 	BotonRepetir.CrearBotonEx(this, IDI_REPETIR, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 300, 10, 30, 30, ID_BOTON_REPETIR);
-//	BotonRepetir.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
+	BotonRepetir.TextoToolTip = L"Repetir lista";
 	if (App.Opciones.Repeat() > 0) BotonRepetir.Marcado(TRUE);
 
 	BotonRotar.CrearBotonEx(this, (Alineacion == Arriba || Alineacion == Abajo) ? IDI_ROTARV : IDI_ROTARH, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 380, 10, 30, 30, ID_BOTON_ROTAR);
-//	BotonRotar.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
+	BotonRotar.TextoToolTip = L"Rotar controles";
 
 	BotonBD.CrearBotonEx(this, IDI_BASEDATOS2, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 460, 10, 30, 30, ID_BOTON_BD_PC);
-//	BotonBD.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
+	BotonBD.TextoToolTip = L"Base de datos";
 
 	BotonLista.CrearBotonEx(this, IDI_LISTA, 24, DBOTONEX_CENTRADO, DBOTONEX_CENTRADO, 500, 10, 30, 30, ID_BOTON_LISTA_PC);
+	BotonLista.TextoToolTip = L"Lista de medios";
 //	BotonLista.Fuente.CrearFuente(18, BotonMezclar.Skin.FuenteNombre.c_str(), TRUE);
 
 	SliderTiempo.CrearBarraDesplazamientoEx(this, 10, 45, RC.right - 20, 24, ID_SLIDER_TIEMPO);

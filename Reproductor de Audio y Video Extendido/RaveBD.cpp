@@ -528,7 +528,7 @@ const BOOL RaveBD::GenerarSugerenciasMenu(DWL::DMenuEx &Menu, const TipoListaAle
 			Texto += L") ";
 		}
 		Texto += Etiqueta;
-		Menu[TotalAgregados++].Texto(Texto);
+		Menu[TotalAgregados++].Texto(Texto, (TotalAgregados == 5) ? TRUE : FALSE);
 //		Menu.AgregarMenu(IDMenu + TotalAgregados, Texto, IDIcono);
 //		TotalAgregados++;
 //		Debug_Escribir_Varg(L"%s\n", Texto.c_str());
