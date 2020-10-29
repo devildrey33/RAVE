@@ -5,6 +5,7 @@
 #include "Generar Actualizador_RAVE.h"
 #include "..\zlib-1.2.11\zlib.h"
 #include <DStringUtils.h>
+#include <DLogConsola.h>
 
 #define CHUNK 16384
 //#define CHUNK 7680
@@ -70,6 +71,8 @@ void GenerarActualizadorApp::Iniciar(void) {
 		MessageBox(NULL, nPathActual.c_str(), L"Error", MB_OK | MB_ICONERROR);
 		return;
 	}
+	DWL::DLogConsola ConsolaDebug;
+
 	ConsolaDebug.Crear(L"Generando Actualizador.exe");
 	ConsolaDebug.EscribirMS(L"Ejecutandose desde : '%s'\n", nPathActual.c_str());
 	// Recorto el path del Directorio RAVE para que quede con la barra al final

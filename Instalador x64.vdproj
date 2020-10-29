@@ -489,12 +489,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_339327BE9AFD45EC8801CB518962CB5B"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_3437CD1E93694FE6B6833F538E4864E9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -640,12 +634,6 @@
         "Entry"
         {
         "MsmKey" = "8:_45C69A907E954459944D4AC26947C2B6"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_45CEFB3B6DF24F9B870068127B98CC00"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -3930,26 +3918,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_339327BE9AFD45EC8801CB518962CB5B"
-            {
-            "SourcePath" = "8:Release-x64\\plugins\\access\\libbluray-j2se-1.1.1.jar"
-            "TargetName" = "8:libbluray-j2se-1.1.1.jar"
-            "Tag" = "8:"
-            "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3437CD1E93694FE6B6833F538E4864E9"
             {
             "SourcePath" = "8:Release-x64\\plugins\\demux\\libmpc_plugin.dll"
@@ -4436,26 +4404,6 @@
             "TargetName" = "8:libpacketizer_h264_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_5461DEAC95004E22A3AA6A455DFC9D54"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_45CEFB3B6DF24F9B870068127B98CC00"
-            {
-            "SourcePath" = "8:Release-x64\\plugins\\access\\libbluray-awt-j2se-1.1.1.jar"
-            "TargetName" = "8:libbluray-awt-j2se-1.1.1.jar"
-            "Tag" = "8:"
-            "Folder" = "8:_544A23CE9BB945E8AA2B290626CA4324"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
