@@ -249,7 +249,6 @@
     <ClInclude Include="VentanaInstalarActualizacion.h" />
     <ClInclude Include="VentanaMomento.h" />
     <ClInclude Include="VentanaObtenerURL.h" />
-    <ClInclude Include="VentanaOpcionesRAVE %28DEPRECATED%29.h" />
     <ClInclude Include="VentanaOpcionesRAVE2.h" />
     <ClInclude Include="VentanaPrecarga.h" />
     <ClInclude Include="VentanaPrincipal.h" />
@@ -315,7 +314,6 @@
     <ClCompile Include="VentanaInstalarActualizacion.cpp" />
     <ClCompile Include="VentanaMomento.cpp" />
     <ClCompile Include="VentanaObtenerURL.cpp" />
-    <ClCompile Include="VentanaOpcionesRAVE %28DEPRECATED%29.cpp" />
     <ClCompile Include="VentanaOpcionesRAVE2.cpp" />
     <ClCompile Include="VentanaPrecarga.cpp" />
     <ClCompile Include="VentanaPrincipal.cpp" />

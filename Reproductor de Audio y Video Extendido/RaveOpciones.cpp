@@ -701,10 +701,11 @@ const int RaveOpciones::AgregarRaiz(std::wstring& nPath, DWL::DUnidadesDisco &Un
 	}
 
 	DWL::DUnidadDisco *Unidad = Unidades.Buscar_Letra(RaizFinal[0]);
-	if (Unidad == NULL)
-		return NULL;
-
-	std::wstring SqlStr = L"INSERT INTO Raiz (Path, IDDisco) VALUES(\"" + RaizFinal + L"\", " + std::to_wstring(Unidad->Numero_Serie()) + L")";
+	std::wstring SqlStr;
+	if (Unidad == NULL) // ubicación de red
+		SqlStr = L"INSERT INTO Raiz (Path, IDDisco) VALUES(\"" + RaizFinal + L"\", 0)";
+	else	// disco duro local
+		SqlStr = L"INSERT INTO Raiz (Path, IDDisco) VALUES(\"" + RaizFinal + L"\", " + std::to_wstring(Unidad->Numero_Serie()) + L")";
 	SqlRet = Consulta(SqlStr);
 
 	ObtenerRaices();

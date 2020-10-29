@@ -76,9 +76,10 @@ void Marco_BaseDatos::AgregarRaiz(void) {
 	App.VentanaRave.ThreadAnalizar.Cancelar(TRUE);
 
 	// No muestro las redes
-	DialogoDirectorios.ArbolDirectorios.MostrarRed = FALSE;
+//	DialogoDirectorios.ArbolDirectorios.MostrarRed = TRUE;
 
-	BOOL Ret = DialogoDirectorios.Mostrar(&App.VentanaOpciones2, Path, App.Opciones.DlgDirectorios_PosX(), App.Opciones.DlgDirectorios_PosY(), App.Opciones.DlgDirectorios_Ancho(), App.Opciones.DlgDirectorios_Alto(), IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+//	BOOL Ret = DialogoDirectorios.Mostrar(&App.VentanaOpciones2, Path, App.Opciones.DlgDirectorios_PosX(), App.Opciones.DlgDirectorios_PosY(), App.Opciones.DlgDirectorios_Ancho(), App.Opciones.DlgDirectorios_Alto(), IDI_REPRODUCTORDEAUDIOYVIDEOEXTENDIDO);
+	BOOL Ret = DialogoDirectorios.Mostrar(L"Seleccionar carpeta", L"C:\\", Path);
 	//	SetFocus(_hWnd);
 	if (Ret == TRUE) {
 		// Agrego la raíz a la BD.

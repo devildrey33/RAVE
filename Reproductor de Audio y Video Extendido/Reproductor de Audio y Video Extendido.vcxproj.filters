@@ -247,9 +247,6 @@
     <ClInclude Include="Marco_Inicio.h">
       <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
     </ClInclude>
-    <ClInclude Include="VentanaOpcionesRAVE %28DEPRECATED%29.h">
-      <Filter>Ventanas y Controles\Ventanas</Filter>
-    </ClInclude>
     <ClInclude Include="Marco_Audio.h">
       <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
     </ClInclude>
@@ -407,9 +404,6 @@
     </ClCompile>
     <ClCompile Include="Marco_Inicio.cpp">
       <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
-    </ClCompile>
-    <ClCompile Include="VentanaOpcionesRAVE %28DEPRECATED%29.cpp">
-      <Filter>Ventanas y Controles\Ventanas</Filter>
     </ClCompile>
     <ClCompile Include="Marco_Audio.cpp">
       <Filter>Ventanas y Controles\Ventanas\Opciones</Filter>
