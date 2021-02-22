@@ -325,10 +325,10 @@ void RaveOpciones::Repeat(const Tipo_Repeat nRepeat) {
 	_Repeat = nRepeat;
 
 	// Guardo el valor del repeat en la BD, siempre que el repeat no implique apagar el reproductor o el windows
-	if (nRepeat != Tipo_Repeat_ApagarReproductor && nRepeat != Tipo_Repeat_ApagarOrdenador /*&& nRepeat != Tipo_Repeat_HibernarOrdenador*/) {
+//	if (nRepeat != Tipo_Repeat_ApagarReproductor && nRepeat != Tipo_Repeat_ApagarOrdenador /*&& nRepeat != Tipo_Repeat_HibernarOrdenador*/) {
 		std::wstring Q = L"Update Opciones SET Repeat=" + std::to_wstring(nRepeat) + L" WHERE Id=0";
 		Consulta(Q.c_str());
-	}
+//	}
 }
 
 void RaveOpciones::Inicio(const Tipo_Inicio nInicio) {

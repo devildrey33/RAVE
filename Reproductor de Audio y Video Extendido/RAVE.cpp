@@ -444,9 +444,9 @@ void RAVE::IniciarUI(int nCmdShow) {
 		case Tipo_Repeat_GenerarGrupo		:       VentanaRave.Menu_Repetir.Menu(3)->Icono(IDI_CHECK);		VentanaRave.Menu_Repetir.Menu(3)->Menu(1)->Icono(IDI_CHECK);	break;
 		case Tipo_Repeat_GenerarDisco		:       VentanaRave.Menu_Repetir.Menu(3)->Icono(IDI_CHECK);		VentanaRave.Menu_Repetir.Menu(3)->Menu(2)->Icono(IDI_CHECK);	break;
 		case Tipo_Repeat_GenerarLoQueSea    :       VentanaRave.Menu_Repetir.Menu(3)->Icono(IDI_CHECK);		VentanaRave.Menu_Repetir.Menu(3)->Menu(5)->Icono(IDI_CHECK);	break;
+		case Tipo_Repeat_ApagarReproductor	:		VentanaRave.Menu_Repetir.Menu(5)->Icono(IDI_CHECK);		break;
+		case Tipo_Repeat_ApagarOrdenador	:		VentanaRave.Menu_Repetir.Menu(6)->Icono(IDI_CHECK);		break;
 		default                             : 		VentanaRave.Menu_Repetir.Menu(0)->Icono(IDI_CHECK);		break;
-//		case Tipo_Repeat_ApagarReproductor	:		Menu_Repetir.Menu(3)->Icono(IDI_CHECK);		break;
-//		case Tipo_Repeat_ApagarOrdenador	:		Menu_Repetir.Menu(4)->Icono(IDI_CHECK);		break;
 	}
 
 //	VentanaRave.Menu_Video.AgregarMenu(ID_MENUVIDEO_AUDIO									, L"Audio");

@@ -50,7 +50,8 @@ const Extension_Medio ExtensionesValidas::ObtenerExtension(const wchar_t *Extens
 	if (_wcsicmp(nExtension.c_str(), TEXT("M2T"))        == 0)		return Extension_M2T;
 	if (_wcsicmp(nExtension.c_str(), TEXT("M2TS"))       == 0)		return Extension_M2TS;
 	if (_wcsicmp(nExtension.c_str(), TEXT("M2V"))        == 0)		return Extension_M2V;
-	if (_wcsicmp(nExtension.c_str(), TEXT("M4V"))        == 0)		return Extension_M4V;
+	if (_wcsicmp(nExtension.c_str(), TEXT("M4V"))		 == 0)		return Extension_M4V;
+	if (_wcsicmp(nExtension.c_str(), TEXT("M4A"))	 	 == 0)		return Extension_M4A;
 	if (_wcsicmp(nExtension.c_str(), TEXT("MOD"))        == 0)		return Extension_MOD;
 	if (_wcsicmp(nExtension.c_str(), TEXT("NSV"))        == 0)		return Extension_NSV;
 	if (_wcsicmp(nExtension.c_str(), TEXT("NUV"))        == 0)		return Extension_NUV;
@@ -95,7 +96,7 @@ const Tipo_Medio ExtensionesValidas::ObtenerTipoMedio(const Extension_Medio Exte
 			return Tipo_Medio_Video;
 		// El Tipo_Medio_IpTv solo se puede obtener una vez cargado el M3u desde una URL
 		case Extension_FLAC:	case Extension_MID:		case Extension_MP2:		case Extension_MP3:		case Extension_S3M:		case Extension_WAV:		case Extension_WEBM:	case Extension_WMA:	
-		case Extension_XM:		case Extension_OGG:		case Extension_MOD:		case Extension_MPC:
+		case Extension_XM:		case Extension_OGG:		case Extension_MOD:		case Extension_MPC:		case Extension_M4A:
 			return Tipo_Medio_Audio;
 		case Extension_CDA:
 			return Tipo_Medio_CDAudio;
@@ -145,6 +146,7 @@ const wchar_t *ExtensionesValidas::ExtensionStr(const Extension_Medio Extension)
 		case Extension_M3U			:	return L"M3U";
 		case Extension_M3U8			:	return L"M3U8";
 		case Extension_M4V			:	return L"M4V";
+		case Extension_M4A			:	return L"M4A";
 		case Extension_MOD			:	return L"MOD";
 		case Extension_NSV			:	return L"NSV";
 		case Extension_NUV			:	return L"NUV";

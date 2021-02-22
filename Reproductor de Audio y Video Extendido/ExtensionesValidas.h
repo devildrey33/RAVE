@@ -56,6 +56,7 @@ enum Extension_Medio {
 	Extension_M3U,
 	Extension_M3U8,
 	Extension_M4V,
+	Extension_M4A,
 	Extension_MOD,
 	Extension_NSV,
 	Extension_NUV,

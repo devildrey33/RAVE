@@ -1016,8 +1016,8 @@ void VentanaPrincipal::Repetir_Click(void) {
 			case ID_REPETIR_NO				:	App.Opciones.Repeat(Tipo_Repeat_NADA);					break;
 			case ID_REPETIR_SI				:	App.Opciones.Repeat(Tipo_Repeat_RepetirLista);			break;
 			case ID_REPETIR_SI_MEZCLAR		:	App.Opciones.Repeat(Tipo_Repeat_RepetirListaShufle);	break;
-			case ID_REPETIR_SI_APAGAR_REP	:	App.Opciones.Repeat(Tipo_Repeat_ApagarReproductor);		break;	// No se guarda en la BD
-			case ID_REPETIR_SI_APAGAR_WIN	:	App.Opciones.Repeat(Tipo_Repeat_ApagarOrdenador);		break;	// No se guarda en la BD
+			case ID_REPETIR_SI_APAGAR_REP	:	App.Opciones.Repeat(Tipo_Repeat_ApagarReproductor);		break;	
+			case ID_REPETIR_SI_APAGAR_WIN	:	App.Opciones.Repeat(Tipo_Repeat_ApagarOrdenador);		break;	
 			case ID_REPETIR_GENERAR         :
 			case ID_REPETIR_LOQUESEA        :	App.Opciones.Repeat(Tipo_Repeat_GenerarLoQueSea);		break;
 			case ID_REPETIR_GENERO			:	App.Opciones.Repeat(Tipo_Repeat_GenerarGenero);			break;
