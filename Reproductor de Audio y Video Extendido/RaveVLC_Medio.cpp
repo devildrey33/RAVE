@@ -482,6 +482,16 @@ const int RaveVLC_Medio::EnumerarSubtitulos(void) {
 		Desc2 = Desc2->p_next;
 	}
 	libvlc_track_description_list_release(Desc2);
+
+	if (TotalSubtitulos > 0) {
+		// Des-marco todos los subtitulos
+		for (size_t i = 0; i < App.MenuVideoSubtitulos->TotalMenus(); i++) {
+			App.MenuVideoSubtitulos->Menu(i)->Icono(0);
+		}
+		// Marco los primeros subtitulos
+		App.MenuVideoSubtitulos->Menu(1)->Icono(IDI_CHECK2);
+	}
+
 	return TotalSubtitulos;
 };
 
@@ -496,6 +506,9 @@ const int RaveVLC_Medio::AsignarSubtitulos(const wchar_t* Path) {
 	Destino[TamRes] = 0;
 	// Segons doc de la VLC libvlc_video_set_subtitle_file está DEPRECATED i s'ha d'utilitzar libvlc_media_player_add_slave, PERO a mi no em funciona...
 	int R = libvlc_media_player_add_slave(_Medio, libvlc_media_slave_type_subtitle , Destino, false);
+//	libvlc_media_slaves_add(_Medio, libvlc_media_slave_type_subtitle, Destino, false);
+	
+	int R3 = libvlc_video_set_spu(_Medio, 1);
 
 //	EnumerarSubtitulos();
 	return R;
@@ -503,6 +516,19 @@ const int RaveVLC_Medio::AsignarSubtitulos(const wchar_t* Path) {
 //	return libvlc_video_set_subtitle_file(_Medio, Destino);
 }
 
+
+const int RaveVLC_Medio::AsignarSubtituloInterno(const int nPos) {
+
+	// Des-marco todos los subtitulos
+	for (size_t i = 0; i < App.MenuVideoSubtitulos->TotalMenus(); i++) {
+		App.MenuVideoSubtitulos->Menu(i)->Icono(0);
+	}
+	// Marco los primeros subtitulos
+
+	App.MenuVideoSubtitulos->Menu(nPos - 1)->Icono(IDI_CHECK2);
+
+	return libvlc_video_set_spu(_Medio, nPos);
+}
 
 
 

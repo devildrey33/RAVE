@@ -720,7 +720,9 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 
 	}
 
-	// Menu Lista -> Momentos -> Momento. Menu BD -> Momentos -> Momento, Menu Video -> Momentos -> Momento
+	// Menu Lista -> Momentos -> Momento 
+	// Menu BD -> Momentos -> Momento
+	// Menu Video -> Momentos -> Momento
 	if (cID >= ID_MENULISTA_MOMENTOS_MOMENTO && cID < ID_MENULISTA_MOMENTOS_MOMENTO_FIN) {
 		DWL::DMenuEx* TmpMenu = App.VentanaRave.Menu_Lista.BuscarMenu(cID);
 		if (TmpMenu != NULL) {
@@ -765,7 +767,16 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		if (App.Opciones.GuardarBSCP() == TRUE)	App.BD.ActualizarMedio(&App.MP.MedioActual());
 		return;
 	}
+
+	// Menu Video -> Subtitulos -> Subtitulo interno del medio
+	if (cID >= ID_MENUVIDEO_SUBTITULOS_SUBS && cID <= ID_MENUVIDEO_SUBTITULOS_SUBS_FIN) {
+		App.MP.AsignarSubtituloInterno((cID - ID_MENUVIDEO_SUBTITULOS_SUBS) + 1);
+		return;
+	}
+
 }
+
+
 
 
 void VentanaPrincipal::Arbol_AsignarNota(const float nNota) {

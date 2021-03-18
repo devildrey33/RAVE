@@ -57,6 +57,8 @@ class RaveVLC_Medio : public Rave_Medio {
 	const int                   AsignarSubtitulos(const wchar_t* Path);
 	const int                   EnumerarSubtitulos(void);
 
+	const int					AsignarSubtituloInterno(const int nPos);
+
 //	UINT64                      TiempoTotal;
 //	BDMedio                     Medio;		// Datos del medio
 //	HWND                        hWndVLC;
