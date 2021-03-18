@@ -470,6 +470,9 @@ const BOOL RaveVLC_Medio::ObtenerDatosParsing(void) {
 }
 
 const int RaveVLC_Medio::EnumerarSubtitulos(void) {
+	// Elimino los subtitulos listados anteriormente
+	App.MenuVideoSubtitulos->EliminarTodosLosMenus();
+
 	// Enumero los subtitulos
 	int          TotalSubtitulos = libvlc_video_get_spu_count(_Medio);
 	std::wstring Texto;
