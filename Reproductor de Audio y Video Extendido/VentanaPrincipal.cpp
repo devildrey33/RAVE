@@ -775,8 +775,18 @@ void VentanaPrincipal::Evento_MenuEx_Click(const UINT cID) {
 		// libvlc_video_set_spu diu que necesita la i_id que surt en el track description
 		// però segueix sense funcionar...
 		DWL::DMenuEx *M = App.MenuVideoSubtitulos->BuscarMenu(cID);
-		if (M != NULL)	
-			App.MP.AsignarSubtituloInterno((cID - ID_MENUVIDEO_SUBTITULOS_SUBS) + 1, static_cast<int>(M->Parametro));
+		if (M != NULL) {
+			if (App.MP.AsignarSubtituloInterno((cID - ID_MENUVIDEO_SUBTITULOS_SUBS) + 1, static_cast<int>(M->Parametro)) == 0) {
+				std::wstring Msg = L"Subtitulos " + M->Texto();
+				App.MostrarToolTipPlayer(Msg);
+			}
+			else {
+				App.MostrarToolTipPlayerError(L"No se ha encontrado el subtitulo con la id especificada...");
+			}
+		}
+		else {
+			App.MostrarToolTipPlayerError(L"No se ha encontrado el subtitulo...");
+		}
 		return;
 	}
 
