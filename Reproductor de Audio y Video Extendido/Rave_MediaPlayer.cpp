@@ -842,9 +842,9 @@ const int Rave_MediaPlayer::AsignarSubtitulos(const wchar_t* Path) {
 	return _Actual->AsignarSubtitulos(Path);
 }
 
-const int Rave_MediaPlayer::AsignarSubtituloInterno(const int nPos) {
+const int Rave_MediaPlayer::AsignarSubtituloInterno(const int nPos, const int tId) {
 	if (_Actual == nullptr) return 0;
-	return _Actual->AsignarSubtituloInterno(nPos);
+	return _Actual->AsignarSubtituloInterno(nPos, tId);
 }
 
 

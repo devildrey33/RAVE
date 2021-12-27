@@ -35,7 +35,7 @@ class Rave_MediaPlayer : public DWL::DVentana {
 	void							AsignarPistaAudio(int nPista);
 	const int				        AsignarSubtitulos(const wchar_t* Path);
 	const int                       EnumerarSubtitulos(void);
-	const int                       AsignarSubtituloInterno(const int nPos);
+	const int                       AsignarSubtituloInterno(const int nPos, const int tId);
 
 	const float						TiempoActual(void);
 	void							TiempoActual(float nTiempo);

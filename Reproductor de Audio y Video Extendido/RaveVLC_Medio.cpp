@@ -477,22 +477,29 @@ const int RaveVLC_Medio::EnumerarSubtitulos(void) {
 	int          TotalSubtitulos = libvlc_video_get_spu_count(_Medio);
 	std::wstring Texto;
 	DMenuEx     *TmpMenu = NULL;
-	libvlc_track_description_t* Desc2 = libvlc_video_get_spu_description(_Medio);
+	libvlc_track_description_t *Desc2 = libvlc_video_get_spu_description(_Medio);
 	for (int i = 0; i < TotalSubtitulos; i++) {
 		DWL::Strings::UTF8ToWide(Desc2->psz_name, Texto);
 		TmpMenu = App.MenuVideoSubtitulos->AgregarMenu(static_cast<INT_PTR>(ID_MENUVIDEO_SUBTITULOS_SUBS) + i, Texto);
+		/* La i_id puede ser :
+		   -1 si está desactivado
+			1 si es un subtitulo en un archivo externo
+			2 o más si es un subtitulo interno */
 		TmpMenu->Parametro = Desc2->i_id;
 		Desc2 = Desc2->p_next;
 	}
 	libvlc_track_description_list_release(Desc2);
 
 	if (TotalSubtitulos > 0) {
-		// Des-marco todos los subtitulos
+		int R2 = libvlc_video_get_spu(_Medio);
+		// Des-marco todos los subtitulos, y marco el subtitulo actualmente seleccionado
+		// Menu->Parametro contiene la i_id de ese subtitulo
 		for (size_t i = 0; i < App.MenuVideoSubtitulos->TotalMenus(); i++) {
-			App.MenuVideoSubtitulos->Menu(i)->Icono(0);
+			if (R2 == static_cast<int>(App.MenuVideoSubtitulos->Menu(i)->Parametro))	
+				App.MenuVideoSubtitulos->Menu(i)->Icono(IDI_CHECK2);
+			else																		
+				App.MenuVideoSubtitulos->Menu(i)->Icono(0);
 		}
-		// Marco los primeros subtitulos
-		App.MenuVideoSubtitulos->Menu(1)->Icono(IDI_CHECK2);
 	}
 
 	return TotalSubtitulos;
@@ -511,6 +518,20 @@ const int RaveVLC_Medio::AsignarSubtitulos(const wchar_t* Path) {
 	int R = libvlc_media_player_add_slave(_Medio, libvlc_media_slave_type_subtitle , Destino, false);
 //	libvlc_media_slaves_add(_Medio, libvlc_media_slave_type_subtitle, Destino, false);
 	
+	// Busco si existe elsub- menú "Archivo externo"
+	DWL::DMenuEx* TmpMenu = App.MenuVideoSubtitulos->BuscarMenu(static_cast<INT_PTR>(ID_MENUVIDEO_SUBTITULOS_SUBS_FIN));
+	// Si no existe lo creo
+	if (TmpMenu == NULL) {
+		TmpMenu = App.MenuVideoSubtitulos->AgregarMenu(static_cast<INT_PTR>(ID_MENUVIDEO_SUBTITULOS_SUBS_FIN), L"Archivo externo");
+		TmpMenu->Parametro = 1;
+	}
+	// Des-marco todos los subtitulos
+	for (size_t i = 0; i < App.MenuVideoSubtitulos->TotalMenus(); i++) {
+		App.MenuVideoSubtitulos->Menu(i)->Icono(0);
+	}
+	// Marco el menú "Archivo externo"
+	TmpMenu->Icono(IDI_CHECK2);
+
 	int R3 = libvlc_video_set_spu(_Medio, 1);
 
 //	EnumerarSubtitulos();
@@ -520,17 +541,18 @@ const int RaveVLC_Medio::AsignarSubtitulos(const wchar_t* Path) {
 }
 
 
-const int RaveVLC_Medio::AsignarSubtituloInterno(const int nPos) {
+const int RaveVLC_Medio::AsignarSubtituloInterno(const int nPos, const int tId) {
 
 	// Des-marco todos los subtitulos
 	for (size_t i = 0; i < App.MenuVideoSubtitulos->TotalMenus(); i++) {
 		App.MenuVideoSubtitulos->Menu(i)->Icono(0);
 	}
-	// Marco los primeros subtitulos
-
+	// Marco el menu de los subtitulos que se ha especificado
 	App.MenuVideoSubtitulos->Menu(nPos - 1)->Icono(IDI_CHECK2);
-
-	return libvlc_video_set_spu(_Medio, nPos);
+	int R = libvlc_video_set_spu(_Medio, tId);
+/*	R = libvlc_video_set_spu(_Medio, 1);
+	int R2 = libvlc_video_get_spu(_Medio);*/
+	return R;
 }
 
 
